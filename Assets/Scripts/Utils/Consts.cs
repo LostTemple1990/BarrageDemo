@@ -1,0 +1,64 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Consts  {
+    public const int DIR_NULL = 0;
+    public const int DIR_LEFT = 1;
+    public const int DIR_RIGHT = 2;
+    public const int DIR_UP = 4;
+    public const int DIR_DOWN = 8;
+
+    public const int SpeedMove = 0;
+    public const int SlowMove = 1;
+
+    public const float HighSpeed = 4.5f;
+    public const float SlowSpeed = 2f;
+
+    public const int CharID_Reimu = 1;
+
+    public const float RefResolutionX = 640f;
+    public const float RefResolutionY = 640f;
+
+    public const float GameWidth = 380f;
+    public const float GameHeight = 450f;
+
+    public const int LayerId_Enemy = 1;
+    public const int LayerId_PlayerBarrage = 2;
+    public const int LayerId_Barrage = 5;
+    public const int LayerId_Player = 10;
+
+    public const int BulletId_ReimuA_Main = 110;
+    public const int BulletId_ReimuA_Sub1 = 111;
+    public const int BulletId_ReimuA_Sub2 = 112;
+
+    public const int PlayerHalfWidth = 16;
+    public const int PlayerHalfHeight = 24;
+
+    public const int CollisionType_Rect = 1;
+    public const int CollisionType_Circle = 2;
+
+    public const int GrazeType_Rect = 1;
+
+    public const int TargetFrameRate = 60;
+
+    public const float AutoGetItemY = 140;
+    public const float ItemBottomBorderY = -240;
+
+    public const int ReboundLeft = 0x01;
+    public const int ReboundRight = 0x02;
+    public const int ReboundTop = 0x04;
+    public const int ReboundBottom = 0x08;
+
+    public const int MaxDuration = 9999;
+    public const float VelocityAngle = -999;
+
+    /// <summary>
+    /// 自机出现的无敌时间
+    /// </summary>
+    public const int AppearInvincibleDuration = 300;
+    /// <summary>
+    /// 多线段集合中每次检测的组中包含的点的个数
+    /// </summary>
+    public const int NumInMultiSegmentsGroup = 2;
+}

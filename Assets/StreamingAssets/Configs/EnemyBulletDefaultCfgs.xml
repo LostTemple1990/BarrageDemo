@@ -1,0 +1,9 @@
+<Data>
+	<Bullet id="0000" prefabName="etama_000" comment="大玉" isRotatedByVAngle="0" selfRotationAngle="0" grazeHalfWidth="20" grazeHalfHeight="20" collisionRadius="14" />
+	<Bullet id="0010" prefabName="etama_010" comment="中玉" isRotatedByVAngle="0" selfRotationAngle="0" grazeHalfWidth="14" grazeHalfHeight="14" collisionRadius="8.5" />
+	<Bullet id="0124" prefabName="etama_124" isRotatedByVAngle="1" selfRotationAngle="0" grazeHalfWidth="8" grazeHalfHeight="8" collisionRadius="4" />
+	<Bullet id="0172" prefabName="etama_172" isRotatedByVAngle="1" selfRotationAngle="0" grazeHalfWidth="8" grazeHalfHeight="8" collisionRadius="4" />
+	<Bullet id="0154" prefabName="etama_154" isRotatedByVAngle="1" selfRotationAngle="0" grazeHalfWidth="8" grazeHalfHeight="8" collisionRadius="4" />
+	<Bullet id="0184" prefabName="etama_184" comment="小玉" isRotatedByVAngle="0" selfRotationAngle="0" grazeHalfWidth="14" grazeHalfHeight="14" collisionRadius="8.5" />
+	<Bullet id="0218" prefabName="etama_218" isRotatedByVAngle="1" selfRotationAngle="0" grazeHalfWidth="8" grazeHalfHeight="8" collisionRadius="4" />
+</Data>
