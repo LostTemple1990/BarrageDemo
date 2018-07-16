@@ -26,8 +26,14 @@ public class BackgroundManager
     private int _bgMoveTime;
     private int _bgMoveDuration;
 
+    private Dictionary<int, Canvas> _canvasMap;
+
     public void Init()
     {
+        if ( _canvasMap == null )
+        {
+            _canvasMap = new Dictionary<int, Canvas>();
+        }
         GameObject go = GameObject.Find("Background");
         _bgTf = go.transform.Find("BgLayer");
         _cameraTf = go.transform.Find("BgCamera");
@@ -47,6 +53,17 @@ public class BackgroundManager
         }
         MoveBg();
         UpdatePos();
+    }
+    
+    public void AddBgBlocks(BgBlock block,int blockCount,int sortingOrder=0)
+    {
+        Canvas canvas;
+        if ( !_canvasMap.TryGetValue(sortingOrder,out canvas) )
+        {
+            canvas = new Canvas();
+            canvas.sortingOrder = sortingOrder;
+            canvas.transform.parent = _bgTf;
+        }
     }
 
     private void MoveCamera()
@@ -71,6 +88,57 @@ public class BackgroundManager
     private void UpdatePos()
     {
         _bgTf.localPosition = _curPos;
+    }
+
+    public void Clear()
+    {
+
+    }
+}
+
+class BgBlockPanel
+{
+    private float _height;
+    private float _speed;
+    private Canvas _canvas;
+    private Transform _canvasTf;
+    private float _curPosZ;
+    public BgBlockPanel(int sortingOrder)
+    {
+        _canvas = new Canvas();
+        _canvasTf = _canvas.transform;
+        _canvas.sortingOrder = sortingOrder;
+        _curPosZ = 0;
+    }
+
+    public void AddBlocks(BgBlock block,int count)
+    {
+        block.AddToPanel(_canvas.transform);
+        float posZ = 0;
+        for (int i=1;i<count;i++)
+        {
+            BgBlock cloneBlock = block.Clone();
+            cloneBlock.AddToPanel(_canvas.transform);
+            posZ += block.height;
+            cloneBlock.SetToPos(new Vector3(0, 0, posZ));
+        }
+    }
+
+    public void SetSpeed(float speed)
+    {
+        _speed = speed;
+    }
+
+    public void Update()
+    {
+        
+    }
+
+    public static BgBlockPanel Create(BgBlock block,int count,int sortingOrder)
+    {
+        BgBlockPanel panel = new BgBlockPanel(sortingOrder);
+        panel.AddBlocks(block, count);
+        return panel;
     }
 
     public void Clear()
