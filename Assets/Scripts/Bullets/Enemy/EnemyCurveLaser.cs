@@ -32,6 +32,11 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     protected MovableObject _movableObj;
 
+    protected int _textureIndex;
+    protected float _vUnit;
+    protected float _startV;
+    protected float _endV;
+
     #region 碰撞相关参数
     /// <summary>
     /// 擦弹检测类型，默认为矩形
@@ -93,8 +98,14 @@ public class EnemyCurveLaser : EnemyBulletBase
         _mesh = laserTrans.GetComponent<MeshFilter>().mesh;
         MeshRenderer renderer = laserTrans.GetComponent<MeshRenderer>();
         renderer.sortingLayerName = "EnemyBarrage";
-        // todo resourceManager.getTexture以后需要改成正式的http://www.anzhen.org/Html/News/Columns/224/Index.html
-        renderer.material.mainTexture = ResourceManager.GetInstance().GetTexture("etama9", texture);
+        // todo resourceManager.getTexture以后需要改成正式的
+        //renderer.material.mainTexture = ResourceManager.GetInstance().GetTexture("etama9", texture);
+        int index = int.Parse(texture.Substring(texture.IndexOf('_') + 1));
+        //renderer.material.SetFloat("_Index", index);
+        _textureIndex = index;
+        _vUnit = 1f / 16;
+        _startV = _vUnit * (index + 1);
+        _endV = _vUnit * index;
     }
 
     public override void SetToPosition(float posX, float posY)
@@ -279,12 +290,12 @@ public class EnemyCurveLaser : EnemyBulletBase
         List<Vector2> uvs = new List<Vector2>();
         for (int i=0;i<_curTrailLen-1;i++)
         {
-            uvs.Add(new Vector2(u, 1));
-            uvs.Add(new Vector2(u, 0));
+            uvs.Add(new Vector2(u, _endV));
+            uvs.Add(new Vector2(u, _startV));
             u += segLen;
         }
-        uvs.Add(new Vector2(1, 1));
-        uvs.Add(new Vector2(1, 0));
+        uvs.Add(new Vector2(1, _endV));
+        uvs.Add(new Vector2(1, _startV));
         _mesh.uv = uvs.ToArray();
     }
 
