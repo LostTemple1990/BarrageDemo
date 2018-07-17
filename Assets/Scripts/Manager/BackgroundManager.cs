@@ -13,7 +13,8 @@ public class BackgroundManager
 
     private GameObject _bgLayer;
     private Transform _bgTf;
-    private Transform _cameraTf;
+    private Camera _bgCamera;
+    private Transform _bgCameraTf;
 
     private Vector3 _curPos;
     private float _speedZ;
@@ -26,23 +27,44 @@ public class BackgroundManager
     private int _bgMoveTime;
     private int _bgMoveDuration;
 
-    private Dictionary<int, Canvas> _canvasMap;
+    private List<BgBlockContainer> _containerList;
+    private int _containerCount;
 
     public void Init()
     {
-        if ( _canvasMap == null )
-        {
-            _canvasMap = new Dictionary<int, Canvas>();
-        }
         GameObject go = GameObject.Find("Background");
         _bgTf = go.transform.Find("BgLayer");
-        _cameraTf = go.transform.Find("BgCamera");
+        _bgCameraTf = go.transform.Find("BgCamera");
+        _bgCamera = _bgCameraTf.GetComponent<Camera>();
         _curPos = Vector3.zero;
         _speedZ = -0.008f;
 
         _isCameraMoving = true;
         _cameraMoveTime = 0;
         _cameraMoveDuration = 150;
+        InitBg();
+        _bgCamera.fieldOfView = 45;
+        _bgCameraTf.localPosition = new Vector3(0,2.8f,0.3f);
+    }
+
+    private void InitBg()
+    {
+        _containerList = new List<BgBlockContainer>();
+        CreateBgBlockContainer(_bgTf.Find("BgBlock").gameObject, 4);
+        _containerCount = _containerList.Count;
+    }
+
+    public void CreateBgBlockContainer(GameObject blockObj,int count)
+    {
+        BgBlockContainer container = new BgBlockContainer(_bgTf);
+        container.Init();
+        container.SetBlockObject(blockObj, count);
+        container.SetSpeed(_speedZ);
+        container.SetDisappearZ(-2.56f);
+        container.SetIntervalRangeZ(2.56f, 2.56f);
+        container.GenerateBlocks(new Vector3(0,0,0));
+        //添加到列表中
+        _containerList.Add(container);
     }
 
     public void Update()
@@ -51,24 +73,19 @@ public class BackgroundManager
         {
             MoveCamera();
         }
-        MoveBg();
-        UpdatePos();
-    }
-    
-    public void AddBgBlocks(BgBlock block,int blockCount,int sortingOrder=0)
-    {
-        Canvas canvas;
-        if ( !_canvasMap.TryGetValue(sortingOrder,out canvas) )
+        foreach(BgBlockContainer container in _containerList)
         {
-            canvas = new Canvas();
-            canvas.sortingOrder = sortingOrder;
-            canvas.transform.parent = _bgTf;
+            container.Update();
         }
+        //MoveBg();
+        //UpdatePos();
     }
 
     private void MoveCamera()
     {
-        _cameraTf.rotation = Quaternion.Euler(MathUtil.GetEaseInOutQuadInterpolation(94, 80, _cameraMoveTime, _cameraMoveDuration), 0, 0);
+        _bgCameraTf.rotation = Quaternion.Euler(MathUtil.GetEaseInOutQuadInterpolation(94, 30, _cameraMoveTime, _cameraMoveDuration), 0, 0);
+        _bgCamera.fieldOfView = MathUtil.GetLinearInterpolation(45, 20, _cameraMoveTime, _cameraMoveDuration);
+        _bgCameraTf.localPosition = MathUtil.GetEaseInOutQuadInterpolation(new Vector3(0, 2.8f, 0.3f), new Vector3(0, 3.43f, -4.33f), _cameraMoveTime, _cameraMoveDuration);
         _cameraMoveTime++;
         if ( _cameraMoveTime >= _cameraMoveDuration )
         {
@@ -90,55 +107,22 @@ public class BackgroundManager
         _bgTf.localPosition = _curPos;
     }
 
-    public void Clear()
+    /// <summary>
+    /// 设置背景相机的位置
+    /// </summary>
+    /// <param name="pos"></param>
+    public void SetBgCameraPos(Vector3 pos)
     {
-
-    }
-}
-
-class BgBlockPanel
-{
-    private float _height;
-    private float _speed;
-    private Canvas _canvas;
-    private Transform _canvasTf;
-    private float _curPosZ;
-    public BgBlockPanel(int sortingOrder)
-    {
-        _canvas = new Canvas();
-        _canvasTf = _canvas.transform;
-        _canvas.sortingOrder = sortingOrder;
-        _curPosZ = 0;
+        _bgCameraTf.localPosition = pos;
     }
 
-    public void AddBlocks(BgBlock block,int count)
+    /// <summary>
+    /// 设置背景相机的视野
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetBgCameraFieldOfView(float value)
     {
-        block.AddToPanel(_canvas.transform);
-        float posZ = 0;
-        for (int i=1;i<count;i++)
-        {
-            BgBlock cloneBlock = block.Clone();
-            cloneBlock.AddToPanel(_canvas.transform);
-            posZ += block.height;
-            cloneBlock.SetToPos(new Vector3(0, 0, posZ));
-        }
-    }
-
-    public void SetSpeed(float speed)
-    {
-        _speed = speed;
-    }
-
-    public void Update()
-    {
-        
-    }
-
-    public static BgBlockPanel Create(BgBlock block,int count,int sortingOrder)
-    {
-        BgBlockPanel panel = new BgBlockPanel(sortingOrder);
-        panel.AddBlocks(block, count);
-        return panel;
+        _bgCamera.fieldOfView = value;
     }
 
     public void Clear()

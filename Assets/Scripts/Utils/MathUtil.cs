@@ -110,6 +110,23 @@ public class MathUtil
         return start + (end - start) * (time /= duration) * time;
     }
 
+    public static Vector3 GetEaseInQuadInterpolation(Vector3 start, Vector3 end, float time, float duration)
+    {
+        float posX, posY, posZ;
+        posX = start.x + (end.x - start.x) * (time /= duration) * time;
+        posY = start.y + (end.y - start.y) / 2 * time * time;
+        posZ = start.z + (end.z - start.z) / 2 * time * time;
+        return new Vector3(posX, posY, posZ);
+    }
+
+    public static Vector2 GetEaseInQuadInterpolation(Vector2 start, Vector2 end, float time, float duration)
+    {
+        float posX, posY;
+        posX = start.x + (end.x - start.x) * (time /= duration) * time;
+        posY = start.y + (end.y - start.y) / 2 * time * time;
+        return new Vector2(posX, posY);
+    }
+
     /// <summary>
     /// 二次函数的缓动 最终减速到0
     /// </summary>
@@ -127,6 +144,31 @@ public class MathUtil
         return start +(start - end) * (time /= duration) * (time - 2);
     }
 
+    public static Vector3 GetEaseOutQuadInterpolation(Vector3 start, Vector3 end, float time, float duration)
+    {
+        float posX, posY, posZ;
+        posX = start.x + (start.x - end.x) * (time /= duration) * (time - 2);
+        posY = start.y + (start.y - end.y) * time * (time - 2);
+        posZ = start.z + (start.z - end.z) * time * (time - 2);
+        return new Vector3(posX, posY, posZ);
+    }
+
+    public static Vector2 GetEaseOutQuadInterpolation(Vector2 start, Vector2 end, float time, float duration)
+    {
+        float posX, posY, posZ;
+        posX = start.x + (start.x - end.x) * (time /= duration) * (time - 2);
+        posY = start.y + (start.y - end.y) * time * (time - 2);
+        return new Vector2(posX, posY);
+    }
+
+    /// <summary>
+    /// 二次函数的缓动，先加速再减速
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <param name="time"></param>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     public static float GetEaseInOutQuadInterpolation(float start, float end, float time, float duration)
     {
         if ( (time /= duration/2) < 1 )
@@ -134,6 +176,40 @@ public class MathUtil
             return start + (end - start) / 2 * time * time;
         }
         return start + (start - end) / 2 * ((--time) * (time - 2) - 1);
+    }
+
+    public static Vector3 GetEaseInOutQuadInterpolation(Vector3 start, Vector3 end, float time, float duration)
+    {
+        float posX, posY, posZ;
+        if ((time /= duration / 2) < 1)
+        {
+            posX = start.x + (end.x - start.x) / 2 * time * time;
+            posY = start.y + (end.y - start.y) / 2 * time * time;
+            posZ = start.z + (end.z - start.z) / 2 * time * time;
+        }
+        else
+        {
+            posX = start.x + (start.x - end.x) / 2 * ((--time) * (time - 2) - 1);
+            posY = start.y + (start.y - end.y) / 2 * (time * (time - 2) - 1);
+            posZ = start.z + (start.z - end.z) / 2 * (time * (time - 2) - 1);
+        }
+        return new Vector3(posX, posY, posZ);
+    }
+
+    public static Vector2 GetEaseInOutQuadInterpolation(Vector2 start, Vector2 end, float time, float duration)
+    {
+        float posX, posY;
+        if ((time /= duration / 2) < 1)
+        {
+            posX = start.x + (end.x - start.x) / 2 * time * time;
+            posY = start.y + (end.y - start.y) / 2 * time * time;
+        }
+        else
+        {
+            posX = start.x + (start.x - end.x) / 2 * ((--time) * (time - 2) - 1);
+            posY = start.y + (start.y - end.y) / 2 * (time * (time - 2) - 1);
+        }
+        return new Vector2(posX, posY);
     }
 
     /// <summary>
@@ -149,6 +225,23 @@ public class MathUtil
         return start + (end - start) * time / duration;
     }
 
+    public static Vector3 GetLinearInterpolation(Vector3 start, Vector3 end, float time, float duration)
+    {
+        float posX, posY, posZ;
+        posX = start.x + (end.x - start.x) * time / duration;
+        posY = start.y + (end.y - start.y) * time / duration;
+        posZ = start.z + (end.z - start.z) * time / duration;
+        return new Vector3(posX, posY, posZ);
+    }
+
+    public static Vector2 GetLinearInterpolation(Vector2 start, Vector2 end, float time, float duration)
+    {
+        float posX, posY;
+        posX = start.x + (end.x - start.x) * time / duration;
+        posY = start.y + (end.y - start.y) * time / duration;
+        return new Vector2(posX, posY);
+    }
+
     /// <summary>
     /// 正弦插值
     /// </summary>
@@ -162,9 +255,37 @@ public class MathUtil
         return start + (end - start) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
     }
 
+    public static Vector3 GetSinInterpolation(Vector3 start, Vector3 end, float time, float duration)
+    {
+        float posX, posY, posZ;
+        posX = start.x + (end.x - start.x) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
+        posY = start.y + (end.y - start.y) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
+        posZ = start.z + (end.z - start.z) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
+        return new Vector3(posX, posY, posZ);
+    }
+
+    public static Vector2 GetSinInterpolation(Vector2 start, Vector2 end, float time, float duration)
+    {
+        float posX, posY, posZ;
+        posX = start.x + (end.x - start.x) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
+        posY = start.y + (end.y - start.y) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
+        return new Vector2(posX, posY);
+    }
+
     public static float GetNoneInterpolation(float start, float end, float time, float duration)
     {
         return time < duration ? start : end;
     }
+
+    public static Vector3 GetNoneInterpolation(Vector3 start, Vector3 end, float time, float duration)
+    {
+        return time < duration ? start : end;
+    }
+
+    public static Vector2 GetNoneInterpolation(Vector2 start, Vector2 end, float time, float duration)
+    {
+        return time < duration ? start : end;
+    }
+
 #endregion
 }
