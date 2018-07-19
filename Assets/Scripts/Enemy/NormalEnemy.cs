@@ -104,7 +104,7 @@ public class NormalEnemy : EnemyBase
     {
         if ( _onKillFuncRef != 0 )
         {
-            Task task = ObjectsPool.GetInstance().GetDataClassAtPool<Task>();
+            Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
             task.funcRef = _onKillFuncRef;
             InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
             InterpreterManager.GetInstance().CallTaskCoroutine(task, 1);

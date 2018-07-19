@@ -36,7 +36,7 @@ public class BCCustomizedTask : BulletComponent
                 task.Update();
                 if ( task.isFinish )
                 {
-                    ObjectsPool.GetInstance().RestoreDataClassToPool<Task>(task);
+                    ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(task);
                     _taskList[i] = null;
                 }
             }
@@ -55,7 +55,7 @@ public class BCCustomizedTask : BulletComponent
                 {
                     InterpreterManager.GetInstance().StopTaskThread(task.luaState, task.funcRef);
                 }
-                ObjectsPool.GetInstance().RestoreDataClassToPool<Task>(task);
+                ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(task);
             }
         }
         _taskList.Clear();

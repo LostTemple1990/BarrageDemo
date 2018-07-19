@@ -155,7 +155,7 @@ public class MathUtil
 
     public static Vector2 GetEaseOutQuadInterpolation(Vector2 start, Vector2 end, float time, float duration)
     {
-        float posX, posY, posZ;
+        float posX, posY;
         posX = start.x + (start.x - end.x) * (time /= duration) * (time - 2);
         posY = start.y + (start.y - end.y) * time * (time - 2);
         return new Vector2(posX, posY);
@@ -266,7 +266,7 @@ public class MathUtil
 
     public static Vector2 GetSinInterpolation(Vector2 start, Vector2 end, float time, float duration)
     {
-        float posX, posY, posZ;
+        float posX, posY;
         posX = start.x + (end.x - start.x) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
         posY = start.y + (end.y - start.y) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
         return new Vector2(posX, posY);

@@ -95,6 +95,16 @@ public partial class LuaLib
             // 清理子弹
             new NameFuncPair("ClearEnemyBulletsInRange",ClearEnemyBulletsInRange),
             new NameFuncPair("ClearAllEnemyBullets",ClearAllEnemyBullets),
+            // 背景相关
+            new NameFuncPair("CreateBgSpriteObject",CreateBgSpriteObject),
+            new NameFuncPair("SetBgSprteObjectPos",SetBgSprteObjectPos),
+            new NameFuncPair("SetBgSpriteObjectScale",SetBgSpriteObjectScale),
+            new NameFuncPair("SetBgSpriteObjectVelocity",SetBgSpriteObjectVelocity),
+            new NameFuncPair("SetBgSpriteObjectSelfRotateAngle",SetBgSpriteObjectSelfRotateAngle),
+            new NameFuncPair("SetBgSpriteObjectRotation",SetBgSpriteObjectRotation),
+            new NameFuncPair("BgSpriteObjectDoFade",BgSpriteObjectDoFade),
+            new NameFuncPair("SetBgSpriteObjectAcce",SetBgSpriteObjectAcce),
+            new NameFuncPair("SetBgSpriteObjectAcceWithLimitation",SetBgSpriteObjectAcceWithLimitation),
             // 通用类相关
             new NameFuncPair("GetRandomInt", GetRandomInt),
             new NameFuncPair("GetRandomFloat", GetRandomFloat),
@@ -407,7 +417,7 @@ public partial class LuaLib
         EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
         int funcRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
         luaState.Pop(1);
-        Task task = ObjectsPool.GetInstance().GetDataClassAtPool<Task>();
+        Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
         task.funcRef = funcRef;
         task.isFinish = false;
         task.luaState = null;
@@ -598,7 +608,7 @@ public partial class LuaLib
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
         int funcRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
         luaState.Pop(1);
-        Task task = ObjectsPool.GetInstance().GetDataClassAtPool<Task>();
+        Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
         task.funcRef = funcRef;
         task.isFinish = false;
         task.luaState = null;

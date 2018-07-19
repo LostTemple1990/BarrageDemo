@@ -24,7 +24,7 @@ public class ObjectsPool
 
     private Dictionary<BulletId, Stack<BulletBase>> _bulletsPool;
     private Dictionary<string, Stack<GameObject>> _bulletPrefabsPool;
-    private Dictionary<string, Stack<IData>> _dataClassPool;
+    private Dictionary<string, Stack<IPoolClass>> _dataClassPool;
 
     private ObjectsPool()
     {
@@ -36,7 +36,7 @@ public class ObjectsPool
         _playerBullets = new List<PlayerBulletBase>();
         _bulletsPool = new Dictionary<BulletId, Stack<BulletBase>>();
         _bulletPrefabsPool = new Dictionary<string, Stack<GameObject>>();
-        _dataClassPool = new Dictionary<string, Stack<IData>>();
+        _dataClassPool = new Dictionary<string, Stack<IPoolClass>>();
     }
 
     /// <summary>
@@ -199,36 +199,42 @@ public class ObjectsPool
         }
     }
 
-    public T GetDataClassAtPool<T>() where T:class,IData,new()
+    public T GetPoolClassAtPool<T>() where T:class,IPoolClass,new()
     {
         string className = typeof(T).ToString();
-        Stack<IData> _stack;
-        IData dataInstance = null;
+        Stack<IPoolClass> _stack;
+        IPoolClass poolCls = null;
         if (_dataClassPool.TryGetValue(className, out _stack))
         {
             if ( _stack.Count > 0 )
             {
-                dataInstance = _stack.Pop();
+                poolCls = _stack.Pop();
             }
         }
-        if ( dataInstance == null )
+        else
         {
-            dataInstance = new T();
+            _stack = new Stack<IPoolClass>();
+            _dataClassPool.Add(className, _stack);
         }
-        return dataInstance as T;
+        if ( poolCls == null )
+        {
+            poolCls = new T();
+        }
+        return poolCls as T;
     }
 
-    public void RestoreDataClassToPool<T>(T dataInstance) where T : class, IData
+    public void RestorePoolClassToPool<T>(T poolCls) where T : class, IPoolClass
     {
-        if ( dataInstance == null )
+        if (poolCls == null)
         {
             return;
         }
         string className = typeof(T).ToString();
-        Stack<IData> _stack;
+        Stack<IPoolClass> _stack;
         if (_dataClassPool.TryGetValue(className, out _stack))
         {
-            _stack.Push(dataInstance);
+            poolCls.Clear();
+            _stack.Push(poolCls);
         }
     }
 }

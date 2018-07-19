@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MovableObject
+public class MovableObject : IPoolClass
 {
     private Vector2 _curPos;
 

@@ -98,7 +98,7 @@ public class ExtraTaskManager
                 task.Update();
                 if (task.isFinish)
                 {
-                    ObjectsPool.GetInstance().RestoreDataClassToPool<Task>(task);
+                    ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(task);
                     _taskList[i] = null;
                 }
             }
@@ -122,7 +122,7 @@ public class ExtraTaskManager
                 if (!task.isFinish)
                 {
                     InterpreterManager.GetInstance().StopTaskThread(task);
-                    ObjectsPool.GetInstance().RestoreDataClassToPool<Task>(task);
+                    ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(task);
                 }
             }
         }

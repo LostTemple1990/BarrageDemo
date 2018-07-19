@@ -44,6 +44,9 @@ TagManager:
   - name: UI
     uniqueID: 2791420813
     locked: 0
+  - name: GameBg
+    uniqueID: 631496219
+    locked: 0
   - name: GameMain
     uniqueID: 3038520163
     locked: 0

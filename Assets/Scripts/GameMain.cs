@@ -22,39 +22,25 @@ public class GameMain : MonoBehaviour
         ItemManager.GetInstance().Update();
         AnimationManager.GetInstance().Update();
         SoundManager.GetInstance().Update();
-
-        //if ( frameNode == 300 )
-        //{
-        //    NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemy(EnemyType.NormalEnemy) as NormalEnemy;
-        //    enemy.Init();
-        //    enemy.SetToPosition(new Vector3(0, 200, 0));
-        //    enemy.DoMove(0.33f, 315, 1000);
-        //}
-        //EnemyCurveLaser curveLaser;
-        //int i,randomNum;
-        //CollisionDetectParas detectParas = new CollisionDetectParas();
-        //detectParas.radius = 3;
-        //GrazeDetectParas grazeParas = new GrazeDetectParas();
-        //grazeParas.halfWidth = 6;
-        //grazeParas.halfHeight = 6;
-        //if ( frameNode >= 300 && frameNode % 150 == 0 )
-        //{
-        //    for (i=0;i<20;i++)
-        //    {
-        //        curveLaser = ObjectsPool.GetInstance().CreateBullet(BulletId.BulletId_Enemy_CurveLaser) as EnemyCurveLaser;
-        //        curveLaser.SetBulletTexture("etama9_10");
-        //        curveLaser.SetToPosition(0, 180);
-        //        randomNum = Random.Range(0, 360);
-        //        curveLaser.DoMove(60, i*18, 1, randomNum);
-        //        curveLaser.SetCollisionDetectParas(detectParas);
-        //        curveLaser.SetGrazeDetectParas(grazeParas);
-        //    }
-        //}
         InterpreterManager.GetInstance().Update();
         ExtraTaskManager.GetInstance().Update();
         BackgroundManager.GetInstance().Update();
         EffectsManager.GetInstance().Update();
         frameNode++;
+        // 背景部分暂时写这，之后转移到lua
+        if ( frameNode % 30 == 0 )
+        {
+            BgSpriteObject spObj = BackgroundManager.GetInstance().CreateBgSpriteObject("MapleLeaf1");
+            float posX = Random.Range(80, 150);
+            float posY = Random.Range(200, 225);
+            spObj.SetToPos(posX, posY);
+            float scale = Random.Range(0.2f, 1);
+            spObj.SetScale(new Vector3(scale, scale));
+            spObj.SetVelocity(Random.Range(1f, 3f), Random.Range(-150, -30));
+            spObj.SetSelfRotateAngle(new Vector3(0, 0, Random.Range(1f, 2f)));
+            spObj.DoFade(Random.Range(90, 180), Random.Range(180,300));
+            BackgroundManager.GetInstance().AddBgSpriteObject(spObj);
+        }
     }
 
     private int frameNode = 0;

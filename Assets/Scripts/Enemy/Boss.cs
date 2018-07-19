@@ -55,7 +55,7 @@ public class Boss : EnemyBase
         InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
         InterpreterManager.GetInstance().CallLuaFunction(_refData.initFuncRef, 1);
         Logger.Log("Call InitFunc of Boss " + _bossName + " Complete!");
-        _bossTask = ObjectsPool.GetInstance().GetDataClassAtPool<Task>();
+        _bossTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
         _bossTask.funcRef = _refData.taskFuncRef;
         InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
         InterpreterManager.GetInstance().CallTaskCoroutine(_bossTask, 1);
@@ -256,7 +256,7 @@ public class Boss : EnemyBase
                 }
                 InterpreterManager.GetInstance().StopTaskThread(_scTask);
                 _isCastingSpell = false;
-                ObjectsPool.GetInstance().RestoreDataClassToPool<Task>(_scTask);
+                ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(_scTask);
                 _scTask = null;
                 ClearTasks();
                 if ( _sc.finishFuncRef != 0 )
@@ -275,7 +275,7 @@ public class Boss : EnemyBase
         }
         else
         {
-            _scTask = ObjectsPool.GetInstance().GetDataClassAtPool<Task>();
+            _scTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
             _scTask.funcRef = _sc.taskRef;
             InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
             InterpreterManager.GetInstance().CallTaskCoroutine(_scTask, 1);
@@ -372,7 +372,7 @@ public class Boss : EnemyBase
             {
                 InterpreterManager.GetInstance().StopTaskThread(_bossTask.luaState, _bossTask.funcRef);
             }
-            ObjectsPool.GetInstance().RestoreDataClassToPool<Task>(_bossTask);
+            ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(_bossTask);
             _bossTask = null;
         }
     }

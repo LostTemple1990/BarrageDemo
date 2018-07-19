@@ -2,7 +2,7 @@
 using System.Collections;
 using UniLua;
 
-public class Task : IData
+public class Task : IPoolClass
 {
     public int funcRef;
     public ILuaState luaState;

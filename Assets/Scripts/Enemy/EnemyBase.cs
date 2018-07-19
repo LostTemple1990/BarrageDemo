@@ -129,7 +129,7 @@ public class EnemyBase : ICollisionObject
                 task.Update();
                 if (task.isFinish)
                 {
-                    ObjectsPool.GetInstance().RestoreDataClassToPool<Task>(task);
+                    ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(task);
                     _tasks[i] = null;
                 }
             }
@@ -324,7 +324,7 @@ public class EnemyBase : ICollisionObject
                 {
                     InterpreterManager.GetInstance().StopTaskThread(task.luaState, task.funcRef);
                 }
-                ObjectsPool.GetInstance().RestoreDataClassToPool<Task>(task);
+                ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(task);
             }
         }
         _tasks.Clear();

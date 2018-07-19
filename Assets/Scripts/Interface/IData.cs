@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public interface IData
+public interface IPoolClass
 {
     void Clear();
 }
