@@ -31,6 +31,8 @@ public class UIManager {
 
     private Dictionary<string, ViewBase> _viewsMap;
 
+    private RectTransform _uiRootTf;
+
     public void Init()
     {
         _enemyLayer = GameObject.Find("EnemyLayer");
@@ -49,6 +51,7 @@ public class UIManager {
         {
             _viewsMap = new Dictionary<string, ViewBase>();
         }
+        _uiRootTf = GameObject.Find("UIRoot").GetComponent<RectTransform>();
         DoScreenAdaption();
     }
 
@@ -136,12 +139,12 @@ public class UIManager {
         Global.PlayerRTBorderPos = new Vector2(Global.GameRTBorderPos.x - Consts.PlayerHalfWidth, Global.GameRTBorderPos.y - Consts.PlayerHalfHeight);
 
         Camera camera = GameObject.Find("GameCamera").GetComponent<Camera>();
-        float scale = (float)Screen.height / 480;
+        float scaleHeight = (float)Screen.height / 480;
         GameObject gameLayer = GameObject.Find("GameLayer");
         Transform tf = gameLayer.transform;
-        tf.localScale = new Vector3(scale, scale, 1);
+        tf.localScale = new Vector3(scaleHeight, scaleHeight, 1);
 
-        float width = scale * 380f;
+        float width = scaleHeight * 380f;
         float w = width / Screen.width;
         camera.rect = new Rect((1f-w)/2, 1f/32, w, 15f/16);
     }
