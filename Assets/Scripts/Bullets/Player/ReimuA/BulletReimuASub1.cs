@@ -43,6 +43,10 @@ public class BulletReimuASub1 :PlayerBulletBase
         {
             GetRandomTarget();
         }
+        if ( _target != null && !_target.CanHit() )
+        {
+            _target = null;
+        }
         if ( _isMoving )
         {
             Move();
@@ -55,28 +59,50 @@ public class BulletReimuASub1 :PlayerBulletBase
     protected virtual void GetRandomTarget()
     {
         EnemyBase target = EnemyManager.GetInstance().GetRandomEnemy();
-        if ( target != null && target.CanHit() )
+        List<EnemyBase> enemyList = EnemyManager.GetInstance().GetEnemyList();
+        List<int> indexList = new List<int>();
+        int indexCount = 0;
+        int enemyCount = enemyList.Count;
+        int i;
+        for (i = 0; i < enemyCount;i++)
         {
+            target = enemyList[i];
+            if ( target != null && target.CanHit() )
+            {
+                indexList.Add(i);
+                indexCount++;
+            }
+        }
+        if ( indexCount > 0 )
+        {
+            // 从可以被攻击的目标当中随机选择
+            int index = indexList[MTRandom.GetNextInt(0, indexCount - 1)];
+            target = enemyList[index];
+            // 设置追踪目标
             _target = target;
-            // 子弹指向目标的向量
-            Vector3 vec = _target.CurPos - _curPos;
-            float length = vec.magnitude;
-            if ( length == 0 )
-            {
-                return;
-            }
-            float deg = Mathf.Acos(vec.x / length) * Mathf.Rad2Deg;
-            if ( vec.y < 0 )
-            {
-                deg = 360f - deg;
-            }
-            DoMove(_curVelocity, deg);
             _targetFlag = 1;
         }
     }
 
     protected override void Move()
     {
+        // 目标不为空的时候跟踪目标
+        if ( _target != null )
+        {
+            Vector3 targetPos = _target.CurPos;
+            Vector2 vecToTarget = targetPos - _curPos;
+            Vector2 vVec = new Vector2(_vx, _vy);
+            // 计算加速度
+            Vector2 dv = (vecToTarget.normalized * _curVelocity*2) - vVec;
+            dv *= _curVelocity / vecToTarget.magnitude;
+            // 还原速度
+            vVec.x += dv.x;
+            vVec.y += dv.y;
+            vVec = vVec.normalized * _curVelocity;
+            // 赋值
+            _vx = vVec.x;
+            _vy = vVec.y;
+        }
         _curPos.x += _vx;
         _curPos.y += _vy;
         if (IsOutOfBorder())

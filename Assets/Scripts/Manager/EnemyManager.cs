@@ -145,7 +145,7 @@ public class EnemyManager
     /// <returns></returns>
     public EnemyBase GetHitEnemy(PlayerBulletBase bullet)
     {
-        EnemyBase hitEnemy = null, tmpEnemy; ;
+        EnemyBase hitEnemy = null, tmpEnemy;
         float bulletX, bulletY, bulletHalfWidth, bulletHalfHeight;
         bullet.GetCollisionParams(out bulletX, out bulletY, out bulletHalfWidth, out bulletHalfHeight);
         //TODO 以后将normalEnemies统一成EnemyBase
