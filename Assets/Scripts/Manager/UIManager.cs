@@ -139,14 +139,18 @@ public class UIManager {
         Global.PlayerRTBorderPos = new Vector2(Global.GameRTBorderPos.x - Consts.PlayerHalfWidth, Global.GameRTBorderPos.y - Consts.PlayerHalfHeight);
 
         Camera camera = GameObject.Find("GameCamera").GetComponent<Camera>();
-        float scaleHeight = (float)Screen.height / 480;
+        float scaleHeight = (float)Screen.height / Consts.RefResolutionY;
         GameObject gameLayer = GameObject.Find("GameLayer");
         Transform tf = gameLayer.transform;
-        tf.localScale = new Vector3(scaleHeight, scaleHeight, 1);
-
-        float width = scaleHeight * 380f;
-        float w = width / Screen.width;
-        camera.rect = new Rect((1f-w)/2, 1f/32, w, 15f/16);
+        // STG游戏部分的实际宽度 = 总宽度- (左边框宽度 + 右边框宽度)
+        float stgWidth = Screen.width - (32 + 224) * scaleHeight;
+        float scaleWidth = stgWidth / Consts.GameWidth;
+        tf.localScale = new Vector3(scaleWidth, scaleHeight, 1);
+        float rectX = 32 * scaleHeight / Screen.width;
+        float rectY = 1f / 30;
+        float rectWidth = stgWidth / Screen.width;
+        float rectHeight = 1 - 2 * rectY;
+        camera.rect = new Rect(rectX, rectY, rectWidth, rectHeight);
     }
 
     public void ShowView(string name,object[] data)

@@ -18,10 +18,15 @@ public class Consts  {
     public const int CharID_Reimu = 1;
 
     public const float RefResolutionX = 640f;
-    public const float RefResolutionY = 640f;
-
-    public const float GameWidth = 380f;
-    public const float GameHeight = 450f;
+    public const float RefResolutionY = 480f;
+    /// <summary>
+    /// STG游戏的默认宽度
+    /// </summary>
+    public const float GameWidth = 384f;
+    /// <summary>
+    /// STG游戏的默认高度
+    /// </summary>
+    public const float GameHeight = 448f;
 
     public const int LayerId_Enemy = 1;
     public const int LayerId_PlayerBarrage = 2;
