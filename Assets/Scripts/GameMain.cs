@@ -72,6 +72,10 @@ public class GameMain : MonoBehaviour
         TimerManager.GetInstance().Init();
 
         UIManager.GetInstance().ShowView(WindowName.GameInfoView, null);
+        
+        // 测试抖动效果
+        ShakeEffect shakeEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ShakeEffect) as ShakeEffect;
+        shakeEffect.DoShake(200, 9999, 12, 1, 5);
 
         // 初始化随机数种子
         long seed = System.DateTime.Now.Ticks % 0xffffffff;

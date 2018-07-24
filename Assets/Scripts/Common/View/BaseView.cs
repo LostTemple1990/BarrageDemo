@@ -45,6 +45,14 @@ public class ViewBase
 
     }
 
+    /// <summary>
+    /// 适配
+    /// </summary>
+    public virtual void Adaptive()
+    {
+
+    }
+
     public virtual LayerId GetLayerId()
     {
         return LayerId.UI;

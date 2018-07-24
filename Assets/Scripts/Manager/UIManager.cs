@@ -25,28 +25,38 @@ public class UIManager {
     private GameObject _barrageLayer;
     private GameObject _playerLayer;
 
-    private Dictionary<LayerId, GameObject> _layersMap;
+    private Dictionary<LayerId, Transform> _layersMap;
 
     private Vector3 _hideVector = new Vector3(2000, 2000, 0);
 
     private Dictionary<string, ViewBase> _viewsMap;
 
     private RectTransform _uiRootTf;
+    private GameObject _stgRoot;
+    /// <summary>
+    /// STG本体的最上层layer
+    /// </summary>
+    private Transform _stgLayerTf;
+    /// <summary>
+    /// STG本体相机
+    /// </summary>
+    private Camera _stgCamera;
 
     public void Init()
     {
-        _enemyLayer = GameObject.Find("EnemyLayer");
-        _barrageLayer = GameObject.Find("EnemyBarrageLayer");
-        _playerLayer = GameObject.Find("PlayerLayer");
-        _layersMap = new Dictionary<LayerId, GameObject>();
-        _layersMap.Add(LayerId.Item, GameObject.Find("ItemLayer"));
-        _layersMap.Add(LayerId.Enemy, _enemyLayer);
-        _layersMap.Add(LayerId.EnemyBarrage, _barrageLayer);
-        _layersMap.Add(LayerId.PlayerBarage, GameObject.Find("PlayerBarrageLayer"));
-        _layersMap.Add(LayerId.Player, _playerLayer);
-        _layersMap.Add(LayerId.PlayerCollisionPoint, GameObject.Find("PlayerCollisionPointLayer"));
-        _layersMap.Add(LayerId.GameEffect, GameObject.Find("GameEffectLayer"));
-        _layersMap.Add(LayerId.GameInfo, GameObject.Find("GameInfoLayer"));
+        _stgRoot = GameObject.Find("GameMainCanvas");
+        _stgLayerTf = _stgRoot.transform.Find("GameLayer");
+        _stgCamera = _stgRoot.transform.Find("GameCamera").GetComponent<Camera>();
+        // 各个层级
+        _layersMap = new Dictionary<LayerId, Transform>();
+        _layersMap.Add(LayerId.Item, _stgLayerTf.Find("ItemLayer"));
+        _layersMap.Add(LayerId.Enemy, _stgLayerTf.Find("EnemyLayer"));
+        _layersMap.Add(LayerId.EnemyBarrage, _stgLayerTf.Find("EnemyBarrageLayer"));
+        _layersMap.Add(LayerId.PlayerBarage, _stgLayerTf.Find("PlayerBarrageLayer"));
+        _layersMap.Add(LayerId.Player, _stgLayerTf.Find("PlayerLayer"));
+        _layersMap.Add(LayerId.PlayerCollisionPoint, _stgLayerTf.Find("PlayerCollisionPointLayer"));
+        _layersMap.Add(LayerId.GameEffect, _stgLayerTf.Find("GameEffectLayer"));
+        _layersMap.Add(LayerId.GameInfo, _stgLayerTf.Find("GameInfoLayer"));
         if ( _viewsMap == null )
         {
             _viewsMap = new Dictionary<string, ViewBase>();
@@ -64,10 +74,10 @@ public class UIManager {
     {
         if ( go != null )
         {
-            GameObject layer;
-            if ( _layersMap.TryGetValue(layerId,out layer) )
+            Transform layerTf;
+            if (_layersMap.TryGetValue(layerId, out layerTf))
             {
-                go.transform.SetParent(layer.transform, false);
+                go.transform.SetParent(layerTf, false);
                 //go.transform.localScale = Vector3.one;
             }
             else
@@ -81,10 +91,10 @@ public class UIManager {
     {
         if (go != null)
         {
-            GameObject layer;
-            if (_layersMap.TryGetValue(layerId, out layer))
+            Transform layerTf;
+            if (_layersMap.TryGetValue(layerId, out layerTf))
             {
-                go.transform.SetParent(layer.transform, false);
+                go.transform.SetParent(layerTf, false);
                 go.transform.localScale = Vector3.one;
                 go.transform.localPosition = pos;
             }
@@ -138,7 +148,7 @@ public class UIManager {
         Global.PlayerLBBorderPos = new Vector2(Global.GameLBBorderPos.x + Consts.PlayerHalfWidth, Global.GameLBBorderPos.y + Consts.PlayerHalfHeight);
         Global.PlayerRTBorderPos = new Vector2(Global.GameRTBorderPos.x - Consts.PlayerHalfWidth, Global.GameRTBorderPos.y - Consts.PlayerHalfHeight);
 
-        Camera camera = GameObject.Find("GameCamera").GetComponent<Camera>();
+
         float scaleHeight = (float)Screen.height / Consts.RefResolutionY;
         GameObject gameLayer = GameObject.Find("GameLayer");
         Transform tf = gameLayer.transform;
@@ -150,7 +160,7 @@ public class UIManager {
         float rectY = 1f / 30;
         float rectWidth = stgWidth / Screen.width;
         float rectHeight = 1 - 2 * rectY;
-        camera.rect = new Rect(rectX, rectY, rectWidth, rectHeight);
+        _stgCamera.rect = new Rect(rectX, rectY, rectWidth, rectHeight);
     }
 
     public void ShowView(string name,object[] data)
@@ -181,6 +191,15 @@ public class UIManager {
         {
             view.Hide();
         }
+    }
+
+    /// <summary>
+    /// 获取游戏本体摄像机
+    /// </summary>
+    /// <returns></returns>
+    public Camera GetSTGCamera()
+    {
+        return _stgCamera;
     }
 }
 

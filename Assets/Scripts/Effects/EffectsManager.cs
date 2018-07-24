@@ -33,10 +33,16 @@ public class EffectsManager
             case EffectType.SpriteEffect:
                 effect = new SpriteEffect();
                 break;
+            case EffectType.ShakeEffect:
+                effect = new ShakeEffect();
+                break;
         }
-        effect.Init();
-        _effectList.Add(effect);
-        _effectsCount++;
+        if ( effect != null )
+        {
+            effect.Init();
+            _effectList.Add(effect);
+            _effectsCount++;
+        }
         return effect;
     }
 
@@ -72,4 +78,5 @@ public class EffectsManager
 public enum EffectType : byte
 {
     SpriteEffect = 1,
+    ShakeEffect = 2,
 }
