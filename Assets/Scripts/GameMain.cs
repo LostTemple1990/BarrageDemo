@@ -42,11 +42,6 @@ public class GameMain : MonoBehaviour
             spObj.DoFade(Random.Range(90, 180), Random.Range(180,300));
             BackgroundManager.GetInstance().AddBgSpriteObject(spObj);
         }
-        // 测试碎裂效果
-        //if ( frameNode == 100 )
-        //{
-        //    EffectsManager.GetInstance().CreateEffectByType(EffectType.BreakScreenEffect);
-        //}
     }
 
     private int frameNode = 0;
