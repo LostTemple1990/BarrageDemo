@@ -36,6 +36,9 @@ public class EffectsManager
             case EffectType.ShakeEffect:
                 effect = new ShakeEffect();
                 break;
+            case EffectType.BreakScreenEffect:
+                effect = new STGBreakScreenEffect();
+                break;
         }
         if ( effect != null )
         {
@@ -79,4 +82,5 @@ public enum EffectType : byte
 {
     SpriteEffect = 1,
     ShakeEffect = 2,
+    BreakScreenEffect = 3,
 }

@@ -20,6 +20,7 @@ public class ResourceManager {
     }
 
     private Dictionary<string, ResourceData> _dic;
+    private Material _spriteDefaultMat;
 
     public void Init()
     {
@@ -108,13 +109,16 @@ public class ResourceManager {
         return prefab;
     }
 
-    private Texture2D _texture = null;
-    public Texture2D GetTexture(string packName, string resName)
+    /// <summary>
+    /// 获取精灵默认的材质
+    /// </summary>
+    /// <returns></returns>
+    public Material GetSpriteDefualtMaterial()
     {
-        if (_texture == null)
+        if ( _spriteDefaultMat == null )
         {
-            _texture = Resources.Load(packName + "/" + resName) as Texture2D;
+            _spriteDefaultMat = Resources.Load<Material>("materials/SpriteDefaultMat");
         }
-        return _texture;
+        return _spriteDefaultMat;
     }
 }

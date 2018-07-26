@@ -57,6 +57,7 @@ public class UIManager {
         _layersMap.Add(LayerId.PlayerCollisionPoint, _stgLayerTf.Find("PlayerCollisionPointLayer"));
         _layersMap.Add(LayerId.GameEffect, _stgLayerTf.Find("GameEffectLayer"));
         _layersMap.Add(LayerId.GameInfo, _stgLayerTf.Find("GameInfoLayer"));
+        _layersMap.Add(LayerId.TopEffect, _stgLayerTf.Find("TopEffectLayer"));
         if ( _viewsMap == null )
         {
             _viewsMap = new Dictionary<string, ViewBase>();
@@ -161,6 +162,7 @@ public class UIManager {
         float rectWidth = stgWidth / Screen.width;
         float rectHeight = 1 - 2 * rectY;
         _stgCamera.rect = new Rect(rectX, rectY, rectWidth, rectHeight);
+        Global.STGActualSize = new Vector2(Consts.GameWidth*scaleWidth,Consts.GameHeight*scaleHeight);
     }
 
     public void ShowView(string name,object[] data)
@@ -212,6 +214,7 @@ public enum LayerId : int
     Player = 400,
     PlayerBarage = 200,
     PlayerCollisionPoint = 600,
+    TopEffect = 650,
     GameInfo = 700,
     UI = 100
 }

@@ -21,6 +21,11 @@ public class Global
     /// </summary>
     public static Vector2 BulletRTBorderPos = Vector2.zero;
 
+    /// <summary>
+    /// STG本体的实际尺寸
+    /// </summary>
+    public static Vector2 STGActualSize;
+
     public static Vector2 PlayerLBBorderPos;
     public static Vector2 PlayerRTBorderPos;
 
