@@ -7,7 +7,6 @@ public class EnemyBulletMovable : EnemyBulletBase
 {
     protected GameObject _bullet;
     protected Transform _trans;
-    protected Image _bulletImg;
 
     protected float _curAccAngle;
     protected float _dvx, _dvy;
@@ -196,6 +195,7 @@ public class EnemyBulletMovable : EnemyBulletBase
         UIManager.GetInstance().RemoveGoFromLayer(_bullet);
         ObjectsPool.GetInstance().RestoreBullet(_prefabName, _bullet);
         _bullet = null;
+        _trans = null;
     }
 
     #region 设置/获取移动参数的相关public方法

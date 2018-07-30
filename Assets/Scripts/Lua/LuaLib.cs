@@ -18,6 +18,7 @@ public partial class LuaLib
             new NameFuncPair("ChangeBulletStyleById",ChangeBulletStyleById),
             new NameFuncPair("SetBulletOrderInLayer",SetBulletOrderInLayer),
             new NameFuncPair("EliminateBullet",EliminateBullet),
+            new NameFuncPair("SetBulletToUnrealState",SetBulletToUnrealState),
             // 设置、获取子弹相关参数
             new NameFuncPair("GetBulletPos",GetBulletPos),
             new NameFuncPair("SetBulletPos",SetBulletPos),
@@ -313,6 +314,22 @@ public partial class LuaLib
         EnemyBulletSimple bullet = luaState.ToUserData(-1) as EnemyBulletSimple;
         luaState.Pop(1);
         bullet.Eliminate();
+        return 0;
+    }
+
+    /// <summary>
+    /// 将子弹设置为虚化状态
+    /// <para>bullet</para>
+    /// <para>int unrealDuration 虚化的时间</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetBulletToUnrealState(ILuaState luaState)
+    {
+        EnemyBulletSimple bullet = luaState.ToUserData(-2) as EnemyBulletSimple;
+        int unrealDuration = luaState.ToInteger(-1);
+        luaState.Pop(2);
+        bullet.SetToUnrealState(unrealDuration);
         return 0;
     }
 

@@ -1,5 +1,6 @@
 stage1 = {}
 lib = require "LuaLib"
+local consts = Constants
 
 local CustomizedTable = {}
 CustomizedTable.SinBullet = {}
@@ -21,6 +22,7 @@ CustomizedTable.SinBullet.Init = function(self,incX,angle,isNegative)
 		end
 	end)
 end
+
 CustomizedTable.NazrinLaser = {}
 CustomizedTable.NazrinLaser.Init = function(laser,enemy,angle,existDuration,toAngle,rotateDuration)
 	local posX,posY = lib.GetEnemyPos(enemy)
@@ -660,9 +662,9 @@ function stage1.StageTask()
 		--local enemy = lib.CreateNormalEnemyById("0000",0,185);
 		local enemy = lib.CreateCustomizedEnemy("TestKillEnemy","0000",0,185,0)
 		lib.AddEnemyTask(enemy,function()
-			if ( coroutine.yield(150)==false ) then return end
+			if coroutine.yield(150)==false then return end
 			lib.EnemyMoveTowards(enemy,1,315,200);
-			if ( coroutine.yield(550)==false ) then return end
+			if coroutine.yield(550)==false then return end
 			lib.EnemyMoveTowards(enemy,0.5,180,700);
 		end)
 		lib.AddEnemyTask(enemy,function()

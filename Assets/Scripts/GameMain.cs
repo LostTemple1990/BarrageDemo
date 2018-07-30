@@ -42,6 +42,22 @@ public class GameMain : MonoBehaviour
             spObj.DoFade(Random.Range(90, 180), Random.Range(180,300));
             BackgroundManager.GetInstance().AddBgSpriteObject(spObj);
         }
+
+        //if ( frameNode == 200 )
+        //{
+        //    List<object> datas = new List<object>();
+        //    float centerX = -130;
+        //    float centerY = 180;
+        //    float radius = 70;
+        //    float distortFactor = 0.1f;
+        //    Color effectColor = new Color(0.62f, 0.22f, 0.61f, 1f);
+        //    datas.Add(centerX);
+        //    datas.Add(centerY);
+        //    datas.Add(radius);
+        //    datas.Add(distortFactor);
+        //    datas.Add(effectColor);
+        //    CommandManager.GetInstance().RunCommand(CommandConsts.UpdateBgDistortEffectProps, datas.ToArray());
+        //}
     }
 
     private int frameNode = 0;

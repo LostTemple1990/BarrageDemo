@@ -3,14 +3,13 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
-		_CircleTex ("Texture", 2D) = "black" {}
 		_CircleCenterX ("CircleCenterX",Range(0,1)) = 0.3
 		_CircleCenterY ("CircleCenterY",Range(0,1)) = 0.8
-		_CircleRadiusRatioWithWidth ("CircleRadiusRatioWithWidth",Range(0,1)) = 0.2
-		_CircleRadiusRatioWithHeight ("CircleRadiusRatioWithWidth",Range(0,1)) = 0.2
-		_DectectRectLeftBottomU ("DetectRectLeftBottomU",Float) = 0.3
-		_DectectRectLeftBottomV ("DetectRectLeftBottomV",Float) = 0.3
+		_CircleRadius ("CircleRadius",Float) = 50
+		_STGWidth ("STGWidth",Float) = 384
+		_STGHeight ("STGHeight",Float) = 448
 		_DistortFactor ("DistortFactor",Range(0.1,0.25)) = 0.15
+		_EffectColor ("EffectColor",Color) = (0.62,0.22,0.61,1)
 	}
 	SubShader
 	{
@@ -53,33 +52,27 @@
 			}
 			
 			sampler2D _MainTex;
-			sampler2D _CircleTex;
 			float _CircleCenterX;
 			float _CircleCenterY;
-			float _CircleRadiusRatioWithWidth;
-			float _CircleRadiusRatioWithHeight;
+			float _CircleRadius;
+			float _STGWidth;
+			float _STGHeight;
 			float _DistortFactor;
+			float _EffectColor;
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				float2 lbBorder = float2(_CircleCenterX-_CircleRadiusRatioWithWidth,_CircleCenterY-_CircleRadiusRatioWithHeight);
-				float2 rtBorder = float2(_CircleCenterX+_CircleRadiusRatioWithWidth,_CircleCenterY+_CircleRadiusRatioWithHeight);
+				float2 pos = float2(_STGWidth*i.uv.x,_STGHeight*i.uv.y);
+				float2 center = float2(_CircleCenterX,_CircleCenterY);
+				float2 dirVec = pos - center;
+				float len = length(dirVec);
 				fixed4 col;
-				if ( i.uv.x >= lbBorder.x && i.uv.x <= rtBorder.x && i.uv.y >= lbBorder.y && i.uv.y <= rtBorder.y )
+				if ( len <= _CircleRadius )
 				{
-					float2 localUV = float2((i.uv.x-lbBorder.x)/2/_CircleRadiusRatioWithWidth,(i.uv.y-lbBorder.y)/2/_CircleRadiusRatioWithHeight);
-					fixed4 distortCol = tex2D(_CircleTex,localUV);
-					if ( distortCol.a > 0 )
-					{
-						//float2 dirVec = localUV - float2(0.5,0.5);
-						//float maxLen = max(_CircleRadiusRatioWithWidth,_CircleRadiusRatioWithHeight);
-						//float2 offset = normalize(dirVec) * (maxLen - length(dirVec)) * _DistortFactor;
-						float2 dirVec = i.uv - float2(_CircleCenterX,_CircleCenterY);
-						float maxLen = max(_CircleRadiusRatioWithWidth,_CircleRadiusRatioWithHeight);
-						float2 offset = normalize(dirVec) * (maxLen - length(dirVec)) * _DistortFactor;
-						col = tex2D(_MainTex,i.uv+offset);
-						return col;
-					}
+					float2 offset = normalize(dirVec) * (_CircleRadius - len) / _CircleRadius * _DistortFactor;
+					col = tex2D(_MainTex,i.uv+offset);
+					col = lerp(col,_EffectColor,1-len/_CircleRadius);
+					return col;
 				}
 				col = tex2D(_MainTex, i.uv);
 				return col;

@@ -50,7 +50,7 @@ public class CommandManager
         }
     }
 
-    public void RunCommand(int cmd,object[] data)
+    public void RunCommand(int cmd,object[] datas)
     {
         List<ICommand> commandList;
         if (_commandsMap.TryGetValue(cmd, out commandList))
@@ -62,7 +62,7 @@ public class CommandManager
             {
                 if (commandList[i] != null )
                 {
-                    commandList[i].Execute(cmd, data);
+                    commandList[i].Execute(cmd, datas);
                 }
                 else
                 {

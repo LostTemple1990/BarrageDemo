@@ -31,12 +31,26 @@ public class EnemyBulletSimple : EnemyBulletMovable
     #endregion
 
     protected int _orderInLayer;
+    /// <summary>
+    /// 表示当前是否虚化状态
+    /// </summary>
+    protected bool _isInUnrealState;
+    protected int _unRealTime;
+    protected int _unRealDuration;
+    /// <summary>
+    /// 原先的颜色设置
+    /// </summary>
+    protected Color _originalColor;
+    protected bool _colorIsChange;
+
+    protected SpriteRenderer _spRenderer;
 
     public override void Init()
     {
         base.Init();
         _id = BulletId.BulletId_Enemy_Simple;
         _orderInLayer = 0;
+        _isInUnrealState = false;
     }
 
     public override void Update()
@@ -44,6 +58,10 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _lastPos = _curPos;
         base.Update();
         CheckRotateImg();
+        if ( _isInUnrealState )
+        {
+            UpdateUnrealState();
+        }
         CheckCollisionWithCharacter();
         if ( IsOutOfBorder() )
         {
@@ -60,6 +78,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _prefabName = texture;
         _bullet = ObjectsPool.GetInstance().CreateBulletPrefab(_prefabName);
         _trans = _bullet.transform;
+        _spRenderer = _trans.Find("BulletSprite").GetComponent<SpriteRenderer>();
     }
 
     public virtual void SetSelfRotation(bool isSelfRotation, float angle)
@@ -119,7 +138,36 @@ public class EnemyBulletSimple : EnemyBulletMovable
         }
     }
 
-    public virtual void RotateImgByVelocity()
+    /// <summary>
+    /// 将子弹设置成虚化状态
+    /// </summary>
+    /// <param name="time"></param>
+    public virtual void SetToUnrealState(int duration)
+    {
+        // 保存原有的颜色数据
+        _originalColor = _spRenderer.color;
+        Color unrealColor = _originalColor;
+        unrealColor.a = 0.5f;
+        _spRenderer.color = unrealColor;
+        _colorIsChange = true;
+        // 设置时间
+        _unRealTime = 0;
+        _unRealDuration = duration;
+        _isInUnrealState = true;
+    }
+
+    protected void UpdateUnrealState()
+    {
+        _unRealTime++;
+        if ( _unRealTime >= _unRealDuration )
+        {
+            _spRenderer.color = _originalColor;
+            _colorIsChange = false;
+            _isInUnrealState = false;
+        }
+    }
+
+    protected virtual void RotateImgByVelocity()
     {
         Vector3 dv = _curPos - _lastPos;
         float rotateAngle = MathUtil.GetAngleBetweenXAxis(dv.x, dv.y, false) - 90;
@@ -182,8 +230,16 @@ public class EnemyBulletSimple : EnemyBulletMovable
         return paras;
     }
 
+    /// <summary>
+    /// 与玩家的碰撞检测
+    /// </summary>
     protected virtual void CheckCollisionWithCharacter()
     {
+        // 虚化状态不进行碰撞判定
+        if ( _isInUnrealState )
+        {
+            return;
+        }
         float playerX = Global.PlayerPos.x;
         float playerY = Global.PlayerPos.y;
         // 首先检测是否在擦弹范围
@@ -204,6 +260,13 @@ public class EnemyBulletSimple : EnemyBulletMovable
     public override void Clear()
     {
         SetOrderInLayer(0);
+        if ( _colorIsChange )
+        {
+            _spRenderer.color = _originalColor;
+            _colorIsChange = false;
+        }
         base.Clear();
+        _spRenderer = null;
+        _isInUnrealState = false;
     }
 }
