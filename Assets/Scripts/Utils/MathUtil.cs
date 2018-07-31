@@ -114,8 +114,8 @@ public class MathUtil
     {
         float posX, posY, posZ;
         posX = start.x + (end.x - start.x) * (time /= duration) * time;
-        posY = start.y + (end.y - start.y) / 2 * time * time;
-        posZ = start.z + (end.z - start.z) / 2 * time * time;
+        posY = start.y + (end.y - start.y) * time * time;
+        posZ = start.z + (end.z - start.z) * time * time;
         return new Vector3(posX, posY, posZ);
     }
 
@@ -123,7 +123,7 @@ public class MathUtil
     {
         float posX, posY;
         posX = start.x + (end.x - start.x) * (time /= duration) * time;
-        posY = start.y + (end.y - start.y) / 2 * time * time;
+        posY = start.y + (end.y - start.y) * time * time;
         return new Vector2(posX, posY);
     }
 

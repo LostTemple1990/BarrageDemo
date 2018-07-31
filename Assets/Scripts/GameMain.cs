@@ -58,6 +58,17 @@ public class GameMain : MonoBehaviour
         //    datas.Add(effectColor);
         //    CommandManager.GetInstance().RunCommand(CommandConsts.UpdateBgDistortEffectProps, datas.ToArray());
         //}
+        //if ( frameNode == 200 )
+        //{
+        //    STGBurstEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.BurstEffect) as STGBurstEffect;
+        //    effect.SetSize(128);
+        //    effect.SetToPos(0, 150);
+        //}
+        //if ( frameNode == 200 )
+        //{
+        //    STGChargeEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ChargeEffect) as STGChargeEffect;
+        //    effect.SetToPos(0, 100);
+        //}
     }
 
     private int frameNode = 0;
