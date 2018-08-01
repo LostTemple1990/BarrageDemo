@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShakeEffect : IEffect
+public class ShakeEffect : STGEffectBase
 {
     private const float MaxShakeLevel = 10;
 
     private Camera _camera;
-    private bool _isFinish;
     private Rect _originalRect;
 
     private int _shakeDelay;
@@ -24,8 +23,9 @@ public class ShakeEffect : IEffect
     private float _clampMinY;
     private float _clampMaxY;
 
-    public void Init()
+    public override void Init()
     {
+        base.Init();
         _isFinish = false;
         _camera = UIManager.GetInstance().GetSTGCamera();
         _originalRect = _camera.rect;
@@ -48,7 +48,7 @@ public class ShakeEffect : IEffect
         _isShaking = true;
     }
 
-    public void Update()
+    public override void Update()
     {
         if ( _isShaking )
         {
@@ -82,24 +82,14 @@ public class ShakeEffect : IEffect
         }
     }
 
-    public void SetToPos(float posX, float posY)
+    public override void SetToPos(float posX, float posY)
     {
         throw new System.NotImplementedException();
     }
 
-    public void Clear()
+    public override void Clear()
     {
         _camera.rect = _originalRect;
         _camera = null;
-    }
-
-    public bool IsFinish()
-    {
-        return _isFinish;
-    }
-
-    public void FinishEffect()
-    {
-        _isFinish = true;
     }
 }

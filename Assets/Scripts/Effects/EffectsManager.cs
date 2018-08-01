@@ -11,7 +11,7 @@ public class EffectsManager
         return _instance;
     }
 
-    private List<IEffect> _effectList;
+    private List<STGEffectBase> _effectList;
     private int _effectsCount;
     private int _clearTime;
 
@@ -19,15 +19,15 @@ public class EffectsManager
     {
         if ( _effectList == null )
         {
-            _effectList = new List<IEffect>();
+            _effectList = new List<STGEffectBase>();
         }
         _effectsCount = 0;
         _clearTime = 0;
     }
 
-    public IEffect CreateEffectByType(EffectType type)
+    public STGEffectBase CreateEffectByType(EffectType type)
     {
-        IEffect effect = null;
+        STGEffectBase effect = null;
         switch ( type )
         {
             case EffectType.SpriteEffect:
@@ -58,7 +58,7 @@ public class EffectsManager
     public void Update()
     {
         int i;
-        IEffect effect;
+        STGEffectBase effect;
         for (i=0;i<_effectsCount;i++)
         {
             effect = _effectList[i];
@@ -79,7 +79,39 @@ public class EffectsManager
         if ( _clearTime >= 600 )
         {
             _clearTime = 0;
-            _effectsCount = CommonUtils.RemoveNullElementsInList<IEffect>(_effectList,_effectsCount);
+            _effectsCount = CommonUtils.RemoveNullElementsInList<STGEffectBase>(_effectList,_effectsCount);
+        }
+    }
+
+    /// <summary>
+    /// 根据名称拿到对应特效
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public STGEffectBase GetEffectByName(string name)
+    {
+        STGEffectBase effect;
+        for (int i=0;i<_effectsCount;i++)
+        {
+            effect = _effectList[i];
+            if ( effect != null && effect.GetName() == name )
+            {
+                return effect;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// 根据名称结束特效
+    /// </summary>
+    /// <param name="name"></param>
+    public void FinishEffectByName(string name)
+    {
+        STGEffectBase effect = GetEffectByName(name);
+        if ( effect != null )
+        {
+            effect.FinishEffect();
         }
     }
 }

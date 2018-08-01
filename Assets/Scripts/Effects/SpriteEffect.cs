@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpriteEffect : IEffect
+public class SpriteEffect : STGEffectBase
 {
     private GameObject _effectGo;
     private Transform _effectTf;
     private SpriteRenderer _spRenderer;
-
-    private bool _isFinish;
 
     private float _curWidthScale;
     private float _curHeightScale;
@@ -26,7 +24,7 @@ public class SpriteEffect : IEffect
     private float _fromHeightScale;
     private float _toHeightScale;
 
-    public void Clear()
+    public override void Clear()
     {
         GameObject.Destroy(_effectGo);
         _effectGo = null;
@@ -34,8 +32,9 @@ public class SpriteEffect : IEffect
         _spRenderer = null;
     }
 
-    public void Init()
+    public override void Init()
     {
+        base.Init();
         _effectGo = ResourceManager.GetInstance().GetPrefab("Prefab/Effects","SpriteEffect");
         _effectTf = _effectGo.transform;
         _spRenderer = _effectTf.Find("Sprite").GetComponent<SpriteRenderer>();
@@ -43,12 +42,7 @@ public class SpriteEffect : IEffect
         UIManager.GetInstance().AddGoToLayer(_effectGo, LayerId.GameEffect);
     }
 
-    public bool IsFinish()
-    {
-        return _isFinish;
-    }
-
-    public void SetToPos(float posX, float posY)
+    public override void SetToPos(float posX, float posY)
     {
         _effectTf.localPosition = new Vector2(posX, posY);
     }
@@ -60,7 +54,7 @@ public class SpriteEffect : IEffect
         _effectTf.localScale = new Vector3(_curWidthScale, _curHeightScale, 1);
     }
 
-    public void Update()
+    public override void Update()
     {
         if ( _isScalingWidth )
         {
@@ -158,10 +152,5 @@ public class SpriteEffect : IEffect
     public void SetSpriteColor(float rValue,float gValue,float bValue,float aValue)
     {
         _spRenderer.material.color = new Color(rValue, gValue, bValue, aValue);
-    }
-
-    public void FinishEffect()
-    {
-        _isFinish = true;
     }
 }

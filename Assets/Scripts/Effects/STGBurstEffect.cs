@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class STGBurstEffect : IEffect
+public class STGBurstEffect : STGEffectBase
 {
     /// <summary>
     /// 默认尺寸
@@ -24,11 +24,9 @@ public class STGBurstEffect : IEffect
     private int _circleBurstTime;
     private int _burstTime;
 
-    private bool _isFinish;
-
-    public void Init()
+    public override void Init()
     {
-        _isFinish = false;
+        base.Init();
         // 容器
         if ( _effectContainerTf == null )
         {
@@ -82,7 +80,7 @@ public class STGBurstEffect : IEffect
         _effectContainerTf.localScale = newScale;
     }
 
-    public void Update()
+    public override void Update()
     {
         _burstTime++;
         if ( _isCircleBurst )
@@ -119,16 +117,16 @@ public class STGBurstEffect : IEffect
         }
     }
 
-    public void SetToPos(float posX, float posY)
+    public override void SetToPos(float posX, float posY)
     {
         _effectContainerTf.localPosition = new Vector3(posX, posY, 0);
     }
 
-    public void Clear()
+    public override void Clear()
     {
         int i;
         BurstObject bo;
-        for (i=0;i<_burstCount;i++)
+        for (i = 0; i < _burstCount; i++)
         {
             bo = _burstList[i];
             bo.Clear();
@@ -137,16 +135,6 @@ public class STGBurstEffect : IEffect
         _burstCount = 0;
         GameObject.Destroy(_circleTf.gameObject);
         GameObject.Destroy(_effectContainerTf.gameObject);
-    }
-
-    public bool IsFinish()
-    {
-        return _isFinish;
-    }
-
-    public void FinishEffect()
-    {
-        _isFinish = true;
     }
 }
 

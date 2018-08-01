@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class STGChargeEffect : IEffect
+public class STGChargeEffect : STGEffectBase
 {
     /// <summary>
     /// 默认尺寸
@@ -33,11 +33,10 @@ public class STGChargeEffect : IEffect
     private int _circleShrinkTime;
     private int _chargeTime;
 
-    private bool _isFinish;
 
-    public void Init()
+    public override void Init()
     {
-        _isFinish = false;
+        base.Init();
         // 容器
         if (_effectContainerTf == null)
         {
@@ -79,7 +78,7 @@ public class STGChargeEffect : IEffect
         }
     }
 
-    public void Update()
+    public override void Update()
     {
         _chargeTime++;
         if (_isCircleShrinking)
@@ -134,12 +133,12 @@ public class STGChargeEffect : IEffect
         return new Vector3(posX, posY, 0);
     }
 
-    public void SetToPos(float posX, float posY)
+    public override void SetToPos(float posX, float posY)
     {
         _effectContainerTf.localPosition = new Vector3(posX, posY, 0);
     }
 
-    public void Clear()
+    public override void Clear()
     {
         int i;
         ChargeObject bo;

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class STGBreakScreenEffect : IEffect
+public class STGBreakScreenEffect : STGEffectBase
 {
     private static int WidthSegment = 8;
     private static int HeightSegment = 8;
@@ -16,8 +16,6 @@ public class STGBreakScreenEffect : IEffect
     /// 碎片停止运动的Y坐标
     /// </summary>
     private static float FragFinishPosY = -Consts.GameHeight / 2 - 100;
-
-    private bool _isFinish;
     /// <summary>
     /// 是否截图完成
     /// </summary>
@@ -41,9 +39,9 @@ public class STGBreakScreenEffect : IEffect
     /// </summary>
     private bool _isCalculated;
 
-    public void Init()
+    public override void Init()
     {
-        _isFinish = false;
+        base.Init();
         _isCaptureComplete = false;
         if (_fragMat == null)
         {
@@ -227,7 +225,7 @@ public class STGBreakScreenEffect : IEffect
         }
     }
 
-    public void Update()
+    public override void Update()
     {
         if ( _curState == StateWaitCaptureScreen )
         {
@@ -318,12 +316,12 @@ public class STGBreakScreenEffect : IEffect
         }
     }
 
-    public void SetToPos(float posX, float posY)
+    public override void SetToPos(float posX, float posY)
     {
         throw new System.NotImplementedException();
     }
 
-    public void Clear()
+    public override void Clear()
     {
         int i;
         FragmentObject fragData;
@@ -335,16 +333,6 @@ public class STGBreakScreenEffect : IEffect
         // 销毁材质
         GameObject.Destroy(_fragMat);
         _fragMat = null;
-    }
-
-    public bool IsFinish()
-    {
-        return _isFinish;
-    }
-
-    public void FinishEffect()
-    {
-        _isFinish = true;
     }
 
     public void Destroy()

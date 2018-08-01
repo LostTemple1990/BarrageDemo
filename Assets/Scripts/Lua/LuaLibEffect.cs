@@ -7,7 +7,7 @@ public partial class LuaLib
     public static int CreateEffectByType(ILuaState luaState)
     {
         EffectType type = (EffectType)luaState.ToInteger(-1);
-        IEffect effect = EffectsManager.GetInstance().CreateEffectByType(type);
+        STGEffectBase effect = EffectsManager.GetInstance().CreateEffectByType(type);
         luaState.Pop(1);
         luaState.PushLightUserData(effect);
         return 1;
@@ -15,7 +15,7 @@ public partial class LuaLib
 
     public static int SetEffectToPos(ILuaState luaState)
     {
-        IEffect effect = luaState.ToUserData(-3) as IEffect;
+        STGEffectBase effect = luaState.ToUserData(-3) as STGEffectBase;
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
@@ -25,9 +25,32 @@ public partial class LuaLib
 
     public static int SetEffectFinish(ILuaState luaState)
     {
-        IEffect effect = luaState.ToUserData(-1) as IEffect;
+        STGEffectBase effect = luaState.ToUserData(-1) as STGEffectBase;
         luaState.Pop(1);
         effect.FinishEffect();
+        return 0;
+    }
+
+    /// <summary>
+    /// 根据名称拿到effect
+    /// <para>string name 特效指定的名称</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int GetEffectByName(ILuaState luaState)
+    {
+        string name = luaState.ToString(-1);
+        luaState.Pop(1);
+        STGEffectBase effect = EffectsManager.GetInstance().GetEffectByName(name);
+        luaState.PushLightUserData(effect);
+        return 1;
+    }
+
+    public static int SetEffectFinishByName(ILuaState luaState)
+    {
+        string name = luaState.ToString(-1);
+        luaState.Pop(1);
+        EffectsManager.GetInstance().FinishEffectByName(name);
         return 0;
     }
 
