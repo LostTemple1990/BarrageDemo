@@ -16,7 +16,7 @@ public class STGChargeEffect : IEffect
     private const float LimitMaxY = 200;
 
     private const int ChargeMinDuration = 50;
-    private const int ChargeMaxDuration = 70;
+    private const int ChargeMaxDuration = 90;
 
     private const float InitCircleScale = 8f;
 

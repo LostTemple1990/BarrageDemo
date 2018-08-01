@@ -38,3 +38,6 @@ Constants.DirModeMoveRandom = 4
 
 Constants.STGWidth = 384
 Constants.STGHeight = 448
+
+Constants.OriginalWidth = -1
+Constants.OriginalHeight= -1

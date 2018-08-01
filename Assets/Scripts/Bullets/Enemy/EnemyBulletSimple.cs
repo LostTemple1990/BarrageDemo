@@ -147,7 +147,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         // 保存原有的颜色数据
         _originalColor = _spRenderer.color;
         Color unrealColor = _originalColor;
-        unrealColor.a = 0.5f;
+        unrealColor.a = 0.3f;
         _spRenderer.color = unrealColor;
         _colorIsChange = true;
         // 设置时间

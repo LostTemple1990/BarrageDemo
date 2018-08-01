@@ -26,10 +26,16 @@ end
 CustomizedTable.NazrinLaser = {}
 CustomizedTable.NazrinLaser.Init = function(laser,enemy,angle,existDuration,toAngle,rotateDuration)
 	local posX,posY = lib.GetEnemyPos(enemy)
-	lib.SetLaserProps(laser,posX,posY,angle,30,300,existDuration)
+	lib.SetLaserProps(laser,posX,posY,angle,4,600,existDuration)
 	lib.SetLaserRotatePara(laser,toAngle,rotateDuration)
+	lib.SetBulletDetectCollision(laser,false)
 	lib.ShowLaserWarningLine(laser,60)
 	lib.SetLaserCollisionDetectParas(laser,7,300)
+	lib.AddBulletTask(laser,function()
+		lib.ChangeLaserWidth(laser,60,60,0)
+		if coroutine.yield(60)==false then return end
+		lib.SetBulletDetectCollision(laser,true)
+	end)
 	lib.AddBulletTask(laser,function()
 		for _=1,Infinite do
 			posX,posY = lib.GetEnemyPos(enemy)

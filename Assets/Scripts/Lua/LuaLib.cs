@@ -19,6 +19,8 @@ public partial class LuaLib
             new NameFuncPair("SetBulletOrderInLayer",SetBulletOrderInLayer),
             new NameFuncPair("EliminateBullet",EliminateBullet),
             new NameFuncPair("SetBulletToUnrealState",SetBulletToUnrealState),
+            new NameFuncPair("SetBulletDetectCollision",SetBulletDetectCollision),
+            new NameFuncPair("SetBulletResistEliminatedFlag",SetBulletResistEliminatedFlag),
             // 设置、获取子弹相关参数
             new NameFuncPair("GetBulletPos",GetBulletPos),
             new NameFuncPair("SetBulletPos",SetBulletPos),
@@ -44,7 +46,7 @@ public partial class LuaLib
             new NameFuncPair("SetLaserExistDuration",SetLaserExistDuration),
             new NameFuncPair("SetLaserSize",SetLaserSize),
             new NameFuncPair("SetLaserRotatePara",SetLaserRotatePara),
-            new NameFuncPair("ShowLaserWarningLine",ShowLaserWarningLine),
+            new NameFuncPair("ChangeLaserWidth",ChangeLaserWidth),
             new NameFuncPair("SetLaserGrazeDetectParas",SetLaserGrazeDetectParas),
             new NameFuncPair("SetLaserCollisionDetectParas",SetLaserCollisionDetectParas),
 
@@ -333,6 +335,31 @@ public partial class LuaLib
         return 0;
     }
 
+    public static int SetBulletDetectCollision(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
+        bool value = luaState.ToBoolean(-1);
+        luaState.Pop(2);
+        bullet.SetDetectCollision(value);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置子弹的消除抗性
+    /// <para>bullet</para>
+    /// <para>flag 不能被消除的标识</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetBulletResistEliminatedFlag(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
+        int flag = luaState.ToInteger(-1);
+        luaState.Pop(2);
+        bullet.SetResistEliminateFlag(flag);
+        return 0;
+    }
+
     #region 获取、设置子弹相关的参数
 
     /// <summary>
@@ -478,40 +505,54 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-6);
         float posY = (float)luaState.ToNumber(-5);
         float angle = (float)luaState.ToNumber(-4);
-        float halfWidth = (float)luaState.ToNumber(-3);
-        float halfHeight = (float)luaState.ToNumber(-2);
+        float width = (float)luaState.ToNumber(-3);
+        float height = (float)luaState.ToNumber(-2);
         int existDuration = luaState.ToInteger(-1);
         luaState.Pop(7);
         EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.BulletId_Enemy_Laser) as EnemyLaser;
         laser.SetBulletTexture(texture);
         laser.SetPosition(posX, posY, angle);
-        laser.SetLaserSize(halfWidth, halfHeight);
+        laser.SetLaserSize(width, height);
         laser.SetLaserExistDuration(existDuration);
         luaState.PushLightUserData(laser);
         return 1;
     }
 
-    public static int ShowLaserWarningLine(ILuaState luaState)
+    public static int ChangeLaserWidth(ILuaState luaState)
     {
-        EnemyLaser laser = luaState.ToUserData(-2) as EnemyLaser;
-        int duration = luaState.ToInteger(-1);
-        luaState.Pop(2);
-        laser.ShowWarningLine(duration);
+        EnemyLaser laser = luaState.ToUserData(-4) as EnemyLaser;
+        float toWidth = (float)luaState.ToNumber(-3);
+        int changeDuration = luaState.ToInteger(-2);
+        int changeDelay = luaState.ToInteger(-1);
+        luaState.Pop(4);
+        laser.ChangeToWidth(toWidth, changeDuration, changeDelay);
         return 0;
     }
-
+    
+    /// <summary>
+    /// 设置激光的属性
+    /// <para>laser 激光本体</para>
+    /// <para>posX</para>
+    /// <para>posY</para>
+    /// <para>angle 激光的角度，x正半轴为0,逆时针增加角度</para>
+    /// <para>width 激光宽度</para>
+    /// <para>height 激光高度</para>
+    /// <para>existDuration 存活时间 todo:随时砍掉这个</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
     public static int SetLaserProps(ILuaState luaState)
     {
         EnemyLaser laser = luaState.ToUserData(-7) as EnemyLaser;
         float posX = (float)luaState.ToNumber(-6);
         float posY = (float)luaState.ToNumber(-5);
         float angle = (float)luaState.ToNumber(-4);
-        float halfWidth = (float)luaState.ToNumber(-3);
-        float halfHeight = (float)luaState.ToNumber(-2);
+        float width = (float)luaState.ToNumber(-3);
+        float height = (float)luaState.ToNumber(-2);
         int existDuration = luaState.ToInteger(-1);
         luaState.Pop(7);
         laser.SetPosition(posX, posY, angle);
-        laser.SetLaserSize(halfWidth, halfHeight);
+        laser.SetLaserSize(width, height);
         laser.SetLaserExistDuration(existDuration);
         luaState.PushLightUserData(laser);
         return 1;

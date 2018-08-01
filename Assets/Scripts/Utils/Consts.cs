@@ -57,6 +57,8 @@ public class Consts  {
 
     public const int MaxDuration = 9999;
     public const float VelocityAngle = -999;
+    public const float OriginalWidth = -1;
+    public const float OriginalHeight = -1;
 
     /// <summary>
     /// 自机出现的无敌时间

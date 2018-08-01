@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class StructUtil {
 
@@ -112,4 +113,34 @@ public enum EnemyObjectType  : byte
     Fairy = 1,
     SpinningEnemy = 2,
     Ghost = 3,
+}
+
+[Flags]
+public enum eEliminateDef : int
+{
+    Null = 0,
+    /// <summary>
+    /// 玩家B触发的消除
+    /// </summary>
+    PlayerBomb = 1,
+    /// <summary>
+    /// 玩家死亡触发的消除
+    /// </summary>
+    PlayerDead = 2,
+    /// <summary>
+    /// 击中玩家触发的消除
+    /// </summary>
+    HitPlayer = 4,
+    /// <summary>
+    /// 符卡结束触发的消除
+    /// </summary>
+    SpellCardEnd = 8,
+    /// <summary>
+    /// 击中某些物体触发的消除
+    /// </summary>
+    HitObject = 16,
+    /// <summary>
+    /// 直接调用代码触发的消除
+    /// </summary>
+    Code = 32,
 }

@@ -163,12 +163,12 @@ public class BombReimuA : BombBase
             {
                 bullet = bulletList[j];
                 // 判断是否要进行碰撞检测
-                if ( bullet != null && bullet.ClearFlag == 0 )
+                if ( bullet != null && bullet.CanBeEliminated(eEliminateDef.PlayerBomb) && bullet.ClearFlag == 0 )
                 {
                     CollisionDetectParas collParas = bullet.GetCollisionDetectParas();
                     if ( DetectCollision(collParas) )
                     {
-                        bullet.Eliminate();
+                        bullet.Eliminate(eEliminateDef.PlayerBomb);
                     }
                 }
             }

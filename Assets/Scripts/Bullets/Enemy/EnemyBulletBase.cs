@@ -10,6 +10,14 @@ public class EnemyBulletBase :BulletBase
 
     protected GrazeDetectParas _grazeParas;
     protected CollisionDetectParas _collisionParas;
+    /// <summary>
+    /// 表示是否进行碰撞检测
+    /// </summary>
+    protected bool _detectCollision;
+    /// <summary>
+    /// 标识不会被某些东西消除
+    /// </summary>
+    protected int _resistEliminateFlag = 0;
 
     public EnemyBulletBase()
     {
@@ -20,6 +28,7 @@ public class EnemyBulletBase :BulletBase
     {
         base.Init();
         _componentsCount = 0;
+        _detectCollision = true;
     }
 
     /// <summary>
@@ -98,9 +107,43 @@ public class EnemyBulletBase :BulletBase
         throw new System.NotImplementedException();
     }
 
-    public virtual void Eliminate(int duration=0)
+    /// <summary>
+    /// 消除子弹
+    /// </summary>
+    /// <param name="eliminateType">消除方式</param>
+    /// <returns></returns>
+    public virtual bool Eliminate(eEliminateDef eliminateType=0)
     {
+        if ( ((int)eliminateType & _resistEliminateFlag) != 0 )
+        {
+            return false;
+        }
         _clearFlag = 1;
+        return true;
+    }
+
+    /// <summary>
+    /// 设置是否进行碰撞检测
+    /// </summary>
+    /// <param name="value"></param>
+    public virtual void SetDetectCollision(bool value)
+    {
+        _detectCollision = value;
+    }
+
+    /// <summary>
+    /// 判断是否能被该种类型消除
+    /// </summary>
+    /// <param name="eliminateType"></param>
+    /// <returns></returns>
+    public virtual bool CanBeEliminated(eEliminateDef eliminateType)
+    {
+        return ((int)eliminateType & _resistEliminateFlag) == 0;
+    }
+
+    public virtual void SetResistEliminateFlag(int flag)
+    {
+        _resistEliminateFlag = flag;
     }
 
     /// <summary>

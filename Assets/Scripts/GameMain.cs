@@ -64,11 +64,11 @@ public class GameMain : MonoBehaviour
         //    effect.SetSize(128);
         //    effect.SetToPos(0, 150);
         //}
-        //if ( frameNode == 200 )
-        //{
-        //    STGChargeEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ChargeEffect) as STGChargeEffect;
-        //    effect.SetToPos(0, 100);
-        //}
+        if (frameNode == 200)
+        {
+            STGChargeEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ChargeEffect) as STGChargeEffect;
+            effect.SetToPos(0, 100);
+        }
     }
 
     private int frameNode = 0;

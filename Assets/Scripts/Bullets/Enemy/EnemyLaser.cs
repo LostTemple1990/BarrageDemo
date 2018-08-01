@@ -26,7 +26,8 @@ public class EnemyLaser : EnemyBulletBase
     protected float _collisionHalfWidth;
     protected float _collisionHalfHeight;
 
-
+    protected float _laserWidth;
+    protected float _laserHeight;
     protected float _laserHalfHeight;
     protected float _laserHalfWidth;
     protected bool _isSized;
@@ -39,23 +40,22 @@ public class EnemyLaser : EnemyBulletBase
     protected int _existTime;
     protected int _existDuration;
 
-    protected bool _isShowWarningLine;
-    protected int _warningLineTime;
-    protected int _warningLineDuration;
     /// <summary>
-    /// 标识正在从警示线扩张成激光
+    /// 表示当前正在改变宽度
     /// </summary>
-    protected bool _isExpanding;
-    protected int _expandDuration;
-    protected int _expandTime;
-    protected float _expandFromWidth;
-    protected float _expandToWidth;
+    protected bool _isChangingWidth;
+    protected int _changeDuration;
+    protected int _changeTime;
+    protected int _changeWidthDelay;
+    protected float _changeFromWidth;
+    protected float _changeToWidth;
 
-    protected float _curHalfWidth;
     /// <summary>
     /// 是否需要Resize激光
     /// </summary>
     protected bool _isDirty;
+
+    protected bool _detectCollision;
 
     public override void Init()
     {
@@ -67,8 +67,7 @@ public class EnemyLaser : EnemyBulletBase
         _existDuration = -1;
         _id = BulletId.BulletId_Enemy_Laser;
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
-        _isShowWarningLine = false;
-        _isExpanding = false;
+        _isChangingWidth = false;
         _isDirty = false;
     }
 
@@ -102,17 +101,18 @@ public class EnemyLaser : EnemyBulletBase
     }
 
     /// <summary>
-    /// 显示预警线
+    /// delay帧之后改变宽度到toWidth，改变时间为duration帧
     /// </summary>
-    /// <param name="warningLineduration">预警线显示时间</param>
-    /// <param name="expandDuration">扩张成激光的时间</param>
-    public virtual void ShowWarningLine(int warningLineduration)
+    /// <param name="toWidth"></param>
+    /// <param name="duration"></param>
+    /// <param name="delay"></param>
+    public virtual void ChangeToWidth(float toWidth,int duration,int delay)
     {
-        _isShowWarningLine = true;
-        _warningLineDuration = warningLineduration;
-        _warningLineTime = 0;
-        _curHalfWidth = WarningLineHalfWidth;
-        Resize();
+        _changeWidthDelay = delay;
+        _changeToWidth = toWidth;
+        _changeDuration = duration;
+        _changeTime = 0;
+        _isChangingWidth = true;
     }
 
     public virtual void SetPosition(float posX,float posY,float angle)
@@ -142,13 +142,21 @@ public class EnemyLaser : EnemyBulletBase
         _existDuration = existDuration;
     }
 
-    public virtual void SetLaserSize(float halfWidth,float halfHeight)
+    public virtual void SetLaserSize(float width,float height)
     {
-        _laserHalfWidth = halfWidth;
-        _laserHalfHeight = halfHeight;
-        _curHalfWidth = _laserHalfWidth;
-        _isSized = true;
-        if (_laser != null)
+        if ( width != Consts.OriginalWidth )
+        {
+            _laserWidth = width;
+            _laserHalfWidth = width / 2;
+            _isSized = true;
+        }
+        if ( height != Consts.OriginalHeight )
+        {
+            _laserHeight = height;
+            _laserHalfHeight = height / 2;
+            _isSized = true;
+        }
+        if (_laser != null && _isSized)
         {
             Resize();
         }
@@ -176,13 +184,9 @@ public class EnemyLaser : EnemyBulletBase
     public override void Update()
     {
         UpdateComponents();
-        if ( _isShowWarningLine )
+        if ( _isChangingWidth )
         {
-            UpdateWarningLine();
-        }
-        if ( _isExpanding )
-        {
-            Expand();
+            ChangingWidth();
         }
         if ( _isMoving )
         {
@@ -201,34 +205,25 @@ public class EnemyLaser : EnemyBulletBase
         UpdateExistTime();
     }
 
-    protected void UpdateWarningLine()
+    /// <summary>
+    /// update-宽度变更
+    /// </summary>
+    protected void ChangingWidth()
     {
-        _warningLineTime++;
-        if ( _warningLineTime >= _warningLineDuration )
+        if ( _changeWidthDelay > 0 )
         {
-            _isShowWarningLine = false;
-            DoExpand(_laserHalfWidth, WarningLineExpandDuration);
+            _changeWidthDelay--;
         }
-    }
-
-    public void DoExpand(float toHalfWidth,int duration)
-    {
-        _isExpanding = true;
-        _expandFromWidth = _curHalfWidth;
-        _expandToWidth = toHalfWidth;
-        _expandTime = 0;
-        _expandDuration = duration;
-    }
-
-    protected void Expand()
-    {
-        _expandTime++;
-        _curHalfWidth = MathUtil.GetLinearInterpolation(_expandFromWidth, _expandToWidth, _expandTime, _expandDuration);
-        if ( _expandTime >= _expandDuration )
+        else
         {
-            _isExpanding = false;
+            _changeTime++;
+            _laserHalfWidth = MathUtil.GetLinearInterpolation(_changeFromWidth, _changeToWidth, _changeTime, _changeDuration);
+            if ( _changeTime >= _changeDuration )
+            {
+                _isChangingWidth = false;
+            }
+            _isDirty = true;
         }
-        _isDirty = true;
     }
 
     protected override void Move()
@@ -279,7 +274,7 @@ public class EnemyLaser : EnemyBulletBase
 
     protected virtual void Resize()
     {
-        _laser.size = new Vector2(_curHalfWidth * 2, _laserHalfHeight * 2);
+        _laser.size = new Vector2(_laserHalfWidth * 2, _laserHalfHeight * 2);
         Vector3 pos = Vector3.zero;
         pos.y = _laserHalfHeight;
         _laserTrans.localPosition = pos;
@@ -315,14 +310,14 @@ public class EnemyLaser : EnemyBulletBase
         {
             type = CollisionDetectType.Rect,
         };
-        if ( _isShowWarningLine )
+        if ( !_detectCollision )
         {
             paras.halfHeight = paras.halfHeight = paras.angle = 0;
             paras.centerPos = Vector2.zero;
         }
         else
         {
-            paras.halfWidth = _curHalfWidth;
+            paras.halfWidth = _laserHalfWidth;
             paras.halfHeight = _laserHalfHeight;
             paras.angle = _laserAngle;
             // 计算矩形中心坐标
