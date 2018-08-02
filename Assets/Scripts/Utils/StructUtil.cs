@@ -118,7 +118,10 @@ public enum EnemyObjectType  : byte
 [Flags]
 public enum eEliminateDef : int
 {
-    Null = 0,
+    /// <summary>
+    /// 直接消除
+    /// </summary>
+    RawEliminate = 0,
     /// <summary>
     /// 玩家B触发的消除
     /// </summary>

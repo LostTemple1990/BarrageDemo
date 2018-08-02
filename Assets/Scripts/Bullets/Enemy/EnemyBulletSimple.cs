@@ -44,6 +44,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
     protected bool _colorIsChange;
 
     protected SpriteRenderer _spRenderer;
+    protected EnemyBulletDefaultCfg _cfg;
 
     public override void Init()
     {
@@ -105,10 +106,13 @@ public class EnemyBulletSimple : EnemyBulletMovable
             Logger.Log("Bullet ChangeStyle Fail! SysId  " + id + " is not exist!");
             return;
         }
-        // 回收现有的prefab
-        SetOrderInLayer(0);
-        UIManager.GetInstance().RemoveGoFromLayer(_bullet);
-        ObjectsPool.GetInstance().RestoreBullet(_prefabName, _bullet);
+        if ( _bullet != null )
+        {
+            // 回收现有的prefab
+            SetOrderInLayer(0);
+            UIManager.GetInstance().RemoveGoFromLayer(_bullet);
+            ObjectsPool.GetInstance().RestoreBullet(_prefabName, _bullet);
+        }
         SetBulletTexture(cfg.prefabName);
         SetToPosition(_curPos.x, _curPos.y);
         SetRotatedByVelocity(cfg.isRotatedByVAngle);
@@ -126,6 +130,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         };
         SetCollisionDetectParas(detectParas);
         SetGrazeDetectParas(grazeParas);
+        _cfg = cfg;
     }
 
     public virtual void SetOrderInLayer(int order)
@@ -251,7 +256,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
             float len = Mathf.Sqrt((_curPos.x - playerX) * (_curPos.x - playerX) + (_curPos.y - playerY) * (_curPos.y - playerY));
             if (len <= Global.PlayerCollisionVec.z + _collisionRadius)
             {
-                _clearFlag = 1;
+                Eliminate(eEliminateDef.HitPlayer);
                 PlayerService.GetInstance().GetCharacter().BeingHit();
             }
         }
@@ -268,5 +273,22 @@ public class EnemyBulletSimple : EnemyBulletMovable
         base.Clear();
         _spRenderer = null;
         _isInUnrealState = false;
+        _cfg = null;
+    }
+
+    public override bool Eliminate(eEliminateDef eliminateType = eEliminateDef.RawEliminate)
+    {
+        if ( base.Eliminate(eliminateType) )
+        {
+            if ( eliminateType != eEliminateDef.PlayerBomb && eliminateType != eEliminateDef.RawEliminate )
+            {
+                Color eliminateColor = _cfg.eliminateColor;
+                STGBulletEliminateEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.BulletEliminate) as STGBulletEliminateEffect;
+                effect.SetColor(eliminateColor);
+                effect.SetToPos(_curPos.x, _curPos.y);
+            }
+            return true;
+        }
+        return false;
     }
 }

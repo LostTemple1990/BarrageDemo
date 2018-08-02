@@ -51,6 +51,7 @@ public class UIManager {
         _layersMap = new Dictionary<LayerId, Transform>();
         _layersMap.Add(LayerId.Item, _stgLayerTf.Find("ItemLayer"));
         _layersMap.Add(LayerId.Enemy, _stgLayerTf.Find("EnemyLayer"));
+        _layersMap.Add(LayerId.HighLightEffect, _stgLayerTf.Find("STGHighLightEffectLayer"));
         _layersMap.Add(LayerId.EnemyBarrage, _stgLayerTf.Find("EnemyBarrageLayer"));
         _layersMap.Add(LayerId.PlayerBarage, _stgLayerTf.Find("PlayerBarrageLayer"));
         _layersMap.Add(LayerId.Player, _stgLayerTf.Find("PlayerLayer"));
@@ -210,6 +211,7 @@ public enum LayerId : int
     GameEffect = 150,
     Item = 250,
     Enemy = 300,
+    HighLightEffect = 350,
     EnemyBarrage = 500,
     Player = 400,
     PlayerBarage = 200,

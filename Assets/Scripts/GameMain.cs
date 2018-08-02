@@ -64,11 +64,17 @@ public class GameMain : MonoBehaviour
         //    effect.SetSize(128);
         //    effect.SetToPos(0, 150);
         //}
-        if (frameNode == 200)
-        {
-            STGChargeEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ChargeEffect) as STGChargeEffect;
-            effect.SetToPos(0, 100);
-        }
+        //if (frameNode == 200)
+        //{
+        //    STGChargeEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ChargeEffect) as STGChargeEffect;
+        //    effect.SetToPos(0, 100);
+        //}
+        //if (frameNode >= 200 && frameNode % 2 == 0 )
+        //{
+        //    STGBulletEliminateEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.BulletEliminate) as STGBulletEliminateEffect;
+        //    effect.SetToPos(Random.Range(-8, 8), Random.Range(-8, 8));
+        //    effect.SetColor(Random.value, Random.value, Random.value, 1);
+        //}
     }
 
     private int frameNode = 0;

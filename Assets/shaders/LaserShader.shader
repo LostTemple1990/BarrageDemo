@@ -15,8 +15,7 @@
 		Tags { "Queue"="Transparent" 
             "IgnoreProjector"="True" 
             "RenderType"="Transparent" 
-            "PreviewType"="Plane"
-            "CanUseSpriteAtlas"="True"}
+            "PreviewType"="Plane"}
 
 		Pass
 		{

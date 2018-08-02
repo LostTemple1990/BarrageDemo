@@ -18,7 +18,6 @@
             "IgnoreProjector"="True" 
             "RenderType"="Transparent"
             "PreviewType"="Plane"
-            "CanUseSpriteAtlas"="True"
 			}
 
 		Pass

@@ -45,6 +45,9 @@ public class EffectsManager
             case EffectType.ChargeEffect:
                 effect = new STGChargeEffect();
                 break;
+            case EffectType.BulletEliminate:
+                effect = new STGBulletEliminateEffect();
+                break;
         }
         if ( effect != null )
         {
@@ -123,4 +126,5 @@ public enum EffectType : byte
     BreakScreenEffect = 3,
     BurstEffect = 4,
     ChargeEffect = 5,
+    BulletEliminate = 6,
 }
