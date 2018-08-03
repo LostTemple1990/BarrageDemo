@@ -55,8 +55,6 @@ public class EnemyLaser : EnemyBulletBase
     /// </summary>
     protected bool _isDirty;
 
-    protected bool _detectCollision;
-
     public override void Init()
     {
         base.Init();
