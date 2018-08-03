@@ -97,7 +97,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         Transform laserTrans = _trans.Find("LaserObject");
         _mesh = laserTrans.GetComponent<MeshFilter>().mesh;
         MeshRenderer renderer = laserTrans.GetComponent<MeshRenderer>();
-        renderer.sortingLayerName = "EnemyBarrage";
+        renderer.sortingLayerName = "STG";
         // todo resourceManager.getTexture以后需要改成正式的
         //renderer.material.mainTexture = ResourceManager.GetInstance().GetTexture("etama9", texture);
         int index = int.Parse(texture.Substring(texture.IndexOf('_') + 1));

@@ -171,23 +171,24 @@ public partial class LuaLib
         luaState.Pop(3);
         EnemyBulletDefaultCfg cfg = BulletsManager.GetInstance().GetBulletDefaultCfgById(sysId);
         EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.BulletId_Enemy_Simple) as EnemyBulletSimple;
-        bullet.SetBulletTexture(cfg.prefabName);
+        bullet.ChangeStyleById(sysId);
+        //bullet.SetBulletTexture(cfg.prefabName);
         bullet.SetToPosition(posX, posY);
-        bullet.SetRotatedByVelocity(cfg.isRotatedByVAngle);
-        bullet.SetSelfRotation(cfg.selfRotationAngle!=0,cfg.selfRotationAngle);
-        CollisionDetectParas detectParas = new CollisionDetectParas
-        {
-            type = CollisionDetectType.Circle,
-            radius = cfg.collisionRadius,
-        };
-        GrazeDetectParas grazeParas = new GrazeDetectParas
-        {
-            type = GrazeDetectType.Rect,
-            halfWidth = cfg.grazeHalfWidth,
-            halfHeight = cfg.grazeHalfHeight,
-        };
-        bullet.SetCollisionDetectParas(detectParas);
-        bullet.SetGrazeDetectParas(grazeParas);
+        //bullet.SetRotatedByVelocity(cfg.isRotatedByVAngle);
+        //bullet.SetSelfRotation(cfg.selfRotationAngle!=0,cfg.selfRotationAngle);
+        //CollisionDetectParas detectParas = new CollisionDetectParas
+        //{
+        //    type = CollisionDetectType.Circle,
+        //    radius = cfg.collisionRadius,
+        //};
+        //GrazeDetectParas grazeParas = new GrazeDetectParas
+        //{
+        //    type = GrazeDetectType.Rect,
+        //    halfWidth = cfg.grazeHalfWidth,
+        //    halfHeight = cfg.grazeHalfHeight,
+        //};
+        //bullet.SetCollisionDetectParas(detectParas);
+        //bullet.SetGrazeDetectParas(grazeParas);
         luaState.PushLightUserData(bullet);
         return 1;
     }

@@ -26,8 +26,7 @@ public class BgBlockContainer
         _container = new GameObject();
         _container.name = "BgContainer";
         _containerTf = _container.transform;
-        _containerTf.parent = bgLayerTf;
-        _containerTf.localPosition = Vector3.zero;
+        _containerTf.SetParent(bgLayerTf, false);
         _curPosZ = 0;
     }
 
@@ -47,13 +46,13 @@ public class BgBlockContainer
         {
             _blockObjList = new List<GameObject>();
         }
-        obj.transform.parent = _containerTf;
+        obj.transform.SetParent(_containerTf, false);
         _blockObjList.Add(obj);
         GameObject blockObj;
         for (int i = 1; i < count; i++)
         {
             blockObj = GameObject.Instantiate(obj);
-            blockObj.transform.parent = _containerTf;
+            blockObj.transform.SetParent(_containerTf);
             _blockObjList.Add(blockObj);
         }
         _blockCount = count;

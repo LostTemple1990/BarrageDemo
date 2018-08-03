@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 public class SoundManager
 {
+    /// <summary>
+    /// 重复播放同一音效的最小间隔
+    /// </summary>
+    private const float RepeatPlayMinInterval = 0.1f;
+
     private static SoundManager _instance = new SoundManager();
 
     public static SoundManager GetInstance()
@@ -73,10 +78,14 @@ public class SoundManager
                 // 当前音效正在播放，则重复播放
                 if ( curEntity.soundName == toPlayEntity.soundName )
                 {
-                    curEntity.endTime = curTime + curEntity.source.clip.length;
-                    curEntity.source.Play();
-                    //Logger.Log("Sound exist, Play Again");
-                    isInCurPlayList = true;
+                    // 间隔时间大于最小间隔的时候才重复播放
+                    if ( curTime - curEntity.startTime >= RepeatPlayMinInterval )
+                    {
+                        curEntity.endTime = curTime + curEntity.source.clip.length;
+                        curEntity.source.Play();
+                        //Logger.Log("Sound exist, Play Again");
+                        isInCurPlayList = true;
+                    }
                     break;
                 }
             }
@@ -89,7 +98,7 @@ public class SoundManager
             if ( soundObj == null )
             {
                 soundObj = new GameObject();
-                soundObj.transform.parent = _defaultSourceTf;
+                soundObj.transform.SetParent(_defaultSourceTf);
                 toPlayEntity.soundObj = soundObj;
             }
             soundObj.name = "Audio_" + toPlayEntity.soundName;
@@ -100,7 +109,10 @@ public class SoundManager
                 source.volume = _curVolume;
                 toPlayEntity.source = source;
             }
+            // 起始播放时间
+            toPlayEntity.startTime = curTime;
             source.clip = Resources.Load<AudioClip>("Sounds/" + toPlayEntity.soundName);
+            // 结束播放时间
             toPlayEntity.endTime = toPlayEntity.isLoop ? -1 : curTime + source.clip.length;
             //Logger.Log("Begin Play sound " + toPlayEntity.soundName + " length = " + source.clip.length);
             toPlayEntity.isFinish = false;
@@ -183,6 +195,13 @@ public class SoundEntity
     public string soundId;
     public string soundName;
     public bool isLoop;
+    /// <summary>
+    /// 播放音效的起始时间
+    /// </summary>
+    public double startTime;
+    /// <summary>
+    /// 播放音效的结束时间
+    /// </summary>
     public double endTime;
     public bool isFinish;
     public GameObject soundObj;

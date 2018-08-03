@@ -19,6 +19,17 @@ public class BulletBase : ICollisionObject
     protected float _vx, _vy;
 
     protected float _dx, _dy;
+    /// <summary>
+    /// 使用Z轴来进行先后的排序
+    /// <para>为了保持一致性，设置的时候取反</para>
+    /// <para>即，orderInLayer = 5 ，则设置Z = -5</para>
+    /// <para>这是为了让order较大的子弹永远显示在前面</para>
+    /// </summary>
+    protected int _orderInLayer;
+    /// <summary>
+    /// 标识进行边界检测以便回收
+    /// </summary>
+    protected bool _checkOutOfBorder;
 
     /// <summary>
     /// 子弹初始化函数
@@ -36,6 +47,9 @@ public class BulletBase : ICollisionObject
         _destroyFlag = 0;
         _isMoving = false;
         _lastPos = Vector3.zero;
+        _curPos = Vector3.zero;
+        _orderInLayer = 0;
+        _checkOutOfBorder = true;
     }
 
     public virtual void Update()
@@ -45,13 +59,33 @@ public class BulletBase : ICollisionObject
 
     public virtual void SetToPosition(Vector3 pos)
     {
-        _curPos = pos;
+        _curPos.x = pos.x;
+        _curPos.y = pos.y;
     }
 
     public virtual void SetToPosition(float posX,float posY)
     {
         _curPos.x = posX;
         _curPos.y = posY;
+    }
+
+    /// <summary>
+    /// 设置子弹的显示层级
+    /// </summary>
+    /// <param name="orderInLayer"></param>
+    public virtual void SetOrderInLayer(int orderInLayer)
+    {
+        _orderInLayer = orderInLayer;
+        _curPos.z = -orderInLayer;
+    }
+
+    /// <summary>
+    /// 设置是否进行边界检测
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetCheckOutOfBorder(bool value)
+    {
+        _checkOutOfBorder = value;
     }
 
     /// <summary>
@@ -121,6 +155,10 @@ public class BulletBase : ICollisionObject
 
     protected virtual bool IsOutOfBorder()
     {
+        if ( !_checkOutOfBorder )
+        {
+            return false;
+        }
         if (_curPos.x < Global.BulletLBBorderPos.x || 
             _curPos.y < Global.BulletLBBorderPos.y ||
             _curPos.x > Global.BulletRTBorderPos.x ||

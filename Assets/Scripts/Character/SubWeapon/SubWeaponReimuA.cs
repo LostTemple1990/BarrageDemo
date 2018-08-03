@@ -27,7 +27,7 @@ public class SubWeaponReimuA : SubWeaponBase
         _shootAngles[3] = new float[] { 135f, 90f, 90f, 45f };
         _curShootCD = 0;
         _subWeaponRenderer = _subWeapon.GetComponent<SpriteRenderer>();
-        _subWeaponRenderer.sprite = ResourceManager.GetInstance().GetResource<Sprite>("pl00","pl00_21");
+        _subWeaponRenderer.sprite = ResourceManager.GetInstance().GetSprite(Consts.ReimuAtlasName, "pl00_21");
     }
 
     public override void Update(int moveMode)

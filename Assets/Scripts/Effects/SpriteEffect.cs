@@ -146,7 +146,7 @@ public class SpriteEffect : STGEffectBase
 
     public void SetSprite(string spName)
     {
-        _spRenderer.sprite = ResourceManager.GetInstance().GetSprite("Effects", spName);
+        _spRenderer.sprite = ResourceManager.GetInstance().GetSprite(Consts.EffectAtlasName, spName);
     }
 
     public void SetSpriteColor(float rValue,float gValue,float bValue,float aValue)

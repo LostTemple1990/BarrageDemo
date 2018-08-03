@@ -82,12 +82,14 @@ public class BackgroundManager
     private void InitBg()
     {
         _containerList = new List<BgBlockContainer>();
-        CreateBgBlockContainer(_bgTf.Find("BgBlock").gameObject, 4);
+        CreateBgBlockContainer("Stage5BgBlock0", 4);
+        CreateBgBlockContainer("Stage5BgBlock1", 4);
         _containerCount = _containerList.Count;
     }
 
-    public void CreateBgBlockContainer(GameObject blockObj,int count)
+    public void CreateBgBlockContainer(string prefabName,int count)
     {
+        GameObject blockObj = ResourceManager.GetInstance().GetPrefab("Prefab/Background", prefabName);
         BgBlockContainer container = new BgBlockContainer(_bgTf);
         container.Init();
         container.SetBlockObject(blockObj, count);

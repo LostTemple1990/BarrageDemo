@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: STGNazrinAtlas
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 8bf7a641f719b554a83397cb15d63fff, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: b9791a1088821f841ba7f12445c95fe0, type: 3}
+  - {fileID: 21300000, guid: 785e0e21118755c4c95d43e53afc90c5, type: 3}
+  - {fileID: 21300000, guid: 9fd42483ab8a29342a6f632801ff0cec, type: 3}
+  - {fileID: 21300000, guid: 2fcba264f7c4a6e4cbef6708d5d962a9, type: 3}
+  - {fileID: 21300000, guid: 8594d07491fba254483511024f5c00b3, type: 3}
+  - {fileID: 21300000, guid: 2b0267c413a4fa843b3dfdb90bc1cd31, type: 3}
+  - {fileID: 21300000, guid: 3043d7d4c67fbc0458413db7f2977440, type: 3}
+  - {fileID: 21300000, guid: 0a069485ad2ba234a87192044b51a958, type: 3}
+  - {fileID: 21300000, guid: 50f18706f91fbc54fb7b5f5fac58d710, type: 3}
+  - {fileID: 21300000, guid: 478ca64b1c9b8d849966f53faedd3c5d, type: 3}
+  - {fileID: 21300000, guid: 7ce695cd22ebc494ea679ad186239e00, type: 3}
+  - {fileID: 21300000, guid: faf274ddb677d944ba3ff6d1f014c9a2, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Nazrin_FadeToRight_1
+  - Nazrin_Idle_0
+  - Nazrin_Right_1
+  - Nazrin_Cast_3
+  - Nazrin_Right_0
+  - Nazrin_Cast_1
+  - Nazrin_Cast_2
+  - Nazrin_Idle_3
+  - Nazrin_FadeToRight_0
+  - Nazrin_Cast_0
+  - Nazrin_Idle_1
+  - Nazrin_Idle_2
+  m_Tag: STGNazrinAtlas
+  m_IsVariant: 0

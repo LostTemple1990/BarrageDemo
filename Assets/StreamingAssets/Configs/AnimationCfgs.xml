@@ -1,7 +1,7 @@
 <Data>
-	<Ani id="0001" aniName="enemy000" textureName="enemy5" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
-	<Ani id="0002" aniName="enemy001" textureName="enemy5" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
-	<Ani id="0010" aniName="enemy010" textureName="enemy5" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="64" sizeH="64"/>
-	<Ani id="1001" aniName="Reimu" textureName="pl00" aniData="Idle,8,8,FadeToRight,4,6,Right,4,8,FadeToLeft,4,6,Left,4,8" isFlapX="0" />
-	<Ani id="2001" aniName="Nazrin" textureName="Nazrin" aniData="Idle,4,16,FadeToRight,2,12,Right,2,16,Cast,4,16" isFlapX="1" />
+	<Ani id="0001" aniName="enemy000" textureName="STGEnemyAtlas0" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
+	<Ani id="0002" aniName="enemy001" textureName="STGEnemyAtlas0" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
+	<Ani id="0010" aniName="enemy010" textureName="STGEnemyAtlas0" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="64" sizeH="64"/>
+	<Ani id="1001" aniName="Reimu" textureName="STGReimuAtlas" aniData="Idle,8,8,FadeToRight,4,6,Right,4,8,FadeToLeft,4,6,Left,4,8" isFlapX="0" />
+	<Ani id="2001" aniName="Nazrin" textureName="STGNazrinAtlas" aniData="Idle,4,16,FadeToRight,2,12,Right,2,16,Cast,4,16" isFlapX="1" />
 </Data>

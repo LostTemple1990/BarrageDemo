@@ -29,8 +29,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
     protected GrazeDetectParas _grazeParas;
     protected CollisionDetectParas _collisionParas;
     #endregion
-
-    protected int _orderInLayer;
     /// <summary>
     /// 表示当前是否虚化状态
     /// </summary>
@@ -131,16 +129,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
         SetCollisionDetectParas(detectParas);
         SetGrazeDetectParas(grazeParas);
         _cfg = cfg;
-    }
-
-    public virtual void SetOrderInLayer(int order)
-    {
-        if ( order != _orderInLayer )
-        {
-            _orderInLayer = order;
-            SpriteRenderer sp = _trans.Find("BulletSprite").GetComponent<SpriteRenderer>();
-            sp.sortingOrder = _orderInLayer;
-        }
     }
 
     /// <summary>

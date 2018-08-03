@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: STGEffectAtlas
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 6ad8feb60126e4344be23c0ef9bd8c51, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 51f69b407c675eb4aaf06e1e53f0f040, type: 3}
+  - {fileID: 21300000, guid: f925fc4049421a141ab4b1062b2ddc04, type: 3}
+  - {fileID: 21300000, guid: ad62d5a33ceafa6448c823c4b4ed7b54, type: 3}
+  - {fileID: 21300000, guid: e3f63a5553783544692956302039f44c, type: 3}
+  - {fileID: 21300000, guid: 1e68c097df8820847939fce7d542db9e, type: 3}
+  - {fileID: 21300000, guid: b20dc2b8b6ac46a4c82fecafab4291d9, type: 3}
+  - {fileID: 21300000, guid: 419fb58a7cdd13947b649cfcbdd44095, type: 3}
+  - {fileID: 21300000, guid: 37e5d48bca733cc49ade8320f958b5e1, type: 3}
+  - {fileID: 21300000, guid: d8505efb048a81848ad80ace2e092ed0, type: 3}
+  - {fileID: 21300000, guid: 821d734df21383649b0737fad025e8e1, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - EliminateEnemyEffect0
+  - TransparentCircle
+  - EliminateEnemyEffect1
+  - etama2_3
+  - MapleLeaf1
+  - etama2_4
+  - etama2_6
+  - MapleLeaf0
+  - EliminateEnemyEffect2
+  - EliminateEnemyEffect3
+  m_Tag: STGEffectAtlas
+  m_IsVariant: 0

@@ -182,7 +182,7 @@ public class STGBreakScreenEffect : STGEffectBase
         MeshRenderer meshRenderer = fragment.GetComponent<MeshRenderer>();
         Mesh mesh = new Mesh();
         // 设置层级
-        meshRenderer.sortingLayerName = "TopEffect";
+        meshRenderer.sortingLayerName = "STG";
         // 计算顶点
         Vector3 vec0 = _vertexList[index0];
         Vector3 vec1 = _vertexList[index1];

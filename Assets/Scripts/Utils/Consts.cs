@@ -68,4 +68,8 @@ public class Consts  {
     /// 多线段集合中每次检测的组中包含的点的个数
     /// </summary>
     public const int NumInMultiSegmentsGroup = 2;
+
+
+    public const string EffectAtlasName = "STGEffectAtlas";
+    public const string ReimuAtlasName = "STGReimuAtlas";
 }

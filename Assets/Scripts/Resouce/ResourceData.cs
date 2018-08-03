@@ -25,4 +25,20 @@ public class ResourceData
         }
         return null;
     }
+
+    public void AddObject(string key,Object go)
+    {
+        Dictionary<string, Object> resMap = (Dictionary<string, Object>)datasDic;
+        if ( resMap != null )
+        {
+            try
+            {
+                resMap.Add(key, go);
+            }
+            catch (System.Exception e)
+            {
+                Logger.Log(e.Message);
+            }
+        }
+    }
 }

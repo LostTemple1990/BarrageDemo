@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 
-public class ResourceManager {
+public class ResourceManager
+{
     private static ResourceManager _instance;
 
     public static ResourceManager GetInstance()
@@ -19,17 +21,24 @@ public class ResourceManager {
 
     }
 
-    private Dictionary<string, ResourceData> _dic;
+    private Dictionary<string, ResourceData> _resourceDataDic;
     private Material _spriteDefaultMat;
+    /// <summary>
+    /// 图集的字典
+    /// </summary>
+    private Dictionary<string, SpriteAtlas> _atlasDic;
 
     public void Init()
     {
-        _dic = new Dictionary<string, ResourceData>();
+        _resourceDataDic = new Dictionary<string, ResourceData>();
+        _atlasDic = new Dictionary<string, SpriteAtlas>();
+        ParseSpriteAtlas("STGReimuAtlas");
+        ParseSpriteAtlas("STGEnemyAtlas0");
+        ParseSpriteAtlas("STGNazrinAtlas");
         ParseResource("pl00", 28);
         ParseResource("etama2", 54);
         ParseResource("etama", 250);
         ParseResource("etama9", 16);
-        ParseSpriteAtlas("Effects", "Effects");
     }
 
     /// <summary>
@@ -52,46 +61,107 @@ public class ResourceManager {
             }
         }
         resData.datasDic = resMap;
-        _dic.Add(packName, resData);
+        _resourceDataDic.Add(packName, resData);
     }
 
-    private void ParseSpriteAtlas(string packName,string atlasName)
+    /// <summary>
+    /// 解析一整个atlas
+    /// </summary>
+    /// <param name="atlasName"></param>
+    public void ParseSpriteAtlas(string atlasName)
     {
         ResourceData resData = new ResourceData();
-        resData.Init(new string[] { packName });
+        resData.Init(new string[] { atlasName });
         Dictionary<string, Object> resMap = new Dictionary<string, Object>();
         resData.datasDic = resMap;
-        _dic.Add(atlasName, resData);
+        _resourceDataDic.Add(atlasName, resData);
 
-        string path = packName == "" ? atlasName : packName + "/" + atlasName;
-        Sprite[] sprites = Resources.LoadAll<Sprite>(path);
-        int len = sprites.Length;
-        for (int i=0;i<len;i++)
+        string path = "SpriteAtlas/" + atlasName;
+        SpriteAtlas atlas = Resources.Load<SpriteAtlas>(path);
+        if ( atlas != null )
         {
-            resMap.Add(sprites[i].name, sprites[i]);
+            int len = atlas.spriteCount;
+            Sprite[] sprites = new Sprite[len];
+            atlas.GetSprites(sprites);
+            for (int i = 0; i < len; i++)
+            {
+                resMap.Add(sprites[i].name, sprites[i]);
+            }
         }
     }
 
-    public Sprite GetSprite(string packName,string resName)
+    /// <summary>
+    /// 从图集中获得sprite
+    /// </summary>
+    /// <param name="atlasName"></param>
+    /// <param name="resName"></param>
+    /// <returns></returns>
+    public Sprite GetSprite(string atlasName, string resName)
     {
-        ResourceData resData;
-        if ( _dic.TryGetValue(packName,out resData) )
+        ResourceData resourceData;
+        if (!_resourceDataDic.TryGetValue(atlasName, out resourceData))
         {
-            if ( resData != null )
+            resourceData = new ResourceData();
+            resourceData.Init(new string[] { atlasName });
+            _resourceDataDic.Add(atlasName, resourceData);
+            Dictionary<string, Object> resMap = new Dictionary<string, Object>();
+            resourceData.datasDic = resMap;
+        }
+        Sprite sp = resourceData.GetObject(resName) as Sprite;
+        // 若当前缓存中不存在，则从图集中创建一份
+        if ( sp == null )
+        {
+            sp = CreateSpriteFromAtlas(atlasName, resName);
+            if ( sp != null )
             {
-                Sprite sp = resData.GetObject(resName) as Sprite;
-                return sp;
+                Dictionary<string, Object> resMap = resourceData.datasDic as Dictionary<string, Object>;
+                resMap.Add(resName, sp);
             }
         }
-        //Resources.Load<Sprite>()
-        //Sprite sp = Resources.Load<Sprite>(packName + "/" + resName);
-        return null;
+        return sp;
+    }
+
+    /// <summary>
+    /// 从图集中创建sprite的一份拷贝
+    /// </summary>
+    /// <param name="packName"></param>
+    /// <param name="resName"></param>
+    /// <returns></returns>
+    public Sprite CreateSpriteFromAtlas(string packName,string resName)
+    {
+        SpriteAtlas atlas = GetSpriteAtlas(packName);
+        Sprite sp = null;
+        if ( atlas != null )
+        {
+            sp = atlas.GetSprite(resName);
+        }
+        return sp;
+    }
+
+    /// <summary>
+    /// 根据图集名称获取图集
+    /// <para>图集暂时存放在Resources/SpriteAtlas下</para>
+    /// </summary>
+    /// <param name="atlasName">图集名称</param>
+    /// <returns></returns>
+    public SpriteAtlas GetSpriteAtlas(string atlasName)
+    {
+        SpriteAtlas atlas;
+        if (!_atlasDic.TryGetValue(atlasName, out atlas))
+        {
+            atlas = Resources.Load<SpriteAtlas>("SpriteAtlas/" + atlasName);
+            if ( atlas != null )
+            {
+                _atlasDic.Add(atlasName, atlas);
+            }
+        }
+        return atlas;
     }
 
     public T GetResource<T>(string packName,string resName)
     {
         ResourceData resData;
-        if (_dic.TryGetValue(packName, out resData))
+        if (_resourceDataDic.TryGetValue(packName, out resData))
         {
             return (T)resData.GetObject(resName);
         }
@@ -104,7 +174,18 @@ public class ResourceManager {
         if ( prefab == null )
         {
             Object obj = Resources.Load(packName + "/" + resName);
-            prefab = GameObject.Instantiate(obj, Vector3.zero, Quaternion.identity) as GameObject;
+            prefab = GameObject.Instantiate(obj) as GameObject;
+        }
+        return prefab;
+    }
+
+    public GameObject GetPrefab(string packName, string resName,Transform parentTf,bool instantiateInWorldSpace)
+    {
+        GameObject prefab = ObjectsPool.GetInstance().GetPrefabAtPool(resName);
+        if (prefab == null)
+        {
+            Object obj = Resources.Load(packName + "/" + resName);
+            prefab = GameObject.Instantiate(obj,parentTf,instantiateInWorldSpace) as GameObject;
         }
         return prefab;
     }
@@ -120,5 +201,38 @@ public class ResourceManager {
             _spriteDefaultMat = Resources.Load<Material>("materials/SpriteDefaultMat");
         }
         return _spriteDefaultMat;
+    }
+
+    /// <summary>
+    /// 检测是否已经有对应名称的资源数据
+    /// </summary>
+    /// <param name="resName"></param>
+    /// <returns></returns>
+    public bool CheckResourceData(string resName)
+    {
+        ResourceData data;
+        if (!_resourceDataDic.TryGetValue(resName, out data))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// 根据resName拿到ResourceData
+    /// <para>若没有，则创建一个新的</para>
+    /// </summary>
+    /// <param name="resName"></param>
+    /// <returns></returns>
+    private ResourceData GetOrCreateResourceData(string resName)
+    {
+        ResourceData data;
+        if ( !_resourceDataDic.TryGetValue(resName, out data) )
+        {
+            data = new ResourceData();
+            data.Init(new string[] { resName });
+            data.datasDic = new Dictionary<string, Object>(); ;
+        }
+        return data;
     }
 }

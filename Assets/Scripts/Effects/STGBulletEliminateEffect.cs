@@ -100,7 +100,7 @@ public class STGBulletEliminateEffect : STGEffectBase
 
     public void SetSprite(string spName)
     {
-        _spRenderer.sprite = ResourceManager.GetInstance().GetSprite("Effects", spName);
+        _spRenderer.sprite = ResourceManager.GetInstance().GetSprite(Consts.EffectAtlasName, spName);
         _tmpColor = _spRenderer.color;
     }
 

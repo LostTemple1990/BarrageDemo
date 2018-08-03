@@ -63,47 +63,76 @@ public class AnimationManager
         _aniCount = CommonUtils.RemoveNullElementsInList<AnimationBase>(_aniList,_aniCount);
     }
 
+    //public void LoadAniCache(string aniId)
+    //{
+    //    UnitAniCfg cfg = GetUnitAniCfgById(aniId);
+    //    string aniName = cfg.aniName;
+    //    string textureName = cfg.textureName;
+    //    string path = "Animation/" + textureName;
+    //    Sprite[] sprites;
+    //    int len, i,j;
+    //    Dictionary<string, Sprite> aniSpsMap;
+    //    // 判断是否已经将该贴图的所有sprites存入map中
+    //    if (!_texturesMap.TryGetValue(textureName, out sprites))
+    //    {
+    //        sprites = Resources.LoadAll<Sprite>(path);
+    //        _texturesMap.Add(textureName, sprites);
+    //    }
+    //    // 提取texture中名字带有aniName的所有sprite，存入aniSpsMap中
+    //    aniSpsMap = new Dictionary<string, Sprite>();
+    //    _textureSpsMap.Add(aniName, aniSpsMap);
+    //    len = sprites.Length;
+    //    for (i=0;i<len;i++)
+    //    {
+    //        if ( sprites[i].name.IndexOf(aniName) != -1 )
+    //        {
+    //            aniSpsMap.Add(sprites[i].name, sprites[i]);
+    //        }
+    //    }
+    //    // 将对应的sp数组放入aniCache中
+    //    Sprite sp;
+    //    Dictionary<string, Sprite[]> cacheSps = new Dictionary<string, Sprite[]>();
+    //    string[] sliceStrs = cfg.aniData.Split(',');
+    //    for (i=0,len=sliceStrs.Length;i<len;i=i+3)
+    //    {
+    //        string actionName = sliceStrs[i];
+    //        int aniLen = int.Parse(sliceStrs[i + 1]);
+    //        sprites = new Sprite[aniLen];
+    //        for (j=0;j<aniLen;j++)
+    //        {
+    //            if (aniSpsMap.TryGetValue(aniName + "_" + actionName + "_" + j, out sp))
+    //            {
+    //                sprites[j] = sp;
+    //            }
+    //        }
+    //        cacheSps.Add(actionName, sprites);
+    //    }
+    //    // 创建AnimationCache
+    //    AnimationCache aniCache = new AnimationCache();
+    //    aniCache.AniName = aniName;
+    //    aniCache.SetActionSpritesMap(cacheSps);
+    //    _aniCacheDic.Add(aniName,aniCache);
+    //}
+
     public void LoadAniCache(string aniId)
     {
         UnitAniCfg cfg = GetUnitAniCfgById(aniId);
         string aniName = cfg.aniName;
         string textureName = cfg.textureName;
-        string path = "Animation/" + textureName;
         Sprite[] sprites;
-        int len, i,j;
-        Dictionary<string, Sprite> aniSpsMap;
-        // 判断是否已经将该贴图的所有sprites存入map中
-        if (!_texturesMap.TryGetValue(textureName, out sprites))
-        {
-            sprites = Resources.LoadAll<Sprite>(path);
-            _texturesMap.Add(textureName, sprites);
-        }
-        // 提取texture中名字带有aniName的所有sprite，存入aniSpsMap中
-        aniSpsMap = new Dictionary<string, Sprite>();
-        _textureSpsMap.Add(aniName, aniSpsMap);
-        len = sprites.Length;
-        for (i=0;i<len;i++)
-        {
-            if ( sprites[i].name.IndexOf(aniName) != -1 )
-            {
-                aniSpsMap.Add(sprites[i].name, sprites[i]);
-            }
-        }
-        // 将对应的sp数组放入aniCache中
-        Sprite sp;
+        int len, i, j;
         Dictionary<string, Sprite[]> cacheSps = new Dictionary<string, Sprite[]>();
         string[] sliceStrs = cfg.aniData.Split(',');
-        for (i=0,len=sliceStrs.Length;i<len;i=i+3)
+        string actionAniFrameName;
+        for (i = 0, len = sliceStrs.Length; i < len; i = i + 3)
         {
             string actionName = sliceStrs[i];
             int aniLen = int.Parse(sliceStrs[i + 1]);
             sprites = new Sprite[aniLen];
-            for (j=0;j<aniLen;j++)
+            for (j = 0; j < aniLen; j++)
             {
-                if (aniSpsMap.TryGetValue(aniName + "_" + actionName + "_" + j, out sp))
-                {
-                    sprites[j] = sp;
-                }
+                actionAniFrameName = aniName + "_" + actionName + "_" + j;
+                sprites[j] = ResourceManager.GetInstance().GetSprite(textureName, actionAniFrameName);
             }
             cacheSps.Add(actionName, sprites);
         }
@@ -111,7 +140,7 @@ public class AnimationManager
         AnimationCache aniCache = new AnimationCache();
         aniCache.AniName = aniName;
         aniCache.SetActionSpritesMap(cacheSps);
-        _aniCacheDic.Add(aniName,aniCache);
+        _aniCacheDic.Add(aniName, aniCache);
     }
 
     public AnimationCache GetAnimationCache(string aniName)

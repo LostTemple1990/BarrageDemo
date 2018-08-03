@@ -47,7 +47,7 @@ TagManager:
   - name: GameBg
     uniqueID: 631496219
     locked: 0
-  - name: GameMain
+  - name: STG
     uniqueID: 3038520163
     locked: 0
   - name: GameEffect
