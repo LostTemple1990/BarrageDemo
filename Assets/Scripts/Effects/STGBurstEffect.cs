@@ -40,7 +40,7 @@ public class STGBurstEffect : STGEffectBase
             _circleTf.parent = _effectContainerTf;
             _circleTf.localScale = new Vector3(0, 0, 1);
             _circleSpRenderer = _circleTf.Find("Sprite").GetComponent<SpriteRenderer>();
-            _circleSpRenderer.sprite = Resources.Load<Sprite>("pl00/pl00_0");
+            _circleSpRenderer.sprite = ResourceManager.GetInstance().GetSprite(Consts.EffectAtlasName,"TransparentCircle");
             _circleSpRenderer.color = new Color(0.95f,0.55f,0.9f,0.5f);
         }
         if ( _burstCount == 0 )

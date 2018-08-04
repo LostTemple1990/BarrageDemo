@@ -54,7 +54,7 @@ public class STGChargeEffect : STGEffectBase
             _circleTf.SetParent(_effectContainerTf, false);
             _circleTf.localScale = new Vector3(InitCircleScale, InitCircleScale, 1);
             _circleSpRenderer = _circleTf.Find("Sprite").GetComponent<SpriteRenderer>();
-            _circleSpRenderer.sprite = Resources.Load<Sprite>("pl00/pl00_0");
+            _circleSpRenderer.sprite = ResourceManager.GetInstance().GetSprite(Consts.EffectAtlasName, "TransparentCircle");
             _circleSpRenderer.color = new Color(0.95f, 0.1f, 0.1f, 0.5f);
         }
         _circleShrinkTime = 0;

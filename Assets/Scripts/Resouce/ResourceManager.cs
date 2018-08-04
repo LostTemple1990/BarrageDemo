@@ -35,7 +35,6 @@ public class ResourceManager
         ParseSpriteAtlas("STGReimuAtlas");
         ParseSpriteAtlas("STGEnemyAtlas0");
         ParseSpriteAtlas("STGNazrinAtlas");
-        ParseResource("pl00", 28);
         ParseResource("etama2", 54);
         ParseResource("etama", 250);
         ParseResource("etama9", 16);
