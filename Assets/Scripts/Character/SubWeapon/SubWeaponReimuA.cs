@@ -7,7 +7,7 @@ public class SubWeaponReimuA : SubWeaponBase
 {
     protected static Vector3 RotateEuler = new Vector3(0f, 0f, 2f);
 
-    protected int _power;
+    protected int _powerLevel;
 
     protected float[][] _shootAngles;
 
@@ -33,7 +33,7 @@ public class SubWeaponReimuA : SubWeaponBase
     public override void Update(int moveMode)
     {
         _moveMode = moveMode;
-        _power = (int)Mathf.Floor(PlayerService.GetInstance().GetPower());
+        _powerLevel = PlayerService.GetInstance().GetPower() / 100;
         UpdatePos();
         Shoot();
         UpdateAni();
@@ -41,7 +41,7 @@ public class SubWeaponReimuA : SubWeaponBase
 
     protected void UpdatePos()
     {
-        _subWeapon.transform.localPosition = _posOffset[_power-1][_subIndex];
+        _subWeapon.transform.localPosition = _posOffset[_powerLevel-1][_subIndex];
     }
 
     protected void Shoot()
@@ -83,7 +83,7 @@ public class SubWeaponReimuA : SubWeaponBase
         }
         else
         {
-            return _shootAngles[_power-1][_subIndex];
+            return _shootAngles[_powerLevel-1][_subIndex];
         }
         return angle;
     }

@@ -82,6 +82,7 @@ public class EnemyCurveLaser : EnemyBulletBase
             _movableObj = new MovableObject();
         }
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
+        Logger.Log("Create new CurveLaser");
     }
 
     public override void SetBulletTexture(string texture)
@@ -377,6 +378,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         base.Clear();
         _trailsList.Clear();
         _curTrailLen = _maxTrailLen = 0;
+        _mesh.Clear();
         UIManager.GetInstance().RemoveGoFromLayer(_bullet);
         ObjectsPool.GetInstance().RestoreBullet(_prefabName, _bullet);
         _bullet = null;

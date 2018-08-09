@@ -10,7 +10,7 @@
 		// No culling or depth
 		Cull Off ZWrite Off ZTest Always
 		Lighting Off
-		Blend One OneMinusSrcAlpha
+		Blend SrcAlpha OneMinusSrcAlpha
 
 		Tags { "Queue"="Transparent" 
             "IgnoreProjector"="True" 

@@ -27,6 +27,7 @@ public class GameMain : MonoBehaviour
         BackgroundManager.GetInstance().Update();
         EffectsManager.GetInstance().Update();
         TimerManager.GetInstance().Update();
+        UIManager.GetInstance().Update();
         frameNode++;
         // 背景部分暂时写这，之后转移到lua
         if ( frameNode % 30 == 0 )
@@ -115,5 +116,7 @@ public class GameMain : MonoBehaviour
         MTRandom.Init(seed);
 
         Application.targetFrameRate = 60;
+
+        UIManager.GetInstance().ShowView("GameMainView");
     }
 }

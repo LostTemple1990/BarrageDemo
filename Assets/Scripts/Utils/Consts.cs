@@ -69,7 +69,17 @@ public class Consts  {
     /// </summary>
     public const int NumInMultiSegmentsGroup = 2;
 
+    /// <summary>
+    /// 玩家初始火力
+    /// </summary>
+    public const int PlayerInitPower = 100;
+    /// <summary>
+    /// 玩家满火力
+    /// </summary>
+    public const int PlayerMaxPower = 400;
+
 
     public const string EffectAtlasName = "STGEffectAtlas";
     public const string ReimuAtlasName = "STGReimuAtlas";
+    public const string STGMainViewAtlasName = "STGMainViewAtlas";
 }

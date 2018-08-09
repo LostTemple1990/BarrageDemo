@@ -41,6 +41,14 @@ public class UIManager {
     /// STG本体相机
     /// </summary>
     private Camera _stgCamera;
+    /// <summary>
+    /// 需要执行update方法的view
+    /// </summary>
+    private List<ViewBase> _viewUpdateList;
+    /// <summary>
+    /// 需要执行update方法的view的数目
+    /// </summary>
+    private int _viewUpdateCount;
 
     public void Init()
     {
@@ -64,6 +72,11 @@ public class UIManager {
             _viewsMap = new Dictionary<string, ViewBase>();
         }
         _uiRootTf = GameObject.Find("UIRoot").GetComponent<RectTransform>();
+        if ( _viewUpdateList == null )
+        {
+            _viewUpdateList = new List<ViewBase>();
+        }
+        _viewUpdateCount = 0;
         DoScreenAdaption();
     }
 
@@ -166,7 +179,7 @@ public class UIManager {
         Global.STGActualSize = new Vector2(Consts.GameWidth*scaleWidth,Consts.GameHeight*scaleHeight);
     }
 
-    public void ShowView(string name,object[] data)
+    public void ShowView(string name,object[] data=null)
     {
         ViewBase view;
         if ( !_viewsMap.TryGetValue(name,out view) )
@@ -178,8 +191,8 @@ public class UIManager {
                 view = System.Activator.CreateInstance(classType) as ViewBase;
                 view.Init(viewGO);
                 _viewsMap.Add(name, view);
+                viewGO.transform.SetParent(_uiRootTf, false);
             }
-
         }
         if ( view != null )
         {
@@ -193,8 +206,59 @@ public class UIManager {
         if ( _viewsMap.TryGetValue(name, out view) )
         {
             view.Hide();
+            UnregisterViewUpdate(view);
         }
     }
+
+    public void Update()
+    {
+        bool needClear = false;
+        ViewBase view;
+        for (int i=0;i<_viewUpdateCount;i++)
+        {
+            view = _viewUpdateList[i];
+            if ( view != null )
+            {
+                view.Update();
+            }
+            else
+            {
+                needClear = true;
+            }
+        }
+        if ( needClear )
+        {
+            _viewUpdateCount = CommonUtils.RemoveNullElementsInList<ViewBase>(_viewUpdateList);
+        }
+    }
+
+    /// <summary>
+    /// 注册update函数
+    /// </summary>
+    /// <param name="view"></param>
+    public void RegisterViewUpdate(ViewBase view)
+    {
+        if ( _viewUpdateList.IndexOf(view) == -1 )
+        {
+            _viewUpdateList.Add(view);
+            _viewUpdateCount++;
+        }
+    }
+
+    /// <summary>
+    /// 撤销注册update函数
+    /// </summary>
+    /// <param name="view"></param>
+    public void UnregisterViewUpdate(ViewBase view)
+    {
+        int index = _viewUpdateList.IndexOf(view);
+        if ( index != -1 )
+        {
+            _viewUpdateList[index] = null;
+        }
+    }
+
+
 
     /// <summary>
     /// 获取游戏本体摄像机

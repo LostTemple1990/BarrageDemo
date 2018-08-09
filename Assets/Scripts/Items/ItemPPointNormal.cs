@@ -13,7 +13,7 @@ public class ItemPPointNormal : ItemBase
 
     protected override void DoEffect()
     {
-        PlayerService.GetInstance().AddPower(0.1f);
+        PlayerService.GetInstance().AddPower(10);
     }
 
     public override void Clear()

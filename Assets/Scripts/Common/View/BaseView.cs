@@ -20,7 +20,7 @@ public class ViewBase
     //    UIManager.GetInstance().AddGoToLayer(viewObj, GetLayerId());
     //}
 
-    public virtual void Show(object[] data)
+    public void Show(object[] data)
     {
         if ( _view != null )
         {
@@ -29,15 +29,20 @@ public class ViewBase
         }
     }
 
+    public virtual void Update()
+    {
+
+    }
+
     public virtual void OnShow(object[] data)
     {
 
     }
 
-    public virtual void Hide()
+    public void Hide()
     {
-        _view.SetActive(false);
         OnHide();
+        _view.SetActive(false);
     }
 
     public virtual void OnHide()

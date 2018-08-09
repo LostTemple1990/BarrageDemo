@@ -1,0 +1,157 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: STGMainViewAtlas
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 7fee8333afdabeb4380db146e4628e2c, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 988258004d8b10d438355fff5f76a880, type: 3}
+  - {fileID: 21300000, guid: 4f50c050e6cf42f49a7670ead01fc6a0, type: 3}
+  - {fileID: 21300000, guid: ff6060606a1a1e14d853c3bf19b221af, type: 3}
+  - {fileID: 21300000, guid: 9f9a11c0b103f014f8dff0cd4084c2b6, type: 3}
+  - {fileID: 21300000, guid: 81135dc0118ab56438ac71f776be70b0, type: 3}
+  - {fileID: 21300000, guid: 432f8ee0495a3b5469fbdfce4cbbe370, type: 3}
+  - {fileID: 21300000, guid: 2c9f101191a22eb45afef93074e31e0e, type: 3}
+  - {fileID: 21300000, guid: 32763331560c103439b76ea7ab621d93, type: 3}
+  - {fileID: 21300000, guid: 69bbecc148ade7e41ba4332280656c14, type: 3}
+  - {fileID: 21300000, guid: e04e1912aedc8794d8d5d4095be4f3a8, type: 3}
+  - {fileID: 21300000, guid: 8d058562ddf33f94fb508d5e0086531e, type: 3}
+  - {fileID: 21300000, guid: 01dca3a286a1eac45a9b83826c7abe6f, type: 3}
+  - {fileID: 21300000, guid: d4a7dfa21ef4d0f488f2c8d7f3f931ed, type: 3}
+  - {fileID: 21300000, guid: e4d254438000f8e40b439d735eb4a7ce, type: 3}
+  - {fileID: 21300000, guid: 94221073bff61f046b6288dbd2d44869, type: 3}
+  - {fileID: 21300000, guid: 98c22fb38020d9640bc7bb1105305eb4, type: 3}
+  - {fileID: 21300000, guid: d21be7045f125b9429dd2330a036370b, type: 3}
+  - {fileID: 21300000, guid: d45ce5349e3b8094190543766203d333, type: 3}
+  - {fileID: 21300000, guid: b727acc4f1b734f4e8672e7d0c3d8a18, type: 3}
+  - {fileID: 21300000, guid: a32bbc05a2386bb4dae0eb80e70dc204, type: 3}
+  - {fileID: 21300000, guid: 632238358b5a3a846bf17227c8c66174, type: 3}
+  - {fileID: 21300000, guid: 4612c665d35734b47a6ab0a44a1864c4, type: 3}
+  - {fileID: 21300000, guid: 878db1d5971d5334081f80818f15cff4, type: 3}
+  - {fileID: 21300000, guid: fe5f29e5cdfa7154188d88aa3e4f640c, type: 3}
+  - {fileID: 21300000, guid: 5217bfe583b1fd740ae1649de9b28de2, type: 3}
+  - {fileID: 21300000, guid: f1451d26d0124e44e8c7d179e6fc04d2, type: 3}
+  - {fileID: 21300000, guid: 973710568544b1541b5627e2f5f52e22, type: 3}
+  - {fileID: 21300000, guid: 3647a5562f6162f4fbeabda3f9e5aa32, type: 3}
+  - {fileID: 21300000, guid: 2797f21719379324f874e25ac39821be, type: 3}
+  - {fileID: 21300000, guid: 96de1d772c787c44a89f19e3f6b8b7fa, type: 3}
+  - {fileID: 21300000, guid: a54c8f77e4981da479a1867b9b0ff3b1, type: 3}
+  - {fileID: 21300000, guid: 3259a9189eb008a479ca0c9aa368221d, type: 3}
+  - {fileID: 21300000, guid: 6842d28834f6cc64898ca65ca15bce37, type: 3}
+  - {fileID: 21300000, guid: d2df47e8847da164abfe5ce2492a2a0d, type: 3}
+  - {fileID: 21300000, guid: 6fb7ecf85618d0d4bb1a99a036396f45, type: 3}
+  - {fileID: 21300000, guid: 41d0ca0963ad96d43bd0e420286791b5, type: 3}
+  - {fileID: 21300000, guid: 3fbf4889da045b64c983341d04adc9c0, type: 3}
+  - {fileID: 21300000, guid: bd419d998482de24aa8e87c01678ea71, type: 3}
+  - {fileID: 21300000, guid: facbd9a90ccb93242a097474881f5965, type: 3}
+  - {fileID: 21300000, guid: f59ded0a40770834e893ac78acb3b52e, type: 3}
+  - {fileID: 21300000, guid: 7961443a942f1954595d592af4e29bda, type: 3}
+  - {fileID: 21300000, guid: 7328308aa1ecf0c4f837d46a2918e826, type: 3}
+  - {fileID: 21300000, guid: 179986daf7d05bf4fba7236e7c7c9cc7, type: 3}
+  - {fileID: 21300000, guid: 6e228c8b9574f5f448df27703c5c9347, type: 3}
+  - {fileID: 21300000, guid: 4aa674abf08915c468950bcaf19e2037, type: 3}
+  - {fileID: 21300000, guid: 6c3101dbdfd38a442acfda88402bcf6d, type: 3}
+  - {fileID: 21300000, guid: 7b13fa0c21ca20c4d9370291388d6fb4, type: 3}
+  - {fileID: 21300000, guid: 8cbd0c3c40cdfc746bbdfd9baf897154, type: 3}
+  - {fileID: 21300000, guid: 9605f66cd44d4314dba4b734e75bbd2d, type: 3}
+  - {fileID: 21300000, guid: 805965cc81ed95b4580b9bce7329a816, type: 3}
+  - {fileID: 21300000, guid: da5b000d4b43cd74b8c0348d1b7fe1b7, type: 3}
+  - {fileID: 21300000, guid: 7cce446df36093640a623d5a121816fa, type: 3}
+  - {fileID: 21300000, guid: 354d24ad209e3f74e9b651952a2dbe5f, type: 3}
+  - {fileID: 21300000, guid: 3742bc1e6a226bf43b8d778d254acc4f, type: 3}
+  - {fileID: 21300000, guid: 247bc92ea557092478b2b869093d434d, type: 3}
+  - {fileID: 21300000, guid: 35a2e8aef195afb4cad2c94c49c4c48d, type: 3}
+  - {fileID: 21300000, guid: 4330895fdfa01c84b804fb6936638a26, type: 3}
+  - {fileID: 21300000, guid: 79fc257f6c7017e4ab3ccb1ede2a561d, type: 3}
+  - {fileID: 21300000, guid: 6688878f19736df499f670c66bf83a85, type: 3}
+  - {fileID: 21300000, guid: 6b95b7bf328c0144ab2839ba37ac519c, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - BigNum2
+  - STGUI_38
+  - STGUI_14
+  - STGUI_17
+  - SmallNum1
+  - STGUI_34
+  - STGUI_4
+  - STGUI_10
+  - STGUI_33
+  - STGUI_32
+  - BigNum3
+  - STGUI_8
+  - STGUI_7
+  - STGUI_0
+  - SmallNum0
+  - BigNum8
+  - STGUI_13
+  - STGUI_16
+  - STGUI_3
+  - BigNum9
+  - BigNum1
+  - STGUI_12
+  - SmallNum9
+  - STGUI_47
+  - STGUI_45
+  - SmallNum3
+  - STGUI_35
+  - STGUI_31
+  - STGUI_5
+  - STGUI_40
+  - BigNum0
+  - BigNum7
+  - STGUI_9
+  - STGUI_48
+  - BigNum4
+  - SmallNum7
+  - SmallNum6
+  - STGUI_59
+  - STGUI_2
+  - BigNum5
+  - STGUI_18
+  - SmallNum4
+  - BigNumPoint
+  - STGUI_44
+  - STGUI_41
+  - STGUI_43
+  - SmallNum2
+  - STGUI_42
+  - STGUI_39
+  - STGUI_37
+  - STGUI_1
+  - STGUI_11
+  - SmallSlash
+  - STGUI_36
+  - SmallNum8
+  - STGUI_6
+  - STGUI_19
+  - STGUI_15
+  - BigNum6
+  - SmallNum5
+  m_Tag: STGMainViewAtlas
+  m_IsVariant: 0

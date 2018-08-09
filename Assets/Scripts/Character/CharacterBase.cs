@@ -451,12 +451,11 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
     protected void UpdateSubWeaponsVisible()
     {
         // TODO 更新当前可用的副武器数目
-        int intPower = (int)Mathf.Floor(PlayerService.GetInstance().GetPower());
+        int intPower = PlayerService.GetInstance().GetPower() / 100;
         SubWeaponBase subWeapon;
         int i;
         if ( intPower != _availableSubCount )
         {
-            Logger.Log("Power Change! CurPowerPoint is " + PlayerService.GetInstance().GetPower());
             _availableSubCount = intPower;
             for (i=0;i<4;i++)
             {

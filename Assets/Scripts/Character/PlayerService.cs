@@ -11,11 +11,12 @@ public class PlayerService
     }
 
     private CharacterBase _character;
-    private float _curPower;
+    private int _curPower;
 
     public void Init()
     {
-        _curPower = 2.95f;
+        //_curPower = Consts.PlayerInitPower;
+        _curPower = 295;
         // todo 选择人物
         _character = new Reimu();
         _character.Init();
@@ -26,21 +27,21 @@ public class PlayerService
         return _character;
     }
 
-    public float GetPower()
+    public int GetPower()
     {
         return _curPower;
     }
 
-    public void AddPower(float value)
+    public void AddPower(int value)
     {
         _curPower += value;
-        if ( _curPower > 4 )
+        if ( _curPower > Consts.PlayerMaxPower )
         {
-            _curPower = 4;
+            _curPower = Consts.PlayerMaxPower;
         }
     }
 
-    public void SetPower(float value)
+    public void SetPower(int value)
     {
         _curPower = value;
     }
