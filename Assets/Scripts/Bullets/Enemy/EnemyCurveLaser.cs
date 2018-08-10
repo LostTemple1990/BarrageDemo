@@ -82,7 +82,6 @@ public class EnemyCurveLaser : EnemyBulletBase
             _movableObj = new MovableObject();
         }
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
-        Logger.Log("Create new CurveLaser");
     }
 
     public override void SetBulletTexture(string texture)

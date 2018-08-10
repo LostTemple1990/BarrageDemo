@@ -41,3 +41,9 @@ Constants.STGHeight = 448
 
 Constants.OriginalWidth = -1
 Constants.OriginalHeight= -1
+
+Constants.eLaserHeadTypeNull = 0
+Constants.eLaserHeadTypeWhite = 1
+Constants.eLaserHeadTypeRed = 2
+Constants.eLaserHeadTypeGreen = 3
+Constants.eLaserHeadTypeBlue = 4

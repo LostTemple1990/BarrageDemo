@@ -97,6 +97,21 @@ public partial class LuaLib
         return 0;
     }
 
+    /// <summary>
+    /// 设置激光的头部是否可用
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetLinearLaserHeadEnable(ILuaState luaState)
+    {
+        EnemyLinearLaser laser = luaState.ToUserData(-3) as EnemyLinearLaser;
+        bool isEnable = luaState.ToBoolean(-2);
+        eLaserHeadType type = (eLaserHeadType)luaState.ToInteger(-1);
+        luaState.Pop(3);
+        laser.SetHeadEnable(isEnable, type);
+        return 0;
+    }
+
     public static int CreateCustomizedLinearLaser(ILuaState luaState)
     {
         int numArgs = luaState.ToInteger(-1);

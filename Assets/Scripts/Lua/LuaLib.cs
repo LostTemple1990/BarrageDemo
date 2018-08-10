@@ -54,6 +54,7 @@ public partial class LuaLib
             new NameFuncPair("DoLinearLaserMove",DoLinearLaserMove),
             new NameFuncPair("GetLinearLaserProps",GetLinearLaserProps),
             new NameFuncPair("SetLinearLaserProps",SetLinearLaserProps),
+            new NameFuncPair("SetLinearLaserHeadEnable",SetLinearLaserHeadEnable),
             new NameFuncPair("CreateCustomizedLinearLaser",CreateCustomizedLinearLaser),
 
             // 曲线激光
@@ -92,6 +93,8 @@ public partial class LuaLib
             new NameFuncPair("SetSpriteEffectColor",SetSpriteEffectColor),
             new NameFuncPair("SpriteEffectScaleWidth",SpriteEffectScaleWidth),
             new NameFuncPair("SpriteEffectScaleHeight",SpriteEffectScaleHeight),
+            new NameFuncPair("ShakeEffectDoShake",ShakeEffectDoShake),
+            new NameFuncPair("ShakeEffectDoShakeWithLimitation",ShakeEffectDoShakeWithLimitation),
             // 子弹组件
             new NameFuncPair("AddBulletComponent",AddBulletComponent),
             new NameFuncPair("AddBulletParaChangeEvent",AddBulletParaChangeEvent),

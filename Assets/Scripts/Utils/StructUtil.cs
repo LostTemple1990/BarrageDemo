@@ -147,3 +147,12 @@ public enum eEliminateDef : int
     /// </summary>
     Code = 32,
 }
+
+public enum eLaserHeadType :int
+{
+    Null = 0,
+    White = 1,
+    Red = 2,
+    Green = 3,
+    Blue = 4,
+}
