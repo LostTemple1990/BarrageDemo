@@ -21,10 +21,6 @@ public class UIManager {
 
     }
 
-    private GameObject _enemyLayer;
-    private GameObject _barrageLayer;
-    private GameObject _playerLayer;
-
     private Dictionary<LayerId, Transform> _layersMap;
 
     private Vector3 _hideVector = new Vector3(2000, 2000, 0);

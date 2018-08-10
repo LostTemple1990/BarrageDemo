@@ -82,4 +82,6 @@ public class Consts  {
     public const string EffectAtlasName = "STGEffectAtlas";
     public const string ReimuAtlasName = "STGReimuAtlas";
     public const string STGMainViewAtlasName = "STGMainViewAtlas";
+    public const string STGCommonAtlasName = "STGCommonAtlas";
+    public const string STGBulletsAtlasName = "STGBulletsAtlas";
 }

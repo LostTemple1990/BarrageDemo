@@ -31,6 +31,8 @@ public class EnemyLinearLaser : EnemyBulletBase
     protected Transform _objTrans;
     protected SpriteRenderer _laser;
     protected Transform _laserTrans;
+    protected Transform _headTf;
+    protected Transform _headSp;
 
     protected int _existTime;
 

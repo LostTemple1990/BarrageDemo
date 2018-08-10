@@ -17,8 +17,11 @@ public static class ProcessToSprites
 
         TextureImporter texImp = AssetImporter.GetAtPath(path) as TextureImporter;//获取图片入口
 
-
-        AssetDatabase.CreateFolder(rootPath, texture.name);//创建文件夹
+        //检测文件夹是否存在
+        if ( !Directory.Exists(rootPath+"/"+texture.name) )
+        {
+            AssetDatabase.CreateFolder(rootPath, texture.name);//创建文件夹
+        }
 
         int tmpWidth, tmpHeight;
         int startPosX,startPosY,endPosX,endPosY;

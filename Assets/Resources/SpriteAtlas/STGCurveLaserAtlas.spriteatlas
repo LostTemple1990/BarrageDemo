@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: STGCurveLaserAtlas
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 23b73631084f0554bbe5fffabdfc0b0e, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 94c62d003530af94c9869c079597da4c, type: 3}
+  - {fileID: 21300000, guid: ec010820a21ae85489fb2575dc4eb54d, type: 3}
+  - {fileID: 21300000, guid: efeabe01deed1d344b48922594ffb434, type: 3}
+  - {fileID: 21300000, guid: 302dcdc2e72b18542995c6a9e1bad0cc, type: 3}
+  - {fileID: 21300000, guid: e76dc5d44fa1bfd45999a676dcee65c2, type: 3}
+  - {fileID: 21300000, guid: 817f43355ef23e04d900aa09a3d646e6, type: 3}
+  - {fileID: 21300000, guid: 5615155617d3b71499ace706244370b8, type: 3}
+  - {fileID: 21300000, guid: bf7250f753d390d419c4bf5ad026c8a8, type: 3}
+  - {fileID: 21300000, guid: 4ef140980e5819149a3dc572d12c5b68, type: 3}
+  - {fileID: 21300000, guid: 699e0d4908b59914aa074f212df21d41, type: 3}
+  - {fileID: 21300000, guid: 9e96128bb7eab124491d4b4f9e23f207, type: 3}
+  - {fileID: 21300000, guid: ef3a19cbb44e19c4eb5e71ed95fbdafb, type: 3}
+  - {fileID: 21300000, guid: e5f22e2ccf9beaf468fc75a715c5ad92, type: 3}
+  - {fileID: 21300000, guid: d3c13daccf66dc945be43c901a14b1fb, type: 3}
+  - {fileID: 21300000, guid: 19fc397e6d65f0745ab2442f457ce140, type: 3}
+  - {fileID: 21300000, guid: f7f0cb7e845652d41b19258345532343, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - etama9_10
+  - etama9_13
+  - etama9_8
+  - etama9_3
+  - etama9_5
+  - etama9_15
+  - etama9_4
+  - etama9_11
+  - etama9_0
+  - etama9_12
+  - etama9_9
+  - etama9_2
+  - etama9_14
+  - etama9_1
+  - etama9_6
+  - etama9_7
+  m_Tag: STGCurveLaserAtlas
+  m_IsVariant: 0

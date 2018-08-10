@@ -41,11 +41,6 @@ public class ShakeEffect : STGEffectBase
     /// </summary>
     private Vector3 _curGameLayerOffset;
 
-    private float _clampMinX;
-    private float _clampMaxX;
-    private float _clampMinY;
-    private float _clampMaxY;
-
     public override void Init()
     {
         base.Init();
@@ -54,11 +49,6 @@ public class ShakeEffect : STGEffectBase
         _shakeLayerTf = UIManager.GetInstance().GetSTGLayerTf();
         _originalRect = _camera.rect;
         _isShaking = false;
-        float clampValue = MaxShakeLevel / Screen.height;
-        _clampMinX = -clampValue;
-        _clampMaxX = clampValue;
-        _clampMinY = -clampValue;
-        _clampMaxY = clampValue;
     }
 
     /// <summary>
