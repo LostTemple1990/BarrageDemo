@@ -113,4 +113,54 @@ public partial class LuaLib
         effect.DoScaleHeight(toScale, duration, scaleMode);
         return 0;
     }
+
+    /// <summary>
+    /// 执行抖动
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <para>int delay 抖动延迟</para>
+    /// <para>int shakeDuration 抖动持续时间</para>
+    /// <para>int shakeInterval 抖动间隔</para>
+    /// <para>float shakeDelta 抖动系数</para>
+    /// <para>float shakeLevel 抖动等级</para>
+    /// <returns></returns>
+    public static int ShakeEffectDoShake(ILuaState luaState)
+    {
+        ShakeEffect effect = luaState.ToUserData(-6) as ShakeEffect;
+        int delay = luaState.ToInteger(-5);
+        int shakeDuration = luaState.ToInteger(-4);
+        int shakeInterval = luaState.ToInteger(-3);
+        float shakeDelta = (float)luaState.ToNumber(-2);
+        float shakeLevel = (float)luaState.ToNumber(-1);
+        luaState.Pop(6);
+        effect.DoShake(delay, shakeDuration, shakeInterval, shakeDelta, shakeLevel);
+        return 0;
+    }
+
+    /// <summary>
+    /// 执行抖动
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <para>int delay 抖动延迟</para>
+    /// <para>int shakeDuration 抖动持续时间</para>
+    /// <para>int shakeInterval 抖动间隔</para>
+    /// <para>float shakeDelta 抖动系数</para>
+    /// <para>float shakeLevel 抖动等级</para>
+    /// <para>float minShakeLevel 最小抖动等级</para>
+    /// <para>float maxRange 抖动的最大范围限制</para>
+    /// <returns></returns>
+    public static int ShakeEffectDoShakeWithLimitation(ILuaState luaState)
+    {
+        ShakeEffect effect = luaState.ToUserData(-8) as ShakeEffect;
+        int delay = luaState.ToInteger(-7);
+        int shakeDuration = luaState.ToInteger(-6);
+        int shakeInterval = luaState.ToInteger(-5);
+        float shakeDelta = (float)luaState.ToNumber(-4);
+        float shakeLevel = (float)luaState.ToNumber(-3);
+        float minShakeLevel = (float)luaState.ToNumber(-2);
+        float maxRange = (float)luaState.ToNumber(-1);
+        luaState.Pop(8);
+        effect.DoShake(delay, shakeDuration, shakeInterval, shakeDelta, shakeLevel,minShakeLevel, maxRange);
+        return 0;
+    }
 }

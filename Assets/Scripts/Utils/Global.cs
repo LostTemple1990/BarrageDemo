@@ -25,6 +25,14 @@ public class Global
     /// STG本体的实际尺寸
     /// </summary>
     public static Vector2 STGActualSize;
+    /// <summary>
+    /// STG本体的实际宽度缩放比例
+    /// </summary>
+    public static float STGAcutalScaleWidth;
+    /// <summary>
+    /// STG本体的实际高度缩放比例
+    /// </summary>
+    public static float STGAcutalScaleHeight;
 
     public static Vector2 PlayerLBBorderPos;
     public static Vector2 PlayerRTBorderPos;

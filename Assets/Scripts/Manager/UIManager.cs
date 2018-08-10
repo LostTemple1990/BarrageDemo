@@ -164,7 +164,7 @@ public class UIManager {
         Global.PlayerRTBorderPos = new Vector2(Global.GameRTBorderPos.x - Consts.PlayerHalfWidth, Global.GameRTBorderPos.y - Consts.PlayerHalfHeight);
 
 
-        float scaleHeight = (float)Screen.height / Consts.RefResolutionY;
+        float scaleHeight = Screen.height / Consts.RefResolutionY;
         GameObject gameLayer = GameObject.Find("GameLayer");
         Transform tf = gameLayer.transform;
         // STG游戏部分的实际宽度 = 总宽度- (左边框宽度 + 右边框宽度)
@@ -176,6 +176,11 @@ public class UIManager {
         float rectWidth = stgWidth / Screen.width;
         float rectHeight = 1 - 2 * rectY;
         _stgCamera.rect = new Rect(rectX, rectY, rectWidth, rectHeight);
+        // 背景部分
+        Transform bgTf = GameObject.Find("GameMainCanvas/BgLayer").transform;
+        bgTf.localScale = new Vector3(scaleWidth, scaleHeight, 1);
+        Global.STGAcutalScaleWidth = scaleWidth;
+        Global.STGAcutalScaleHeight = scaleHeight;
         Global.STGActualSize = new Vector2(Consts.GameWidth*scaleWidth,Consts.GameHeight*scaleHeight);
     }
 
@@ -258,8 +263,6 @@ public class UIManager {
         }
     }
 
-
-
     /// <summary>
     /// 获取游戏本体摄像机
     /// </summary>
@@ -267,6 +270,15 @@ public class UIManager {
     public Camera GetSTGCamera()
     {
         return _stgCamera;
+    }
+
+    /// <summary>
+    /// 获取STG本体的layer
+    /// </summary>
+    /// <returns></returns>
+    public Transform GetSTGLayerTf()
+    {
+        return _stgLayerTf;
     }
 }
 

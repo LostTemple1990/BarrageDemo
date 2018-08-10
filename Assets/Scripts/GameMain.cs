@@ -94,7 +94,7 @@ public class GameMain : MonoBehaviour
         BulletsManager.GetInstance().Init();
         EnemyManager.GetInstance().Init();
         ItemManager.GetInstance().Init();
-        SoundManager.GetInstance().Init(gameObject.transform);
+        SoundManager.GetInstance().Init(transform);
 
         InterpreterManager.GetInstance().Init();
         InterpreterManager.GetInstance().DoStageLua(1);
@@ -106,10 +106,10 @@ public class GameMain : MonoBehaviour
         TimerManager.GetInstance().Init();
 
         UIManager.GetInstance().ShowView(WindowName.GameInfoView, null);
-        
+
         // 测试抖动效果
         //ShakeEffect shakeEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ShakeEffect) as ShakeEffect;
-        //shakeEffect.DoShake(200, 9999, 12, 1, 5);
+        //shakeEffect.DoShake(200, 9999, 6, 1, 5, 3, 15);
 
         // 初始化随机数种子
         long seed = System.DateTime.Now.Ticks % 0xffffffff;
@@ -117,6 +117,6 @@ public class GameMain : MonoBehaviour
 
         Application.targetFrameRate = 60;
 
-        UIManager.GetInstance().ShowView("GameMainView");
+        UIManager.GetInstance().ShowView(WindowName.GameMainView);
     }
 }

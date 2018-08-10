@@ -16,7 +16,7 @@ public class PlayerService
     public void Init()
     {
         //_curPower = Consts.PlayerInitPower;
-        _curPower = 295;
+        _curPower = Consts.PlayerInitPower;
         // todo 选择人物
         _character = new Reimu();
         _character.Init();
