@@ -287,5 +287,71 @@ public class MathUtil
         return time < duration ? start : end;
     }
 
-#endregion
+    #endregion
+
+    #region 获取插值的函数
+    public delegate float InterpolationFloatFunc(float start, float end, float time, float duration);
+    public delegate Vector2 InterpolationVec2Func(Vector2 start, Vector2 end, float time, float duration);
+    public delegate Vector3 InterpolationVec3Func(Vector3 start, Vector3 end, float time, float duration);
+
+    public static InterpolationFloatFunc GetInterpolationFloatFunc(InterpolationMode mode)
+    {
+        switch (mode)
+        {
+            case InterpolationMode.None:
+                return GetNoneInterpolation;
+            case InterpolationMode.Linear:
+                return GetLinearInterpolation;
+            case InterpolationMode.EaseInQuad:
+                return GetEaseInQuadInterpolation;
+            case InterpolationMode.EaseOutQuad:
+                return GetEaseOutQuadInterpolation;
+            case InterpolationMode.EaseInOutQuad:
+                return GetEaseInOutQuadInterpolation;
+            case InterpolationMode.Sin:
+                return GetSinInterpolation;
+        }
+        return null;
+    }
+
+    public static InterpolationVec2Func GetInterpolationVec2Func(InterpolationMode mode)
+    {
+        switch (mode)
+        {
+            case InterpolationMode.None:
+                return GetNoneInterpolation;
+            case InterpolationMode.Linear:
+                return GetLinearInterpolation;
+            case InterpolationMode.EaseInQuad:
+                return GetEaseInQuadInterpolation;
+            case InterpolationMode.EaseOutQuad:
+                return GetEaseOutQuadInterpolation;
+            case InterpolationMode.EaseInOutQuad:
+                return GetEaseInOutQuadInterpolation;
+            case InterpolationMode.Sin:
+                return GetSinInterpolation;
+        }
+        return null;
+    }
+
+    public static InterpolationVec3Func GetInterpolationVec3Func(InterpolationMode mode)
+    {
+        switch (mode)
+        {
+            case InterpolationMode.None:
+                return GetNoneInterpolation;
+            case InterpolationMode.Linear:
+                return GetLinearInterpolation;
+            case InterpolationMode.EaseInQuad:
+                return GetEaseInQuadInterpolation;
+            case InterpolationMode.EaseOutQuad:
+                return GetEaseOutQuadInterpolation;
+            case InterpolationMode.EaseInOutQuad:
+                return GetEaseInOutQuadInterpolation;
+            case InterpolationMode.Sin:
+                return GetSinInterpolation;
+        }
+        return null;
+    }
+    #endregion
 }

@@ -156,3 +156,12 @@ public enum eLaserHeadType :int
     Green = 3,
     Blue = 4,
 }
+
+public enum eUIType : int
+{
+    Any = 0,
+    Image = 4,
+    RawImage = 5,
+    SpriteRenderer = 6,
+    Text = 8,
+}

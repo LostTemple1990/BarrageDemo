@@ -20,8 +20,8 @@ public class AnimationManager
     /// </summary>
     private Dictionary<string, Sprite[]> _texturesMap;
     /// <summary>
-    /// key - texture里面的aniName
-    /// value - 对应aniName里面的所有sprite的map
+    /// <para>key - texture里面的aniName</para>
+    /// <para>value - 对应aniName里面的所有sprite的map</para>
     /// </summary>
     private Dictionary<string, Dictionary<string, Sprite>> _textureSpsMap;
 
