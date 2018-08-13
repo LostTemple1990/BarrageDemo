@@ -12,11 +12,15 @@ public class PlayerService
 
     private CharacterBase _character;
     private int _curPower;
+    /// <summary>
+    /// 擦弹数目
+    /// </summary>
+    private int _graze;
 
     public void Init()
     {
-        //_curPower = Consts.PlayerInitPower;
         _curPower = Consts.PlayerInitPower;
+        _graze = 0;
         // todo 选择人物
         _character = new Reimu();
         _character.Init();
@@ -44,5 +48,24 @@ public class PlayerService
     public void SetPower(int value)
     {
         _curPower = value;
+    }
+
+    public void SetGraze(int value)
+    {
+        _graze = value;
+    }
+
+    public void AddGraze(int value)
+    {
+        _graze += value;
+    }
+
+    /// <summary>
+    /// 获取当前擦弹数
+    /// </summary>
+    /// <returns></returns>
+    public int GetGraze()
+    {
+        return _graze;
     }
 }

@@ -37,8 +37,6 @@ public class Global
     public static Vector2 PlayerLBBorderPos;
     public static Vector2 PlayerRTBorderPos;
 
-    public static float PlayerPower = 4f;
-
     public static float[] ExtraArgs;
 
     public static Vector2 PlayerPos = new Vector2();
@@ -49,6 +47,10 @@ public class Global
     /// <para>z 实际碰撞圆半径</para>
     /// </summary>
     public static Vector3 PlayerCollisionVec = new Vector3();
+    /// <summary>
+    /// 玩家的擦弹检测半径
+    /// </summary>
+    public static float PlayerGrazeRadius = 16f;
 
     public static Boss Boss;
 

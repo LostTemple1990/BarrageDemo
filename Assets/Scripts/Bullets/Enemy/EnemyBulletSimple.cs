@@ -43,6 +43,16 @@ public class EnemyBulletSimple : EnemyBulletMovable
 
     protected SpriteRenderer _spRenderer;
     protected EnemyBulletDefaultCfg _cfg;
+    /// <summary>
+    /// 检测碰撞判断用的一个值
+    /// <para>这个值等于子弹碰撞半径与玩家碰撞半径的和的平方</para>
+    /// </summary>
+    protected float _detCollisonValue;
+    /// <summary>
+    /// 检测擦弹判断用的一个值
+    /// <para>这个值等于子弹碰撞半径与玩家擦弹半径的平方</para>
+    /// </summary>
+    protected float _detGrazeValue;
 
     public override void Init()
     {
@@ -126,6 +136,14 @@ public class EnemyBulletSimple : EnemyBulletMovable
             halfWidth = cfg.grazeHalfWidth,
             halfHeight = cfg.grazeHalfHeight,
         };
+        // 计算用于擦弹以及碰撞检测的两个数值
+        // 擦弹
+        float value = Global.PlayerGrazeRadius + cfg.collisionRadius * _scaleFactor;
+        _detGrazeValue = value * value;
+        // 碰撞
+        value = Global.PlayerCollisionVec.z + cfg.collisionRadius * _scaleFactor;
+        _detCollisonValue = value * value;
+
         SetCollisionDetectParas(detectParas);
         SetGrazeDetectParas(grazeParas);
         _cfg = cfg;
@@ -233,16 +251,20 @@ public class EnemyBulletSimple : EnemyBulletMovable
         {
             return;
         }
-        float playerX = Global.PlayerPos.x;
-        float playerY = Global.PlayerPos.y;
+        float dx = Mathf.Abs(_curPos.x - Global.PlayerPos.x);
+        float dy = Mathf.Abs(_curPos.y - Global.PlayerPos.y);
+        // 子弹中心与玩家中心的距离的平方
+        float detValue = dx * dx + dy * dy;
         // 首先检测是否在擦弹范围
-        if (Mathf.Abs(_curPos.x - playerX) <= _grazeHalfWidth + Global.PlayerCollisionVec.x &&
-            Mathf.Abs(_curPos.y - playerY) <= _grazeHalfHeight + Global.PlayerCollisionVec.y)
+        if ( detValue <= _detGrazeValue )
         {
-            // TODO 擦弹数+1
+            if ( !_isGrazed )
+            {
+                PlayerService.GetInstance().AddGraze(1);
+                _isGrazed = true;
+            }
             // 在擦弹范围内，进行实际的碰撞检测
-            float len = Mathf.Sqrt((_curPos.x - playerX) * (_curPos.x - playerX) + (_curPos.y - playerY) * (_curPos.y - playerY));
-            if (len <= Global.PlayerCollisionVec.z + _collisionRadius)
+            if (detValue <= _detCollisonValue)
             {
                 Eliminate(eEliminateDef.HitPlayer);
                 PlayerService.GetInstance().GetCharacter().BeingHit();

@@ -18,6 +18,20 @@ public class EnemyBulletBase :BulletBase
     /// 标识不会被某些东西消除
     /// </summary>
     protected int _resistEliminateFlag = 0;
+    /// <summary>
+    /// 是否已经擦过弹
+    /// </summary>
+    protected bool _isGrazed;
+    /// <summary>
+    /// 擦弹的冷却时间
+    /// <para>用作重复擦弹的判断</para>
+    /// <para>用作激光的擦弹判断</para>
+    /// </summary>
+    protected int _grazeCoolDown;
+    /// <summary>
+    /// 本体的缩放系数
+    /// </summary>
+    protected float _scaleFactor;
 
     public EnemyBulletBase()
     {
@@ -29,6 +43,9 @@ public class EnemyBulletBase :BulletBase
         base.Init();
         _componentsCount = 0;
         _detectCollision = true;
+        _isGrazed = false;
+        _grazeCoolDown = 0;
+        _scaleFactor = 1f;
     }
 
     /// <summary>
@@ -144,6 +161,21 @@ public class EnemyBulletBase :BulletBase
     public virtual void SetResistEliminateFlag(int flag)
     {
         _resistEliminateFlag = flag;
+    }
+
+    /// <summary>
+    /// 更新擦弹冷却时间
+    /// </summary>
+    protected virtual void UpdateGrazeCoolDown()
+    {
+        if ( _isGrazed )
+        {
+            _grazeCoolDown--;
+            if ( _grazeCoolDown == 0 )
+            {
+                _isGrazed = false;
+            }
+        }
     }
 
     /// <summary>

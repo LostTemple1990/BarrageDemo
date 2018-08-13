@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class EnemyCurveLaser : EnemyBulletBase
 {
+    /// <summary>
+    /// 擦弹判定冷却时间
+    /// </summary>
+    private const int GrazeCoolDown = 2;
+
     protected GameObject _bullet;
     protected Transform _trans;
     protected Image _bulletImg;
@@ -134,6 +139,7 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     public override void Update()
     {
+        UpdateGrazeCoolDown();
         UpdatePath();
         if (IsOutOfBorder())
         {
@@ -350,13 +356,18 @@ public class EnemyCurveLaser : EnemyBulletBase
             }
             centerX = (minX + maxX) / 2;
             centerY = (minY + maxY) / 2;
-            grazeHW = centerX - minX + _grazeHalfWidth;
-            grazeHH = centerY - minY + _grazeHalfHeight;
+            grazeHW = centerX - minX + _collisionRadius;
+            grazeHH = centerY - minY + _collisionRadius;
             // 检测是否在擦弹范围内
-            if ( Mathf.Abs(centerX+_relationX-playerX) <= grazeHW + Global.PlayerCollisionVec.x &&
-                 Mathf.Abs(centerY + _relationY - playerY) <= grazeHH + Global.PlayerCollisionVec.y )
+            if ( Mathf.Abs(centerX+_relationX-playerX) <= grazeHW + Global.PlayerGrazeRadius &&
+                 Mathf.Abs(centerY + _relationY - playerY) <= grazeHH + Global.PlayerGrazeRadius )
             {
-                // TODO 擦弹数+1
+                if ( !_isGrazed )
+                {
+                    _isGrazed = true;
+                    PlayerService.GetInstance().AddGraze(1);
+                    _grazeCoolDown = GrazeCoolDown;
+                }
                 // 检测_trailsList[i]与_trailsList[tmpIdx]之间的线段与玩家的碰撞判定
                 vecA = new Vector2(_trailsList[i].x + _relationX, _trailsList[i].y + _relationY);
                 vecB = new Vector2(_trailsList[tmpIdx].x + _relationX, _trailsList[tmpIdx].y + _relationY);
@@ -364,9 +375,8 @@ public class EnemyCurveLaser : EnemyBulletBase
                 minDis = MathUtil.GetMinDisFromPointToLineSegment(vecA, vecB, vecP);
                 if ( minDis < _collisionRadius + Global.PlayerCollisionVec.z )
                 {
-                    _clearFlag = 1;
+                    Eliminate(eEliminateDef.HitPlayer);
                     PlayerService.GetInstance().GetCharacter().BeingHit();
-                    //Logger.Log("Curve Laser Hit Player!");
                 }
             }
         }

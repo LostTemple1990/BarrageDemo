@@ -14,6 +14,10 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     private const int HeadAniInterval = 6;
     private const int HeadAniTotalFrame = 4;
+    /// <summary>
+    /// 擦弹冷却时间
+    /// </summary>
+    private const int GrazeCoolDown = 2;
 
     private static string GetHeadSpriteNameByType(eLaserHeadType type)
     {
@@ -149,6 +153,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         _movableObj.Update();
         _curPos = _movableObj.GetPos();
         UpdatePath();
+        UpdateGrazeCoolDown();
         if (_isDirty)
         {
             Resize();
@@ -292,13 +297,22 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     protected virtual void CheckCollisionWithCharacter()
     {
-        // todo 直线激光的擦弹
         // 直线碰撞检测
         float minDis = MathUtil.GetMinDisFromPointToLineSegment(_pathList[_pathBeginIndex], _pathList[_pathEndIndex], Global.PlayerPos);
-        if ( minDis < DefaultLaserHalfHeight + Global.PlayerCollisionVec.z )
+        // 擦弹判断
+        if ( minDis <= DefaultLaserHalfHeight + Global.PlayerGrazeRadius )
         {
-            PlayerService.GetInstance().GetCharacter().BeingHit();
-            _clearFlag = 1;
+            if ( !_isGrazed )
+            {
+                _isGrazed = true;
+                _grazeCoolDown = GrazeCoolDown;
+                PlayerService.GetInstance().AddGraze(1);
+            }
+            if (minDis <= DefaultLaserHalfHeight + Global.PlayerCollisionVec.z)
+            {
+                PlayerService.GetInstance().GetCharacter().BeingHit();
+                Eliminate(eEliminateDef.HitPlayer);
+            }
         }
     }
     #endregion

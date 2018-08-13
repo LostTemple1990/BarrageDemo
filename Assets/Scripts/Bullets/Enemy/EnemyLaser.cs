@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class EnemyLaser : EnemyBulletBase
 {
-    private const float WarningLineHalfWidth = 2;
-    private const int WarningLineExpandDuration = 30;
+    /// <summary>
+    /// 擦弹冷却时间
+    /// </summary>
+    private const int GrazeCoolDown = 2;
 
     protected float _laserAngle;
     protected float _laserRotateOmiga;
@@ -198,6 +200,7 @@ public class EnemyLaser : EnemyBulletBase
         {
             Resize();
         }
+        UpdateGrazeCoolDown();
         UpdatePosition();
         CheckCollisionWithCharacter();
         UpdateExistTime();
@@ -340,18 +343,40 @@ public class EnemyLaser : EnemyBulletBase
         center.y = _collisionHalfHeight * sin + _curPos.y;
         Vector2 vec = Global.PlayerPos - center;
         Vector2 relativeVec = new Vector2();
-        // 项链顺时针旋转laserAngle的度数
+        // 向量顺时针旋转laserAngle的度数
         relativeVec.x = cos * vec.x + sin * vec.y;
         relativeVec.y = -sin * vec.x + cos * vec.y;
         // 判定是否在矩形内
         float len = relativeVec.magnitude;
-        float rate = (len - Global.PlayerCollisionVec.z) / len;
-        relativeVec *= rate;
-        if ( Mathf.Abs(relativeVec.x) < _collisionHalfHeight && Mathf.Abs(relativeVec.y) < _collisionHalfWidth)
+        float rate = (len - Global.PlayerGrazeRadius) / len;
+        bool isGrazing = false;
+        if ( rate < 0 )
         {
-            // todo 射线击中玩家
-            PlayerService.GetInstance().GetCharacter().BeingHit();
-            //Logger.Log("Laser Hit Player");
+            isGrazing = true;
+        }
+        else
+        {
+            Vector2 tmpVec = relativeVec * rate;
+            if (Mathf.Abs(tmpVec.x) < _collisionHalfHeight && Mathf.Abs(tmpVec.y) < _collisionHalfWidth)
+            {
+                _isGrazed = true;
+            }
+        }
+        if ( isGrazing )
+        {
+            if ( !_isGrazed )
+            {
+                _isGrazed = true;
+                PlayerService.GetInstance().AddGraze(1);
+                _grazeCoolDown = GrazeCoolDown;
+            }
+            rate = (len - Global.PlayerCollisionVec.z) / len;
+            relativeVec *= rate;
+            if (rate <= 0 || (Mathf.Abs(relativeVec.x) < _collisionHalfHeight && Mathf.Abs(relativeVec.y) < _collisionHalfWidth))
+            {
+                Eliminate(eEliminateDef.HitPlayer);
+                PlayerService.GetInstance().GetCharacter().BeingHit();
+            }
         }
     }
     #endregion
