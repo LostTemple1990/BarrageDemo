@@ -2,11 +2,11 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class TweenAlpha : TweenBase
+public class TweenColor : TweenBase
 {
     private bool _isCache = false;
-    private float _startAlpha;
-    private float _endAlpha;
+    private Color _start;
+    private Color _end;
     private Graphic _grahpic;
     private SpriteRenderer _spRenderer;
     private Material _material;
@@ -17,58 +17,52 @@ public class TweenAlpha : TweenBase
         _grahpic = _tweenGo.GetComponent<Graphic>();
         if (_grahpic != null)
         {
-            _startAlpha = _grahpic.color.a;
+            _start = _grahpic.color;
             return;
         }
         _spRenderer = _tweenGo.GetComponent<SpriteRenderer>();
         if (_spRenderer != null)
         {
-            _startAlpha = _spRenderer.color.a;
+            _start = _spRenderer.color;
             return;
         }
         Renderer renderer = _tweenGo.GetComponent<Renderer>();
         _material = renderer.material;
         if (_material != null)
         {
-            _startAlpha = _material.color.a;
+            _start = _material.color;
         }
     }
 
-    public void SetParas(float endAlpha,InterpolationMode mode)
+    public void SetParas(Color endColor, InterpolationMode mode)
     {
         if (!_isCache) Cache();
-        _endAlpha = endAlpha;
+        _end = endColor;
         SetInterpolationMode(mode);
     }
 
-    public void SetParas(float startAlpha,float endAlpha,InterpolationMode mode)
+    public void SetParas(Color startColor, Color endColor, InterpolationMode mode)
     {
         if (!_isCache) Cache();
-        _startAlpha = startAlpha;
-        _endAlpha = endAlpha;
+        _start = startColor;
+        _end = endColor;
         SetInterpolationMode(mode);
     }
 
     protected override void OnUpdate(float interpolationValue)
     {
-        float value = Mathf.Lerp(_startAlpha, _endAlpha, interpolationValue);
-        if ( _grahpic != null )
+        Color value = Color.Lerp(_start, _end, interpolationValue);
+        if (_grahpic != null)
         {
-            Color c = _grahpic.color;
-            c.a = value;
-            _grahpic.color = c;
+            _grahpic.color = value;
         }
-        else if ( _spRenderer != null )
+        else if (_spRenderer != null)
         {
-            Color c = _spRenderer.color;
-            c.a = value;
-            _spRenderer.color = c;
+            _spRenderer.color = value;
         }
-        else if ( _material != null )
+        else if (_material != null)
         {
-            Color c = _material.color;
-            c.a = value;
-            _material.color = c;
+            _material.color = value;
         }
     }
 

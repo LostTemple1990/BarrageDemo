@@ -165,3 +165,13 @@ public enum eUIType : int
     SpriteRenderer = 6,
     Text = 8,
 }
+
+/// <summary>
+/// 播放模式
+/// </summary>
+public enum ePlayMode : int
+{
+    Once = 0,
+    Loop = 1,
+    PingPong = 2,
+}
