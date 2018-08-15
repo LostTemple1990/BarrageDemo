@@ -9,8 +9,6 @@ public class NormalEnemy : EnemyBase
     //protected AnimationCharacter _enemyAni;
     protected EnemyObjectBase _enemyObj;
 
-    protected int _onKillFuncRef;
-
     public NormalEnemy()
     {
         _type = EnemyType.NormalEnemy;
@@ -26,7 +24,6 @@ public class NormalEnemy : EnemyBase
         SetCollisionParams(cfg.collisionHalfWidth, cfg.collisionHalfWidth);
         SetMaxHp(cfg.maxHp);
         SetDrop(cfg.dropId, cfg.dropHalfWidth, cfg.dropHalfHeight);
-        _onKillFuncRef = 0;
     }
 
     /// <summary>
@@ -95,33 +92,13 @@ public class NormalEnemy : EnemyBase
         }
     }
 
-    public virtual void SetOnKillFuncRef(int funcRef)
-    {
-        _onKillFuncRef = funcRef;
-    }
-
-    protected virtual void CreateOnKillTask()
-    {
-        if ( _onKillFuncRef != 0 )
-        {
-            Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
-            task.funcRef = _onKillFuncRef;
-            InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
-            InterpreterManager.GetInstance().CallTaskCoroutine(task, 1);
-            ExtraTaskManager.GetInstance().AddTask(task);
-        }
-    }
-
-    public override void DoHit(float damage)
+    public override void GetHit(float damage)
     {
         _curHp -= damage;
         if ( _curHp <= 0 )
         {
-            _clearFlag = 1;
             _curHp = 0;
-            SoundManager.GetInstance().Play("se_tan02", false);
-            DropItems();
-            CreateOnKillTask();
+            Eliminate(eEnemyEliminateDef.Player);
         }
     }
 
@@ -144,19 +121,21 @@ public class NormalEnemy : EnemyBase
         return Consts.CollisionType_Rect;
     }
 
-    public override void Kill()
+    public override bool Eliminate(eEnemyEliminateDef eliminateType = eEnemyEliminateDef.ForcedDelete)
     {
-        _clearFlag = 1;
         _curHp = 0;
-        SoundManager.GetInstance().Play("se_tan02", false);
-        DropItems();
-        CreateOnKillTask();
-    }
-
-    public override void RawKill()
-    {
-        _clearFlag = 1;
-        _curHp = 0;
-        SoundManager.GetInstance().Play("se_tan02", false);
+        if ( base.Eliminate(eliminateType) )
+        {
+            if ( eliminateType != eEnemyEliminateDef.ForcedDelete )
+            {
+                SoundManager.GetInstance().Play("se_tan02", false);
+            }
+            if ( eliminateType != eEnemyEliminateDef.ForcedDelete || eliminateType != eEnemyEliminateDef.CodeRawEliminate )
+            {
+                DropItems();
+            }
+            return true;
+        }
+        return false;
     }
 }

@@ -32,8 +32,8 @@ public partial class LuaLib
             new NameFuncPair("CreateNormalEnemyById",CreateNormalEnemyById),
             new NameFuncPair("CreateCustomizedEnemy",CreateCustomizedEnemy),
             new NameFuncPair("HitEnemy",HitEnemy),
-            new NameFuncPair("KillEnemy",KillEnemy),
-            new NameFuncPair("RawKillEnemy",RawKillEnemy),
+            new NameFuncPair("EliminateEnemy",EliminateEnemy),
+            new NameFuncPair("RawEliminateEnemy",RawEliminateEnemy),
             new NameFuncPair("SetEnemyWanderRange",SetEnemyWanderRange),
             new NameFuncPair("SetEnemyWanderAmplitude",SetEnemyWanderAmplitude),
             new NameFuncPair("SetEnemyWanderMode",SetEnemyWanderMode),
@@ -691,10 +691,10 @@ public partial class LuaLib
         NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemy(EnemyType.NormalEnemy) as NormalEnemy;
         enemy.Init(cfg);
         enemy.SetToPosition(new Vector3(posX, posY, 0));
-        int onKillFuncRef = InterpreterManager.GetInstance().GetEnemyOnKillFuncRef(customizedName);
-        if ( onKillFuncRef != 0 )
+        int onEliminateFuncRef = InterpreterManager.GetInstance().GetEnemyOnEliminateFuncRef(customizedName);
+        if (onEliminateFuncRef != 0 )
         {
-            enemy.SetOnKillFuncRef(onKillFuncRef);
+            enemy.SetOnEliminateFuncRef(onEliminateFuncRef);
         }
         // init函数
         int initFuncRef = InterpreterManager.GetInstance().GetEnemyInitFuncRef(customizedName);

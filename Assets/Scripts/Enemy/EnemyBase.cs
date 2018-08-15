@@ -62,6 +62,14 @@ public class EnemyBase : ICollisionObject
     protected bool _isWandering;
 
     protected bool _isInteractive;
+    /// <summary>
+    /// 被击中时调用函数
+    /// </summary>
+    protected int _onHitFuncRef;
+    /// <summary>
+    /// 被消灭的时候调用函数
+    /// </summary>
+    protected int _onEliminateFuncRef;
 
     public virtual void Init()
     {
@@ -80,6 +88,8 @@ public class EnemyBase : ICollisionObject
         _dropId = null;
         _isWandering = false;
         _isInteractive = true;
+        _onHitFuncRef = 0;
+        _onEliminateFuncRef = 0;
     }
 
     public virtual void Update()
@@ -164,14 +174,70 @@ public class EnemyBase : ICollisionObject
         }
     }
 
+    public virtual bool Eliminate(eEnemyEliminateDef eliminateType=0)
+    {
+        if ( eliminateType != eEnemyEliminateDef.ForcedDelete || 
+            eliminateType != eEnemyEliminateDef.CodeRawEliminate )
+        {
+            if ( _onEliminateFuncRef != 0 )
+            {
+                OnEliminate();
+            }
+        }
+        _clearFlag = 1;
+        return true;
+    }
+
+    /// <summary>
+    /// 设置被消除的时候触发的函数
+    /// </summary>
+    /// <param name="funcRef"></param>
+    public void SetOnEliminateFuncRef(int funcRef)
+    {
+        _onEliminateFuncRef = funcRef;
+    }
+
+    /// <summary>
+    /// 设置被击中的时候触发的函数
+    /// </summary>
+    /// <param name="funcRef"></param>
+    public void SetOnHitFuncRef(int funcRef)
+    {
+        _onHitFuncRef = funcRef;
+    }
+
     protected virtual void Move()
     {
         
     }
 
-    public virtual void DoHit(float damage)
+    public virtual void GetHit(float damage)
     {
 
+    }
+
+    /// <summary>
+    /// 被消除的时候调用
+    /// </summary>
+    protected void OnEliminate()
+    {
+        Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
+        task.funcRef = _onEliminateFuncRef;
+        InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
+        InterpreterManager.GetInstance().CallTaskCoroutine(task, 1);
+        ExtraTaskManager.GetInstance().AddTask(task);
+    }
+
+    /// <summary>
+    /// 被击中的时候调用
+    /// </summary>
+    protected void OnHit()
+    {
+        Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
+        task.funcRef = _onHitFuncRef;
+        InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
+        InterpreterManager.GetInstance().CallTaskCoroutine(task, 1);
+        ExtraTaskManager.GetInstance().AddTask(task);
     }
 
     protected virtual void UpdatePos()
@@ -208,17 +274,6 @@ public class EnemyBase : ICollisionObject
     {
         _maxHp = maxHp;
         _curHp = maxHp;
-    }
-
-    public virtual void Kill()
-    {
-        
-    }
-
-    public virtual void RawKill()
-    {
-        _curHp = 0;
-        _clearFlag = 1;
     }
 
     /// <summary>

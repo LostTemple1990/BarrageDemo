@@ -286,11 +286,11 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _cfg = null;
     }
 
-    public override bool Eliminate(eEliminateDef eliminateType = eEliminateDef.RawEliminate)
+    public override bool Eliminate(eEliminateDef eliminateType = eEliminateDef.ForcedDelete)
     {
         if ( base.Eliminate(eliminateType) )
         {
-            if ( eliminateType != eEliminateDef.PlayerBomb && eliminateType != eEliminateDef.RawEliminate )
+            if ( eliminateType != eEliminateDef.PlayerBomb && eliminateType != eEliminateDef.ForcedDelete )
             {
                 Color eliminateColor = _cfg.eliminateColor;
                 STGBulletEliminateEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.BulletEliminate) as STGBulletEliminateEffect;

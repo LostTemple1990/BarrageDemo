@@ -262,7 +262,7 @@ public class EnemyManager
         return refData;
     }
 
-    public void KillAllEnemy(bool isIncludingBoss)
+    public void EliminateAllEnemyByCode(bool isIncludingBoss)
     {
         int tmpCount = _normalEnemies.Count;
         EnemyBase enemy;
@@ -273,13 +273,13 @@ public class EnemyManager
             {
                 if ( enemy.Type != EnemyType.Boss || isIncludingBoss )
                 {
-                    enemy.Kill();
+                    enemy.Eliminate(eEnemyEliminateDef.CodeEliminate);
                 }
             }
         }
     }
 
-    public void RawKillAllEnemy(bool isIncludingBoss)
+    public void RawEliminateAllEnemyByCode(bool isIncludingBoss)
     {
         int tmpCount = _normalEnemies.Count;
         EnemyBase enemy;
@@ -290,7 +290,7 @@ public class EnemyManager
             {
                 if (enemy.Type != EnemyType.Boss || isIncludingBoss)
                 {
-                    enemy.RawKill();
+                    enemy.Eliminate(eEnemyEliminateDef.CodeRawEliminate);
                 }
             }
         }

@@ -29,7 +29,7 @@ public class InterpreterManager
 
     private Dictionary<string, int> _customizedInitFuncMap;
     private Dictionary<string, int> _customizedEnemyInitMap;
-    private Dictionary<string, int> _customizedEnemyOnKillMap;
+    private Dictionary<string, int> _customizedEnemyOnEliminateMap;
     private Dictionary<string, Vector2> _luaGlobalVec2Map;
     private Dictionary<string, float> _luaGlobalNumberMap;
     private Dictionary<string, object> _luaGlobalObjectMap;
@@ -40,7 +40,7 @@ public class InterpreterManager
     {
         _customizedInitFuncMap = new Dictionary<string, int>();
         _customizedEnemyInitMap = new Dictionary<string, int>();
-        _customizedEnemyOnKillMap = new Dictionary<string, int>();
+        _customizedEnemyOnEliminateMap = new Dictionary<string, int>();
         _luaGlobalNumberMap = new Dictionary<string, float>();
         _luaGlobalVec2Map = new Dictionary<string, Vector2>();
         _luaGlobalObjectMap = new Dictionary<string, object>();
@@ -127,6 +127,8 @@ public class InterpreterManager
         if (!_luaState.IsTable(-1))
         {
             Logger.Log("field CustomizedTable is not a table!");
+            _luaState.Pop(1);
+            return;
         }
         _luaState.PushNil();
         while (_luaState.Next(-2))
@@ -147,7 +149,7 @@ public class InterpreterManager
             if ( _luaState.IsFunction(-1) )
             {
                 onKillFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
-                _customizedEnemyOnKillMap.Add(customizedName, onKillFuncRef);
+                _customizedEnemyOnEliminateMap.Add(customizedName, onKillFuncRef);
                 Logger.Log("OnKillFunction in Customized Enemy " + customizedName + " is Ref , ref = " + onKillFuncRef);
             }
             else
@@ -396,10 +398,10 @@ public class InterpreterManager
     /// </summary>
     /// <param name="customizedName"></param>
     /// <returns></returns>
-    public int GetEnemyOnKillFuncRef(string customizedName)
+    public int GetEnemyOnEliminateFuncRef(string customizedName)
     {
         int funcRef;
-        if (_customizedEnemyOnKillMap.TryGetValue(customizedName, out funcRef))
+        if (_customizedEnemyOnEliminateMap.TryGetValue(customizedName, out funcRef))
         {
             return funcRef;
         }

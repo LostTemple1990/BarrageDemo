@@ -46,7 +46,7 @@ public class PlayerBulletBase : BulletBase
         EnemyBase hitEnemy = EnemyManager.GetInstance().GetHitEnemy(this);
         if ( hitEnemy != null )
         {
-            hitEnemy.DoHit(GetDamage());
+            hitEnemy.GetHit(GetDamage());
             _clearFlag = 1;
             //TODO 炸弹撞到单位的特效
         }

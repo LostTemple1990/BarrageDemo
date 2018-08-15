@@ -264,7 +264,7 @@ public class Boss : EnemyBase
                     InterpreterManager.GetInstance().CallLuaFunction(_sc.finishFuncRef, 0);
                 }
                 BulletsManager.GetInstance().ClearAllEnemyBullets();
-                EnemyManager.GetInstance().RawKillAllEnemy(false);
+                EnemyManager.GetInstance().RawEliminateAllEnemyByCode(false);
                 // 更新血条
                 // 执行下一个task
             }
@@ -331,7 +331,7 @@ public class Boss : EnemyBase
         return true;
     }
 
-    public override void DoHit(float damage)
+    public override void GetHit(float damage)
     {
         if ( !_isInvincible )
         {

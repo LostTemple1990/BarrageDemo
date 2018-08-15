@@ -119,9 +119,9 @@ public enum EnemyObjectType  : byte
 public enum eEliminateDef : int
 {
     /// <summary>
-    /// 直接消除
+    /// 强制直接删除
     /// </summary>
-    RawEliminate = 0,
+    ForcedDelete = 0,
     /// <summary>
     /// 玩家B触发的消除
     /// </summary>
@@ -145,7 +145,21 @@ public enum eEliminateDef : int
     /// <summary>
     /// 直接调用代码触发的消除
     /// </summary>
-    Code = 32,
+    CodeEliminate = 32,
+    /// <summary>
+    /// 直接调用代码，不触发消除触发的函数
+    /// </summary>
+    CodeRawEliminate = 64,
+}
+
+[Flags]
+public enum eEnemyEliminateDef :int
+{
+    ForcedDelete = 0,
+    Player = 1,
+    SpellCardEnd = 2,
+    CodeEliminate = 4,
+    CodeRawEliminate = 8,
 }
 
 public enum eLaserHeadType :int

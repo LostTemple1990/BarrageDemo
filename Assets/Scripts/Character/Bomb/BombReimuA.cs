@@ -114,7 +114,7 @@ public class BombReimuA : BombBase
             {
                 if ( enemyList[i] != null )
                 {
-                    enemyList[i].DoHit(400);
+                    enemyList[i].GetHit(400);
                 }
             }
             _curState = 3;
@@ -141,7 +141,7 @@ public class BombReimuA : BombBase
                         Mathf.Abs(_detectCenter.y - collParas.centerPos.y) <= _detectRadius + collParas.halfHeight )
                     {
                         // 造成1点伤害
-                        enemy.DoHit(1);
+                        enemy.GetHit(1);
                     }
                 }
             }

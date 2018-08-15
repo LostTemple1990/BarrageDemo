@@ -41,19 +41,21 @@ public partial class LuaLib
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
         float damage = (float)luaState.ToNumber(-1);
         luaState.Pop(2);
-        enemy.DoHit(damage);
+        enemy.GetHit(damage);
         return 0;
     }
 
-    public static int KillEnemy(ILuaState luaState)
+    public static int EliminateEnemy(ILuaState luaState)
     {
         EnemyBase enemy = luaState.ToUserData(-1) as EnemyBase;
+        enemy.Eliminate(eEnemyEliminateDef.CodeEliminate);
         return 0;
     }
 
-    public static int RawKillEnemy(ILuaState luaState)
+    public static int RawEliminateEnemy(ILuaState luaState)
     {
         EnemyBase enemy = luaState.ToUserData(-1) as EnemyBase;
+        enemy.Eliminate(eEnemyEliminateDef.CodeRawEliminate);
         return 0;
     }
 
