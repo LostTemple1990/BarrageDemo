@@ -142,4 +142,9 @@ public class GameMainView : ViewBase,ICommand
         _grazeBitCount = 0;
         _curGraze = -1;
     }
+
+    public override LayerId GetLayerId()
+    {
+        return LayerId.GameUI;
+    }
 }

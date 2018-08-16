@@ -108,6 +108,7 @@ public class GameMain : MonoBehaviour
         TweenManager.GetInstance().Init();
 
         UIManager.GetInstance().ShowView(WindowName.GameInfoView, null);
+        UIManager.GetInstance().ShowView(WindowName.STGBottomView, null);
 
         // 测试抖动效果
         //ShakeEffect shakeEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ShakeEffect) as ShakeEffect;

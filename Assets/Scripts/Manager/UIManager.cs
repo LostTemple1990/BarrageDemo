@@ -53,6 +53,7 @@ public class UIManager {
         _stgCamera = _stgRoot.transform.Find("GameCamera").GetComponent<Camera>();
         // 各个层级
         _layersMap = new Dictionary<LayerId, Transform>();
+        _layersMap.Add(LayerId.STGBottomView, _stgLayerTf.Find("STGBottomViewLayer"));
         _layersMap.Add(LayerId.Item, _stgLayerTf.Find("ItemLayer"));
         _layersMap.Add(LayerId.Enemy, _stgLayerTf.Find("EnemyLayer"));
         _layersMap.Add(LayerId.HighLightEffect, _stgLayerTf.Find("STGHighLightEffectLayer"));
@@ -68,6 +69,7 @@ public class UIManager {
             _viewsMap = new Dictionary<string, ViewBase>();
         }
         _uiRootTf = GameObject.Find("UIRoot").GetComponent<RectTransform>();
+        _layersMap.Add(LayerId.GameUI, _uiRootTf);
         if ( _viewUpdateList == null )
         {
             _viewUpdateList = new List<ViewBase>();
@@ -192,7 +194,12 @@ public class UIManager {
                 view = System.Activator.CreateInstance(classType) as ViewBase;
                 view.Init(viewGO);
                 _viewsMap.Add(name, view);
-                viewGO.transform.SetParent(_uiRootTf, false);
+                Transform parentTf;
+                if ( !_layersMap.TryGetValue(view.GetLayerId(),out parentTf) )
+                {
+                    parentTf = _uiRootTf;
+                }
+                viewGO.transform.SetParent(parentTf, false);
             }
         }
         if ( view != null )
@@ -290,5 +297,7 @@ public enum LayerId : int
     PlayerCollisionPoint = 600,
     TopEffect = 650,
     GameInfo = 700,
-    UI = 100
+    UI = 100,
+    STGBottomView = 110,
+    GameUI = 1000,
 }

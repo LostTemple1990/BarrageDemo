@@ -107,7 +107,6 @@ public class NormalEnemy : EnemyBase
         base.Clear();
         //AnimationManager.GetInstance().RemoveAnimation(_enemyAni);
         //_enemyAni = null;
-        _onKillFuncRef = 0;
         EnemyManager.GetInstance().RestoreEnemyObjectToPool(_enemyObj);
         _enemyObj = null;
     }

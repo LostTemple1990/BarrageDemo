@@ -162,6 +162,16 @@ public abstract class TweenBase
         get { return _isFinish; }
     }
 
+    public int delay
+    {
+        get { return _delay; }
+    }
+
+    public int duration
+    {
+        get { return _duration; }
+    }
+
     public virtual void SetStartToCurrentValue() { }
 
     public virtual void SetEndToCurrentValue() { }
