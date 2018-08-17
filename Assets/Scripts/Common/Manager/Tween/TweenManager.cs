@@ -93,7 +93,7 @@ public class TweenManager
                     tween = list[i];
                     if ( tween != null )
                     {
-                        tween.Clear();
+                        tween.RestoreToPool();
                         list[i] = null;
                     }
                 }
@@ -112,6 +112,17 @@ public class TweenManager
         {
             ClearFinishedTweens();
         }
+    }
+
+    /// <summary>
+    /// 创建一个tween对象
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public T Create<T>() where T : TweenBase,new()
+    {
+        T tween = ObjectsPool.GetInstance().GetPoolClassAtPool<T>();
+        return tween;
     }
 
     private void UpdateTweens()
@@ -134,7 +145,7 @@ public class TweenManager
                         tween.Update();
                         if (tween.IsFinish)
                         {
-                            tween.Clear();
+                            tween.RestoreToPool();
                             list[j] = null;
                         }
                     }

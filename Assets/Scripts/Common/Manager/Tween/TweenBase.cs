@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class TweenBase
+public class TweenBase : IPoolClass
 {
     /// <summary>
     /// 当前时间
@@ -179,6 +179,11 @@ public abstract class TweenBase
     public void SetIgnoreTimeScale(bool value)
     {
         _ignoreTimeScale = value;
+    }
+
+    public virtual void RestoreToPool()
+    {
+        throw new System.NotImplementedException();
     }
 
     public virtual void Clear()

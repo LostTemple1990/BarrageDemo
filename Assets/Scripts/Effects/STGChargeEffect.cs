@@ -10,13 +10,13 @@ public class STGChargeEffect : STGEffectBase
     private const float DefaultSize = 64;
     private const int CircleShrinkDuration = 60;
 
-    private const float LimitMinX = 100;
-    private const float LimitMaxX = 150;
-    private const float LimitMinY = 150;
-    private const float LimitMaxY = 200;
+    private const float LimitMinX = 300;
+    private const float LimitMaxX = 500;
+    private const float LimitMinY = 300;
+    private const float LimitMaxY = 500;
 
     private const int ChargeMinDuration = 50;
-    private const int ChargeMaxDuration = 90;
+    private const int ChargeMaxDuration = 80;
 
     private const float InitCircleScale = 8f;
 
@@ -52,6 +52,7 @@ public class STGChargeEffect : STGEffectBase
         {
             _circleTf = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "SpriteEffect").transform;
             _circleTf.SetParent(_effectContainerTf, false);
+            _circleTf.localPosition = Vector3.zero;
             _circleTf.localScale = new Vector3(InitCircleScale, InitCircleScale, 1);
             _circleSpRenderer = _circleTf.Find("Sprite").GetComponent<SpriteRenderer>();
             _circleSpRenderer.sprite = ResourceManager.GetInstance().GetSprite(Consts.EffectAtlasName, "TransparentCircle");
@@ -60,16 +61,17 @@ public class STGChargeEffect : STGEffectBase
         _circleShrinkTime = 0;
         _isCircleShrinking = true;
         _chargeTime = 0;
+        SoundManager.GetInstance().Play("castcharge", false);
     }
 
     private void InitChargeObjects()
     {
         _chargeList = new List<ChargeObject>();
-        _chargeCount = Random.Range(15, 25);
+        _chargeCount = 50;
         for (int i = 0; i < _chargeCount; i++)
         {
             ChargeObject chargeObj = new ChargeObject();
-            chargeObj.Init(_effectContainerTf);
+            chargeObj.Init();
             Vector3 startPos = GetRandomStartPos();
             Vector3 rotateAngle = new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 2f));
             int easeDuration = Random.Range(ChargeMinDuration, ChargeMaxDuration);
@@ -149,18 +151,7 @@ public class STGChargeEffect : STGEffectBase
         }
         _chargeList.Clear();
         _chargeCount = 0;
-        GameObject.Destroy(_circleTf.gameObject);
         GameObject.Destroy(_effectContainerTf.gameObject);
-    }
-
-    public bool IsFinish()
-    {
-        return _isFinish;
-    }
-
-    public void FinishEffect()
-    {
-        _isFinish = true;
     }
 }
 
@@ -183,7 +174,7 @@ class ChargeObject
     public int duration;
     float startScale;
     float toScale;
-    Vector3 ratoteAngle;
+    Vector3 rotateAngle;
     public int state;
     public float dAlpha;
     public Color tmpColor;
@@ -191,16 +182,15 @@ class ChargeObject
     public Vector3 endPos;
     public bool isComplete;
 
-    public void Init(Transform parent)
+    public void Init()
     {
-        go = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "SpriteEffect");
+        go = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "EffectMapleLeaf0");
         tf = go.transform;
-        tf.SetParent(parent, false);
+        spRenderer = tf.Find("Sprite").GetComponent<SpriteRenderer>();
+        UIManager.GetInstance().AddGoToLayer(go, LayerId.GameEffect);
         tf.localPosition = Vector3.zero;
         // 随机方向
         tf.localRotation = Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360)));
-        spRenderer = tf.Find("Sprite").GetComponent<SpriteRenderer>();
-        spRenderer.sprite = Resources.Load<Sprite>("Background/MapleLeaf1");
         // 一定的透明度
         tmpColor = spRenderer.color;
         tmpColor.a = 0.3f;
@@ -210,6 +200,7 @@ class ChargeObject
         tf.localScale = new Vector3(scale, scale, 1);
         startScale = scale;
         toScale = Random.Range(EndScaleRangeMin, EndScaleRangeMax);
+        go.SetActive(true);
         isComplete = false;
     }
 
@@ -220,7 +211,7 @@ class ChargeObject
         // 缓动的起始、结束位置
         this.startPos = startPos;
         endPos = Vector3.zero;
-        this.ratoteAngle = rotateAngle;
+        this.rotateAngle = rotateAngle;
         // 设置时间
         time = 0;
         this.duration = easeDuration;
@@ -230,14 +221,23 @@ class ChargeObject
     {
         time++;
         // 减速移动到指定位置
-        Vector3 pos = MathUtil.GetEaseInQuadInterpolation(startPos, endPos, time, duration);
+        Vector3 pos = MathUtil.GetLinearInterpolation(startPos, endPos, time, duration);
         tf.localPosition = pos;
         // 放大倍数
         float scale = MathUtil.GetEaseOutQuadInterpolation(startScale, toScale, time, duration);
         tf.localScale = new Vector3(scale, scale, 1);
         // 旋转角度
-        tf.Rotate(ratoteAngle);
+        tf.Rotate(rotateAngle);
         // 透明度
+        if ( time >= duration - 15)
+        {
+            tmpColor.a = (duration - time) * 12f / 180;
+        }
+        else
+        {
+            tmpColor.a = Mathf.Pow((float)time / (duration - 15), 6) * 180;
+        }
+        spRenderer.color = tmpColor;
         if (time >= duration)
         {
             go.SetActive(false);
@@ -247,8 +247,7 @@ class ChargeObject
 
     public void Clear()
     {
-        spRenderer.sprite = null;
-        GameObject.Destroy(go);
+        ObjectsPool.GetInstance().RestorePrefabToPool("EffectMapleLeaf0", go);
         go = null;
         tf = null;
         spRenderer = null;

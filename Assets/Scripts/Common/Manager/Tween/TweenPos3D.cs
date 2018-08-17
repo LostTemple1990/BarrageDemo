@@ -37,6 +37,11 @@ public class TweenPos3D : TweenBase
         _tf.localPosition = value;
     }
 
+    public override void RestoreToPool()
+    {
+        ObjectsPool.GetInstance().RestorePoolClassToPool<TweenPos3D>(this);
+    }
+
     public override void Clear()
     {
         _tf = null;

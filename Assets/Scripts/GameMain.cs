@@ -68,8 +68,10 @@ public class GameMain : MonoBehaviour
         //}
         //if (frameNode == 200)
         //{
+        //    TimeUtil.BeginSample();
         //    STGChargeEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ChargeEffect) as STGChargeEffect;
         //    effect.SetToPos(0, 100);
+        //    TimeUtil.EndSample();
         //}
         //if (frameNode >= 200 && frameNode % 2 == 0 )
         //{

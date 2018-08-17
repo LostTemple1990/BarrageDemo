@@ -35,6 +35,11 @@ public class TweenRotation : TweenBase
         _tf.localEulerAngles = value;
     }
 
+    public override void RestoreToPool()
+    {
+        ObjectsPool.GetInstance().RestorePoolClassToPool<TweenRotation>(this);
+    }
+
     public override void Clear()
     {
         _tf = null;

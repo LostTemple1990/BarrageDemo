@@ -66,6 +66,11 @@ public class TweenColor : TweenBase
         }
     }
 
+    public override void RestoreToPool()
+    {
+        ObjectsPool.GetInstance().RestorePoolClassToPool<TweenColor>(this);
+    }
+
     public override void Clear()
     {
         _grahpic = null;

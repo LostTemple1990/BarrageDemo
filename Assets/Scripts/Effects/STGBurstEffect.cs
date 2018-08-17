@@ -59,8 +59,8 @@ public class STGBurstEffect : STGEffectBase
         for (int i=0;i<_burstCount;i++)
         {
             BurstObject burstObject = new BurstObject();
-            GameObject burstGo = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "SpriteEffect");
-            burstObject.Init(burstGo,_effectContainerTf);
+            GameObject burstGo = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "EffectMapleLeaf0");
+            burstObject.Init(burstGo);
             float angle = Random.Range(0, 360);
             float dis = Random.Range(150f,240f);
             float toScale = Random.Range(1.5f, 3f);
@@ -133,7 +133,6 @@ public class STGBurstEffect : STGEffectBase
         }
         _burstList.Clear();
         _burstCount = 0;
-        GameObject.Destroy(_circleTf.gameObject);
         GameObject.Destroy(_effectContainerTf.gameObject);
     }
 }
@@ -154,14 +153,14 @@ class BurstObject
     public Vector3 endPos;
     public bool isComplete;
 
-    public void Init(GameObject go,Transform parent)
+    public void Init(GameObject go)
     {
         this.go = go;
+        go.SetActive(true);
         tf = go.transform;
-        tf.SetParent(parent, false);
+        UIManager.GetInstance().AddGoToLayer(go, LayerId.GameEffect);
         tf.localPosition = Vector3.zero;
         spRenderer = tf.Find("Sprite").GetComponent<SpriteRenderer>();
-        spRenderer.sprite = Resources.Load<Sprite>("Background/MapleLeaf0");
         tf.localScale = new Vector3(0, 0, 1);
         isComplete = false;
     }
@@ -195,14 +194,14 @@ class BurstObject
         // 透明度
         if ( time >= duration )
         {
+            go.SetActive(false);
             isComplete = true;
         }
     }
 
     public void Clear()
     {
-        spRenderer.sprite = null;
-        GameObject.Destroy(go);
+        ObjectsPool.GetInstance().RestorePrefabToPool("EffectMapleLeaf0", go);
         go = null;
         tf = null;
         spRenderer = null;

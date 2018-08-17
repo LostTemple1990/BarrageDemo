@@ -72,6 +72,11 @@ public class TweenAlpha : TweenBase
         }
     }
 
+    public override void RestoreToPool()
+    {
+        ObjectsPool.GetInstance().RestorePoolClassToPool<TweenAlpha>(this);
+    }
+
     public override void Clear()
     {
         _grahpic = null;

@@ -35,6 +35,11 @@ public class TweenScale : TweenBase
         _tf.localScale = value;
     }
 
+    public override void RestoreToPool()
+    {
+        ObjectsPool.GetInstance().RestorePoolClassToPool<TweenScale>(this);
+    }
+
     public override void Clear()
     {
         _tf = null;
