@@ -69,6 +69,8 @@ public class TweenBase : IPoolClass
         // 初始化
         _factor = 0f;
         _curTime = 0;
+        _isFinish = false;
+        _isEnable = true;
     }
 
     /// <summary>
@@ -155,6 +157,11 @@ public class TweenBase : IPoolClass
     protected virtual void OnUpdate(float interpolationValue)
     {
 
+    }
+
+    public GameObject GetTweenObject()
+    {
+        return _tweenGo;
     }
 
     public bool IsFinish

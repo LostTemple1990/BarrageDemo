@@ -189,3 +189,9 @@ public enum ePlayMode : int
     Loop = 1,
     PingPong = 2,
 }
+
+public enum eGameState : int
+{
+    Main = 1,
+    STG = 3,
+}

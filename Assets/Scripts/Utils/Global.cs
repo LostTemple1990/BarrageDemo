@@ -55,4 +55,8 @@ public class Global
     public static Boss Boss;
 
     public static List<Vector2> MultiSegmentsCollisionPointList;
+    /// <summary>
+    /// STG游戏是否暂停
+    /// </summary>
+    public static bool IsPause;
 }

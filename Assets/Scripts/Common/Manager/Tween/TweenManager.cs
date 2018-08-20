@@ -36,6 +36,24 @@ public class TweenManager
         _clearListCount = 0;
     }
 
+    public void AddTween(TweenBase tween)
+    {
+        List<TweenBase> tweenList;
+        GameObject go = tween.GetTweenObject();
+        if ( go != null )
+        {
+            int hash = go.GetHashCode();
+            if (!_tweenMap.TryGetValue(hash, out tweenList))
+            {
+                tweenList = new List<TweenBase>();
+                _tweenMap.Add(hash, tweenList);
+                _curTweenGoList.Add(hash);
+                _curTweenGoCount++;
+            }
+            tweenList.Add(tween);
+        }
+    }
+
     /// <summary>
     /// 添加缓动动画
     /// </summary>

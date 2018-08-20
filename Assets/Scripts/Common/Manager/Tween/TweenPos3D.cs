@@ -44,6 +44,7 @@ public class TweenPos3D : TweenBase
 
     public override void Clear()
     {
+        _isCache = false;
         _tf = null;
         base.Clear();
     }

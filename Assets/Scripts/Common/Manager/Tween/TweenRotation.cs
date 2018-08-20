@@ -42,6 +42,7 @@ public class TweenRotation : TweenBase
 
     public override void Clear()
     {
+        _isCache = false;
         _tf = null;
         base.Clear();
     }

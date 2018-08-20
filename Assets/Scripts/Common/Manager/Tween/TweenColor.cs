@@ -73,6 +73,7 @@ public class TweenColor : TweenBase
 
     public override void Clear()
     {
+        _isCache = false;
         _grahpic = null;
         _spRenderer = null;
         _material = null;

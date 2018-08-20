@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: STGPauseViewAtlas
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 01c8172608257444b86647ca8548096f, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: ef646d9181bc8094490c43a960036ccf, type: 3}
+  - {fileID: 21300000, guid: ae7cb29293eb1eb4f95c3500cccdb9ac, type: 3}
+  - {fileID: 21300000, guid: 02c9b9e24e5f8664992b5a33ebe1546f, type: 3}
+  - {fileID: 21300000, guid: 8e39aa36a1dcfd74994d354928a2c0f8, type: 3}
+  - {fileID: 21300000, guid: 908621a74339c104b993ca153e8b5d04, type: 3}
+  - {fileID: 21300000, guid: a886152806e80bd4f88a3be45e4283f9, type: 3}
+  - {fileID: 21300000, guid: 17c124680baeb504fb251ed7807adcdf, type: 3}
+  - {fileID: 21300000, guid: 9812736cb88f8614c8a7d765e50d97ce, type: 3}
+  - {fileID: 21300000, guid: 74021f5d55609c64ba0544820a2e0cee, type: 3}
+  - {fileID: 21300000, guid: 107842afdd3fa0b46bcb954552f81fcd, type: 3}
+  - {fileID: 21300000, guid: d73b19afb0f3f3c4b9a47d55df430d81, type: 3}
+  - {fileID: 21300000, guid: 9fa340ff2b6fad244b59f12350ec599b, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - ImgYes
+  - ImgReally
+  - ImgContinue
+  - ImgNextScene
+  - ImgClear
+  - ImgNo
+  - ImgReturnToGame
+  - ImgReturnTitle
+  - ImgSaveReplay
+  - ImgGameOver
+  - ImgPause
+  - ImgRetry
+  m_Tag: STGPauseViewAtlas
+  m_IsVariant: 0
