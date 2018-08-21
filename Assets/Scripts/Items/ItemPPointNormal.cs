@@ -18,7 +18,7 @@ public class ItemPPointNormal : ItemBase
 
     public override void Clear()
     {
-        base.Clear();
         UIManager.GetInstance().RemoveGoFromLayer(_itemGO);
+        base.Clear();
     }
 }

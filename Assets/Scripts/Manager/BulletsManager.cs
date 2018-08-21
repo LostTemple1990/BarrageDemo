@@ -255,6 +255,7 @@ public class BulletsManager
             if ( bullet != null )
             {
                 bullet.Clear();
+                ObjectsPool.GetInstance().RestoreBullet(bullet);
             }
         }
         _playerBullets.Clear();
@@ -266,6 +267,7 @@ public class BulletsManager
             if (bullet != null)
             {
                 bullet.Clear();
+                ObjectsPool.GetInstance().RestoreBullet(bullet);
             }
         }
         _enemyBullets.Clear();

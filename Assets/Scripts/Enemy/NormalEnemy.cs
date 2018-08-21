@@ -104,11 +104,9 @@ public class NormalEnemy : EnemyBase
 
     public override void Clear()
     {
-        base.Clear();
-        //AnimationManager.GetInstance().RemoveAnimation(_enemyAni);
-        //_enemyAni = null;
         EnemyManager.GetInstance().RestoreEnemyObjectToPool(_enemyObj);
         _enemyObj = null;
+        base.Clear();
     }
 
     public override int GetCollisionParams(out float arg1, out float arg2, out float arg3, out float arg4)

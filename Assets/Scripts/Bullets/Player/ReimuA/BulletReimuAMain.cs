@@ -11,13 +11,12 @@ public class BulletReimuAMain : PlayerBulletBase
 
     public BulletReimuAMain()
     {
-
+        _id = BulletId.BulletId_ReimuA_Main;
+        _prefabName = "ReimuAMain";
     }
 
     public override void Init()
     {
-        _id = BulletId.BulletId_ReimuA_Main;
-        _prefabName = "ReimuAMain";
         base.Init();
         UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.PlayerBarage);
         DoMove(DefaultSpeedY, 90);

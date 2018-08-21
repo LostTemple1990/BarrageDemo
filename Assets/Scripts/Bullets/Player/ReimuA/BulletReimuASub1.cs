@@ -23,13 +23,12 @@ public class BulletReimuASub1 :PlayerBulletBase
 
     public BulletReimuASub1()
     {
-
+        _id = BulletId.BulletId_ReimuA_Sub1;
+        _prefabName = "ReimuASub1";
     }
 
     public override void Init()
     {
-        _id = BulletId.BulletId_ReimuA_Sub1;
-        _prefabName = "ReimuASub1";
         base.Init();
         UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.PlayerBarage);
         BulletsManager.GetInstance().RegisterPlayerBullet(this);
@@ -128,5 +127,11 @@ public class BulletReimuASub1 :PlayerBulletBase
     protected override float GetDamage()
     {
         return 1;
+    }
+
+    public override void Clear()
+    {
+        _target = null;
+        base.Clear();
     }
 }

@@ -82,7 +82,7 @@ public class EnemyBase : ICollisionObject
         }
         if ( _movableObj == null )
         {
-            _movableObj = new MovableObject();
+            _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
         }
         _taskCount = 0;
         _dropId = null;
@@ -365,6 +365,9 @@ public class EnemyBase : ICollisionObject
     public virtual void Clear()
     {
         ClearTasks();
+        ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObj);
+        _movableObj = null;
+        _enemyGo = null;
     }
 
     protected virtual void ClearTasks()

@@ -18,12 +18,12 @@ public class SpinningEnemy : EnemyObjectBase
         
     }
 
-    public override void SetEnemyAni(string aniId)
+    public override void SetEnemyAni(string aniName)
     {
-        _prefabName = aniId;
+        _prefabName = aniName;
         if (_go == null)
         {
-            _go = ResourceManager.GetInstance().GetPrefab("Prefab/Enemy", aniId);
+            _go = ResourceManager.GetInstance().GetPrefab("Prefab/Enemy", aniName);
             _tf = _go.transform;
             _border0Tf = _tf.Find("Border0");
             _border1Tf = _tf.Find("Border1");

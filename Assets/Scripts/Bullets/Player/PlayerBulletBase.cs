@@ -33,12 +33,13 @@ public class PlayerBulletBase : BulletBase
 
     public override void Clear()
     {
-        _renderer = null;
         _destroyFlag = 0;
         _clearFlag = 0;
         UIManager.GetInstance().HideGo(_bullet);
+        ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         _trans = null;
         _bullet = null;
+        _renderer = null;
     }
 
     public virtual void CheckHitEnemy()

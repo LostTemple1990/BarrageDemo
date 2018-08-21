@@ -657,7 +657,7 @@ public partial class LuaLib
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
         EnemyCfg cfg = EnemyManager.GetInstance().GetEnemyCfgById(enemyId);
-        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemy(EnemyType.NormalEnemy) as NormalEnemy;
+        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.NormalEnemy) as NormalEnemy;
         enemy.Init(cfg);
         enemy.SetToPosition(new Vector3(posX, posY, 0));
         luaState.PushLightUserData(enemy);
@@ -688,7 +688,7 @@ public partial class LuaLib
         float posY = (float)luaState.ToNumber(-1 - numArgs);
         // 创建敌机
         EnemyCfg cfg = EnemyManager.GetInstance().GetEnemyCfgById(enemyId);
-        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemy(EnemyType.NormalEnemy) as NormalEnemy;
+        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.NormalEnemy) as NormalEnemy;
         enemy.Init(cfg);
         enemy.SetToPosition(new Vector3(posX, posY, 0));
         int onEliminateFuncRef = InterpreterManager.GetInstance().GetEnemyOnEliminateFuncRef(customizedName);
@@ -727,7 +727,7 @@ public partial class LuaLib
     {
         string bossName = luaState.ToString(-1);
         luaState.Pop(1);
-        Boss boss = EnemyManager.GetInstance().CreateEnemy(EnemyType.Boss) as Boss;
+        Boss boss = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.Boss) as Boss;
         boss.Init(bossName);
         Global.Boss = boss;
         luaState.PushLightUserData(boss);

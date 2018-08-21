@@ -129,5 +129,8 @@ public class STGMain
         _char = null;
         _opController.Clear();
         BulletsManager.GetInstance().Clear();
+        EnemyManager.GetInstance().Clear();
+        ItemManager.GetInstance().Clear();
+        //EffectsManager.GetInstance().Cl
     }
 }

@@ -161,6 +161,12 @@ public class ItemBase
 
     public virtual void Clear()
     {
+        
+    }
 
+    public virtual void Destroy()
+    {
+        GameObject.Destroy(_itemGO);
+        _itemGO = null;
     }
 }

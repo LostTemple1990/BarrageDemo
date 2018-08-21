@@ -17,7 +17,7 @@ public class EnemyManager
 
     private EnemyManager()
     {
-        _normalEnemies = new List<EnemyBase>();
+        _enemyList = new List<EnemyBase>();
         _clearList = new List<EnemyBase>();
         _enemiesPool = new Dictionary<EnemyType, Stack<EnemyBase>>();
         _enemyDatabase = DataManager.GetInstance().GetDatasByName("EnemyCfgs") as Dictionary<string, IParser>;
@@ -29,7 +29,7 @@ public class EnemyManager
     /// </summary>
     private List<EnemyBase> _clearList;
 
-    private List<EnemyBase> _normalEnemies;
+    private List<EnemyBase> _enemyList;
     /// <summary>
     /// 对象池
     /// </summary>
@@ -56,13 +56,7 @@ public class EnemyManager
         return parser as EnemyCfg; ;
     }
 
-    //protected T NewEnemy<T>()
-    //    where T:EnemyBase,new()
-    //{
-        
-    //}
-
-    public EnemyBase CreateEnemy(EnemyType type)
+    public EnemyBase CreateEnemyByType(EnemyType type)
     {
         EnemyBase enemy = NewEnemy(type);
         RegisterEnemy(enemy);
@@ -70,6 +64,11 @@ public class EnemyManager
         return enemy;
     }
 
+    /// <summary>
+    /// 从对象池中or新创建enemyBase
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     protected EnemyBase NewEnemy(EnemyType type)
     {
         Stack<EnemyBase> stack;
@@ -103,18 +102,23 @@ public class EnemyManager
 
     public void RestoreEnemyToPool(EnemyBase enemy)
     {
-        
+        if (enemy == null) return;
+        EnemyType enemyType = enemy.GetEnemyType();
+        Stack<EnemyBase> stack;
+        if ( _enemiesPool.TryGetValue(enemyType, out stack) )
+        {
+            enemy.Clear();
+            stack.Push(enemy);
+        }
+        else
+        {
+            Logger.Log("Restore Enemy Fail!Reason : stack of type " + enemyType + " is not found!");
+        }
     }
 
     public bool RegisterEnemy(EnemyBase enemy)
     {
-        _normalEnemies.Add(enemy);
-        //switch ( enemy.Type )
-        //{
-        //    case EnemyType.NormalEnemy:
-        //        _normalEnemies.Add(enemy as NormalEnemy);
-        //        break;
-        //}
+        _enemyList.Add(enemy);
         return true;
     }
 
@@ -135,7 +139,7 @@ public class EnemyManager
     /// <returns></returns>
     public List<EnemyBase> GetEnemyList()
     {
-        return _normalEnemies;
+        return _enemyList;
     }
 
     /// <summary>
@@ -149,11 +153,11 @@ public class EnemyManager
         float bulletX, bulletY, bulletHalfWidth, bulletHalfHeight;
         bullet.GetCollisionParams(out bulletX, out bulletY, out bulletHalfWidth, out bulletHalfHeight);
         //TODO 以后将normalEnemies统一成EnemyBase
-        int tmpCount = _normalEnemies.Count;
+        int tmpCount = _enemyList.Count;
         float enemyX, enemyY, enemyHalfWidth, enemyHalfHeight;
         for (int i=0;i<tmpCount;i++)
         {
-            tmpEnemy = _normalEnemies[i];
+            tmpEnemy = _enemyList[i];
             if ( tmpEnemy != null && tmpEnemy.CanHit() )
             {
                 tmpEnemy.GetCollisionParams(out enemyX, out enemyY, out enemyHalfWidth, out enemyHalfHeight);
@@ -170,9 +174,9 @@ public class EnemyManager
     public EnemyBase GetRandomEnemy()
     {
         EnemyBase enemy = null;
-        if ( _normalEnemies.Count > 0 )
+        if ( _enemyList.Count > 0 )
         {
-            enemy = _normalEnemies[MTRandom.GetNextInt(0, _normalEnemies.Count-1)];
+            enemy = _enemyList[MTRandom.GetNextInt(0, _enemyList.Count-1)];
         }
         return enemy;
     }
@@ -181,33 +185,33 @@ public class EnemyManager
     {
         EnemyBase ememy;
         int tmpCount, i, j, findFlag;
-        tmpCount = _normalEnemies.Count;
+        tmpCount = _enemyList.Count;
         for (i = 0, j = i + 1; i < tmpCount; i++, j++)
         {
             findFlag = 1;
-            if (_normalEnemies[i] == null)
+            if (_enemyList[i] == null)
             {
                 j = j == 1 ? i + 1 : j;
                 findFlag = 0;
                 for (; j < tmpCount; j++)
                 {
-                    if (_normalEnemies[j] != null)
+                    if (_enemyList[j] != null)
                     {
-                        _normalEnemies[i] = _normalEnemies[j];
-                        _normalEnemies[j] = null;
+                        _enemyList[i] = _enemyList[j];
+                        _enemyList[j] = null;
                         findFlag = 1;
                         break;
                     }
                 }
             }
-            ememy = _normalEnemies[i];
+            ememy = _enemyList[i];
             if (ememy != null)
             {
                 ememy.Update();
             }
             if (findFlag == 0)
             {
-                _normalEnemies.RemoveRange(i, tmpCount - i);
+                _enemyList.RemoveRange(i, tmpCount - i);
                 break;
             }
         }
@@ -217,12 +221,12 @@ public class EnemyManager
     {
         EnemyBase enemy;
         int tmpCount, i;
-        for (i = 0, tmpCount = _normalEnemies.Count; i < tmpCount; i++)
+        for (i = 0, tmpCount = _enemyList.Count; i < tmpCount; i++)
         {
-            enemy = _normalEnemies[i];
+            enemy = _enemyList[i];
             if (enemy.ClearFlag == 1)
             {
-                _normalEnemies[i] = null;
+                _enemyList[i] = null;
                 _clearList.Add(enemy);
             }
         }
@@ -230,8 +234,7 @@ public class EnemyManager
         for (i = 0; i < tmpCount; i++)
         {
             enemy = _clearList[i];
-            enemy.Clear();
-            //BulletPool.GetInstance().RestoreBullet(enemy);
+            RestoreEnemyToPool(enemy);
         }
         _clearList.Clear();
     }
@@ -264,11 +267,11 @@ public class EnemyManager
 
     public void EliminateAllEnemyByCode(bool isIncludingBoss)
     {
-        int tmpCount = _normalEnemies.Count;
+        int tmpCount = _enemyList.Count;
         EnemyBase enemy;
         for (int i=0;i<tmpCount;i++)
         {
-            enemy = _normalEnemies[i];
+            enemy = _enemyList[i];
             if ( enemy != null && enemy.ClearFlag == 0 )
             {
                 if ( enemy.Type != EnemyType.Boss || isIncludingBoss )
@@ -281,11 +284,11 @@ public class EnemyManager
 
     public void RawEliminateAllEnemyByCode(bool isIncludingBoss)
     {
-        int tmpCount = _normalEnemies.Count;
+        int tmpCount = _enemyList.Count;
         EnemyBase enemy;
         for (int i = 0; i < tmpCount; i++)
         {
-            enemy = _normalEnemies[i];
+            enemy = _enemyList[i];
             if (enemy != null && enemy.ClearFlag == 0)
             {
                 if (enemy.Type != EnemyType.Boss || isIncludingBoss)
@@ -296,6 +299,11 @@ public class EnemyManager
         }
     }
 
+    /// <summary>
+    /// 创建EnemyObject
+    /// </summary>
+    /// <param name="type">类型</param>
+    /// <returns></returns>
     public EnemyObjectBase CreateEnemyObjectByType(EnemyObjectType type)
     {
         EnemyObjectBase enemyObj = null;
@@ -324,6 +332,10 @@ public class EnemyManager
         return enemyObj;
     }
 
+    /// <summary>
+    /// 将enemyObject缓存回对象池
+    /// </summary>
+    /// <param name="enemyObject"></param>
     public void RestoreEnemyObjectToPool(EnemyObjectBase enemyObject)
     {
         if ( enemyObject != null )
@@ -339,5 +351,69 @@ public class EnemyManager
                 Logger.Log("Restore EnemyObject Fail!Reason : stack of type " + enemyObject.GetObjectType() + " is not found!");
             }
         }
+    }
+
+    /// <summary>
+    /// clear函数
+    /// </summary>
+    /// <param name="clearEnemyCache">是否清除敌机object的缓存</param>
+    public void Clear(bool clearAllCache=true)
+    {
+        int i, len;
+        EnemyBase enemy;
+        len = _enemyList.Count;
+        for (i=0;i<len;i++)
+        {
+            enemy = _enemyList[i];
+            if ( enemy != null )
+            {
+                enemy.Clear();
+            }
+        }
+        _enemyList.Clear();
+        if (clearAllCache)
+        {
+            ClearEnemyCache();
+            ClearEnemyObjectCache();
+        }
+    }
+
+    /// <summary>
+    /// 清除敌机的缓存
+    /// </summary>
+    private void ClearEnemyCache()
+    {
+        Stack<EnemyBase> stack;
+        foreach (KeyValuePair<EnemyType, Stack<EnemyBase>> kv in _enemiesPool)
+        {
+            stack = kv.Value;
+            if (stack != null)
+            {
+                stack.Clear();
+            }
+        }
+        _enemiesPool.Clear();
+    }
+
+    /// <summary>
+    /// 清除敌机对象的缓存
+    /// </summary>
+    private void ClearEnemyObjectCache()
+    {
+        Stack<EnemyObjectBase> stack;
+        foreach (KeyValuePair<EnemyObjectType, Stack<EnemyObjectBase>> kv in _enemyObjectsPool)
+        {
+            stack = kv.Value;
+            if (stack != null)
+            {
+                stack.Clear();
+            }
+        }
+        _enemyObjectsPool.Clear();
+    }
+
+    private void ClearBossRefData()
+    {
+
     }
 }

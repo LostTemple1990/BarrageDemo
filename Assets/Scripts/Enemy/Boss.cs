@@ -44,13 +44,16 @@ public class Boss : EnemyBase
         :base()
     {
         _type = EnemyType.Boss;
-        _movableObj = new MovableObject();
         _segmentGoList = new List<GameObject>();
     }
 
     public void Init(string bossName)
     {
         _bossName = bossName;
+        if ( _movableObj == null )
+        {
+            _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
+        }
         _refData = EnemyManager.GetInstance().GetRefDataByName(bossName);
         InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
         InterpreterManager.GetInstance().CallLuaFunction(_refData.initFuncRef, 1);
@@ -365,7 +368,6 @@ public class Boss : EnemyBase
 
     public override void Clear()
     {
-        base.Clear();
         if ( _bossTask != null )
         {
             if ( !_bossTask.isFinish )
@@ -375,5 +377,20 @@ public class Boss : EnemyBase
             ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(_bossTask);
             _bossTask = null;
         }
+        // BOSS动画
+        AnimationManager.GetInstance().RemoveAnimation(_bossAni);
+        _bossAni = null;
+        // 血条部分
+        _bloodBarSp = null;
+        _bloodBarLayerTf = null;
+        _segmentGoList.Clear();
+        _weights.Clear();
+        GameObject.Destroy(_enemyGo);
+        // 符卡数据
+        _sc = null;
+        // movableObject
+        ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObj);
+        _movableObj = null;
+        base.Clear();
     }
 }

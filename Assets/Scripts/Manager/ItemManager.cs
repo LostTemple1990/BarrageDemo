@@ -18,6 +18,9 @@ public class ItemManager
         _dropDatabase = DataManager.GetInstance().GetDatasByName("DropItemsCfgs") as Dictionary<string, IParser>;
         _itemsPool = new Dictionary<ItemType, Stack<ItemBase>>();
         //_itemTypeList = new List<ItemType>() { ItemType.PPointNormal, ItemType.PPointBig };
+        // 初始化最大的缓存数目
+        _maxCacheCountDatas = new Dictionary<ItemType, int>();
+        _maxCacheCountDatas.Add(ItemType.PPointNormal, 100); // 小P点
     }
 
     private Dictionary<string, IParser> _dropDatabase;
@@ -29,6 +32,10 @@ public class ItemManager
     private int _clearListCount;
 
     private Dictionary<ItemType, Stack<ItemBase>> _itemsPool;
+    /// <summary>
+    /// 对应最大的缓存数目
+    /// </summary>
+    private Dictionary<ItemType, int> _maxCacheCountDatas;
 
     //private List<ItemType> _itemTypeList;
 
@@ -63,6 +70,7 @@ public class ItemManager
 
     /// <summary>
     /// 将clearList里面的item放回pool
+    /// <para>todo 每隔一段时间再检测一次</para>
     /// </summary>
     private void ClearItems()
     {
@@ -182,6 +190,65 @@ public class ItemManager
             item.Clear();
             stack.Push(item);
         }
+    }
+
+    /// <summary>
+    /// Clear函数
+    /// <para>ItemManager执行clear不清除对象池</para>
+    /// <para>会针对每个item设置一个最大数目</para>
+    /// <para>会定期清除高于这个最大数目的部分</para>
+    /// </summary>
+    public void Clear()
+    {
+        int i;
+        ItemBase item;
+        for (i = 0; i < _itemCount; i++)
+        {
+            item = _itemList[i];
+            if ( item != null )
+            {
+                RestoreToPool(item);
+            }
+        }
+        _itemList.Clear();
+        _itemCount = 0;
+    }
+
+    /// <summary>
+    /// 清除额外的item的cache
+    /// </summary>
+    /// <returns>返回true说明已经执行过销毁</returns>
+    public bool DestroyExtraCache()
+    {
+        Dictionary<ItemType,Stack<ItemBase>>.KeyCollection keys = _itemsPool.Keys;
+        Stack<ItemBase> stack;
+        ItemBase item;
+        foreach (ItemType type in keys)
+        {
+            int maxCacheCount;
+            if ( _maxCacheCountDatas.TryGetValue(type,out maxCacheCount) )
+            {
+                if ( _itemsPool.TryGetValue(type, out stack) )
+                {
+                    int stackCount = stack.Count;
+                    if ( stack.Count > maxCacheCount )
+                    {
+                        int count = 0;
+                        while ( count <= Consts.MaxDestroyCountPerFrame && stackCount > maxCacheCount )
+                        {
+                            // 销毁对象
+                            item = stack.Pop();
+                            item.Destroy();
+                            // 更新计数
+                            count++;
+                            stackCount--;
+                        }
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
 

@@ -85,4 +85,9 @@ public class Consts
     public const string STGMainViewAtlasName = "STGMainViewAtlas";
     public const string STGCommonAtlasName = "STGCommonAtlas";
     public const string STGBulletsAtlasName = "STGBulletsAtlas";
+
+    /// <summary>
+    /// 每帧最多销毁的对象的个数
+    /// </summary>
+    public const int MaxDestroyCountPerFrame = 10;
 }
