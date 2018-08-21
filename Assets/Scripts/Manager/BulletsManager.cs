@@ -242,4 +242,32 @@ public class BulletsManager
             }
         }
     }
+
+    public void Clear()
+    {
+        int tmpCount, i, j;
+        BulletBase bullet;
+        // 己方子弹
+        tmpCount = _playerBullets.Count;
+        for (i=0;i<tmpCount;i++)
+        {
+            bullet = _playerBullets[i];
+            if ( bullet != null )
+            {
+                bullet.Clear();
+            }
+        }
+        _playerBullets.Clear();
+        // 敌方子弹
+        tmpCount = _enemyBullets.Count;
+        for (i = 0; i < tmpCount; i++)
+        {
+            bullet = _enemyBullets[i];
+            if (bullet != null)
+            {
+                bullet.Clear();
+            }
+        }
+        _enemyBullets.Clear();
+    }
 }

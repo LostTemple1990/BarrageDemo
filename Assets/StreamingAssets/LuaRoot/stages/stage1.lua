@@ -49,6 +49,7 @@ CustomizedTable.ReboundLinearLaser = {}
 CustomizedTable.ReboundLinearLaser.Init = function(laser,posX,posY,reboundPara,reboundCount)
 	lib.SetBulletPos(laser,posX,posY)
 	lib.AddBulletTask(laser,function()
+		lib.SetLinearLaserHeadEnable(laser,true,consts.eLaserHeadTypeBlue)
 		for _=1,Infinite do
 			if reboundCount > 0 then
 				local reboundFlag = 0
@@ -691,7 +692,7 @@ function stage1.StageTask()
 		end)
 		--测试直线激光
 		lib.AddEnemyTask(enemy,function()
-			--if ( coroutine.yield(10000) == false ) then return end
+			if ( coroutine.yield(10000) == false ) then return end
 			local laser,angle,i
 			angle = lib.GetAimToPlayerAngle(lib.GetEnemyPos(enemy))
 			for _=1,Infinite do
@@ -707,13 +708,12 @@ function stage1.StageTask()
 		end)
 		--测试自定义直线激光
 		lib.AddEnemyTask(enemy,function()
-			if ( coroutine.yield(10000) == false ) then return end
+			--if ( coroutine.yield(10000) == false ) then return end
 			local laser,i
 			for _=1,Infinite do
 				local posX,posY = lib.GetEnemyPos(enemy)
 				for i=0,10 do
 					laser = lib.CreateCustomizedLinearLaser("ReboundLinearLaser",posX,posY,7,5,4)
-					lib.SetLinearLaserHeadEnable(laser,true,consts.eLaserHeadTypeBlue)
 					lib.SetLinearLaserProps(laser,"etama9_5",45,3.5,15+i*15,0,0)
 				end
 				if ( coroutine.yield(60) == false ) then return end
@@ -721,7 +721,7 @@ function stage1.StageTask()
 		end)
 		--测试曲线激光
 		lib.AddEnemyTask(enemy,function()
-			if ( coroutine.yield(10000) == false ) then return end
+			--if ( coroutine.yield(10000) == false ) then return end
 			local laser,i
 			for i=1,18 do
 				local posX,posY = lib.GetEnemyPos(enemy)

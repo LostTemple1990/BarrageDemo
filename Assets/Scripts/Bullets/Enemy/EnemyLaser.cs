@@ -57,6 +57,11 @@ public class EnemyLaser : EnemyBulletBase
     /// </summary>
     protected bool _isDirty;
 
+    public EnemyLaser()
+    {
+        _prefabName = "Laser";
+    }
+
     public override void Init()
     {
         base.Init();
@@ -75,7 +80,7 @@ public class EnemyLaser : EnemyBulletBase
     {
         if ( _laserObj == null )
         {
-            _laserObj = ResourceManager.GetInstance().GetPrefab("BulletPrefab", "Laser");
+            _laserObj = ResourceManager.GetInstance().GetPrefab("BulletPrefab", _prefabName);
             _objTrans = _laserObj.transform;
             _laser = _objTrans.Find("LaserSprite").GetComponent<SpriteRenderer>();
             _laserTrans = _laser.transform;
@@ -383,8 +388,13 @@ public class EnemyLaser : EnemyBulletBase
 
     public override void Clear()
     {
-        base.Clear();
         UIManager.GetInstance().HideGo(_laserObj);
+        ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _laserObj);
+        _laserObj = null;
+        _objTrans = null;
         _laser.sprite = null;
+        _laser = null;
+        _laserTrans = null;
+        base.Clear();
     }
 }

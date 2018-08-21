@@ -29,7 +29,6 @@ public class GameMain : MonoBehaviour
 
     private void Init()
     {
-        Global.IsPause = false;
         CommandManager.GetInstance().Init();
         DataManager.GetInstance().Init();
         ResourceManager.GetInstance().Init();

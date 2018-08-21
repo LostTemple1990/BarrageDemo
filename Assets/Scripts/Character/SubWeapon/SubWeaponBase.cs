@@ -60,4 +60,11 @@ public class SubWeaponBase
     {
         _subWeapon.SetActive(value);
     }
+
+    public virtual void Clear()
+    {
+        _character = null;
+        _subWeapon = null;
+        _subWeaponRenderer = null;
+    }
 }

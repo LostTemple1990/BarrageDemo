@@ -122,4 +122,12 @@ public class STGMain
         }
         return Global.IsPause;
     }
+
+    public void Clear()
+    {
+        PlayerService.GetInstance().Clear();
+        _char = null;
+        _opController.Clear();
+        BulletsManager.GetInstance().Clear();
+    }
 }

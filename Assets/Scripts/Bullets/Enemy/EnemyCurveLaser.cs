@@ -12,7 +12,6 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     protected GameObject _bullet;
     protected Transform _trans;
-    protected Image _bulletImg;
 
     protected float _curAccAngle;
     protected float _dvx, _dvy;
@@ -63,19 +62,12 @@ public class EnemyCurveLaser : EnemyBulletBase
     {
         _trailsList = new List<Vector3>();
         _id = BulletId.BulletId_Enemy_CurveLaser;
-        _prefabName = "LaserCurve3D";
+        _prefabName = "CurveLaser";
     }
 
     public override void Init()
     {
         base.Init();
-        if (_bullet == null)
-        {
-            //_bullet = ResourceManager.GetInstance().GetPrefab("Prefab", "EnemyBulletNormal");
-            //_trans = _bullet.transform;
-            //_bulletImg = _bullet.GetComponent<Image>();
-            //UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.EnemyBarrage);
-        }
         _isMoving = false;
         // 先写死激光最大长度
         _maxTrailLen = 45;
@@ -84,27 +76,24 @@ public class EnemyCurveLaser : EnemyBulletBase
         _collisionRadius = 3;
         if ( _movableObj == null )
         {
-            _movableObj = new MovableObject();
+            _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
         }
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
     }
 
     public override void SetBulletTexture(string texture)
     {
-        //_bulletImg.texture = ResourceManager.GetInstance().GetTexture("etama",texture);
-
-        //TimeUtil.BeginSample(100);
-        //_bulletImg.sprite = ResourceManager.GetInstance().GetResource<Sprite>("etama", texture);
-        //TimeUtil.EndSample();
-        //_bulletImg.SetNativeSize();
-        _bullet = ObjectsPool.GetInstance().CreateBulletPrefab(_prefabName);
+        if ( _bullet == null )
+        {
+            _bullet = ResourceManager.GetInstance().GetPrefab("BulletPrefab", _prefabName);
+        }
         _trans = _bullet.transform;
         Transform laserTrans = _trans.Find("LaserObject");
         _mesh = laserTrans.GetComponent<MeshFilter>().mesh;
+        // 设置sortingLayer
         MeshRenderer renderer = laserTrans.GetComponent<MeshRenderer>();
         renderer.sortingLayerName = "STG";
-        // todo resourceManager.getTexture以后需要改成正式的
-        //renderer.material.mainTexture = ResourceManager.GetInstance().GetTexture("etama9", texture);
+        // todo 以后根据名称/配置来设置显示
         int index = int.Parse(texture.Substring(texture.IndexOf('_') + 1));
         //renderer.material.SetFloat("_Index", index);
         _textureIndex = index;
@@ -384,12 +373,17 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     public override void Clear()
     {
-        base.Clear();
         _trailsList.Clear();
         _curTrailLen = _maxTrailLen = 0;
         _mesh.Clear();
+        _mesh = null;
         UIManager.GetInstance().RemoveGoFromLayer(_bullet);
         ObjectsPool.GetInstance().RestoreBullet(_prefabName, _bullet);
         _bullet = null;
+        _trans = null;
+        // 清除movableObject
+        ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObj);
+        _movableObj = null;
+        base.Clear();
     }
 }

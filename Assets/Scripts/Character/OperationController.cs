@@ -105,4 +105,9 @@ public class OperationController
             _character.InputBomb = false;
         }
     }
+
+    public void Clear()
+    {
+        _character = null;
+    }
 }

@@ -55,11 +55,29 @@ public class EnemyLinearLaser : EnemyBulletBase
     protected float _laserHalfWidth;
     protected bool _isSized;
 
+    /// <summary>
+    /// 激光本体Object
+    /// </summary>
     protected GameObject _laserObj;
+    /// <summary>
+    /// 激光本体tf
+    /// </summary>
     protected Transform _objTrans;
+    /// <summary>
+    /// 射线部分的sp
+    /// </summary>
     protected SpriteRenderer _laser;
+    /// <summary>
+    /// 射线部分的tf
+    /// </summary>
     protected Transform _laserTrans;
+    /// <summary>
+    /// 激光头部tf
+    /// </summary>
     protected Transform _headTf;
+    /// <summary>
+    /// 激光头部sp
+    /// </summary>
     protected SpriteRenderer _headSp;
 
     protected int _existTime;
@@ -81,7 +99,7 @@ public class EnemyLinearLaser : EnemyBulletBase
     public EnemyLinearLaser()
     {
         _pathList = new List<Vector2>();
-        _movableObj = new MovableObject();
+        _prefabName = "LinearLaser";
     }
 
     public override void Init()
@@ -98,13 +116,13 @@ public class EnemyLinearLaser : EnemyBulletBase
         _pathEndIndex = -1;
         _clearFlag = 0;
         _isHeadEnable = false;
-    }
-
-    public override void SetBulletTexture(string texture)
-    {
+        if ( _movableObj == null )
+        {
+            _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
+        }
         if (_laserObj == null)
         {
-            _laserObj = ResourceManager.GetInstance().GetPrefab("BulletPrefab", "Laser");
+            _laserObj = ResourceManager.GetInstance().GetPrefab("BulletPrefab", _prefabName);
             _objTrans = _laserObj.transform;
             _laser = _objTrans.Find("LaserSprite").GetComponent<SpriteRenderer>();
             _laserTrans = _laser.transform;
@@ -112,6 +130,10 @@ public class EnemyLinearLaser : EnemyBulletBase
             _headSp = _headTf.GetComponent<SpriteRenderer>();
             UIManager.GetInstance().AddGoToLayer(_laserObj, LayerId.EnemyBarrage);
         }
+    }
+
+    public override void SetBulletTexture(string texture)
+    {
         _textureName = texture;
         _laser.sprite = ResourceManager.GetInstance().GetResource<Sprite>("etama9", texture);
         _laser.size = Vector2.zero;
@@ -344,10 +366,22 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     public override void Clear()
     {
-        base.Clear();
         UIManager.GetInstance().HideGo(_laserObj);
+        ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _laserObj);
+        _laserObj = null;
+        _objTrans = null;
+        // 清除射线部分
         _laser.sprite = null;
+        _laser = null;
+        _laserTrans = null;
+        // 激光头部
         _headSp.sprite = null;
+        _headSp = null;
+        _headTf = null;
         _pathList.Clear();
+        // movableObject
+        ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObj);
+        _movableObj = null;
+        base.Clear();
     }
 }

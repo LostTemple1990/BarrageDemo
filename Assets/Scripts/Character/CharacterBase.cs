@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class CharacterBase :ICollisionObject,IGrazeObject{
     protected double _hitRadius = 0d;
     protected GameObject _character;
-    protected Animator _anim;
     protected Transform _trans;
     protected Transform _subLayerTrans;
     /// <summary>
@@ -524,8 +523,33 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
 
     public void Clear()
     {
+        // 人物动画
+        _aniChar.Clear();
+        _aniChar = null;
+        _charAniSp.sprite = null;
+        _charAniSp = null;
         _isCastingBomb = false;
+        // B
         _bomb.Clear();
+        _bomb = null;
+        // 副武器
+        _subLayerTrans = null;
+        for (int i=0;i<_subWeapons.Length;i++)
+        {
+            _subWeapons[i].Clear();
+        }
+        _subWeapons = null;
+        // 销毁
+        GameObject.Destroy(_character);
+        _character = null;
+        // 判定点
+        GameObject.Destroy(_collisionPointTf.gameObject);
+        _collisionPointTf = null;
+        _rotatePointTf = null;
+        // 状态机
+        _stateEnterFunc = null;
+        _stateExitFunc = null;
+        _stateUpdateFunc = null;
     }
 
     /// <summary>

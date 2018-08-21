@@ -17,7 +17,7 @@ public class EnemyBulletBase :BulletBase
     /// <summary>
     /// 标识不会被某些东西消除
     /// </summary>
-    protected int _resistEliminateFlag = 0;
+    protected int _resistEliminateFlag;
     /// <summary>
     /// 是否已经擦过弹
     /// </summary>
@@ -46,6 +46,7 @@ public class EnemyBulletBase :BulletBase
         _isGrazed = false;
         _grazeCoolDown = 0;
         _scaleFactor = 1f;
+        _resistEliminateFlag = 0;
     }
 
     /// <summary>

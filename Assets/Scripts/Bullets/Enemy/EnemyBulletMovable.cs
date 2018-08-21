@@ -191,11 +191,11 @@ public class EnemyBulletMovable : EnemyBulletBase
 
     public override void Clear()
     {
-        base.Clear();
         UIManager.GetInstance().RemoveGoFromLayer(_bullet);
         ObjectsPool.GetInstance().RestoreBullet(_prefabName, _bullet);
         _bullet = null;
         _trans = null;
+        base.Clear();
     }
 
     #region 设置/获取移动参数的相关public方法

@@ -204,6 +204,15 @@ public class AnimationBase
             _aniParent.SetActive(false);
             ObjectsPool.GetInstance().RestorePrefabToPool("AniParent",_aniParent);
         }
+        else
+        {
+            GameObject.Destroy(_aniParent);
+        }
+        _spList = null;
+        _renderer = null;
+        _trans = null;
+        _aniTf = null;
+        _aniObject = null;
         _aniParent = null;
         _completeCBFunc = null;
         _completeCBPara = null;

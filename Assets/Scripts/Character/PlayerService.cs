@@ -68,4 +68,10 @@ public class PlayerService
     {
         return _graze;
     }
+
+    public void Clear()
+    {
+        _character.Clear();
+        _character = null;
+    }
 }

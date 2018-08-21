@@ -280,10 +280,9 @@ public class EnemyBulletSimple : EnemyBulletMovable
             _spRenderer.color = _originalColor;
             _colorIsChange = false;
         }
-        base.Clear();
         _spRenderer = null;
-        _isInUnrealState = false;
         _cfg = null;
+        base.Clear();
     }
 
     public override bool Eliminate(eEliminateDef eliminateType = eEliminateDef.ForcedDelete)

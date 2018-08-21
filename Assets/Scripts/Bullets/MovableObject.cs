@@ -256,6 +256,6 @@ public class MovableObject : IPoolClass
 
     public virtual void Clear()
     {
-        _moveFunc = null;
+        Reset();
     }
 }
