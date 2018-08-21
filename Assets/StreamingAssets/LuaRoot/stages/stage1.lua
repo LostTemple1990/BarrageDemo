@@ -664,7 +664,7 @@ end
 
 function stage1.StageTask()
 	lib.PlaySound("bgm",true)
-	coroutine.yield(200);
+	if coroutine.yield(200) == false then return end
 	do
 		--local enemy = lib.CreateNormalEnemyById("0000",0,185);
 		local enemy = lib.CreateCustomizedEnemy("TestKillEnemy","0000",0,185,0)
@@ -732,11 +732,11 @@ function stage1.StageTask()
 			end
 		end)
 	end
-	coroutine.yield(10000)
+	if coroutine.yield(10000) == false then return end
 	do
 		local boss = lib.CreateBoss("MidBoss")
 	end
-	coroutine.yield(10000)
+	if coroutine.yield(10000) == false then return end
 	--自定义子弹
 	do
 		local enemy = lib.CreateNormalEnemyById("0001",0,280)

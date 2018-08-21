@@ -206,5 +206,7 @@ public class ShakeEffect : STGEffectBase
     public override void Clear()
     {
         _shakeLayerTf.localPosition = Vector3.zero;
+        _camera = null;
+        _shakeLayerTf = null;
     }
 }

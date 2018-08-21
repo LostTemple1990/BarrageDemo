@@ -117,6 +117,22 @@ public class EffectsManager
             effect.FinishEffect();
         }
     }
+
+    public void Clear()
+    {
+        int i;
+        STGEffectBase effect;
+        for (i = 0; i < _effectsCount; i++)
+        {
+            effect = _effectList[i];
+            if (effect != null)
+            {
+                effect.Clear();
+            }
+        }
+        _effectList.Clear();
+        _effectsCount = 0;
+    }
 }
 
 public enum EffectType : byte

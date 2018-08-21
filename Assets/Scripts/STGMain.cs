@@ -3,6 +3,7 @@ using System.Collections;
 
 public class STGMain
 {
+    private bool _isStart;
     OperationController _opController;
     CharacterBase _char;
 
@@ -78,7 +79,12 @@ public class STGMain
 
     public void Init()
     {
+        // 初始化随机数种子
+        long seed = System.DateTime.Now.Ticks % 0xffffffff;
+        MTRandom.Init(seed);
+        // 全局暂停
         Global.IsPause = false;
+        _isStart = false;
         AnimationManager.GetInstance().Init();
         PlayerService.GetInstance().Init();
         _char = PlayerService.GetInstance().GetCharacter();
@@ -89,25 +95,15 @@ public class STGMain
         ItemManager.GetInstance().Init();
 
         InterpreterManager.GetInstance().Init();
-        InterpreterManager.GetInstance().DoStageLua(1);
 
         ExtraTaskManager.GetInstance().Init();
 
         BackgroundManager.GetInstance().Init();
         EffectsManager.GetInstance().Init();
 
-        UIManager.GetInstance().ShowView(WindowName.GameInfoView, null);
-        UIManager.GetInstance().ShowView(WindowName.STGBottomView, null);
-
         // 测试抖动效果
         //ShakeEffect shakeEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ShakeEffect) as ShakeEffect;
         //shakeEffect.DoShake(200, 9999, 6, 1, 5, 3, 15);
-
-        // 初始化随机数种子
-        long seed = System.DateTime.Now.Ticks % 0xffffffff;
-        MTRandom.Init(seed);
-
-        UIManager.GetInstance().ShowView(WindowName.GameMainView);
     }
 
     /// <summary>
@@ -131,6 +127,21 @@ public class STGMain
         BulletsManager.GetInstance().Clear();
         EnemyManager.GetInstance().Clear();
         ItemManager.GetInstance().Clear();
-        //EffectsManager.GetInstance().Cl
+        EffectsManager.GetInstance().Clear();
+        ExtraTaskManager.GetInstance().Clear();
+        BackgroundManager.GetInstance().Clear();
+        InterpreterManager.GetInstance().Clear();
+        _isStart = false;
+    }
+
+    public void EnterStage(int stageId)
+    {
+        InterpreterManager.GetInstance().DoStageLua(stageId);
+        _isStart = true;
+    }
+
+    public bool IsStart
+    {
+        get { return _isStart; }
     }
 }

@@ -10,4 +10,9 @@
     /// 播放人物立绘动画
     /// </summary>
     public const int PlayCharacterCGAni = 2010;
+
+    /// <summary>
+    /// 进入关卡
+    /// </summary>
+    public const int EnterStage = 3000;
 }

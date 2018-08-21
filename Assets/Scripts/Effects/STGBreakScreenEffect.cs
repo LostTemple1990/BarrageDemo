@@ -328,8 +328,11 @@ public class STGBreakScreenEffect : STGEffectBase
         for (i = 0; i < _fragCount;i++)
         {
             fragData = _fragList[i];
-            fragData.meshRenderer.material = null;
+            GameObject.Destroy(fragData.fragTf.gameObject);
+            fragData.fragTf = null;
+            fragData.meshRenderer = null;
         }
+        _fragList.Clear();
         // 销毁材质
         GameObject.Destroy(_fragMat);
         _fragMat = null;

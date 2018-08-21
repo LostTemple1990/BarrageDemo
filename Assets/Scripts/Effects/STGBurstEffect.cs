@@ -201,6 +201,7 @@ class BurstObject
 
     public void Clear()
     {
+        go.SetActive(false);
         ObjectsPool.GetInstance().RestorePrefabToPool("EffectMapleLeaf0", go);
         go = null;
         tf = null;

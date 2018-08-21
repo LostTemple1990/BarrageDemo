@@ -132,6 +132,10 @@ public class BgBlockContainer
 
     public void Clear()
     {
-
+        GameObject.Destroy(_container);
+        _container = null;
+        _containerTf = null;
+        _blockObjList.Clear();
+        _blockObjList = null;
     }
 }

@@ -23,8 +23,6 @@ public class InterpreterManager
 
     private List<LuaPara> _funcParas;
 
-    private Dictionary<int, LuaCoroutineData> _coroutineDic;
-
     private LuaCoroutineData _stageCoData;
 
     private Dictionary<string, int> _customizedInitFuncMap;
@@ -52,9 +50,6 @@ public class InterpreterManager
         _luaState = LuaAPI.NewState();
         _luaState.L_OpenLibs();
         _luaState.L_RequireF("LuaLib", LuaLib.Init, false);
-        //this.loadScript("Utility.lua");
-        //this.loadScript("Constants.lua");
-        //this._params = new List<LuaParam>();
         _luaState.Pop(this._luaState.GetTop());
         // 添加错误log函数
         _luaState.PushCSharpFunction(Traceback);
@@ -65,8 +60,6 @@ public class InterpreterManager
         {
             throw new Exception(_luaState.ToString(-1));
         }
-
-        _coroutineDic = new Dictionary<int, LuaCoroutineData>();
 
         _stageCoData = new LuaCoroutineData
         {
@@ -819,6 +812,79 @@ public class InterpreterManager
     public void Clear()
     {
         _funcParas.Clear();
+        UnrefCustomizedBullets();
+        UnrefCustomizedEnemy();
+        UnrefBoss();
+        ClearStageTask();
+        ClearLuaGlobal();
+    }
+
+    /// <summary>
+    /// 清除自定义子弹的初始化函数
+    /// </summary>
+    private void UnrefCustomizedBullets()
+    {
+        foreach (KeyValuePair<string,int> kv in _customizedInitFuncMap)
+        {
+            string customizedBulletName = kv.Key;
+            int initFuncRef = kv.Value;
+            _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
+            Logger.Log("Unref init function of bullet " + customizedBulletName + " ref = " + initFuncRef);
+        }
+        _customizedInitFuncMap.Clear();
+    }
+
+    /// <summary>
+    /// 清除自定义敌机的函数
+    /// </summary>
+    private void UnrefCustomizedEnemy()
+    {
+        // 敌机初始化函数
+        foreach (KeyValuePair<string, int> kv in _customizedEnemyInitMap)
+        {
+            string customizedEnemyName = kv.Key;
+            int initFuncRef = kv.Value;
+            _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
+            Logger.Log("Unref init function of enemy " + customizedEnemyName + " ref = " + initFuncRef);
+        }
+        _customizedEnemyInitMap.Clear();
+        // 敌机被消灭触发的函数
+        foreach (KeyValuePair<string, int> kv in _customizedEnemyOnEliminateMap)
+        {
+            string customizedEnemyName = kv.Key;
+            int initFuncRef = kv.Value;
+            _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
+            Logger.Log("Unref onEliminate function of enemy " + customizedEnemyName + " ref = " + initFuncRef);
+        }
+        _customizedEnemyOnEliminateMap.Clear();
+    }
+
+    private void UnrefBoss()
+    {
+        Dictionary<string, BossRefData> datas = EnemyManager.GetInstance().GetAllBossRefData();
+        // BOSS部分
+        foreach (KeyValuePair<string, BossRefData> kv in datas)
+        {
+            string bossName = kv.Key;
+            BossRefData refData = kv.Value;
+            _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, refData.initFuncRef);
+            _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, refData.taskFuncRef);
+            Logger.Log("Unref init function of boss " + bossName + " ref = " + refData.initFuncRef + " and " + refData.taskFuncRef);
+        }
+        datas.Clear();
+    }
+
+    private void ClearStageTask()
+    {
+        StopTaskThread(_stageCoData.luaState, _stageCoData.funcRef);
+        _stageCoData.Clear();
+    }
+
+    private void ClearLuaGlobal()
+    {
+        _luaGlobalNumberMap.Clear();
+        _luaGlobalObjectMap.Clear();
+        _luaGlobalVec2Map.Clear();
     }
 }
 

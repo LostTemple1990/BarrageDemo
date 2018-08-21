@@ -211,6 +211,23 @@ public class BackgroundManager
 
     public void Clear()
     {
-
+        int i;
+        foreach (BgBlockContainer container in _containerList)
+        {
+            container.Clear();
+        }
+        _containerList.Clear();
+        _containerCount = 0;
+        BgSpriteObject spObj;
+        for (i = 0; i < _spriteObjCount; i++)
+        {
+            spObj = _spriteObjList[i];
+            if (spObj != null)
+            {
+                ObjectsPool.GetInstance().RestorePoolClassToPool(spObj);
+            }
+        }
+        _spriteObjList.Clear();
+        _spriteObjCount = 0;
     }
 }

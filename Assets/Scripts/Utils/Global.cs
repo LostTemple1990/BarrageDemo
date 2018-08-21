@@ -59,4 +59,6 @@ public class Global
     /// STG游戏是否暂停
     /// </summary>
     public static bool IsPause;
+
+    public static STGMain STGMain;
 }

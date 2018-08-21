@@ -265,6 +265,16 @@ public class EnemyManager
         return refData;
     }
 
+    /// <summary>
+    /// todo 以后这部分全部存到InterpreterManager中
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<string,BossRefData> GetAllBossRefData()
+    {
+        return _bossRefDatabase;
+    }
+    
+
     public void EliminateAllEnemyByCode(bool isIncludingBoss)
     {
         int tmpCount = _enemyList.Count;
