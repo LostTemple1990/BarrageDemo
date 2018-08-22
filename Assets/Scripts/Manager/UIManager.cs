@@ -69,7 +69,9 @@ public class UIManager {
             _viewsMap = new Dictionary<string, ViewBase>();
         }
         _uiRootTf = GameObject.Find("UIRoot").GetComponent<RectTransform>();
-        _layersMap.Add(LayerId.GameUI, _uiRootTf);
+        _layersMap.Add(LayerId.GameUI_Bottom, _uiRootTf.Find("BottomLayer"));
+        _layersMap.Add(LayerId.GameUI_Normal, _uiRootTf.Find("NormalLayer"));
+        _layersMap.Add(LayerId.GameUI_Top, _uiRootTf.Find("TopLayer"));
         if ( _viewUpdateList == null )
         {
             _viewUpdateList = new List<ViewBase>();
@@ -197,7 +199,7 @@ public class UIManager {
                 Transform parentTf;
                 if ( !_layersMap.TryGetValue(view.GetLayerId(),out parentTf) )
                 {
-                    parentTf = _uiRootTf;
+                    parentTf = _uiRootTf.Find("NormalLayer");
                 }
                 viewGO.transform.SetParent(parentTf, false);
             }
@@ -299,5 +301,7 @@ public enum LayerId : int
     GameInfo = 700,
     UI = 100,
     STGBottomView = 110,
-    GameUI = 1000,
+    GameUI_Bottom = 900,
+    GameUI_Normal = 1000,
+    GameUI_Top = 1100,
 }

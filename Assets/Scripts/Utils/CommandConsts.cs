@@ -15,4 +15,12 @@
     /// 进入关卡
     /// </summary>
     public const int EnterStage = 3000;
+    /// <summary>
+    /// STG部分初始化完成
+    /// </summary>
+    public const int STGInitComplete = 3001;
+    /// <summary>
+    /// 解析stage.lua完成
+    /// </summary>
+    public const int STGLoadStageLuaComplete = 3002;
 }

@@ -10,4 +10,7 @@ public class WindowName
     /// 暂停界面
     /// </summary>
     public const string STGPauseView = "STGPauseView";
+
+    public const string GameLoadingView = "GameLoadingView";
+    public const string STGBgLoadingView = "STGBgLoadingView";
 }

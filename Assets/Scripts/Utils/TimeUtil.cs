@@ -35,4 +35,10 @@ public class TimeUtil
             sum = 0;
         }
     }
+
+    public static void LogNowTime()
+    {
+        System.DateTime now = System.DateTime.Now;
+        Logger.Log("NowTime = " + now.Minute + ":" + now.Second + ":" + now.Millisecond);
+    }
 }

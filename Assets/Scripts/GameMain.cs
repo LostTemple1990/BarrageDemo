@@ -41,7 +41,6 @@ public class GameMain : MonoBehaviour
         _fsm.AddState((int)eGameState.STG, new StateSTGMain());
         object[] datas = { 1 };
         _fsm.SetNextStateId((int)eGameState.STG,datas);
-
         Application.targetFrameRate = 60;
     }
 }

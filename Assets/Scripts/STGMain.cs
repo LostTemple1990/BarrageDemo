@@ -101,6 +101,8 @@ public class STGMain
         BackgroundManager.GetInstance().Init();
         EffectsManager.GetInstance().Init();
 
+        CommandManager.GetInstance().RunCommand(CommandConsts.STGInitComplete);
+
         // 测试抖动效果
         //ShakeEffect shakeEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ShakeEffect) as ShakeEffect;
         //shakeEffect.DoShake(200, 9999, 6, 1, 5, 3, 15);
@@ -138,6 +140,7 @@ public class STGMain
     {
         InterpreterManager.GetInstance().DoStageLua(stageId);
         _isStart = true;
+        CommandManager.GetInstance().RunCommand(CommandConsts.STGLoadStageLuaComplete);
     }
 
     public bool IsStart
