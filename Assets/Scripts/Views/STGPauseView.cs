@@ -220,6 +220,7 @@ public class STGPauseView : ViewBase
         // 若当前是子选择界面，返回上一级
         if (_state == StateConfirm)
         {
+            _state = StatePause;
             TweenManager.GetInstance().RemoveTweenByGo(_curYesNoItem);
             _yesNoPanel.SetActive(false);
             SetCurSelectItem(_curSelectIndex);
@@ -269,6 +270,7 @@ public class STGPauseView : ViewBase
             // 返回上一级界面、即返回暂停界面
             if ( _curYesNoIndex == IndexNo )
             {
+                _state = StatePause;
                 TweenManager.GetInstance().RemoveTweenByGo(_curYesNoItem);
                 _yesNoPanel.SetActive(false);
                 SetCurSelectItem(_curSelectIndex);
