@@ -3,7 +3,6 @@ using System.Collections;
 
 public class STGMain
 {
-    private bool _isStart;
     OperationController _opController;
     CharacterBase _char;
 
@@ -84,7 +83,6 @@ public class STGMain
         MTRandom.Init(seed);
         // 全局暂停
         Global.IsPause = false;
-        _isStart = false;
         AnimationManager.GetInstance().Init();
         PlayerService.GetInstance().Init();
         _char = PlayerService.GetInstance().GetCharacter();
@@ -133,18 +131,30 @@ public class STGMain
         ExtraTaskManager.GetInstance().Clear();
         BackgroundManager.GetInstance().Clear();
         InterpreterManager.GetInstance().Clear();
-        _isStart = false;
+    }
+
+    /// <summary>
+    /// 初始化STG的数据、玩家对象、控制器等
+    /// </summary>
+    public void InitSTG()
+    {
+        // 初始化随机数种子
+        long seed = System.DateTime.Now.Ticks % 0xffffffff;
+        MTRandom.Init(seed);
+        // 全局暂停
+        Global.IsPause = false;
+        PlayerService.GetInstance().Init();
+        _char = PlayerService.GetInstance().GetCharacter();
+        _opController = new OperationController();
+        _opController.InitCharacter(_char);
+        BackgroundManager.GetInstance().Init();
+
+        CommandManager.GetInstance().RunCommand(CommandConsts.STGInitComplete);
     }
 
     public void EnterStage(int stageId)
     {
         InterpreterManager.GetInstance().DoStageLua(stageId);
-        _isStart = true;
         CommandManager.GetInstance().RunCommand(CommandConsts.STGLoadStageLuaComplete);
-    }
-
-    public bool IsStart
-    {
-        get { return _isStart; }
     }
 }

@@ -524,7 +524,7 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
     public void Clear()
     {
         // 人物动画
-        _aniChar.Clear();
+        AnimationManager.GetInstance().RemoveAnimation(_aniChar);
         _aniChar = null;
         _charAniSp.sprite = null;
         _charAniSp = null;

@@ -16,9 +16,17 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private const int StateLoadStageLua = 3;
     /// <summary>
+    /// 执行clear
+    /// </summary>
+    private const int StateClear = 4;
+    /// <summary>
+    /// STG开始前的初始化
+    /// </summary>
+    private const int StateInitSTG = 5;
+    /// <summary>
     /// update STG
     /// </summary>
-    private const int StateUpdateSTG = 4;
+    private const int StateUpdateSTG = 6;
 
     private int _curStageId;
     private int _nextStageId;
@@ -50,6 +58,9 @@ public class StateSTGMain : IState,ICommand
             case CommandConsts.STGLoadStageLuaComplete:
                 OnLoadStageLuaComplete();
                 break;
+            case CommandConsts.RetryGame:
+                OnRetryGame();
+                break;
         }
     }
 
@@ -73,10 +84,9 @@ public class StateSTGMain : IState,ICommand
         commandList.Add(CommandConsts.STGLoadStageLuaComplete);
         object[] commandArr = commandList.ToArray();
         UIManager.GetInstance().ShowView(WindowName.GameLoadingView, commandArr);
-        // 实例化MainSTG,初始化参数
-        CommandManager.GetInstance().Register(CommandConsts.STGInitComplete, this);
-        CommandManager.GetInstance().Register(CommandConsts.STGLoadStageLuaComplete, this);
-        CommandManager.GetInstance().Register(CommandConsts.EnterStage, this);
+        // 添加监听
+        CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
+        CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
         // 设置需要载入的stageId
         _nextStageId = (int)datas[0];
         // 实例化STGMain
@@ -89,8 +99,7 @@ public class StateSTGMain : IState,ICommand
 
     public void OnStateExit()
     {
-        CommandManager.GetInstance().Remove(CommandConsts.STGInitComplete, this);
-        CommandManager.GetInstance().Remove(CommandConsts.STGLoadStageLuaComplete, this);
+
     }
 
     public void OnUpdate()
@@ -102,6 +111,14 @@ public class StateSTGMain : IState,ICommand
         else if ( _curState == StateLoadStageLua )
         {
             OnStateLoadStageLuaUpdate();
+        }
+        else if ( _curState == StateClear )
+        {
+            OnStateClearUpdate();
+        }
+        else if ( _curState == StateInitSTG )
+        {
+            OnStateInitSTGUpdate();
         }
         else if ( _curState == StateUpdateSTG )
         {
@@ -135,27 +152,18 @@ public class StateSTGMain : IState,ICommand
         _curState = StateUpdateSTG;
     }
 
-    private void EnterNextStage()
+    /// <summary>
+    /// 重新开始游戏
+    /// </summary>
+    private void OnRetryGame()
     {
-        _curStageId = _nextStageId;
-        _nextStageId = -1;
-        if ( _stgMain.IsStart )
-        {
-            _stgMain.Clear();
-        }
-        else
-        {
-            _stgMain.Init();
-            // 打开界面
-            UIManager.GetInstance().ShowView(WindowName.GameInfoView, null);
-            UIManager.GetInstance().ShowView(WindowName.STGBottomView, null);
-            UIManager.GetInstance().ShowView(WindowName.GameMainView);
-        }
-    }
-
-    private void OnWaitForInitUpdate()
-    {
-
+        _curState = StateClear;
+        _nextStageId = 1;
+        // 打开loadingView
+        List<object> commandList = new List<object>();
+        commandList.Add(CommandConsts.STGLoadStageLuaComplete);
+        object[] commandArr = commandList.ToArray();
+        UIManager.GetInstance().ShowView(WindowName.GameLoadingView, commandArr);
     }
 
     /// <summary>
@@ -163,12 +171,12 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnStateInitSTGMainUpdate()
     {
-        _curState = StateWait;
         _stgMain.Init();
         // 打开界面
         UIManager.GetInstance().ShowView(WindowName.GameInfoView, null);
         UIManager.GetInstance().ShowView(WindowName.STGBottomView, null);
         UIManager.GetInstance().ShowView(WindowName.GameMainView);
+        _curState = StateLoadStageLua;
     }
 
     /// <summary>
@@ -179,5 +187,23 @@ public class StateSTGMain : IState,ICommand
         _curState = StateWait;
         _curStageId = _nextStageId;
         _stgMain.EnterStage(_curStageId);
+        _curState = StateUpdateSTG;
+    }
+
+    /// <summary>
+    /// 执行clear
+    /// </summary>
+    private void OnStateClearUpdate()
+    {
+        _curState = StateWait;
+        _stgMain.Clear();
+        _curState = StateInitSTG;
+    }
+
+
+    private void OnStateInitSTGUpdate()
+    {
+        _stgMain.InitSTG();
+        _curState = StateLoadStageLua;
     }
 }

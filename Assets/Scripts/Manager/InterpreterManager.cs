@@ -327,7 +327,7 @@ public class InterpreterManager
         if ( status == ThreadStatus.LUA_OK )
         {
             _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX,taskFuncRef);
-            Logger.Log("StopTask Success!");
+            Logger.Log("StopTask Success! ref = " + taskFuncRef);
         }
         else
         {

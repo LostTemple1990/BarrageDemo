@@ -86,6 +86,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         if ( _bullet == null )
         {
             _bullet = ResourceManager.GetInstance().GetPrefab("BulletPrefab", _prefabName);
+            UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.EnemyBarrage);
         }
         _trans = _bullet.transform;
         Transform laserTrans = _trans.Find("LaserObject");

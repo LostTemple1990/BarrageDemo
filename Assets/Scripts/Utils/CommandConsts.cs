@@ -23,4 +23,7 @@
     /// 解析stage.lua完成
     /// </summary>
     public const int STGLoadStageLuaComplete = 3002;
+
+    public const int RetryStage = 3010;
+    public const int RetryGame = 3011;
 }

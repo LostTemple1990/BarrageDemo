@@ -247,7 +247,8 @@ public class BombReimuA : BombBase
 
     public override void Clear()
     {
-        for (int i=0;i<BombCount;i++)
+        int count = _bombs.Count;
+        for (int i=0;i< count; i++)
         {
             GameObject.Destroy(_bombs[i]);
         }

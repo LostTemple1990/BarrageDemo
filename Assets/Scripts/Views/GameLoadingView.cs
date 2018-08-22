@@ -37,8 +37,6 @@ public class GameLoadingView : ViewBase ,ICommand
     {
         base.Init(viewObj);
         _bgGo = _viewTf.Find("Background").gameObject;
-        // 设置初始颜色
-        _bgGo.GetComponent<RawImage>().color = new Color(0, 0, 0, 1);
     }
 
     public override void OnShow(object[] datas=null)
@@ -57,6 +55,8 @@ public class GameLoadingView : ViewBase ,ICommand
             }
             _totalWaitCommandCount = count;
         }
+        // 设置初始颜色
+        _bgGo.GetComponent<RawImage>().color = new Color(0, 0, 0, 1);
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
 

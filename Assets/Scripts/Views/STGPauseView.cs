@@ -83,7 +83,6 @@ public class STGPauseView : ViewBase
 
     public override void OnHide()
     {
-        Global.IsPause = false;
         TweenManager.GetInstance().RemoveTweenByGo(_curSelectItem);
         ResetImgColor(_curSelectItem);
     }
@@ -229,6 +228,7 @@ public class STGPauseView : ViewBase
         else if (_state == StatePause)
         {
             Hide();
+            Global.IsPause = false;
         }
     }
 
@@ -242,6 +242,7 @@ public class STGPauseView : ViewBase
             if ( _curSelectIndex == IndexReturnToGame )
             {
                 Hide();
+                Global.IsPause = false;
             }
             else if ( _curSelectIndex == IndexBackToTitle )
             {
@@ -257,6 +258,7 @@ public class STGPauseView : ViewBase
             }
             else if (_curSelectIndex == IndexRetry)
             {
+                _state = StateConfirm;
                 _yesNoPanel.SetActive(true);
                 TweenManager.GetInstance().RemoveTweenByGo(_curSelectItem);
                 SetCurYesNoItem(IndexNo);
@@ -328,7 +330,8 @@ public class STGPauseView : ViewBase
     /// </summary>
     private void OnRetry()
     {
-
+        CommandManager.GetInstance().RunCommand(CommandConsts.RetryGame);
+        Hide();
     }
 
     /// <summary>
