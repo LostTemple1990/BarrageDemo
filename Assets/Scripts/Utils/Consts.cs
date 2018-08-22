@@ -90,4 +90,10 @@ public class Consts
     /// 每帧最多销毁的对象的个数
     /// </summary>
     public const int MaxDestroyCountPerFrame = 10;
+    public const int MaxDestroyPrefabCountPerFrame = 2;
+    public const int MaxDestroyClassCountPerFrame = 2;
+    /// <summary>
+    /// 不执行对象回收的系统繁忙最小值
+    /// </summary>
+    public const int SysBusyValue = 200;
 }

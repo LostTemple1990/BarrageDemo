@@ -25,6 +25,11 @@ public class GameMain : MonoBehaviour
         TweenManager.GetInstance().Update();
         UIManager.GetInstance().Update();
         SoundManager.GetInstance().Update();
+        // 销毁检测
+        if ( Global.SysBusyValue < Consts.SysBusyValue)
+        {
+            ObjectsPool.GetInstance().CheckDestroyPoolObjects();
+        }
     }
 
     private void Init()

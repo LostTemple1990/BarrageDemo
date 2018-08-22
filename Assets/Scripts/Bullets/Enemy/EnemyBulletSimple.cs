@@ -85,7 +85,8 @@ public class EnemyBulletSimple : EnemyBulletMovable
     public override void SetBulletTexture(string texture)
     {
         _prefabName = texture;
-        _bullet = ObjectsPool.GetInstance().CreateBulletPrefab(_prefabName);
+        _bullet = ResourceManager.GetInstance().GetPrefab("BulletPrefab", _prefabName);
+        UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.EnemyBarrage);
         _trans = _bullet.transform;
         _spRenderer = _trans.Find("BulletSprite").GetComponent<SpriteRenderer>();
     }

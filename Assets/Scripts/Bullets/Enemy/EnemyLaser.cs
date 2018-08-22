@@ -60,6 +60,7 @@ public class EnemyLaser : EnemyBulletBase
     public EnemyLaser()
     {
         _prefabName = "Laser";
+        _sysBusyWeight = 3;
     }
 
     public override void Init()

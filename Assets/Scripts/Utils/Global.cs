@@ -59,6 +59,10 @@ public class Global
     /// STG游戏是否暂停
     /// </summary>
     public static bool IsPause;
+    /// <summary>
+    /// 系统繁忙数值
+    /// </summary>
+    public static int SysBusyValue = 0;
 
     public static STGMain STGMain;
 }

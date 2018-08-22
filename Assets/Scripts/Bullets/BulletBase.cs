@@ -30,17 +30,12 @@ public class BulletBase : ICollisionObject
     /// 标识进行边界检测以便回收
     /// </summary>
     protected bool _checkOutOfBorder;
-
     /// <summary>
-    /// 子弹初始化函数
+    /// 系统繁忙权重，用于判断当前系统是否繁忙
+    /// <para>当系统不繁忙时，会从对象池中destroy多余的prefab</para>
     /// </summary>
-    /// <param name="datas">传入的初始参数
-    /// <para>datas[0] Vector3 pos 设定初始位置</para>
-    /// <para>datas[1] float velocity 设定初始速度 单位：像素每60帧</para>
-    /// <para>datas[2] float angle 设定初始角度</para>
-    /// <para>datas[3] float A 设定初始加速度</para>
-    /// <para>datas[4] float angle 设定初始角加速度</para>
-    /// </param>
+    protected int _sysBusyWeight = 1;
+
     public virtual void Init()
     {
         _clearFlag = 0;
@@ -50,6 +45,7 @@ public class BulletBase : ICollisionObject
         _curPos = Vector3.zero;
         _orderInLayer = 0;
         _checkOutOfBorder = true;
+        Global.SysBusyValue += _sysBusyWeight;
     }
 
     public virtual void Update()
@@ -172,7 +168,7 @@ public class BulletBase : ICollisionObject
 
     public virtual void Clear()
     {
-
+        Global.SysBusyValue -= _sysBusyWeight;
     }
 
     public virtual void Destroy()

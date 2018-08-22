@@ -63,6 +63,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         _trailsList = new List<Vector3>();
         _id = BulletId.BulletId_Enemy_CurveLaser;
         _prefabName = "CurveLaser";
+        _sysBusyWeight = 20;
     }
 
     public override void Init()

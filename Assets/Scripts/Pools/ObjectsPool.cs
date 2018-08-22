@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// todo 改成ObjectPool
-/// </summary>
 public class ObjectsPool
 {
     private static ObjectsPool _instance;
@@ -18,10 +15,6 @@ public class ObjectsPool
         return _instance;
     }
 
-    private List<PlayerBulletBase> _playerBullets;
-    private List<PlayerBulletBase> _playerSubBullets;
-    private List<int> _enemyBullets;
-
     private Dictionary<BulletId, Stack<BulletBase>> _bulletsPool;
     private Dictionary<string, Stack<GameObject>> _bulletPrefabsPool;
     private Dictionary<string, Stack<IPoolClass>> _dataClassPool;
@@ -33,7 +26,6 @@ public class ObjectsPool
 
     private void Init()
     {
-        _playerBullets = new List<PlayerBulletBase>();
         _bulletsPool = new Dictionary<BulletId, Stack<BulletBase>>();
         _bulletPrefabsPool = new Dictionary<string, Stack<GameObject>>();
         _dataClassPool = new Dictionary<string, Stack<IPoolClass>>();
@@ -50,30 +42,6 @@ public class ObjectsPool
         if ( bullet != null )
         {
             bullet.Init();
-        }
-        return bullet;
-    }
-
-    public GameObject CreateBulletPrefab(string resName)
-    {
-        GameObject bullet = null;
-        Stack<GameObject> _stack;
-        if ( _bulletPrefabsPool.TryGetValue(resName, out _stack) )
-        {
-            if ( _stack.Count > 0 )
-            {
-                bullet = _stack.Pop();
-            }
-        }
-        else
-        {
-            _stack = new Stack<GameObject>();
-            _bulletPrefabsPool.Add(resName, _stack);
-        }
-        if ( bullet == null )
-        {
-            bullet = ResourceManager.GetInstance().GetPrefab("BulletPrefab", resName);
-            UIManager.GetInstance().AddGoToLayer(bullet, LayerId.EnemyBarrage);
         }
         return bullet;
     }
@@ -142,15 +110,6 @@ public class ObjectsPool
                     break;
                 case BulletId.BulletId_ReimuA_Sub1:
                     bullet = new BulletReimuASub1();
-                    break;
-                case BulletId.BulletId_Enemy_Straight:
-                    bullet = new EnemyBulletStraight();
-                    break;
-                case BulletId.BulletId_Enemy_Rebound:
-                    bullet = new EnemyBulletRebound();
-                    break;
-                case BulletId.BulletId_Enemy_Curve:
-                    bullet = new EnemyBulletCurve();
                     break;
                 case BulletId.BulletId_Enemy_Laser:
                     bullet = new EnemyLaser();
@@ -236,6 +195,59 @@ public class ObjectsPool
             poolCls.Clear();
             _stack.Push(poolCls);
         }
+    }
+
+    /// <summary>
+    /// 检测是否需要销毁额外的对象
+    /// </summary>
+    public bool CheckDestroyPoolObjects()
+    {
+        var keys0 = _bulletPrefabsPool.Keys;
+        // 检测顺序
+        // 1.子弹GameObject
+        foreach(string key in keys0)
+        {
+            Stack<GameObject> stack;
+            GameObject go;
+            if ( _bulletPrefabsPool.TryGetValue(key,out stack) )
+            {
+                int stackCount = stack.Count;
+                if (stackCount > 0 )
+                {
+                    int count = 0;
+                    while ( count < Consts.MaxDestroyPrefabCountPerFrame && stackCount > 0 )
+                    {
+                        go = stack.Pop();
+                        GameObject.Destroy(go);
+                        count++;
+                        stackCount--;
+                    }
+                    return true;
+                }
+            }
+        }
+        // 2.子弹类
+        var keys1 = _bulletsPool.Keys;
+        foreach (BulletId id in keys1)
+        {
+            Stack<BulletBase> stack;
+            if (_bulletsPool.TryGetValue(id, out stack))
+            {
+                int stackCount = stack.Count;
+                if (stackCount > 0)
+                {
+                    int count = 0;
+                    while (count < Consts.MaxDestroyClassCountPerFrame && stackCount > 0)
+                    {
+                        stack.Pop();
+                        count++;
+                        stackCount--;
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
 

@@ -100,6 +100,7 @@ public class EnemyLinearLaser : EnemyBulletBase
     {
         _pathList = new List<Vector2>();
         _prefabName = "LinearLaser";
+        _sysBusyWeight = 3;
     }
 
     public override void Init()
