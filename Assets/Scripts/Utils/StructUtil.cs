@@ -192,3 +192,90 @@ public enum eGameState : int
     Main = 1,
     STG = 3,
 }
+
+#region struct ItemWithFramentsCounter
+/// <summary>
+/// 带碎片的道具计数器
+/// </summary>
+public struct ItemWithFramentsCounter
+{
+    public int itemCount;
+    public int maxItemCount;
+    public int fragmentCount;
+    public int maxFragmentCount;
+
+    public void AddItemCount(int value)
+    {
+        itemCount = Mathf.Min(maxItemCount, itemCount + value);
+    }
+
+    public void AddFragmentCount(int value)
+    {
+        fragmentCount += value;
+        if ( fragmentCount >= maxFragmentCount )
+        {
+            int extraItemCount = fragmentCount / maxFragmentCount;
+            fragmentCount %= maxFragmentCount;
+            itemCount += extraItemCount;
+            // 最大持有数目不能超过maxItemCount以及maxFragmentCount
+            if ( itemCount > maxItemCount )
+            {
+                itemCount = maxItemCount;
+                fragmentCount = maxFragmentCount;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 消耗道具
+    /// </summary>
+    /// <param name="costValue">消耗的数目</param>
+    /// <returns></returns>
+    public bool CostItem(int costValue)
+    {
+        // 当itemCount达到上限时先消耗碎片
+        if ( itemCount >= maxItemCount && fragmentCount >= maxFragmentCount )
+        {
+            costValue -= 1;
+            fragmentCount = 0;
+        }
+        if ( itemCount >= costValue )
+        {
+            itemCount -= costValue;
+            return true;
+        }
+        return false;
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj == null) return false;
+        if (GetType() != obj.GetType()) return false;
+        return Equals((ItemWithFramentsCounter)obj);
+    }
+
+    public bool Equals(ItemWithFramentsCounter obj)
+    {
+        return itemCount == obj.itemCount &&
+            maxItemCount == obj.maxItemCount &&
+            fragmentCount == obj.fragmentCount &&
+            maxFragmentCount == obj.maxFragmentCount;
+    }
+
+    public static bool operator ==(ItemWithFramentsCounter left,ItemWithFramentsCounter right)
+    {
+        if (ReferenceEquals(left, null)) return ReferenceEquals(right, null);
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(ItemWithFramentsCounter left, ItemWithFramentsCounter right)
+    {
+        return !(left == right);
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+}
+#endregion

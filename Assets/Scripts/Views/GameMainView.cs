@@ -31,8 +31,20 @@ public class GameMainView : ViewBase,ICommand
     /// 当前擦弹数
     /// </summary>
     private int _curGraze;
-
+    /// <summary>
+    /// 当前Power
+    /// </summary>
     private int _curPower;
+    /// <summary>
+    /// 当前残机
+    /// </summary>
+    private ItemWithFramentsCounter _curLifeCounter;
+    private List<Image> _lifeImgList;
+    /// <summary>
+    /// 当前符卡
+    /// </summary>
+    private ItemWithFramentsCounter _curSpellCardCounter;
+    private List<Image> _spellCardImgList;
 
     public override void Init(GameObject viewObj)
     {
@@ -50,8 +62,32 @@ public class GameMainView : ViewBase,ICommand
             _curGraze = -1;
             _grazeBitCount = 0;
         }
-        UIManager.GetInstance().RegisterViewUpdate(this);
+        if ( _lifeImgList == null )
+        {
+            _lifeImgList = new List<Image>();
+            for (int i=0;i<Consts.PlayerMaxLifeCount;i++)
+            {
+                _lifeImgList.Add(_viewTf.Find("Info/Life/Count/Life" + i).GetComponent<Image>());
+            }
+        }
+        if (_spellCardImgList == null)
+        {
+            _spellCardImgList = new List<Image>();
+            for (int i = 0; i < Consts.PlayerMaxLifeCount; i++)
+            {
+                _spellCardImgList.Add(_viewTf.Find("Info/SpellCard/Count/SpellCard" + i).GetComponent<Image>());
+            }
+        }
         _curPower = -1;
+    }
+
+    public override void OnShow(object[] data)
+    {
+        base.OnShow(data);
+        // 重新初始化
+        _curLifeCounter = new ItemWithFramentsCounter();
+        _curSpellCardCounter = new ItemWithFramentsCounter();
+        UIManager.GetInstance().RegisterViewUpdate(this);
     }
 
     public void Execute(int cmd,object[] args)
@@ -61,8 +97,11 @@ public class GameMainView : ViewBase,ICommand
 
     public override void Update()
     {
+        if (Global.IsPause) return;
         UpdatePowerValue();
         UpdateGrazeValue();
+        UpdateLifeValue();
+        UpdateSpellCardValue();
     }
 
     /// <summary>
@@ -129,6 +168,54 @@ public class GameMainView : ViewBase,ICommand
             bit++;
         }
         return bit;
+    }
+
+    private void UpdateLifeValue()
+    {
+        ItemWithFramentsCounter lifeCounter = PlayerService.GetInstance().GetLifeCounter();
+        if ( lifeCounter != _curLifeCounter )
+        {
+            _curLifeCounter = lifeCounter;
+            int i;
+            for (i=0;i<_curLifeCounter.itemCount;i++)
+            {
+                _lifeImgList[i].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "life1");
+            }
+            // 有残机碎片且残机没有达到最大值时，显示残机碎片
+            if ( _curLifeCounter.fragmentCount > 0 && _curLifeCounter.itemCount != _curLifeCounter.maxItemCount )
+            {
+                _lifeImgList[i].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "life" + _curLifeCounter.fragmentCount + "/" + _curLifeCounter.maxFragmentCount);
+                i++;
+            }
+            for (;i<Consts.PlayerMaxLifeCount;i++)
+            {
+                _lifeImgList[i].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "life0");
+            }
+        }
+    }
+
+    private void UpdateSpellCardValue()
+    {
+        ItemWithFramentsCounter spellCardCounter = PlayerService.GetInstance().GetSpellCardCounter();
+        if (spellCardCounter != _curSpellCardCounter)
+        {
+            _curSpellCardCounter = spellCardCounter;
+            int i;
+            for (i = 0; i < _curSpellCardCounter.itemCount; i++)
+            {
+                _spellCardImgList[i].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "sc1");
+            }
+            // 有符卡碎片且符卡没有达到最大值时，显示符卡碎片
+            if (_curSpellCardCounter.fragmentCount > 0 && _curSpellCardCounter.itemCount != _curSpellCardCounter.maxItemCount)
+            {
+                _spellCardImgList[i].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "sc" + _curSpellCardCounter.fragmentCount + "/" + _curSpellCardCounter.maxFragmentCount);
+                i++;
+            }
+            for (; i < Consts.PlayerMaxSpellCardCount; i++)
+            {
+                _spellCardImgList[i].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "sc0");
+            }
+        }
     }
 
     public override void OnHide()

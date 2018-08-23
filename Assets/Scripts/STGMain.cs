@@ -78,16 +78,7 @@ public class STGMain
 
     public void Init()
     {
-        // 初始化随机数种子
-        long seed = System.DateTime.Now.Ticks % 0xffffffff;
-        MTRandom.Init(seed);
-        // 全局暂停
-        Global.IsPause = false;
         AnimationManager.GetInstance().Init();
-        PlayerService.GetInstance().Init();
-        _char = PlayerService.GetInstance().GetCharacter();
-        _opController = new OperationController();
-        _opController.InitCharacter(_char);
         BulletsManager.GetInstance().Init();
         EnemyManager.GetInstance().Init();
         ItemManager.GetInstance().Init();
@@ -96,10 +87,7 @@ public class STGMain
 
         ExtraTaskManager.GetInstance().Init();
 
-        BackgroundManager.GetInstance().Init();
         EffectsManager.GetInstance().Init();
-
-        CommandManager.GetInstance().RunCommand(CommandConsts.STGInitComplete);
 
         // 测试抖动效果
         //ShakeEffect shakeEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ShakeEffect) as ShakeEffect;
@@ -141,8 +129,6 @@ public class STGMain
         // 初始化随机数种子
         long seed = System.DateTime.Now.Ticks % 0xffffffff;
         MTRandom.Init(seed);
-        // 全局暂停
-        Global.IsPause = false;
         PlayerService.GetInstance().Init();
         _char = PlayerService.GetInstance().GetCharacter();
         _opController = new OperationController();

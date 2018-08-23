@@ -58,7 +58,7 @@ public class Global
     /// <summary>
     /// STG游戏是否暂停
     /// </summary>
-    public static bool IsPause;
+    public static bool IsPause = true;
     /// <summary>
     /// 系统繁忙数值
     /// </summary>

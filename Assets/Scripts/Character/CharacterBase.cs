@@ -431,10 +431,13 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
         {
             return;
         }
-        _bomb.Start();
-        _curBombCD = _bombCoolDown;
-        SetInvincible(true, _bombInvincibleDuration);
-        _isCastingBomb = true;
+        if ( PlayerService.GetInstance().CastSpellCard() )
+        {
+            _bomb.Start();
+            _curBombCD = _bombCoolDown;
+            SetInvincible(true, _bombInvincibleDuration);
+            _isCastingBomb = true;
+        }
     }
 
     public void SetInvincible(bool isInvincible,int duration)

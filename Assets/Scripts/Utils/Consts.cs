@@ -78,6 +78,30 @@ public class Consts
     /// 玩家满火力
     /// </summary>
     public const int PlayerMaxPower = 400;
+    /// <summary>
+    /// 最大残机数
+    /// </summary>
+    public const int PlayerMaxLifeCount = 8;
+    /// <summary>
+    /// 残机碎片的最大数目
+    /// </summary>
+    public const int PlayerMaxLifeFragmentCount = 5;
+    /// <summary>
+    /// 最大可使用的符卡数
+    /// </summary>
+    public const int PlayerMaxSpellCardCount = 8;
+    /// <summary>
+    /// 符卡碎片最大数目
+    /// </summary>
+    public const int PlayerMaxSpellCardFragmentCount = 5;
+    /// <summary>
+    /// 初始残疾数目
+    /// </summary>
+    public const int STGInitLifeCount = 2;
+    /// <summary>
+    /// 初始符卡数目
+    /// </summary>
+    public const int STGInitSpellCardCount = 3;
 
 
     public const string EffectAtlasName = "STGEffectAtlas";

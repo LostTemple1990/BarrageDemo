@@ -31,7 +31,7 @@ public class StateSTGMain : IState,ICommand
     private int _curStageId;
     private int _nextStageId;
     /// <summary>
-    /// 装嵌状态
+    /// 当前状态
     /// </summary>
     private int _curState;
 
@@ -172,6 +172,10 @@ public class StateSTGMain : IState,ICommand
     private void OnStateInitSTGMainUpdate()
     {
         _stgMain.Init();
+        _stgMain.InitSTG();
+        // 设置初始残机数和符卡数目
+        PlayerService.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
+        PlayerService.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
         // 打开界面
         UIManager.GetInstance().ShowView(WindowName.GameInfoView, null);
         UIManager.GetInstance().ShowView(WindowName.STGBottomView, null);
@@ -187,6 +191,7 @@ public class StateSTGMain : IState,ICommand
         _curState = StateWait;
         _curStageId = _nextStageId;
         _stgMain.EnterStage(_curStageId);
+        Global.IsPause = false;
         _curState = StateUpdateSTG;
     }
 
@@ -204,6 +209,9 @@ public class StateSTGMain : IState,ICommand
     private void OnStateInitSTGUpdate()
     {
         _stgMain.InitSTG();
+        // 设置初始残机数和符卡数目
+        PlayerService.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
+        PlayerService.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
         _curState = StateLoadStageLua;
     }
 }
