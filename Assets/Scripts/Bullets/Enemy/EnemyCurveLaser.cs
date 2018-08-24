@@ -89,6 +89,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         _prefabName = "CurveLaser";
         _sysBusyWeight = 20;
         _availableIndexRangeList = new List<Vector2>();
+        _eliminateRangeList = new List<Vector2>();
     }
 
     public override void Init()
@@ -99,6 +100,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         _laserHalfWidth = 5;
         _collisionRadius = 3;
         _availableCount = 0;
+        _eliminateRangeListCount = 0;
         if ( _movableObj == null )
         {
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
@@ -156,6 +158,7 @@ public class EnemyCurveLaser : EnemyBulletBase
     public override void Update()
     {
         _uvFlag = 0;
+        CheckDivideIntoMultiple();
         UpdateGrazeCoolDown();
         UpdatePath();
         if (IsOutOfBorder())
@@ -163,9 +166,9 @@ public class EnemyCurveLaser : EnemyBulletBase
             _clearFlag = 1;
             return;
         }
-        PopulateMesh1();
+        PopulateMesh();
         //UpdatePos();
-        CheckCollisionWithCharacter();
+        CheckCollisionWithCharacter1();
     }
 
     #region 设置碰撞检测相关参数
@@ -247,51 +250,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         _trailsList.Add(new Vector3(_curPos.x, _curPos.y, 0));
     }
 
-    protected override void Move()
-    {
-        throw new System.NotImplementedException();
-        // 更新速度
-        _vx += _dvx;
-        _vy += _dvy;
-        // 更新位置
-        _curPos.x += _vx;
-        _curPos.y += _vy;
-        // 将当前位置添加到点集中
-        if ( _curTrailLen >= _maxTrailLen )
-        {
-            _uvFlag = 0;
-            _trailsList.RemoveAt(0);
-        }
-        else
-        {
-            _curTrailLen++;
-            if ( _curTrailLen > 2 )
-            {
-                _uvFlag = 1;
-            }
-        }
-        _trailsList.Add(new Vector3(_curPos.x-_relationX,_curPos.y-_relationY,0));
-        if (IsOutOfBorder())
-        {
-            _clearFlag = 1;
-            return;
-        }
-    }
-
-    protected void PopulateMesh()
-    {
-        if ( _curTrailLen >= 2 )
-        {
-            GetVertices();
-            if ( _uvFlag == 1 )
-            {
-                GetTris();
-                GetUVs();
-            }
-        }
-    }
-
-    private void PopulateMesh1()
+    private void PopulateMesh()
     {
         if (_curTrailLen < 2) return;
         int availableCount = _availableIndexRangeList.Count;
@@ -403,67 +362,6 @@ public class EnemyCurveLaser : EnemyBulletBase
         uvs.Add(new Vector2(1, _startV));
     }
 
-    protected void GetVertices()
-    {
-        List<Vector3> verticesList = new List<Vector3>();
-        int i;
-        Vector3 tmpPos0,tmpPos1=Vector3.zero,vec0,vec1;
-        Vector3 tmpVec,normalVec=Vector3.zero;
-        float scale = 1f;
-        for (i=0;i<_curTrailLen-1;i++)
-        {
-            tmpPos0 = _trailsList[i];
-            tmpPos1 = _trailsList[i + 1];
-            // 当前点指向下一个点的向量
-            tmpVec = tmpPos1 - tmpPos0;
-            // 当前点法线向量
-            normalVec = new Vector3(-tmpVec.y, tmpVec.x);
-            normalVec = normalVec.normalized;
-            normalVec *= _laserHalfWidth;
-            vec0 = new Vector3(tmpPos0.x + normalVec.x, tmpPos0.y + normalVec.y, 0);
-            vec1 = new Vector3(tmpPos0.x - normalVec.x, tmpPos0.y - normalVec.y, 0);
-            verticesList.Add(vec0*scale);
-            verticesList.Add(vec1*scale);
-        }
-        verticesList.Add(new Vector3(tmpPos1.x + normalVec.x, tmpPos1.y + normalVec.y, 0)*scale);
-        verticesList.Add(new Vector3(tmpPos1.x - normalVec.x, tmpPos1.y - normalVec.y, 0)*scale);
-        _mesh.vertices = verticesList.ToArray();
-    }
-
-    protected void GetTris()
-    {
-        List<int> tris = new List<int>();
-        int tmpIndex;
-        for (int i=0;i< _curTrailLen-1; i++)
-        {
-            tmpIndex = i * 2;
-            tris.Add(tmpIndex);
-            tris.Add(tmpIndex + 2);
-            tris.Add(tmpIndex + 1);
-            tris.Add(tmpIndex + 2);
-            tris.Add(tmpIndex + 3);
-            tris.Add(tmpIndex + 1);
-        }
-        _mesh.triangles = tris.ToArray();
-    }
-
-    protected void GetUVs()
-    {
-        int segment = _curTrailLen - 1;
-        float segLen = 1f / segment;
-        float u = 0f;
-        List<Vector2> uvs = new List<Vector2>();
-        for (int i=0;i<_curTrailLen-1;i++)
-        {
-            uvs.Add(new Vector2(u, _endV));
-            uvs.Add(new Vector2(u, _startV));
-            u += segLen;
-        }
-        uvs.Add(new Vector2(1, _endV));
-        uvs.Add(new Vector2(1, _startV));
-        _mesh.uv = uvs.ToArray();
-    }
-
     protected virtual void UpdatePos()
     {
         _trans.localPosition = _curPos;
@@ -480,6 +378,72 @@ public class EnemyCurveLaser : EnemyBulletBase
             return true;
         }
         return false;
+    }
+
+    private void CheckCollisionWithCharacter1()
+    {
+        // 一组中检测的个数
+        int numInGroup = 2;
+        int i, j, k, tmpIdx = 0;
+        int startIndex, endIndex;
+        Vector2 availableRange;
+        float minX, minY, maxX, maxY, centerX, centerY, grazeHW, grazeHH, minDis;
+        float playerX = Global.PlayerPos.x;
+        float playerY = Global.PlayerPos.y;
+        Vector3 vecA, vecB, vecP;
+        for (k=0;k<_availableCount;k++)
+        {
+            availableRange = _availableIndexRangeList[k];
+            startIndex = (int)availableRange.x;
+            endIndex = (int)availableRange.y;
+            // 头尾两端不附加判定
+            for (i = startIndex+1; i < endIndex - 1; i = i + numInGroup)
+            {
+                minX = _trailsList[i].x;
+                minY = _trailsList[i].y;
+                maxX = _trailsList[i].x;
+                maxY = _trailsList[i].y;
+                for (j = 1; j < numInGroup; j++)
+                {
+                    tmpIdx = i + j;
+                    if (tmpIdx >= endIndex - 1)
+                    {
+                        // 取回上一个节点的下标
+                        tmpIdx -= 1;
+                        break;
+                    }
+                    minX = _trailsList[tmpIdx].x < minX ? _trailsList[tmpIdx].x : minX;
+                    minY = _trailsList[tmpIdx].y < minY ? _trailsList[tmpIdx].y : minY;
+                    maxX = _trailsList[tmpIdx].x > maxX ? _trailsList[tmpIdx].x : maxX;
+                    maxY = _trailsList[tmpIdx].y > maxY ? _trailsList[tmpIdx].y : maxY;
+                }
+                centerX = (minX + maxX) / 2;
+                centerY = (minY + maxY) / 2;
+                grazeHW = centerX - minX + _collisionRadius;
+                grazeHH = centerY - minY + _collisionRadius;
+                // 检测是否在擦弹范围内
+                if (Mathf.Abs(centerX + _relationX - playerX) <= grazeHW + Global.PlayerGrazeRadius &&
+                     Mathf.Abs(centerY + _relationY - playerY) <= grazeHH + Global.PlayerGrazeRadius)
+                {
+                    if (!_isGrazed)
+                    {
+                        _isGrazed = true;
+                        PlayerService.GetInstance().AddGraze(1);
+                        _grazeCoolDown = GrazeCoolDown;
+                    }
+                    // 检测_trailsList[i]与_trailsList[tmpIdx]之间的线段与玩家的碰撞判定
+                    vecA = new Vector2(_trailsList[i].x + _relationX, _trailsList[i].y + _relationY);
+                    vecB = new Vector2(_trailsList[tmpIdx].x + _relationX, _trailsList[tmpIdx].y + _relationY);
+                    vecP = new Vector2(playerX, playerY);
+                    minDis = MathUtil.GetMinDisFromPointToLineSegment(vecA, vecB, vecP);
+                    if (minDis < _collisionRadius + Global.PlayerCollisionVec.z)
+                    {
+                        EliminateByRange(i, tmpIdx);
+                        PlayerService.GetInstance().GetCharacter().BeingHit();
+                    }
+                }
+            }
+        }
     }
 
     protected virtual void CheckCollisionWithCharacter()
@@ -540,6 +504,12 @@ public class EnemyCurveLaser : EnemyBulletBase
         }
     }
 
+    private void EliminateByRange(int startIndex,int endIndex)
+    {
+        _eliminateRangeList.Add(new Vector2(startIndex, endIndex));
+        _eliminateRangeListCount++;
+    }
+
     /// <summary>
     /// 检测是否因为部分被消除而分隔成多个激光
     /// </summary>
@@ -560,9 +530,15 @@ public class EnemyCurveLaser : EnemyBulletBase
         for (i=0;i<_eliminateRangeListCount;i++)
         {
             eliminateRange = _eliminateRangeList[i];
+            Logger.Log("--------------------------------------------------");
+            Logger.Log("eliminateRange = " + eliminateRange);
             for (j = 0; j < availableCount; j++)
             {
                 availableRange = _availableIndexRangeList[j];
+                if ( eliminateRange.x >= availableRange.y || eliminateRange.y <= availableRange.x )
+                {
+                    continue;
+                }
                 //分四种情况，上为eliminateRange，下为availableRange
                 // 最优先判断会被全部截取掉的情况
                 //    ----------
@@ -599,6 +575,12 @@ public class EnemyCurveLaser : EnemyBulletBase
                     _availableIndexRangeList[j] = divideRange0;
                 }
             }
+            Logger.Log("----------  availableRange  -------------------------");
+            for (j = 0; j < availableCount; j++)
+            {
+                Logger.Log(_availableIndexRangeList[j]);
+            }
+            Logger.Log("--------------------------------------------------");
         }
         _eliminateRangeList.Clear();
         _eliminateRangeListCount = 0;
