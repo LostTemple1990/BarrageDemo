@@ -57,6 +57,30 @@ public class EnemyCurveLaser : EnemyBulletBase
     /// </summary>
     protected float _collisionRadius;
     #endregion
+    /// <summary>
+    /// 消去的范围
+    /// </summary>
+    private List<Vector2> _eliminateRangeList;
+    /// <summary>
+    /// 消去的范围数目
+    /// </summary>
+    private int _eliminateRangeListCount;
+    /// <summary>
+    /// 路径起始下标
+    /// </summary>
+    private int _pathBeginIndex;
+    /// <summary>
+    /// 路径结束下标
+    /// </summary>
+    private int _pathEndIndex;
+    /// <summary>
+    /// 有效的路径下标范围
+    /// </summary>
+    private List<Vector2> _availableIndexRangeList;
+    /// <summary>
+    /// 有效的激光段数目
+    /// </summary>
+    private int _availableCount;
 
     public EnemyCurveLaser()
     {
@@ -64,17 +88,17 @@ public class EnemyCurveLaser : EnemyBulletBase
         _id = BulletId.BulletId_Enemy_CurveLaser;
         _prefabName = "CurveLaser";
         _sysBusyWeight = 20;
+        _availableIndexRangeList = new List<Vector2>();
     }
 
     public override void Init()
     {
         base.Init();
         _isMoving = false;
-        // 先写死激光最大长度
-        _maxTrailLen = 45;
         _curTrailLen = 0;
         _laserHalfWidth = 5;
         _collisionRadius = 3;
+        _availableCount = 0;
         if ( _movableObj == null )
         {
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
@@ -111,6 +135,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         _movableObj.SetPos(0, 0);
         _relationX = posX;
         _relationY = posY;
+        _trailsList.Add(Vector3.zero);
     }
 
     /// <summary>
@@ -130,6 +155,7 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     public override void Update()
     {
+        _uvFlag = 0;
         UpdateGrazeCoolDown();
         UpdatePath();
         if (IsOutOfBorder())
@@ -137,7 +163,7 @@ public class EnemyCurveLaser : EnemyBulletBase
             _clearFlag = 1;
             return;
         }
-        PopulateMesh();
+        PopulateMesh1();
         //UpdatePos();
         CheckCollisionWithCharacter();
     }
@@ -145,6 +171,7 @@ public class EnemyCurveLaser : EnemyBulletBase
     #region 设置碰撞检测相关参数
     public override void SetCollisionDetectParas(CollisionDetectParas paras)
     {
+        _collisionParas = paras;
         _collisionRadius = paras.radius;
     }
 
@@ -152,6 +179,11 @@ public class EnemyCurveLaser : EnemyBulletBase
     {
         _grazeHalfWidth = paras.halfWidth;
         _grazeHalfHeight = paras.halfHeight;
+    }
+
+    public override CollisionDetectParas GetCollisionDetectParas()
+    {
+        return _collisionParas;
     }
     #endregion
 
@@ -178,15 +210,38 @@ public class EnemyCurveLaser : EnemyBulletBase
         // 将当前位置添加到点集中
         if (_curTrailLen >= _maxTrailLen)
         {
-            _uvFlag = 0;
             _trailsList.RemoveAt(0);
         }
         else
         {
+            // 长度增加，因此要修改availableRangeList
             _curTrailLen++;
-            if (_curTrailLen > 2)
+            if ( _availableCount == 0 )
             {
-                _uvFlag = 1;
+                // 添加第一段
+                _availableIndexRangeList.Add(new Vector2(0, 1));
+                _availableCount = 1;
+            }
+            else
+            {
+                // 先检测第一段是否在起始位置
+                Vector2 availableRange = _availableIndexRangeList[0];
+                if ( availableRange.x == 0 )
+                {
+                    availableRange.y += 1;
+                    _availableIndexRangeList[0] = availableRange;
+                }
+                else
+                {
+                    // 插入(0,1)段
+                    _availableIndexRangeList.Add(new Vector2(0, 1));
+                    _availableCount++;
+                }
+                for (int i=1;i<_availableCount;i++)
+                {
+                    availableRange = _availableIndexRangeList[i];
+                    _availableIndexRangeList[i] = new Vector2(availableRange.x + 1, availableRange.y + 1);
+                }
             }
         }
         _trailsList.Add(new Vector3(_curPos.x, _curPos.y, 0));
@@ -194,6 +249,7 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     protected override void Move()
     {
+        throw new System.NotImplementedException();
         // 更新速度
         _vx += _dvx;
         _vy += _dvy;
@@ -233,6 +289,118 @@ public class EnemyCurveLaser : EnemyBulletBase
                 GetUVs();
             }
         }
+    }
+
+    private void PopulateMesh1()
+    {
+        if (_curTrailLen < 2) return;
+        int availableCount = _availableIndexRangeList.Count;
+        int i, j,startIndex,endIndex,tmpVerCount,totalVerCount;
+        List<Vector3> tmpVerticesList = new List<Vector3>();
+        List<Vector3> meshVerticesList = new List<Vector3>();
+        List<int> triList = new List<int>();
+        List<Vector2> uvList = new List<Vector2>();
+        // 遍历availableIndexRange，计算需要渲染的顶点
+        totalVerCount = 0;
+        for (i=0;i<availableCount;i++)
+        {
+            startIndex = (int)_availableIndexRangeList[i].x;
+            endIndex = (int)_availableIndexRangeList[i].y;
+            if ( endIndex - startIndex >= 1 )
+            {
+                tmpVerCount = GetVertices(startIndex, endIndex, tmpVerticesList);
+                meshVerticesList.AddRange(tmpVerticesList);
+                AddTris(totalVerCount, tmpVerCount, triList);
+                AddUVs(startIndex, endIndex, uvList);
+                // 更新总顶点数
+                totalVerCount += tmpVerCount;
+                tmpVerticesList.Clear();
+            }
+        }
+        // 渲染
+        _mesh.Clear();
+        //Logger.Log("Vertices Len = " + meshVerticesList.Count + " uv len = " + uvList.Count);
+        _mesh.vertices = meshVerticesList.ToArray();
+        _mesh.triangles = triList.ToArray();
+        _mesh.uv = uvList.ToArray();
+    }
+
+    /// <summary>
+    /// 计算需要渲染的顶点
+    /// </summary>
+    /// <param name="startIndex"></param>
+    /// <param name="endIndex"></param>
+    /// <param name="verticesList"></param>
+    /// <returns>顶点个数</returns>
+    private int GetVertices(int startIndex,int endIndex,List<Vector3> verticesList)
+    {
+        int i;
+        Vector3 tmpPos0, tmpPos1 = Vector3.zero, vec0, vec1;
+        Vector3 tmpVec, normalVec = Vector3.zero;
+        float scale = 1f;
+        for (i = startIndex; i < endIndex; i++)
+        {
+            tmpPos0 = _trailsList[i];
+            tmpPos1 = _trailsList[i + 1];
+            // 当前点指向下一个点的向量
+            tmpVec = tmpPos1 - tmpPos0;
+            // 当前点法线向量
+            normalVec = new Vector3(-tmpVec.y, tmpVec.x);
+            normalVec = normalVec.normalized;
+            normalVec *= _laserHalfWidth;
+            vec0 = new Vector3(tmpPos0.x + normalVec.x, tmpPos0.y + normalVec.y, 0);
+            vec1 = new Vector3(tmpPos0.x - normalVec.x, tmpPos0.y - normalVec.y, 0);
+            verticesList.Add(vec0 * scale);
+            verticesList.Add(vec1 * scale);
+        }
+        verticesList.Add(new Vector3(tmpPos1.x + normalVec.x, tmpPos1.y + normalVec.y, 0) * scale);
+        verticesList.Add(new Vector3(tmpPos1.x - normalVec.x, tmpPos1.y - normalVec.y, 0) * scale);
+        return (endIndex-startIndex)<<1;
+    }
+
+    /// <summary>
+    /// 增加三角形
+    /// </summary>
+    /// <param name="startIndex">起始点下标</param>
+    /// <param name="count">数目</param>
+    /// <param name="tris">添加到的三角形数组</param>
+    private void AddTris(int startIndex, int count,List<int> tris)
+    {
+        int tmpIndex;
+        for (int i = 0; i < count - 2; i+=2)
+        {
+            tmpIndex = startIndex + i;
+            tris.Add(tmpIndex);
+            tris.Add(tmpIndex + 2);
+            tris.Add(tmpIndex + 1);
+            tris.Add(tmpIndex + 2);
+            tris.Add(tmpIndex + 3);
+            tris.Add(tmpIndex + 1);
+        }
+    }
+
+    /// <summary>
+    /// 添加uv
+    /// <para>注意：这个下标是指轨迹点的下标</para>
+    /// <para>而不是mesh中顶点对应的下标</para>
+    /// <para>一个下标对应2个vertices</para>
+    /// </summary>
+    /// <param name="startIndex">轨迹点起始下标</param>
+    /// <param name="endIndex">轨迹点结束下标</param>
+    /// <param name="uvs"></param>
+    private void AddUVs(int startIndex,int endIndex,List<Vector2> uvs)
+    {
+        int segment = endIndex - startIndex;
+        float segLen = 1f / segment;
+        float u = 0f;
+        for (int i = 0; i < segment; i++)
+        {
+            uvs.Add(new Vector2(u, _endV));
+            uvs.Add(new Vector2(u, _startV));
+            u += segLen;
+        }
+        uvs.Add(new Vector2(1, _endV));
+        uvs.Add(new Vector2(1, _startV));
     }
 
     protected void GetVertices()
@@ -314,7 +482,6 @@ public class EnemyCurveLaser : EnemyBulletBase
         return false;
     }
 
-
     protected virtual void CheckCollisionWithCharacter()
     {
         // 一组中检测的个数
@@ -373,6 +540,70 @@ public class EnemyCurveLaser : EnemyBulletBase
         }
     }
 
+    /// <summary>
+    /// 检测是否因为部分被消除而分隔成多个激光
+    /// </summary>
+    private void CheckDivideIntoMultiple()
+    {
+        if (_eliminateRangeListCount == 0) return;
+        DivideAvailableRange();
+    }
+
+    /// <summary>
+    /// 根据被消除的部分重新分割激光的有效范围
+    /// </summary>
+    private void DivideAvailableRange()
+    {
+        int i,j;
+        Vector2 eliminateRange,availableRange,divideRange0,divideRange1;
+        int availableCount = _availableIndexRangeList.Count;
+        for (i=0;i<_eliminateRangeListCount;i++)
+        {
+            eliminateRange = _eliminateRangeList[i];
+            for (j = 0; j < availableCount; j++)
+            {
+                availableRange = _availableIndexRangeList[j];
+                //分四种情况，上为eliminateRange，下为availableRange
+                // 最优先判断会被全部截取掉的情况
+                //    ----------
+                //      ------
+                if (eliminateRange.x <= availableRange.x && eliminateRange.y >= availableRange.y)
+                {
+                    _availableIndexRangeList.RemoveAt(j);
+                    availableCount--;
+                    j--;
+                }
+                //    ---------
+                //  -----
+                else if ( eliminateRange.x >= availableRange.x && eliminateRange.y >= availableRange.y )
+                {
+                    divideRange0 = new Vector2(availableRange.x, eliminateRange.x);
+                    _availableIndexRangeList[j] = divideRange0;
+                }
+                //    ---------
+                //  -------------
+                else if (eliminateRange.x >= availableRange.x && eliminateRange.y <= availableRange.y )
+                {
+                    divideRange0 = new Vector2(availableRange.x, eliminateRange.x);
+                    divideRange1 = new Vector2(eliminateRange.y, availableRange.y);
+                    _availableIndexRangeList[j] = divideRange0;
+                    _availableIndexRangeList.Insert(j + 1, divideRange1);
+                    availableCount++;
+                    j++;
+                }
+                //    ---------
+                //      -----------
+                else if (eliminateRange.x <= availableRange.x && eliminateRange.y <= availableRange.y)
+                {
+                    divideRange0 = new Vector2(eliminateRange.y, availableRange.y);
+                    _availableIndexRangeList[j] = divideRange0;
+                }
+            }
+        }
+        _eliminateRangeList.Clear();
+        _eliminateRangeListCount = 0;
+    }
+
     public override void Clear()
     {
         _trailsList.Clear();
@@ -386,6 +617,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         // 清除movableObject
         ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObj);
         _movableObj = null;
+        _availableIndexRangeList.Clear();
         base.Clear();
     }
 }
