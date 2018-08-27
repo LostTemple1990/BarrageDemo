@@ -167,8 +167,7 @@ public class EnemyCurveLaser : EnemyBulletBase
             return;
         }
         PopulateMesh();
-        //UpdatePos();
-        CheckCollisionWithCharacter1();
+        CheckCollisionWithCharacter();
     }
 
     #region 设置碰撞检测相关参数
@@ -314,7 +313,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         }
         verticesList.Add(new Vector3(tmpPos1.x + normalVec.x, tmpPos1.y + normalVec.y, 0) * scale);
         verticesList.Add(new Vector3(tmpPos1.x - normalVec.x, tmpPos1.y - normalVec.y, 0) * scale);
-        return (endIndex-startIndex)<<1;
+        return (endIndex+1-startIndex)<<1;
     }
 
     /// <summary>
@@ -380,10 +379,10 @@ public class EnemyCurveLaser : EnemyBulletBase
         return false;
     }
 
-    private void CheckCollisionWithCharacter1()
+    private void CheckCollisionWithCharacter()
     {
-        // 一组中检测的个数
-        int numInGroup = 2;
+        // 一组中检测的个数,以及对应的循环增量
+        int numInGroup = 2, dNumInGroup = numInGroup - 1;
         int i, j, k, tmpIdx = 0;
         int startIndex, endIndex;
         Vector2 availableRange;
@@ -397,7 +396,7 @@ public class EnemyCurveLaser : EnemyBulletBase
             startIndex = (int)availableRange.x;
             endIndex = (int)availableRange.y;
             // 头尾两端不附加判定
-            for (i = startIndex+1; i < endIndex - 1; i = i + numInGroup)
+            for (i = startIndex; i < endIndex; i += dNumInGroup)
             {
                 minX = _trailsList[i].x;
                 minY = _trailsList[i].y;
@@ -406,7 +405,7 @@ public class EnemyCurveLaser : EnemyBulletBase
                 for (j = 1; j < numInGroup; j++)
                 {
                     tmpIdx = i + j;
-                    if (tmpIdx >= endIndex - 1)
+                    if (tmpIdx > endIndex)
                     {
                         // 取回上一个节点的下标
                         tmpIdx -= 1;
@@ -446,64 +445,6 @@ public class EnemyCurveLaser : EnemyBulletBase
         }
     }
 
-    protected virtual void CheckCollisionWithCharacter()
-    {
-        // 一组中检测的个数
-        int numInGroup = 2;
-        int i,j,tmpIdx=0;
-        float minX, minY, maxX, maxY,centerX,centerY,grazeHW,grazeHH,minDis;
-        float playerX = Global.PlayerPos.x;
-        float playerY = Global.PlayerPos.y;
-        Vector3 vecA, vecB,vecP;
-        // 头尾两端不附加判定
-        for (i=1;i<_curTrailLen-1;i=i+numInGroup)
-        {
-            minX = _trailsList[i].x;
-            minY = _trailsList[i].y;
-            maxX = _trailsList[i].x;
-            maxY = _trailsList[i].y;
-            for (j=1;j<numInGroup;j++)
-            {
-                tmpIdx = i + j;
-                if ( tmpIdx >= _curTrailLen-1 )
-                {
-                    // 取回上一个节点的下标
-                    tmpIdx -= 1;
-                    break;
-                }
-                minX = _trailsList[tmpIdx].x < minX ? _trailsList[tmpIdx].x : minX;
-                minY = _trailsList[tmpIdx].y < minY ? _trailsList[tmpIdx].y : minY;
-                maxX = _trailsList[tmpIdx].x > maxX ? _trailsList[tmpIdx].x : maxX;
-                maxY = _trailsList[tmpIdx].y > maxY ? _trailsList[tmpIdx].y : maxY;
-            }
-            centerX = (minX + maxX) / 2;
-            centerY = (minY + maxY) / 2;
-            grazeHW = centerX - minX + _collisionRadius;
-            grazeHH = centerY - minY + _collisionRadius;
-            // 检测是否在擦弹范围内
-            if ( Mathf.Abs(centerX+_relationX-playerX) <= grazeHW + Global.PlayerGrazeRadius &&
-                 Mathf.Abs(centerY + _relationY - playerY) <= grazeHH + Global.PlayerGrazeRadius )
-            {
-                if ( !_isGrazed )
-                {
-                    _isGrazed = true;
-                    PlayerService.GetInstance().AddGraze(1);
-                    _grazeCoolDown = GrazeCoolDown;
-                }
-                // 检测_trailsList[i]与_trailsList[tmpIdx]之间的线段与玩家的碰撞判定
-                vecA = new Vector2(_trailsList[i].x + _relationX, _trailsList[i].y + _relationY);
-                vecB = new Vector2(_trailsList[tmpIdx].x + _relationX, _trailsList[tmpIdx].y + _relationY);
-                vecP = new Vector2(playerX, playerY);
-                minDis = MathUtil.GetMinDisFromPointToLineSegment(vecA, vecB, vecP);
-                if ( minDis < _collisionRadius + Global.PlayerCollisionVec.z )
-                {
-                    Eliminate(eEliminateDef.HitPlayer);
-                    PlayerService.GetInstance().GetCharacter().BeingHit();
-                }
-            }
-        }
-    }
-
     private void EliminateByRange(int startIndex,int endIndex)
     {
         _eliminateRangeList.Add(new Vector2(startIndex, endIndex));
@@ -526,13 +467,12 @@ public class EnemyCurveLaser : EnemyBulletBase
     {
         int i,j;
         Vector2 eliminateRange,availableRange,divideRange0,divideRange1;
-        int availableCount = _availableIndexRangeList.Count;
         for (i=0;i<_eliminateRangeListCount;i++)
         {
             eliminateRange = _eliminateRangeList[i];
-            Logger.Log("--------------------------------------------------");
-            Logger.Log("eliminateRange = " + eliminateRange);
-            for (j = 0; j < availableCount; j++)
+            //Logger.Log("--------------------------------------------------");
+            //Logger.Log("eliminateRange = " + eliminateRange);
+            for (j = 0; j < _availableCount; j++)
             {
                 availableRange = _availableIndexRangeList[j];
                 if ( eliminateRange.x >= availableRange.y || eliminateRange.y <= availableRange.x )
@@ -546,7 +486,7 @@ public class EnemyCurveLaser : EnemyBulletBase
                 if (eliminateRange.x <= availableRange.x && eliminateRange.y >= availableRange.y)
                 {
                     _availableIndexRangeList.RemoveAt(j);
-                    availableCount--;
+                    _availableCount--;
                     j--;
                 }
                 //    ---------
@@ -564,7 +504,7 @@ public class EnemyCurveLaser : EnemyBulletBase
                     divideRange1 = new Vector2(eliminateRange.y, availableRange.y);
                     _availableIndexRangeList[j] = divideRange0;
                     _availableIndexRangeList.Insert(j + 1, divideRange1);
-                    availableCount++;
+                    _availableCount++;
                     j++;
                 }
                 //    ---------
@@ -575,12 +515,12 @@ public class EnemyCurveLaser : EnemyBulletBase
                     _availableIndexRangeList[j] = divideRange0;
                 }
             }
-            Logger.Log("----------  availableRange  -------------------------");
-            for (j = 0; j < availableCount; j++)
-            {
-                Logger.Log(_availableIndexRangeList[j]);
-            }
-            Logger.Log("--------------------------------------------------");
+            //Logger.Log("----------  availableRange  -------------------------");
+            //for (j = 0; j < _availableCount; j++)
+            //{
+            //    Logger.Log(_availableIndexRangeList[j]);
+            //}
+            //Logger.Log("--------------------------------------------------");
         }
         _eliminateRangeList.Clear();
         _eliminateRangeListCount = 0;
