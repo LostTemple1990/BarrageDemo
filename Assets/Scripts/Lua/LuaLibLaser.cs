@@ -112,6 +112,23 @@ public partial class LuaLib
         return 0;
     }
 
+    /// <summary>
+    /// 设置激光的发射源是否显示
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <para>isEnable 是否显示</para>
+    /// <para>sourceIndex 发射源的图像索引</para>
+    /// <returns></returns>
+    public static int SetLinearLaserSourceEnable(ILuaState luaState)
+    {
+        EnemyLinearLaser laser = luaState.ToUserData(-3) as EnemyLinearLaser;
+        bool isEnable = luaState.ToBoolean(-2);
+        int sourceIndex = luaState.ToInteger(-1);
+        luaState.Pop(3);
+        laser.SetSourceEnable(isEnable, sourceIndex);
+        return 0;
+    }
+
     public static int CreateCustomizedLinearLaser(ILuaState luaState)
     {
         int numArgs = luaState.ToInteger(-1);

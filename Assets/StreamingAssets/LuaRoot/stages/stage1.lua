@@ -50,6 +50,7 @@ CustomizedTable.ReboundLinearLaser.Init = function(laser,posX,posY,reboundPara,r
 	lib.SetBulletPos(laser,posX,posY)
 	lib.AddBulletTask(laser,function()
 		lib.SetLinearLaserHeadEnable(laser,true,consts.eLaserHeadTypeBlue)
+		lib.SetLinearLaserSourceEnable(laser,true,3)
 		for _=1,Infinite do
 			if reboundCount > 0 then
 				local reboundFlag = 0
@@ -708,7 +709,7 @@ function stage1.StageTask()
 		end)
 		--测试自定义直线激光
 		lib.AddEnemyTask(enemy,function()
-			if ( coroutine.yield(10000) == false ) then return end
+			--if coroutine.yield(10000) == false then return end
 			local laser,i
 			for _=1,Infinite do
 				local posX,posY = lib.GetEnemyPos(enemy)
@@ -721,7 +722,7 @@ function stage1.StageTask()
 		end)
 		--测试曲线激光
 		lib.AddEnemyTask(enemy,function()
-			--if ( coroutine.yield(10000) == false ) then return end
+			if coroutine.yield(10000) == false then return end
 			local laser,i
 			for i=1,18 do
 				local posX,posY = lib.GetEnemyPos(enemy)

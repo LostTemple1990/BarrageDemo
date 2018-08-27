@@ -55,6 +55,7 @@ public partial class LuaLib
             new NameFuncPair("GetLinearLaserProps",GetLinearLaserProps),
             new NameFuncPair("SetLinearLaserProps",SetLinearLaserProps),
             new NameFuncPair("SetLinearLaserHeadEnable",SetLinearLaserHeadEnable),
+            new NameFuncPair("SetLinearLaserSourceEnable",SetLinearLaserSourceEnable),
             new NameFuncPair("CreateCustomizedLinearLaser",CreateCustomizedLinearLaser),
 
             // 曲线激光

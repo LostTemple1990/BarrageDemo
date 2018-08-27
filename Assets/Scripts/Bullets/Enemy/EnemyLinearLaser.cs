@@ -12,6 +12,12 @@ public class EnemyLinearLaser : EnemyBulletBase
     private const string HeadSpriteNameRed = "LaserHead_R";
     private const string HeadSpriteNameGreen = "LaserHead_G";
 
+    private const string SourceSpriteName = "LaserSource_";
+    /// <summary>
+    /// 发射源的自旋速度
+    /// </summary>
+    private static Vector3 SourceSpinSpeed = new Vector3(0, 0, 18);
+
     private const int HeadAniInterval = 6;
     private const int HeadAniTotalFrame = 4;
     /// <summary>
@@ -95,6 +101,19 @@ public class EnemyLinearLaser : EnemyBulletBase
     protected int _headAniTime;
     protected int _headAniIndex;
 
+    /// <summary>
+    /// 激光发射源是否显示
+    /// </summary>
+    protected bool _isSourceEnable;
+    /// <summary>
+    /// 发射源的图片索引
+    /// </summary>
+    protected int _laserSourceIndex;
+
+    protected Transform _laserSourceTf;
+
+    protected SpriteRenderer _laserSourceSp;
+
 
     public EnemyLinearLaser()
     {
@@ -117,6 +136,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         _pathEndIndex = -1;
         _clearFlag = 0;
         _isHeadEnable = false;
+        _isSourceEnable = false;
         if ( _movableObj == null )
         {
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
@@ -129,6 +149,8 @@ public class EnemyLinearLaser : EnemyBulletBase
             _laserTrans = _laser.transform;
             _headTf = _objTrans.Find("HeadSprite");
             _headSp = _headTf.GetComponent<SpriteRenderer>();
+            _laserSourceTf = _objTrans.Find("LaserSource");
+            _laserSourceSp = _laserSourceTf.GetComponent<SpriteRenderer>();
             UIManager.GetInstance().AddGoToLayer(_laserObj, LayerId.EnemyBarrage);
         }
     }
@@ -186,6 +208,10 @@ public class EnemyLinearLaser : EnemyBulletBase
         {
             UpdateHeadAni();
         }
+        if ( _isSourceEnable )
+        {
+            UpdateLaserSource();
+        }
         CheckCollisionWithCharacter();
         //UpdateExistTime();
         if ( IsOutOfBorder() )
@@ -215,6 +241,7 @@ public class EnemyLinearLaser : EnemyBulletBase
                 _pathEndIndex -= 60;
                 _pathList.RemoveRange(0, 60);
             }
+            SetSourceEnable(false);
         }
         else
         {
@@ -247,9 +274,38 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
     }
 
+    public void SetSourceEnable(bool isEnable,int sourceIndex=0)
+    {
+        if ( _isSourceEnable != isEnable )
+        {
+            _isSourceEnable = isEnable;
+            if ( _isSourceEnable )
+            {
+                _laserSourceTf.gameObject.SetActive(true);
+                _laserSourceSp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, SourceSpriteName + sourceIndex);
+            }
+            else
+            {
+                _laserSourceTf.gameObject.SetActive(false);
+            }
+        }
+    }
+
     protected virtual void UpdatePos()
     {
         _objTrans.localPosition = _curPos;
+    }
+
+    /// <summary>
+    /// 更新发射源
+    /// </summary>
+    private void UpdateLaserSource()
+    {
+        // 位置
+        Vector3 offset = _pathList[_pathBeginIndex] - _pathList[_pathEndIndex];
+        _laserSourceTf.localPosition = MathUtil.GetVec2AfterRotate(offset.x, offset.y, 0, 0, -_curAngle);
+        // 自旋
+        _laserSourceTf.Rotate(SourceSpinSpeed);
     }
 
     /// <summary>
@@ -379,6 +435,10 @@ public class EnemyLinearLaser : EnemyBulletBase
         _headSp.sprite = null;
         _headSp = null;
         _headTf = null;
+        // 发射源
+        _laserSourceSp.sprite = null;
+        _laserSourceSp = null;
+        _laserSourceTf = null;
         _pathList.Clear();
         // movableObject
         ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObj);

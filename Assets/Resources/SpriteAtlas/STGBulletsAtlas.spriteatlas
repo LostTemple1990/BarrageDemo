@@ -62,6 +62,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: ca18a9a1ade9ae64082f3021d93e6167, type: 3}
   - {fileID: 21300000, guid: 23296aa122833514d90f8d973fff184e, type: 3}
   - {fileID: 21300000, guid: 9a2a14c1b39fa474687d289f16b71423, type: 3}
+  - {fileID: 21300000, guid: fbc016c119ec8734aa8bc24e9ce02441, type: 3}
   - {fileID: 21300000, guid: e9013fc13e4ec1142a15983634ab5d63, type: 3}
   - {fileID: 21300000, guid: b7deb0d1160f00b42ba54140aa288d79, type: 3}
   - {fileID: 21300000, guid: 6b250cd1373b67c449ab9be468d66cac, type: 3}
@@ -82,6 +83,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 550ca172b99baa14880a5b84a6a4d38b, type: 3}
   - {fileID: 21300000, guid: 6ee83b72d158efc4aab37665bb35d0c9, type: 3}
   - {fileID: 21300000, guid: 52374392683b22c40990551138bb5e61, type: 3}
+  - {fileID: 21300000, guid: d4fbd492fb3f9e24da4eaa29fee00b8c, type: 3}
   - {fileID: 21300000, guid: 5bb4e3a2c14f7c049b11daf5dda45ed0, type: 3}
   - {fileID: 21300000, guid: 3d1c81b2d8717ee46abd0a15a4e584eb, type: 3}
   - {fileID: 21300000, guid: fda6a8b20bd0be140b8e0c0caaba5097, type: 3}
@@ -138,6 +140,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3eac7256e55e5c542aba0210efce486f, type: 3}
   - {fileID: 21300000, guid: 5a8f5f564b8c18e40809a1d82d16b21f, type: 3}
   - {fileID: 21300000, guid: 401f2976f8db6cf4ea5ae70cdbdbb375, type: 3}
+  - {fileID: 21300000, guid: ae7a1b768f7a771458b6432ff0a47b47, type: 3}
   - {fileID: 21300000, guid: 2047ae868519e16428ccf2621a22e485, type: 3}
   - {fileID: 21300000, guid: 84ff5a96471417a4f92c4a870f6f8ef4, type: 3}
   - {fileID: 21300000, guid: 5cdb41a6379282e48baa6a917f4c32e1, type: 3}
@@ -150,6 +153,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3612dbd63bfdb8141abab60ebd9de9b3, type: 3}
   - {fileID: 21300000, guid: 0c436417b0e6cc948a2c09fd3d548754, type: 3}
   - {fileID: 21300000, guid: 94dc703754182814f9a7aa3cf8d0233a, type: 3}
+  - {fileID: 21300000, guid: fd78634789f813449abac1ecd1e4215e, type: 3}
   - {fileID: 21300000, guid: 7c85b1570e065b6448ecad16eed864bb, type: 3}
   - {fileID: 21300000, guid: 01ef22570d113624a9061721d324536d, type: 3}
   - {fileID: 21300000, guid: c80bd557ff151334792e8977e9b4ab87, type: 3}
@@ -162,6 +166,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: cdfadab7325e74e479a2cadf7aa4ad0e, type: 3}
   - {fileID: 21300000, guid: a91928d7c1e29de49aff907720ceb890, type: 3}
   - {fileID: 21300000, guid: c9c505e7fc12c00488dc54831e26b881, type: 3}
+  - {fileID: 21300000, guid: eabf61f7a6c2d82499002fce054ffc47, type: 3}
   - {fileID: 21300000, guid: 8b0963088ae05b344b61a41cfd5908b1, type: 3}
   - {fileID: 21300000, guid: 12f22f08959e63a48a2fd74d17546c91, type: 3}
   - {fileID: 21300000, guid: f0af06183d7bcf948bcec29b78c8f389, type: 3}
@@ -180,7 +185,9 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 2d43d1e84de07684f9a7a44ae3bf4b0c, type: 3}
   - {fileID: 21300000, guid: 8ec807095f7c36249ba9d72e32dc970f, type: 3}
   - {fileID: 21300000, guid: 3e86b80971cded2449872eefa5eac845, type: 3}
+  - {fileID: 21300000, guid: b3696a0979dd0534b8c998d2066dcde6, type: 3}
   - {fileID: 21300000, guid: 3e021619332578f469bf80e84a1046b2, type: 3}
+  - {fileID: 21300000, guid: fd96281919543ea41aab2e43b68dbc4b, type: 3}
   - {fileID: 21300000, guid: c24110297fb796c41b411e4124630bf9, type: 3}
   - {fileID: 21300000, guid: 067abb296cf186746a31a3c3c6c2c501, type: 3}
   - {fileID: 21300000, guid: c8d3f5496e3407240826cbc6e34374dc, type: 3}
@@ -279,6 +286,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3e8f65fea18cc0743b28bcc60e318253, type: 3}
   - {fileID: 21300000, guid: bd608dfe705563e48a4a583326409048, type: 3}
   - {fileID: 21300000, guid: 8f9e1b0fa9036f749962979222bc8115, type: 3}
+  - {fileID: 21300000, guid: 45acf45fe5d950b4ea650678ee97f2c9, type: 3}
   - {fileID: 21300000, guid: e47e646f32b58ea4d9743a93b89fbb2a, type: 3}
   - {fileID: 21300000, guid: 15ca566fb1a090b488824ee228b1d5ea, type: 3}
   - {fileID: 21300000, guid: 0b67d96f4f7a2bd4a97f09ccbd17f26e, type: 3}
@@ -325,6 +333,7 @@ SpriteAtlas:
   - etama_88
   - etama_139
   - etama_4
+  - LaserSource_7
   - etama_53
   - etama_167
   - etama_199
@@ -345,6 +354,7 @@ SpriteAtlas:
   - etama_244
   - LaserHead_W0
   - etama_160
+  - LaserSource_1
   - etama_10
   - etama_204
   - etama_222
@@ -401,6 +411,7 @@ SpriteAtlas:
   - etama_192
   - etama_168
   - etama_190
+  - LaserSource_6
   - etama_65
   - LaserHead_G2
   - etama_93
@@ -413,6 +424,7 @@ SpriteAtlas:
   - etama_56
   - etama_64
   - etama_187
+  - LaserSource_3
   - etama_91
   - etama_120
   - etama_31
@@ -425,6 +437,7 @@ SpriteAtlas:
   - etama_7
   - LaserHead_R0
   - etama_21
+  - LaserSource_0
   - etama_78
   - etama_208
   - etama_18
@@ -443,7 +456,9 @@ SpriteAtlas:
   - etama_241
   - etama_231
   - etama_30
+  - LaserSource_5
   - etama_211
+  - LaserSource_2
   - etama_148
   - etama_172
   - etama_245
@@ -542,6 +557,7 @@ SpriteAtlas:
   - etama_179
   - etama_3
   - etama_153
+  - LaserSource_4
   - etama_147
   - etama_115
   - etama_220
