@@ -1,9 +1,0 @@
-Temp/
-Library/
-obj/
-.vs/
-Packages/
-
-*.sln
-*.suo
-*.csproj
