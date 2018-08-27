@@ -13,9 +13,6 @@ public class EnemyCurveLaser : EnemyBulletBase
     protected GameObject _bullet;
     protected Transform _trans;
 
-    protected float _curAccAngle;
-    protected float _dvx, _dvy;
-
     /// <summary>
     /// 轨迹集合
     /// </summary>
@@ -29,8 +26,14 @@ public class EnemyCurveLaser : EnemyBulletBase
     protected float _laserHalfWidth;
 
     protected Mesh _mesh;
-    // 是否需要重新计算uv
-    protected int _uvFlag;
+    /// <summary>
+    /// 是否需要重新计算三角形
+    /// </summary>
+    protected bool _triModified;
+    /// <summary>
+    /// 是否需要重新计算uv
+    /// </summary>
+    protected bool _uvModified;
 
     protected float _relationX, _relationY;
 
@@ -157,7 +160,8 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     public override void Update()
     {
-        _uvFlag = 0;
+        _triModified = false;
+        _uvModified = false;
         CheckDivideIntoMultiple();
         UpdateGrazeCoolDown();
         UpdatePath();
@@ -216,6 +220,9 @@ public class EnemyCurveLaser : EnemyBulletBase
         }
         else
         {
+            // 标识三角形数据需要重新计算
+            _triModified = true;
+            _uvModified = true;
             // 长度增加，因此要修改availableRangeList
             _curTrailLen++;
             if ( _availableCount == 0 )
@@ -252,15 +259,14 @@ public class EnemyCurveLaser : EnemyBulletBase
     private void PopulateMesh()
     {
         if (_curTrailLen < 2) return;
-        int availableCount = _availableIndexRangeList.Count;
-        int i, j,startIndex,endIndex,tmpVerCount,totalVerCount;
+        int i,startIndex,endIndex,tmpVerCount,totalVerCount;
         List<Vector3> tmpVerticesList = new List<Vector3>();
         List<Vector3> meshVerticesList = new List<Vector3>();
         List<int> triList = new List<int>();
         List<Vector2> uvList = new List<Vector2>();
         // 遍历availableIndexRange，计算需要渲染的顶点
         totalVerCount = 0;
-        for (i=0;i<availableCount;i++)
+        for (i=0;i<_availableCount;i++)
         {
             startIndex = (int)_availableIndexRangeList[i].x;
             endIndex = (int)_availableIndexRangeList[i].y;
@@ -268,19 +274,34 @@ public class EnemyCurveLaser : EnemyBulletBase
             {
                 tmpVerCount = GetVertices(startIndex, endIndex, tmpVerticesList);
                 meshVerticesList.AddRange(tmpVerticesList);
-                AddTris(totalVerCount, tmpVerCount, triList);
-                AddUVs(startIndex, endIndex, uvList);
+                if ( _triModified )
+                {
+                    AddTris(totalVerCount, tmpVerCount, triList);
+                }
+                if ( _uvModified )
+                {
+                    AddUVs(startIndex, endIndex, uvList);
+                }
                 // 更新总顶点数
                 totalVerCount += tmpVerCount;
                 tmpVerticesList.Clear();
             }
         }
         // 渲染
-        _mesh.Clear();
+        if ( _triModified )
+        {
+            _mesh.Clear();
+        }
         //Logger.Log("Vertices Len = " + meshVerticesList.Count + " uv len = " + uvList.Count);
         _mesh.vertices = meshVerticesList.ToArray();
-        _mesh.triangles = triList.ToArray();
-        _mesh.uv = uvList.ToArray();
+        if ( _triModified )
+        {
+            _mesh.triangles = triList.ToArray();
+        }
+        if ( _uvModified )
+        {
+            _mesh.uv = uvList.ToArray();
+        }
     }
 
     /// <summary>
@@ -458,6 +479,8 @@ public class EnemyCurveLaser : EnemyBulletBase
     {
         if (_eliminateRangeListCount == 0) return;
         DivideAvailableRange();
+        _triModified = true;
+        _uvModified = true;
     }
 
     /// <summary>

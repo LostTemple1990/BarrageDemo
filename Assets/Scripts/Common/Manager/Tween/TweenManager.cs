@@ -161,7 +161,8 @@ public class TweenManager
                     {
                         isAllFinish = false;
                         tween.Update();
-                        if (tween.IsFinish)
+                        // 先做判断防止已经在回调里面被回收
+                        if (list[j] != null && tween.IsFinish)
                         {
                             tween.RestoreToPool();
                             list[j] = null;

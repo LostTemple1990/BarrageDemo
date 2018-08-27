@@ -77,6 +77,8 @@ public class STGPauseView : ViewBase
         Global.IsPause = true;
         _isShowAniFinish = false;
         _state = StatePause;
+        // 隐藏yesno面板
+        _yesNoPanel.SetActive(false);
         PlayShowAni();
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
@@ -85,6 +87,8 @@ public class STGPauseView : ViewBase
     {
         TweenManager.GetInstance().RemoveTweenByGo(_curSelectItem);
         ResetImgColor(_curSelectItem);
+        _curSelectItem = null;
+        _curYesNoItem = null;
     }
 
     /// <summary>
