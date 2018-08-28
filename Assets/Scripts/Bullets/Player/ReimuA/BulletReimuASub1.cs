@@ -23,7 +23,7 @@ public class BulletReimuASub1 :PlayerBulletBase
 
     public BulletReimuASub1()
     {
-        _id = BulletId.BulletId_ReimuA_Sub1;
+        _id = BulletId.ReimuA_Sub1;
         _prefabName = "ReimuASub1";
     }
 

@@ -128,7 +128,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         _isSized = false;
         _curPos = Vector3.zero;
         _existDuration = -1;
-        _id = BulletId.BulletId_Enemy_LinearLaser;
+        _id = BulletId.Enemy_LinearLaser;
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
         _isDirty = false;
         _pathCount = 0;

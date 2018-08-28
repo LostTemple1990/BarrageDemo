@@ -105,22 +105,22 @@ public class ObjectsPool
         {
             switch (bulletID)
             {
-                case BulletId.BulletId_ReimuA_Main:
+                case BulletId.ReimuA_Main:
                     bullet = new BulletReimuAMain();
                     break;
-                case BulletId.BulletId_ReimuA_Sub1:
+                case BulletId.ReimuA_Sub1:
                     bullet = new BulletReimuASub1();
                     break;
-                case BulletId.BulletId_Enemy_Laser:
+                case BulletId.Enemy_Laser:
                     bullet = new EnemyLaser();
                     break;
-                case BulletId.BulletId_Enemy_CurveLaser:
+                case BulletId.Enemy_CurveLaser:
                     bullet = new EnemyCurveLaser();
                     break;
-                case BulletId.BulletId_Enemy_Simple:
+                case BulletId.Enemy_Simple:
                     bullet = new EnemyBulletSimple();
                     break;
-                case BulletId.BulletId_Enemy_LinearLaser:
+                case BulletId.Enemy_LinearLaser:
                     bullet = new EnemyLinearLaser();
                     break;
                 default:

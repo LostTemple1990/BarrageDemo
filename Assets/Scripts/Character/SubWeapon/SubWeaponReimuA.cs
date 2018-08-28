@@ -100,7 +100,7 @@ public class SubWeaponReimuA : SubWeaponBase
     {
         get
         {
-            return BulletId.BulletId_ReimuA_Sub1;
+            return BulletId.ReimuA_Sub1;
         }
     }
 }

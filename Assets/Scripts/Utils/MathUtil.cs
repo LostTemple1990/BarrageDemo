@@ -56,6 +56,8 @@ public class MathUtil
     /// <returns></returns>
     public static float GetMinDisFromPointToLineSegment(Vector2 pointA,Vector2 pointB,Vector2 pointP)
     {
+        // 线段起始坐标与结束坐标相同，即为同一个点，则直接计算距离
+        if (pointA == pointB) return Vector2.Distance(pointA, pointP);
         Vector2 vecAtoB = pointB - pointA;
         Vector2 vecAtoP = pointP - pointA;
         float dot = vecAtoB.x * vecAtoP.x + vecAtoB.y * vecAtoP.y;

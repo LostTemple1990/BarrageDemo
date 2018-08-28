@@ -57,7 +57,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
     public override void Init()
     {
         base.Init();
-        _id = BulletId.BulletId_Enemy_Simple;
+        _id = BulletId.Enemy_Simple;
         _orderInLayer = 0;
         _isInUnrealState = false;
     }

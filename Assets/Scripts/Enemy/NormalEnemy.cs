@@ -94,9 +94,11 @@ public class NormalEnemy : EnemyBase
 
     public override void GetHit(float damage)
     {
+        if (!_isInteractive) return;
         _curHp -= damage;
         if ( _curHp <= 0 )
         {
+            _isInteractive = false;
             _curHp = 0;
             Eliminate(eEnemyEliminateDef.Player);
         }

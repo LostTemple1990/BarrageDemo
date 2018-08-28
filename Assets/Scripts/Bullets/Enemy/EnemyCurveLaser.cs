@@ -59,6 +59,12 @@ public class EnemyCurveLaser : EnemyBulletBase
     /// 线段判定半径
     /// </summary>
     protected float _collisionRadius;
+    /// <summary>
+    /// 擦弹检测半径，暂时默认碰撞检测的1.5倍
+    /// </summary>
+    private float _grazeRadius;
+
+    private List<Vector3> _collisionPointList;
     #endregion
     /// <summary>
     /// 消去的范围
@@ -88,11 +94,12 @@ public class EnemyCurveLaser : EnemyBulletBase
     public EnemyCurveLaser()
     {
         _trailsList = new List<Vector3>();
-        _id = BulletId.BulletId_Enemy_CurveLaser;
+        _id = BulletId.Enemy_CurveLaser;
         _prefabName = "CurveLaser";
         _sysBusyWeight = 20;
         _availableIndexRangeList = new List<Vector2>();
         _eliminateRangeList = new List<Vector2>();
+        _collisionPointList = new List<Vector3>();
     }
 
     public override void Init()
@@ -156,6 +163,14 @@ public class EnemyCurveLaser : EnemyBulletBase
     {
         _laserHalfWidth = halfWidth;
         _collisionRadius = collisionHalfWidth;
+        _grazeRadius = collisionHalfWidth * 1.5f;
+        // 设置碰撞参数
+        _collisionParas = new CollisionDetectParas
+        {
+            type = CollisionDetectType.MultiSegments,
+            radius = _collisionRadius,
+            multiSegmentPointList = _collisionPointList,
+        };
     }
 
     public override void Update()
@@ -217,6 +232,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         if (_curTrailLen >= _maxTrailLen)
         {
             _trailsList.RemoveAt(0);
+            _collisionPointList.RemoveAt(0);
         }
         else
         {
@@ -254,6 +270,7 @@ public class EnemyCurveLaser : EnemyBulletBase
             }
         }
         _trailsList.Add(new Vector3(_curPos.x, _curPos.y, 0));
+        _collisionPointList.Add(new Vector3(_curPos.x+_relationX, _curPos.y+_relationY, 0));
     }
 
     private void PopulateMesh()
@@ -410,13 +427,13 @@ public class EnemyCurveLaser : EnemyBulletBase
         float minX, minY, maxX, maxY, centerX, centerY, grazeHW, grazeHH, minDis;
         float playerX = Global.PlayerPos.x;
         float playerY = Global.PlayerPos.y;
+        float playerGrazeRadius = Global.PlayerGrazeRadius;
         Vector3 vecA, vecB, vecP;
         for (k=0;k<_availableCount;k++)
         {
             availableRange = _availableIndexRangeList[k];
             startIndex = (int)availableRange.x;
             endIndex = (int)availableRange.y;
-            // 头尾两端不附加判定
             for (i = startIndex; i < endIndex; i += dNumInGroup)
             {
                 minX = _trailsList[i].x;
@@ -439,11 +456,11 @@ public class EnemyCurveLaser : EnemyBulletBase
                 }
                 centerX = (minX + maxX) / 2;
                 centerY = (minY + maxY) / 2;
-                grazeHW = centerX - minX + _collisionRadius;
-                grazeHH = centerY - minY + _collisionRadius;
+                grazeHW = centerX - minX + _grazeRadius;
+                grazeHH = centerY - minY + _grazeRadius;
                 // 检测是否在擦弹范围内
-                if (Mathf.Abs(centerX + _relationX - playerX) <= grazeHW + Global.PlayerGrazeRadius &&
-                     Mathf.Abs(centerY + _relationY - playerY) <= grazeHH + Global.PlayerGrazeRadius)
+                if (Mathf.Abs(centerX + _relationX - playerX) <= grazeHW + playerGrazeRadius &&
+                     Mathf.Abs(centerY + _relationY - playerY) <= grazeHH + playerGrazeRadius)
                 {
                     if (!_isGrazed)
                     {
@@ -466,7 +483,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         }
     }
 
-    private void EliminateByRange(int startIndex,int endIndex)
+    public void EliminateByRange(int startIndex,int endIndex)
     {
         _eliminateRangeList.Add(new Vector2(startIndex, endIndex));
         _eliminateRangeListCount++;
@@ -552,6 +569,7 @@ public class EnemyCurveLaser : EnemyBulletBase
     public override void Clear()
     {
         _trailsList.Clear();
+        _collisionPointList.Clear();
         _curTrailLen = _maxTrailLen = 0;
         _mesh.Clear();
         _mesh = null;

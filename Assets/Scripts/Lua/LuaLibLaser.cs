@@ -20,7 +20,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(4);
-        EnemyLinearLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.BulletId_Enemy_LinearLaser) as EnemyLinearLaser;
+        EnemyLinearLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_LinearLaser) as EnemyLinearLaser;
         laser.SetBulletTexture(texture);
         laser.SetLength(laserLen);
         laser.SetToPosition(posX, posY);
@@ -138,7 +138,7 @@ public partial class LuaLib
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
         luaState.Replace(-2 - numArgs);
         // 将本体插入执行栈中
-        EnemyLinearLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.BulletId_Enemy_LinearLaser) as EnemyLinearLaser;
+        EnemyLinearLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_LinearLaser) as EnemyLinearLaser;
         laser.AddComponent<BCCustomizedTask>();
         luaState.PushLightUserData(laser);
         luaState.Insert(-1-numArgs);
@@ -164,7 +164,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(4);
-        EnemyCurveLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.BulletId_Enemy_CurveLaser) as EnemyCurveLaser;
+        EnemyCurveLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_CurveLaser) as EnemyCurveLaser;
         laser.SetBulletTexture(texture);
         laser.SetLength(laserLen);
         laser.SetToPosition(posX, posY);
@@ -252,7 +252,7 @@ public partial class LuaLib
         int initFuncRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
         // 将本体插入执行栈中
-        EnemyCurveLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.BulletId_Enemy_CurveLaser) as EnemyCurveLaser;
+        EnemyCurveLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_CurveLaser) as EnemyCurveLaser;
         laser.AddComponent<BCCustomizedTask>();
         luaState.PushLightUserData(laser);
         luaState.Replace(-3 - numArgs);

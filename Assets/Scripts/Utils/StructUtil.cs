@@ -18,10 +18,14 @@ public struct CollisionDetectParas
     /// <para>直线判定时代表判定距离</para>
     /// </summary>
     public float radius;
+    /// <summary>
+    /// 中心点
+    /// </summary>
     public Vector2 centerPos;
     public Vector2 linePointA;
     public Vector2 linePointB;
     public float angle;
+    public List<Vector3> multiSegmentPointList;
 }
 
 public struct GrazeDetectParas
@@ -60,13 +64,13 @@ public enum GrazeDetectType : int
 #region 子弹id
 public enum BulletId : int
 {
-    BulletId_ReimuA_Main = 110,
-    BulletId_ReimuA_Sub1 = 111,
-    BulletId_ReimuA_Sub2 = 112,
-    BulletId_Enemy_Laser = 504,
-    BulletId_Enemy_CurveLaser = 505,
-    BulletId_Enemy_Simple = 506,
-    BulletId_Enemy_LinearLaser = 507,
+    ReimuA_Main = 110,
+    ReimuA_Sub1 = 111,
+    ReimuA_Sub2 = 112,
+    Enemy_Laser = 504,
+    Enemy_CurveLaser = 505,
+    Enemy_Simple = 506,
+    Enemy_LinearLaser = 507,
 }
 #endregion
 

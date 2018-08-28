@@ -709,7 +709,7 @@ function stage1.StageTask()
 		end)
 		--测试自定义直线激光
 		lib.AddEnemyTask(enemy,function()
-			--if coroutine.yield(10000) == false then return end
+			if coroutine.yield(10000) == false then return end
 			local laser,i
 			for _=1,Infinite do
 				local posX,posY = lib.GetEnemyPos(enemy)
@@ -722,14 +722,15 @@ function stage1.StageTask()
 		end)
 		--测试曲线激光
 		lib.AddEnemyTask(enemy,function()
-			if coroutine.yield(10000) == false then return end
+			--if coroutine.yield(10000) == false then return end
 			local laser,i
 			for i=1,18 do
 				local posX,posY = lib.GetEnemyPos(enemy)
 				local angle = lib.GetAimToPlayerAngle(posX,posY)
 				laser = lib.CreateCurveLaser("etama9_10",45,posX,posY)
 				lib.SetCurveLaserCurveParas(laser,0,i*20,3,3)
-				if ( coroutine.yield(5) == false ) then return end
+				lib.SetCurveLaserWidth(laser,5,3)
+				if coroutine.yield(5) == false then return end
 			end
 		end)
 	end

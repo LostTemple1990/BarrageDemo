@@ -33,6 +33,7 @@ SpriteAtlas:
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: b3856930961a4644b9e298b0dc70e816, type: 3}
+  - {fileID: 21300000, guid: acea58703268a734a9ea4f8414d2a649, type: 3}
   - {fileID: 21300000, guid: 03b86dc071a9e5c499b2292283b6d16a, type: 3}
   - {fileID: 21300000, guid: 4a6905017e961a841983748d315de3d1, type: 3}
   - {fileID: 21300000, guid: 50ac88c1a0c6fec4c842f46c00be840a, type: 3}
@@ -48,6 +49,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: fcb699445b1a8a248aac9258282d4d20, type: 3}
   - {fileID: 21300000, guid: 78e961b4927c9d547b57bfc9b9724535, type: 3}
   - {fileID: 21300000, guid: 50c714c446281584fb8a2968ceab9ba5, type: 3}
+  - {fileID: 21300000, guid: 64bac7f4db0345a478cc70b9b328b611, type: 3}
   - {fileID: 21300000, guid: bae889f492207e74b9247503a5582e3c, type: 3}
   - {fileID: 21300000, guid: 6ab49a053aeb9bd41a474eb19710efec, type: 3}
   - {fileID: 21300000, guid: c544cd25ab1fb3948b132f80b107d450, type: 3}
@@ -86,6 +88,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: d9c3f66f3423c2743bfe1a08b32379aa, type: 3}
   m_PackedSpriteNamesToIndex:
   - pl00_4
+  - ReimuABomb
   - pl00_10
   - pl00_6
   - pl00_24
@@ -101,6 +104,7 @@ SpriteAtlas:
   - pl00_22
   - pl00_16
   - Reimu_Idle_7
+  - circle2
   - Reimu_FadeToLeft_2
   - pl00_8
   - pl00_5

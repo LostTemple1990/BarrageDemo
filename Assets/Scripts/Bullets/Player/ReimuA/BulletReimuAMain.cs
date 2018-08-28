@@ -11,7 +11,7 @@ public class BulletReimuAMain : PlayerBulletBase
 
     public BulletReimuAMain()
     {
-        _id = BulletId.BulletId_ReimuA_Main;
+        _id = BulletId.ReimuA_Main;
         _prefabName = "ReimuAMain";
     }
 

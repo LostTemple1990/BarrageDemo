@@ -16,7 +16,7 @@ public class Reimu : CharacterBase
         _charID = Consts.CharID_Reimu;
         _subID = 0;
         _shootCoolDown = 12;
-        _mainBulletId = BulletId.BulletId_ReimuA_Main;
+        _mainBulletId = BulletId.ReimuA_Main;
         int i;
         GameObject subWeapon;
         for (i = 0; i < 4; i++)

@@ -150,7 +150,7 @@ public partial class LuaLib
         bool isRotatedByVAngle = luaState.ToBoolean(-2);
         float selfRotAngle = (float)luaState.ToNumber(-1);
         luaState.Pop(5);
-        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.BulletId_Enemy_Simple) as EnemyBulletSimple;
+        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Simple) as EnemyBulletSimple;
         bullet.SetBulletTexture(textureName);
         bullet.SetToPosition(posX, posY);
         bullet.SetRotatedByVelocity(isRotatedByVAngle);
@@ -174,7 +174,7 @@ public partial class LuaLib
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
         EnemyBulletDefaultCfg cfg = BulletsManager.GetInstance().GetBulletDefaultCfgById(sysId);
-        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.BulletId_Enemy_Simple) as EnemyBulletSimple;
+        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Simple) as EnemyBulletSimple;
         bullet.ChangeStyleById(sysId);
         //bullet.SetBulletTexture(cfg.prefabName);
         bullet.SetToPosition(posX, posY);
@@ -420,7 +420,7 @@ public partial class LuaLib
         float posY = (float)luaState.ToNumber(-2-numArgs);
         luaState.Pop(1);
         EnemyBulletDefaultCfg cfg = BulletsManager.GetInstance().GetBulletDefaultCfgById(sysId);
-        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.BulletId_Enemy_Simple) as EnemyBulletSimple;
+        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Simple) as EnemyBulletSimple;
         bullet.SetBulletTexture(cfg.prefabName);
         bullet.SetToPosition(posX, posY);
         bullet.SetRotatedByVelocity(cfg.isRotatedByVAngle);
@@ -482,7 +482,7 @@ public partial class LuaLib
         string laserTexture = luaState.ToString(-2 - numArgs);
         // 弹出参数个数
         luaState.Pop(1);
-        EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.BulletId_Enemy_Laser) as EnemyLaser;
+        EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Laser) as EnemyLaser;
         laser.SetBulletTexture(laserTexture);
         // 设置自定义的数据
         BCCustomizedTask bc = laser.AddComponent<BCCustomizedTask>();
@@ -514,7 +514,7 @@ public partial class LuaLib
         float height = (float)luaState.ToNumber(-2);
         int existDuration = luaState.ToInteger(-1);
         luaState.Pop(7);
-        EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.BulletId_Enemy_Laser) as EnemyLaser;
+        EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Laser) as EnemyLaser;
         laser.SetBulletTexture(texture);
         laser.SetPosition(posX, posY, angle);
         laser.SetLaserSize(width, height);

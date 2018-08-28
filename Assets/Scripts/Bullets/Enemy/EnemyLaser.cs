@@ -71,7 +71,7 @@ public class EnemyLaser : EnemyBulletBase
         _moveFlag = false;
         _curPos = Vector3.zero;
         _existDuration = -1;
-        _id = BulletId.BulletId_Enemy_Laser;
+        _id = BulletId.Enemy_Laser;
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
         _isChangingWidth = false;
         _isDirty = false;
