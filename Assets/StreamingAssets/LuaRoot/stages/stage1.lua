@@ -734,7 +734,7 @@ function stage1.StageTask()
 			end
 		end)
 	end
-	if coroutine.yield(10000) == false then return end
+	if coroutine.yield(600) == false then return end
 	do
 		local boss = lib.CreateBoss("MidBoss")
 	end

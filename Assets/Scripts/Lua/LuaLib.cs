@@ -419,26 +419,9 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-3-numArgs);
         float posY = (float)luaState.ToNumber(-2-numArgs);
         luaState.Pop(1);
-        EnemyBulletDefaultCfg cfg = BulletsManager.GetInstance().GetBulletDefaultCfgById(sysId);
         EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Simple) as EnemyBulletSimple;
-        bullet.SetBulletTexture(cfg.prefabName);
-        bullet.SetToPosition(posX, posY);
-        bullet.SetRotatedByVelocity(cfg.isRotatedByVAngle);
-        bullet.SetSelfRotation(cfg.selfRotationAngle != 0, cfg.selfRotationAngle);
-        // 设置碰撞参数
-        CollisionDetectParas detectParas = new CollisionDetectParas
-        {
-            type = CollisionDetectType.Circle,
-            radius = cfg.collisionRadius,
-        };
-        GrazeDetectParas grazeParas = new GrazeDetectParas
-        {
-            type = GrazeDetectType.Rect,
-            halfWidth = cfg.grazeHalfWidth,
-            halfHeight = cfg.grazeHalfHeight,
-        };
-        bullet.SetCollisionDetectParas(detectParas);
-        bullet.SetGrazeDetectParas(grazeParas);
+        bullet.ChangeStyleById(sysId);
+		bullet.SetToPosition(posX, posY);
         // 设置自定义的数据
         BCCustomizedTask bc = bullet.AddComponent<BCCustomizedTask>();
         //InterpreterManager.GetInstance().CallCostomizedInitFunc(bullet, customizedName,numArgs);

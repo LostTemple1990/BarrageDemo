@@ -296,7 +296,6 @@ public class InterpreterManager
             task.isFinish = true;
             _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, task.funcRef);
             Logger.Log("TaskLua complete! LuaFunc = " + task.funcRef);
-            task.Clear();
         }
     }
 

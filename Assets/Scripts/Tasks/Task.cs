@@ -28,7 +28,7 @@ public class Task : IPoolClass
     public void Clear()
     {
         isStarted = false;
-        isFinish = true;
+        isFinish = false;
         luaState = null;
     }
 }
