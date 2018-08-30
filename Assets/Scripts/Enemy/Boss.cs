@@ -58,11 +58,6 @@ public class Boss : EnemyBase
         InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
         InterpreterManager.GetInstance().CallLuaFunction(_refData.initFuncRef, 1);
         Logger.Log("Call InitFunc of Boss " + _bossName + " Complete!");
-        _bossTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
-        _bossTask.funcRef = _refData.taskFuncRef;
-        InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
-        InterpreterManager.GetInstance().CallTaskCoroutine(_bossTask, 1);
-        Logger.Log("Start Task Coroutine of Boss " + _bossName + " !");
     }
 
     public void SetAni(string aniId)
@@ -118,7 +113,7 @@ public class Boss : EnemyBase
     protected void UpdateBloodBar()
     {
         //Logger.Log("BeginRate = " + _beginRate + "   hpRate = " + (_scCurHp / _scMaxHp) * _curTotalRate);
-        _curRate = _beginRate + (_scCurHp / _scMaxHp) * _curTotalRate;
+        _curRate = _beginRate + (_curHp / _maxHp) * _curTotalRate;
         _bloodBarSp.material.SetFloat("_Rate", _curRate);
         //Logger.Log("CurRate : " + _curRate);
     }
@@ -161,7 +156,7 @@ public class Boss : EnemyBase
 
     public override void Update()
     {
-        DoBossTask();
+        //DoBossTask();
         if ( _isInvincible )
         {
             UpdateInvincibleStatue();
@@ -216,6 +211,22 @@ public class Boss : EnemyBase
         }
     }
 
+    /// <summary>
+    /// 重载setMaxHp
+    /// <para>设置了这个值说明进入了新的符卡阶段</para>
+    /// <para>因此重新计算血条位置</para>
+    /// </summary>
+    /// <param name="maxHp"></param>
+    public override void SetMaxHp(int maxHp)
+    {
+        // 计算血量
+        _curSubPhase--;
+        _remainingWeight -= _weights[_curSubPhase];
+        _beginRate = _remainingWeight / _totalWeight;
+        _curTotalRate = _weights[_curSubPhase] / _totalWeight;
+        base.SetMaxHp(maxHp);
+    }
+
     public void EnterSpellCard(SpellCard sc)
     {
         _isCastingSpell = true;
@@ -236,6 +247,29 @@ public class Boss : EnemyBase
         // 显示符卡时间
         object[] data = { _scTimeLeft };
         CommandManager.GetInstance().RunCommand(CommandConsts.NewSpellCardTime, data);
+    }
+
+    /// <summary>
+    /// 设置无敌时间
+    /// </summary>
+    /// <param name="duration"></param>
+    public void SetInvincible(float duration)
+    {
+        _invincibleTimeLeft = (int)(duration * 60);
+        _isInvincible = _invincibleTimeLeft != 0;
+    }
+
+    /// <summary>
+    /// 显示BOSS血条
+    /// </summary>
+    /// <param name="value"></param>
+    public void ShowBloodBar(bool value)
+    {
+        if ( _isShowBloodBar != value )
+        {
+            _isShowBloodBar = value;
+            _bloodBarLayerTf.gameObject.SetActive(_isShowBloodBar);
+        }
     }
 
     public void CastingSpellCard()
@@ -334,7 +368,7 @@ public class Boss : EnemyBase
         return true;
     }
 
-    public override void GetHit(float damage)
+    public override void GetHit(int damage)
     {
         if ( !_isInvincible )
         {

@@ -28,9 +28,17 @@ public class InterpreterManager
     private Dictionary<string, int> _customizedInitFuncMap;
     private Dictionary<string, int> _customizedEnemyInitMap;
     private Dictionary<string, int> _customizedEnemyOnEliminateMap;
+    /// <summary>
+    /// 已经读取过的符卡配置
+    /// </summary>
+    private List<int> _spellCardLoadedList;
     private Dictionary<string, Vector2> _luaGlobalVec2Map;
     private Dictionary<string, float> _luaGlobalNumberMap;
     private Dictionary<string, object> _luaGlobalObjectMap;
+    /// <summary>
+    /// 当前正在进行的符卡
+    /// </summary>
+    private SpellCard _curSpellCard;
 
     private int _traceBackIndex;
 
@@ -42,6 +50,7 @@ public class InterpreterManager
         _luaGlobalNumberMap = new Dictionary<string, float>();
         _luaGlobalVec2Map = new Dictionary<string, Vector2>();
         _luaGlobalObjectMap = new Dictionary<string, object>();
+        _spellCardLoadedList = new List<int>();
         _funcParas = new List<LuaPara>();
     }
 
@@ -67,8 +76,28 @@ public class InterpreterManager
         };
     }
 
-    public void DoStageLua(int stageId)
+    /// <summary>
+    /// 加载关卡对应的符卡配置
+    /// </summary>
+    /// <param name="stageId"></param>
+    public void LoadSpellCardConfig(int stageId)
     {
+        if ( _spellCardLoadedList.IndexOf(stageId) == -1 )
+        {
+            _spellCardLoadedList.Add(stageId);
+            var status = _luaState.L_DoFile("stages/stage" + stageId + "sc.lua");
+            if (status != ThreadStatus.LUA_OK)
+            {
+                throw new Exception(_luaState.ToString(-1));
+            }
+            RefCustomizedBullet();
+            RefCustomizedEnemy();
+        }
+    }
+
+    public Task LoadStage(int stageId)
+    {
+        LoadSpellCardConfig(stageId);
         var status = _luaState.L_DoFile("stages/stage" + stageId + ".lua");
         if (status != ThreadStatus.LUA_OK)
         {
@@ -78,13 +107,14 @@ public class InterpreterManager
         RefCustomizedBullet();
         RefCustomizedEnemy();
         RefBossTable();
-        //CallStageCoroutine();
-        //LuaCoroutineData coData = new LuaCoroutineData();
+        Task stageTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
+        InitStageTask(stageTask);
+        return stageTask;
     }
 
     private void RefCustomizedBullet()
     {
-        _luaState.GetField(-1, "CustomizedTable");
+        _luaState.GetField(-1, "CustomizedBulletTable");
         string customizedName;
         int initFuncRef;
         if (!_luaState.IsTable(-1))
@@ -192,6 +222,19 @@ public class InterpreterManager
             Logger.Log("Boss " + bossName + " is ref");
         }
         //弹出BossTable
+        _luaState.Pop(1);
+    }
+
+    private void InitStageTask(Task stageTask)
+    {
+        _luaState.GetField(-1, "StageTask");
+        if (!_luaState.IsFunction(-1))
+        {
+            Logger.LogError("Func StageTask is not exist!");
+            return;
+        }
+        stageTask.funcRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+        // 弹出function StageTask
         _luaState.Pop(1);
     }
 
@@ -814,7 +857,7 @@ public class InterpreterManager
         UnrefCustomizedBullets();
         UnrefCustomizedEnemy();
         UnrefBoss();
-        ClearStageTask();
+        //ClearStageTask();
         ClearLuaGlobal();
     }
 

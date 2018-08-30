@@ -92,7 +92,7 @@ public class NormalEnemy : EnemyBase
         }
     }
 
-    public override void GetHit(float damage)
+    public override void GetHit(int damage)
     {
         if (!_isInteractive) return;
         _curHp -= damage;

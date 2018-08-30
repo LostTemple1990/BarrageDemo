@@ -57,7 +57,7 @@ public class PlayerBulletBase : BulletBase
     /// 子弹对应的伤害
     /// </summary>
     /// <returns></returns>
-    protected virtual float GetDamage()
+    protected virtual int GetDamage()
     {
         throw new System.NotImplementedException();
     }

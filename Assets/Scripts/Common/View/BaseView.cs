@@ -42,6 +42,7 @@ public class ViewBase
     public void Hide()
     {
         OnHide();
+        UIManager.GetInstance().UnregisterViewUpdate(this);
         _view.SetActive(false);
     }
 

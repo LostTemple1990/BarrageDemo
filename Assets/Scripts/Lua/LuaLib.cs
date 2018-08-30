@@ -38,6 +38,7 @@ public partial class LuaLib
             new NameFuncPair("SetEnemyWanderAmplitude",SetEnemyWanderAmplitude),
             new NameFuncPair("SetEnemyWanderMode",SetEnemyWanderMode),
             new NameFuncPair("EnemyDoWander",EnemyDoWander),
+            new NameFuncPair("SetEnemyMaxHp",SetEnemyMaxHp),
             // 直线激光相关
             new NameFuncPair("CreateLaser",CreateLaser),
             new NameFuncPair("SetLaserProps",SetLaserProps),
@@ -81,12 +82,17 @@ public partial class LuaLib
             new NameFuncPair("SetEnemyCollisionParas",SetEnemyCollisionParas),
             new NameFuncPair("SetBossCurPhaseData",SetBossCurPhaseData),
             new NameFuncPair("GetBossSpellCardHpRate",GetBossSpellCardHpRate),
-            new NameFuncPair("GetBossSpellCardTimeLeftRate",GetBossSpellCardTimeLeftRate),
+            new NameFuncPair("GetSpellCardTimeLeftRate",GetSpellCardTimeLeftRate),
+            new NameFuncPair("SetBossInvincible",SetBossInvincible),
+            new NameFuncPair("ShowBossBloodBar",ShowBossBloodBar),
 
             new NameFuncPair("CreateSpellCard",CreateSpellCard),
             new NameFuncPair("SetSpellCardTask",SetSpellCardTask),
             new NameFuncPair("SetSpellCardFinishFunc",SetSpellCardFinishFunc),
             new NameFuncPair("EnterSpellCard",EnterSpellCard),
+            new NameFuncPair("StartSpellCard",StartSpellCard),
+            new NameFuncPair("WaitForSpellCardFinish",WaitForSpellCardFinish),
+            new NameFuncPair("SetSpellCardProperties",SetSpellCardProperties),
             // 特效
             new NameFuncPair("SetEffectToPos",SetEffectToPos),
             new NameFuncPair("SetEffectFinish",SetEffectFinish),
@@ -779,6 +785,34 @@ public partial class LuaLib
         return 0;
     }
 
+    /// <summary>
+    /// 设置BOSS无敌持续时间
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetBossInvincible(ILuaState luaState)
+    {
+        Boss boss = luaState.ToUserData(-2) as Boss;
+        float duration = (float)luaState.ToNumber(-1);
+        luaState.Pop(2);
+        boss.SetInvincible(duration);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置BOSS是否显示血条
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int ShowBossBloodBar(ILuaState luaState)
+    {
+        Boss boss = luaState.ToUserData(-2) as Boss;
+        bool isShow = luaState.ToBoolean(-1);
+        luaState.Pop(2);
+        boss.ShowBloodBar(isShow);
+        return 0;
+    }
+
     /// <summary> 创建一个符卡对象
     /// <para>type 符卡类型</para>
     /// <para>name 符卡名称</para>
@@ -818,6 +852,68 @@ public partial class LuaLib
         SpellCard sc = luaState.ToUserData(-2) as SpellCard;
         sc.finishFuncRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
         luaState.Pop(1);
+        return 0;
+    }
+
+    /// <summary>
+    /// 符卡开始
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int StartSpellCard(ILuaState luaState)
+    {
+        int bossCount = 0;
+        List<Boss> bossList = new List<Boss>();
+        Boss boss;
+        // 获取符卡对应的函数
+        while ( !luaState.IsFunction(-1) )
+        {
+            boss = luaState.ToUserData(-1) as Boss;
+            bossList.Add(boss);
+            bossCount++;
+            luaState.Pop(1);
+        }
+        int funcRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+        STGStageManager.GetInstance().StartSpellCard(funcRef, bossList);
+        return 0;
+    }
+
+    /// <summary>
+    /// 关卡主线程挂起等待符卡结束
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int WaitForSpellCardFinish(ILuaState luaState)
+    {
+        STGStageManager.GetInstance().SetStageTaskWaitingForSpellCardFinish(true);
+        luaState.PushInteger(1);
+        luaState.Yield(1);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置符卡的基本属性
+    /// <para>name 符卡名称</para>
+    /// <para>duration 单位：秒，符卡持续时间</para>
+    /// <para>conditon 符卡的条件</para>
+    /// <para> finishFunc 可以为nil，符卡结束时候的函数</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetSpellCardProperties(ILuaState luaState)
+    {
+        SpellCard sc = STGStageManager.GetInstance().GetSpellCard();
+        string scName = luaState.ToString(-4);
+        float duration = (float)luaState.ToNumber(-3);
+        int condition = luaState.ToInteger(-2);
+        // 判断有没有符卡结束时候的函数
+        if ( luaState.IsFunction(-1))
+        {
+            int finishFuncRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+            sc.SetFinishFuncRef(finishFuncRef);
+        }
+        luaState.Pop(3);
+        sc.SetProperties(scName, duration, (eSpellCardCondition)condition);
         return 0;
     }
 

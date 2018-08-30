@@ -216,7 +216,6 @@ public class UIManager {
         if ( _viewsMap.TryGetValue(name, out view) )
         {
             view.Hide();
-            UnregisterViewUpdate(view);
         }
     }
 

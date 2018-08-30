@@ -734,9 +734,18 @@ function stage1.StageTask()
 			end
 		end)
 	end
-	if coroutine.yield(600) == false then return end
+	if coroutine.yield(300) == false then return end
 	do
 		local boss = lib.CreateBoss("MidBoss")
+		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
+		if coroutine.yield(100) == false then return end
+		lib.SetBossCurPhaseData(boss,1,1,1,1,4)
+		lib.StartSpellCard(SpellCard.NazrinSC1_0,boss)
+		if lib.WaitForSpellCardFinish() == false then return end
+		lib.StartSpellCard(SpellCard.NazrinSC1_0,boss)
+		if lib.WaitForSpellCardFinish() == false then return end
+		lib.StartSpellCard(SpellCard.NazrinSC1_0,boss)
+		if lib.WaitForSpellCardFinish() == false then return end
 	end
 	if coroutine.yield(10000) == false then return end
 	--自定义子弹
@@ -883,7 +892,7 @@ end
 
 return
 {
-	CustomizedTable = CustomizedTable,
+	CustomizedBulletTable = CustomizedTable,
 	CustomizedEnemyTable = CustomizedEnemyTable,
 	BossTable = BossTable,
 	StageTask = stage1.StageTask,

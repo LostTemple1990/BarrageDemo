@@ -49,7 +49,7 @@ public class BulletReimuAMain : PlayerBulletBase
         return Consts.CollisionType_Rect;
     }
 
-    protected override float GetDamage()
+    protected override int GetDamage()
     {
         return 2;
     }

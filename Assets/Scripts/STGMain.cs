@@ -18,8 +18,8 @@ public class STGMain
         BulletsManager.GetInstance().Update();
         ItemManager.GetInstance().Update();
         AnimationManager.GetInstance().Update();
-        InterpreterManager.GetInstance().Update();
         ExtraTaskManager.GetInstance().Update();
+        STGStageManager.GetInstance().Update();
         BackgroundManager.GetInstance().Update();
         EffectsManager.GetInstance().Update();
         frameNode++;
@@ -84,6 +84,7 @@ public class STGMain
         ItemManager.GetInstance().Init();
 
         InterpreterManager.GetInstance().Init();
+        STGStageManager.GetInstance().Init();
 
         ExtraTaskManager.GetInstance().Init();
 
@@ -118,6 +119,7 @@ public class STGMain
         EffectsManager.GetInstance().Clear();
         ExtraTaskManager.GetInstance().Clear();
         BackgroundManager.GetInstance().Clear();
+        STGStageManager.GetInstance().Clear();
         InterpreterManager.GetInstance().Clear();
     }
 
@@ -140,7 +142,7 @@ public class STGMain
 
     public void EnterStage(int stageId)
     {
-        InterpreterManager.GetInstance().DoStageLua(stageId);
+        STGStageManager.GetInstance().LoadStage(stageId);
         CommandManager.GetInstance().RunCommand(CommandConsts.STGLoadStageLuaComplete);
     }
 }

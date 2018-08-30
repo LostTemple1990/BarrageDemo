@@ -1,3 +1,4 @@
+SpellCard = {}
 Constants = {}
 
 Constants.VelocityAngle = -999
@@ -47,3 +48,9 @@ Constants.eLaserHeadTypeWhite = 1
 Constants.eLaserHeadTypeRed = 2
 Constants.eLaserHeadTypeGreen = 3
 Constants.eLaserHeadTypeBlue = 4
+
+Constants.eSpellCardCondition = {}
+Constants.eSpellCardCondition.EliminateAll = 1
+Constants.eSpellCardCondition.EliminateOne = 2
+Constants.eSpellCardCondition.EliminateSpecificOne = 3
+Constants.eSpellCardCondition.TimeOver = 5

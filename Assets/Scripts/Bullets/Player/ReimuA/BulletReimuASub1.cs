@@ -124,7 +124,7 @@ public class BulletReimuASub1 :PlayerBulletBase
         return Consts.CollisionType_Rect;
     }
 
-    protected override float GetDamage()
+    protected override int GetDamage()
     {
         return 1;
     }

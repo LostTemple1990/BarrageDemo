@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemyBase : ICollisionObject
 {
-    protected float _curHp;
-    protected float _maxHp;
+    protected int _curHp;
+    protected int _maxHp;
    /// <summary>
    /// 当前位置
    /// </summary>
@@ -211,7 +211,7 @@ public class EnemyBase : ICollisionObject
         
     }
 
-    public virtual void GetHit(float damage)
+    public virtual void GetHit(int damage)
     {
 
     }
@@ -419,6 +419,24 @@ public class EnemyBase : ICollisionObject
             return false;
         }
         return _curHp > 0;
+    }
+
+    /// <summary>
+    /// 获取当前血量
+    /// </summary>
+    /// <returns></returns>
+    public int GetCurHp()
+    {
+        return _curHp;
+    }
+
+    /// <summary>
+    /// 获取当前最大血量
+    /// </summary>
+    /// <returns></returns>
+    public int GetMaxHp()
+    {
+        return _maxHp;
     }
 
     public EnemyType Type

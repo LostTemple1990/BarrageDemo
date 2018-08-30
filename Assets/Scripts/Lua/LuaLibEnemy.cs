@@ -39,7 +39,7 @@ public partial class LuaLib
     public static int HitEnemy(ILuaState luaState)
     {
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
-        float damage = (float)luaState.ToNumber(-1);
+        int damage = luaState.ToInteger(-1);
         luaState.Pop(2);
         enemy.GetHit(damage);
         return 0;
@@ -122,6 +122,20 @@ public partial class LuaLib
         return 0;
     }
 
+    /// <summary>
+    /// 设置敌机的最大血量，同时同步当前血量到最大血量
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetEnemyMaxHp(ILuaState luaState)
+    {
+        EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
+        int maxHp = luaState.ToInteger(-1);
+        luaState.Pop(2);
+        enemy.SetMaxHp(maxHp);
+        return 0;
+    }
+
     public static int GetBossSpellCardHpRate(ILuaState luaState)
     {
         Boss boss = Global.Boss;
@@ -129,10 +143,11 @@ public partial class LuaLib
         return 1;
     }
 
-    public static int GetBossSpellCardTimeLeftRate(ILuaState luaState)
+    public static int GetSpellCardTimeLeftRate(ILuaState luaState)
     {
-        Boss boss = Global.Boss;
-        luaState.PushNumber(boss.GetSpellCardTimeLeftRate());
+        SpellCard sc = STGStageManager.GetInstance().GetSpellCard();
+        float rate = sc.GetTimeRate();
+        luaState.PushNumber(rate);
         return 1;
     }
 }
