@@ -1,5 +1,6 @@
 local SC = SpellCard
 local Condition = Constants.eSpellCardCondition
+local BulletResist = Constants.eBulletResistEliminated
 lib = require "LuaLib"
 
 local CustomizedBulletTable = {}
@@ -9,6 +10,7 @@ local CustomizedEnemyTable = {}
 --waitTime之后变换成札弹的子弹
 CustomizedBulletTable.NazrinSC1Bullet0 = {}
 CustomizedBulletTable.NazrinSC1Bullet0.Init = function(bullet,waitTime,maxRadius)
+	lib.SetBulletResistEliminatedFlag(bullet,BulletResist.PlayerBomb + BulletResist.PlayerDead + BulletResist.HitPlayer)
 	lib.AddBulletTask(bullet,function()
 		local posX,posY = lib.GetBulletPos(bullet)
 		lib.AddBulletComponent(bullet,Constants.BCTypeMoveParasChange)
@@ -102,7 +104,7 @@ function SC.NazrinSC1_0(boss)
 	end)
 		--圈形防护罩0
 		lib.AddEnemyTask(boss,function()
-			local spriteEffect = lib.CreateSpriteEffect("Effects_1",150,150,2000,2000)
+			local spriteEffect = lib.CreateSpriteEffect("TransparentCircle",150,150,2000,2000)
 			lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
 			lib.SetGlobalUserData("SC1Effect0",spriteEffect)
 			if coroutine.yield(80)==false then return end
@@ -124,7 +126,7 @@ function SC.NazrinSC1_0(boss)
 		end)
 		--圈形防护罩1
 		lib.AddEnemyTask(boss,function()
-			local spriteEffect = lib.CreateSpriteEffect("Effects_1",150,150,2000,2000)
+			local spriteEffect = lib.CreateSpriteEffect("TransparentCircle",150,150,2000,2000)
 			lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
 			lib.SetGlobalUserData("SC1Effect1",spriteEffect)
 			if coroutine.yield(186)==false then return end
@@ -148,7 +150,7 @@ function SC.NazrinSC1_0(boss)
 		lib.AddEnemyTask(boss,function()
 			if coroutine.yield(300)==false then return end
 			for _=1,Infinite do
-				local hpRate = lib.GetBossSpellCardHpRate()
+				local hpRate = lib.GetBossSpellCardHpRate(0)
 				local timeLeftRate = lib.GetSpellCardTimeLeftRate()
 				local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 				local posX,posY = lib.GetEnemyPos(boss)

@@ -136,10 +136,23 @@ public partial class LuaLib
         return 0;
     }
 
+    /// <summary>
+    /// 获取boss当前符卡的hp比例
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
     public static int GetBossSpellCardHpRate(ILuaState luaState)
     {
-        Boss boss = Global.Boss;
-        luaState.PushNumber(boss.GetSpellCardHpRate());
+        int index = luaState.ToInteger(-1);
+        luaState.Pop(1);
+        SpellCard sc = STGStageManager.GetInstance().GetSpellCard();
+        Boss boss = sc.GetBossByIndex(index);
+        float rate = 0f;
+        if ( boss != null )
+        {
+            rate = (float)boss.GetCurHp() / boss.GetMaxHp();
+        }
+        luaState.PushNumber(rate);
         return 1;
     }
 

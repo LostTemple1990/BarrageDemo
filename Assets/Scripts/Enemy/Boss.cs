@@ -93,7 +93,7 @@ public class Boss : EnemyBase
         // 设置segmentGo的位置
         float tmpWeight = 0;
         float angle;
-        float r = 42;
+        float r = (256 - 4 - 1) * 0.35f * 0.5f;
         for (i=0;i<count;i++)
         {
             angle = 2 * Mathf.PI * tmpWeight / _totalWeight;
@@ -102,7 +102,7 @@ public class Boss : EnemyBase
             //Logger.Log("Segment Angle : " + 360f * tmpWeight / _totalWeight);
             angle += Mathf.PI / 2;
             // 计算位置
-            _segmentGoList[i].transform.localPosition = new Vector3(Mathf.Cos(angle) * r, Mathf.Sin(angle) * r, 0);
+            _segmentGoList[i].transform.localPosition = new Vector3(Mathf.Cos(angle) * r, Mathf.Sin(angle) * r, -1);
             tmpWeight += _weights[i];
             //Logger.Log("Segment Position : " + _segmentGoList[i].transform.localPosition);
         }
@@ -113,7 +113,11 @@ public class Boss : EnemyBase
     protected void UpdateBloodBar()
     {
         //Logger.Log("BeginRate = " + _beginRate + "   hpRate = " + (_scCurHp / _scMaxHp) * _curTotalRate);
-        _curRate = _beginRate + (_curHp / _maxHp) * _curTotalRate;
+        _curRate = _beginRate + ((float)_curHp / _maxHp) * _curTotalRate;
+        if ( STGStageManager.GetInstance().GetFrameSinceStageStart() % 20 == 0 )
+        {
+            Logger.Log(_curRate);
+        }
         _bloodBarSp.material.SetFloat("_Rate", _curRate);
         //Logger.Log("CurRate : " + _curRate);
     }
@@ -156,7 +160,6 @@ public class Boss : EnemyBase
 
     public override void Update()
     {
-        //DoBossTask();
         if ( _isInvincible )
         {
             UpdateInvincibleStatue();
@@ -183,34 +186,6 @@ public class Boss : EnemyBase
         _bossAni.Play(at, dir);
     }
 
-    protected void DoBossTask()
-    {
-        // 开启BOSS的Task
-        if ( _bossTask != null && !_bossTask.isStarted )
-        {
-            InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
-            InterpreterManager.GetInstance().CallTaskCoroutine(_bossTask,1);
-            return;
-        }
-        // 当前不在taks线程挂起状态，直接执行task
-        if ( !_isCastingSpell )
-        {
-            if ( !_bossTask.isFinish )
-            {
-                _bossTask.Update();
-                if ( _bossTask.isFinish )
-                {
-                    Logger.Log("Boss Task Complete!");
-                }
-            }
-            return;
-        }
-        if ( _isCastingSpell )
-        {
-            CastingSpellCard();
-        }
-    }
-
     /// <summary>
     /// 重载setMaxHp
     /// <para>设置了这个值说明进入了新的符卡阶段</para>
@@ -225,28 +200,6 @@ public class Boss : EnemyBase
         _beginRate = _remainingWeight / _totalWeight;
         _curTotalRate = _weights[_curSubPhase] / _totalWeight;
         base.SetMaxHp(maxHp);
-    }
-
-    public void EnterSpellCard(SpellCard sc)
-    {
-        _isCastingSpell = true;
-        _sc = sc;
-        _sc.isFinish = false;
-        // 计算血量
-        _curSubPhase--;
-        _remainingWeight -= _weights[_curSubPhase];
-        _beginRate = _remainingWeight / _totalWeight;
-        _curTotalRate = _weights[_curSubPhase] / _totalWeight;
-        Logger.Log("Enter SpellCard " + sc.name + " ");
-        _scTimeLeft = (int)(_sc.spellDuration * 60);
-        _scMaxHp = _sc.maxHp;
-        _scCurHp = _sc.maxHp;
-        // 设置无敌状态
-        _invincibleTimeLeft = (int)(_sc.invincibleDuration * 60);
-        _isInvincible = _invincibleTimeLeft != 0;
-        // 显示符卡时间
-        object[] data = { _scTimeLeft };
-        CommandManager.GetInstance().RunCommand(CommandConsts.NewSpellCardTime, data);
     }
 
     /// <summary>
@@ -372,32 +325,12 @@ public class Boss : EnemyBase
     {
         if ( !_isInvincible )
         {
-            _scCurHp -= damage;
-            if ( _scCurHp <= 0 )
+            _curHp -= damage;
+            if ( _curHp <= 0 )
             {
-                _scCurHp = 0;
+                _curHp = 0;
             }
         }
-    }
-
-    public virtual float GetSpellCardMaxHp()
-    {
-        return _scMaxHp;
-    }
-
-    public virtual float GetSpellCardCurHp()
-    {
-        return _scCurHp;
-    }
-
-    public virtual float GetSpellCardHpRate()
-    {
-        return _scCurHp / _scMaxHp;
-    }
-
-    public virtual float GetSpellCardTimeLeftRate()
-    {
-        return _scTimeLeft / _sc.spellDuration / 60;
     }
 
     public override void Clear()

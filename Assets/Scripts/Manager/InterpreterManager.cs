@@ -305,7 +305,7 @@ public class InterpreterManager
             task.luaState = _luaState.NewThread();
             _luaState.Pop(1);
             task.luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, task.funcRef);
-            Logger.Log("Get Task func , funcRef = " + task.funcRef);
+            //Logger.Log("Get Task func , funcRef = " + task.funcRef);
             if (!task.luaState.IsFunction(-1))
             {
                 Logger.LogError("Task funcRef is not point to a function!");
@@ -354,7 +354,7 @@ public class InterpreterManager
         if (status == ThreadStatus.LUA_OK)
         {
             _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, task.funcRef);
-            Logger.Log("StopTask Success!");
+            //Logger.Log("StopTask Success!");
         }
         else
         {
@@ -369,7 +369,7 @@ public class InterpreterManager
         if ( status == ThreadStatus.LUA_OK )
         {
             _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX,taskFuncRef);
-            Logger.Log("StopTask Success! ref = " + taskFuncRef);
+            //Logger.Log("StopTask Success! ref = " + taskFuncRef);
         }
         else
         {
@@ -561,275 +561,6 @@ public class InterpreterManager
     {
         _luaGlobalObjectMap.Remove(key);
     }
-
-    //public void createSkill()
-    //{
-    //    this.loadSkillScript("skill1");
-    //    string scriptName = "skills/skill1.lua";
-    //    var status = this._luaState.L_DoFile(scriptName);
-    //    if (status != ThreadStatus.LUA_OK)
-    //    {
-    //        throw new Exception(this._luaState.ToString(-1));
-    //    }
-
-    //}
-
-    //public int initSkill(string skillId, Unit unit)
-    //{
-    //    if (this.loadSkillScript(skillId) != BattleConsts.LUA_OPERATION_SUCCESS)
-    //    {
-    //        Debug.LogError("lua script " + skillId + ".lua occurs an error!");
-    //        return BattleConsts.LUA_OPERATION_FAIL;
-    //    }
-    //    if (!this._currentState.IsTable(-1))
-    //    {
-    //        return BattleConsts.LUA_OPERATION_FAIL;
-    //    }
-    //    this._currentState.GetField(-1, "initSkill");
-    //    if (!this._currentState.IsFunction(-1))
-    //    {
-    //        Debug.LogError("method initSkill is not exist!");
-    //        return BattleConsts.LUA_OPERATION_FAIL;
-    //    }
-    //    this.pushLightUserData(this._currentState, unit);
-    //    this._currentState.PCall(1, 0, 0);
-    //    return BattleConsts.LUA_OPERATION_SUCCESS;
-    //}
-
-    //public void registerEffect(SkillEffect effect)
-    //{
-    //    this._currentState.PushLightUserData(effect);
-    //    effect.setRef(this._currentState.L_Ref(LuaDef.LUA_REGISTRYINDEX));
-    //}
-
-    //public void registerLightUserData(ILuaUserData userData)
-    //{
-    //    this._currentState.PushLightUserData(userData);
-    //    userData.setRef(this._currentState.L_Ref(LuaDef.LUA_REGISTRYINDEX));
-    //}
-
-    //public int callFunction(int funcRef, int paramCount, int retCount = 0)
-    //{
-    //    this._currentState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
-    //    if (!this._currentState.IsFunction(-1))
-    //    {
-    //        Debug.LogError("funcRef doesn't point to a function!");
-    //        this._currentState.Pop(1);
-    //        return BattleConsts.LUA_OPERATION_FAIL;
-    //    }
-    //    if (this._params.Count != paramCount)
-    //    {
-    //        Debug.Log("param count is not match!");
-    //        return BattleConsts.LUA_OPERATION_FAIL;
-    //    }
-    //    this.pushParams(this._currentState);
-    //    //int numArgs = args==null ? 0 : 
-    //    var status = this._currentState.PCall(paramCount, retCount, 0);
-    //    if (status != ThreadStatus.LUA_OK)
-    //    {
-    //        Debug.LogError(this._currentState.ToString(-1));
-    //        this._currentState.Pop(1);
-    //        return BattleConsts.LUA_OPERATION_FAIL;
-    //    }
-    //    return BattleConsts.LUA_OPERATION_SUCCESS;
-    //}
-
-    //public int callCoroutine(int funcRef, int paramCount)
-    //{
-    //    if (funcRef == 0)
-    //    {
-    //        Debug.LogError("\"CallRoutine\" : attempt to call a null funciton!");
-    //        this.clearParams();
-    //        return BattleConsts.LUA_OPERATION_FAIL;
-    //    }
-    //    if (this._params.Count != paramCount)
-    //    {
-    //        Debug.LogError("\"CallRoutine\" : Param count is not match!");
-    //        return BattleConsts.LUA_OPERATION_FAIL;
-    //    }
-    //    ILuaState newState;
-    //    if (this._coroutineDic.TryGetValue(funcRef, out newState))
-    //    {
-    //        newState = this._luaState.NewThread();
-    //        newState.RawGetI(funcRef, LuaDef.LUA_REGISTRYINDEX);
-    //        if (!newState.IsFunction(-1))
-    //        {
-    //            Debug.LogError("\"CallRoutine\" : FuncRef doesn't point to a function!");
-    //            this.clearParams();
-    //            return BattleConsts.LUA_OPERATION_FAIL;
-    //        }
-    //        this._coroutineDic.Add(funcRef, newState);
-    //    }
-    //    this.pushParams(newState);
-    //    ThreadStatus status = newState.Resume(newState, paramCount);
-    //    if (status == ThreadStatus.LUA_OK)
-    //    {
-    //        this._coroutineDic.Remove(funcRef);
-    //        this._currentState = this._luaState;
-    //        return BattleConsts.LUA_COROUTINE_FINISH;
-    //    }
-    //    else if (status == ThreadStatus.LUA_YIELD)
-    //    {
-    //        return BattleConsts.LUA_COROUTINE_YIELD;
-    //    }
-    //    else
-    //    {
-    //        this._currentState = this._luaState;
-    //        this._coroutineDic.Remove(funcRef);
-    //        return BattleConsts.LUA_OPERATION_FAIL;
-    //    }
-    //}
-
-    ///// <summary>
-    ///// 检测条件
-    ///// </summary>
-    ///// <param name="funcRef">函数索引</param>
-    ///// <param name="paramCount">参数个数</param>
-    ///// <returns></returns>
-    //public bool checkCondition(int funcRef, int paramCount)
-    //{
-    //    if (funcRef == 0)
-    //    {
-    //        this.clearParams();
-    //        return true;
-    //    }
-    //    int result = this.callFunction(funcRef, paramCount, 1);
-    //    if (result != BattleConsts.LUA_OPERATION_SUCCESS)
-    //    {
-    //        Debug.LogError("condition function call fail!");
-    //        this.clearParams();
-    //        return false;
-    //    }
-    //    bool checkResult = this._currentState.ToBoolean(-1);
-    //    this._currentState.Pop(1);
-    //    return checkResult;
-    //}
-
-    //public int loadSkillScript(string skillId)
-    //{
-    //    this._currentState.GetGlobal(skillId);
-    //    if (this._currentState.IsNil(-1))
-    //    {
-    //        this._currentState.Pop(1);
-    //        this._currentState.CreateTable(0, 0);
-    //        this._currentState.SetGlobal(skillId);
-    //        this._currentState.GetGlobal(skillId);
-    //        return this.loadScript("skills/" + skillId + ".lua");
-    //    }
-    //    return BattleConsts.LUA_OPERATION_SUCCESS;
-    //}
-
-    //public void createSkillBySkillId(string skillId)
-    //{
-
-    //}
-
-    //private int loadScript(string scriptName)
-    //{
-    //    var status = this._currentState.L_DoFile(scriptName);
-    //    if (status != ThreadStatus.LUA_OK)
-    //    {
-    //        Debug.Log(this._currentState.ToString(-1));
-    //        this._currentState.Pop(1);
-    //        return BattleConsts.LUA_OPERATION_FAIL;
-    //    }
-    //    return BattleConsts.LUA_OPERATION_SUCCESS;
-    //}
-
-    ///// <summary>
-    ///// 添加lua函数的参数
-    ///// </summary>
-    ///// <param name="param">参数</param>
-    ///// <param name="paramType">参数类型</param>
-    //public void addParam(object param, BattleConsts.ParamType paramType)
-    //{
-    //    this._params.Add(this.genLuaParam(param, paramType));
-    //}
-
-    ///// <summary>
-    ///// 获取参数个数
-    ///// </summary>
-    ///// <returns></returns>
-    //public int getParamCount()
-    //{
-    //    return this._params.Count;
-    //}
-
-    //private LuaParam genLuaParam(object param, BattleConsts.ParamType paramType)
-    //{
-    //    LuaParam luaParam = new LuaParam();
-    //    luaParam.param = param;
-    //    luaParam.paramType = paramType;
-    //    return luaParam;
-    //}
-
-    ///// <summary>
-    ///// 将缓存的参数压入栈
-    ///// </summary>
-    //private void pushParams(ILuaState luaState)
-    //{
-    //    int len = this._params.Count;
-    //    for (int i = 0; i < len; i++)
-    //    {
-    //        LuaParam it = this._params[i];
-    //        switch (it.paramType)
-    //        {
-    //            case BattleConsts.ParamType.Boolean:
-    //                luaState.PushBoolean((bool)it.param);
-    //                break;
-    //            case BattleConsts.ParamType.Int:
-    //                luaState.PushInteger((int)it.param);
-    //                break;
-    //            case BattleConsts.ParamType.String:
-    //                luaState.PushString((string)it.param);
-    //                break;
-    //            case BattleConsts.ParamType.VO:
-    //                luaState.PushLightUserData(it.param);
-    //                break;
-    //            case BattleConsts.ParamType.Event:
-    //                luaState.PushLightUserData(it.param);
-    //                break;
-    //        }
-    //    }
-    //    this.clearParams();
-    //}
-
-    ///// <summary>
-    ///// 清楚缓存的参数
-    ///// </summary>
-    //private void clearParams()
-    //{
-    //    int len = this._params.Count;
-    //    for (int i = 0; i < len; i++)
-    //    {
-    //        this._params[i].param = null;
-    //    }
-    //    this._params.Clear();
-    //}
-
-    //public void pushEffect(ILuaState luaState, ISkillEffect effect)
-    //{
-    //    if (effect == null || effect.getRef() == 0)
-    //    {
-    //        luaState.PushNil();
-    //    }
-    //    else
-    //    {
-    //        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, effect.getRef());
-    //    }
-    //}
-
-    //public void pushLightUserData(ILuaState luaState, ILuaUserData userData)
-    //{
-    //    if (userData == null || userData.getRef() == 0)
-    //    {
-    //        luaState.PushNil();
-    //    }
-    //    else
-    //    {
-    //        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, userData.getRef());
-    //    }
-    //}
 
     private static int Traceback(ILuaState lua)
     {

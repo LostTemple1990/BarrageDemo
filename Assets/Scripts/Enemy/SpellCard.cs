@@ -145,6 +145,7 @@ public class SpellCard
         // 符卡尚未开始
         if ( !_isStarted )
         {
+            Logger.Log("Start Casting SpellCard " + name);
             for (int i=0;i<_bossCount;i++)
             {
                 InterpreterManager.GetInstance().AddPara(bossList[i], LuaParaType.LightUserData);

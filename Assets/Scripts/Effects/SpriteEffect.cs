@@ -49,8 +49,8 @@ public class SpriteEffect : STGEffectBase
 
     public void SetSize(float width,float height)
     {
-        _curWidthScale = width / 256;
-        _curHeightScale = height / 256;
+        _curWidthScale = width / 32;
+        _curHeightScale = height / 32;
         _effectTf.localScale = new Vector3(_curWidthScale, _curHeightScale, 1);
     }
 

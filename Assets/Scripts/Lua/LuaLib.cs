@@ -86,10 +86,6 @@ public partial class LuaLib
             new NameFuncPair("SetBossInvincible",SetBossInvincible),
             new NameFuncPair("ShowBossBloodBar",ShowBossBloodBar),
 
-            new NameFuncPair("CreateSpellCard",CreateSpellCard),
-            new NameFuncPair("SetSpellCardTask",SetSpellCardTask),
-            new NameFuncPair("SetSpellCardFinishFunc",SetSpellCardFinishFunc),
-            new NameFuncPair("EnterSpellCard",EnterSpellCard),
             new NameFuncPair("StartSpellCard",StartSpellCard),
             new NameFuncPair("WaitForSpellCardFinish",WaitForSpellCardFinish),
             new NameFuncPair("SetSpellCardProperties",SetSpellCardProperties),
@@ -813,48 +809,6 @@ public partial class LuaLib
         return 0;
     }
 
-    /// <summary> 创建一个符卡对象
-    /// <para>type 符卡类型</para>
-    /// <para>name 符卡名称</para>
-    /// <para>scHp 符卡血量</para>
-    /// <para>scDuration 符卡持续时间，单位秒</para>
-    /// <para>invincibleDuration 符卡起始无敌时间,单位秒</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int CreateSpellCard(ILuaState luaState)
-    {
-        string scName = luaState.ToString(-4);
-        float scHp = (float)luaState.ToNumber(-3);
-        float scDuration = (float)luaState.ToNumber(-2);
-        float invincibleDuration = (float)luaState.ToNumber(-1);
-        luaState.Pop(4);
-        SpellCard sc = new SpellCard();
-        sc.name = scName;
-        sc.maxHp = scHp;
-        sc.spellDuration = scDuration;
-        sc.invincibleDuration = invincibleDuration;
-        luaState.PushLightUserData(sc);
-        return 1;
-    }
-
-    public static int SetSpellCardTask(ILuaState luaState)
-    {
-        SpellCard sc = luaState.ToUserData(-2) as SpellCard;
-        sc.taskRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
-        Logger.Log("Ref SpellCard Task, FuncRef = " + sc.taskRef);
-        luaState.Pop(1);
-        return 0;
-    }
-
-    public static int SetSpellCardFinishFunc(ILuaState luaState)
-    {
-        SpellCard sc = luaState.ToUserData(-2) as SpellCard;
-        sc.finishFuncRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
-        luaState.Pop(1);
-        return 0;
-    }
-
     /// <summary>
     /// 符卡开始
     /// </summary>
@@ -914,24 +868,6 @@ public partial class LuaLib
         }
         luaState.Pop(3);
         sc.SetProperties(scName, duration, (eSpellCardCondition)condition);
-        return 0;
-    }
-
-    /// <summary>
-    /// 进入符卡
-    /// <para>boss</para>
-    /// <para>sc</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int EnterSpellCard(ILuaState luaState)
-    {
-        Boss boss = luaState.ToUserData(-2) as Boss;
-        SpellCard sc = luaState.ToUserData(-1) as SpellCard;
-        luaState.Pop(2);
-        boss.EnterSpellCard(sc);
-        luaState.PushInteger(1);
-        luaState.Yield(1);
         return 0;
     }
 

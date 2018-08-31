@@ -49,6 +49,17 @@ Constants.eLaserHeadTypeRed = 2
 Constants.eLaserHeadTypeGreen = 3
 Constants.eLaserHeadTypeBlue = 4
 
+Constants.eBulletResistEliminated = {}
+Constants.eBulletResistEliminated.ForcedDelete = 0
+Constants.eBulletResistEliminated.PlayerBomb = 1
+Constants.eBulletResistEliminated.PlayerDead = 2
+Constants.eBulletResistEliminated.HitPlayer = 4
+Constants.eBulletResistEliminated.SpellCardEnd = 8
+Constants.eBulletResistEliminated.HitObject = 16
+Constants.eBulletResistEliminated.CodeEliminate = 32
+Constants.eBulletResistEliminated.CodeRawEliminate = 64
+
+
 Constants.eSpellCardCondition = {}
 Constants.eSpellCardCondition.EliminateAll = 1
 Constants.eSpellCardCondition.EliminateOne = 2

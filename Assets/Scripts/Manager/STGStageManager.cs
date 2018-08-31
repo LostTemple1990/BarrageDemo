@@ -25,6 +25,10 @@ public class STGStageManager
     /// 是否等待符卡结束
     /// </summary>
     private bool _isWaitingForSpellCard;
+    /// <summary>
+    /// 从关卡开始经过的帧数
+    /// </summary>
+    private int _frameSinceStageStart;
 
     public STGStageManager()
     {
@@ -40,6 +44,7 @@ public class STGStageManager
     {
         if ( _state == StateUpdateStageTask)
         {
+            _frameSinceStageStart++;
             if ( !_isWaitingForSpellCard )
             {
                 OnStageTaskUpdate();
@@ -56,7 +61,6 @@ public class STGStageManager
                 }
             }
         }
-
     }
 
     /// <summary>
@@ -67,6 +71,7 @@ public class STGStageManager
     {
         _curStageTask = InterpreterManager.GetInstance().LoadStage(stageId);
         _state = StateUpdateStageTask;
+        _frameSinceStageStart = 0;
     }
 
     /// <summary>
@@ -107,14 +112,28 @@ public class STGStageManager
         _isWaitingForSpellCard = value;
     }
 
+    /// <summary>
+    /// 执行关卡task
+    /// </summary>
     private void OnStageTaskUpdate()
     {
         InterpreterManager.GetInstance().CallTaskCoroutine(_curStageTask);
     }
 
+    /// <summary>
+    /// 获取关卡开始之后经过的帧数
+    /// </summary>
+    /// <returns></returns>
+    public int GetFrameSinceStageStart()
+    {
+        return _frameSinceStageStart;
+    }
+
     public void Clear()
     {
         _curSpellCard.Clear();
+        _isCastingSpellCard = false;
+        _isWaitingForSpellCard = false;
         InterpreterManager.GetInstance().StopTaskThread(_curStageTask);
     }
 }

@@ -24,7 +24,7 @@ SpriteAtlas:
       padding: 2
       blockOffset: 1
       allowAlphaSplitting: 0
-      enableRotation: 1
+      enableRotation: 0
       enableTightPacking: 0
     variantMultiplier: 1
     packables:
@@ -38,10 +38,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 8aad0982c8844d34cbeba33c1c90caa9, type: 3}
   - {fileID: 21300000, guid: fe254ab51be65804a8822a479b7912e1, type: 3}
   - {fileID: 21300000, guid: d9e6044628127bb429da24c6aa6a5cf7, type: 3}
+  - {fileID: 21300000, guid: 2403f1b717ede6144b84e9f31de050f3, type: 3}
   - {fileID: 21300000, guid: b70dbc88647b2994fb184f6b7bb7a328, type: 3}
   - {fileID: 21300000, guid: 22f65e79cd8459c43a3d0d893cc98600, type: 3}
   - {fileID: 21300000, guid: b730ff0a8376d0046a050cafa9fb38fe, type: 3}
+  - {fileID: 21300000, guid: c92fec8aac6b1ef439275af7791620f6, type: 3}
   - {fileID: 21300000, guid: e24688acdb70cff4b8f380e860b09152, type: 3}
+  - {fileID: 21300000, guid: 51893e3de2592b24695caf0ef6c1bf78, type: 3}
   - {fileID: 21300000, guid: 75cb760f2ea848d4dbb0e5226fdef1e6, type: 3}
   m_PackedSpriteNamesToIndex:
   - etama8_48
@@ -50,10 +53,13 @@ SpriteAtlas:
   - PPointBig
   - etama2_33
   - etama8_50
+  - CircleBorder
   - CollisionPointBack
   - etama8_47
   - CollisionPointFront
+  - MyMask
   - etama8_49
+  - Segment
   - PPointFull
   m_Tag: STGCommonAtlas
   m_IsVariant: 0

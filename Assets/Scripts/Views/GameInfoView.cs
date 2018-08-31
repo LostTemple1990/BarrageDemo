@@ -28,11 +28,11 @@ public class GameInfoView : ViewBase,ICommand
         // spellCardName
         _scNameText = _viewTf.Find("SpellCardNameText").GetComponent<Text>();
         _scNameObject = _scNameText.gameObject;
-        _isShowSpellCardTime = false;
         // spellcardTime
         _scTimeText = _viewTf.Find("SpellCardTimeText").GetComponent<Text>();
         _scTimeObject = _scTimeText.gameObject;
         _timeFormat = "00.00";
+        Reset();
         //_bgmText = _viewTf.Find("BGMText").GetComponent<Text>();
     }
 
@@ -40,12 +40,16 @@ public class GameInfoView : ViewBase,ICommand
     {
         CommandManager.GetInstance().Register(CommandConsts.NewSpellCardTime, this);
         CommandManager.GetInstance().Register(CommandConsts.UpdateSpellCardTime, this);
+        CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
+        CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
     }
 
     public override void OnHide()
     {
         CommandManager.GetInstance().Remove(CommandConsts.NewSpellCardTime, this);
         CommandManager.GetInstance().Remove(CommandConsts.UpdateSpellCardTime, this);
+        CommandManager.GetInstance().Remove(CommandConsts.RetryGame, this);
+        CommandManager.GetInstance().Remove(CommandConsts.RetryStage, this);
         _isShowSpellCardTime = false;
         _scTimeObject.SetActive(false);
         _bgmObject.SetActive(false);
@@ -60,6 +64,10 @@ public class GameInfoView : ViewBase,ICommand
                 break;
             case CommandConsts.UpdateSpellCardTime:
                 UpdateSpellCardTime((int)data[0]);
+                break;
+            case CommandConsts.RetryGame:
+            case CommandConsts.RetryStage:
+                Reset();
                 break;
         }
     }
@@ -100,6 +108,13 @@ public class GameInfoView : ViewBase,ICommand
             time = 99.99f;
         }
         return time;
+    }
+
+    private void Reset()
+    {
+        // SpellCardTime
+        _isShowSpellCardTime = false;
+        _scTimeObject.SetActive(false);
     }
 
     public override LayerId GetLayerId()
