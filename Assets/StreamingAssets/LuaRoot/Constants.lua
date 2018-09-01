@@ -65,3 +65,11 @@ Constants.eSpellCardCondition.EliminateAll = 1
 Constants.eSpellCardCondition.EliminateOne = 2
 Constants.eSpellCardCondition.EliminateSpecificOne = 3
 Constants.eSpellCardCondition.TimeOver = 5
+
+Constants.eTweenType = {}
+Constants.eTweenType.Alpha = 1
+Constants.eTweenType.Color = 2
+Constants.eTweenType.Pos2D = 3
+Constants.eTweenType.Pos3D = 4
+Constants.eTweenType.Rotation = 5
+Constants.eTweenType.Scale = 6

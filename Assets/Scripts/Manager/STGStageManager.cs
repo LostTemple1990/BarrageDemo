@@ -57,7 +57,9 @@ public class STGStageManager
                 }
                 else
                 {
+                    _isCastingSpellCard = false;
                     _isWaitingForSpellCard = false;
+                    CommandManager.GetInstance().RunCommand(CommandConsts.SpellCardFinish);
                 }
             }
         }

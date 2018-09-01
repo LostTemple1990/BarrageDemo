@@ -129,6 +129,8 @@ public partial class LuaLib
             new NameFuncPair("SetGlobalUserData", SetGlobalUserData),
             new NameFuncPair("GetGlobalUserData",GetGlobalUserData),
             new NameFuncPair("RemoveGlobalUserData", RemoveGlobalUserData),
+            new NameFuncPair("PlayCharacterCG", PlayCharacterCG),
+
         };
         luaState.L_NewLib(define);
         return 1;
@@ -857,17 +859,18 @@ public partial class LuaLib
     public static int SetSpellCardProperties(ILuaState luaState)
     {
         SpellCard sc = STGStageManager.GetInstance().GetSpellCard();
-        string scName = luaState.ToString(-4);
-        float duration = (float)luaState.ToNumber(-3);
-        int condition = luaState.ToInteger(-2);
+        string scName = luaState.ToString(-5);
+        float duration = (float)luaState.ToNumber(-4);
+        int condition = luaState.ToInteger(-3);
+        bool isSpellCard = luaState.ToBoolean(-2);
         // 判断有没有符卡结束时候的函数
         if ( luaState.IsFunction(-1))
         {
             int finishFuncRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
             sc.SetFinishFuncRef(finishFuncRef);
         }
-        luaState.Pop(3);
-        sc.SetProperties(scName, duration, (eSpellCardCondition)condition);
+        luaState.Pop(4);
+        sc.SetProperties(scName, duration, (eSpellCardCondition)condition,isSpellCard);
         return 0;
     }
 

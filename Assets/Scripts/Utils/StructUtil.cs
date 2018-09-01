@@ -197,6 +197,16 @@ public enum eGameState : int
     STG = 3,
 }
 
+public enum eTweenType :int
+{
+    Alhpa = 1,
+    Color = 2,
+    Pos2D = 3,
+    Pos3D = 4,
+    Rotation = 5,
+    Scale = 6,
+}
+
 #region struct ItemWithFramentsCounter
 /// <summary>
 /// 带碎片的道具计数器

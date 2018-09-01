@@ -10,6 +10,14 @@
     /// 播放人物立绘动画
     /// </summary>
     public const int PlayCharacterCGAni = 2010;
+    /// <summary>
+    /// 显示符卡信息
+    /// </summary>
+    public const int ShowSpellCardInfo = 2011;
+    /// <summary>
+    /// 符卡结束
+    /// </summary>
+    public const int SpellCardFinish = 2012;
 
     /// <summary>
     /// 进入关卡

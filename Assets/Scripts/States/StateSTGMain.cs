@@ -157,6 +157,7 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnRetryGame()
     {
+        Logger.Log("Retry Game");
         _curState = StateClear;
         _nextStageId = 1;
         // 打开loadingView

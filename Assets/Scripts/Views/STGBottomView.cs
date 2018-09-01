@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UniLua;
 
 public class STGBottomView : ViewBase,ICommand
 {
@@ -41,7 +42,8 @@ public class STGBottomView : ViewBase,ICommand
         string path = (string)datas[0];
         _charCGImg.sprite = Resources.Load<Sprite>(path);
         _charCGImg.SetNativeSize();
-        List<TweenBase> tweenList = (List<TweenBase>)datas[1];
+        ILuaState luaState = (ILuaState)datas[1];
+        List<TweenBase> tweenList = ParseLuaTableToTweenList(luaState);
         int count = tweenList.Count;
         int maxTime = 0;
         TweenBase tween;
@@ -57,6 +59,146 @@ public class STGBottomView : ViewBase,ICommand
         endTween.SetParas(_charCGGo, maxTime + 1, 0, ePlayMode.Once);
         endTween.SetFinishCallBack(OnPlayCGFinish);
         TweenManager.GetInstance().AddTweens(_charCGGo, tweenList);
+    }
+
+    /// <summary>
+    /// 解析table，转换成对应的tweenList
+    /// </summary>
+    /// <param name="luaState"></param>
+    private List<TweenBase> ParseLuaTableToTweenList(ILuaState luaState)
+    {
+        List<TweenBase> tweenList = new List<TweenBase>();
+        TweenBase tween;
+        luaState.PushNil();
+        while ( luaState.Next(-2) )
+        {
+            tween = CreateTweenByTable(luaState);
+            tween.SetIgnoreTimeScale(false);
+            tweenList.Add(tween);
+            luaState.Pop(1);
+        }
+        return tweenList;
+    }
+
+    /// <summary>
+    /// 根据栈顶的table创建对应的tween
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    private TweenBase CreateTweenByTable(ILuaState luaState)
+    {
+        luaState.GetField(-1, "type");
+        // 缓动类型
+        eTweenType type = (eTweenType)luaState.ToInteger(-1);
+        luaState.Pop(1);
+        // delay and duration
+        int delay, duration;
+        luaState.GetField(-1, "delay");
+        delay = luaState.ToInteger(-1);
+        luaState.GetField(-2, "duration");
+        duration = luaState.ToInteger(-1);
+        luaState.Pop(2);
+        switch (type)
+        {
+            case eTweenType.Alhpa:
+                {
+                    TweenAlpha tween = TweenManager.GetInstance().Create<TweenAlpha>();
+                    float begin, end;
+                    InterpolationMode mode;
+                    luaState.GetField(-1, "beginValue");
+                    begin = (float)luaState.ToNumber(-1);
+                    luaState.GetField(-2, "endValue");
+                    end = (float)luaState.ToNumber(-1);
+                    luaState.GetField(-3, "mode");
+                    mode = (InterpolationMode)luaState.ToInteger(-1);
+                    luaState.Pop(3);
+                    tween.SetParas(_charCGGo, delay, duration, ePlayMode.Once);
+                    tween.SetParas(begin, end, mode);
+                    return tween;
+                }
+            case eTweenType.Color:
+                {
+                    TweenColor tween = TweenManager.GetInstance().Create<TweenColor>();
+                    Color begin, end;
+                    InterpolationMode mode;
+                    luaState.GetField(-1, "beginValue");
+                    begin = InterpreterManager.GetInstance().TranslateTableToColor(luaState);
+                    luaState.GetField(-1, "endValue");
+                    end = InterpreterManager.GetInstance().TranslateTableToColor(luaState);
+                    luaState.GetField(-1, "mode");
+                    mode = (InterpolationMode)luaState.ToInteger(-1);
+                    luaState.Pop(1);
+                    tween.SetParas(_charCGGo, delay, duration, ePlayMode.Once);
+                    tween.SetParas(begin, end, mode);
+                    return tween;
+                }
+            case eTweenType.Pos2D:
+                {
+                    TweenPos2D tween = TweenManager.GetInstance().Create<TweenPos2D>();
+                    Vector2 begin, end;
+                    InterpolationMode mode;
+                    luaState.GetField(-1, "beginValue");
+                    begin = InterpreterManager.GetInstance().TranslateTableToVector2(luaState);
+                    luaState.GetField(-1, "endValue");
+                    end = InterpreterManager.GetInstance().TranslateTableToVector2(luaState);
+                    luaState.GetField(-1, "mode");
+                    mode = (InterpolationMode)luaState.ToInteger(-1);
+                    luaState.Pop(1);
+                    tween.SetParas(_charCGGo, delay, duration, ePlayMode.Once);
+                    tween.SetParas(begin, end, mode);
+                    return tween;
+                }
+            case eTweenType.Pos3D:
+                {
+                    TweenPos3D tween = TweenManager.GetInstance().Create<TweenPos3D>();
+                    Vector3 begin, end;
+                    InterpolationMode mode;
+                    luaState.GetField(-1, "beginValue");
+                    begin = InterpreterManager.GetInstance().TranslateTableToVector3(luaState);
+                    luaState.GetField(-1, "endValue");
+                    end = InterpreterManager.GetInstance().TranslateTableToVector3(luaState);
+                    luaState.GetField(-1, "mode");
+                    mode = (InterpolationMode)luaState.ToInteger(-1);
+                    luaState.Pop(1);
+                    tween.SetParas(_charCGGo, delay, duration, ePlayMode.Once);
+                    tween.SetParas(begin, end, mode);
+                    return tween;
+                }
+            case eTweenType.Rotation:
+                {
+                    TweenPos3D tween = TweenManager.GetInstance().Create<TweenPos3D>();
+                    Vector3 begin, end;
+                    InterpolationMode mode;
+                    luaState.GetField(-1, "beginValue");
+                    begin = InterpreterManager.GetInstance().TranslateTableToVector3(luaState);
+                    luaState.GetField(-1, "endValue");
+                    end = InterpreterManager.GetInstance().TranslateTableToVector3(luaState);
+                    luaState.GetField(-1, "mode");
+                    mode = (InterpolationMode)luaState.ToInteger(-1);
+                    luaState.Pop(1);
+                    tween.SetParas(_charCGGo, delay, duration, ePlayMode.Once);
+                    tween.SetParas(begin, end, mode);
+                    return tween;
+                }
+            case eTweenType.Scale:
+                {
+                    TweenPos3D tween = TweenManager.GetInstance().Create<TweenPos3D>();
+                    Vector3 begin, end;
+                    InterpolationMode mode;
+                    luaState.GetField(-1, "beginValue");
+                    begin = InterpreterManager.GetInstance().TranslateTableToVector3(luaState);
+                    luaState.GetField(-1, "endValue");
+                    end = InterpreterManager.GetInstance().TranslateTableToVector3(luaState);
+                    luaState.GetField(-1, "mode");
+                    mode = (InterpolationMode)luaState.ToInteger(-1);
+                    luaState.Pop(1);
+                    tween.SetParas(_charCGGo, delay, duration, ePlayMode.Once);
+                    tween.SetParas(begin, end, mode);
+                    return tween;
+                }
+        }
+        Logger.LogError("Create Tween by table fail! eTweenType not match!");
+        return null;
     }
 
     private void OnPlayCGFinish(GameObject go)

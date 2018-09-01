@@ -505,7 +505,7 @@ public class EnemyCurveLaser : EnemyBulletBase
     /// </summary>
     private void DivideAvailableRange()
     {
-        int i,j;
+        int i,j,segmentLen;
         Vector2 eliminateRange,availableRange,divideRange0,divideRange1;
         for (i=0;i<_eliminateRangeListCount;i++)
         {
@@ -515,7 +515,8 @@ public class EnemyCurveLaser : EnemyBulletBase
             for (j = 0; j < _availableCount; j++)
             {
                 availableRange = _availableIndexRangeList[j];
-                if ( eliminateRange.x >= availableRange.y || eliminateRange.y <= availableRange.x )
+                segmentLen = (int)(availableRange.y - availableRange.x);
+                if ( segmentLen > 0 && (eliminateRange.x >= availableRange.y || eliminateRange.y <= availableRange.x) )
                 {
                     continue;
                 }

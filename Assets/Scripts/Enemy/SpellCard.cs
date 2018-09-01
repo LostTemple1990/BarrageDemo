@@ -36,6 +36,10 @@ public class SpellCard
     /// 符卡是否已经开始
     /// </summary>
     private bool _isStarted;
+    /// <summary>
+    /// 是否符卡，false表示非符，不显示符卡信息
+    /// </summary>
+    private bool _isSpellCard;
 
     public SpellCard()
     {
@@ -46,9 +50,10 @@ public class SpellCard
     /// 设置符卡的基本属性
     /// </summary>
     /// <param name="name"></param>
-    /// <param name="funcRef"></param>
-    /// <param name="bossList"></param>
-    public void SetProperties(string name,float duration, eSpellCardCondition condition)
+    /// <param name="duration"></param>
+    /// <param name="condition"></param>
+    /// <param name="isSpellCard">是否符卡，符卡的话需要显示信息</param>
+    public void SetProperties(string name,float duration, eSpellCardCondition condition,bool isSpellCard)
     {
         this.name = name;
         // 时间
@@ -56,10 +61,17 @@ public class SpellCard
         _frameTotal = (int)(duration * 60);
         _frameLeft = _frameTotal;
         // 显示符卡时间
-        object[] data = { _frameLeft };
-        CommandManager.GetInstance().RunCommand(CommandConsts.NewSpellCardTime, data);
+        object[] scTimeDatas = { _frameLeft };
+        CommandManager.GetInstance().RunCommand(CommandConsts.NewSpellCardTime, scTimeDatas);
         // 完成条件
         _condition = condition;
+        // 是否显示符卡信息
+        _isSpellCard = isSpellCard;
+        if ( _isSpellCard )
+        {
+            object[] scDatas = { this.name };
+            CommandManager.GetInstance().RunCommand(CommandConsts.ShowSpellCardInfo, scDatas);
+        }
     }
 
     public void SetFinishFuncRef(int funcRef)
@@ -142,6 +154,7 @@ public class SpellCard
 
     public void Update()
     {
+        //Logger.Log("CurFrame = " + STGStageManager.GetInstance().GetFrameSinceStageStart());
         // 符卡尚未开始
         if ( !_isStarted )
         {

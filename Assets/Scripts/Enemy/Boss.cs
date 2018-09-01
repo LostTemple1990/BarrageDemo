@@ -11,18 +11,9 @@ public class Boss : EnemyBase
 
     protected float _beginX, _beginY;
 
-    protected Task _bossTask;
-
     protected bool _isPlayAni;
     protected int _playAniTime;
     protected int _playAniDuration;
-
-    protected SpellCard _sc;
-    protected bool _isCastingSpell;
-    protected Task _scTask;
-    protected int _scTimeLeft;
-    protected float _scMaxHp;
-    protected float _scCurHp;
 
     protected bool _isInvincible;
     protected int _invincibleTimeLeft;
@@ -114,10 +105,6 @@ public class Boss : EnemyBase
     {
         //Logger.Log("BeginRate = " + _beginRate + "   hpRate = " + (_scCurHp / _scMaxHp) * _curTotalRate);
         _curRate = _beginRate + ((float)_curHp / _maxHp) * _curTotalRate;
-        if ( STGStageManager.GetInstance().GetFrameSinceStageStart() % 20 == 0 )
-        {
-            Logger.Log(_curRate);
-        }
         _bloodBarSp.material.SetFloat("_Rate", _curRate);
         //Logger.Log("CurRate : " + _curRate);
     }
@@ -225,57 +212,6 @@ public class Boss : EnemyBase
         }
     }
 
-    public void CastingSpellCard()
-    {
-        if ( _scTask != null )
-        {
-            // 更新符卡时间
-            _scTimeLeft--;
-            object[] data = { _scTimeLeft };
-            CommandManager.GetInstance().RunCommand(CommandConsts.UpdateSpellCardTime,data);
-            // 判断是否已经击破sc或者sc时间已经到了
-            if ( _scCurHp <= 0 || _scTimeLeft <= 0 )
-            {
-                if ( _scCurHp <= 0 )
-                {
-                    Logger.Log("SpellCard + " + _sc.name + " is finish,Reason : Destroy");
-                }
-                else
-                {
-                    Logger.Log("SpellCard + " + _sc.name + " is finish,Reason : TimedOut");
-                }
-                InterpreterManager.GetInstance().StopTaskThread(_scTask);
-                _isCastingSpell = false;
-                ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(_scTask);
-                _scTask = null;
-                ClearTasks();
-                if ( _sc.finishFuncRef != 0 )
-                {
-                    InterpreterManager.GetInstance().CallLuaFunction(_sc.finishFuncRef, 0);
-                }
-                BulletsManager.GetInstance().ClearAllEnemyBullets();
-                EnemyManager.GetInstance().RawEliminateAllEnemyByCode(false);
-                // 更新血条
-                // 执行下一个task
-            }
-            else
-            {
-                _scTask.Update();
-            }
-        }
-        else
-        {
-            _scTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
-            _scTask.funcRef = _sc.taskRef;
-            InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
-            InterpreterManager.GetInstance().CallTaskCoroutine(_scTask, 1);
-            // 显示血条
-            _isShowBloodBar = true;
-            _bloodBarLayerTf.gameObject.SetActive(true);
-            Logger.Log("Casting SpellCard : " + _sc.name + " hp = " + _scMaxHp + " lastTime = " + _scTimeLeft);
-        }
-    }
-
     protected void UpdateInvincibleStatue()
     {
         _invincibleTimeLeft--;
@@ -335,15 +271,6 @@ public class Boss : EnemyBase
 
     public override void Clear()
     {
-        if ( _bossTask != null )
-        {
-            if ( !_bossTask.isFinish )
-            {
-                InterpreterManager.GetInstance().StopTaskThread(_bossTask.luaState, _bossTask.funcRef);
-            }
-            ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(_bossTask);
-            _bossTask = null;
-        }
         // BOSS动画
         AnimationManager.GetInstance().RemoveAnimation(_bossAni);
         _bossAni = null;
@@ -353,8 +280,6 @@ public class Boss : EnemyBase
         _segmentGoList.Clear();
         _weights.Clear();
         GameObject.Destroy(_enemyGo);
-        // 符卡数据
-        _sc = null;
         // movableObject
         ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObj);
         _movableObj = null;

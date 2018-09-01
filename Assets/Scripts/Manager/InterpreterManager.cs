@@ -562,6 +562,71 @@ public class InterpreterManager
         _luaGlobalObjectMap.Remove(key);
     }
 
+    public List<TweenBase> TranslateTableToTweenList(ILuaState luaState)
+    {
+        List<TweenBase> tweenList = new List<TweenBase>();
+        luaState.PushNil();
+        while ( luaState.Next(-2) )
+        {
+
+        }
+        return tweenList;
+    }
+
+    /// <summary>
+    /// 将栈顶的table转换成vec2并弹出该table
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public Vector2 TranslateTableToVector2(ILuaState luaState)
+    {
+        Vector2 vec = new Vector2();
+        luaState.GetField(-1, "x");
+        vec.x = (float)luaState.ToNumber(-1);
+        luaState.GetField(-2, "y");
+        vec.y = (float)luaState.ToNumber(-1);
+        luaState.Pop(3);
+        return vec;
+    }
+
+    /// <summary>
+    /// 将栈顶的table转换成vec3并弹出该table
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public Vector3 TranslateTableToVector3(ILuaState luaState)
+    {
+        Vector3 vec = new Vector2();
+        luaState.GetField(-1, "x");
+        vec.x = (float)luaState.ToNumber(-1);
+        luaState.GetField(-2, "y");
+        vec.y = (float)luaState.ToNumber(-1);
+        luaState.GetField(-3, "z");
+        vec.z = (float)luaState.ToNumber(-1);
+        luaState.Pop(4);
+        return vec;
+    }
+
+    /// <summary>
+    /// 将栈顶的table转换成color并弹出该table
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public Color TranslateTableToColor(ILuaState luaState)
+    {
+        Color color = new Color();
+        luaState.GetField(-1, "r");
+        color.r = (float)luaState.ToNumber(-1);
+        luaState.GetField(-2, "g");
+        color.g = (float)luaState.ToNumber(-1);
+        luaState.GetField(-3, "b");
+        color.b = (float)luaState.ToNumber(-1);
+        luaState.GetField(-4, "a");
+        color.a = (float)luaState.ToNumber(-1);
+        luaState.Pop(5);
+        return color;
+    }
+
     private static int Traceback(ILuaState lua)
     {
         var msg = lua.ToString(1);

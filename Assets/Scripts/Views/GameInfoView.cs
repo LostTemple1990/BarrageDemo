@@ -19,6 +19,8 @@ public class GameInfoView : ViewBase,ICommand
     // boss名称
     private Text _bossNameText;
 
+    private bool _isShowSpellCardInfo;
+
     public override void Init(GameObject viewObj)
     {
         base.Init(viewObj);
@@ -42,6 +44,8 @@ public class GameInfoView : ViewBase,ICommand
         CommandManager.GetInstance().Register(CommandConsts.UpdateSpellCardTime, this);
         CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
+        CommandManager.GetInstance().Register(CommandConsts.ShowSpellCardInfo, this);
+        CommandManager.GetInstance().Register(CommandConsts.SpellCardFinish, this);
     }
 
     public override void OnHide()
@@ -50,6 +54,8 @@ public class GameInfoView : ViewBase,ICommand
         CommandManager.GetInstance().Remove(CommandConsts.UpdateSpellCardTime, this);
         CommandManager.GetInstance().Remove(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Remove(CommandConsts.RetryStage, this);
+        CommandManager.GetInstance().Remove(CommandConsts.ShowSpellCardInfo, this);
+        CommandManager.GetInstance().Remove(CommandConsts.SpellCardFinish, this);
         _isShowSpellCardTime = false;
         _scTimeObject.SetActive(false);
         _bgmObject.SetActive(false);
@@ -68,6 +74,12 @@ public class GameInfoView : ViewBase,ICommand
             case CommandConsts.RetryGame:
             case CommandConsts.RetryStage:
                 Reset();
+                break;
+            case CommandConsts.ShowSpellCardInfo:
+                ShowSpellCardInfo((string)data[0]);
+                break;
+            case CommandConsts.SpellCardFinish:
+                OnSpellCardFinish();
                 break;
         }
     }
@@ -110,11 +122,42 @@ public class GameInfoView : ViewBase,ICommand
         return time;
     }
 
+    /// <summary>
+    /// 显示符卡名称
+    /// </summary>
+    private void ShowSpellCardInfo(string scName)
+    {
+        _scNameText.text = scName;
+        _scNameObject.SetActive(true);
+        TweenPos2D tweenPos = TweenManager.GetInstance().Create<TweenPos2D>();
+        tweenPos.SetParas(_scNameObject, 60, 60, ePlayMode.Once);
+        tweenPos.SetParas(new Vector2(108,-140), new Vector2(108,209), InterpolationMode.Linear);
+        TweenManager.GetInstance().AddTween(tweenPos);
+        _isShowSpellCardInfo = true;
+    }
+
+    private void OnSpellCardFinish()
+    {
+        // 隐藏符卡时间
+        _isShowSpellCardTime = false;
+        _scTimeObject.SetActive(false);
+        if ( _isShowSpellCardInfo )
+        {
+            // 隐藏符卡名称
+            _scNameObject.SetActive(false);
+            TweenManager.GetInstance().RemoveTweenByGo(_scNameObject);
+        }
+    }
+
     private void Reset()
     {
         // SpellCardTime
         _isShowSpellCardTime = false;
         _scTimeObject.SetActive(false);
+        // 符卡名称
+        TweenManager.GetInstance().RemoveTweenByGo(_scNameObject);
+        _scNameObject.SetActive(false);
+        _isShowSpellCardInfo = false;
     }
 
     public override LayerId GetLayerId()
