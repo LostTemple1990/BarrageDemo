@@ -57,6 +57,7 @@ public class STGStageManager
                 }
                 else
                 {
+                    _curSpellCard.OnFinish();
                     _isCastingSpellCard = false;
                     _isWaitingForSpellCard = false;
                     CommandManager.GetInstance().RunCommand(CommandConsts.SpellCardFinish);

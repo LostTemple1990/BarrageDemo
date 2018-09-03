@@ -221,11 +221,8 @@ public class EnemyBase : ICollisionObject
     /// </summary>
     protected void OnEliminate()
     {
-        Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
-        task.funcRef = _onEliminateFuncRef;
         InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
-        InterpreterManager.GetInstance().CallTaskCoroutine(task, 1);
-        ExtraTaskManager.GetInstance().AddTask(task);
+        InterpreterManager.GetInstance().CallLuaFunction(_onEliminateFuncRef, 1);
     }
 
     /// <summary>
@@ -233,11 +230,8 @@ public class EnemyBase : ICollisionObject
     /// </summary>
     protected void OnHit()
     {
-        Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
-        task.funcRef = _onHitFuncRef;
         InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
-        InterpreterManager.GetInstance().CallTaskCoroutine(task, 1);
-        ExtraTaskManager.GetInstance().AddTask(task);
+        InterpreterManager.GetInstance().CallLuaFunction(_onHitFuncRef, 1);
     }
 
     protected virtual void UpdatePos()

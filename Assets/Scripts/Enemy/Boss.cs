@@ -211,6 +211,14 @@ public class Boss : EnemyBase
         }
     }
 
+    /// <summary>
+    /// 符卡结束时，清除所有task
+    /// </summary>
+    public void OnSpellCardFinish()
+    {
+        ClearTasks();
+    }
+
     protected void UpdateInvincibleStatue()
     {
         _invincibleTimeLeft--;

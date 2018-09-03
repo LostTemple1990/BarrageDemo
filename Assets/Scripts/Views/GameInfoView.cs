@@ -132,6 +132,7 @@ public class GameInfoView : ViewBase,ICommand
         TweenPos2D tweenPos = TweenManager.GetInstance().Create<TweenPos2D>();
         tweenPos.SetParas(_scNameObject, 60, 60, ePlayMode.Once);
         tweenPos.SetParas(new Vector2(108,-140), new Vector2(108,209), InterpolationMode.Linear);
+        tweenPos.SetIgnoreTimeScale(false);
         TweenManager.GetInstance().AddTween(tweenPos);
         _isShowSpellCardInfo = true;
     }

@@ -32,6 +32,10 @@ public class STGBottomView : ViewBase,ICommand
             case CommandConsts.PlayCharacterCGAni:
                 PlayCGAni(datas);
                 break;
+            case CommandConsts.RetryStage:
+            case CommandConsts.RetryGame:
+                Reset();
+                break;
         }
     }
 
@@ -58,6 +62,7 @@ public class STGBottomView : ViewBase,ICommand
         TweenPos2D endTween = new TweenPos2D();
         endTween.SetParas(_charCGGo, maxTime + 1, 0, ePlayMode.Once);
         endTween.SetFinishCallBack(OnPlayCGFinish);
+        endTween.SetIgnoreTimeScale(false);
         TweenManager.GetInstance().AddTweens(_charCGGo, tweenList);
     }
 
@@ -203,9 +208,15 @@ public class STGBottomView : ViewBase,ICommand
 
     private void OnPlayCGFinish(GameObject go)
     {
+        Reset();
+    }
+
+    private void Reset()
+    {
         _charCGImg.sprite = null;
         _charCGGo.SetActive(false);
         _isPlayingCharCG = false;
+        _charCGGo.transform.localPosition = new Vector3(2000, 2000, 0);
     }
 
     public override LayerId GetLayerId()

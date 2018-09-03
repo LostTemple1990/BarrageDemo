@@ -108,7 +108,7 @@ public class STGMain
         return Global.IsPause;
     }
 
-    public void Clear()
+    public void Clear(eSTGClearType type)
     {
         PlayerService.GetInstance().Clear();
         _char = null;
@@ -120,7 +120,7 @@ public class STGMain
         ExtraTaskManager.GetInstance().Clear();
         BackgroundManager.GetInstance().Clear();
         STGStageManager.GetInstance().Clear();
-        InterpreterManager.GetInstance().Clear();
+        InterpreterManager.GetInstance().Clear(type);
     }
 
     /// <summary>

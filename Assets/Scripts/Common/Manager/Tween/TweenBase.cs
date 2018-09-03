@@ -85,7 +85,7 @@ public class TweenBase : IPoolClass
     public void Update()
     {
         if (!_isEnable) return;
-        // TODO 稍后加入游戏暂停处理
+        if (!_ignoreTimeScale && Global.IsPause) return;
         if ( _curTime < _delay )
         {
             _curTime++;

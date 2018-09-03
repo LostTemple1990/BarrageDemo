@@ -207,6 +207,25 @@ public enum eTweenType :int
     Scale = 6,
 }
 
+/// <summary>
+/// 调用clear函数的类型
+/// </summary>
+public enum eSTGClearType :byte
+{
+    /// <summary>
+    /// 返回到主菜单，全部清除
+    /// </summary>
+    BackToTitle = 1,
+    /// <summary>
+    /// 重开当前关卡，各个初始化函数等都不清除
+    /// </summary>
+    RetryCurStage = 2,
+    /// <summary>
+    /// 重开游戏，全部清除
+    /// </summary>
+    RetryGame = 3,
+}
+
 #region struct ItemWithFramentsCounter
 /// <summary>
 /// 带碎片的道具计数器

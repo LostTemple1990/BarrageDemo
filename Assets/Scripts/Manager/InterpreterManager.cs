@@ -32,6 +32,10 @@ public class InterpreterManager
     private Dictionary<string, Vector2> _luaGlobalVec2Map;
     private Dictionary<string, float> _luaGlobalNumberMap;
     private Dictionary<string, object> _luaGlobalObjectMap;
+    /// <summary>
+    /// 当前加载的stageId
+    /// </summary>
+    private int _curStageId;
 
 #if LogLuaFuncRef
     /// <summary>
@@ -62,7 +66,7 @@ public class InterpreterManager
         _luaState = LuaAPI.NewState();
         _luaState.L_OpenLibs();
         _luaState.L_RequireF("LuaLib", LuaLib.Init, false);
-        _luaState.Pop(this._luaState.GetTop());
+        _luaState.Pop(_luaState.GetTop());
         // 添加错误log函数
         _luaState.PushCSharpFunction(Traceback);
         _traceBackIndex = _luaState.GetTop();
@@ -72,6 +76,7 @@ public class InterpreterManager
         {
             throw new Exception(_luaState.ToString(-1));
         }
+        _curStageId = -1;
     }
 
     /// <summary>
@@ -80,31 +85,34 @@ public class InterpreterManager
     /// <param name="stageId"></param>
     public void LoadSpellCardConfig(int stageId)
     {
-        if ( _spellCardLoadedList.IndexOf(stageId) == -1 )
-        {
-            _spellCardLoadedList.Add(stageId);
-            var status = _luaState.L_DoFile("stages/stage" + stageId + "sc.lua");
-            if (status != ThreadStatus.LUA_OK)
-            {
-                throw new Exception(_luaState.ToString(-1));
-            }
-            RefCustomizedBullet();
-            RefCustomizedEnemy();
-        }
-    }
-
-    public Task LoadStage(int stageId)
-    {
-        LoadSpellCardConfig(stageId);
-        var status = _luaState.L_DoFile("stages/stage" + stageId + ".lua");
+        _spellCardLoadedList.Add(stageId);
+        var status = _luaState.L_DoFile("stages/stage" + stageId + "sc.lua");
         if (status != ThreadStatus.LUA_OK)
         {
             throw new Exception(_luaState.ToString(-1));
         }
-        // 存放自定义的子弹task
         RefCustomizedBullet();
         RefCustomizedEnemy();
-        RefBossTable();
+        // 弹出对应的sc.lua的返回table
+        _luaState.Pop(1);
+    }
+
+    public Task LoadStage(int stageId)
+    {
+        if ( _curStageId != stageId )
+        {
+            LoadSpellCardConfig(stageId);
+            var status = _luaState.L_DoFile("stages/stage" + stageId + ".lua");
+            if (status != ThreadStatus.LUA_OK)
+            {
+                throw new Exception(_luaState.ToString(-1));
+            }
+            // 存放自定义的子弹task
+            RefCustomizedBullet();
+            RefCustomizedEnemy();
+            RefBossTable();
+            _curStageId = stageId;
+        }
         Task stageTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
         InitStageTask(stageTask);
         return stageTask;
@@ -231,6 +239,11 @@ public class InterpreterManager
 
     private void InitStageTask(Task stageTask)
     {
+        _luaState.GetField(-1, "Stage");
+        if ( !_luaState.IsTable(-1) )
+        {
+            throw new Exception("Return value of Stage" + _curStageId + ".lua is not valid.Prop Stage is not table!");
+        }
         _luaState.GetField(-1, "StageTask");
         if (!_luaState.IsFunction(-1))
         {
@@ -242,7 +255,7 @@ public class InterpreterManager
         Logger.Log("Ref StageTask,Ref = " + stageTask.funcRef);
         _luaRefDic.Add(stageTask.funcRef, stageTask.funcRef);
 #endif
-        // 弹出function StageTask
+        // 弹出Stage
         _luaState.Pop(1);
     }
 
@@ -274,7 +287,7 @@ public class InterpreterManager
             task.luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, task.funcRef);
             if (!task.luaState.IsFunction(-1))
             {
-                Logger.LogError("Task funcRef is not point to a function!");
+                Logger.LogError("Task funcRef " + task.funcRef + " is not point to a function!");
                 return;
             }
             PushParasToStack(task.luaState);
@@ -623,11 +636,17 @@ public class InterpreterManager
         return 1;
     }
 
-    public void Clear()
+    public void Clear(eSTGClearType type)
     {
         _funcParas.Clear();
-        UnrefCustomizedBullets();
-        UnrefCustomizedEnemy();
+        if (type != eSTGClearType.RetryCurStage)
+        {
+            UnrefCustomizedBullets();
+            UnrefCustomizedEnemy();
+            // 弹出当前stage.lua返回的table
+            _luaState.Pop(1);
+            _curStageId = -1;
+        }
         //UnrefBoss();
         ClearLuaGlobal();
 #if LogLuaFuncRef

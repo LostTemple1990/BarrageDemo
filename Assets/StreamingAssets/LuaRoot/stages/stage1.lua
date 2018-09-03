@@ -1,6 +1,6 @@
-stage1 = {}
 lib = require "LuaLib"
 local consts = Constants
+local Stage = {}
 
 local CustomizedTable = {}
 CustomizedTable.SinBullet = {}
@@ -663,7 +663,7 @@ BossTable.MidBoss.Task = function(boss)
 	lib.EnterSpellCard(boss,sc)
 end
 
-function stage1.StageTask()
+function Stage.StageTask()
 	lib.PlaySound("bgm",true)
 	if coroutine.yield(200) == false then return end
 	do
@@ -895,5 +895,5 @@ return
 	CustomizedBulletTable = CustomizedTable,
 	CustomizedEnemyTable = CustomizedEnemyTable,
 	BossTable = BossTable,
-	StageTask = stage1.StageTask,
+	Stage = Stage,
 }

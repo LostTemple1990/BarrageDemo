@@ -202,7 +202,7 @@ public class StateSTGMain : IState,ICommand
     private void OnStateClearUpdate()
     {
         _curState = StateWait;
-        _stgMain.Clear();
+        _stgMain.Clear(eSTGClearType.RetryCurStage);
         _curState = StateInitSTG;
     }
 

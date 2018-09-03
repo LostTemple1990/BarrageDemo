@@ -191,6 +191,13 @@ public class SpellCard
         {
             InterpreterManager.GetInstance().CallLuaFunction(finishFuncRef, 0);
         }
+        // 清除BossTask
+        for (int i=0;i<_bossCount;i++)
+        {
+            bossList[i].OnSpellCardFinish();
+        }
+        BulletsManager.GetInstance().ClearAllEnemyBullets();
+        EnemyManager.GetInstance().RawEliminateAllEnemyByCode(false);
     }
 
     /// <summary>
