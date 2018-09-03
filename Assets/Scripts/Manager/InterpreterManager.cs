@@ -1,10 +1,9 @@
-﻿using System;
+﻿#define LogLuaFuncRef
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UniLua;
 using UnityEngine;
-
 
 public class InterpreterManager
 {
@@ -23,8 +22,6 @@ public class InterpreterManager
 
     private List<LuaPara> _funcParas;
 
-    private LuaCoroutineData _stageCoData;
-
     private Dictionary<string, int> _customizedInitFuncMap;
     private Dictionary<string, int> _customizedEnemyInitMap;
     private Dictionary<string, int> _customizedEnemyOnEliminateMap;
@@ -35,10 +32,13 @@ public class InterpreterManager
     private Dictionary<string, Vector2> _luaGlobalVec2Map;
     private Dictionary<string, float> _luaGlobalNumberMap;
     private Dictionary<string, object> _luaGlobalObjectMap;
+
+#if LogLuaFuncRef
     /// <summary>
-    /// 当前正在进行的符卡
+    /// 已经被索引的lua变量
     /// </summary>
-    private SpellCard _curSpellCard;
+    private Dictionary<int, int> _luaRefDic;
+#endif
 
     private int _traceBackIndex;
 
@@ -52,6 +52,9 @@ public class InterpreterManager
         _luaGlobalObjectMap = new Dictionary<string, object>();
         _spellCardLoadedList = new List<int>();
         _funcParas = new List<LuaPara>();
+#if LogLuaFuncRef
+        _luaRefDic = new Dictionary<int, int>();
+#endif
     }
 
     public void Init()
@@ -69,11 +72,6 @@ public class InterpreterManager
         {
             throw new Exception(_luaState.ToString(-1));
         }
-
-        _stageCoData = new LuaCoroutineData
-        {
-            isFinish = false
-        };
     }
 
     /// <summary>
@@ -137,7 +135,10 @@ public class InterpreterManager
             initFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
             _luaState.Pop(1);
             _customizedInitFuncMap.Add(customizedName, initFuncRef);
+#if LogLuaFuncRef
             Logger.Log("InitFunction in Customized Class " + customizedName + " is Ref , ref = " + initFuncRef);
+            _luaRefDic.Add(initFuncRef, initFuncRef);
+#endif
         }
         _luaState.Pop(1);
     }
@@ -168,19 +169,25 @@ public class InterpreterManager
             }
             initFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
             _customizedEnemyInitMap.Add(customizedName, initFuncRef);
+#if LogLuaFuncRef
+            Logger.Log("InitFunction in Customized Class " + customizedName + " is Ref , ref = " + initFuncRef);
+            _luaRefDic.Add(initFuncRef, initFuncRef);
+#endif
             _luaState.GetField(-1, "OnKill");
             if ( _luaState.IsFunction(-1) )
             {
                 onKillFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
                 _customizedEnemyOnEliminateMap.Add(customizedName, onKillFuncRef);
+#if LogLuaFuncRef
                 Logger.Log("OnKillFunction in Customized Enemy " + customizedName + " is Ref , ref = " + onKillFuncRef);
+                _luaRefDic.Add(onKillFuncRef, onKillFuncRef);
+#endif
             }
             else
             {
                 _luaState.Pop(1);
             }
             _luaState.Pop(1);
-            Logger.Log("InitFunction in Customized Class " + customizedName + " is Ref , ref = " + initFuncRef);
         }
         _luaState.Pop(1);
     }
@@ -189,7 +196,7 @@ public class InterpreterManager
     {
         _luaState.GetField(-1, "BossTable");
         string bossName;
-        int initRef, taskRef;
+        int initRef;
         if ( !_luaState.IsTable(-1) )
         {
             Logger.Log("Return value BossTable is not a table!");
@@ -209,17 +216,14 @@ public class InterpreterManager
                 Logger.Log("Init Funciton of Boss" + bossName + " is invalid");
             }
             initRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
-            // task
-            _luaState.GetField(-1, "Task");
-            if (!_luaState.IsFunction(-1))
-            {
-                Logger.Log("Task Funciton of Boss" + bossName + " is invalid");
-            }
-            taskRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+            // boss与enemy公用一个initFuncMap
+            _customizedEnemyInitMap.Add(bossName, initRef);
             // 弹出table
             _luaState.Pop(1);
-            EnemyManager.GetInstance().AddBossRefData(bossName, initRef, taskRef);
-            Logger.Log("Boss " + bossName + " is ref");
+#if LogLuaFuncRef
+            _luaRefDic.Add(initRef, initRef);
+            Logger.Log("Boss " + bossName + " is ref.Init funcRef = " + initRef);
+#endif
         }
         //弹出BossTable
         _luaState.Pop(1);
@@ -234,67 +238,30 @@ public class InterpreterManager
             return;
         }
         stageTask.funcRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+#if LogLuaFuncRef
+        Logger.Log("Ref StageTask,Ref = " + stageTask.funcRef);
+        _luaRefDic.Add(stageTask.funcRef, stageTask.funcRef);
+#endif
         // 弹出function StageTask
         _luaState.Pop(1);
     }
 
-    public void Update()
+    /// <summary>
+    /// 设置栈顶的luaFunc设置索引
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public int RefLuaFunction(ILuaState luaState)
     {
-        if ( !_stageCoData.isFinish )
+        if ( !luaState.IsFunction(-1) )
         {
-            CallStageCoroutine();
+            throw new Exception("stack top is not function!");
         }
-    }
-
-    private void CallStageCoroutine()
-    {
-        ThreadStatus status;
-        if ( _stageCoData.luaState == null )
-        {
-            if ( !_luaState.IsTable(-1) )
-            {
-                throw new Exception("stage return is not a table!");
-            }
-            _luaState.GetField(-1, "StageTask");
-            if ( !_luaState.IsFunction(-1) )
-            {
-                Logger.Log("Func StageTask is not exist!");
-                return;
-            }
-            int funcRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
-            _stageCoData.luaState = _luaState.NewThread();
-            _luaState.Pop(1);
-            _stageCoData.funcRef = funcRef;
-            _stageCoData.totalWaitTime = 0;
-            _stageCoData.isFinish = false;
-            // 将协程函数压入栈
-            _stageCoData.luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
-            status = _stageCoData.luaState.Resume(null, 0);
-        }
-        else
-        {
-            _stageCoData.curWaitTime++;
-            if ( _stageCoData.totalWaitTime != 0 && _stageCoData.curWaitTime < _stageCoData.totalWaitTime )
-            {
-                return;
-            }
-            _stageCoData.curWaitTime = 0;
-            status = _stageCoData.luaState.Resume(_stageCoData.luaState, 0);
-        }
-        if ( status == ThreadStatus.LUA_YIELD )
-        {
-            // get waitTime
-            _stageCoData.curWaitTime = 0;
-            _stageCoData.totalWaitTime = _stageCoData.luaState.ToInteger(-1);
-            _stageCoData.luaState.Pop(1);
-            Logger.Log("StageLua wait for " + _stageCoData.totalWaitTime + " frames");
-        }
-        else if ( status == ThreadStatus.LUA_OK )
-        {
-            _stageCoData.isFinish = true;
-            _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, _stageCoData.funcRef);
-            Logger.Log("StageLua complete!");
-        }
+        int funcRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+#if LogLuaFuncRef
+        _luaRefDic.Add(funcRef, funcRef);
+#endif
+        return funcRef;
     }
 
     public void CallTaskCoroutine(Task task,int numArgs=0)
@@ -305,7 +272,6 @@ public class InterpreterManager
             task.luaState = _luaState.NewThread();
             _luaState.Pop(1);
             task.luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, task.funcRef);
-            //Logger.Log("Get Task func , funcRef = " + task.funcRef);
             if (!task.luaState.IsFunction(-1))
             {
                 Logger.LogError("Task funcRef is not point to a function!");
@@ -338,7 +304,10 @@ public class InterpreterManager
         {
             task.isFinish = true;
             _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, task.funcRef);
+#if LogLuaFuncRef
+            _luaRefDic.Remove(task.funcRef);
             Logger.Log("TaskLua complete! LuaFunc = " + task.funcRef);
+#endif
         }
     }
 
@@ -354,7 +323,10 @@ public class InterpreterManager
         if (status == ThreadStatus.LUA_OK)
         {
             _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, task.funcRef);
-            //Logger.Log("StopTask Success!");
+#if LogLuaFuncRef
+            _luaRefDic.Remove(task.funcRef);
+            Logger.Log("StopTask Success! ref = " + task.funcRef);
+#endif
         }
         else
         {
@@ -369,7 +341,10 @@ public class InterpreterManager
         if ( status == ThreadStatus.LUA_OK )
         {
             _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX,taskFuncRef);
-            //Logger.Log("StopTask Success! ref = " + taskFuncRef);
+#if LogLuaFuncRef
+            _luaRefDic.Remove(taskFuncRef);
+            Logger.Log("StopTask Success! ref = " + taskFuncRef);
+#endif
         }
         else
         {
@@ -562,40 +537,37 @@ public class InterpreterManager
         _luaGlobalObjectMap.Remove(key);
     }
 
-    public List<TweenBase> TranslateTableToTweenList(ILuaState luaState)
-    {
-        List<TweenBase> tweenList = new List<TweenBase>();
-        luaState.PushNil();
-        while ( luaState.Next(-2) )
-        {
-
-        }
-        return tweenList;
-    }
-
     /// <summary>
-    /// 将栈顶的table转换成vec2并弹出该table
+    /// 将栈顶的table转换成vec2
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
     public Vector2 TranslateTableToVector2(ILuaState luaState)
     {
+        if ( !luaState.IsTable(-1) )
+        {
+            throw new Exception("Translate table to vector2 fail!Stack Top is not table!");
+        }
         Vector2 vec = new Vector2();
         luaState.GetField(-1, "x");
         vec.x = (float)luaState.ToNumber(-1);
         luaState.GetField(-2, "y");
         vec.y = (float)luaState.ToNumber(-1);
-        luaState.Pop(3);
+        luaState.Pop(2);
         return vec;
     }
 
     /// <summary>
-    /// 将栈顶的table转换成vec3并弹出该table
+    /// 将栈顶的table转换成vec3
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
     public Vector3 TranslateTableToVector3(ILuaState luaState)
     {
+        if (!luaState.IsTable(-1))
+        {
+            throw new Exception("Translate table to vector3 fail!Stack Top is not table!");
+        }
         Vector3 vec = new Vector2();
         luaState.GetField(-1, "x");
         vec.x = (float)luaState.ToNumber(-1);
@@ -603,17 +575,21 @@ public class InterpreterManager
         vec.y = (float)luaState.ToNumber(-1);
         luaState.GetField(-3, "z");
         vec.z = (float)luaState.ToNumber(-1);
-        luaState.Pop(4);
+        luaState.Pop(3);
         return vec;
     }
 
     /// <summary>
-    /// 将栈顶的table转换成color并弹出该table
+    /// 将栈顶的table转换成color
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
     public Color TranslateTableToColor(ILuaState luaState)
     {
+        if (!luaState.IsTable(-1))
+        {
+            throw new Exception("Translate table to color fail!Stack Top is not table!");
+        }
         Color color = new Color();
         luaState.GetField(-1, "r");
         color.r = (float)luaState.ToNumber(-1);
@@ -623,7 +599,7 @@ public class InterpreterManager
         color.b = (float)luaState.ToNumber(-1);
         luaState.GetField(-4, "a");
         color.a = (float)luaState.ToNumber(-1);
-        luaState.Pop(5);
+        luaState.Pop(4);
         return color;
     }
 
@@ -652,9 +628,11 @@ public class InterpreterManager
         _funcParas.Clear();
         UnrefCustomizedBullets();
         UnrefCustomizedEnemy();
-        UnrefBoss();
-        //ClearStageTask();
+        //UnrefBoss();
         ClearLuaGlobal();
+#if LogLuaFuncRef
+        Logger.Log("InterpreterManager Clear Finished!\n Count of FuncRefDic = " + _luaRefDic.Count);
+#endif
     }
 
     /// <summary>
@@ -667,7 +645,10 @@ public class InterpreterManager
             string customizedBulletName = kv.Key;
             int initFuncRef = kv.Value;
             _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
+#if LogLuaFuncRef
+            _luaRefDic.Remove(initFuncRef);
             Logger.Log("Unref init function of bullet " + customizedBulletName + " ref = " + initFuncRef);
+#endif
         }
         _customizedInitFuncMap.Clear();
     }
@@ -683,16 +664,22 @@ public class InterpreterManager
             string customizedEnemyName = kv.Key;
             int initFuncRef = kv.Value;
             _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
+#if LogLuaFuncRef
+            _luaRefDic.Remove(initFuncRef);
             Logger.Log("Unref init function of enemy " + customizedEnemyName + " ref = " + initFuncRef);
+#endif
         }
         _customizedEnemyInitMap.Clear();
         // 敌机被消灭触发的函数
         foreach (KeyValuePair<string, int> kv in _customizedEnemyOnEliminateMap)
         {
             string customizedEnemyName = kv.Key;
-            int initFuncRef = kv.Value;
-            _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
-            Logger.Log("Unref onEliminate function of enemy " + customizedEnemyName + " ref = " + initFuncRef);
+            int killFuncRef = kv.Value;
+            _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, killFuncRef);
+#if LogLuaFuncRef
+            _luaRefDic.Remove(killFuncRef);
+            Logger.Log("Unref onEliminate function of enemy " + customizedEnemyName + " ref = " + killFuncRef);
+#endif
         }
         _customizedEnemyOnEliminateMap.Clear();
     }
@@ -707,15 +694,13 @@ public class InterpreterManager
             BossRefData refData = kv.Value;
             _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, refData.initFuncRef);
             _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, refData.taskFuncRef);
+#if LogLuaFuncRef
+            _luaRefDic.Remove(refData.initFuncRef);
+            _luaRefDic.Remove(refData.taskFuncRef);
             Logger.Log("Unref init function of boss " + bossName + " ref = " + refData.initFuncRef + " and " + refData.taskFuncRef);
+#endif
         }
         datas.Clear();
-    }
-
-    private void ClearStageTask()
-    {
-        StopTaskThread(_stageCoData.luaState, _stageCoData.funcRef);
-        _stageCoData.Clear();
     }
 
     private void ClearLuaGlobal()

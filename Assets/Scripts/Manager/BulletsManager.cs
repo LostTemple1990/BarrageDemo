@@ -245,7 +245,7 @@ public class BulletsManager
 
     public void Clear()
     {
-        int tmpCount, i, j;
+        int tmpCount, i;
         BulletBase bullet;
         // 己方子弹
         tmpCount = _playerBullets.Count;

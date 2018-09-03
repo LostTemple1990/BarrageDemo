@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class Boss : EnemyBase
 {
     protected string _bossName;
-    protected BossRefData _refData;
 
     protected AnimationCharacter _bossAni;
 
@@ -45,9 +44,9 @@ public class Boss : EnemyBase
         {
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
         }
-        _refData = EnemyManager.GetInstance().GetRefDataByName(bossName);
+        int initFuncRef = InterpreterManager.GetInstance().GetEnemyInitFuncRef(_bossName);
         InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
-        InterpreterManager.GetInstance().CallLuaFunction(_refData.initFuncRef, 1);
+        InterpreterManager.GetInstance().CallLuaFunction(initFuncRef, 1);
         Logger.Log("Call InitFunc of Boss " + _bossName + " Complete!");
     }
 

@@ -451,7 +451,7 @@ public partial class LuaLib
     public static int AddBulletTask(ILuaState luaState)
     {
         EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
-        int funcRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+        int funcRef = InterpreterManager.GetInstance().RefLuaFunction(luaState);
         luaState.Pop(1);
         Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
         task.funcRef = funcRef;
@@ -656,7 +656,7 @@ public partial class LuaLib
     public static int AddEnemyTask(ILuaState luaState)
     {
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
-        int funcRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+        int funcRef = InterpreterManager.GetInstance().RefLuaFunction(luaState);
         luaState.Pop(1);
         Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
         task.funcRef = funcRef;
@@ -717,7 +717,6 @@ public partial class LuaLib
         luaState.Pop(1);
         Boss boss = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.Boss) as Boss;
         boss.Init(bossName);
-        Global.Boss = boss;
         luaState.PushLightUserData(boss);
         return 1;
     }
@@ -829,7 +828,7 @@ public partial class LuaLib
             bossCount++;
             luaState.Pop(1);
         }
-        int funcRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+        int funcRef = InterpreterManager.GetInstance().RefLuaFunction(luaState);
         STGStageManager.GetInstance().StartSpellCard(funcRef, bossList);
         return 0;
     }
@@ -866,7 +865,7 @@ public partial class LuaLib
         // 判断有没有符卡结束时候的函数
         if ( luaState.IsFunction(-1))
         {
-            int finishFuncRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+            int finishFuncRef = InterpreterManager.GetInstance().RefLuaFunction(luaState);
             sc.SetFinishFuncRef(finishFuncRef);
         }
         luaState.Pop(4);

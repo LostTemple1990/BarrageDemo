@@ -52,8 +52,6 @@ public class Global
     /// </summary>
     public static float PlayerGrazeRadius = 16f;
 
-    public static Boss Boss;
-
     /// <summary>
     /// STG游戏是否暂停
     /// </summary>

@@ -1,5 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//define 定义
+// LogLuaFuncRef  是否log出记录在c#这边的lua变量的索引
+
 using UnityEngine;
 
 public class GameMain : MonoBehaviour

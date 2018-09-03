@@ -26,8 +26,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
 
     protected float _collisionRadius;
 
-    protected GrazeDetectParas _grazeParas;
-    protected CollisionDetectParas _collisionParas;
     #endregion
     /// <summary>
     /// 表示当前是否虚化状态
