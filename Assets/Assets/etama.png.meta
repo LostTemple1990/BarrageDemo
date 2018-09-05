@@ -2,32 +2,32 @@ fileFormatVersion: 2
 guid: 87f72b5c31938184ba2916361ac05457
 TextureImporter:
   fileIDToRecycleName:
-    21300000: etama_0
-    21300002: etama_1
-    21300004: etama_2
-    21300006: etama_3
-    21300008: etama_4
-    21300010: etama_5
-    21300012: etama_6
-    21300014: etama_7
-    21300016: etama_8
-    21300018: etama_9
-    21300020: etama_10
-    21300022: etama_11
-    21300024: etama_12
-    21300026: etama_13
-    21300028: etama_14
-    21300030: etama_15
-    21300032: etama_16
-    21300034: etama_17
-    21300036: etama_18
-    21300038: etama_19
-    21300040: etama_20
-    21300042: etama_21
-    21300044: etama_22
-    21300046: etama_23
-    21300048: etama_24
-    21300050: etama_25
+    21300000: Bullet100080
+    21300002: Bullet100090
+    21300004: Bullet100100
+    21300006: Bullet100110
+    21300008: Bullet100120
+    21300010: Bullet100130
+    21300012: Bullet100140
+    21300014: Bullet100150
+    21300016: Bullet100000
+    21300018: Bullet100010
+    21300020: Bullet100020
+    21300022: Bullet100030
+    21300024: Bullet100040
+    21300026: Bullet100050
+    21300028: Bullet100060
+    21300030: Bullet100070
+    21300032: Bullet102150
+    21300034: Bullet102010
+    21300036: Bullet102060
+    21300038: Bullet102100
+    21300040: Bullet102130
+    21300042: Bullet102000
+    21300044: Bullet102020
+    21300046: Bullet102050
+    21300048: Bullet102090
+    21300050: Bullet102120
     21300052: etama_26
     21300054: etama_27
     21300056: etama_28
@@ -37,25 +37,25 @@ TextureImporter:
     21300064: etama_32
     21300066: etama_33
     21300068: etama_34
-    21300070: etama_35
-    21300072: etama_36
-    21300074: etama_37
-    21300076: etama_38
-    21300078: etama_39
-    21300080: etama_40
-    21300082: etama_41
-    21300084: etama_42
-    21300086: etama_43
-    21300088: etama_44
-    21300090: etama_45
-    21300092: etama_46
-    21300094: etama_47
-    21300096: etama_48
-    21300098: etama_49
-    21300100: etama_50
-    21300102: etama_51
-    21300104: etama_52
-    21300106: etama_53
+    21300070: Bullet101080
+    21300072: Bullet101090
+    21300074: Bullet101100
+    21300076: Bullet101110
+    21300078: Bullet101120
+    21300080: Bullet101130
+    21300082: Bullet101140
+    21300084: Bullet101150
+    21300086: Bullet101000
+    21300088: Bullet101010
+    21300090: Bullet101020
+    21300092: Bullet101030
+    21300094: Bullet101040
+    21300096: Bullet101050
+    21300098: Bullet101060
+    21300100: Bullet101070
+    21300102: Bullet112120
+    21300104: Bullet112000
+    21300106: Bullet112140
     21300108: etama_54
     21300110: etama_55
     21300112: etama_56
@@ -72,166 +72,166 @@ TextureImporter:
     21300134: etama_67
     21300136: etama_68
     21300138: etama_69
-    21300140: etama_70
-    21300142: etama_71
-    21300144: etama_72
-    21300146: etama_73
-    21300148: etama_74
-    21300150: etama_75
-    21300152: etama_76
-    21300154: etama_77
-    21300156: etama_78
-    21300158: etama_79
-    21300160: etama_80
-    21300162: etama_81
-    21300164: etama_82
-    21300166: etama_83
-    21300168: etama_84
-    21300170: etama_85
-    21300172: etama_86
-    21300174: etama_87
-    21300176: etama_88
-    21300178: etama_89
-    21300180: etama_90
-    21300182: etama_91
-    21300184: etama_92
-    21300186: etama_93
-    21300188: etama_94
-    21300190: etama_95
-    21300192: etama_96
-    21300194: etama_97
-    21300196: etama_98
-    21300198: etama_99
-    21300200: etama_100
-    21300202: etama_101
-    21300204: etama_102
-    21300206: etama_103
-    21300208: etama_104
-    21300210: etama_105
-    21300212: etama_106
-    21300214: etama_107
-    21300216: etama_108
-    21300218: etama_109
-    21300220: etama_110
-    21300222: etama_111
-    21300224: etama_112
-    21300226: etama_113
-    21300228: etama_114
-    21300230: etama_115
-    21300232: etama_116
-    21300234: etama_117
-    21300236: etama_118
-    21300238: etama_119
-    21300240: etama_120
-    21300242: etama_121
-    21300244: etama_122
-    21300246: etama_123
-    21300248: etama_124
-    21300250: etama_125
-    21300252: etama_126
-    21300254: etama_127
-    21300256: etama_128
-    21300258: etama_129
-    21300260: etama_130
-    21300262: etama_131
-    21300264: etama_132
-    21300266: etama_133
-    21300268: etama_134
-    21300270: etama_135
-    21300272: etama_136
-    21300274: etama_137
-    21300276: etama_138
-    21300278: etama_139
-    21300280: etama_140
-    21300282: etama_141
-    21300284: etama_142
-    21300286: etama_143
-    21300288: etama_144
-    21300290: etama_145
-    21300292: etama_146
-    21300294: etama_147
-    21300296: etama_148
-    21300298: etama_149
-    21300300: etama_150
-    21300302: etama_151
-    21300304: etama_152
-    21300306: etama_153
-    21300308: etama_154
-    21300310: etama_155
-    21300312: etama_156
-    21300314: etama_157
-    21300316: etama_158
-    21300318: etama_159
-    21300320: etama_160
-    21300322: etama_161
-    21300324: etama_162
-    21300326: etama_163
-    21300328: etama_164
-    21300330: etama_165
-    21300332: etama_166
-    21300334: etama_167
-    21300336: etama_168
-    21300338: etama_169
-    21300340: etama_170
-    21300342: etama_171
-    21300344: etama_172
-    21300346: etama_173
-    21300348: etama_174
-    21300350: etama_175
-    21300352: etama_176
-    21300354: etama_177
-    21300356: etama_178
-    21300358: etama_179
-    21300360: etama_180
-    21300362: etama_181
-    21300364: etama_182
-    21300366: etama_183
-    21300368: etama_184
-    21300370: etama_185
-    21300372: etama_186
-    21300374: etama_187
-    21300376: etama_188
-    21300378: etama_189
-    21300380: etama_190
-    21300382: etama_191
-    21300384: etama_192
-    21300386: etama_193
-    21300388: etama_194
-    21300390: etama_195
-    21300392: etama_196
-    21300394: etama_197
-    21300396: etama_198
-    21300398: etama_199
-    21300400: etama_200
-    21300402: etama_201
-    21300404: etama_202
-    21300406: etama_203
-    21300408: etama_204
-    21300410: etama_205
-    21300412: etama_206
-    21300414: etama_207
-    21300416: etama_208
-    21300418: etama_209
-    21300420: etama_210
-    21300422: etama_211
-    21300424: etama_212
-    21300426: etama_213
-    21300428: etama_214
-    21300430: etama_215
-    21300432: etama_216
-    21300434: etama_217
-    21300436: etama_218
-    21300438: etama_219
-    21300440: etama_220
-    21300442: etama_221
-    21300444: etama_222
-    21300446: etama_223
-    21300448: etama_224
-    21300450: etama_225
-    21300452: etama_226
-    21300454: etama_227
-    21300456: etama_228
-    21300458: etama_229
+    21300140: Bullet111000
+    21300142: Bullet111010
+    21300144: Bullet111020
+    21300146: Bullet111030
+    21300148: Bullet111040
+    21300150: Bullet111050
+    21300152: Bullet111060
+    21300154: Bullet111070
+    21300156: Bullet111080
+    21300158: Bullet111090
+    21300160: Bullet111100
+    21300162: Bullet111110
+    21300164: Bullet111120
+    21300166: Bullet111130
+    21300168: Bullet111140
+    21300170: Bullet111150
+    21300172: Bullet110000
+    21300174: Bullet110010
+    21300176: Bullet110020
+    21300178: Bullet110030
+    21300180: Bullet110040
+    21300182: Bullet110050
+    21300184: Bullet110060
+    21300186: Bullet110070
+    21300188: Bullet110080
+    21300190: Bullet110090
+    21300192: Bullet110100
+    21300194: Bullet110110
+    21300196: Bullet110130
+    21300198: Bullet110120
+    21300200: Bullet110140
+    21300202: Bullet110150
+    21300204: Bullet109000
+    21300206: Bullet109010
+    21300208: Bullet109020
+    21300210: Bullet109030
+    21300212: Bullet109040
+    21300214: Bullet109050
+    21300216: Bullet109060
+    21300218: Bullet109070
+    21300220: Bullet109080
+    21300222: Bullet109090
+    21300224: Bullet109100
+    21300226: Bullet109110
+    21300228: Bullet109120
+    21300230: Bullet109130
+    21300232: Bullet109140
+    21300234: Bullet109150
+    21300236: Bullet107000
+    21300238: Bullet107010
+    21300240: Bullet107020
+    21300242: Bullet107030
+    21300244: Bullet107040
+    21300246: Bullet107050
+    21300248: Bullet107060
+    21300250: Bullet107070
+    21300252: Bullet107080
+    21300254: Bullet107090
+    21300256: Bullet107100
+    21300258: Bullet107110
+    21300260: Bullet107120
+    21300262: Bullet107130
+    21300264: Bullet107140
+    21300266: Bullet107150
+    21300268: Bullet106000
+    21300270: Bullet106010
+    21300272: Bullet106020
+    21300274: Bullet106030
+    21300276: Bullet106040
+    21300278: Bullet106050
+    21300280: Bullet106060
+    21300282: Bullet106070
+    21300284: Bullet106080
+    21300286: Bullet106090
+    21300288: Bullet106100
+    21300290: Bullet106110
+    21300292: Bullet106120
+    21300294: Bullet106130
+    21300296: Bullet106140
+    21300298: Bullet106150
+    21300300: Bullet105000
+    21300302: Bullet105010
+    21300304: Bullet105020
+    21300306: Bullet105030
+    21300308: Bullet105040
+    21300310: Bullet105050
+    21300312: Bullet105060
+    21300314: Bullet105070
+    21300316: Bullet105080
+    21300318: Bullet105090
+    21300320: Bullet105100
+    21300322: Bullet105110
+    21300324: Bullet105120
+    21300326: Bullet105130
+    21300328: Bullet105140
+    21300330: Bullet105150
+    21300332: Bullet104000
+    21300334: Bullet104010
+    21300336: Bullet104020
+    21300338: Bullet104030
+    21300340: Bullet104040
+    21300342: Bullet104050
+    21300344: Bullet104060
+    21300346: Bullet104070
+    21300348: Bullet104080
+    21300350: Bullet104090
+    21300352: Bullet104100
+    21300354: Bullet104110
+    21300356: Bullet104120
+    21300358: Bullet104130
+    21300360: Bullet104140
+    21300362: Bullet104150
+    21300364: Bullet113000
+    21300366: Bullet113010
+    21300368: Bullet113020
+    21300370: Bullet113030
+    21300372: Bullet113040
+    21300374: Bullet113050
+    21300376: Bullet113060
+    21300378: Bullet113070
+    21300380: Bullet113080
+    21300382: Bullet113090
+    21300384: Bullet113100
+    21300386: Bullet113110
+    21300388: Bullet113120
+    21300390: Bullet113130
+    21300392: Bullet113140
+    21300394: Bullet113150
+    21300396: Bullet103000
+    21300398: Bullet103010
+    21300400: Bullet103020
+    21300402: Bullet103030
+    21300404: Bullet103040
+    21300406: Bullet103050
+    21300408: Bullet103060
+    21300410: Bullet103070
+    21300412: Bullet103080
+    21300414: Bullet103090
+    21300416: Bullet103100
+    21300418: Bullet103110
+    21300420: Bullet103120
+    21300422: Bullet103130
+    21300424: Bullet103140
+    21300426: Bullet103150
+    21300428: Bullet108000
+    21300430: Bullet108010
+    21300432: Bullet108020
+    21300434: Bullet108030
+    21300436: Bullet108040
+    21300438: Bullet108050
+    21300440: Bullet108060
+    21300442: Bullet108070
+    21300444: Bullet108080
+    21300446: Bullet108090
+    21300448: Bullet108100
+    21300450: Bullet108110
+    21300452: Bullet108120
+    21300454: Bullet108130
+    21300456: Bullet108140
+    21300458: Bullet108150
     21300460: etama_230
     21300462: etama_231
     21300464: etama_232
@@ -328,7 +328,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: etama_0
+      name: Bullet100080
       rect:
         serializedVersion: 2
         x: 0
@@ -336,7 +336,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -348,7 +348,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_1
+      name: Bullet100090
       rect:
         serializedVersion: 2
         x: 8
@@ -356,7 +356,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -368,7 +368,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_2
+      name: Bullet100100
       rect:
         serializedVersion: 2
         x: 16
@@ -376,7 +376,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -388,7 +388,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_3
+      name: Bullet100110
       rect:
         serializedVersion: 2
         x: 24
@@ -396,7 +396,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -408,7 +408,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_4
+      name: Bullet100120
       rect:
         serializedVersion: 2
         x: 32
@@ -416,7 +416,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -428,7 +428,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_5
+      name: Bullet100130
       rect:
         serializedVersion: 2
         x: 40
@@ -436,7 +436,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -448,7 +448,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_6
+      name: Bullet100140
       rect:
         serializedVersion: 2
         x: 48
@@ -456,7 +456,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -468,7 +468,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_7
+      name: Bullet100150
       rect:
         serializedVersion: 2
         x: 56
@@ -476,7 +476,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -488,7 +488,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_8
+      name: Bullet100000
       rect:
         serializedVersion: 2
         x: 0
@@ -496,7 +496,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -508,7 +508,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_9
+      name: Bullet100010
       rect:
         serializedVersion: 2
         x: 8
@@ -516,7 +516,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -528,7 +528,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_10
+      name: Bullet100020
       rect:
         serializedVersion: 2
         x: 16
@@ -536,7 +536,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -548,7 +548,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_11
+      name: Bullet100030
       rect:
         serializedVersion: 2
         x: 24
@@ -556,7 +556,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -568,7 +568,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_12
+      name: Bullet100040
       rect:
         serializedVersion: 2
         x: 32
@@ -576,7 +576,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -588,7 +588,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_13
+      name: Bullet100050
       rect:
         serializedVersion: 2
         x: 40
@@ -596,7 +596,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -608,7 +608,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_14
+      name: Bullet100060
       rect:
         serializedVersion: 2
         x: 48
@@ -616,7 +616,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -628,7 +628,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_15
+      name: Bullet100070
       rect:
         serializedVersion: 2
         x: 56
@@ -636,7 +636,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -648,7 +648,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_16
+      name: Bullet102150
       rect:
         serializedVersion: 2
         x: 64
@@ -656,7 +656,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -668,7 +668,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_17
+      name: Bullet102010
       rect:
         serializedVersion: 2
         x: 80
@@ -676,7 +676,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -688,7 +688,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_18
+      name: Bullet102060
       rect:
         serializedVersion: 2
         x: 96
@@ -696,7 +696,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -708,7 +708,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_19
+      name: Bullet102100
       rect:
         serializedVersion: 2
         x: 112
@@ -716,7 +716,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -728,7 +728,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_20
+      name: Bullet102130
       rect:
         serializedVersion: 2
         x: 128
@@ -736,7 +736,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -748,7 +748,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_21
+      name: Bullet102000
       rect:
         serializedVersion: 2
         x: 144
@@ -756,7 +756,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -768,7 +768,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_22
+      name: Bullet102020
       rect:
         serializedVersion: 2
         x: 160
@@ -776,7 +776,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -788,7 +788,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_23
+      name: Bullet102050
       rect:
         serializedVersion: 2
         x: 176
@@ -796,7 +796,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -808,7 +808,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_24
+      name: Bullet102090
       rect:
         serializedVersion: 2
         x: 192
@@ -816,7 +816,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -828,7 +828,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_25
+      name: Bullet102120
       rect:
         serializedVersion: 2
         x: 208
@@ -836,7 +836,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -856,7 +856,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -876,7 +876,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -896,7 +896,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -916,7 +916,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -936,7 +936,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -956,7 +956,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -976,7 +976,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -996,7 +996,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1016,7 +1016,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1028,7 +1028,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_35
+      name: Bullet101080
       rect:
         serializedVersion: 2
         x: 0
@@ -1036,7 +1036,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1048,7 +1048,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_36
+      name: Bullet101090
       rect:
         serializedVersion: 2
         x: 8
@@ -1056,7 +1056,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1068,7 +1068,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_37
+      name: Bullet101100
       rect:
         serializedVersion: 2
         x: 16
@@ -1076,7 +1076,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1088,7 +1088,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_38
+      name: Bullet101110
       rect:
         serializedVersion: 2
         x: 24
@@ -1096,7 +1096,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1108,7 +1108,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_39
+      name: Bullet101120
       rect:
         serializedVersion: 2
         x: 32
@@ -1116,7 +1116,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1128,7 +1128,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_40
+      name: Bullet101130
       rect:
         serializedVersion: 2
         x: 40
@@ -1136,7 +1136,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1148,7 +1148,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_41
+      name: Bullet101140
       rect:
         serializedVersion: 2
         x: 48
@@ -1156,7 +1156,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1168,7 +1168,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_42
+      name: Bullet101150
       rect:
         serializedVersion: 2
         x: 56
@@ -1176,7 +1176,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1188,7 +1188,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_43
+      name: Bullet101000
       rect:
         serializedVersion: 2
         x: 0
@@ -1196,7 +1196,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1208,7 +1208,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_44
+      name: Bullet101010
       rect:
         serializedVersion: 2
         x: 8
@@ -1216,7 +1216,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1228,7 +1228,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_45
+      name: Bullet101020
       rect:
         serializedVersion: 2
         x: 16
@@ -1236,7 +1236,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1248,7 +1248,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_46
+      name: Bullet101030
       rect:
         serializedVersion: 2
         x: 24
@@ -1256,7 +1256,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1268,7 +1268,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_47
+      name: Bullet101040
       rect:
         serializedVersion: 2
         x: 32
@@ -1276,7 +1276,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1288,7 +1288,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_48
+      name: Bullet101050
       rect:
         serializedVersion: 2
         x: 40
@@ -1296,7 +1296,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1308,7 +1308,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_49
+      name: Bullet101060
       rect:
         serializedVersion: 2
         x: 48
@@ -1316,7 +1316,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1328,7 +1328,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_50
+      name: Bullet101070
       rect:
         serializedVersion: 2
         x: 56
@@ -1336,7 +1336,7 @@ TextureImporter:
         width: 8
         height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1348,7 +1348,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_51
+      name: Bullet112120
       rect:
         serializedVersion: 2
         x: 208
@@ -1356,7 +1356,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1368,7 +1368,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_52
+      name: Bullet112000
       rect:
         serializedVersion: 2
         x: 224
@@ -1376,7 +1376,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1388,7 +1388,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_53
+      name: Bullet112140
       rect:
         serializedVersion: 2
         x: 240
@@ -1396,7 +1396,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1416,7 +1416,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1436,7 +1436,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1456,7 +1456,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1476,7 +1476,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1496,7 +1496,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1516,7 +1516,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1536,7 +1536,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1556,7 +1556,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1576,7 +1576,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1596,7 +1596,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1616,7 +1616,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1636,7 +1636,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1656,7 +1656,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1676,7 +1676,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1696,7 +1696,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1716,7 +1716,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1728,7 +1728,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_70
+      name: Bullet111000
       rect:
         serializedVersion: 2
         x: 0
@@ -1736,7 +1736,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1748,7 +1748,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_71
+      name: Bullet111010
       rect:
         serializedVersion: 2
         x: 16
@@ -1756,7 +1756,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1768,7 +1768,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_72
+      name: Bullet111020
       rect:
         serializedVersion: 2
         x: 32
@@ -1776,7 +1776,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1788,7 +1788,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_73
+      name: Bullet111030
       rect:
         serializedVersion: 2
         x: 48
@@ -1796,7 +1796,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1808,7 +1808,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_74
+      name: Bullet111040
       rect:
         serializedVersion: 2
         x: 64
@@ -1816,7 +1816,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1828,7 +1828,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_75
+      name: Bullet111050
       rect:
         serializedVersion: 2
         x: 80
@@ -1836,7 +1836,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1848,7 +1848,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_76
+      name: Bullet111060
       rect:
         serializedVersion: 2
         x: 96
@@ -1856,7 +1856,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1868,7 +1868,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_77
+      name: Bullet111070
       rect:
         serializedVersion: 2
         x: 112
@@ -1876,7 +1876,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1888,7 +1888,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_78
+      name: Bullet111080
       rect:
         serializedVersion: 2
         x: 128
@@ -1896,7 +1896,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1908,7 +1908,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_79
+      name: Bullet111090
       rect:
         serializedVersion: 2
         x: 144
@@ -1916,7 +1916,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1928,7 +1928,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_80
+      name: Bullet111100
       rect:
         serializedVersion: 2
         x: 160
@@ -1936,7 +1936,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1948,7 +1948,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_81
+      name: Bullet111110
       rect:
         serializedVersion: 2
         x: 176
@@ -1956,7 +1956,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1968,7 +1968,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_82
+      name: Bullet111120
       rect:
         serializedVersion: 2
         x: 192
@@ -1976,7 +1976,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1988,7 +1988,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_83
+      name: Bullet111130
       rect:
         serializedVersion: 2
         x: 208
@@ -1996,7 +1996,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2008,7 +2008,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_84
+      name: Bullet111140
       rect:
         serializedVersion: 2
         x: 224
@@ -2016,7 +2016,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2028,7 +2028,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_85
+      name: Bullet111150
       rect:
         serializedVersion: 2
         x: 240
@@ -2036,7 +2036,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2048,7 +2048,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_86
+      name: Bullet110000
       rect:
         serializedVersion: 2
         x: 0
@@ -2056,7 +2056,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2068,7 +2068,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_87
+      name: Bullet110010
       rect:
         serializedVersion: 2
         x: 16
@@ -2076,7 +2076,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2088,7 +2088,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_88
+      name: Bullet110020
       rect:
         serializedVersion: 2
         x: 32
@@ -2096,7 +2096,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2108,7 +2108,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_89
+      name: Bullet110030
       rect:
         serializedVersion: 2
         x: 48
@@ -2116,7 +2116,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2128,7 +2128,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_90
+      name: Bullet110040
       rect:
         serializedVersion: 2
         x: 64
@@ -2136,7 +2136,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2148,7 +2148,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_91
+      name: Bullet110050
       rect:
         serializedVersion: 2
         x: 80
@@ -2156,7 +2156,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2168,7 +2168,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_92
+      name: Bullet110060
       rect:
         serializedVersion: 2
         x: 96
@@ -2176,7 +2176,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2188,7 +2188,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_93
+      name: Bullet110070
       rect:
         serializedVersion: 2
         x: 112
@@ -2196,7 +2196,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2208,7 +2208,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_94
+      name: Bullet110080
       rect:
         serializedVersion: 2
         x: 128
@@ -2216,7 +2216,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2228,7 +2228,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_95
+      name: Bullet110090
       rect:
         serializedVersion: 2
         x: 144
@@ -2236,7 +2236,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2248,7 +2248,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_96
+      name: Bullet110100
       rect:
         serializedVersion: 2
         x: 160
@@ -2256,7 +2256,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2268,7 +2268,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_97
+      name: Bullet110110
       rect:
         serializedVersion: 2
         x: 176
@@ -2276,7 +2276,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2288,7 +2288,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_98
+      name: Bullet110130
       rect:
         serializedVersion: 2
         x: 192
@@ -2296,7 +2296,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2308,7 +2308,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_99
+      name: Bullet110120
       rect:
         serializedVersion: 2
         x: 208
@@ -2316,7 +2316,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2328,7 +2328,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_100
+      name: Bullet110140
       rect:
         serializedVersion: 2
         x: 224
@@ -2336,7 +2336,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2348,7 +2348,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_101
+      name: Bullet110150
       rect:
         serializedVersion: 2
         x: 240
@@ -2356,7 +2356,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2368,7 +2368,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_102
+      name: Bullet109000
       rect:
         serializedVersion: 2
         x: 0
@@ -2376,7 +2376,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2388,7 +2388,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_103
+      name: Bullet109010
       rect:
         serializedVersion: 2
         x: 16
@@ -2396,7 +2396,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2408,7 +2408,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_104
+      name: Bullet109020
       rect:
         serializedVersion: 2
         x: 32
@@ -2416,7 +2416,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2428,7 +2428,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_105
+      name: Bullet109030
       rect:
         serializedVersion: 2
         x: 48
@@ -2436,7 +2436,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2448,7 +2448,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_106
+      name: Bullet109040
       rect:
         serializedVersion: 2
         x: 64
@@ -2456,7 +2456,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2468,7 +2468,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_107
+      name: Bullet109050
       rect:
         serializedVersion: 2
         x: 80
@@ -2476,7 +2476,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2488,7 +2488,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_108
+      name: Bullet109060
       rect:
         serializedVersion: 2
         x: 96
@@ -2496,7 +2496,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2508,7 +2508,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_109
+      name: Bullet109070
       rect:
         serializedVersion: 2
         x: 112
@@ -2516,7 +2516,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2528,7 +2528,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_110
+      name: Bullet109080
       rect:
         serializedVersion: 2
         x: 128
@@ -2536,7 +2536,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2548,7 +2548,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_111
+      name: Bullet109090
       rect:
         serializedVersion: 2
         x: 144
@@ -2556,7 +2556,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2568,7 +2568,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_112
+      name: Bullet109100
       rect:
         serializedVersion: 2
         x: 160
@@ -2576,7 +2576,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2588,7 +2588,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_113
+      name: Bullet109110
       rect:
         serializedVersion: 2
         x: 176
@@ -2596,7 +2596,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2608,7 +2608,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_114
+      name: Bullet109120
       rect:
         serializedVersion: 2
         x: 192
@@ -2616,7 +2616,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2628,7 +2628,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_115
+      name: Bullet109130
       rect:
         serializedVersion: 2
         x: 208
@@ -2636,7 +2636,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2648,7 +2648,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_116
+      name: Bullet109140
       rect:
         serializedVersion: 2
         x: 224
@@ -2656,7 +2656,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2668,7 +2668,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_117
+      name: Bullet109150
       rect:
         serializedVersion: 2
         x: 240
@@ -2676,7 +2676,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2688,7 +2688,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_118
+      name: Bullet107000
       rect:
         serializedVersion: 2
         x: 0
@@ -2696,7 +2696,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2708,7 +2708,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_119
+      name: Bullet107010
       rect:
         serializedVersion: 2
         x: 16
@@ -2716,7 +2716,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2728,7 +2728,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_120
+      name: Bullet107020
       rect:
         serializedVersion: 2
         x: 32
@@ -2736,7 +2736,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2748,7 +2748,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_121
+      name: Bullet107030
       rect:
         serializedVersion: 2
         x: 48
@@ -2756,7 +2756,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2768,7 +2768,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_122
+      name: Bullet107040
       rect:
         serializedVersion: 2
         x: 64
@@ -2776,7 +2776,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2788,7 +2788,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_123
+      name: Bullet107050
       rect:
         serializedVersion: 2
         x: 80
@@ -2796,7 +2796,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2808,7 +2808,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_124
+      name: Bullet107060
       rect:
         serializedVersion: 2
         x: 96
@@ -2816,7 +2816,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2828,7 +2828,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_125
+      name: Bullet107070
       rect:
         serializedVersion: 2
         x: 112
@@ -2836,7 +2836,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2848,7 +2848,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_126
+      name: Bullet107080
       rect:
         serializedVersion: 2
         x: 128
@@ -2856,7 +2856,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2868,7 +2868,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_127
+      name: Bullet107090
       rect:
         serializedVersion: 2
         x: 144
@@ -2876,7 +2876,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2888,7 +2888,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_128
+      name: Bullet107100
       rect:
         serializedVersion: 2
         x: 160
@@ -2896,7 +2896,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2908,7 +2908,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_129
+      name: Bullet107110
       rect:
         serializedVersion: 2
         x: 176
@@ -2916,7 +2916,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2928,7 +2928,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_130
+      name: Bullet107120
       rect:
         serializedVersion: 2
         x: 192
@@ -2936,7 +2936,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2948,7 +2948,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_131
+      name: Bullet107130
       rect:
         serializedVersion: 2
         x: 208
@@ -2956,7 +2956,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2968,7 +2968,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_132
+      name: Bullet107140
       rect:
         serializedVersion: 2
         x: 224
@@ -2976,7 +2976,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2988,7 +2988,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_133
+      name: Bullet107150
       rect:
         serializedVersion: 2
         x: 240
@@ -2996,7 +2996,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3008,7 +3008,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_134
+      name: Bullet106000
       rect:
         serializedVersion: 2
         x: 0
@@ -3016,7 +3016,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3028,7 +3028,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_135
+      name: Bullet106010
       rect:
         serializedVersion: 2
         x: 16
@@ -3036,7 +3036,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3048,7 +3048,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_136
+      name: Bullet106020
       rect:
         serializedVersion: 2
         x: 32
@@ -3056,7 +3056,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3068,7 +3068,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_137
+      name: Bullet106030
       rect:
         serializedVersion: 2
         x: 48
@@ -3076,7 +3076,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3088,7 +3088,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_138
+      name: Bullet106040
       rect:
         serializedVersion: 2
         x: 64
@@ -3096,7 +3096,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3108,7 +3108,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_139
+      name: Bullet106050
       rect:
         serializedVersion: 2
         x: 80
@@ -3116,7 +3116,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3128,7 +3128,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_140
+      name: Bullet106060
       rect:
         serializedVersion: 2
         x: 96
@@ -3136,7 +3136,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3148,7 +3148,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_141
+      name: Bullet106070
       rect:
         serializedVersion: 2
         x: 112
@@ -3156,7 +3156,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3168,7 +3168,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_142
+      name: Bullet106080
       rect:
         serializedVersion: 2
         x: 128
@@ -3176,7 +3176,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3188,7 +3188,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_143
+      name: Bullet106090
       rect:
         serializedVersion: 2
         x: 144
@@ -3196,7 +3196,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3208,7 +3208,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_144
+      name: Bullet106100
       rect:
         serializedVersion: 2
         x: 160
@@ -3216,7 +3216,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3228,7 +3228,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_145
+      name: Bullet106110
       rect:
         serializedVersion: 2
         x: 176
@@ -3236,7 +3236,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3248,7 +3248,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_146
+      name: Bullet106120
       rect:
         serializedVersion: 2
         x: 192
@@ -3256,7 +3256,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3268,7 +3268,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_147
+      name: Bullet106130
       rect:
         serializedVersion: 2
         x: 208
@@ -3276,7 +3276,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3288,7 +3288,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_148
+      name: Bullet106140
       rect:
         serializedVersion: 2
         x: 224
@@ -3296,7 +3296,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3308,7 +3308,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_149
+      name: Bullet106150
       rect:
         serializedVersion: 2
         x: 240
@@ -3316,7 +3316,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3328,7 +3328,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_150
+      name: Bullet105000
       rect:
         serializedVersion: 2
         x: 0
@@ -3336,7 +3336,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3348,7 +3348,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_151
+      name: Bullet105010
       rect:
         serializedVersion: 2
         x: 16
@@ -3356,7 +3356,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3368,7 +3368,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_152
+      name: Bullet105020
       rect:
         serializedVersion: 2
         x: 32
@@ -3376,7 +3376,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3388,7 +3388,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_153
+      name: Bullet105030
       rect:
         serializedVersion: 2
         x: 48
@@ -3396,7 +3396,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3408,7 +3408,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_154
+      name: Bullet105040
       rect:
         serializedVersion: 2
         x: 64
@@ -3416,7 +3416,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3428,7 +3428,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_155
+      name: Bullet105050
       rect:
         serializedVersion: 2
         x: 80
@@ -3436,7 +3436,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3448,7 +3448,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_156
+      name: Bullet105060
       rect:
         serializedVersion: 2
         x: 96
@@ -3456,7 +3456,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3468,7 +3468,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_157
+      name: Bullet105070
       rect:
         serializedVersion: 2
         x: 112
@@ -3476,7 +3476,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3488,7 +3488,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_158
+      name: Bullet105080
       rect:
         serializedVersion: 2
         x: 128
@@ -3496,7 +3496,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3508,7 +3508,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_159
+      name: Bullet105090
       rect:
         serializedVersion: 2
         x: 144
@@ -3516,7 +3516,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3528,7 +3528,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_160
+      name: Bullet105100
       rect:
         serializedVersion: 2
         x: 160
@@ -3536,7 +3536,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3548,7 +3548,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_161
+      name: Bullet105110
       rect:
         serializedVersion: 2
         x: 176
@@ -3556,7 +3556,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3568,7 +3568,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_162
+      name: Bullet105120
       rect:
         serializedVersion: 2
         x: 192
@@ -3576,7 +3576,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3588,7 +3588,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_163
+      name: Bullet105130
       rect:
         serializedVersion: 2
         x: 208
@@ -3596,7 +3596,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3608,7 +3608,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_164
+      name: Bullet105140
       rect:
         serializedVersion: 2
         x: 224
@@ -3616,7 +3616,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3628,7 +3628,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_165
+      name: Bullet105150
       rect:
         serializedVersion: 2
         x: 240
@@ -3636,7 +3636,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3648,7 +3648,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_166
+      name: Bullet104000
       rect:
         serializedVersion: 2
         x: 0
@@ -3656,7 +3656,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3668,7 +3668,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_167
+      name: Bullet104010
       rect:
         serializedVersion: 2
         x: 16
@@ -3676,7 +3676,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3688,7 +3688,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_168
+      name: Bullet104020
       rect:
         serializedVersion: 2
         x: 32
@@ -3696,7 +3696,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3708,7 +3708,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_169
+      name: Bullet104030
       rect:
         serializedVersion: 2
         x: 48
@@ -3716,7 +3716,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3728,7 +3728,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_170
+      name: Bullet104040
       rect:
         serializedVersion: 2
         x: 64
@@ -3736,7 +3736,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3748,7 +3748,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_171
+      name: Bullet104050
       rect:
         serializedVersion: 2
         x: 80
@@ -3756,7 +3756,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3768,7 +3768,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_172
+      name: Bullet104060
       rect:
         serializedVersion: 2
         x: 96
@@ -3776,7 +3776,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3788,7 +3788,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_173
+      name: Bullet104070
       rect:
         serializedVersion: 2
         x: 112
@@ -3796,7 +3796,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3808,7 +3808,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_174
+      name: Bullet104080
       rect:
         serializedVersion: 2
         x: 128
@@ -3816,7 +3816,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3828,7 +3828,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_175
+      name: Bullet104090
       rect:
         serializedVersion: 2
         x: 144
@@ -3836,7 +3836,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3848,7 +3848,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_176
+      name: Bullet104100
       rect:
         serializedVersion: 2
         x: 160
@@ -3856,7 +3856,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3868,7 +3868,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_177
+      name: Bullet104110
       rect:
         serializedVersion: 2
         x: 176
@@ -3876,7 +3876,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3888,7 +3888,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_178
+      name: Bullet104120
       rect:
         serializedVersion: 2
         x: 192
@@ -3896,7 +3896,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3908,7 +3908,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_179
+      name: Bullet104130
       rect:
         serializedVersion: 2
         x: 208
@@ -3916,7 +3916,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3928,7 +3928,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_180
+      name: Bullet104140
       rect:
         serializedVersion: 2
         x: 224
@@ -3936,7 +3936,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3948,7 +3948,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_181
+      name: Bullet104150
       rect:
         serializedVersion: 2
         x: 240
@@ -3956,7 +3956,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3968,7 +3968,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_182
+      name: Bullet113000
       rect:
         serializedVersion: 2
         x: 0
@@ -3976,7 +3976,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3988,7 +3988,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_183
+      name: Bullet113010
       rect:
         serializedVersion: 2
         x: 16
@@ -3996,7 +3996,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4008,7 +4008,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_184
+      name: Bullet113020
       rect:
         serializedVersion: 2
         x: 32
@@ -4016,7 +4016,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4028,7 +4028,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_185
+      name: Bullet113030
       rect:
         serializedVersion: 2
         x: 48
@@ -4036,7 +4036,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4048,7 +4048,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_186
+      name: Bullet113040
       rect:
         serializedVersion: 2
         x: 64
@@ -4056,7 +4056,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4068,7 +4068,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_187
+      name: Bullet113050
       rect:
         serializedVersion: 2
         x: 80
@@ -4076,7 +4076,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4088,7 +4088,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_188
+      name: Bullet113060
       rect:
         serializedVersion: 2
         x: 96
@@ -4096,7 +4096,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4108,7 +4108,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_189
+      name: Bullet113070
       rect:
         serializedVersion: 2
         x: 112
@@ -4116,7 +4116,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4128,7 +4128,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_190
+      name: Bullet113080
       rect:
         serializedVersion: 2
         x: 128
@@ -4136,7 +4136,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4148,7 +4148,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_191
+      name: Bullet113090
       rect:
         serializedVersion: 2
         x: 144
@@ -4156,7 +4156,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4168,7 +4168,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_192
+      name: Bullet113100
       rect:
         serializedVersion: 2
         x: 160
@@ -4176,7 +4176,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4188,7 +4188,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_193
+      name: Bullet113110
       rect:
         serializedVersion: 2
         x: 176
@@ -4196,7 +4196,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4208,7 +4208,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_194
+      name: Bullet113120
       rect:
         serializedVersion: 2
         x: 192
@@ -4216,7 +4216,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4228,7 +4228,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_195
+      name: Bullet113130
       rect:
         serializedVersion: 2
         x: 208
@@ -4236,7 +4236,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4248,7 +4248,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_196
+      name: Bullet113140
       rect:
         serializedVersion: 2
         x: 224
@@ -4256,7 +4256,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4268,7 +4268,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_197
+      name: Bullet113150
       rect:
         serializedVersion: 2
         x: 240
@@ -4276,7 +4276,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4288,7 +4288,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_198
+      name: Bullet103000
       rect:
         serializedVersion: 2
         x: 0
@@ -4296,7 +4296,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4308,7 +4308,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_199
+      name: Bullet103010
       rect:
         serializedVersion: 2
         x: 16
@@ -4316,7 +4316,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4328,7 +4328,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_200
+      name: Bullet103020
       rect:
         serializedVersion: 2
         x: 32
@@ -4336,7 +4336,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4348,7 +4348,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_201
+      name: Bullet103030
       rect:
         serializedVersion: 2
         x: 48
@@ -4356,7 +4356,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4368,7 +4368,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_202
+      name: Bullet103040
       rect:
         serializedVersion: 2
         x: 64
@@ -4376,7 +4376,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4388,7 +4388,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_203
+      name: Bullet103050
       rect:
         serializedVersion: 2
         x: 80
@@ -4396,7 +4396,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4408,7 +4408,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_204
+      name: Bullet103060
       rect:
         serializedVersion: 2
         x: 96
@@ -4416,7 +4416,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4428,7 +4428,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_205
+      name: Bullet103070
       rect:
         serializedVersion: 2
         x: 112
@@ -4436,7 +4436,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4448,7 +4448,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_206
+      name: Bullet103080
       rect:
         serializedVersion: 2
         x: 128
@@ -4456,7 +4456,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4468,7 +4468,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_207
+      name: Bullet103090
       rect:
         serializedVersion: 2
         x: 144
@@ -4476,7 +4476,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4488,7 +4488,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_208
+      name: Bullet103100
       rect:
         serializedVersion: 2
         x: 160
@@ -4496,7 +4496,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4508,7 +4508,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_209
+      name: Bullet103110
       rect:
         serializedVersion: 2
         x: 176
@@ -4516,7 +4516,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4528,7 +4528,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_210
+      name: Bullet103120
       rect:
         serializedVersion: 2
         x: 192
@@ -4536,7 +4536,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4548,7 +4548,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_211
+      name: Bullet103130
       rect:
         serializedVersion: 2
         x: 208
@@ -4556,7 +4556,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4568,7 +4568,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_212
+      name: Bullet103140
       rect:
         serializedVersion: 2
         x: 224
@@ -4576,7 +4576,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4588,7 +4588,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_213
+      name: Bullet103150
       rect:
         serializedVersion: 2
         x: 240
@@ -4596,7 +4596,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4608,7 +4608,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_214
+      name: Bullet108000
       rect:
         serializedVersion: 2
         x: 0
@@ -4616,7 +4616,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4628,7 +4628,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_215
+      name: Bullet108010
       rect:
         serializedVersion: 2
         x: 16
@@ -4636,7 +4636,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4648,7 +4648,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_216
+      name: Bullet108020
       rect:
         serializedVersion: 2
         x: 32
@@ -4656,7 +4656,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4668,7 +4668,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_217
+      name: Bullet108030
       rect:
         serializedVersion: 2
         x: 48
@@ -4676,7 +4676,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4688,7 +4688,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_218
+      name: Bullet108040
       rect:
         serializedVersion: 2
         x: 64
@@ -4696,7 +4696,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4708,7 +4708,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_219
+      name: Bullet108050
       rect:
         serializedVersion: 2
         x: 80
@@ -4716,7 +4716,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4728,7 +4728,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_220
+      name: Bullet108060
       rect:
         serializedVersion: 2
         x: 96
@@ -4736,7 +4736,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4748,7 +4748,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_221
+      name: Bullet108070
       rect:
         serializedVersion: 2
         x: 112
@@ -4756,7 +4756,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4768,7 +4768,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_222
+      name: Bullet108080
       rect:
         serializedVersion: 2
         x: 128
@@ -4776,7 +4776,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4788,7 +4788,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_223
+      name: Bullet108090
       rect:
         serializedVersion: 2
         x: 144
@@ -4796,7 +4796,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4808,7 +4808,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_224
+      name: Bullet108100
       rect:
         serializedVersion: 2
         x: 160
@@ -4816,7 +4816,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4828,7 +4828,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_225
+      name: Bullet108110
       rect:
         serializedVersion: 2
         x: 176
@@ -4836,7 +4836,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4848,7 +4848,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_226
+      name: Bullet108120
       rect:
         serializedVersion: 2
         x: 192
@@ -4856,7 +4856,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4868,7 +4868,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_227
+      name: Bullet108130
       rect:
         serializedVersion: 2
         x: 208
@@ -4876,7 +4876,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4888,7 +4888,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_228
+      name: Bullet108140
       rect:
         serializedVersion: 2
         x: 224
@@ -4896,7 +4896,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4908,7 +4908,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama_229
+      name: Bullet108150
       rect:
         serializedVersion: 2
         x: 240
@@ -4916,7 +4916,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4936,7 +4936,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4956,7 +4956,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4976,7 +4976,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4996,7 +4996,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5016,7 +5016,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5036,7 +5036,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5056,7 +5056,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5076,7 +5076,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5096,7 +5096,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5116,7 +5116,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5136,7 +5136,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5156,7 +5156,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5176,7 +5176,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5196,7 +5196,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5216,7 +5216,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5236,7 +5236,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5250,7 +5250,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: f2c4f7e2055e6814d8ef28acbd1a1312
     vertices: []
     indices: 
     edges: []

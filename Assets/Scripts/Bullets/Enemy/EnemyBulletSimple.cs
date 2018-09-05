@@ -82,9 +82,10 @@ public class EnemyBulletSimple : EnemyBulletMovable
 
     public override void SetBulletTexture(string texture)
     {
-        _prefabName = texture;
-        _bullet = ResourceManager.GetInstance().GetPrefab("BulletPrefab", _prefabName);
-        UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.EnemyBarrage);
+        _prefabName = _cfg.id.ToString();
+        //_bullet = ResourceManager.GetInstance().GetPrefab("BulletPrefab", _prefabName);
+        //UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.EnemyBarrage);
+        _bullet = BulletsManager.GetInstance().GetBulletPrefab(_id, _cfg.id);
         _trans = _bullet.transform;
         _spRenderer = _trans.Find("BulletSprite").GetComponent<SpriteRenderer>();
     }
@@ -110,7 +111,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         EnemyBulletDefaultCfg cfg = BulletsManager.GetInstance().GetBulletDefaultCfgById(id);
         if ( cfg == null )
         {
-            Logger.Log("Bullet ChangeStyle Fail! SysId  " + id + " is not exist!");
+            Logger.LogError("Bullet ChangeStyle Fail! SysId  " + id + " is not exist!");
             return;
         }
         if ( _bullet != null )
@@ -120,7 +121,8 @@ public class EnemyBulletSimple : EnemyBulletMovable
             UIManager.GetInstance().RemoveGoFromLayer(_bullet);
             ObjectsPool.GetInstance().RestoreBullet(_prefabName, _bullet);
         }
-        SetBulletTexture(cfg.prefabName);
+        _cfg = cfg;
+        SetBulletTexture(cfg.textureName);
         SetToPosition(_curPos.x, _curPos.y);
         SetRotatedByVelocity(cfg.isRotatedByVAngle);
         SetSelfRotation(cfg.selfRotationAngle != 0, cfg.selfRotationAngle);

@@ -2,10 +2,10 @@ fileFormatVersion: 2
 guid: 16329fe4433201743b96a883ca24832a
 TextureImporter:
   fileIDToRecycleName:
-    21300000: etama6_0
-    21300002: etama6_1
-    21300004: etama6_2
-    21300006: etama6_3
+    21300000: Bullet118010
+    21300002: Bullet118050
+    21300004: Bullet118090
+    21300006: Bullet118130
     21300008: etama6_4
     21300010: etama6_5
     21300012: etama6_6
@@ -14,30 +14,30 @@ TextureImporter:
     21300018: etama6_9
     21300020: etama6_10
     21300022: etama6_11
-    21300024: etama6_12
-    21300026: etama6_13
-    21300028: etama6_14
-    21300030: etama6_15
-    21300032: etama6_16
-    21300034: etama6_17
-    21300036: etama6_18
-    21300038: etama6_19
-    21300040: etama6_20
-    21300042: etama6_21
-    21300044: etama6_22
-    21300046: etama6_23
-    21300048: etama6_24
-    21300050: etama6_25
-    21300052: etama6_26
-    21300054: etama6_27
-    21300056: etama6_28
-    21300058: etama6_29
-    21300060: etama6_30
-    21300062: etama6_31
-    21300064: etama6_32
-    21300066: etama6_33
-    21300068: etama6_34
-    21300070: etama6_35
+    21300024: Bullet114000
+    21300026: Bullet114010
+    21300028: Bullet114030
+    21300030: Bullet114050
+    21300032: Bullet114070
+    21300034: Bullet114090
+    21300036: Bullet114130
+    21300038: Bullet114150
+    21300040: Bullet115000
+    21300042: Bullet115010
+    21300044: Bullet115030
+    21300046: Bullet115050
+    21300048: Bullet115070
+    21300050: Bullet115090
+    21300052: Bullet115130
+    21300054: Bullet115150
+    21300056: Bullet116000
+    21300058: Bullet116010
+    21300060: Bullet116030
+    21300062: Bullet116050
+    21300064: Bullet116070
+    21300066: Bullet116090
+    21300068: Bullet116130
+    21300070: Bullet116150
     21300072: etama6_36
     21300074: etama6_37
     21300076: etama6_38
@@ -46,14 +46,14 @@ TextureImporter:
     21300082: etama6_41
     21300084: etama6_42
     21300086: etama6_43
-    21300088: etama6_44
-    21300090: etama6_45
-    21300092: etama6_46
-    21300094: etama6_47
-    21300096: etama6_48
-    21300098: etama6_49
-    21300100: etama6_50
-    21300102: etama6_51
+    21300088: Bullet117000
+    21300090: Bullet117010
+    21300092: Bullet117030
+    21300094: Bullet117050
+    21300096: Bullet117070
+    21300098: Bullet117090
+    21300100: Bullet117130
+    21300102: Bullet117150
     21300104: etama6_52
     21300106: etama6_53
     21300108: etama6_54
@@ -165,7 +165,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: etama6_0
+      name: Bullet118010
       rect:
         serializedVersion: 2
         x: 0
@@ -185,7 +185,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_1
+      name: Bullet118050
       rect:
         serializedVersion: 2
         x: 64
@@ -205,7 +205,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_2
+      name: Bullet118090
       rect:
         serializedVersion: 2
         x: 128
@@ -225,7 +225,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_3
+      name: Bullet118130
       rect:
         serializedVersion: 2
         x: 192
@@ -405,7 +405,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_12
+      name: Bullet114000
       rect:
         serializedVersion: 2
         x: 0
@@ -425,7 +425,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_13
+      name: Bullet114010
       rect:
         serializedVersion: 2
         x: 32
@@ -445,7 +445,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_14
+      name: Bullet114030
       rect:
         serializedVersion: 2
         x: 64
@@ -465,7 +465,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_15
+      name: Bullet114050
       rect:
         serializedVersion: 2
         x: 96
@@ -485,7 +485,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_16
+      name: Bullet114070
       rect:
         serializedVersion: 2
         x: 128
@@ -505,7 +505,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_17
+      name: Bullet114090
       rect:
         serializedVersion: 2
         x: 160
@@ -525,7 +525,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_18
+      name: Bullet114130
       rect:
         serializedVersion: 2
         x: 192
@@ -545,7 +545,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_19
+      name: Bullet114150
       rect:
         serializedVersion: 2
         x: 224
@@ -565,7 +565,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_20
+      name: Bullet115000
       rect:
         serializedVersion: 2
         x: 0
@@ -585,7 +585,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_21
+      name: Bullet115010
       rect:
         serializedVersion: 2
         x: 32
@@ -605,7 +605,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_22
+      name: Bullet115030
       rect:
         serializedVersion: 2
         x: 64
@@ -625,7 +625,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_23
+      name: Bullet115050
       rect:
         serializedVersion: 2
         x: 96
@@ -645,7 +645,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_24
+      name: Bullet115070
       rect:
         serializedVersion: 2
         x: 128
@@ -665,7 +665,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_25
+      name: Bullet115090
       rect:
         serializedVersion: 2
         x: 160
@@ -685,7 +685,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_26
+      name: Bullet115130
       rect:
         serializedVersion: 2
         x: 192
@@ -705,7 +705,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_27
+      name: Bullet115150
       rect:
         serializedVersion: 2
         x: 224
@@ -725,7 +725,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_28
+      name: Bullet116000
       rect:
         serializedVersion: 2
         x: 0
@@ -745,7 +745,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_29
+      name: Bullet116010
       rect:
         serializedVersion: 2
         x: 32
@@ -765,7 +765,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_30
+      name: Bullet116030
       rect:
         serializedVersion: 2
         x: 64
@@ -785,7 +785,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_31
+      name: Bullet116050
       rect:
         serializedVersion: 2
         x: 96
@@ -805,7 +805,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_32
+      name: Bullet116070
       rect:
         serializedVersion: 2
         x: 128
@@ -825,7 +825,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_33
+      name: Bullet116090
       rect:
         serializedVersion: 2
         x: 160
@@ -845,7 +845,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_34
+      name: Bullet116130
       rect:
         serializedVersion: 2
         x: 192
@@ -865,7 +865,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_35
+      name: Bullet116150
       rect:
         serializedVersion: 2
         x: 224
@@ -1045,7 +1045,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_44
+      name: Bullet117000
       rect:
         serializedVersion: 2
         x: 0
@@ -1065,7 +1065,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_45
+      name: Bullet117010
       rect:
         serializedVersion: 2
         x: 32
@@ -1085,7 +1085,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_46
+      name: Bullet117030
       rect:
         serializedVersion: 2
         x: 64
@@ -1105,7 +1105,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_47
+      name: Bullet117050
       rect:
         serializedVersion: 2
         x: 96
@@ -1125,7 +1125,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_48
+      name: Bullet117070
       rect:
         serializedVersion: 2
         x: 128
@@ -1145,7 +1145,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_49
+      name: Bullet117090
       rect:
         serializedVersion: 2
         x: 160
@@ -1165,7 +1165,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_50
+      name: Bullet117130
       rect:
         serializedVersion: 2
         x: 192
@@ -1185,7 +1185,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama6_51
+      name: Bullet117150
       rect:
         serializedVersion: 2
         x: 224

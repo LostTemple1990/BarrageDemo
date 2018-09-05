@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class EnemyBulletDefaultCfg : IParser
 {
-    public string id;
-    public string prefabName;
+    public int id;
+    public string textureName;
     public bool isRotatedByVAngle;
     public float selfRotationAngle;
     public float grazeHalfWidth;
@@ -19,8 +19,8 @@ public class EnemyBulletDefaultCfg : IParser
 
     public void parse(XmlElement xmlElement)
     {
-        id = xmlElement.GetAttribute("id");
-        prefabName = xmlElement.GetAttribute("prefabName");
+        id = int.Parse(xmlElement.GetAttribute("id"));
+        textureName = xmlElement.GetAttribute("textureName");
         isRotatedByVAngle = int.Parse(xmlElement.GetAttribute("isRotatedByVAngle")) == 1 ? true : false;
         selfRotationAngle = float.Parse(xmlElement.GetAttribute("selfRotationAngle"));
         grazeHalfWidth = float.Parse(xmlElement.GetAttribute("grazeHalfWidth"));

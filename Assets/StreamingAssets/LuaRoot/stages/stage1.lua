@@ -165,7 +165,7 @@ CustomizedEnemyTable.TestKillEnemy.OnKill = function(enemy)
 	for _=1,1 do
 		local i
 		for i=0,15 do
-			local bullet = lib.CreateCustomizedBullet("XiongBullet0","0124",posX,posY,i,75,2)
+			local bullet = lib.CreateCustomizedBullet("XiongBullet0","107060",posX,posY,i,75,2)
 			lib.SetBulletCurvePara(bullet,0,24*i*k,0,1.5*k)
 		end
 	end
@@ -682,7 +682,8 @@ function Stage.StageTask()
 					local posX,posY = lib.GetEnemyPos(enemy)
 					local bullet
 					do local angle=-35 for _=1,3 do
-						bullet = lib.CreateSimpleBulletById("0172",posX,posY)
+						bullet = lib.CreateSimpleBulletById("104060",posX,posY)
+						--lib.SetBulletStraightParas(bullet,0.5,angle,true,0.25,Constants.VelocityAngle)
 						lib.SetBulletStraightParas(bullet,2,angle,true,0.25,Constants.VelocityAngle)
 						angle = angle+35
 					end end
@@ -722,7 +723,7 @@ function Stage.StageTask()
 		end)
 		--测试曲线激光
 		lib.AddEnemyTask(enemy,function()
-			--if coroutine.yield(10000) == false then return end
+			if coroutine.yield(10000) == false then return end
 			local laser,i
 			for i=1,18 do
 				local posX,posY = lib.GetEnemyPos(enemy)
@@ -734,7 +735,7 @@ function Stage.StageTask()
 			end
 		end)
 	end
-	if coroutine.yield(300) == false then return end
+	if coroutine.yield(30000) == false then return end
 	do
 		local boss = lib.CreateBoss("MidBoss")
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)

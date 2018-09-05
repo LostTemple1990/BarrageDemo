@@ -27,6 +27,10 @@ public class ResourceManager
     /// 图集的字典
     /// </summary>
     private Dictionary<string, SpriteAtlas> _atlasDic;
+    /// <summary>
+    /// sprite的不同混合模式的材质
+    /// </summary>
+    private List<Material> _spriteMatList;
 
     public void Init()
     {
@@ -38,6 +42,10 @@ public class ResourceManager
         ParseResource("etama2", 54);
         ParseResource("etama", 250);
         ParseResource("etama9", 16);
+        // sprite的材质
+        _spriteMatList = new List<Material>();
+        _spriteMatList.Add(Resources.Load<Material>("materials/SpriteDefaultMat"));
+        _spriteMatList.Add(Resources.Load<Material>("materials/SpriteSoftAdditiveMat"));
     }
 
     /// <summary>
@@ -200,6 +208,17 @@ public class ResourceManager
             _spriteDefaultMat = Resources.Load<Material>("materials/SpriteDefaultMat");
         }
         return _spriteDefaultMat;
+    }
+
+    /// <summary>
+    /// 根据混合模式获取对应的精灵的材质
+    /// </summary>
+    /// <param name="mode"></param>
+    /// <returns></returns>
+    public Material GetSpriteMatByBlendMode(eBlendMode mode)
+    {
+        int index = (int)mode;
+        return _spriteMatList[index];
     }
 
     /// <summary>

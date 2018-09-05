@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class EnemyBulletBase :BulletBase
 {
+    /// <summary>
+    /// bulletId
+    /// <para>6位数字</para>
+    /// <para>开头为1</para>
+    /// <para>1,XX,YY,Z</para>
+    /// <para>XX为子弹的大类</para>
+    /// <para>YY为子弹的颜色类型</para>
+    /// <para>颜色从0~15为别为：</para>
+    /// <para>Z为是否高亮</para>
+    /// </summary>
     protected string _prefabName;
     protected List<BulletComponent> _components;
     protected int _componentsCount;

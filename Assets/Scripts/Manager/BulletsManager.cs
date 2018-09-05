@@ -229,6 +229,44 @@ public class BulletsManager
         }
     }
 
+    /// <summary>
+    /// 获取子弹的prefab
+    /// </summary>
+    /// <param name="bulletId"></param>
+    /// <param name="textureId"></param>
+    /// <returns></returns>
+    public GameObject GetBulletPrefab(BulletId type,int bulletId)
+    {
+        string textureName = "Bullet" + bulletId;
+        GameObject prefab = ObjectsPool.GetInstance().GetPrefabAtPool(bulletId.ToString());
+        if ( prefab == null )
+        {
+            // 缓存中没有，先取原型
+            GameObject protoType = ObjectsPool.GetInstance().GetBulletProtoType(bulletId);
+            // 若不存在原型，则先创建一个原型到缓存池中
+            if ( protoType == null )
+            {
+                GameObject original = Resources.Load<GameObject>("BulletPrefab/SimpleBullet");
+                protoType = GameObject.Instantiate<GameObject>(original);
+                // 设置sprite以及material
+                protoType.name = textureName;
+                SpriteRenderer sp = protoType.transform.Find("BulletSprite").GetComponent<SpriteRenderer>();
+                sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, textureName);
+                eBlendMode blendMode = (eBlendMode)(bulletId % 10);
+                if ( blendMode != eBlendMode.Normal )
+                {
+                    sp.material = ResourceManager.GetInstance().GetSpriteMatByBlendMode(blendMode);
+                }
+                UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
+                // 添加原型到缓存池中
+                ObjectsPool.GetInstance().AddBulletProtoType(bulletId, protoType);
+            }
+            prefab = GameObject.Instantiate<GameObject>(protoType);
+            UIManager.GetInstance().AddGoToLayer(prefab, LayerId.EnemyBarrage);
+        }
+        return prefab;
+    }
+
     public void ClearAllEnemyBullets()
     {
         EnemyBulletBase bullet;

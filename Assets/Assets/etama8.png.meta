@@ -6,22 +6,22 @@ TextureImporter:
     21300002: etama8_1
     21300004: etama8_2
     21300006: etama8_3
-    21300008: etama8_4
-    21300010: etama8_5
-    21300012: etama8_6
-    21300014: etama8_7
-    21300016: etama8_8
-    21300018: etama8_9
-    21300020: etama8_10
-    21300022: etama8_11
-    21300024: etama8_12
-    21300026: etama8_13
-    21300028: etama8_14
-    21300030: etama8_15
-    21300032: etama8_16
-    21300034: etama8_17
-    21300036: etama8_18
-    21300038: etama8_19
+    21300008: Bullet121000
+    21300010: Bullet121010
+    21300012: Bullet121020
+    21300014: Bullet121030
+    21300016: Bullet121040
+    21300018: Bullet121050
+    21300020: Bullet121060
+    21300022: Bullet121070
+    21300024: Bullet121080
+    21300026: Bullet121090
+    21300028: Bullet121100
+    21300030: Bullet121110
+    21300032: Bullet121120
+    21300034: Bullet121130
+    21300036: Bullet121140
+    21300038: Bullet121150
     21300040: etama8_20
     21300042: etama8_21
     21300044: etama8_22
@@ -62,18 +62,18 @@ TextureImporter:
     21300114: etama8_57
     21300116: etama8_58
     21300118: etama8_59
-    21300120: etama8_60
-    21300122: etama8_61
-    21300124: etama8_62
-    21300126: etama8_63
-    21300128: etama8_64
-    21300130: etama8_65
-    21300132: etama8_66
-    21300134: etama8_67
-    21300136: etama8_68
-    21300138: etama8_69
-    21300140: etama8_70
-    21300142: etama8_71
+    21300120: Bullet119010
+    21300122: Bullet119050
+    21300124: Bullet119090
+    21300126: Bullet119130
+    21300128: Bullet120000
+    21300130: Bullet120010
+    21300132: Bullet120030
+    21300134: Bullet120050
+    21300136: Bullet120070
+    21300138: Bullet120090
+    21300140: Bullet120130
+    21300142: Bullet120150
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -245,7 +245,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_4
+      name: Bullet121000
       rect:
         serializedVersion: 2
         x: 0
@@ -265,7 +265,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_5
+      name: Bullet121010
       rect:
         serializedVersion: 2
         x: 16
@@ -285,7 +285,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_6
+      name: Bullet121020
       rect:
         serializedVersion: 2
         x: 32
@@ -305,7 +305,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_7
+      name: Bullet121030
       rect:
         serializedVersion: 2
         x: 48
@@ -325,7 +325,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_8
+      name: Bullet121040
       rect:
         serializedVersion: 2
         x: 64
@@ -345,7 +345,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_9
+      name: Bullet121050
       rect:
         serializedVersion: 2
         x: 80
@@ -365,7 +365,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_10
+      name: Bullet121060
       rect:
         serializedVersion: 2
         x: 96
@@ -385,7 +385,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_11
+      name: Bullet121070
       rect:
         serializedVersion: 2
         x: 112
@@ -405,7 +405,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_12
+      name: Bullet121080
       rect:
         serializedVersion: 2
         x: 128
@@ -425,7 +425,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_13
+      name: Bullet121090
       rect:
         serializedVersion: 2
         x: 144
@@ -445,7 +445,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_14
+      name: Bullet121100
       rect:
         serializedVersion: 2
         x: 160
@@ -465,7 +465,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_15
+      name: Bullet121110
       rect:
         serializedVersion: 2
         x: 176
@@ -485,7 +485,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_16
+      name: Bullet121120
       rect:
         serializedVersion: 2
         x: 192
@@ -505,7 +505,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_17
+      name: Bullet121130
       rect:
         serializedVersion: 2
         x: 208
@@ -525,7 +525,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_18
+      name: Bullet121140
       rect:
         serializedVersion: 2
         x: 224
@@ -545,7 +545,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_19
+      name: Bullet121150
       rect:
         serializedVersion: 2
         x: 240
@@ -1365,7 +1365,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_60
+      name: Bullet119010
       rect:
         serializedVersion: 2
         x: 0
@@ -1385,7 +1385,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_61
+      name: Bullet119050
       rect:
         serializedVersion: 2
         x: 64
@@ -1405,7 +1405,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_62
+      name: Bullet119090
       rect:
         serializedVersion: 2
         x: 128
@@ -1425,11 +1425,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_63
+      name: Bullet119130
       rect:
         serializedVersion: 2
         x: 192
-        y: 160
+        y: 159
         width: 64
         height: 64
       alignment: 0
@@ -1445,7 +1445,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_64
+      name: Bullet120000
       rect:
         serializedVersion: 2
         x: 0
@@ -1465,7 +1465,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_65
+      name: Bullet120010
       rect:
         serializedVersion: 2
         x: 32
@@ -1485,7 +1485,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_66
+      name: Bullet120030
       rect:
         serializedVersion: 2
         x: 64
@@ -1505,7 +1505,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_67
+      name: Bullet120050
       rect:
         serializedVersion: 2
         x: 96
@@ -1525,7 +1525,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_68
+      name: Bullet120070
       rect:
         serializedVersion: 2
         x: 128
@@ -1545,7 +1545,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_69
+      name: Bullet120090
       rect:
         serializedVersion: 2
         x: 160
@@ -1565,7 +1565,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_70
+      name: Bullet120130
       rect:
         serializedVersion: 2
         x: 192
@@ -1585,7 +1585,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: etama8_71
+      name: Bullet120150
       rect:
         serializedVersion: 2
         x: 224

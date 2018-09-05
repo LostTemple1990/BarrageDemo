@@ -226,6 +226,12 @@ public enum eSTGClearType :byte
     RetryGame = 3,
 }
 
+public enum eBlendMode : int
+{
+    Normal = 0,
+    SoftAdditive = 1,
+}
+
 #region struct ItemWithFramentsCounter
 /// <summary>
 /// 带碎片的道具计数器

@@ -18,6 +18,10 @@ public class ObjectsPool
     private Dictionary<BulletId, Stack<BulletBase>> _bulletsPool;
     private Dictionary<string, Stack<GameObject>> _bulletPrefabsPool;
     private Dictionary<string, Stack<IPoolClass>> _dataClassPool;
+    /// <summary>
+    /// 子弹原型字典
+    /// </summary>
+    private Dictionary<int, GameObject> _bulletProtoTypeDic;
 
     private ObjectsPool()
     {
@@ -29,6 +33,7 @@ public class ObjectsPool
         _bulletsPool = new Dictionary<BulletId, Stack<BulletBase>>();
         _bulletPrefabsPool = new Dictionary<string, Stack<GameObject>>();
         _dataClassPool = new Dictionary<string, Stack<IPoolClass>>();
+        _bulletProtoTypeDic = new Dictionary<int, GameObject>();
     }
 
     /// <summary>
@@ -198,6 +203,38 @@ public class ObjectsPool
     }
 
     /// <summary>
+    /// 根据子弹贴图id获取贴图原型prefab
+    /// </summary>
+    /// <param name="textureId"></param>
+    /// <returns></returns>
+    public GameObject GetBulletProtoType(int textureId)
+    {
+        GameObject protoType;
+        if ( _bulletProtoTypeDic.TryGetValue(textureId,out protoType) )
+        {
+            return protoType;
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// 添加子弹原型到缓存中
+    /// </summary>
+    /// <param name="textureId"></param>
+    /// <param name="protoType"></param>
+    public void AddBulletProtoType(int textureId,GameObject protoType)
+    {
+        try
+        {
+            _bulletProtoTypeDic.Add(textureId, protoType);
+        }
+        catch
+        {
+            throw new System.Exception("Add ProtoType to dic fail! TextureId = " + textureId);
+        }
+    }
+
+    /// <summary>
     /// 检测是否需要销毁额外的对象
     /// </summary>
     public bool CheckDestroyPoolObjects()
@@ -248,6 +285,23 @@ public class ObjectsPool
             }
         }
         return false;
+    }
+
+    /// <summary>
+    /// 清除子弹的原型缓存
+    /// </summary>
+    public void DestroyBulletProtoTypes()
+    {
+        var keys = _bulletProtoTypeDic.Keys;
+        GameObject protoType;
+        foreach (int id in keys)
+        {
+            if ( _bulletProtoTypeDic.TryGetValue(id,out protoType) )
+            {
+                GameObject.Destroy(protoType);
+            }
+        }
+        _bulletProtoTypeDic.Clear();
     }
 }
 

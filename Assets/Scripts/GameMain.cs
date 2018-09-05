@@ -30,6 +30,10 @@ public class GameMain : MonoBehaviour
         if ( Global.SysBusyValue < Consts.SysBusyValue)
         {
             ObjectsPool.GetInstance().CheckDestroyPoolObjects();
+            if ( Global.SysBusyValue == 0 )
+            {
+                ObjectsPool.GetInstance().DestroyBulletProtoTypes();
+            }
         }
     }
 

@@ -87,7 +87,7 @@ public class EnemyLaser : EnemyBulletBase
             _laserTrans = _laser.transform;
             UIManager.GetInstance().AddGoToLayer(_laserObj, LayerId.EnemyBarrage);
         }
-        _laser.sprite = ResourceManager.GetInstance().GetResource<Sprite>("etama",texture);
+        _laser.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName,texture);
         if ( _isSized )
         {
             Resize();
