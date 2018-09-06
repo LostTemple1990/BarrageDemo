@@ -575,18 +575,34 @@ function SC.NazrinSC1_3(boss)
 end
 
 CustomizedBulletTable.NazrinSC2Laser = {}
-CustomizedBulletTable.NazrinSC2Laser.Init = function(laser,angle,maxRadius)
-	lib.SetBulletResistEliminatedFlag(bullet,BulletResist.PlayerBomb + BulletResist.PlayerDead + BulletResist.HitPlayer)
-	lib.AddBulletTask(bullet,function()
-		local posX,posY = lib.GetBulletPos(bullet)
-		lib.AddBulletComponent(bullet,Constants.BCTypeMoveParasChange)
-		lib.AddBulletParaChangeEvent(bullet,5,Constants.ParaChangeMode_ChangeTo,maxRadius,0,Constants.ModeLinear,30)
-		--lib.AddBulletParaChangeEvent(bullet,8,Constants.ParaChangeMode_ChangeTo,1.5,50-waitTime,Constants.ModeLinear,10)
-		if coroutine.yield(80-waitTime) == false then return end
-		lib.ChangeBulletStyleById(bullet,"0124")
-		--lib.SetBulletOrderInLayer(bullet,1)
-		local angle = lib.GetAimToPlayerAngle(posX,posY)
-		lib.SetBulletStraightParas(bullet,2.5,angle,false,0,0)
+CustomizedBulletTable.NazrinSC2Laser.Init = function(laser,posX,posY,angle,existDuration)
+	--lib.SetBulletResistEliminatedFlag(bullet,BulletResist.PlayerBomb + BulletResist.PlayerDead + BulletResist.HitPlayer)
+	lib.SetBulletTexture(laser,"200060")
+	lib.SetLaserProps(laser,posX,posY,angle,2,500,150)
+	lib.SetBulletDetectCollision(laser,false)
+	lib.SetLaserCollisionFactor(laser,0.8)
+	lib.AddBulletTask(laser,function()
+		if coroutine.yield(30) == false then return end
+		lib.ChangeLaserWidth(laser,16,10,30)
+		lib.SetBulletDetectCollision(laser,true)
+		if coroutine.yield(existDuration) == false then return end
+		lib.SetBulletDetectCollision(laser,false)
+		lib.ChangeLaserWidth(laser,0,10,0)
+		if coroutine.yield(10) == false then return end
+		lib.EliminateBullet(laser)
+	end)
+	lib.AddBulletTask(laser,function()
+		if coroutine.yield(existDuration+30) == false then return end
+		local createBulletCount = math.floor(500/32)
+		local normalizedX = math.cos(math.rad(angle))
+		local normalizedY = math.sin(math.rad(angle))
+		for i=1,createBulletCount do
+			local x = normalizedX * i * 32 + posX
+			local y = normalizedY * i * 32 + posY
+			local a = lib.GetRandomInt(0,360)
+			local bullet = lib.CreateSimpleBulletById("104060",x,y)
+			lib.SetBulletStraightParas(bullet,3,a,false,0,0)
+		end
 	end)
 end
 
@@ -626,10 +642,8 @@ function SC.NazrinSC2_0(boss)
 			local posX,posY = lib.GetEnemyPos(boss)
 			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
 			for i=1,20 do
-				local laser = lib.CreateLaser("etama_236",posX,posY,playerAngle+11.25+i*15,1,500,90)
-				lib.ChangeLaserWidth(laser,5,10,30)
-				laser = lib.CreateLaser("etama_236",posX,posY,playerAngle-11.25-i*15,1,500,90)
-				lib.ChangeLaserWidth(laser,5,10,30)
+				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+11.25+i*15,93-i*3,4)
+				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-11.25-i*15,93-i*3,4)
 				if coroutine.yield(3) == false then return end
 			end
 			if coroutine.yield(120) == false then return end

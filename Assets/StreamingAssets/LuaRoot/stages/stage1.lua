@@ -99,7 +99,7 @@ CustomizedTable.XiongBullet0.Init = function(bullet,waitTime,maxRadius)
 		lib.AddBulletParaChangeEvent(bullet,5,Constants.ParaChangeMode_ChangeTo,maxRadius,0,Constants.ModeLinear,30)
 		--lib.AddBulletParaChangeEvent(bullet,8,Constants.ParaChangeMode_ChangeTo,1.5,50-waitTime,Constants.ModeLinear,10)
 		if coroutine.yield(80-waitTime) == false then return end
-		lib.ChangeBulletStyleById(bullet,"0124")
+		lib.ChangeBulletStyleById(bullet,"107060")
 		--lib.SetBulletOrderInLayer(bullet,1)
 		local angle = lib.GetAimToPlayerAngle(posX,posY)
 		lib.SetBulletStraightParas(bullet,2.5,angle,false,0,0)
@@ -165,7 +165,7 @@ CustomizedEnemyTable.TestKillEnemy.OnKill = function(enemy)
 	for _=1,1 do
 		local i
 		for i=0,15 do
-			local bullet = lib.CreateCustomizedBullet("XiongBullet0","107060",posX,posY,i,75,2)
+			local bullet = lib.CreateCustomizedBullet("XiongBullet0","113020",posX,posY,i,75,2)
 			lib.SetBulletCurvePara(bullet,0,24*i*k,0,1.5*k)
 		end
 	end
@@ -735,13 +735,13 @@ function Stage.StageTask()
 			end
 		end)
 	end
-	if coroutine.yield(30000) == false then return end
+	if coroutine.yield(300) == false then return end
 	do
 		local boss = lib.CreateBoss("MidBoss")
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
 		if coroutine.yield(100) == false then return end
 		lib.SetBossCurPhaseData(boss,1,1,1,1,4)
-		lib.StartSpellCard(SpellCard.NazrinSC1_0,boss)
+		lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
 		lib.StartSpellCard(SpellCard.NazrinSC1_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end

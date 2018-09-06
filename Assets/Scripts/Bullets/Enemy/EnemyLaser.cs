@@ -46,11 +46,26 @@ public class EnemyLaser : EnemyBulletBase
     /// 表示当前正在改变宽度
     /// </summary>
     protected bool _isChangingWidth;
-    protected int _changeDuration;
-    protected int _changeTime;
+    protected int _changeWidthDuration;
+    protected int _changeWidthTime;
     protected int _changeWidthDelay;
     protected float _changeFromWidth;
     protected float _changeToWidth;
+
+    /// <summary>
+    /// 表示当前正在改变高度
+    /// </summary>
+    protected bool _isChangingHeight;
+    protected int _changeHeightDuration;
+    protected int _changeHeightTime;
+    protected int _changeHeightDelay;
+    protected float _changeFromHeight;
+    protected float _changeToHeight;
+
+    /// <summary>
+    /// 设置激光碰撞宽度和宽度的比例
+    /// </summary>
+    protected float _collisionFactor;
 
     /// <summary>
     /// 是否需要Resize激光
@@ -74,7 +89,10 @@ public class EnemyLaser : EnemyBulletBase
         _id = BulletId.Enemy_Laser;
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
         _isChangingWidth = false;
+        _isChangingHeight = false;
+        _laserHalfWidth = _laserHalfHeight = 0;
         _isDirty = false;
+        _collisionFactor = 1;
     }
 
     public override void SetBulletTexture(string texture)
@@ -87,7 +105,7 @@ public class EnemyLaser : EnemyBulletBase
             _laserTrans = _laser.transform;
             UIManager.GetInstance().AddGoToLayer(_laserObj, LayerId.EnemyBarrage);
         }
-        _laser.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName,texture);
+        _laser.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName,"Bullet" + texture);
         if ( _isSized )
         {
             Resize();
@@ -115,10 +133,33 @@ public class EnemyLaser : EnemyBulletBase
     public virtual void ChangeToWidth(float toWidth,int duration,int delay)
     {
         _changeWidthDelay = delay;
-        _changeToWidth = toWidth;
-        _changeDuration = duration;
-        _changeTime = 0;
+        if ( delay == 0 )
+        {
+            _changeFromWidth = _laserHalfWidth;
+        }
+        _changeToWidth = toWidth / 2;
+        _changeWidthDuration = duration;
+        _changeWidthTime = 0;
         _isChangingWidth = true;
+    }
+
+    /// <summary>
+    /// delay帧之后改变宽度到toHeight，改变时间为duration帧
+    /// </summary>
+    /// <param name="toWidth"></param>
+    /// <param name="duration"></param>
+    /// <param name="delay"></param>
+    public virtual void ChangeToHeight(float toHeight, int duration, int delay)
+    {
+        _changeHeightDelay = delay;
+        if ( delay == 0 )
+        {
+            _changeFromHeight = _laserHalfHeight;
+        }
+        _changeToHeight = toHeight / 2;
+        _changeHeightDuration = duration;
+        _changeHeightTime = 0;
+        _isChangingHeight = true;
     }
 
     public virtual void SetPosition(float posX,float posY,float angle)
@@ -187,12 +228,25 @@ public class EnemyLaser : EnemyBulletBase
         _isRotating = true;
     }
 
+    /// <summary>
+    /// 设置碰撞系数
+    /// </summary>
+    /// <param name="factor"></param>
+    public void SetCollisionFactor(float factor)
+    {
+        _collisionFactor = Mathf.Clamp01(factor);
+    }
+
     public override void Update()
     {
         UpdateComponents();
         if ( _isChangingWidth )
         {
             ChangingWidth();
+        }
+        if ( _isChangingHeight )
+        {
+            ChangingHeight();
         }
         if ( _isMoving )
         {
@@ -220,14 +274,43 @@ public class EnemyLaser : EnemyBulletBase
         if ( _changeWidthDelay > 0 )
         {
             _changeWidthDelay--;
+            if ( _changeWidthDelay == 0 )
+            {
+                _changeFromWidth = _laserHalfWidth;
+            }
         }
         else
         {
-            _changeTime++;
-            _laserHalfWidth = MathUtil.GetLinearInterpolation(_changeFromWidth, _changeToWidth, _changeTime, _changeDuration);
-            if ( _changeTime >= _changeDuration )
+            _changeWidthTime++;
+            _laserHalfWidth = MathUtil.GetLinearInterpolation(_changeFromWidth, _changeToWidth, _changeWidthTime, _changeWidthDuration);
+            if ( _changeWidthTime >= _changeWidthDuration )
             {
                 _isChangingWidth = false;
+            }
+            _isDirty = true;
+        }
+    }
+
+    /// <summary>
+    /// update-高度变更
+    /// </summary>
+    protected void ChangingHeight()
+    {
+        if (_changeHeightDelay > 0)
+        {
+            _changeHeightDelay--;
+            if (_changeHeightDelay == 0)
+            {
+                _changeFromHeight = _laserHalfHeight;
+            }
+        }
+        else
+        {
+            _changeHeightTime++;
+            _laserHalfHeight = MathUtil.GetLinearInterpolation(_changeFromHeight, _changeToHeight, _changeHeightTime, _changeHeightDuration);
+            if (_changeHeightTime >= _changeHeightDuration)
+            {
+                _isChangingHeight = false;
             }
             _isDirty = true;
         }
@@ -345,8 +428,8 @@ public class EnemyLaser : EnemyBulletBase
         float cos = Mathf.Cos(_laserAngle * Mathf.Deg2Rad);
         float sin = Mathf.Sin(_laserAngle * Mathf.Deg2Rad);
         // 矩形中心坐标
-        center.x = _collisionHalfHeight * cos + _curPos.x;
-        center.y = _collisionHalfHeight * sin + _curPos.y;
+        center.x = _laserHalfHeight * cos + _curPos.x;
+        center.y = _laserHalfHeight * sin + _curPos.y;
         Vector2 vec = Global.PlayerPos - center;
         Vector2 relativeVec = new Vector2();
         // 向量顺时针旋转laserAngle的度数
@@ -363,7 +446,7 @@ public class EnemyLaser : EnemyBulletBase
         else
         {
             Vector2 tmpVec = relativeVec * rate;
-            if (Mathf.Abs(tmpVec.x) < _collisionHalfHeight && Mathf.Abs(tmpVec.y) < _collisionHalfWidth)
+            if (Mathf.Abs(tmpVec.x) < _laserHalfHeight && Mathf.Abs(tmpVec.y) < _laserHalfWidth)
             {
                 _isGrazed = true;
             }
@@ -378,7 +461,7 @@ public class EnemyLaser : EnemyBulletBase
             }
             rate = (len - Global.PlayerCollisionVec.z) / len;
             relativeVec *= rate;
-            if (rate <= 0 || (Mathf.Abs(relativeVec.x) < _collisionHalfHeight && Mathf.Abs(relativeVec.y) < _collisionHalfWidth))
+            if (rate <= 0 || (Mathf.Abs(relativeVec.x) < _laserHalfHeight && Mathf.Abs(relativeVec.y) < _laserHalfWidth * _collisionFactor))
             {
                 Eliminate(eEliminateDef.HitPlayer);
                 PlayerService.GetInstance().GetCharacter().BeingHit();

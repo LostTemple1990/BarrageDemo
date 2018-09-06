@@ -292,7 +292,6 @@ public class InterpreterManager
             }
             PushParasToStack(task.luaState);
             status = task.luaState.Resume(null, numArgs);
-            task.isStarted = true;
         }
         else
         {

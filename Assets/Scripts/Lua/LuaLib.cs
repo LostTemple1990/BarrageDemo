@@ -9,7 +9,6 @@ public partial class LuaLib
     {
         var define = new NameFuncPair[]
         {
-            new NameFuncPair("CreateSimpleBullet", CreateSimpleBullet),
             new NameFuncPair("CreateSimpleBulletById", CreateSimpleBulletById),
             new NameFuncPair("SetBulletStraightParas",SetBulletStraightParas),
             new NameFuncPair("SetBulletCurvePara",SetBulletCurvePara),
@@ -21,13 +20,13 @@ public partial class LuaLib
             new NameFuncPair("SetBulletToUnrealState",SetBulletToUnrealState),
             new NameFuncPair("SetBulletDetectCollision",SetBulletDetectCollision),
             new NameFuncPair("SetBulletResistEliminatedFlag",SetBulletResistEliminatedFlag),
+            new NameFuncPair("SetBulletTexture",SetBulletTexture),
             // 设置、获取子弹相关参数
             new NameFuncPair("GetBulletPos",GetBulletPos),
             new NameFuncPair("SetBulletPos",SetBulletPos),
             // 自定义子弹
             new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet),
             new NameFuncPair("AddBulletTask",AddBulletTask),
-            new NameFuncPair("CreateCustomizedLaser",CreateCustomizedLaser),
 
             new NameFuncPair("CreateNormalEnemyById",CreateNormalEnemyById),
             new NameFuncPair("CreateCustomizedEnemy",CreateCustomizedEnemy),
@@ -41,6 +40,8 @@ public partial class LuaLib
             new NameFuncPair("SetEnemyMaxHp",SetEnemyMaxHp),
             // 直线激光相关
             new NameFuncPair("CreateLaser",CreateLaser),
+            new NameFuncPair("CreateCustomizedLaser",CreateCustomizedLaser),
+            new NameFuncPair("SetLaserCollisionFactor",SetLaserCollisionFactor),
             new NameFuncPair("SetLaserProps",SetLaserProps),
             new NameFuncPair("SetLaserPos",SetLaserPos),
             new NameFuncPair("SetLaserAngle",SetLaserAngle),
@@ -48,6 +49,7 @@ public partial class LuaLib
             new NameFuncPair("SetLaserSize",SetLaserSize),
             new NameFuncPair("SetLaserRotatePara",SetLaserRotatePara),
             new NameFuncPair("ChangeLaserWidth",ChangeLaserWidth),
+            new NameFuncPair("ChangeLaserHeight",ChangeLaserHeight),
             new NameFuncPair("SetLaserGrazeDetectParas",SetLaserGrazeDetectParas),
             new NameFuncPair("SetLaserCollisionDetectParas",SetLaserCollisionDetectParas),
 
@@ -137,33 +139,6 @@ public partial class LuaLib
     }
 
     /// <summary>
-    /// 创建一颗简单的子弹
-    /// <para>float posX</para>
-    /// <para>float posY</para>
-    /// <para>string textureName</para>
-    /// <para>bool isRotatedByVAngle</para>
-    /// <para>float selfRotAngle</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int CreateSimpleBullet(ILuaState luaState)
-    {
-        float posX = (float)luaState.ToNumber(-5);
-        float posY = (float)luaState.ToNumber(-4);
-        string textureName = luaState.ToString(-3);
-        bool isRotatedByVAngle = luaState.ToBoolean(-2);
-        float selfRotAngle = (float)luaState.ToNumber(-1);
-        luaState.Pop(5);
-        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Simple) as EnemyBulletSimple;
-        bullet.SetBulletTexture(textureName);
-        bullet.SetToPosition(posX, posY);
-        bullet.SetRotatedByVelocity(isRotatedByVAngle);
-        bullet.SetSelfRotation(selfRotAngle != 0, selfRotAngle);
-        luaState.PushLightUserData(bullet);
-        return 1;
-    }
-
-    /// <summary>
     /// 根据id创建SimpleBullet
     /// <para>id 配置里面的id</para>
     /// <para>float posX</para>
@@ -179,23 +154,7 @@ public partial class LuaLib
         luaState.Pop(3);
         EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Simple) as EnemyBulletSimple;
         bullet.ChangeStyleById(sysId);
-        //bullet.SetBulletTexture(cfg.prefabName);
         bullet.SetToPosition(posX, posY);
-        //bullet.SetRotatedByVelocity(cfg.isRotatedByVAngle);
-        //bullet.SetSelfRotation(cfg.selfRotationAngle!=0,cfg.selfRotationAngle);
-        //CollisionDetectParas detectParas = new CollisionDetectParas
-        //{
-        //    type = CollisionDetectType.Circle,
-        //    radius = cfg.collisionRadius,
-        //};
-        //GrazeDetectParas grazeParas = new GrazeDetectParas
-        //{
-        //    type = GrazeDetectType.Rect,
-        //    halfWidth = cfg.grazeHalfWidth,
-        //    halfHeight = cfg.grazeHalfHeight,
-        //};
-        //bullet.SetCollisionDetectParas(detectParas);
-        //bullet.SetGrazeDetectParas(grazeParas);
         luaState.PushLightUserData(bullet);
         return 1;
     }
@@ -321,7 +280,7 @@ public partial class LuaLib
 
     public static int EliminateBullet(ILuaState luaState)
     {
-        EnemyBulletSimple bullet = luaState.ToUserData(-1) as EnemyBulletSimple;
+        EnemyBulletBase bullet = luaState.ToUserData(-1) as EnemyBulletBase;
         luaState.Pop(1);
         bullet.Eliminate();
         return 0;
@@ -365,6 +324,15 @@ public partial class LuaLib
         int flag = luaState.ToInteger(-1);
         luaState.Pop(2);
         bullet.SetResistEliminateFlag(flag);
+        return 0;
+    }
+
+    public static int SetBulletTexture(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
+        string texture = luaState.ToString(-1);
+        luaState.Pop(2);
+        bullet.SetBulletTexture(texture);
         return 0;
     }
 
@@ -460,32 +428,6 @@ public partial class LuaLib
         bc.AddTask(task);
         return 0;
     }
-
-    public static int CreateCustomizedLaser(ILuaState luaState)
-    {
-        int numArgs = luaState.ToInteger(-1);
-        string customizedName = luaState.ToString(-3 - numArgs);
-        string laserTexture = luaState.ToString(-2 - numArgs);
-        // 弹出参数个数
-        luaState.Pop(1);
-        EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Laser) as EnemyLaser;
-        laser.SetBulletTexture(laserTexture);
-        // 设置自定义的数据
-        BCCustomizedTask bc = laser.AddComponent<BCCustomizedTask>();
-        int funcRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
-        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
-        if (!luaState.IsFunction(-1))
-        {
-            Logger.Log("InitFuncRef of " + customizedName + " is not point to a function");
-        }
-        luaState.PushLightUserData(laser);
-        luaState.Replace(-3 - numArgs);
-        luaState.Replace(-3 - numArgs);
-        luaState.Call(numArgs + 1, 0);
-        // 将laser压入栈
-        luaState.PushLightUserData(laser);
-        return 1;
-    }
     #endregion
 
     #region 直线激光相关
@@ -509,6 +451,45 @@ public partial class LuaLib
         return 1;
     }
 
+    public static int CreateCustomizedLaser(ILuaState luaState)
+    {
+        int numArgs = luaState.ToInteger(-1);
+        // 弹出参数个数
+        luaState.Pop(1);
+        string customizedName = luaState.ToString(-1 - numArgs);
+        EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Laser) as EnemyLaser;
+        // 设置自定义的数据
+        BCCustomizedTask bc = laser.AddComponent<BCCustomizedTask>();
+        int funcRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
+        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
+        if (!luaState.IsFunction(-1))
+        {
+            Logger.Log("InitFuncRef of " + customizedName + " is not point to a function");
+        }
+        luaState.Replace(-2 - numArgs);
+        luaState.PushLightUserData(laser);
+        luaState.Insert(-1 - numArgs);
+        luaState.Call(numArgs + 1, 0);
+        // 将laser压入栈
+        luaState.PushLightUserData(laser);
+        return 1;
+    }
+
+    public static int SetLaserCollisionFactor(ILuaState luaState)
+    {
+        EnemyLaser laser = luaState.ToUserData(-2) as EnemyLaser;
+        float factor = (float)luaState.ToNumber(-1);
+        luaState.Pop(2);
+        laser.SetCollisionFactor(factor);
+        return 0;
+    }
+
+    /// <summary>
+    /// 更改laser的宽度
+    /// <para>toWidth为实际宽度的一半</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
     public static int ChangeLaserWidth(ILuaState luaState)
     {
         EnemyLaser laser = luaState.ToUserData(-4) as EnemyLaser;
@@ -519,7 +500,24 @@ public partial class LuaLib
         laser.ChangeToWidth(toWidth, changeDuration, changeDelay);
         return 0;
     }
-    
+
+    /// <summary>
+    /// 更改laser的高度
+    /// <para>toHeight为实际高度的一半</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int ChangeLaserHeight(ILuaState luaState)
+    {
+        EnemyLaser laser = luaState.ToUserData(-4) as EnemyLaser;
+        float toHeight = (float)luaState.ToNumber(-3);
+        int changeDuration = luaState.ToInteger(-2);
+        int changeDelay = luaState.ToInteger(-1);
+        luaState.Pop(4);
+        laser.ChangeToHeight(toHeight, changeDuration, changeDelay);
+        return 0;
+    }
+
     /// <summary>
     /// 设置激光的属性
     /// <para>laser 激光本体</para>
