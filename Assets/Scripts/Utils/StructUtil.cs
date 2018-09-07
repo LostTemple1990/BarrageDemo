@@ -232,6 +232,22 @@ public enum eBlendMode : int
     SoftAdditive = 1,
 }
 
+[Flags]
+public enum eColliderGroup : int
+{
+    Player = 1,
+    PlayerBullet = 2,
+    Enemy = 4,
+    EnemyBullet = 8,
+    Item = 16,
+}
+
+public enum eColliderType : int
+{
+    Circle = 1,
+    Rect = 2,
+}
+
 #region struct ItemWithFramentsCounter
 /// <summary>
 /// 带碎片的道具计数器
