@@ -40,6 +40,7 @@ public class PlayerBulletBase : BulletBase
         _trans = null;
         _bullet = null;
         _renderer = null;
+        base.Clear();
     }
 
     public virtual void CheckHitEnemy()

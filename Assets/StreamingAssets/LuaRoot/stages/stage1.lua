@@ -743,9 +743,20 @@ function Stage.StageTask()
 		lib.SetBossCurPhaseData(boss,1,1,1,1,4)
 		lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
+		lib.StartSpellCard(SpellCard.NazrinSC2_1,boss)
+		if lib.WaitForSpellCardFinish() == false then return end
+		lib.StartSpellCard(SpellCard.NazrinSC2_2,boss)
+		if lib.WaitForSpellCardFinish() == false then return end
+		lib.StartSpellCard(SpellCard.NazrinSC2_3,boss)
+		if lib.WaitForSpellCardFinish() == false then return end
+		lib.SetBossCurPhaseData(boss,1,1,1,1,4)
 		lib.StartSpellCard(SpellCard.NazrinSC1_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
-		lib.StartSpellCard(SpellCard.NazrinSC1_0,boss)
+		lib.StartSpellCard(SpellCard.NazrinSC1_1,boss)
+		if lib.WaitForSpellCardFinish() == false then return end
+		lib.StartSpellCard(SpellCard.NazrinSC1_2,boss)
+		if lib.WaitForSpellCardFinish() == false then return end
+		lib.StartSpellCard(SpellCard.NazrinSC1_3,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
 	end
 	if coroutine.yield(10000) == false then return end

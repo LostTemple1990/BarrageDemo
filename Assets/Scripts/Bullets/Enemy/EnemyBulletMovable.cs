@@ -50,6 +50,9 @@ public class EnemyBulletMovable : EnemyBulletBase
         _isMoving = false;
         _isMovingStraight = false;
         _isMovingCurve = false;
+        _vx = 0;
+        _vy = 0;
+        _curVelocity = 0;
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
     }
 

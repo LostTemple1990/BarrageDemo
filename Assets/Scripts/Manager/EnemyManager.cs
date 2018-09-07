@@ -152,7 +152,6 @@ public class EnemyManager
         EnemyBase hitEnemy = null, tmpEnemy;
         float bulletX, bulletY, bulletHalfWidth, bulletHalfHeight;
         bullet.GetCollisionParams(out bulletX, out bulletY, out bulletHalfWidth, out bulletHalfHeight);
-        //TODO 以后将normalEnemies统一成EnemyBase
         int tmpCount = _enemyList.Count;
         float enemyX, enemyY, enemyHalfWidth, enemyHalfHeight;
         for (int i=0;i<tmpCount;i++)

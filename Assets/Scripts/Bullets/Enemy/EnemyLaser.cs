@@ -10,7 +10,7 @@ public class EnemyLaser : EnemyBulletBase
     private const int GrazeCoolDown = 2;
 
     protected float _laserAngle;
-    protected float _laserRotateOmiga;
+    protected float _laserRotateOmega;
     protected int _rotateCounter;
     protected int _rotateDuration;
     protected float _rotateToAngle;
@@ -93,6 +93,7 @@ public class EnemyLaser : EnemyBulletBase
         _laserHalfWidth = _laserHalfHeight = 0;
         _isDirty = false;
         _collisionFactor = 1;
+        _isRotating = false;
     }
 
     public override void SetBulletTexture(string texture)
@@ -224,7 +225,16 @@ public class EnemyLaser : EnemyBulletBase
         _rotateToAngle = toAngle;
         _rotateCounter = 0;
         _rotateDuration = duration;
-        _laserRotateOmiga = (toAngle - _laserAngle) / duration;
+        _laserRotateOmega = (toAngle - _laserAngle) / duration;
+        _isRotating = true;
+    }
+
+    public void DoRotateWithOmega(float omega,int duration)
+    {
+        _rotateToAngle = _laserAngle + duration * omega;
+        _rotateCounter = 0;
+        _rotateDuration = duration;
+        _laserRotateOmega = omega;
         _isRotating = true;
     }
 
@@ -333,7 +343,7 @@ public class EnemyLaser : EnemyBulletBase
 
     protected virtual void Rotate()
     {
-        _laserAngle += _laserRotateOmiga;
+        _laserAngle += _laserRotateOmega;
         _rotateCounter++;
         if ( _rotateCounter >= _rotateDuration )
         {
@@ -424,6 +434,7 @@ public class EnemyLaser : EnemyBulletBase
 
     protected virtual void CheckCollisionWithCharacter()
     {
+        if (!_detectCollision) return;
         Vector2 center = new Vector2();
         float cos = Mathf.Cos(_laserAngle * Mathf.Deg2Rad);
         float sin = Mathf.Sin(_laserAngle * Mathf.Deg2Rad);
@@ -448,7 +459,7 @@ public class EnemyLaser : EnemyBulletBase
             Vector2 tmpVec = relativeVec * rate;
             if (Mathf.Abs(tmpVec.x) < _laserHalfHeight && Mathf.Abs(tmpVec.y) < _laserHalfWidth)
             {
-                _isGrazed = true;
+                isGrazing = true;
             }
         }
         if ( isGrazing )

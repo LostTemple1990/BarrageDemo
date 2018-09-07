@@ -252,6 +252,10 @@ public class EnemyBulletSimple : EnemyBulletMovable
         {
             return;
         }
+        if ( !_detectCollision )
+        {
+            return;
+        }
         float dx = Mathf.Abs(_curPos.x - Global.PlayerPos.x);
         float dy = Mathf.Abs(_curPos.y - Global.PlayerPos.y);
         // 子弹中心与玩家中心的距离的平方

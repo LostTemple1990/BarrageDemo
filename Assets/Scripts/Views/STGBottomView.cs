@@ -22,7 +22,7 @@ public class STGBottomView : ViewBase,ICommand
         _charCGGo = _viewTf.Find("CG").gameObject;
         _charCGImg = _charCGGo.GetComponent<Image>();
         CommandManager.GetInstance().Register(CommandConsts.PlayCharacterCGAni, this);
-        _isPlayingCharCG = false;
+        Reset();
     }
 
     public void Execute(int cmd, object[] datas)

@@ -385,7 +385,7 @@ public class InterpreterManager
             _luaState.Pop(2);
             return;
         }
-        Logger.Log("CustomizedFunc by Name " + customizedName + " is not exist");
+        Logger.LogError("CustomizedFunc by Name " + customizedName + " is not exist");
     }
 
     public int GetInitFuncRef(string customizedName)
@@ -411,7 +411,7 @@ public class InterpreterManager
         {
             return funcRef;
         }
-        Logger.Log("CustomizedFunc by Name " + customizedName + " is not exist");
+        Logger.LogError("CustomizedFunc by Name " + customizedName + " is not exist");
         return 0;
     }
 

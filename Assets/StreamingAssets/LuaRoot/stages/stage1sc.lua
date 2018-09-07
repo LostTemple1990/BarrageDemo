@@ -575,39 +575,74 @@ function SC.NazrinSC1_3(boss)
 end
 
 CustomizedBulletTable.NazrinSC2Laser = {}
-CustomizedBulletTable.NazrinSC2Laser.Init = function(laser,posX,posY,angle,existDuration)
+CustomizedBulletTable.NazrinSC2Laser.Init = function(laser,posX,posY,angle,existDuration,createRandomBulletInterval)
 	--lib.SetBulletResistEliminatedFlag(bullet,BulletResist.PlayerBomb + BulletResist.PlayerDead + BulletResist.HitPlayer)
 	lib.SetBulletTexture(laser,"200060")
 	lib.SetLaserProps(laser,posX,posY,angle,2,500,150)
 	lib.SetBulletDetectCollision(laser,false)
 	lib.SetLaserCollisionFactor(laser,0.8)
 	lib.AddBulletTask(laser,function()
-		if coroutine.yield(30) == false then return end
 		lib.ChangeLaserWidth(laser,16,10,30)
 		lib.SetBulletDetectCollision(laser,true)
+		if coroutine.yield(30) == false then return end
 		if coroutine.yield(existDuration) == false then return end
 		lib.SetBulletDetectCollision(laser,false)
 		lib.ChangeLaserWidth(laser,0,10,0)
 		if coroutine.yield(10) == false then return end
 		lib.EliminateBullet(laser)
 	end)
+	if createRandomBulletInterval ~= 0 then
+		lib.AddBulletTask(laser,function()
+			if coroutine.yield(existDuration+30) == false then return end
+			local createBulletCount = math.floor(500/createRandomBulletInterval)
+			local normalizedX = math.cos(math.rad(angle))
+			local normalizedY = math.sin(math.rad(angle))
+			for i=1,createBulletCount do
+				local x = normalizedX * i * createRandomBulletInterval + posX
+				local y = normalizedY * i * createRandomBulletInterval + posY
+				local a = lib.GetRandomInt(0,360)
+				local bullet = lib.CreateSimpleBulletById("104060",x,y)
+				lib.SetBulletOrderInLayer(bullet,1)
+				lib.DoBulletAccelerationWithLimitation(bullet,0.05,a,60)
+				--lib.SetBulletStraightParas(bullet,3,a,false,0,0)
+			end
+		end)
+	end
+end
+
+CustomizedBulletTable.NazrinSC2Spark = {}
+CustomizedBulletTable.NazrinSC2Spark.Init = function(laser,posX,posY,canRotate)
+	lib.SetBulletTexture(laser,"200060")
+	local laserAngle = lib.GetAimToPlayerAngle(posX,posY)
+	lib.SetLaserProps(laser,posX,posY,laserAngle,2,0,500)
+	lib.SetBulletDetectCollision(laser,false)
+	lib.SetBulletResistEliminatedFlag(laser,BulletResist.PlayerBomb + BulletResist.PlayerDead + BulletResist.HitPlayer)
+	lib.SetLaserCollisionFactor(laser,0.8)
 	lib.AddBulletTask(laser,function()
-		if coroutine.yield(existDuration+30) == false then return end
-		local createBulletCount = math.floor(500/32)
-		local normalizedX = math.cos(math.rad(angle))
-		local normalizedY = math.sin(math.rad(angle))
-		for i=1,createBulletCount do
-			local x = normalizedX * i * 32 + posX
-			local y = normalizedY * i * 32 + posY
-			local a = lib.GetRandomInt(0,360)
-			local bullet = lib.CreateSimpleBulletById("104060",x,y)
-			lib.SetBulletStraightParas(bullet,3,a,false,0,0)
-		end
+		lib.ChangeLaserHeight(laser,500,30,0)
+		if coroutine.yield(60) == false then return end
+		lib.ChangeLaserWidth(laser,128,10,0)
+		lib.SetBulletDetectCollision(laser,true)
+		if coroutine.yield(60) == false then return end
+		lib.SetBulletDetectCollision(laser,false)
+		lib.ChangeLaserWidth(laser,0,10,0)
+		if coroutine.yield(10) == false then return end
+		lib.EliminateBullet(laser)
 	end)
+	--转向玩家的方向
+	if canRotate then
+		lib.AddBulletTask(laser,function()
+			local prePlayerPosX,prePlayerPosY = lib.GetPlayerPos()
+			if coroutine.yield(70) == false then return end
+			local nowPlayerPosX,nowPlayerPosY = lib.GetPlayerPos()
+			local omega = prePlayerPosX > nowPlayerPosX and -0.2 or 0.2
+			lib.SetLaserRotateParaWithOmega(laser,omega,60)
+		end)
+	end
 end
 
 function SC.NazrinSC2_0(boss)
-	lib.SetSpellCardProperties("LaserSign-Lasers",60,Condition.EliminateAll,true,nil)
+	lib.SetSpellCardProperties("LaserSign-Easy",60,Condition.EliminateAll,true,nil)
 	--bossCG
 	do
 		local tweenList = {}
@@ -636,17 +671,188 @@ function SC.NazrinSC2_0(boss)
 	lib.SetBossInvincible(boss,5)
 	lib.SetEnemyMaxHp(boss,500)
 	lib.ShowBossBloodBar(boss,true)
-	--激光部分
+	--散射激光部分
 	lib.AddEnemyTask(boss,function()
 		for _=1,Infinite do
 			local posX,posY = lib.GetEnemyPos(boss)
 			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
 			for i=1,20 do
-				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+11.25+i*15,93-i*3,4)
-				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-11.25-i*15,93-i*3,4)
+				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+26.25+i*15,93-i*3,0,5)
+				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-26.25-i*15,93-i*3,0,5)
 				if coroutine.yield(3) == false then return end
 			end
 			if coroutine.yield(120) == false then return end
+		end
+	end)
+	--自机狙激光
+	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(60) == false then return end
+		for _=1,Infinite do
+			local laserPosX,laserPosY = lib.GetEnemyPos(boss)
+			local laser = lib.CreateCustomizedLaser("NazrinSC2Spark",laserPosX,laserPosY,false,3)
+			if coroutine.yield(180) == false then return end
+		end
+	end)
+end
+
+function SC.NazrinSC2_1(boss)
+	lib.SetSpellCardProperties("LaserSign-Normal",60,Condition.EliminateAll,true,nil)
+	--bossCG
+	do
+		local tweenList = {}
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=0,duration=30,beginValue={x=200,y=200},endValue={x=0,y=0},mode=Constants.ModeEaseInQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=60,duration=60,beginValue={x=0,y=0},endValue={x=-200,y=-200},mode=Constants.ModeEaseOutQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=0,duration=0,beginValue=1,endValue=1,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=90,duration=30,beginValue=1,endValue=0,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Scale,delay=0,duration=0,beginValue={x=0.75,y=0.75,z=1},endValue={x=0.75,y=0.75,z=1},mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		lib.PlayCharacterCG("CG/face04ct",tweenList)
+	end
+	lib.SetBossInvincible(boss,5)
+	lib.SetEnemyMaxHp(boss,500)
+	lib.ShowBossBloodBar(boss,true)
+	--散射激光部分
+	lib.AddEnemyTask(boss,function()
+		for _=1,Infinite do
+			local posX,posY = lib.GetEnemyPos(boss)
+			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
+			for i=1,20 do
+				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+26.25+i*15,93-i*3,50,5)
+				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-26.25-i*15,93-i*3,50,5)
+				if coroutine.yield(3) == false then return end
+			end
+			if coroutine.yield(120) == false then return end
+		end
+	end)
+	--自机狙激光
+	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(60) == false then return end
+		for _=1,Infinite do
+			local laserPosX,laserPosY = lib.GetEnemyPos(boss)
+			local laser = lib.CreateCustomizedLaser("NazrinSC2Spark",laserPosX,laserPosY,false,3)
+			if coroutine.yield(180) == false then return end
+		end
+	end)
+end
+
+function SC.NazrinSC2_2(boss)
+	lib.SetSpellCardProperties("LaserSign-Hard",60,Condition.EliminateAll,true,nil)
+	--bossCG
+	do
+		local tweenList = {}
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=0,duration=30,beginValue={x=200,y=200},endValue={x=0,y=0},mode=Constants.ModeEaseInQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=60,duration=60,beginValue={x=0,y=0},endValue={x=-200,y=-200},mode=Constants.ModeEaseOutQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=0,duration=0,beginValue=1,endValue=1,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=90,duration=30,beginValue=1,endValue=0,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Scale,delay=0,duration=0,beginValue={x=0.75,y=0.75,z=1},endValue={x=0.75,y=0.75,z=1},mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		lib.PlayCharacterCG("CG/face04ct",tweenList)
+	end
+	lib.SetBossInvincible(boss,5)
+	lib.SetEnemyMaxHp(boss,500)
+	lib.ShowBossBloodBar(boss,true)
+	--散射激光部分
+	lib.AddEnemyTask(boss,function()
+		for _=1,Infinite do
+			local posX,posY = lib.GetEnemyPos(boss)
+			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
+			for i=1,20 do
+				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+4.125+i*16.5,93-i*3,32,5)
+				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-4.125-i*16.5,93-i*3,32,5)
+				if coroutine.yield(3) == false then return end
+			end
+			if coroutine.yield(120) == false then return end
+		end
+	end)
+	--自机狙激光
+	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(60) == false then return end
+		for _=1,Infinite do
+			local laserPosX,laserPosY = lib.GetEnemyPos(boss)
+			local laser = lib.CreateCustomizedLaser("NazrinSC2Spark",laserPosX,laserPosY,false,3)
+			if coroutine.yield(180) == false then return end
+		end
+	end)
+end
+
+function SC.NazrinSC2_3(boss)
+	lib.SetSpellCardProperties("LaserSign-Lunatic",60,Condition.EliminateAll,true,nil)
+	--bossCG
+	do
+		local tweenList = {}
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=0,duration=30,beginValue={x=200,y=200},endValue={x=0,y=0},mode=Constants.ModeEaseInQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=60,duration=60,beginValue={x=0,y=0},endValue={x=-200,y=-200},mode=Constants.ModeEaseOutQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=0,duration=0,beginValue=1,endValue=1,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=90,duration=30,beginValue=1,endValue=0,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Scale,delay=0,duration=0,beginValue={x=0.75,y=0.75,z=1},endValue={x=0.75,y=0.75,z=1},mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		lib.PlayCharacterCG("CG/face04ct",tweenList)
+	end
+	lib.SetBossInvincible(boss,5)
+	lib.SetEnemyMaxHp(boss,500)
+	lib.ShowBossBloodBar(boss,true)
+	--散射激光部分
+	lib.AddEnemyTask(boss,function()
+		for _=1,Infinite do
+			local posX,posY = lib.GetEnemyPos(boss)
+			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
+			for i=1,20 do
+				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+4.125+i*16.5,93-i*3,32,5)
+				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-4.125-i*16.5,93-i*3,32,5)
+				if coroutine.yield(3) == false then return end
+			end
+			if coroutine.yield(120) == false then return end
+		end
+	end)
+	--自机狙激光
+	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(60) == false then return end
+		for _=1,Infinite do
+			local laserPosX,laserPosY = lib.GetEnemyPos(boss)
+			local laser = lib.CreateCustomizedLaser("NazrinSC2Spark",laserPosX,laserPosY,true,3)
+			if coroutine.yield(180) == false then return end
 		end
 	end)
 end

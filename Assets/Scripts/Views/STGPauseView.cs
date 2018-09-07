@@ -251,12 +251,14 @@ public class STGPauseView : ViewBase
             }
             else if ( _curSelectIndex == IndexBackToTitle )
             {
+                _state = StateConfirm;
                 _yesNoPanel.SetActive(true);
                 TweenManager.GetInstance().RemoveTweenByGo(_curSelectItem);
                 SetCurYesNoItem(IndexNo);
             }
             else if (_curSelectIndex == IndexSaveReplay)
             {
+                _state = StateConfirm;
                 _yesNoPanel.SetActive(true);
                 TweenManager.GetInstance().RemoveTweenByGo(_curSelectItem);
                 SetCurYesNoItem(IndexNo);

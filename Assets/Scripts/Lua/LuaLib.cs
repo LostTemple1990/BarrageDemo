@@ -48,6 +48,7 @@ public partial class LuaLib
             new NameFuncPair("SetLaserExistDuration",SetLaserExistDuration),
             new NameFuncPair("SetLaserSize",SetLaserSize),
             new NameFuncPair("SetLaserRotatePara",SetLaserRotatePara),
+            new NameFuncPair("SetLaserRotateParaWithOmega",SetLaserRotateParaWithOmega),
             new NameFuncPair("ChangeLaserWidth",ChangeLaserWidth),
             new NameFuncPair("ChangeLaserHeight",ChangeLaserHeight),
             new NameFuncPair("SetLaserGrazeDetectParas",SetLaserGrazeDetectParas),
@@ -592,6 +593,16 @@ public partial class LuaLib
         int duration = luaState.ToInteger(-1);
         luaState.Pop(3);
         laser.DoRotate(toAngle, duration);
+        return 0;
+    }
+
+    public static int SetLaserRotateParaWithOmega(ILuaState luaState)
+    {
+        EnemyLaser laser = luaState.ToUserData(-3) as EnemyLaser;
+        float omega = (float)luaState.ToNumber(-2);
+        int duration = luaState.ToInteger(-1);
+        luaState.Pop(3);
+        laser.DoRotateWithOmega(omega, duration);
         return 0;
     }
 
