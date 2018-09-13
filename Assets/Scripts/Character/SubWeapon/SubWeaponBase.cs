@@ -16,6 +16,8 @@ public class SubWeaponBase
 
     protected GameObject _subWeapon;
 
+    protected Transform _subTf;
+
     protected SpriteRenderer _subWeaponRenderer;
 
     protected Vector3[][] _posOffset;
@@ -27,6 +29,7 @@ public class SubWeaponBase
     public virtual void Init(GameObject go,CharacterBase character)
     {
         _subWeapon = go;
+        _subTf = go.transform;
         _character = character;
     }
 
@@ -61,10 +64,21 @@ public class SubWeaponBase
         _subWeapon.SetActive(value);
     }
 
+    public void SetToPosition(Vector2 pos)
+    {
+        _subTf.localPosition = pos;
+    }
+
+    public Vector2 GetPosition()
+    {
+        return _subTf.position;
+    }
+
     public virtual void Clear()
     {
         _character = null;
         _subWeapon = null;
+        _subTf = null;
         _subWeaponRenderer = null;
     }
 }

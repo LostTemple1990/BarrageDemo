@@ -30,6 +30,8 @@ public class BulletReimuASub1 :PlayerBulletBase
     public override void Init()
     {
         base.Init();
+        _trans = _bullet.GetComponent<RectTransform>();
+        _renderer = _trans.Find("Bullet").GetComponent<SpriteRenderer>();
         UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.PlayerBarage);
         BulletsManager.GetInstance().RegisterPlayerBullet(this);
         _target = null;

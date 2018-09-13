@@ -18,4 +18,5 @@ interpreterManager里面的tableToVec2/Vec3/Color方法修改，不弹出顶部t
 protoType没有被回收的bug --finish
 playerBullet也统一成protoType的样式
 自机子弹击中敌机的函数修改
-laser相关问题的修复
+laser相关问题的修复  --finish
+完成魔机

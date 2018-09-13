@@ -408,10 +408,8 @@ public class EnemyBase : ICollisionObject
     /// <returns></returns>
     public virtual bool CanHit()
     {
-        if ( _clearFlag == 1 )
-        {
-            return false;
-        }
+        if (!_isInteractive) return false;
+        if (_clearFlag == 1) return false;
         return _curHp > 0;
     }
 

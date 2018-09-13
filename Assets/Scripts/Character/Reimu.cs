@@ -36,4 +36,9 @@ public class Reimu : CharacterBase
         _bombCoolDown = 300;
         _bombInvincibleDuration = 300;
     }
+
+    protected override void UpdateSubWeapons()
+    {
+        
+    }
 }

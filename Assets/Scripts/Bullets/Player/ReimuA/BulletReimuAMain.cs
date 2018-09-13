@@ -18,6 +18,7 @@ public class BulletReimuAMain : PlayerBulletBase
     public override void Init()
     {
         base.Init();
+        _renderer = _trans.Find("Bullet").GetComponent<SpriteRenderer>();
         UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.PlayerBarage);
         DoMove(DefaultSpeedY, 90);
         _trans.localRotation = Quaternion.Euler(0f, 0f, 90f); ;

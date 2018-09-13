@@ -33,11 +33,15 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
 
     protected int _charID;
     protected int _subID;
+    /// <summary>
+    /// 自机左、右侧的子弹发射位置的偏移量
+    /// </summary>
     protected Vector3 _leftBulletOffset, _rightBulletOffset;
 
     protected BulletId _mainBulletId;
     protected BulletId _subBulletId;
 
+    protected int _preMoveMode;
     protected int _curMoveMode;
     protected Transform _collisionPointTf;
     protected Transform _rotatePointTf;
@@ -163,8 +167,10 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
         _invincibleDuration = Consts.AppearInvincibleDuration;
         _stateUpdateFunc = StateAppearUpdate;
         _character.SetActive(true);
+        _preMoveMode = _curMoveMode = Consts.SpeedMove;
         // 显示副武器
         UpdateSubWeaponsVisible();
+        ResetSubWeapons();
     }
 
     protected void StateAppearUpdate()
@@ -209,6 +215,7 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
         }
         UpdateSubWeaponsVisible();
         UpdateSubWeaponsShoot();
+        UpdateSubWeapons();
         UpdateCollisionData();
         if ( _isInvincible )
         {
@@ -306,6 +313,7 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
         _collisionPointTf = go.transform;
         _rotatePointTf = _collisionPointTf.Find("Point");
         UIManager.GetInstance().AddGoToLayer(go, LayerId.PlayerCollisionPoint);
+        _preMoveMode = Consts.SpeedMove;
         _curMoveMode = Consts.SpeedMove;
         go.SetActive(false);
         _collisionPointRotateVec3 = new Vector3(0, 0, 3f);
@@ -328,6 +336,7 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
 
     public void CheckMoveMode()
     {
+        _preMoveMode = _curMoveMode;
         if ( _curMoveMode != _inputMoveMode )
         {
             _curMoveMode = _inputMoveMode;
@@ -450,14 +459,23 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
         }
     }
 
+    protected virtual void UpdateSubWeapons()
+    {
+
+    }
+
+    protected virtual void ResetSubWeapons()
+    {
+
+    }
+
     protected void UpdateSubWeaponsVisible()
     {
-        // TODO 更新当前可用的副武器数目
         int intPower = PlayerService.GetInstance().GetPower() / 100;
-        SubWeaponBase subWeapon;
-        int i;
         if ( intPower != _availableSubCount )
         {
+            SubWeaponBase subWeapon;
+            int i;
             _availableSubCount = intPower;
             for (i=0;i<4;i++)
             {
@@ -649,5 +667,21 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
     {
         set { _inputBomb = value; }
         get { return _inputBomb; }
+    }
+
+    /// <summary>
+    /// 上一帧的移动模式
+    /// </summary>
+    public int PreMoveMode
+    {
+        get { return _preMoveMode; }
+    }
+
+    /// <summary>
+    /// 当前帧的移动模式
+    /// </summary>
+    public int CurModeMode
+    {
+        get { return _curMoveMode; }
     }
 }

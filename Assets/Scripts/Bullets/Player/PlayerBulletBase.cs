@@ -16,9 +16,8 @@ public class PlayerBulletBase : BulletBase
         if ( _bullet == null )
         {
             _bullet = ResourceManager.GetInstance().GetPrefab("Prefab/PlayerBullets",_prefabName);
+            _trans = _bullet.GetComponent<RectTransform>();
         }
-        _trans = _bullet.GetComponent<RectTransform>();
-        _renderer = _trans.Find("Bullet").GetComponent<SpriteRenderer>();
     }
 
     public override void Update()
@@ -52,6 +51,11 @@ public class PlayerBulletBase : BulletBase
             _clearFlag = 1;
             //TODO 炸弹撞到单位的特效
         }
+    }
+
+    public BulletId id
+    {
+        set { _id = value; }
     }
 
     /// <summary>

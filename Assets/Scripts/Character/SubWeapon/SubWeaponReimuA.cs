@@ -14,7 +14,6 @@ public class SubWeaponReimuA : SubWeaponBase
     public override void Init(GameObject go,CharacterBase character)
     {
         base.Init(go,character);
-        // 暂时写死power
         _posOffset = new Vector3[4][];
         _posOffset[0] = new Vector3[] { new Vector3(0f,32f,0) };
         _posOffset[1] = new Vector3[] { new Vector3(-12f, 32f, 0), new Vector3(12f, 32f, 0) };
