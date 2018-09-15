@@ -13,7 +13,9 @@ public class PlayerLaser : PlayerBulletBase
 
     private float _texWidth;
     private float _repeatCount;
-
+    /// <summary>
+    /// 射线的总长度，即贴图长度*重复次数
+    /// </summary>
     private float _laserTotalLen;
     /// <summary>
     /// 当前射线长度
@@ -23,9 +25,14 @@ public class PlayerLaser : PlayerBulletBase
     /// 上一帧射线的长度，未赋值之前为-1
     /// </summary>
     private float _preLaserLen;
+    /// <summary>
+    /// 射线的方向向量
+    /// </summary>
+    private Vector2 _dirVec;
 
     public PlayerLaser()
     {
+        _id = BulletId.Player_Laser;
         _prefabName = "PlayerLaser";
     }
 
@@ -59,6 +66,7 @@ public class PlayerLaser : PlayerBulletBase
         _curAngle = angle;
         // 角度
         _laserTf.rotation = Quaternion.Euler(0, 0, _curAngle);
+        _dirVec = new Vector2(Mathf.Cos(_curAngle * Mathf.Deg2Rad), Mathf.Sin(_curAngle * Mathf.Deg2Rad));
     }
 
     public override void Update()
@@ -78,7 +86,6 @@ public class PlayerLaser : PlayerBulletBase
         _curLaserLen = _laserTotalLen;
         // shader赋值
         _laserSr.material.SetFloat("_TotalLen", _texWidth);
-        //_laserSr.material.SetFloat("_CurLen", _curLaserLen);
         _laserSr.material.SetFloat("_RepeatCount", _repeatCount);
         _isCached = true;
     }
@@ -87,8 +94,16 @@ public class PlayerLaser : PlayerBulletBase
     {
         List<EnemyBase> enemyList = EnemyManager.GetInstance().GetEnemyList();
         int enemyCount = enemyList.Count;
-        EnemyBase enemy;
+        EnemyBase enemy,hitEnemy = null;
         CollisionDetectParas collDetParas;
+        // verticalDis 圆心到射线的垂直距离
+        // angle 两项链的夹角
+        // dis 从射线起始点指向敌机中心的向量的长度
+        // minDis 击中敌人的最小距离,即射线第一个击中的敌人
+        float verticalDis,angle,dis,minDis,horizonDis;
+        minDis = _laserTotalLen;
+        // vecA为射线发射点到敌机的向量
+        Vector2 vecA;
         // 遍历所有敌机，检测激光最先碰到的敌机
         for (int i=0;i<enemyCount;i++)
         {
@@ -96,8 +111,31 @@ public class PlayerLaser : PlayerBulletBase
             if ( enemy != null && enemy.CanHit() )
             {
                 collDetParas = enemy.GetCollisionDetectParas();
+                // 计算vecA
+                vecA = collDetParas.centerPos - new Vector2(_curPos.x,_curPos.y);
+                // 计算夹角
+                angle = Vector2.Angle(_dirVec, vecA);
+                if (angle > 90) continue;
+                dis = vecA.magnitude;
+                verticalDis = dis * Mathf.Sin(Mathf.Deg2Rad * angle);
+                // 判断垂直距离
+                if ( verticalDis <= collDetParas.halfWidth )
+                {
+                    horizonDis = dis * Mathf.Cos(Mathf.Deg2Rad * angle);
+                    if ( horizonDis < minDis )
+                    {
+                        hitEnemy = enemy;
+                        minDis = horizonDis;
+                    }
+                }
             }
         }
+        // 如果有击中敌机
+        if ( hitEnemy != null )
+        {
+            hitEnemy.GetHit(GetDamage());
+        }
+        _curLaserLen = minDis;
     }
 
     private void RenderLaser()
@@ -108,11 +146,7 @@ public class PlayerLaser : PlayerBulletBase
 
     public override int GetCollisionParams(out float arg1, out float arg2, out float arg3, out float arg4)
     {
-        arg1 = _curPos.x;
-        arg2 = _curPos.y;
-        arg3 = 8;
-        arg4 = 8;
-        return Consts.CollisionType_Rect;
+        throw new System.NotImplementedException();
     }
 
     protected override int GetDamage()

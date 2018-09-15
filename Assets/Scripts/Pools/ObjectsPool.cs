@@ -116,6 +116,9 @@ public class ObjectsPool
                 case BulletId.ReimuA_Sub1:
                     bullet = new BulletReimuASub1();
                     break;
+                case BulletId.Player_Laser:
+                    bullet = new PlayerLaser();
+                    break;
                 case BulletId.Enemy_Laser:
                     bullet = new EnemyLaser();
                     break;

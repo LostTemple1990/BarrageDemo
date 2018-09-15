@@ -20,6 +20,10 @@ public class BulletBase : ICollisionObject
 
     protected float _dx, _dy;
     /// <summary>
+    /// 表示是否进行碰撞检测
+    /// </summary>
+    protected bool _detectCollision;
+    /// <summary>
     /// 使用Z轴来进行先后的排序
     /// <para>为了保持一致性，设置的时候取反</para>
     /// <para>即，orderInLayer = 5 ，则设置Z = -5</para>
@@ -85,6 +89,15 @@ public class BulletBase : ICollisionObject
     }
 
     /// <summary>
+    /// 设置是否进行碰撞检测
+    /// </summary>
+    /// <param name="value"></param>
+    public virtual void SetDetectCollision(bool value)
+    {
+        _detectCollision = value;
+    }
+
+    /// <summary>
     /// 
     /// </summary>
     /// <param name="v">速度</param>
@@ -105,11 +118,6 @@ public class BulletBase : ICollisionObject
     }
 
     protected virtual void Move()
-    {
-
-    }
-
-    public virtual void DoAction(object[] datas)
     {
 
     }

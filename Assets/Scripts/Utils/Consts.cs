@@ -17,6 +17,7 @@ public class Consts
     public const float SlowSpeed = 2f;
 
     public const int CharID_Reimu = 1;
+    public const int CharID_Marisa = 2;
 
     public const float RefResolutionX = 640f;
     public const float RefResolutionY = 480f;
@@ -106,6 +107,7 @@ public class Consts
 
     public const string EffectAtlasName = "STGEffectAtlas";
     public const string ReimuAtlasName = "STGReimuAtlas";
+    public const string MarisaAtlasName = "STGMarisaAtlas";
     public const string STGMainViewAtlasName = "STGMainViewAtlas";
     public const string STGCommonAtlasName = "STGCommonAtlas";
     public const string STGBulletsAtlasName = "STGBulletsAtlas";

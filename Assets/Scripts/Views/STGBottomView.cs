@@ -30,7 +30,7 @@ public class STGBottomView : ViewBase,ICommand
         switch ( cmd )
         {
             case CommandConsts.PlayCharacterCGAni:
-                PlayCGAni(datas);
+                //PlayCGAni(datas);
                 break;
             case CommandConsts.RetryStage:
             case CommandConsts.RetryGame:

@@ -67,6 +67,7 @@ public enum BulletId : int
     ReimuA_Main = 110,
     ReimuA_Sub1 = 111,
     ReimuA_Sub2 = 112,
+    Player_Laser = 113,
     Enemy_Laser = 504,
     Enemy_CurveLaser = 505,
     Enemy_Simple = 506,

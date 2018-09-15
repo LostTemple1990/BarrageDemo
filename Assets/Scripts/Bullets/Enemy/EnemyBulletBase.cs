@@ -21,10 +21,6 @@ public class EnemyBulletBase :BulletBase
     protected GrazeDetectParas _grazeParas;
     protected CollisionDetectParas _collisionParas;
     /// <summary>
-    /// 表示是否进行碰撞检测
-    /// </summary>
-    protected bool _detectCollision;
-    /// <summary>
     /// 标识不会被某些东西消除
     /// </summary>
     protected int _resistEliminateFlag;
@@ -148,15 +144,6 @@ public class EnemyBulletBase :BulletBase
         }
         _clearFlag = 1;
         return true;
-    }
-
-    /// <summary>
-    /// 设置是否进行碰撞检测
-    /// </summary>
-    /// <param name="value"></param>
-    public virtual void SetDetectCollision(bool value)
-    {
-        _detectCollision = value;
     }
 
     /// <summary>

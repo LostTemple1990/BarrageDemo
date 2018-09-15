@@ -3,10 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterBase :ICollisionObject,IGrazeObject{
+public class CharacterBase :ICollisionObject,IGrazeObject
+{
     protected double _hitRadius = 0d;
     protected GameObject _character;
+    /// <summary>
+    /// 本体tf
+    /// </summary>
     protected Transform _trans;
+    /// <summary>
+    /// 副武器的显示层级
+    /// </summary>
     protected Transform _subLayerTrans;
     /// <summary>
     /// 人物本体动画id
@@ -169,7 +176,7 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
         _character.SetActive(true);
         _preMoveMode = _curMoveMode = Consts.SpeedMove;
         // 显示副武器
-        UpdateSubWeaponsVisible();
+        //UpdateSubWeaponsVisible();
         ResetSubWeapons();
     }
 
@@ -213,8 +220,8 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
                 _bomb.Clear();
             }
         }
-        UpdateSubWeaponsVisible();
-        UpdateSubWeaponsShoot();
+        //UpdateSubWeaponsVisible();
+        //UpdateSubWeaponsShoot();
         UpdateSubWeapons();
         UpdateCollisionData();
         if ( _isInvincible )
@@ -309,13 +316,13 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
         _leftBulletOffset = new Vector3(-8, 24);
         _rightBulletOffset = new Vector3(8, 24);
         // 设置判定点sprite
-        GameObject go = ResourceManager.GetInstance().GetPrefab("Prefab/Character", "CollisionPointObject");
-        _collisionPointTf = go.transform;
+        GameObject collisionPointGo = ResourceManager.GetInstance().GetPrefab("Prefab/Character", "CollisionPointObject");
+        _collisionPointTf = collisionPointGo.transform;
         _rotatePointTf = _collisionPointTf.Find("Point");
-        UIManager.GetInstance().AddGoToLayer(go, LayerId.PlayerCollisionPoint);
+        UIManager.GetInstance().AddGoToLayer(collisionPointGo, LayerId.PlayerCollisionPoint);
         _preMoveMode = Consts.SpeedMove;
         _curMoveMode = Consts.SpeedMove;
-        go.SetActive(false);
+        collisionPointGo.SetActive(false);
         _collisionPointRotateVec3 = new Vector3(0, 0, 3f);
         // 初始化副武器的层
         _subLayerTrans = _trans.Find("SubWeapons");
@@ -531,6 +538,11 @@ public class CharacterBase :ICollisionObject,IGrazeObject{
     {
         posX = _curPos.x;
         posY = _curPos.y;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return _curPos;
     }
 
     protected void UpdateCollisionData()

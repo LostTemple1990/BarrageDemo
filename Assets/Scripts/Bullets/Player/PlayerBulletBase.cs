@@ -53,6 +53,11 @@ public class PlayerBulletBase : BulletBase
         }
     }
 
+    public virtual void Eliminate()
+    {
+        _clearFlag = 1;
+    }
+
     public BulletId id
     {
         set { _id = value; }

@@ -25,6 +25,10 @@ public class SubWeaponBase
     protected int _curShootCD;
 
     protected int _moveMode;
+    /// <summary>
+    /// 当前与自机的位置偏移
+    /// </summary>
+    protected Vector3 _curPos;
 
     public virtual void Init(GameObject go,CharacterBase character)
     {
@@ -66,6 +70,7 @@ public class SubWeaponBase
 
     public void SetToPosition(Vector2 pos)
     {
+        _curPos = pos;
         _subTf.localPosition = pos;
     }
 

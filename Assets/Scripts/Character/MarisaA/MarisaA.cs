@@ -6,6 +6,11 @@ using UnityEngine.UI;
 public class MarisaA : CharacterBase
 {
     /// <summary>
+    /// 子机总个数
+    /// </summary>
+    private const int SubWeaponTotalCount = 4;
+
+    /// <summary>
     /// 子机在高低速切换下的移动时间
     /// </summary>
     private const int SubMoveDuration = 5;
@@ -46,7 +51,7 @@ public class MarisaA : CharacterBase
         _aniChar = AnimationManager.GetInstance().CreateAnimation<AnimationCharacter>(_character, "MarisaAni", LayerId.Player);
         _aniChar.Play(_charAniId, AniActionType.Idle, Consts.DIR_NULL);
         base.Init();
-        _charID = Consts.CharID_Reimu;
+        _charID = Consts.CharID_Marisa;
         _subID = 0;
         _shootCoolDown = 12;
         _mainBulletId = BulletId.ReimuA_Main;
@@ -56,6 +61,7 @@ public class MarisaA : CharacterBase
         {
             // 副武器GO
             subWeapon = ResourceManager.GetInstance().GetPrefab("Prefab/Character/MarisaA", "SubWeapon");
+            subWeapon.transform.SetParent(_subLayerTrans, false);
             // 初始化
             _subWeapons[i] = new SubWeaponMarisaA();
             _subWeapons[i].Init(subWeapon, this);
@@ -91,6 +97,10 @@ public class MarisaA : CharacterBase
         _isChangingSubCount = false;
         UpdateSubWeaponsAvailableCount();
         UpdateSubWeaponsPosition();
+        for (int i=0;i<_availableSubCount;i++)
+        {
+            _subWeapons[i].Update(_curMoveMode);
+        }
     }
 
     /// <summary>
@@ -169,6 +179,8 @@ public class MarisaA : CharacterBase
 
     protected override void ResetSubWeapons()
     {
+        _availableSubCount = -1;
+        UpdateSubWeaponsAvailableCount();
         _availableSubCount = PlayerService.GetInstance().GetPower() / 100;
         SubWeaponBase subWeapon;
         for (int i = 0; i < _availableSubCount; i++)
