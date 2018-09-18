@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletReimuASub1 :PlayerBulletBase
+public class BulletReimuASub1 : PlayerBulletSimple
 {
     protected static Vector3 RotateEuler = new Vector3(0f, 0f, 20f);
     protected static float DefaultVelocity = 10f;
@@ -24,22 +24,18 @@ public class BulletReimuASub1 :PlayerBulletBase
     public BulletReimuASub1()
     {
         _id = BulletId.ReimuA_Sub1;
-        _prefabName = "ReimuASub1";
     }
 
     public override void Init()
     {
         base.Init();
-        _trans = _bullet.GetComponent<RectTransform>();
-        _renderer = _trans.Find("Bullet").GetComponent<SpriteRenderer>();
-        UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.PlayerBarage);
-        BulletsManager.GetInstance().RegisterPlayerBullet(this);
         _target = null;
         _targetFlag = 0;
     }
 
     public override void Update()
     {
+        _lastPos = _curPos;
         if ( _targetFlag == 0 )
         {
             GetRandomTarget();
@@ -52,7 +48,7 @@ public class BulletReimuASub1 :PlayerBulletBase
         {
             Move();
         }
-        UpdateAni();
+        CheckRotated();
         UpdatePos();
         CheckHitEnemy();
     }

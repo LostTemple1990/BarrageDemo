@@ -36,6 +36,7 @@ public class DataManager
         _parserMap.Add("EnemyCfgs", "EnemyCfg");
         _parserMap.Add("EnemyBulletDefaultCfgs", "EnemyBulletDefaultCfg");
         _parserMap.Add("DropItemsCfgs", "DropItemsCfg");
+        _parserMap.Add("PlayerBulletCfgs", "PlayerBulletCfg");
         _datasMap = new Dictionary<string, object>();
         CfgFolderPath = Path.Combine(Application.streamingAssetsPath, "Configs");
     }
@@ -43,7 +44,7 @@ public class DataManager
     public object GetDatasByName(string name)
     {
         object datas;
-        if (!this._datasMap.TryGetValue(name, out datas))
+        if (!_datasMap.TryGetValue(name, out datas))
         {
             // 解析xml
             datas = ParseXML(name);

@@ -56,7 +56,8 @@ public class SubWeaponReimuA : SubWeaponBase
             {
                 float posX, posY;
                 _character.GetPosition(out posX, out posY);
-                BulletBase bullet = ObjectsPool.GetInstance().CreateBullet(BulletId);
+                BulletReimuASub1 bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.ReimuA_Sub1) as BulletReimuASub1;
+                bullet.ChangeStyleById("501000");
                 bullet.SetToPosition(posX + _subWeapon.transform.localPosition.x, posY + _subWeapon.transform.localPosition.y);
                 bullet.DoMove(8,GetShootBulletAngle());
                 _curShootCD = ShootCD;

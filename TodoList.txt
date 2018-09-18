@@ -20,3 +20,4 @@ playerBullet也统一成protoType的样式
 自机子弹击中敌机的函数修改
 laser相关问题的修复  --finish
 完成魔机
+统一bullet的curPos，全部改成Vector2

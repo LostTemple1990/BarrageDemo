@@ -111,6 +111,7 @@ public class Consts
     public const string STGMainViewAtlasName = "STGMainViewAtlas";
     public const string STGCommonAtlasName = "STGCommonAtlas";
     public const string STGBulletsAtlasName = "STGBulletsAtlas";
+    public const string STGLaserAtlasName = "STGLaserAtlas";
 
     /// <summary>
     /// 每帧最多销毁的对象的个数

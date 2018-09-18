@@ -119,6 +119,9 @@ public class ObjectsPool
                 case BulletId.Player_Laser:
                     bullet = new PlayerLaser();
                     break;
+                case BulletId.Player_Simple:
+                    bullet = new PlayerBulletSimple();
+                    break;
                 case BulletId.Enemy_Laser:
                     bullet = new EnemyLaser();
                     break;
@@ -153,18 +156,7 @@ public class ObjectsPool
         }
     }
 
-    public void RestoreBullet(string resName,GameObject bullet)
-    {
-        Stack<GameObject> _stack;
-        if (_bulletPrefabsPool.TryGetValue(resName, out _stack))
-        {
-            _stack.Push(bullet);
-        }
-        else
-        {
-            Logger.Log("Pool TryGetValue fail!");
-        }
-    }
+
 
     public T GetPoolClassAtPool<T>() where T:class,IPoolClass,new()
     {

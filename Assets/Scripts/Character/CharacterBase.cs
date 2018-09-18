@@ -45,7 +45,7 @@ public class CharacterBase :ICollisionObject,IGrazeObject
     /// </summary>
     protected Vector3 _leftBulletOffset, _rightBulletOffset;
 
-    protected BulletId _mainBulletId;
+    protected string _mainBulletId;
     protected BulletId _subBulletId;
 
     protected int _preMoveMode;
@@ -379,13 +379,18 @@ public class CharacterBase :ICollisionObject,IGrazeObject
         {
             return;
         }
-        BulletBase bullet = ObjectsPool.GetInstance().CreateBullet(_mainBulletId);
-        bullet.SetToPosition(_curPos.x+_leftBulletOffset.x, _curPos.y + _leftBulletOffset.y);
-        bullet = ObjectsPool.GetInstance().CreateBullet(_mainBulletId);
-        bullet.SetToPosition(_curPos.x + _rightBulletOffset.x, _curPos.y + _rightBulletOffset.y);
+        CreateMainBullets();
         // 设置发射冷却
         _curShootCD = _shootCoolDown;
         SoundManager.GetInstance().Play("se_plst00", false);
+    }
+
+    /// <summary>
+    /// 创建自机发射的子弹
+    /// </summary>
+    protected virtual void CreateMainBullets()
+    {
+
     }
 
     public void Move()

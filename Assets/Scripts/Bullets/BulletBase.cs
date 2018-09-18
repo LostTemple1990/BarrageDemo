@@ -20,6 +20,11 @@ public class BulletBase : ICollisionObject
 
     protected float _dx, _dy;
     /// <summary>
+    /// 碰撞检测相关参数
+    /// </summary>
+    protected GrazeDetectParas _grazeParas;
+    protected CollisionDetectParas _collisionParas;
+    /// <summary>
     /// 表示是否进行碰撞检测
     /// </summary>
     protected bool _detectCollision;
@@ -182,6 +187,26 @@ public class BulletBase : ICollisionObject
     public virtual void Destroy()
     {
 
+    }
+
+    public virtual void SetCollisionDetectParas(CollisionDetectParas paras)
+    {
+        _collisionParas = paras;
+    }
+
+    public virtual void SetGrazeDetectParas(GrazeDetectParas paras)
+    {
+        _grazeParas = paras;
+    }
+
+    public virtual CollisionDetectParas GetCollisionDetectParas()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual GrazeDetectParas GetGrazeDetectParas()
+    {
+        throw new System.NotImplementedException();
     }
 
     public virtual int GetCollisionParams(out float arg1, out float arg2, out float arg3, out float arg4)

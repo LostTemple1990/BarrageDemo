@@ -45,7 +45,6 @@ public class MarisaA : CharacterBase
 
     public override void Init()
     {
-        // 暂用
         _charAniId = "1011";
         _character = ResourceManager.GetInstance().GetPrefab("Prefab/Character", "MarisaA");
         _aniChar = AnimationManager.GetInstance().CreateAnimation<AnimationCharacter>(_character, "MarisaAni", LayerId.Player);
@@ -54,7 +53,7 @@ public class MarisaA : CharacterBase
         _charID = Consts.CharID_Marisa;
         _subID = 0;
         _shootCoolDown = 12;
-        _mainBulletId = BulletId.ReimuA_Main;
+        _mainBulletId = "520000";
         int i;
         GameObject subWeapon;
         for (i = 0; i < 4; i++)

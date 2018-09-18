@@ -53,7 +53,7 @@ public class Reimu : CharacterBase
         _charID = Consts.CharID_Reimu;
         _subID = 0;
         _shootCoolDown = 12;
-        _mainBulletId = BulletId.ReimuA_Main;
+        _mainBulletId = "500000";
         int i;
         GameObject subWeapon;
         for (i = 0; i < 4; i++)
@@ -88,6 +88,20 @@ public class Reimu : CharacterBase
         _subPosOffset[Consts.SlowMove][3] = new Vector2[] { new Vector2(-28f, 4f), new Vector2(-12f, 28f), new Vector2(12f, 28f), new Vector2(28f, 4f) };
         _isSubMoving = false;
         _subMoveDuration = SubMoveDuration;
+    }
+
+    protected override void CreateMainBullets()
+    {
+        // 左侧子弹
+        PlayerBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Player_Simple) as PlayerBulletSimple;
+        bullet.ChangeStyleById(_mainBulletId);
+        bullet.DoMoveStraight(10f, 90f);
+        bullet.SetToPosition(_curPos.x + _leftBulletOffset.x, _curPos.y + _leftBulletOffset.y);
+        // 右侧子弹
+        bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Player_Simple) as PlayerBulletSimple;
+        bullet.ChangeStyleById(_mainBulletId);
+        bullet.DoMoveStraight(10f, 90f);
+        bullet.SetToPosition(_curPos.x + _rightBulletOffset.x, _curPos.y + _rightBulletOffset.y);
     }
 
     protected override void UpdateSubWeapons()

@@ -18,8 +18,6 @@ public class EnemyBulletBase :BulletBase
     protected List<BulletComponent> _components;
     protected int _componentsCount;
 
-    protected GrazeDetectParas _grazeParas;
-    protected CollisionDetectParas _collisionParas;
     /// <summary>
     /// 标识不会被某些东西消除
     /// </summary>
@@ -107,26 +105,6 @@ public class EnemyBulletBase :BulletBase
     }
 
     public virtual void SetExtraDatas(int type,object[] datas)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public virtual void SetCollisionDetectParas(CollisionDetectParas paras)
-    {
-        _collisionParas = paras;
-    }
-
-    public virtual void SetGrazeDetectParas(GrazeDetectParas paras)
-    {
-        _grazeParas = paras;
-    }
-
-    public virtual CollisionDetectParas GetCollisionDetectParas()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public virtual GrazeDetectParas GetGrazeDetectParas()
     {
         throw new System.NotImplementedException();
     }

@@ -1,0 +1,6 @@
+<Data>
+	<Bullet id="500000" packName="STGReimuAtlas" texName="pl00_1" comment="灵梦A自机子弹" isRotatedByVAngle="1" selfRotationAngle="0" collisionRadius="8" eliminateColor="0.5,0.5,0.5"/>
+	<Bullet id="501000" packName="STGReimuAtlas" texName="pl00_14" comment="灵梦A子机子弹" isRotatedByVAngle="0" selfRotationAngle="20" collisionRadius="8" eliminateColor="0.5,0.5,0.5"/>
+	<Bullet id="520000" packName="STGMarisaAtlas" texName="MarisaAMain" comment="魔理沙A自机子弹" isRotatedByVAngle="0" selfRotationAngle="0" collisionRadius="8" eliminateColor="0.5,0.5,0.5"/>
+	<Bullet id="521000" packName="STGMarisaAtlas" texName="MarisaALaser" comment="魔理沙A子机激光" isRotatedByVAngle="0" selfRotationAngle="0" collisionRadius="8" eliminateColor="0.5,0.5,0.5"/>
+</Data>
