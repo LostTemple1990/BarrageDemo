@@ -156,8 +156,6 @@ public class ObjectsPool
         }
     }
 
-
-
     public T GetPoolClassAtPool<T>() where T:class,IPoolClass,new()
     {
         string className = typeof(T).ToString();

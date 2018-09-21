@@ -21,3 +21,4 @@ playerBullet也统一成protoType的样式
 laser相关问题的修复  --finish
 完成魔机
 统一bullet的curPos，全部改成Vector2
+移除playerBullet的GetCollisionParams方法，全部使用GetCollisionDetectParas的统一接口

@@ -46,10 +46,6 @@ public class PlayerBulletSimple : PlayerBulletBase
         _lastPos = _curPos;
         _movableObject.Update();
         _curPos = _movableObject.GetPos();
-        if ( _id == BulletId.Player_Simple )
-        {
-            Logger.Log("MainBullet Pos = " + _curPos);
-        }
         CheckRotated();
         CheckHitEnemy();
         if ( IsOutOfBorder() )
@@ -118,6 +114,16 @@ public class PlayerBulletSimple : PlayerBulletBase
             Vector3 dv = _curPos - _lastPos;
             float rotateAngle = MathUtil.GetAngleBetweenXAxis(dv.x, dv.y, false);
             _trans.localRotation = Quaternion.Euler(new Vector3(0, 0, rotateAngle));
+        }
+    }
+
+    public void CheckHitEnemy()
+    {
+        List<EnemyBase> enemyList = EnemyManager.GetInstance().GetEnemyList();
+        int enemyCount = enemyList.Count;
+        for (int i=0;i<enemyCount;i++)
+        {
+
         }
     }
 
