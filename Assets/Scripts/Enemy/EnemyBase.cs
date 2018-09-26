@@ -248,6 +248,7 @@ public class EnemyBase : ICollisionObject
             centerPos = new Vector2(_curPos.x,_curPos.y),
             halfWidth = _collisionHalfWidth,
             halfHeight = _collisionHalfHeight,
+            radius = Mathf.Min(_collisionHalfWidth,_collisionHalfHeight),
             angle = 0,
         };
         return paras;

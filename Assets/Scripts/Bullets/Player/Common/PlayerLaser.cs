@@ -90,7 +90,7 @@ public class PlayerLaser : PlayerBulletBase
         _isCached = true;
     }
 
-    public override void CheckHitEnemy()
+    public void CheckHitEnemy()
     {
         List<EnemyBase> enemyList = EnemyManager.GetInstance().GetEnemyList();
         int enemyCount = enemyList.Count;

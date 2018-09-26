@@ -62,11 +62,11 @@ public class EnemyLinearLaser : EnemyBulletBase
     protected bool _isSized;
 
     /// <summary>
-    /// 激光本体Object
+    /// 激光容器Object
     /// </summary>
     protected GameObject _laserObj;
     /// <summary>
-    /// 激光本体tf
+    /// 激光容器tf
     /// </summary>
     protected Transform _objTrans;
     /// <summary>
@@ -256,6 +256,12 @@ public class EnemyLinearLaser : EnemyBulletBase
         _movableObj.Reset(posX, posY);
     }
 
+    public override void SetToPosition(Vector2 pos)
+    {
+        base.SetToPosition(pos);
+        _movableObj.Reset(pos.x,pos.y);
+    }
+
     public virtual void SetHeadEnable(bool isEnable,eLaserHeadType headType)
     {
         _isHeadEnable = isEnable;
@@ -293,7 +299,7 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     protected virtual void UpdatePos()
     {
-        _objTrans.localPosition = _curPos;
+        _objTrans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
     }
 
     /// <summary>

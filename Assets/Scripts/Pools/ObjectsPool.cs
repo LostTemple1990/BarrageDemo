@@ -110,9 +110,6 @@ public class ObjectsPool
         {
             switch (bulletID)
             {
-                case BulletId.ReimuA_Main:
-                    bullet = new BulletReimuAMain();
-                    break;
                 case BulletId.ReimuA_Sub1:
                     bullet = new BulletReimuASub1();
                     break;

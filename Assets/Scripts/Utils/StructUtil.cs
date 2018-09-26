@@ -25,7 +25,7 @@ public struct CollisionDetectParas
     public Vector2 linePointA;
     public Vector2 linePointB;
     public float angle;
-    public List<Vector3> multiSegmentPointList;
+    public List<Vector2> multiSegmentPointList;
 }
 
 public struct GrazeDetectParas

@@ -10,7 +10,6 @@ public class MovableObject : IPoolClass
     protected float _curAcce;
     protected float _curAccAngle;
     protected float _dvx, _dvy;
-    protected Vector3 _moveStraightEndPos;
     protected int _curStraightTime;
     protected int _moveStraightDuration;
     protected int _accTime;

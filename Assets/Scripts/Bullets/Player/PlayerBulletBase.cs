@@ -45,17 +45,6 @@ public class PlayerBulletBase : BulletBase
         base.Clear();
     }
 
-    public virtual void CheckHitEnemy()
-    {
-        EnemyBase hitEnemy = EnemyManager.GetInstance().GetHitEnemy(this);
-        if ( hitEnemy != null )
-        {
-            hitEnemy.GetHit(GetDamage());
-            _clearFlag = 1;
-            //TODO 炸弹撞到单位的特效
-        }
-    }
-
     public virtual void Eliminate()
     {
         _clearFlag = 1;

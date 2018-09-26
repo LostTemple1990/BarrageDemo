@@ -131,7 +131,7 @@ public class ColliderCircle : ObjectColliderBase
             if (bullet.Id == BulletId.Enemy_CurveLaser)
             {
                 EnemyCurveLaser curveLaser = bullet as EnemyCurveLaser;
-                List<Vector3> pointList = collParas.multiSegmentPointList;
+                List<Vector2> pointList = collParas.multiSegmentPointList;
                 int pointCount = pointList.Count;
                 float dx, dy, sum;
                 int eliminateStart = -1;

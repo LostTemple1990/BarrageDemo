@@ -189,7 +189,7 @@ public class EnemyBulletMovable : EnemyBulletBase
 
     protected virtual void UpdatePos()
     {
-        _trans.localPosition = _curPos;
+        _trans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
     }
 
     public override void Clear()

@@ -49,13 +49,13 @@ public class BulletReimuASub1 : PlayerBulletSimple
             Move();
         }
         CheckRotated();
-        UpdatePos();
         CheckHitEnemy();
+        UpdatePos();
     }
 
     protected virtual void GetRandomTarget()
     {
-        EnemyBase target = EnemyManager.GetInstance().GetRandomEnemy();
+        EnemyBase target;
         List<EnemyBase> enemyList = EnemyManager.GetInstance().GetEnemyList();
         List<int> indexList = new List<int>();
         int indexCount = 0;
@@ -86,7 +86,7 @@ public class BulletReimuASub1 : PlayerBulletSimple
         // 目标不为空的时候跟踪目标
         if ( _target != null )
         {
-            Vector3 targetPos = _target.CurPos;
+            Vector2 targetPos = _target.CurPos;
             Vector2 vecToTarget = targetPos - _curPos;
             Vector2 vVec = new Vector2(_vx, _vy);
             // 计算加速度

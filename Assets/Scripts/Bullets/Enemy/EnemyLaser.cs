@@ -34,9 +34,21 @@ public class EnemyLaser : EnemyBulletBase
     protected float _laserHalfWidth;
     protected bool _isSized;
 
+    /// <summary>
+    /// 激光容器object
+    /// </summary>
     protected GameObject _laserObj;
+    /// <summary>
+    /// 激光容器tf
+    /// </summary>
     protected Transform _objTrans;
+    /// <summary>
+    /// 激光本体SpriteRenderer
+    /// </summary>
     protected SpriteRenderer _laser;
+    /// <summary>
+    /// 激光本体tf
+    /// </summary>
     protected Transform _laserTrans;
 
     protected int _existTime;
@@ -113,16 +125,17 @@ public class EnemyLaser : EnemyBulletBase
         }
     }
 
-    public override void SetToPosition(Vector3 vec)
+    public override void SetToPosition(Vector2 vec)
     {
         _curPos.x = vec.x;
         _curPos.y = vec.y;
         _moveFlag = true;
-        if ( vec.z < 360 )
-        {
-            _laserAngle = vec.z;
-            _rotateFlag = true;
-        }
+    }
+
+    public override void SetToPosition(float posX, float posY)
+    {
+        base.SetToPosition(posX, posY);
+        _moveFlag = true;
     }
 
     /// <summary>
@@ -170,12 +183,6 @@ public class EnemyLaser : EnemyBulletBase
         _laserAngle = angle;
         _moveFlag = true;
         _rotateFlag = true;
-    }
-
-    public override void SetToPosition(float posX, float posY)
-    {
-        base.SetToPosition(posX, posY);
-        _moveFlag = true;
     }
 
     public virtual void SetLaserAngle(float angle)
@@ -368,7 +375,7 @@ public class EnemyLaser : EnemyBulletBase
         if ( _moveFlag )
         {
             _moveFlag = false;
-            _objTrans.localPosition = _curPos;
+            _objTrans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
         }
     }
 

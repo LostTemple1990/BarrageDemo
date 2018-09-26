@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BulletBase : ICollisionObject
 {
-    protected Vector3 _lastPos;
-    protected Vector3 _curPos;
+    protected Vector2 _lastPos;
+    protected Vector2 _curPos;
     protected int _clearFlag;
     protected int _destroyFlag;
     protected BulletId _id;
@@ -50,8 +50,8 @@ public class BulletBase : ICollisionObject
         _clearFlag = 0;
         _destroyFlag = 0;
         _isMoving = false;
-        _lastPos = Vector3.zero;
-        _curPos = Vector3.zero;
+        _lastPos = Vector2.zero;
+        _curPos = Vector2.zero;
         _orderInLayer = 0;
         _checkOutOfBorder = true;
         Global.SysBusyValue += _sysBusyWeight;
@@ -62,7 +62,7 @@ public class BulletBase : ICollisionObject
 
     }
 
-    public virtual void SetToPosition(Vector3 pos)
+    public virtual void SetToPosition(Vector2 pos)
     {
         _curPos.x = pos.x;
         _curPos.y = pos.y;
@@ -81,7 +81,6 @@ public class BulletBase : ICollisionObject
     public virtual void SetOrderInLayer(int orderInLayer)
     {
         _orderInLayer = orderInLayer;
-        _curPos.z = -orderInLayer;
     }
 
     /// <summary>

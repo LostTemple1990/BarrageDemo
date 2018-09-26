@@ -181,7 +181,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
 
     protected virtual void RotateImgByVelocity()
     {
-        Vector3 dv = _curPos - _lastPos;
+        Vector2 dv = _curPos - _lastPos;
         float rotateAngle = MathUtil.GetAngleBetweenXAxis(dv.x, dv.y, false) - 90;
         _trans.localRotation = Quaternion.Euler(new Vector3(0, 0, rotateAngle));
     }

@@ -170,16 +170,6 @@ public class EnemyManager
         return hitEnemy;
     }
 
-    public EnemyBase GetRandomEnemy()
-    {
-        EnemyBase enemy = null;
-        if ( _enemyList.Count > 0 )
-        {
-            enemy = _enemyList[MTRandom.GetNextInt(0, _enemyList.Count-1)];
-        }
-        return enemy;
-    }
-
     private void UpdateEnemies()
     {
         EnemyBase ememy;

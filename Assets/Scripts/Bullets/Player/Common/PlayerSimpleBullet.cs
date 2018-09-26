@@ -58,7 +58,7 @@ public class PlayerBulletSimple : PlayerBulletBase
         }
     }
 
-    public override void SetToPosition(Vector3 pos)
+    public override void SetToPosition(Vector2 pos)
     {
         _curPos.x = pos.x;
         _curPos.y = pos.y;
@@ -121,9 +121,21 @@ public class PlayerBulletSimple : PlayerBulletBase
     {
         List<EnemyBase> enemyList = EnemyManager.GetInstance().GetEnemyList();
         int enemyCount = enemyList.Count;
+        EnemyBase enemy;
         for (int i=0;i<enemyCount;i++)
         {
-
+            enemy = enemyList[i];
+            // 自机子弹与敌机使用方形检测
+            if ( enemy != null && enemy.CanHit() )
+            {
+                CollisionDetectParas paras = enemy.GetCollisionDetectParas();
+                if ( Mathf.Abs(_curPos.x-paras.centerPos.x) <= _collisionRadius + paras.halfWidth &&
+                    Mathf.Abs(_curPos.y - paras.centerPos.y) <= _collisionRadius + paras.halfHeight )
+                {
+                    enemy.GetHit(GetDamage());
+                    _clearFlag = 1;
+                }
+            }
         }
     }
 

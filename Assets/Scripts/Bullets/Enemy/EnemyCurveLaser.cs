@@ -16,7 +16,7 @@ public class EnemyCurveLaser : EnemyBulletBase
     /// <summary>
     /// 轨迹集合
     /// </summary>
-    protected List<Vector3> _trailsList;
+    protected List<Vector2> _trailsList;
     /// <summary>
     /// 长度
     /// </summary>
@@ -64,7 +64,7 @@ public class EnemyCurveLaser : EnemyBulletBase
     /// </summary>
     private float _grazeRadius;
 
-    private List<Vector3> _collisionPointList;
+    private List<Vector2> _collisionPointList;
     #endregion
     /// <summary>
     /// 消去的范围
@@ -93,13 +93,13 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     public EnemyCurveLaser()
     {
-        _trailsList = new List<Vector3>();
+        _trailsList = new List<Vector2>();
         _id = BulletId.Enemy_CurveLaser;
         _prefabName = "CurveLaser";
         _sysBusyWeight = 20;
         _availableIndexRangeList = new List<Vector2>();
         _eliminateRangeList = new List<Vector2>();
-        _collisionPointList = new List<Vector3>();
+        _collisionPointList = new List<Vector2>();
     }
 
     public override void Init()
@@ -143,11 +143,21 @@ public class EnemyCurveLaser : EnemyBulletBase
     public override void SetToPosition(float posX, float posY)
     {
         base.SetToPosition(posX, posY);
-        _trans.localPosition = _curPos;
+        _trans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
         _movableObj.SetPos(0, 0);
         _relationX = posX;
         _relationY = posY;
-        _trailsList.Add(Vector3.zero);
+        _trailsList.Add(Vector2.zero);
+    }
+
+    public override void SetToPosition(Vector2 pos)
+    {
+        base.SetToPosition(pos);
+        _trans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
+        _movableObj.SetPos(0, 0);
+        _relationX = pos.x;
+        _relationY = pos.y;
+        _trailsList.Add(Vector2.zero);
     }
 
     /// <summary>
@@ -401,7 +411,7 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     protected virtual void UpdatePos()
     {
-        _trans.localPosition = _curPos;
+        _trans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
     }
 
     protected override bool IsOutOfBorder()

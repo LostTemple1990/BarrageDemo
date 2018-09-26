@@ -93,7 +93,7 @@ public class SubWeaponMarisaA : SubWeaponBase
             if ( _isShooting )
             {
                 ActiveShootingEffect(false);
-                _laser.SetToPosition(new Vector3(2000, 2000, 0));
+                _laser.SetToPosition(new Vector2(2000, 2000));
                 _laser.SetDetectCollision(false);
             }
             _isShooting = false;

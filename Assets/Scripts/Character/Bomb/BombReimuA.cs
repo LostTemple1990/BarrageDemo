@@ -217,7 +217,7 @@ public class BombReimuA : BombBase
         }
         else if ( collParas.type == CollisionDetectType.MultiSegments )
         {
-            List<Vector3> pointList = collParas.multiSegmentPointList;
+            List<Vector2> pointList = collParas.multiSegmentPointList;
             int pointCount = pointList.Count;
             int groupNum = Consts.NumInMultiSegmentsGroup;
             int lastIndex;
@@ -300,7 +300,7 @@ public class BombReimuA : BombBase
             if ( bullet.Id == BulletId.Enemy_CurveLaser )
             {
                 EnemyCurveLaser curveLaser = bullet as EnemyCurveLaser;
-                List<Vector3> pointList = collParas.multiSegmentPointList;
+                List<Vector2> pointList = collParas.multiSegmentPointList;
                 int pointCount = pointList.Count;
                 float dx, dy, sum;
                 int eliminateStart = -1;
