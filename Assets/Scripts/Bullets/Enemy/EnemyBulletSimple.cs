@@ -231,6 +231,36 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _collisionParas = paras;
     }
 
+    public override bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
+    {
+        Vector2 bulletBoundingBoxLBPos = new Vector2(_curPos.x - _collisionRadius, _curPos.y - _collisionRadius);
+        Vector2 bulletBoundingBoxRTPos = new Vector2(_curPos.x + _collisionRadius, _curPos.y + _collisionRadius);
+        // 由于通常情况下大部分子弹都是不在包围盒范围内的
+        // 因此选择判断不相交的方式尽可能减少判断的次数
+        bool notHit =  bulletBoundingBoxRTPos.x < lbPos.x ||    // 子弹包围盒右边缘X坐标小于检测包围盒的左边缘X坐标
+            bulletBoundingBoxLBPos.x > rtPos.x ||   // 子弹包围盒左边缘X坐标大于检测包围盒的左右边缘X坐标
+            bulletBoundingBoxRTPos.y < lbPos.y ||   // 子弹包围盒上边缘Y坐标小于检测包围盒的下边缘Y坐标
+            bulletBoundingBoxLBPos.y > rtPos.y;     // 子弹包围盒下边缘Y坐标大于检测包围盒的上边缘Y坐标
+        return !notHit;
+    }
+
+    public override CollisionDetectParas GetCollisionDetectParas(int index = 0)
+    {
+        CollisionDetectParas paras = new CollisionDetectParas
+        {
+            type = CollisionDetectType.Circle,
+            centerPos = _curPos,
+            radius = _collisionRadius,
+            nextIndex = -1,
+        };
+        return paras;
+    }
+
+    public override void CollidedByObject(int n = 0, eEliminateDef eliminateType = eEliminateDef.HitObject)
+    {
+        Eliminate(eliminateType);
+    }
+
     public override CollisionDetectParas GetCollisionDetectParas()
     {
         CollisionDetectParas paras = new CollisionDetectParas

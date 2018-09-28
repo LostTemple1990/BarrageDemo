@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletBase : ICollisionObject
+public class BulletBase :ICollisionObject
 {
     protected Vector2 _lastPos;
     protected Vector2 _curPos;
@@ -126,6 +126,10 @@ public class BulletBase : ICollisionObject
 
     }
 
+    /// <summary>
+    /// 是否进行碰撞检测
+    /// </summary>
+    /// <returns></returns>
     public virtual bool DetectCollision()
     {
         return false;
@@ -188,6 +192,21 @@ public class BulletBase : ICollisionObject
 
     }
 
+    public virtual bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual CollisionDetectParas GetCollisionDetectParas(int index=0)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void CollidedByObject(int n = 0,eEliminateDef eliminateDef = eEliminateDef.HitObject)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public virtual void SetCollisionDetectParas(CollisionDetectParas paras)
     {
         _collisionParas = paras;
@@ -204,11 +223,6 @@ public class BulletBase : ICollisionObject
     }
 
     public virtual GrazeDetectParas GetGrazeDetectParas()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public virtual int GetCollisionParams(out float arg1, out float arg2, out float arg3, out float arg4)
     {
         throw new System.NotImplementedException();
     }

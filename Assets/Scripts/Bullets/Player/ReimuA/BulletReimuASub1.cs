@@ -113,15 +113,6 @@ public class BulletReimuASub1 : PlayerBulletSimple
         _bullet.transform.Rotate(RotateEuler);
     }
 
-    public override int GetCollisionParams(out float arg1, out float arg2, out float arg3, out float arg4)
-    {
-        arg1 = _curPos.x;
-        arg2 = _curPos.y;
-        arg3 = 8;
-        arg4 = 8;
-        return Consts.CollisionType_Rect;
-    }
-
     protected override int GetDamage()
     {
         return 1;

@@ -77,6 +77,8 @@ public partial class LuaLib
             new NameFuncPair("EnemyMoveToPos",EnemyMoveToPos),
             new NameFuncPair("GetEnemyPos", GetEnemyPos),
             new NameFuncPair("PlaySound", PlaySound),
+            new NameFuncPair("SetEnemyDropItems",SetEnemyDropItems),
+            new NameFuncPair("DropItems",DropItems),
             // Boss相关
             new NameFuncPair("CreateBoss",CreateBoss),
             new NameFuncPair("SetBossPos",SetBossPos),

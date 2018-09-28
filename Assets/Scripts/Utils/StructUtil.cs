@@ -25,6 +25,10 @@ public struct CollisionDetectParas
     public Vector2 linePointA;
     public Vector2 linePointB;
     public float angle;
+    /// <summary>
+    /// 下一个碰撞盒的索引
+    /// </summary>
+    public int nextIndex;
     public List<Vector2> multiSegmentPointList;
 }
 

@@ -158,15 +158,22 @@ end
 
 CustomizedEnemyTable.TestKillEnemy = {}
 CustomizedEnemyTable.TestKillEnemy.Init = function(enemy)
+	do
+		local itemDatas = {}
+		table.insert(itemDatas,{itemType = 1,itemCount = 5})
+		lib.SetEnemyDropItems(enemy,itemDatas,48,48)
+	end
 end
 CustomizedEnemyTable.TestKillEnemy.OnKill = function(enemy)
-	local k = 1
-	local posX,posY = lib.GetEnemyPos(enemy)
-	for _=1,1 do
-		local i
-		for i=0,15 do
-			local bullet = lib.CreateCustomizedBullet("XiongBullet0","113020",posX,posY,i,75,2)
-			lib.SetBulletCurvePara(bullet,0,24*i*k,0,1.5*k)
+	do
+		local k = 1
+		local posX,posY = lib.GetEnemyPos(enemy)
+		for _=1,1 do
+			local i
+			for i=0,15 do
+				local bullet = lib.CreateCustomizedBullet("XiongBullet0","113020",posX,posY,i,75,2)
+				lib.SetBulletCurvePara(bullet,0,24*i*k,0,1.5*k)
+			end
 		end
 	end
 end

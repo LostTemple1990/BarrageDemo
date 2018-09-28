@@ -142,34 +142,6 @@ public class EnemyManager
         return _enemyList;
     }
 
-    /// <summary>
-    /// 获得玩家子弹击中的敌机
-    /// </summary>
-    /// <param name="bullet">玩家发射的子弹</param>
-    /// <returns></returns>
-    public EnemyBase GetHitEnemy(PlayerBulletBase bullet)
-    {
-        EnemyBase hitEnemy = null, tmpEnemy;
-        float bulletX, bulletY, bulletHalfWidth, bulletHalfHeight;
-        bullet.GetCollisionParams(out bulletX, out bulletY, out bulletHalfWidth, out bulletHalfHeight);
-        int tmpCount = _enemyList.Count;
-        float enemyX, enemyY, enemyHalfWidth, enemyHalfHeight;
-        for (int i=0;i<tmpCount;i++)
-        {
-            tmpEnemy = _enemyList[i];
-            if ( tmpEnemy != null && tmpEnemy.CanHit() )
-            {
-                tmpEnemy.GetCollisionParams(out enemyX, out enemyY, out enemyHalfWidth, out enemyHalfHeight);
-                if (Mathf.Abs(bulletX - enemyX) <= bulletHalfWidth + enemyHalfWidth && Mathf.Abs(bulletY - enemyY) <= bulletHalfHeight + enemyHalfHeight)
-                {
-                    hitEnemy = tmpEnemy;
-                    break;
-                }
-            }
-        }
-        return hitEnemy;
-    }
-
     private void UpdateEnemies()
     {
         EnemyBase ememy;

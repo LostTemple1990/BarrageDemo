@@ -8,6 +8,18 @@ public class NormalEnemy : EnemyBase
 
     //protected AnimationCharacter _enemyAni;
     protected EnemyObjectBase _enemyObj;
+    /// <summary>
+    /// 掉落的道具数据
+    /// </summary>
+    protected List<int> _dropItemDatas;
+    /// <summary>
+    /// 掉落道具的范围-宽度的一半
+    /// </summary>
+    protected float _dropHalfWidth;
+    /// <summary>
+    /// 掉落道具的范围-高度的一半
+    /// </summary>
+    protected float _dropHalfHeight;
 
     public NormalEnemy()
     {
@@ -23,7 +35,7 @@ public class NormalEnemy : EnemyBase
         //SetEnemyAni(cfg.aniId);
         SetCollisionParams(cfg.collisionHalfWidth, cfg.collisionHalfWidth);
         SetMaxHp(cfg.maxHp);
-        SetDrop(cfg.dropId, cfg.dropHalfWidth, cfg.dropHalfHeight);
+        _dropItemDatas = null;
     }
 
     /// <summary>
@@ -108,16 +120,26 @@ public class NormalEnemy : EnemyBase
     {
         EnemyManager.GetInstance().RestoreEnemyObjectToPool(_enemyObj);
         _enemyObj = null;
+        _dropItemDatas = null;
         base.Clear();
     }
 
-    public override int GetCollisionParams(out float arg1, out float arg2, out float arg3, out float arg4)
+    /// <summary>
+    /// 设置敌机的死亡掉落
+    /// </summary>
+    public void SetDropItemDatas(List<int> itemDatas,float halfWidth,float halfHeight)
     {
-        arg1 = _curPos.x;
-        arg2 = _curPos.y;
-        arg3 = _collisionHalfWidth;
-        arg4 = _collisionHalfHeight;
-        return Consts.CollisionType_Rect;
+        _dropItemDatas = itemDatas;
+        _dropHalfWidth = halfWidth;
+        _dropHalfHeight = halfHeight;
+    }
+
+    /// <summary>
+    /// 掉落物体
+    /// </summary>
+    protected void DropItems()
+    {
+        ItemManager.GetInstance().DropItems(_dropItemDatas, _curPos.x, _curPos.y, _dropHalfWidth, _dropHalfHeight);
     }
 
     public override bool Eliminate(eEnemyEliminateDef eliminateType = eEnemyEliminateDef.ForcedDelete)
@@ -131,7 +153,10 @@ public class NormalEnemy : EnemyBase
             }
             if ( eliminateType != eEnemyEliminateDef.ForcedDelete || eliminateType != eEnemyEliminateDef.CodeRawEliminate )
             {
-                DropItems();
+                if ( _dropItemDatas != null )
+                {
+                    DropItems();
+                }
             }
             return true;
         }

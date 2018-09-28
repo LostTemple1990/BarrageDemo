@@ -144,11 +144,6 @@ public class PlayerLaser : PlayerBulletBase
         _preLaserLen = _curLaserLen;
     }
 
-    public override int GetCollisionParams(out float arg1, out float arg2, out float arg3, out float arg4)
-    {
-        throw new System.NotImplementedException();
-    }
-
     protected override int GetDamage()
     {
         return 2;

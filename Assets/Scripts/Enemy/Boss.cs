@@ -250,15 +250,6 @@ public class Boss : EnemyBase
         _collisionHalfHeight = collisionHH;
     }
 
-    public override int GetCollisionParams(out float arg1, out float arg2, out float arg3, out float arg4)
-    {
-        arg1 = _curPos.x;
-        arg2 = _curPos.y;
-        arg3 = _collisionHalfWidth;
-        arg4 = _collisionHalfHeight;
-        return Consts.CollisionType_Rect;
-    }
-
     public override bool CanHit()
     {
         return true;

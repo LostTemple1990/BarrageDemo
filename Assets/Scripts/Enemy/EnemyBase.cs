@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase : ICollisionObject
+public class EnemyBase
 {
     protected int _curHp;
     protected int _maxHp;
@@ -47,10 +47,6 @@ public class EnemyBase : ICollisionObject
     protected float _collisionHalfWidth;
     protected float _collisionHalfHeight;
 
-    protected string _dropId;
-    protected float _dropHalfWidth;
-    protected float _dropHalfHeight;
-
     protected Vector2 _wanderRangeX;
     protected Vector2 _wanderRangeY;
     protected Vector2 _wanderAmplitudeX;
@@ -85,7 +81,6 @@ public class EnemyBase : ICollisionObject
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
         }
         _taskCount = 0;
-        _dropId = null;
         _isWandering = false;
         _isInteractive = true;
         _onHitFuncRef = 0;
@@ -113,19 +108,6 @@ public class EnemyBase : ICollisionObject
     {
         _tasks.Add(task);
         _taskCount++;
-    }
-
-    /// <summary>
-    /// 设置掉落,掉落范围在以当前位置为中心，长宽分别为2*halfWidth和2*halfHeight的矩形内
-    /// </summary>
-    /// <param name="id">掉落包id</param>
-    /// <param name="halfWidth">掉落矩形宽</param>
-    /// <param name="halfHeight">掉落矩形高</param>
-    public virtual void SetDrop(string id,float halfWidth,float halfHeight)
-    {
-        _dropId = id;
-        _dropHalfWidth = halfWidth;
-        _dropHalfHeight = halfHeight;
     }
 
     protected virtual void UpdateTask()
@@ -254,11 +236,6 @@ public class EnemyBase : ICollisionObject
         return paras;
     }
 
-    public virtual int GetCollisionParams(out float arg1, out float arg2, out float arg3, out float arg4)
-    {
-        throw new System.NotImplementedException();
-    }
-
     public virtual void SetCollisionParams(float collisionHW,float collisionHH)
     {
         _collisionHalfWidth = collisionHW;
@@ -344,17 +321,6 @@ public class EnemyBase : ICollisionObject
         float toX = MTRandom.GetNextFloat(minX, maxX);
         float toY = MTRandom.GetNextFloat(minY, maxY); ;
         MoveToPos(toX, toY, duration, _wanderMode);
-    }
-
-    /// <summary>
-    /// 掉落道具
-    /// </summary>
-    protected virtual void DropItems()
-    {
-        if ( _dropId != null )
-        {
-            ItemManager.GetInstance().DropItems(_dropId, _curPos.x, _curPos.y, _dropHalfWidth, _dropHalfHeight);
-        }
     }
 
     public virtual void Clear()

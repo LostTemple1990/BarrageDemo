@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using UniLua;
 
 public partial class LuaLib
@@ -162,5 +162,80 @@ public partial class LuaLib
         float rate = sc.GetTimeRate();
         luaState.PushNumber(rate);
         return 1;
+    }
+
+
+    /// <summary>
+    /// 设置一个敌机死亡时掉落的物品
+    /// <para>enemy</para>
+    /// <para>dropItemDatas List{itemType,itemCount}</para>
+    /// <para>halfWidth</para>
+    /// <para>halfHeight</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetEnemyDropItems(ILuaState luaState)
+    {
+        float halfWidth = (float)luaState.ToNumber(-2);
+        float halfHeight = (float)luaState.ToNumber(-1);
+        luaState.Pop(2);
+        // 遍历dropItemDatas
+        List<int> itemDatas = new List<int>();
+        int itemType, itemCount;
+        luaState.PushNil();
+        while (luaState.Next(-2))
+        {
+            luaState.GetField(-1, "itemType");
+            luaState.GetField(-2, "itemCount");
+            itemType = luaState.ToInteger(-2);
+            itemCount = luaState.ToInteger(-1);
+            itemDatas.Add(itemType);
+            itemDatas.Add(itemCount);
+            // 只保留key
+            luaState.Pop(3);
+        }
+        NormalEnemy enemy = luaState.ToUserData(-2) as NormalEnemy;
+        // 弹出剩余的enemy以及table
+        luaState.Pop(2);
+        enemy.SetDropItemDatas(itemDatas, halfWidth, halfHeight);
+        return 0;
+    }
+
+    /// <summary>
+    /// 掉落物品
+    /// <para>dropItemDatas List{itemType,itemCount}</para>
+    /// <para>centerX</para>
+    /// <para>centerY</para>
+    /// <para>halfWidth</para>
+    /// <para>halfHeight</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int DropItems(ILuaState luaState)
+    {
+        float centerX = (float)luaState.ToNumber(-4);
+        float centerY = (float)luaState.ToNumber(-3);
+        float halfWidth = (float)luaState.ToNumber(-2);
+        float halfHeight = (float)luaState.ToNumber(-1);
+        //弹出前4个基本数据，开始遍历dropTable
+        luaState.Pop(4);
+        List<int> itemDatas = new List<int>();
+        int itemType, itemCount;
+        luaState.PushNil();
+        while ( luaState.Next(-2) )
+        {
+            luaState.GetField(-1, "itemType");
+            luaState.GetField(-2, "itemCount");
+            itemType = luaState.ToInteger(-2);
+            itemCount = luaState.ToInteger(-1);
+            itemDatas.Add(itemType);
+            itemDatas.Add(itemCount);
+            // 只保留key
+            luaState.Pop(3);
+        }
+        // 弹出table
+        luaState.Pop(1);
+        ItemManager.GetInstance().DropItems(itemDatas, centerX, centerY, halfWidth, halfHeight);
+        return 0;
     }
 }

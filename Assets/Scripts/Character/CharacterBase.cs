@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterBase :ICollisionObject,IGrazeObject
+public class CharacterBase
 {
     protected double _hitRadius = 0d;
     protected GameObject _character;

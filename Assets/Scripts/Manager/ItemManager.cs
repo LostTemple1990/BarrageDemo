@@ -15,15 +15,12 @@ public class ItemManager
     {
         _itemList = new List<ItemBase>();
         _clearItemList = new List<ItemBase>();
-        _dropDatabase = DataManager.GetInstance().GetDatasByName("DropItemsCfgs") as Dictionary<string, IParser>;
         _itemsPool = new Dictionary<ItemType, Stack<ItemBase>>();
         //_itemTypeList = new List<ItemType>() { ItemType.PPointNormal, ItemType.PPointBig };
         // 初始化最大的缓存数目
         _maxCacheCountDatas = new Dictionary<ItemType, int>();
         _maxCacheCountDatas.Add(ItemType.PPointNormal, 100); // 小P点
     }
-
-    private Dictionary<string, IParser> _dropDatabase;
 
     private List<ItemBase> _itemList;
     private int _itemCount;
@@ -109,48 +106,45 @@ public class ItemManager
         _itemCount = i;
     }
 
-    public void DropItems(string id,float centerX,float centerY,float halfWidth,float halfHeight)
+    /// <summary>
+    /// 掉落物品
+    /// </summary>
+    /// <param name="itemDatas">结构 type,count</param>
+    /// <para>举例： 1,5,2,3,5,6</para>
+    /// <para>即生成type=1的5个，type=2的3个,type=5的6个</para>
+    /// <param name="centerX"></param>
+    /// <param name="centerY"></param>
+    /// <param name="halfWidth"></param>
+    /// <param name="halfHeight"></param>
+    public void DropItems(List<int> itemDatas, float centerX, float centerY, float halfWidth, float halfHeight)
     {
         float beginX = centerX - halfWidth;
         float endX = centerX + halfWidth;
         float beginY = centerY - halfHeight;
         float endY = centerY + halfHeight;
         ItemType itemType;
-        int i;
-        DropItemsCfg cfg = GetDropCfgById(id);
-        if (cfg != null)
+        int itemCount;
+        for (int i = 0, len = itemDatas.Count; i < len; i += 2)
         {
-            itemType = ItemType.PPointNormal;
-            for (i=0;i<cfg.pPointN;i++)
-            {
-                CreateItemByItemType(itemType, MTRandom.GetNextFloat(beginX, endX), MTRandom.GetNextFloat(beginY, endY));
-            }
-            itemType = ItemType.PPointBig;
-            for (i = 0; i < cfg.pPointB; i++)
+            itemType = (ItemType)itemDatas[i];
+            itemCount = itemDatas[i + 1];
+            for (int j = 0; j < itemCount; j++)
             {
                 CreateItemByItemType(itemType, MTRandom.GetNextFloat(beginX, endX), MTRandom.GetNextFloat(beginY, endY));
             }
         }
-    }
-
-    public DropItemsCfg GetDropCfgById(string id)
-    {
-        IParser parser;
-        if ( !_dropDatabase.TryGetValue(id,out parser) )
-        {
-            return null;
-        }
-        return parser as DropItemsCfg;
     }
 
     public void CreateItemByItemType(ItemType itemType,float posX,float posY)
     {
-        ItemBase item;
-        item = GetAtPool(itemType);
-        item.Init();
-        item.SetToPosition(posX, posY);
-        _itemList.Add(item);
-        _itemCount++;
+        ItemBase item = GetAtPool(itemType);
+        if ( item != null )
+        {
+            item.Init();
+            item.SetToPosition(posX, posY);
+            _itemList.Add(item);
+            _itemCount++;
+        }
         //Logger.Log("CreateItem at pos " + posX + " , " + posY);
     }
 

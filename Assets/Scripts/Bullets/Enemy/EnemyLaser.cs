@@ -398,6 +398,17 @@ public class EnemyLaser : EnemyBulletBase
     }
 
     #region 碰撞检测相关参数
+
+    public override bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
+    {
+        return true;
+    }
+
+    public override CollisionDetectParas GetCollisionDetectParas(int index = 0)
+    {
+        return base.GetCollisionDetectParas(index);
+    }
+
     public override void SetGrazeDetectParas(GrazeDetectParas paras)
     {
         _grazeHalfWidth = paras.halfWidth;
@@ -419,7 +430,7 @@ public class EnemyLaser : EnemyBulletBase
         };
         if ( !_detectCollision )
         {
-            paras.halfHeight = paras.halfHeight = paras.angle = 0;
+            paras.halfWidth = paras.halfHeight = paras.angle = 0;
             paras.centerPos = Vector2.zero;
         }
         else
