@@ -114,11 +114,33 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     protected SpriteRenderer _laserSourceSp;
 
+    private List<Vector2> _availableIndexRangeList;
+    /// <summary>
+    /// 近似碰撞点的list
+    /// <para>与其他不规则物体碰撞时</para>
+    /// <para>拆分成若干条直线，每条直线取中点做圆形检测</para>
+    /// </summary>
+    private List<Vector2> _collisionPointList;
+    /// <summary>
+    /// 近似碰撞点的个数
+    /// </summary>
+    private int _collisionPointCount;
+    /// <summary>
+    /// 表示是否已经缓存了近似碰撞点的数据
+    /// <para>若激光属性发生变化，这个值会设置成false</para>
+    /// <para>表示需要重新计算</para>
+    /// </summary>
+    private bool _isCachedCollisionPoint;
+
+    private const int SegmentLen = 2;
+
 
     public EnemyLinearLaser()
     {
         _pathList = new List<Vector2>();
         _prefabName = "LinearLaser";
+        _availableIndexRangeList = new List<Vector2>();
+        _collisionPointList = new List<Vector2>();
         _sysBusyWeight = 3;
     }
 
@@ -137,6 +159,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         _clearFlag = 0;
         _isHeadEnable = false;
         _isSourceEnable = false;
+        _isCachedCollisionPoint = false;
         if ( _movableObj == null )
         {
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
@@ -380,6 +403,62 @@ public class EnemyLinearLaser : EnemyBulletBase
         return paras;
     }
 
+    public override bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
+    {
+        Vector2 laserStartPos = _pathList[0];
+        Vector2 laserEndPos = _pathList[_laserLen - 1];
+        // 计算包围矩形的左下和右上的坐标
+        Vector2 tmpLBPos = new Vector2(Mathf.Min(laserStartPos.x, laserEndPos.x), Mathf.Min(laserStartPos.y, laserEndPos.y));
+        Vector2 tmpRTPos = new Vector2(Mathf.Max(laserStartPos.x, laserEndPos.x), Mathf.Max(laserStartPos.y, laserEndPos.y));
+        Vector2 bulletBoundingBoxLBPos = new Vector2(_curPos.x - DefaultCollisionHalfHeight, _curPos.y - DefaultCollisionHalfHeight);
+        Vector2 bulletBoundingBoxRTPos = new Vector2(_curPos.x + DefaultCollisionHalfHeight, _curPos.y + DefaultCollisionHalfHeight);
+        // 由于通常情况下大部分子弹都是不在包围盒范围内的
+        // 因此选择判断不相交的方式尽可能减少判断的次数
+        bool notHit = bulletBoundingBoxRTPos.x < lbPos.x ||    // 子弹包围盒右边缘X坐标小于检测包围盒的左边缘X坐标
+            bulletBoundingBoxLBPos.x > rtPos.x ||   // 子弹包围盒左边缘X坐标大于检测包围盒的左右边缘X坐标
+            bulletBoundingBoxRTPos.y < lbPos.y ||   // 子弹包围盒上边缘Y坐标小于检测包围盒的下边缘Y坐标
+            bulletBoundingBoxLBPos.y > rtPos.y;     // 子弹包围盒下边缘Y坐标大于检测包围盒的上边缘Y坐标
+        return !notHit;
+    }
+
+    public override CollisionDetectParas GetCollisionDetectParas(int index = 0)
+    {
+        if ( !_isCachedCollisionPoint )
+        {
+            CacheCollisionPoints();
+        }
+        CollisionDetectParas paras = new CollisionDetectParas()
+        {
+            type = CollisionDetectType.Circle,
+            centerPos = _collisionPointList[index],
+            nextIndex = index + 1 >= _collisionPointCount ? -1 : index + 1,
+            radius = DefaultCollisionHalfHeight,
+        };
+        return paras;
+    }
+
+    private void CacheCollisionPoints()
+    {
+        int laserSegmentCount = _availableIndexRangeList.Count;
+        int startIndex,endIndex;
+        Vector2 rangeVec,collisionPoint;
+        _collisionPointCount = 0;
+        for (int i=0;i<laserSegmentCount;i++)
+        {
+            rangeVec = _availableIndexRangeList[i];
+            for (int j=(int)rangeVec.x;j<=rangeVec.y;j+=SegmentLen)
+            {
+                startIndex = j;
+                endIndex = j + SegmentLen > rangeVec.y ? (int)rangeVec.y : j + SegmentLen;
+                // 计算近似碰撞点的坐标
+                collisionPoint = (_pathList[startIndex] + _pathList[endIndex]) / 2;
+                _collisionPointList.Add(collisionPoint);
+                _collisionPointCount++;
+            }
+        }
+        _isCachedCollisionPoint = true;
+    }
+
     protected virtual void CheckCollisionWithCharacter()
     {
         // 直线碰撞检测
@@ -449,6 +528,10 @@ public class EnemyLinearLaser : EnemyBulletBase
         // movableObject
         ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObj);
         _movableObj = null;
+        _collisionPointList.Clear();
+        _availableIndexRangeList.Clear();
         base.Clear();
     }
 }
+
+
