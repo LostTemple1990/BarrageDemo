@@ -46,8 +46,9 @@ CustomizedTable.NazrinLaser.Init = function(laser,enemy,angle,existDuration,toAn
 end
 
 CustomizedTable.ReboundLinearLaser = {}
-CustomizedTable.ReboundLinearLaser.Init = function(laser,posX,posY,reboundPara,reboundCount)
+CustomizedTable.ReboundLinearLaser.Init = function(laser,posX,posY,angle,reboundPara,reboundCount)
 	lib.SetBulletPos(laser,posX,posY)
+	lib.SetLinearLaserProps(laser,"202060",45,3.5,angle,0,0)
 	lib.AddBulletTask(laser,function()
 		lib.SetLinearLaserHeadEnable(laser,true,consts.eLaserHeadTypeBlue)
 		lib.SetLinearLaserSourceEnable(laser,true,3)
@@ -82,8 +83,7 @@ CustomizedTable.ReboundLinearLaser.Init = function(laser,posX,posY,reboundPara,r
 				end
 				if reboundFlag == 1 then
 					reboundCount = reboundCount - 1
-					laser = lib.CreateCustomizedLinearLaser("ReboundLinearLaser",curPosX,curPosY,reboundPara,reboundCount,4)
-					lib.SetLinearLaserProps(laser,texture,length,v,angle,acce,accDuration)
+					laser = lib.CreateCustomizedLinearLaser("ReboundLinearLaser",curPosX,curPosY,angle,reboundPara,reboundCount,5)
 				end
 			end
 			if ( coroutine.yield(1)==false ) then return end
@@ -683,6 +683,7 @@ function Stage.StageTask()
 			lib.EnemyMoveTowards(enemy,0.5,180,700);
 		end)
 		lib.AddEnemyTask(enemy,function()
+			if ( coroutine.yield(10000)==false ) then return end
 			for _=1,10 do
 				for _=1,6 do
 					lib.PlaySound("se_tan00",false)
@@ -701,14 +702,14 @@ function Stage.StageTask()
 		end)
 		--测试直线激光
 		lib.AddEnemyTask(enemy,function()
-			if ( coroutine.yield(10000) == false ) then return end
+			--if ( coroutine.yield(10000) == false ) then return end
 			local laser,angle,i
 			angle = lib.GetAimToPlayerAngle(lib.GetEnemyPos(enemy))
 			for _=1,Infinite do
 				angle = lib.GetAimToPlayerAngle(lib.GetEnemyPos(enemy))
 				for i=0,18 do
 					local posX,posY = lib.GetEnemyPos(enemy)
-					laser = lib.CreateLinearLaser("etama9_13",45,posX,posY)
+					laser = lib.CreateLinearLaser("202060",45,posX,posY)
 					lib.SetLinearLaserHeadEnable(laser,true,consts.eLaserHeadTypeBlue)
 					lib.DoLinearLaserMove(laser,3,angle+i*20,0.02,60)
 					if ( coroutine.yield(3) == false ) then return end
@@ -719,11 +720,10 @@ function Stage.StageTask()
 		lib.AddEnemyTask(enemy,function()
 			if coroutine.yield(10000) == false then return end
 			local laser,i
-			for _=1,Infinite do
+			for _=1,5 do
 				local posX,posY = lib.GetEnemyPos(enemy)
 				for i=0,10 do
-					laser = lib.CreateCustomizedLinearLaser("ReboundLinearLaser",posX,posY,7,5,4)
-					lib.SetLinearLaserProps(laser,"etama9_5",45,3.5,15+i*15,0,0)
+					laser = lib.CreateCustomizedLinearLaser("ReboundLinearLaser",posX,posY,15+i*15,7,5,5)
 				end
 				if ( coroutine.yield(60) == false ) then return end
 			end
@@ -742,7 +742,7 @@ function Stage.StageTask()
 			end
 		end)
 	end
-	if coroutine.yield(300) == false then return end
+	if coroutine.yield(30000) == false then return end
 	do
 		local boss = lib.CreateBoss("MidBoss")
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)

@@ -33,6 +33,7 @@ public class BulletsManager
 
     private Dictionary<string, IParser> _enemyDefaultBulletDataBase;
     private Dictionary<string, IParser> _playerBulletDataBase;
+    private Dictionary<string, IParser> _enemyLinearLaserDataBase;
 
     public void Init()
     {
@@ -42,6 +43,7 @@ public class BulletsManager
         _clearList = new List<BulletBase>();
         _enemyDefaultBulletDataBase = DataManager.GetInstance().GetDatasByName("EnemyBulletDefaultCfgs") as Dictionary<string, IParser>;
         _playerBulletDataBase = DataManager.GetInstance().GetDatasByName("PlayerBulletCfgs") as Dictionary<string, IParser>;
+        _enemyLinearLaserDataBase = DataManager.GetInstance().GetDatasByName("EnemyLinearLaserCfgs") as Dictionary<string, IParser>;
     }
 
     public bool RegisterPlayerBullet(PlayerBulletBase bullet)
@@ -227,6 +229,21 @@ public class BulletsManager
         return parser as PlayerBulletCfg;
     }
 
+    /// <summary>
+    /// 获取敌机激光配置
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public EnemyLinearLaserCfg GetLinearLaserCfgById(string id)
+    {
+        IParser parser;
+        if (!_enemyLinearLaserDataBase.TryGetValue(id, out parser))
+        {
+            return null;
+        }
+        return parser as EnemyLinearLaserCfg;
+    }
+
     public List<EnemyBulletBase> GetEnemyBulletList()
     {
         return _enemyBullets;
@@ -257,7 +274,7 @@ public class BulletsManager
     /// <param name="bulletId"></param>
     /// <param name="textureId"></param>
     /// <returns></returns>
-    public GameObject GetBulletGameObject(BulletId type,int bulletId)
+    public GameObject CreateBulletGameObject(BulletId type,int bulletId)
     {
         string textureName = "Bullet" + bulletId;
         GameObject prefab = ObjectsPool.GetInstance().GetPrefabAtPool(bulletId.ToString());
@@ -287,6 +304,9 @@ public class BulletsManager
                 break;
             case BulletId.Player_Simple:
                 protoType = CreatePlayerSimpleBulletProtoType(bulletId);
+                break;
+            case BulletId.Enemy_LinearLaser:
+                protoType = CreateEnemyLinearLaserProtoType(bulletId);
                 break;
         }
         return protoType;
@@ -347,17 +367,28 @@ public class BulletsManager
     {
         GameObject original = Resources.Load<GameObject>("BulletPrefab/LinearLaser");
         GameObject protoType = GameObject.Instantiate<GameObject>(original);
+        EnemyLinearLaserCfg cfg = GetLinearLaserCfgById(bulletId.ToString());
         string textureName = "Bullet" + bulletId;
+        // 激光发射源
+        SpriteRenderer sourceSp = protoType.transform.Find("Source").GetComponent<SpriteRenderer>();
+        sourceSp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, "Bullet" + cfg.laserSourceTexId);
         // 设置sprite以及material
         protoType.name = textureName;
-        SpriteRenderer sp = protoType.transform.Find("LaserSprite").GetComponent<SpriteRenderer>();
-        sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGLaserAtlasName, textureName);
+        // 激光段tf
+        Transform segmentTf = protoType.transform.Find("Segment");
+        // 激光本体
+        SpriteRenderer sp = segmentTf.Find("LaserSprite").GetComponent<SpriteRenderer>();
+        sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, cfg.laserTexName);
         eBlendMode blendMode = (eBlendMode)(bulletId % 10);
         if (blendMode != eBlendMode.Normal)
         {
             sp.material = ResourceManager.GetInstance().GetSpriteMatByBlendMode(blendMode);
         }
-        UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
+        // 设置尺寸为0
+        sp.size = Vector2.zero;
+        // 激光头部
+        sp = segmentTf.Find("HeadSprite").GetComponent<SpriteRenderer>();
+        sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, cfg.laserHeadTexName);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddBulletProtoType(bulletId, protoType);
         return protoType;

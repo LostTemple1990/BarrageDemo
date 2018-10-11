@@ -15,13 +15,13 @@ public partial class LuaLib
     /// <returns></returns>
     public static int CreateLinearLaser(ILuaState luaState)
     {
-        string texture = luaState.ToString(-4);
+        string id = luaState.ToString(-4);
         int laserLen = luaState.ToInteger(-3);
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(4);
         EnemyLinearLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_LinearLaser) as EnemyLinearLaser;
-        laser.SetBulletTexture(texture);
+        laser.SetStyleById(id);
         laser.SetLength(laserLen);
         laser.SetToPosition(posX, posY);
         luaState.PushLightUserData(laser);
@@ -60,7 +60,7 @@ public partial class LuaLib
     {
         EnemyLinearLaser laser = luaState.ToUserData(-1) as EnemyLinearLaser;
         luaState.Pop(-1);
-        luaState.PushString(laser.GetTextureName());
+        luaState.PushString(laser.GetId());
         luaState.PushInteger(laser.GetLength());
         luaState.PushNumber(laser.GetVelocity());
         luaState.PushNumber(laser.GetAngle());
@@ -72,7 +72,7 @@ public partial class LuaLib
     /// <summary>
     /// 设置直线激光所有的基础属性
     /// <para>laser 激光本体</para>
-    /// <para>texture 暂时指向于etama9的激光贴图</para>
+    /// <para>id 直线激光配置id</para>
     /// <para>laserLen 激光长度</para>
     /// <para>velocity 速度</para>
     /// <para>angle 速度方向</para>
@@ -84,14 +84,14 @@ public partial class LuaLib
     public static int SetLinearLaserProps(ILuaState luaState)
     {
         EnemyLinearLaser laser = luaState.ToUserData(-7) as EnemyLinearLaser;
-        string texture = luaState.ToString(-6);
+        string id = luaState.ToString(-6);
         int laserLen = luaState.ToInteger(-5);
         float velocity = (float)luaState.ToNumber(-4);
         float angle = (float)luaState.ToNumber(-3);
         float acce = (float)luaState.ToNumber(-2);
         int accDuration = luaState.ToInteger(-1);
         luaState.Pop(7);
-        laser.SetBulletTexture(texture);
+        laser.SetStyleById(id);
         laser.SetLength(laserLen);
         laser.DoStraightMove(velocity, angle, acce, accDuration);
         return 0;

@@ -85,7 +85,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _prefabName = _cfg.id.ToString();
         //_bullet = ResourceManager.GetInstance().GetPrefab("BulletPrefab", _prefabName);
         //UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.EnemyBarrage);
-        _bullet = BulletsManager.GetInstance().GetBulletGameObject(_id, _cfg.id);
+        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(_id, _cfg.id);
         _trans = _bullet.transform;
         _spRenderer = _trans.Find("BulletSprite").GetComponent<SpriteRenderer>();
     }
@@ -117,7 +117,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
         if ( _bullet != null )
         {
             // 回收现有的prefab
-            SetOrderInLayer(0);
             UIManager.GetInstance().RemoveGoFromLayer(_bullet);
             ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         }

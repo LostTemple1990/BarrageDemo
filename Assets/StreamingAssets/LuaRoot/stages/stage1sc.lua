@@ -577,7 +577,7 @@ end
 CustomizedBulletTable.NazrinSC2Laser = {}
 CustomizedBulletTable.NazrinSC2Laser.Init = function(laser,posX,posY,angle,existDuration,createRandomBulletInterval)
 	--lib.SetBulletResistEliminatedFlag(bullet,BulletResist.PlayerBomb + BulletResist.PlayerDead + BulletResist.HitPlayer)
-	lib.SetBulletTexture(laser,"200060")
+	lib.SetBulletTexture(laser,"201060")
 	lib.SetLaserProps(laser,posX,posY,angle,2,500,150)
 	lib.SetBulletDetectCollision(laser,false)
 	lib.SetLaserCollisionFactor(laser,0.8)
@@ -612,7 +612,7 @@ end
 
 CustomizedBulletTable.NazrinSC2Spark = {}
 CustomizedBulletTable.NazrinSC2Spark.Init = function(laser,posX,posY,canRotate)
-	lib.SetBulletTexture(laser,"200060")
+	lib.SetBulletTexture(laser,"201060")
 	local laserAngle = lib.GetAimToPlayerAngle(posX,posY)
 	lib.SetLaserProps(laser,posX,posY,laserAngle,2,0,500)
 	lib.SetBulletDetectCollision(laser,false)

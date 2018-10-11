@@ -104,11 +104,6 @@ public class EnemyBulletBase :BulletBase
         }
     }
 
-    public virtual void SetExtraDatas(int type,object[] datas)
-    {
-        throw new System.NotImplementedException();
-    }
-
     /// <summary>
     /// 消除子弹
     /// </summary>

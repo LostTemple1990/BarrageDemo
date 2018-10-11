@@ -31,7 +31,8 @@ public class PlayerBulletSimple : PlayerBulletBase
             ObjectsPool.GetInstance().RestorePrefabToPool(_bulletCfg.textureName, _bullet);
         }
         _bulletCfg = BulletsManager.GetInstance().GetPlayerBulletCfgById(id);
-        _bullet = BulletsManager.GetInstance().GetBulletGameObject(BulletId.Player_Simple, int.Parse(id));
+        _prefabName = id;
+        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Player_Simple, int.Parse(id));
         _trans = _bullet.transform;
         _renderer = _trans.Find("BulletSprite").GetComponent<SpriteRenderer>();
         _trans.localPosition = _curPos;
@@ -157,7 +158,7 @@ public class PlayerBulletSimple : PlayerBulletBase
     public override void Clear()
     {
         UIManager.GetInstance().HideGo(_bullet);
-        ObjectsPool.GetInstance().RestorePrefabToPool(_bulletCfg.textureName, _bullet);
+        ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         _bullet = null;
         _bulletCfg = null;
         ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObject);
