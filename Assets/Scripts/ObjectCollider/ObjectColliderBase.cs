@@ -79,23 +79,23 @@ public class ObjectColliderBase
         {
             Scale();
         }
-        if ( (_colliderGroups & (int)eColliderGroup.Player) == 1 )
+        if ( (_colliderGroups & (int)eColliderGroup.Player) != 0 )
         {
             CheckCollisionWithPlayer();
         }
-        if ((_colliderGroups & (int)eColliderGroup.PlayerBullet) == 1)
+        if ((_colliderGroups & (int)eColliderGroup.PlayerBullet) != 0)
         {
             CheckCollisionWithPlayerBullet();
         }
-        if ((_colliderGroups & (int)eColliderGroup.Enemy) == 1)
+        if ((_colliderGroups & (int)eColliderGroup.Enemy) != 0)
         {
             CheckCollisionWithEnemy();
         }
-        if ((_colliderGroups & (int)eColliderGroup.EnemyBullet) == 1)
+        if ((_colliderGroups & (int)eColliderGroup.EnemyBullet) != 0)
         {
             CheckCollisionWithEnemyBullet();
         }
-        if ((_colliderGroups & (int)eColliderGroup.Item) == 1)
+        if ((_colliderGroups & (int)eColliderGroup.Item) != 0)
         {
             CheckCollisionWithItem();
         }

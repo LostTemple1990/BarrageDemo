@@ -702,7 +702,7 @@ function Stage.StageTask()
 		end)
 		--测试直线激光
 		lib.AddEnemyTask(enemy,function()
-			--if ( coroutine.yield(10000) == false ) then return end
+			if ( coroutine.yield(10000) == false ) then return end
 			local laser,angle,i
 			angle = lib.GetAimToPlayerAngle(lib.GetEnemyPos(enemy))
 			for _=1,Infinite do
@@ -718,7 +718,7 @@ function Stage.StageTask()
 		end)
 		--测试自定义直线激光
 		lib.AddEnemyTask(enemy,function()
-			if coroutine.yield(10000) == false then return end
+			--if coroutine.yield(10000) == false then return end
 			local laser,i
 			for _=1,5 do
 				local posX,posY = lib.GetEnemyPos(enemy)

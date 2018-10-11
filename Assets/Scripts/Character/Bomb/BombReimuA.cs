@@ -13,6 +13,7 @@ public class BombReimuA : BombBase
     private List<GameObject> _bombs;
     private List<Transform> _bombsTf;
     private List<Color> _colors;
+    private List<ColliderCircle> _colliderList;
 
     private int _curState;
     private int _time;
@@ -33,6 +34,7 @@ public class BombReimuA : BombBase
         _colors.Add(new Color(0.5f, 0, 0.5f, 0.5f));
         _colors.Add(new Color(0, 0, 0.5f, 0.5f));
         _colors.Add(new Color(0, 0.5f, 0, 0.5f));
+        _colliderList = new List<ColliderCircle>();
     }
 
     public override void Start()
@@ -41,6 +43,8 @@ public class BombReimuA : BombBase
         GameObject go;
         Transform tf;
         Vector2 playerPos = Global.PlayerPos;
+        ColliderCircle collider;
+        Vector2 bombPos;
         for (i=0;i<BombCount;i++)
         {
             go = ResourceManager.GetInstance().GetPrefab("Prefab/Character", "ReimuABomb");
@@ -48,10 +52,17 @@ public class BombReimuA : BombBase
             UIManager.GetInstance().AddGoToLayer(go, LayerId.GameEffect);
             _bombs.Add(go);
             _bombsTf.Add(tf);
-            tf.localPosition = new Vector3(playerPos.x + _posOffsets[i].x, playerPos.y + _posOffsets[i].y, 0);
+            bombPos = new Vector2(playerPos.x + _posOffsets[i].x, playerPos.y + _posOffsets[i].y);
+            tf.localPosition = bombPos;
             tf.localScale = Vector3.zero;
             SpriteRenderer sp = tf.Find("Bomb").GetComponent<SpriteRenderer>();
             sp.material.SetColor("_Color", _colors[i]);
+            // 创建ObjectCollider
+            collider = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Circle) as ColliderCircle;
+            collider.SetSize(0,0);
+            collider.SetColliderGroup((int)eColliderGroup.EnemyBullet);
+            collider.SetToPositon(bombPos.x, bombPos.y);
+            _colliderList.Add(collider);
         }
         _curState = 1;
         _time = 0;
@@ -80,11 +91,12 @@ public class BombReimuA : BombBase
         _time++;
         _curScale = MathUtil.GetEaseOutQuadInterpolation(0, 1.25f, _time, _duration);
         _detectRadius = _curScale * DefaultRadius;
-        CheckCollisionWithEnemyBullets();
+        //CheckCollisionWithEnemyBullets();
         CheckCollisionWithEnemy();
         for (int i=0;i<BombCount;i++)
         {
             _bombsTf[i].localScale = new Vector3(_curScale, _curScale, 1);
+            _colliderList[i].SetSize(_detectRadius, _detectRadius);
         }
         if (_time >= _duration)
         {
@@ -99,11 +111,12 @@ public class BombReimuA : BombBase
         _time++;
         _curScale = MathUtil.GetEaseOutQuadInterpolation(1.25f, 10f, _time, _duration);
         _detectRadius = _curScale * DefaultRadius;
-        CheckCollisionWithEnemyBullets();
+        //CheckCollisionWithEnemyBullets();
         CheckCollisionWithEnemy();
         for (int i = 0; i < BombCount; i++)
         {
             _bombsTf[i].localScale = new Vector3(_curScale, _curScale, 1);
+            _colliderList[i].SetSize(_detectRadius, _detectRadius);
         }
         if ( _time >= _duration )
         {
@@ -345,9 +358,11 @@ public class BombReimuA : BombBase
         int count = _bombs.Count;
         for (int i=0;i< count; i++)
         {
+            _colliderList[i].ClearSelf();
             GameObject.Destroy(_bombs[i]);
         }
         _bombs.Clear();
         _bombsTf.Clear();
+        _colliderList.Clear();
     }
 }

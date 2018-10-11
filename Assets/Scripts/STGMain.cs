@@ -14,6 +14,7 @@ public class STGMain
         }
         _opController.Update();
         _char.Update();
+        ColliderManager.GetInstance().Update();
         EnemyManager.GetInstance().Update();
         BulletsManager.GetInstance().Update();
         ItemManager.GetInstance().Update();
@@ -79,6 +80,7 @@ public class STGMain
     public void Init()
     {
         AnimationManager.GetInstance().Init();
+        ColliderManager.GetInstance().Init();
         BulletsManager.GetInstance().Init();
         EnemyManager.GetInstance().Init();
         ItemManager.GetInstance().Init();
@@ -113,6 +115,7 @@ public class STGMain
         PlayerService.GetInstance().Clear();
         _char = null;
         _opController.Clear();
+        ColliderManager.GetInstance().Clear();
         BulletsManager.GetInstance().Clear();
         EnemyManager.GetInstance().Clear();
         ItemManager.GetInstance().Clear();

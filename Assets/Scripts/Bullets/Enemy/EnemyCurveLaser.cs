@@ -216,6 +216,11 @@ public class EnemyCurveLaser : EnemyBulletBase
     {
         return _collisionParas;
     }
+
+    public override CollisionDetectParas GetCollisionDetectParas(int index = 0)
+    {
+        return base.GetCollisionDetectParas(index);
+    }
     #endregion
 
     public virtual void SetStraightParas(float v, float angle, float acce, float accAngle)

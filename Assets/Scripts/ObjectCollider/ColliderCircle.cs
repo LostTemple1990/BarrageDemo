@@ -66,7 +66,7 @@ public class ColliderCircle : ObjectColliderBase
             // 判断是否要进行碰撞检测
             if (bullet != null && bullet.ClearFlag == 0 && bullet.CanBeEliminated(eEliminateDef.HitObject))
             {
-                DetectCollision(bullet);
+                DetectCollisionWithEnemyBullet(bullet);
             }
         }
     }
@@ -76,98 +76,106 @@ public class ColliderCircle : ObjectColliderBase
     /// </summary>
     /// <param name="collParas"></param>
     /// <returns></returns>
-    private bool DetectCollision(EnemyBulletBase bullet)
+    private bool DetectCollisionWithEnemyBullet(EnemyBulletBase bullet)
     {
-        CollisionDetectParas collParas = bullet.GetCollisionDetectParas();
-        if (collParas.type == CollisionDetectType.Circle)
+        int nextColliderIndex = 0;
+        int curColliderIndex;
+        bool isCollided = false;
+        do
         {
-            // 子弹为圆形判定，先检测外切正方形
-            float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
-            float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
-            // 两圆的半径和
-            float sumOfRadius = _radius + collParas.radius;
-            if (dx <= sumOfRadius && dy <= sumOfRadius)
+            CollisionDetectParas collParas = bullet.GetCollisionDetectParas(nextColliderIndex);
+            curColliderIndex = nextColliderIndex;
+            nextColliderIndex = collParas.nextIndex;
+            if (collParas.type == CollisionDetectType.Circle)
             {
-                if (dx * dx + dy * dy <= sumOfRadius * sumOfRadius)
+                // 子弹为圆形判定，先检测外切正方形
+                float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
+                float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
+                // 两圆的半径和
+                float sumOfRadius = _radius + collParas.radius;
+                if (dx <= sumOfRadius && dy <= sumOfRadius)
+                {
+                    if (dx * dx + dy * dy <= sumOfRadius * sumOfRadius)
+                    {
+                        bullet.CollidedByObject(curColliderIndex);
+                        isCollided = true;
+                    }
+                }
+            }
+            else if (collParas.type == CollisionDetectType.Rect)
+            {
+                // 子弹为矩形判定
+                // 以子弹中心点为圆心，将B的判定中心旋转angle的角度计算判定
+                Vector2 vec = new Vector2(_curPosX - collParas.centerPos.x, _curPosY - collParas.centerPos.y);
+                float cos = Mathf.Cos(collParas.angle * Mathf.Deg2Rad);
+                float sin = Mathf.Sin(collParas.angle * Mathf.Deg2Rad);
+                Vector2 relativeVec = new Vector2();
+                // 向量顺时针旋转laserAngle的度数
+                relativeVec.x = cos * vec.x + sin * vec.y;
+                relativeVec.y = -sin * vec.x + cos * vec.y;
+                // 计算圆和矩形的碰撞
+                float len = relativeVec.magnitude;
+                float rate = (len - _radius) / len;
+                relativeVec *= rate;
+                if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
+                {
+                    bullet.CollidedByObject(curColliderIndex);
+                    isCollided = true;
+                }
+            }
+            else if (collParas.type == CollisionDetectType.Line)
+            {
+                float dis = MathUtil.GetMinDisFromPointToLineSegment(collParas.linePointA, collParas.linePointB, _curPos);
+                if (dis <= _radius + collParas.radius)
                 {
                     bullet.Eliminate(eEliminateDef.HitObject);
                     return true;
                 }
             }
-        }
-        else if (collParas.type == CollisionDetectType.Rect)
-        {
-            // 子弹为矩形判定
-            // 以子弹中心点为圆心，将B的判定中心旋转angle的角度计算判定
-            Vector2 vec = new Vector2(_curPosX - collParas.centerPos.x, _curPosY - collParas.centerPos.y);
-            float cos = Mathf.Cos(collParas.angle * Mathf.Deg2Rad);
-            float sin = Mathf.Sin(collParas.angle * Mathf.Deg2Rad);
-            Vector2 relativeVec = new Vector2();
-            // 向量顺时针旋转laserAngle的度数
-            relativeVec.x = cos * vec.x + sin * vec.y;
-            relativeVec.y = -sin * vec.x + cos * vec.y;
-            // 计算圆和矩形的碰撞
-            float len = relativeVec.magnitude;
-            float rate = (len - _radius) / len;
-            relativeVec *= rate;
-            if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
+            // 多线段集合，判断圆心到每个点的距离即可
+            else if (collParas.type == CollisionDetectType.MultiSegments)
             {
-                bullet.Eliminate(eEliminateDef.HitObject);
-                return true;
-            }
-        }
-        else if (collParas.type == CollisionDetectType.Line)
-        {
-            float dis = MathUtil.GetMinDisFromPointToLineSegment(collParas.linePointA, collParas.linePointB, _curPos);
-            if (dis <= _radius + collParas.radius)
-            {
-                bullet.Eliminate(eEliminateDef.HitObject);
-                return true;
-            }
-        }
-        // 多线段集合，判断圆心到每个点的距离即可
-        else if (collParas.type == CollisionDetectType.MultiSegments)
-        {
-            if (bullet.Id == BulletId.Enemy_CurveLaser)
-            {
-                EnemyCurveLaser curveLaser = bullet as EnemyCurveLaser;
-                List<Vector2> pointList = collParas.multiSegmentPointList;
-                int pointCount = pointList.Count;
-                float dx, dy, sum;
-                int eliminateStart = -1;
-                int eliminateEnd = -1;
-                for (int i = 0; i < pointCount; i++)
+                if (bullet.Id == BulletId.Enemy_CurveLaser)
                 {
-                    dx = pointList[i].x - _curPosX;
-                    dy = pointList[i].y - _curPosY;
-                    sum = collParas.radius + _radius;
-                    if (dx * dx + dy * dy <= sum * sum)
+                    EnemyCurveLaser curveLaser = bullet as EnemyCurveLaser;
+                    List<Vector2> pointList = collParas.multiSegmentPointList;
+                    int pointCount = pointList.Count;
+                    float dx, dy, sum;
+                    int eliminateStart = -1;
+                    int eliminateEnd = -1;
+                    for (int i = 0; i < pointCount; i++)
                     {
-                        if (eliminateStart == -1)
+                        dx = pointList[i].x - _curPosX;
+                        dy = pointList[i].y - _curPosY;
+                        sum = collParas.radius + _radius;
+                        if (dx * dx + dy * dy <= sum * sum)
                         {
-                            eliminateStart = i;
+                            if (eliminateStart == -1)
+                            {
+                                eliminateStart = i;
+                            }
+                            eliminateEnd = i;
                         }
-                        eliminateEnd = i;
-                    }
-                    else
-                    {
-                        if (eliminateStart != -1)
+                        else
                         {
-                            curveLaser.EliminateByRange(eliminateStart, eliminateEnd);
-                            eliminateStart = -1;
+                            if (eliminateStart != -1)
+                            {
+                                curveLaser.EliminateByRange(eliminateStart, eliminateEnd);
+                                eliminateStart = -1;
+                            }
                         }
                     }
+                    if (eliminateStart != -1)
+                    {
+                        curveLaser.EliminateByRange(eliminateStart, eliminateEnd);
+                    }
                 }
-                if (eliminateStart != -1)
+                else if (bullet.Id == BulletId.Enemy_LinearLaser)
                 {
-                    curveLaser.EliminateByRange(eliminateStart, eliminateEnd);
-                }
-            }
-            else if (bullet.Id == BulletId.Enemy_LinearLaser)
-            {
 
+                }
             }
-        }
-        return false;
+        } while (nextColliderIndex != -1);
+        return isCollided;
     }
 }

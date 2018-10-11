@@ -42,11 +42,6 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     class LaserSegment
     {
-        private Transform _containerTf;
-        /// <summary>
-        /// laser段的名称
-        /// </summary>
-        private string _prefabName;
         private GameObject _segmentObj;
         private Transform _segmentTf;
         private Transform _laserTf;
@@ -194,8 +189,6 @@ public class EnemyLinearLaser : EnemyBulletBase
             {
                 _laserSpriteRenderer.size = Vector2.zero;
             }
-            _containerTf = null;
-            _prefabName = null;
             _segmentObj = null;
             _segmentTf = null;
             _laserTf = null;
@@ -411,6 +404,7 @@ public class EnemyLinearLaser : EnemyBulletBase
             Logger.LogError("LinearLaserCfg with id " + id + " is not exist!");
             return;
         }
+        _prefabName = _cfg.id.ToString();
         _laserObj = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Enemy_LinearLaser, int.Parse(_cfg.id));
         _objTrans = _laserObj.transform;
         _objTrans.localPosition = new Vector3(0, 0, -_orderInLayer);
@@ -533,6 +527,7 @@ public class EnemyLinearLaser : EnemyBulletBase
                 }
             }
             startIndex = 1;
+            _isCachedCollisionSegment = false;
             _isDirty = true;
         }
         // 线段索引起始点、终点全部+1
@@ -738,11 +733,14 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     private void CacheCollisionPoints()
     {
-        int laserSegmentCount = _laserSegmentList.Count;
+        // 先清除原来缓存的碰撞分段数据
+        _collisionSegmentList.Clear();
+        _collisionSegmentCount = 0;
+        // 重新计算
         int startIndex,endIndex;
         Vector2 rangeVec,collisionSegment;
         _collisionSegmentCount = 0;
-        for (int i=0;i<laserSegmentCount;i++)
+        for (int i=0;i<_laserSegmentCount;i++)
         {
             rangeVec = _laserSegmentList[i].GetSegmentVec();
             for (int j=(int)rangeVec.x;j<=rangeVec.y;j+=CollisionSegmentLen)
@@ -779,7 +777,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         int laserSegmentLen;
         for (int i = 0; i < _collidedSegmentCount; i++)
         {
-            collidedSegmentVec = _collisionSegmentList[i];
+            collidedSegmentVec = _collisionSegmentList[_collidedSegmentIndexList[i]];
             for (int j = 0; j < _laserSegmentCount; j++)
             {
                 laserSegmentVec = _laserSegmentList[j].GetSegmentVec();
@@ -830,6 +828,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
         _collidedSegmentIndexList.Clear();
         _collidedSegmentCount = 0;
+        _isCachedCollisionSegment = false;
         _isDirty = true;
     }
 
