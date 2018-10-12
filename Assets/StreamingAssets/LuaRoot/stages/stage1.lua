@@ -58,32 +58,33 @@ CustomizedTable.ReboundLinearLaser.Init = function(laser,posX,posY,angle,rebound
 				local curPosX,curPosY = lib.GetBulletPos(laser)
 				local texture,length,v,angle,acce,accDuration = lib.GetLinearLaserProps(laser)
 				local tmpRebound = reboundPara
-				if tmpRebound >= Constants.ReboundBottom and curPosY < -225 then
+				if tmpRebound >= Constants.ReboundBottom and curPosY < -224 then
 					reboundFlag = 1
 					angle = -angle
-					curPosY = -450 - curPosY
+					curPosY = -448 - curPosY
 					tmpRebound = tmpRebound - Constants.ReboundBottom
 				end
-				if tmpRebound >= Constants.ReboundTop and curPosY > 225 then
+				if tmpRebound >= Constants.ReboundTop and curPosY > 224 then
 					reboundFlag = 1
 					angle = -angle
-					curPosY = 450 - curPosY
+					curPosY = 448 - curPosY
 					tmpRebound = tmpRebound - Constants.ReboundTop
 				end
-				if tmpRebound >= Constants.ReboundRight and curPosX > 190 then
+				if tmpRebound >= Constants.ReboundRight and curPosX > 192 then
 					reboundFlag = 1
 					angle = 180 - angle
-					curPosX = 380 - curPosX
+					curPosX = 384 - curPosX
 					tmpRebound = tmpRebound - Constants.ReboundRight
 				end
-				if tmpRebound >= Constants.ReboundLeft and curPosX < -190 then
+				if tmpRebound >= Constants.ReboundLeft and curPosX < -192 then
 					reboundFlag = 1
 					angle = -180 - angle
-					curPosX = -380 - curPosX
+					curPosX = -384 - curPosX
 				end
 				if reboundFlag == 1 then
 					reboundCount = reboundCount - 1
 					laser = lib.CreateCustomizedLinearLaser("ReboundLinearLaser",curPosX,curPosY,angle,reboundPara,reboundCount,5)
+					return
 				end
 			end
 			if ( coroutine.yield(1)==false ) then return end

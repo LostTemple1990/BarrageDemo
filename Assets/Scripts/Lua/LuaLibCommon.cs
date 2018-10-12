@@ -12,4 +12,11 @@ public partial class LuaLib
         luaState.Pop(2);
         return 0;
     }
+
+    public static int LogFrameSinceStageStart(ILuaState luaState)
+    {
+        int frame = STGStageManager.GetInstance().GetFrameSinceStageStart();
+        Logger.Log("Frame Since Stage Start = " + frame);
+        return 0;
+    }
 }

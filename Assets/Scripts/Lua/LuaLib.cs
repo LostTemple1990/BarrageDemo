@@ -135,7 +135,7 @@ public partial class LuaLib
             new NameFuncPair("GetGlobalUserData",GetGlobalUserData),
             new NameFuncPair("RemoveGlobalUserData", RemoveGlobalUserData),
             new NameFuncPair("PlayCharacterCG", PlayCharacterCG),
-
+            new NameFuncPair("LogFrameSinceStageStart", LogFrameSinceStageStart),
         };
         luaState.L_NewLib(define);
         return 1;

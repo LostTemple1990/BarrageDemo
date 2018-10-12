@@ -45,6 +45,7 @@ public class STGStageManager
         if ( _state == StateUpdateStageTask)
         {
             _frameSinceStageStart++;
+            //Logger.Log("--------------STG Frame " + _frameSinceStageStart + " finish------------");
             if ( !_isWaitingForSpellCard )
             {
                 OnStageTaskUpdate();

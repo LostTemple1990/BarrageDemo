@@ -90,6 +90,12 @@ public class EnemyCurveLaser : EnemyBulletBase
     /// 有效的激光段数目
     /// </summary>
     private int _availableCount;
+    /// <summary>
+    /// 是否已经缓存好碰撞的段
+    /// </summary>
+    private int _isCachedCollisionSegments;
+    private List<Vector2> _collisionSegmentsVec;
+    private int _collisionSegmentsCount;
 
     public EnemyCurveLaser()
     {
@@ -221,6 +227,8 @@ public class EnemyCurveLaser : EnemyBulletBase
     {
         return base.GetCollisionDetectParas(index);
     }
+
+
     #endregion
 
     public virtual void SetStraightParas(float v, float angle, float acce, float accAngle)
@@ -553,6 +561,13 @@ public class EnemyCurveLaser : EnemyBulletBase
                     _availableIndexRangeList[j] = divideRange0;
                 }
                 //    ---------
+                //      -----------
+                else if (eliminateRange.x <= availableRange.x && eliminateRange.y <= availableRange.y)
+                {
+                    divideRange0 = new Vector2(eliminateRange.y, availableRange.y);
+                    _availableIndexRangeList[j] = divideRange0;
+                }
+                //    ---------
                 //  -------------
                 else if (eliminateRange.x >= availableRange.x && eliminateRange.y <= availableRange.y )
                 {
@@ -562,13 +577,6 @@ public class EnemyCurveLaser : EnemyBulletBase
                     _availableIndexRangeList.Insert(j + 1, divideRange1);
                     _availableCount++;
                     j++;
-                }
-                //    ---------
-                //      -----------
-                else if (eliminateRange.x <= availableRange.x && eliminateRange.y <= availableRange.y)
-                {
-                    divideRange0 = new Vector2(eliminateRange.y, availableRange.y);
-                    _availableIndexRangeList[j] = divideRange0;
                 }
             }
             //Logger.Log("----------  availableRange  -------------------------");

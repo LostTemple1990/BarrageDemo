@@ -42,6 +42,10 @@ public struct GrazeDetectParas
 public enum CollisionDetectType : int
 {
     /// <summary>
+    /// 无判定
+    /// </summary>
+    Null = 0,
+    /// <summary>
     /// 圆周判定
     /// </summary>
     Circle = 1,

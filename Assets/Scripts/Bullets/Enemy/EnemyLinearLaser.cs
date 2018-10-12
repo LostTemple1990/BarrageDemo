@@ -89,7 +89,7 @@ public class EnemyLinearLaser : EnemyBulletBase
                 _segmentObj = GameObject.Instantiate<GameObject>(protoType);
             }
             _segmentTf = _segmentObj.transform;
-            //_segmentTf.SetParent(laserContainerTf, false);
+            _segmentTf.SetParent(protoType.transform.parent, false);
             _laserTf = _segmentTf.Find("LaserSprite");
             _laserSpriteRenderer = _laserTf.GetComponent<SpriteRenderer>();
             // 激光头部相关
@@ -215,12 +215,6 @@ public class EnemyLinearLaser : EnemyBulletBase
     /// </summary>
     protected int _laserLen;
     protected int _existDuration;
-    /// <summary>
-    /// 直线激光尾部坐标在pathList中的索引
-    /// <para>用于判断直线激光是否已经超出范围</para>
-    /// <para>同时，若该值不为0说明直线激光已经发射完成</para>
-    /// </summary>
-    private int _laserTrailIndex;
 
     protected int _accDuration;
     protected string _textureName;
@@ -362,7 +356,6 @@ public class EnemyLinearLaser : EnemyBulletBase
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
         _isDirty = false;
         _pathCount = 0;
-        _laserTrailIndex = 0;
         _clearFlag = 0;
         _isHeadEnable = false;
         _isSourceEnable = false;
@@ -490,9 +483,6 @@ public class EnemyLinearLaser : EnemyBulletBase
         // 添加新的路径点
         _pathList.Add(_curPos);
         _pathCount++;
-        // segmentList从startIndex索引处开始每段
-        // 起始点和终点索引都+1来模拟激光的移动
-        int startIndex = 0;
         if ( _pathCount > _laserLen )
         {
             // 加速度不为0，说明长度改变了，重绘激光图像
@@ -501,7 +491,7 @@ public class EnemyLinearLaser : EnemyBulletBase
                 _isDirty = true;
             }
             SetSourceEnable(false);
-            _laserTrailIndex++;
+            _pathList.RemoveAt(0);
         }
         else
         {
@@ -526,16 +516,15 @@ public class EnemyLinearLaser : EnemyBulletBase
                     _laserSegmentCount++;
                 }
             }
-            startIndex = 1;
+            // 线段索引起始点、终点全部+1
+            Vector2 segmentVec;
+            for (int i = 1; i < _laserSegmentCount; i++)
+            {
+                segmentVec = _laserSegmentList[i].GetSegmentVec();
+                _laserSegmentList[i].SetSegmentVec(new Vector2(segmentVec.x + 1, segmentVec.y + 1));
+            }
             _isCachedCollisionSegment = false;
             _isDirty = true;
-        }
-        // 线段索引起始点、终点全部+1
-        Vector2 segmentVec;
-        for (int i = startIndex; i < _laserSegmentCount; i++)
-        {
-            segmentVec = _laserSegmentList[i].GetSegmentVec();
-            _laserSegmentList[i].SetSegmentVec(new Vector2(segmentVec.x + 1, segmentVec.y + 1));
         }
     }
 
@@ -550,12 +539,13 @@ public class EnemyLinearLaser : EnemyBulletBase
         if ( _laserSegmentPool.Count > 0 )
         {
             segment = _laserSegmentPool.Pop();
+            segment.SetEnable(true);
             segment.SetSegmentVec(startIndex, endIndex);
         }
         else
         {
             segment = new LaserSegment();
-            segment.Init(_laserSegmentProtoType,false).SetSegmentVec(startIndex, endIndex);
+            segment.Init(_laserSegmentProtoType,false).SetPath(_pathList).SetSegmentVec(startIndex, endIndex).SetAngle(_curAngle);
         }
         return segment;
     }
@@ -566,19 +556,20 @@ public class EnemyLinearLaser : EnemyBulletBase
     /// <param name="segment"></param>
     private void RestoreLaserSegment(LaserSegment segment)
     {
+        segment.SetEnable(false);
         _laserSegmentPool.Push(segment);
     }
 
     public override void SetToPosition(float posX, float posY)
     {
-        //base.SetToPosition(posX, posY);
+        //Logger.Log("Set LinearLaser To Position " + posX + "  , " + posY);
         _movableObj.Reset(posX, posY);
         _pathList.Add(new Vector2(posX, posY));
     }
 
     public override void SetToPosition(Vector2 pos)
     {
-        //base.SetToPosition(pos);
+        //Logger.Log("Set LinearLaser To Position " + pos.x + "  , " + pos.y);
         _movableObj.Reset(pos.x,pos.y);
         _pathList.Add(pos);
     }
@@ -659,10 +650,10 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     protected override bool IsOutOfBorder()
     {
-        if (_pathList[_laserTrailIndex].x < Global.BulletLBBorderPos.x ||
-            _pathList[_laserTrailIndex].y < Global.BulletLBBorderPos.y ||
-            _pathList[_laserTrailIndex].x > Global.BulletRTBorderPos.x ||
-            _pathList[_laserTrailIndex].y > Global.BulletRTBorderPos.y)
+        if (_pathList[0].x < Global.BulletLBBorderPos.x ||
+            _pathList[0].y < Global.BulletLBBorderPos.y ||
+            _pathList[0].x > Global.BulletRTBorderPos.x ||
+            _pathList[0].y > Global.BulletRTBorderPos.y)
         {
             //Logger.Log("Laser is out of border");
             return true;
@@ -682,18 +673,6 @@ public class EnemyLinearLaser : EnemyBulletBase
         _collisionHalfWidth = paras.halfWidth;
         _collisionHalfHeight = paras.halfHeight;
         base.SetCollisionDetectParas(paras);
-    }
-
-    public override CollisionDetectParas GetCollisionDetectParas()
-    {
-        CollisionDetectParas paras = new CollisionDetectParas()
-        {
-            type = CollisionDetectType.Line,
-            linePointA = _pathList[_laserTrailIndex],
-            linePointB = _pathList[_pathCount],
-            radius = DefaultCollisionHalfHeight,
-        };
-        return paras;
     }
 
     public override bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
@@ -720,14 +699,26 @@ public class EnemyLinearLaser : EnemyBulletBase
         {
             CacheCollisionPoints();
         }
-        Vector2 segment = _collisionSegmentList[index];
-        CollisionDetectParas paras = new CollisionDetectParas()
+        CollisionDetectParas paras;
+        if ( _collisionSegmentCount == 0 )
         {
-            type = CollisionDetectType.Circle,
-            centerPos = (_pathList[(int)segment.x] + _pathList[(int)segment.y]) / 2,
-            nextIndex = index + 1 >= _collisionSegmentCount ? -1 : index + 1,
-            radius = DefaultCollisionHalfHeight,
-        };
+            paras = new CollisionDetectParas()
+            {
+                type = CollisionDetectType.Null,
+                nextIndex = -1,
+            };
+        }
+        else
+        {
+            Vector2 segment = _collisionSegmentList[index];
+            paras = new CollisionDetectParas()
+            {
+                type = CollisionDetectType.Circle,
+                centerPos = (_pathList[(int)segment.x] + _pathList[(int)segment.y]) / 2,
+                nextIndex = index + 1 >= _collisionSegmentCount ? -1 : index + 1,
+                radius = DefaultCollisionHalfHeight,
+            };
+        }
         return paras;
     }
 
@@ -739,7 +730,6 @@ public class EnemyLinearLaser : EnemyBulletBase
         // 重新计算
         int startIndex,endIndex;
         Vector2 rangeVec,collisionSegment;
-        _collisionSegmentCount = 0;
         for (int i=0;i<_laserSegmentCount;i++)
         {
             rangeVec = _laserSegmentList[i].GetSegmentVec();
@@ -747,6 +737,8 @@ public class EnemyLinearLaser : EnemyBulletBase
             {
                 startIndex = j;
                 endIndex = j + CollisionSegmentLen > rangeVec.y ? (int)rangeVec.y : j + CollisionSegmentLen;
+                // 只剩余一个点，不做划分
+                if (startIndex == endIndex) break;
                 // 计算近似碰撞点的坐标
                 collisionSegment = new Vector2(startIndex, endIndex);
                 _collisionSegmentList.Add(collisionSegment);
@@ -771,6 +763,13 @@ public class EnemyLinearLaser : EnemyBulletBase
     private void CheckDivideIntoMutiple()
     {
         if (_collidedSegmentCount == 0) return;
+        //Logger.Log("-------LogSegmentBegin-------------------");
+        //Logger.Log("-------SegmentsBeforeDivided-------------------");
+        //for (int i = 0; i < _laserSegmentCount; i++)
+        //{
+        //    Logger.Log(_laserSegmentList[i].GetSegmentVec());
+        //}
+        //Logger.Log("---------CollidedSegments----------------------");
         Vector2 laserSegmentVec,collidedSegmentVec;
         Vector2 divideSegment0, divideSegment1;
         // segment是碰撞分段的起始、结束下标索引
@@ -778,6 +777,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         for (int i = 0; i < _collidedSegmentCount; i++)
         {
             collidedSegmentVec = _collisionSegmentList[_collidedSegmentIndexList[i]];
+            //Logger.Log(collidedSegmentVec);
             for (int j = 0; j < _laserSegmentCount; j++)
             {
                 laserSegmentVec = _laserSegmentList[j].GetSegmentVec();
@@ -806,6 +806,13 @@ public class EnemyLinearLaser : EnemyBulletBase
                     _laserSegmentList[j].SetSegmentVec(divideSegment0);
                 }
                 //    ---------
+                //      -----------
+                else if (collidedSegmentVec.x <= laserSegmentVec.x && collidedSegmentVec.y <= laserSegmentVec.y)
+                {
+                    divideSegment0 = new Vector2(collidedSegmentVec.y, laserSegmentVec.y);
+                    _laserSegmentList[j].SetSegmentVec(divideSegment0);
+                }
+                //    ---------
                 //  -------------
                 else if (collidedSegmentVec.x >= laserSegmentVec.x && collidedSegmentVec.y <= laserSegmentVec.y)
                 {
@@ -817,18 +824,17 @@ public class EnemyLinearLaser : EnemyBulletBase
                     _laserSegmentCount++;
                     j++;
                 }
-                //    ---------
-                //      -----------
-                else if (collidedSegmentVec.x <= laserSegmentVec.x && collidedSegmentVec.y <= laserSegmentVec.y)
-                {
-                    divideSegment0 = new Vector2(collidedSegmentVec.y, laserSegmentVec.y);
-                    _laserSegmentList[j].SetSegmentVec(divideSegment0);
-                }
             }
         }
         _collidedSegmentIndexList.Clear();
         _collidedSegmentCount = 0;
         _isCachedCollisionSegment = false;
+        //Logger.Log("-------SegmentsAfterDivided-------------------");
+        //for (int i = 0; i < _laserSegmentCount; i++)
+        //{
+        //    Logger.Log(_laserSegmentList[i].GetSegmentVec());
+        //}
+        //Logger.Log("----------LogSegmentEnd----------------");
         _isDirty = true;
     }
 

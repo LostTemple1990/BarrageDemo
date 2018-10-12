@@ -1,4 +1,4 @@
-直线激光的消弹判定
+直线激光的消弹判定 --finish
 boss符卡部分重新开始之后是否需要重新载入对应lua --finish
 加入一个dic记录每次被unref的luafunc来检查是否已经完全清除     --finish
 interpreterManager里面的tableToVec2/Vec3/Color方法修改，不弹出顶部table  --finish

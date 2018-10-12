@@ -367,6 +367,7 @@ public class BulletsManager
     {
         GameObject original = Resources.Load<GameObject>("BulletPrefab/LinearLaser");
         GameObject protoType = GameObject.Instantiate<GameObject>(original);
+        // 读取配置
         EnemyLinearLaserCfg cfg = GetLinearLaserCfgById(bulletId.ToString());
         string textureName = "Bullet" + bulletId;
         // 激光发射源
@@ -389,6 +390,8 @@ public class BulletsManager
         // 激光头部
         sp = segmentTf.Find("HeadSprite").GetComponent<SpriteRenderer>();
         sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, cfg.laserHeadTexName);
+        // 将原型放置在敌机弹幕层
+        UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddBulletProtoType(bulletId, protoType);
         return protoType;
