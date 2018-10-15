@@ -56,6 +56,9 @@ public class ColliderCircle : ObjectColliderBase
 
     protected override void CheckCollisionWithEnemyBullet()
     {
+        // 计算碰撞盒参数
+        Vector2 lbPos = new Vector2(_curPosX - _radius, _curPosY - _radius);
+        Vector2 rtPos = new Vector2(_curPosX + _radius, _curPosY + _radius);
         int i, bulletCount;
         List<EnemyBulletBase> bulletList = BulletsManager.GetInstance().GetEnemyBulletList();
         EnemyBulletBase bullet;
@@ -64,7 +67,10 @@ public class ColliderCircle : ObjectColliderBase
         {
             bullet = bulletList[i];
             // 判断是否要进行碰撞检测
-            if (bullet != null && bullet.ClearFlag == 0 && bullet.CanBeEliminated(eEliminateDef.HitObject))
+            if (bullet != null && 
+                bullet.ClearFlag == 0 && 
+                bullet.CanBeEliminated(eEliminateDef.HitObject) &&
+                bullet.CheckBoundingBoxesIntersect(lbPos,rtPos) )
             {
                 DetectCollisionWithEnemyBullet(bullet);
             }

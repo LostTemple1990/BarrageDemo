@@ -482,7 +482,6 @@ public class EnemyLinearLaser : EnemyBulletBase
         _curPos = _movableObj.GetPos();
         // 添加新的路径点
         _pathList.Add(_curPos);
-        _pathCount++;
         if ( _pathCount > _laserLen )
         {
             // 加速度不为0，说明长度改变了，重绘激光图像
@@ -495,6 +494,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
         else
         {
+            _pathCount++;
             if ( _laserSegmentCount == 0 )
             {
                 LaserSegment segment = CreateLaserSegment(0, 1);
@@ -677,13 +677,14 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     public override bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
     {
+        if (_pathCount <= 1) return false;
         Vector2 laserStartPos = _pathList[0];
-        Vector2 laserEndPos = _pathList[_laserLen - 1];
+        Vector2 laserEndPos = _pathList[_pathCount - 1];
         // 计算包围矩形的左下和右上的坐标
         Vector2 tmpLBPos = new Vector2(Mathf.Min(laserStartPos.x, laserEndPos.x), Mathf.Min(laserStartPos.y, laserEndPos.y));
         Vector2 tmpRTPos = new Vector2(Mathf.Max(laserStartPos.x, laserEndPos.x), Mathf.Max(laserStartPos.y, laserEndPos.y));
-        Vector2 bulletBoundingBoxLBPos = new Vector2(_curPos.x - DefaultCollisionHalfHeight, _curPos.y - DefaultCollisionHalfHeight);
-        Vector2 bulletBoundingBoxRTPos = new Vector2(_curPos.x + DefaultCollisionHalfHeight, _curPos.y + DefaultCollisionHalfHeight);
+        Vector2 bulletBoundingBoxLBPos = new Vector2(tmpLBPos.x - DefaultCollisionHalfHeight, tmpLBPos.y - DefaultCollisionHalfHeight);
+        Vector2 bulletBoundingBoxRTPos = new Vector2(tmpRTPos.x + DefaultCollisionHalfHeight, tmpRTPos.y + DefaultCollisionHalfHeight);
         // 由于通常情况下大部分子弹都是不在包围盒范围内的
         // 因此选择判断不相交的方式尽可能减少判断的次数
         bool notHit = bulletBoundingBoxRTPos.x < lbPos.x ||    // 子弹包围盒右边缘X坐标小于检测包围盒的左边缘X坐标

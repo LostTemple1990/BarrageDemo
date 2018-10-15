@@ -9,6 +9,7 @@ public class EnemyCurveLaser : EnemyBulletBase
     /// 擦弹判定冷却时间
     /// </summary>
     private const int GrazeCoolDown = 2;
+    private const int CollisionSegmentLen = 1;
 
     protected GameObject _bullet;
     protected Transform _trans;
@@ -64,7 +65,6 @@ public class EnemyCurveLaser : EnemyBulletBase
     /// </summary>
     private float _grazeRadius;
 
-    private List<Vector2> _collisionPointList;
     #endregion
     /// <summary>
     /// 消去的范围
@@ -93,8 +93,8 @@ public class EnemyCurveLaser : EnemyBulletBase
     /// <summary>
     /// 是否已经缓存好碰撞的段
     /// </summary>
-    private int _isCachedCollisionSegments;
-    private List<Vector2> _collisionSegmentsVec;
+    private bool _isCachedCollisionSegments;
+    private List<Vector2> _collisionSegmentsList;
     private int _collisionSegmentsCount;
 
     public EnemyCurveLaser()
@@ -105,7 +105,6 @@ public class EnemyCurveLaser : EnemyBulletBase
         _sysBusyWeight = 20;
         _availableIndexRangeList = new List<Vector2>();
         _eliminateRangeList = new List<Vector2>();
-        _collisionPointList = new List<Vector2>();
     }
 
     public override void Init()
@@ -117,6 +116,9 @@ public class EnemyCurveLaser : EnemyBulletBase
         _collisionRadius = 3;
         _availableCount = 0;
         _eliminateRangeListCount = 0;
+        _isCachedCollisionSegments = false;
+        _collisionSegmentsList = new List<Vector2>();
+        _collisionSegmentsCount = 0;
         if ( _movableObj == null )
         {
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
@@ -180,13 +182,6 @@ public class EnemyCurveLaser : EnemyBulletBase
         _laserHalfWidth = halfWidth;
         _collisionRadius = collisionHalfWidth;
         _grazeRadius = collisionHalfWidth * 1.5f;
-        // 设置碰撞参数
-        _collisionParas = new CollisionDetectParas
-        {
-            type = CollisionDetectType.MultiSegments,
-            radius = _collisionRadius,
-            multiSegmentPointList = _collisionPointList,
-        };
     }
 
     public override void Update()
@@ -218,17 +213,75 @@ public class EnemyCurveLaser : EnemyBulletBase
         _grazeHalfHeight = paras.halfHeight;
     }
 
-    public override CollisionDetectParas GetCollisionDetectParas()
+    /// <summary>
+    /// 曲线激光不进行碰撞盒判定
+    /// </summary>
+    /// <param name="lbPos"></param>
+    /// <param name="rtPos"></param>
+    /// <returns></returns>
+    public override bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
     {
-        return _collisionParas;
+        return true;
     }
 
     public override CollisionDetectParas GetCollisionDetectParas(int index = 0)
     {
-        return base.GetCollisionDetectParas(index);
+        if ( !_isCachedCollisionSegments )
+        {
+            CacheCollisionSegments();
+        }
+        if ( _collisionSegmentsCount == 0 )
+        {
+            return new CollisionDetectParas
+            {
+                type = CollisionDetectType.Null,
+                nextIndex = -1,
+            };
+        }
+        Vector2 segmentVec = _collisionSegmentsList[index];
+        Vector2 centerPos = (_trailsList[(int)segmentVec.x] + _trailsList[(int)segmentVec.y]) / 2 + new Vector2(_relationX, _relationY);
+        return new CollisionDetectParas
+        {
+            type = CollisionDetectType.Circle,
+            centerPos = centerPos,
+            radius = _collisionRadius,
+            nextIndex = index + 1 >= _collisionSegmentsCount ? -1 : index + 1,
+        };
     }
 
+    /// <summary>
+    /// 缓存碰撞段
+    /// <para></para>
+    /// </summary>
+    private void CacheCollisionSegments()
+    {
+        _collisionSegmentsList.Clear();
+        _collisionSegmentsCount = 0;
+        int endIndex,segmentEndIndex;
+        Vector2 segmentVec;
+        for (int i=0;i<_availableCount;i++)
+        {
+            segmentVec = _availableIndexRangeList[i];
+            segmentEndIndex = (int)segmentVec.y;
+            for (int j=(int)segmentVec.x;j< segmentEndIndex; j+=CollisionSegmentLen)
+            {
+                endIndex = j + CollisionSegmentLen > segmentEndIndex ? segmentEndIndex : j + CollisionSegmentLen;
+                // 该段不为一个点，则加入到碰撞段中
+                if ( endIndex != j )
+                {
+                    _collisionSegmentsList.Add(new Vector2(j, endIndex));
+                    _collisionSegmentsCount++;
+                }
+            }
+        }
+        _isCachedCollisionSegments = true;
+    }
 
+    public override void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObject)
+    {
+        _eliminateRangeList.Add(_collisionSegmentsList[n]);
+        _eliminateRangeListCount++;
+    }
     #endregion
 
     public virtual void SetStraightParas(float v, float angle, float acce, float accAngle)
@@ -255,13 +308,13 @@ public class EnemyCurveLaser : EnemyBulletBase
         if (_curTrailLen >= _maxTrailLen)
         {
             _trailsList.RemoveAt(0);
-            _collisionPointList.RemoveAt(0);
         }
         else
         {
             // 标识三角形数据需要重新计算
             _triModified = true;
             _uvModified = true;
+            _isCachedCollisionSegments = false;
             // 长度增加，因此要修改availableRangeList
             _curTrailLen++;
             if ( _availableCount == 0 )
@@ -293,12 +346,11 @@ public class EnemyCurveLaser : EnemyBulletBase
             }
         }
         _trailsList.Add(new Vector3(_curPos.x, _curPos.y, 0));
-        _collisionPointList.Add(new Vector3(_curPos.x+_relationX, _curPos.y+_relationY, 0));
     }
 
     private void PopulateMesh()
     {
-        if (_curTrailLen < 2) return;
+        if (_curTrailLen < 1) return;
         int i,startIndex,endIndex,tmpVerCount,totalVerCount;
         List<Vector3> tmpVerticesList = new List<Vector3>();
         List<Vector3> meshVerticesList = new List<Vector3>();
@@ -498,7 +550,7 @@ public class EnemyCurveLaser : EnemyBulletBase
                     minDis = MathUtil.GetMinDisFromPointToLineSegment(vecA, vecB, vecP);
                     if (minDis < _collisionRadius + Global.PlayerCollisionVec.z)
                     {
-                        EliminateByRange(i, tmpIdx);
+                        //EliminateByRange(i, tmpIdx);
                         PlayerService.GetInstance().GetCharacter().BeingHit();
                     }
                 }
@@ -521,6 +573,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         DivideAvailableRange();
         _triModified = true;
         _uvModified = true;
+        _isCachedCollisionSegments = true;
     }
 
     /// <summary>
@@ -593,7 +646,6 @@ public class EnemyCurveLaser : EnemyBulletBase
     public override void Clear()
     {
         _trailsList.Clear();
-        _collisionPointList.Clear();
         _curTrailLen = _maxTrailLen = 0;
         _mesh.Clear();
         _mesh = null;
