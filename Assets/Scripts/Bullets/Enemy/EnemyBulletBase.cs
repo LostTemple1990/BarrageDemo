@@ -164,12 +164,12 @@ public class EnemyBulletBase :BulletBase
 
     public override void Clear()
     {
-        base.Clear();
         for (int i=0;i<_componentsCount;i++)
         {
             _components[i].Clear();
         }
         _components.Clear();
         _componentsCount = 0;
+        base.Clear();
     }
 }

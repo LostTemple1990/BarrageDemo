@@ -64,8 +64,7 @@ public class BulletBase :ICollisionObject
 
     public virtual void SetToPosition(Vector2 pos)
     {
-        _curPos.x = pos.x;
-        _curPos.y = pos.y;
+        _curPos = pos;
     }
 
     public virtual void SetToPosition(float posX,float posY)

@@ -12,6 +12,8 @@ public class STGMain
         {
             return;
         }
+        CommandManager.GetInstance().RunCommand(CommandConsts.STGFrameStart);
+        long frameBeginTime = System.DateTime.Now.Ticks;
         _opController.Update();
         _char.Update();
         ColliderManager.GetInstance().Update();
@@ -38,7 +40,12 @@ public class STGMain
             spObj.DoFade(Random.Range(90, 180), Random.Range(180, 300));
             BackgroundManager.GetInstance().AddBgSpriteObject(spObj);
         }
-
+        long frameEndTime = System.DateTime.Now.Ticks;
+        if ( frameEndTime - frameBeginTime >= 50000 )
+        {
+            Logger.LogWarn("Frame " + STGStageManager.GetInstance().GetFrameSinceStageStart() + " cost time " + (frameEndTime-frameBeginTime)/10000f + "ms");
+            CommandManager.GetInstance().RunCommand(CommandConsts.LogFrameStatistics);
+        }
         //if ( frameNode == 200 )
         //{
         //    List<object> datas = new List<object>();

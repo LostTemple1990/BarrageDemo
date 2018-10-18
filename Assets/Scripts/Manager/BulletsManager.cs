@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletsManager
+public class BulletsManager : ICommand
 {
     private static BulletsManager _instance;
 
@@ -24,26 +24,43 @@ public class BulletsManager
     /// 玩家的子弹
     /// </summary>
     private List<PlayerBulletBase> _playerBullets;
+    private int _playerBulletsCount;
     /// <summary>
     /// 待清除的子弹列表
     /// </summary>
     private List<BulletBase> _clearList;
-
+    /// <summary>
+    /// 敌机子弹列表
+    /// </summary>
     private List<EnemyBulletBase> _enemyBullets;
+    /// <summary>
+    /// 敌机子弹计数
+    /// </summary>
+    private int _enemyBulletsCount;
 
     private Dictionary<string, IParser> _enemyDefaultBulletDataBase;
     private Dictionary<string, IParser> _playerBulletDataBase;
     private Dictionary<string, IParser> _enemyLinearLaserDataBase;
 
+    #region 子弹生成统计数据相关
+    // 一帧中创建的子弹数目
+    private int _countOfPlayerBulletCreatedInFrame;
+    private int _countOfEnemyBulletCreatedInFrame;
+    #endregion
+
     public void Init()
     {
         _playerBullets = new List<PlayerBulletBase>();
+        _playerBulletsCount = 0;
         _enemyBullets = new List<EnemyBulletBase>();
+        _enemyBulletsCount = 0;
         _enemyBullets.Capacity = 5000;
         _clearList = new List<BulletBase>();
         _enemyDefaultBulletDataBase = DataManager.GetInstance().GetDatasByName("EnemyBulletDefaultCfgs") as Dictionary<string, IParser>;
         _playerBulletDataBase = DataManager.GetInstance().GetDatasByName("PlayerBulletCfgs") as Dictionary<string, IParser>;
         _enemyLinearLaserDataBase = DataManager.GetInstance().GetDatasByName("EnemyLinearLaserCfgs") as Dictionary<string, IParser>;
+        CommandManager.GetInstance().Register(CommandConsts.STGFrameStart, this);
+        CommandManager.GetInstance().Register(CommandConsts.LogFrameStatistics, this);
     }
 
     public bool RegisterPlayerBullet(PlayerBulletBase bullet)
@@ -53,6 +70,8 @@ public class BulletsManager
             return false;
         }
         _playerBullets.Add(bullet);
+        _playerBulletsCount++;
+        _countOfPlayerBulletCreatedInFrame++;
         return true;
     }
 
@@ -63,6 +82,8 @@ public class BulletsManager
             return false;
         }
         _enemyBullets.Add(bullet);
+        _enemyBulletsCount++;
+        _countOfEnemyBulletCreatedInFrame++;
         return true;
     }
 
@@ -83,7 +104,7 @@ public class BulletsManager
     {
         PlayerBulletBase tmpBullet;
         int tmpCount, i, j,findFlag;
-        tmpCount = _playerBullets.Count;
+        tmpCount = _playerBulletsCount;
         for (i = 0, j = 1; i < tmpCount; i++,j++)
         {
             findFlag = 1;
@@ -110,6 +131,7 @@ public class BulletsManager
             if (findFlag == 0)
             {
                 _playerBullets.RemoveRange(i, tmpCount - i);
+                _playerBulletsCount = i;
                 break;
             }
         }
@@ -119,7 +141,7 @@ public class BulletsManager
     {
         EnemyBulletBase tmpBullet;
         int tmpCount, i, j, findFlag;
-        tmpCount = _enemyBullets.Count;
+        tmpCount = _enemyBulletsCount;
         //Logger.Log(tmpCount);
         for (i = 0, j = 1; i < tmpCount; i++, j++)
         {
@@ -147,6 +169,7 @@ public class BulletsManager
             if (findFlag == 0)
             {
                 _enemyBullets.RemoveRange(i, tmpCount - i);
+                _enemyBulletsCount = i;
                 break;
             }
         }
@@ -308,6 +331,9 @@ public class BulletsManager
             case BulletId.Enemy_LinearLaser:
                 protoType = CreateEnemyLinearLaserProtoType(bulletId);
                 break;
+            case BulletId.Player_Laser:
+                protoType = CreatePlayerLaserProtoType(bulletId);
+                break;
         }
         return protoType;
     }
@@ -334,7 +360,7 @@ public class BulletsManager
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddBulletProtoType(bulletId, protoType);
-        // 创建缓存stack
+        Logger.Log("Create EnemySimpleBullet ProtoType " + bulletId);
         return protoType;
     }
 
@@ -394,6 +420,7 @@ public class BulletsManager
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddBulletProtoType(bulletId, protoType);
+        Logger.Log("Create EnemyLinearLaser ProtoType " + bulletId);
         return protoType;
     }
 
@@ -420,6 +447,29 @@ public class BulletsManager
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.PlayerBarage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddBulletProtoType(bulletId, protoType);
+        Logger.Log("Create PlayerSimpleBullet ProtoType " + bulletId);
+        return protoType;
+    }
+
+    /// <summary>
+    /// 创建PlayerLaser的原型
+    /// </summary>
+    /// <param name="bulletId"></param>
+    /// <returns></returns>
+    private GameObject CreatePlayerLaserProtoType(int bulletId)
+    {
+        GameObject original = Resources.Load<GameObject>("BulletPrefab/PlayerLaser");
+        GameObject protoType = GameObject.Instantiate<GameObject>(original);
+        // 读取配置
+        PlayerBulletCfg cfg = BulletsManager.GetInstance().GetPlayerBulletCfgById(bulletId.ToString());
+        // 设置sprite以及material
+        protoType.name = cfg.textureName;
+        SpriteRenderer sp = protoType.transform.Find("Laser").GetComponent<SpriteRenderer>();
+        sp.sprite = ResourceManager.GetInstance().GetSprite(cfg.packName, cfg.textureName);
+        UIManager.GetInstance().AddGoToLayer(protoType, LayerId.PlayerBarage);
+        // 添加原型到缓存池中
+        ObjectsPool.GetInstance().AddBulletProtoType(bulletId, protoType);
+        Logger.Log("Create PlayerLaser ProtoType " + bulletId);
         return protoType;
     }
 
@@ -461,11 +511,10 @@ public class BulletsManager
 
     public void Clear()
     {
-        int tmpCount, i;
+        int i;
         BulletBase bullet;
         // 己方子弹
-        tmpCount = _playerBullets.Count;
-        for (i=0;i<tmpCount;i++)
+        for (i=0;i< _playerBulletsCount; i++)
         {
             bullet = _playerBullets[i];
             if ( bullet != null )
@@ -475,9 +524,9 @@ public class BulletsManager
             }
         }
         _playerBullets.Clear();
+        _playerBulletsCount = 0;
         // 敌方子弹
-        tmpCount = _enemyBullets.Count;
-        for (i = 0; i < tmpCount; i++)
+        for (i = 0; i < _enemyBulletsCount; i++)
         {
             bullet = _enemyBullets[i];
             if (bullet != null)
@@ -487,5 +536,30 @@ public class BulletsManager
             }
         }
         _enemyBullets.Clear();
+        _enemyBulletsCount = 0;
+    }
+
+    public void Execute(int cmd, object[] data)
+    {
+        if ( cmd == CommandConsts.STGFrameStart )
+        {
+            ResetFrameStatistics();
+        }
+        else if ( cmd == CommandConsts.LogFrameStatistics )
+        {
+            LogFrameStatistics();
+        }
+    }
+
+    private void ResetFrameStatistics()
+    {
+        _countOfPlayerBulletCreatedInFrame = 0;
+        _countOfEnemyBulletCreatedInFrame = 0;
+    }
+
+    private void LogFrameStatistics()
+    {
+        Logger.Log("CountOfPlayerBulletCreated = " + _countOfPlayerBulletCreatedInFrame);
+        Logger.Log("CountOfEnemyBulletCreated = " + _countOfEnemyBulletCreatedInFrame);
     }
 }

@@ -11,6 +11,11 @@ public class PlayerBulletSimple : PlayerBulletBase
 
     protected float _collisionRadius;
 
+    protected bool _isEliminating;
+    protected int _eliminatingTime;
+    protected int _eliminatingDuration;
+    protected Color _bulletColor;
+
     public PlayerBulletSimple()
     {
         _id = BulletId.Player_Simple;
@@ -19,6 +24,7 @@ public class PlayerBulletSimple : PlayerBulletBase
     public override void Init()
     {
         base.Init();
+        _isEliminating = false;
         BulletsManager.GetInstance().RegisterPlayerBullet(this);
         _movableObject = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
     }
@@ -44,18 +50,25 @@ public class PlayerBulletSimple : PlayerBulletBase
 
     public override void Update()
     {
-        _lastPos = _curPos;
-        _movableObject.Update();
-        _curPos = _movableObject.GetPos();
-        CheckRotated();
-        CheckHitEnemy();
-        if ( IsOutOfBorder() )
+        if ( !_isEliminating )
         {
-            _clearFlag = 1;
+            _lastPos = _curPos;
+            _movableObject.Update();
+            _curPos = _movableObject.GetPos();
+            CheckRotated();
+            CheckHitEnemy();
+            if (IsOutOfBorder())
+            {
+                _clearFlag = 1;
+            }
+            else
+            {
+                UpdatePos();
+            }
         }
         else
         {
-            UpdatePos();
+            UpdateEliminating();
         }
     }
 
@@ -134,7 +147,7 @@ public class PlayerBulletSimple : PlayerBulletBase
                     Mathf.Abs(_curPos.y - paras.centerPos.y) <= _collisionRadius + paras.halfHeight )
                 {
                     enemy.GetHit(GetDamage());
-                    _clearFlag = 1;
+                    BeginEliminating();
                 }
             }
         }
@@ -150,6 +163,39 @@ public class PlayerBulletSimple : PlayerBulletBase
         };
     }
 
+    /// <summary>
+    /// 开始消弹
+    /// </summary>
+    protected virtual void BeginEliminating()
+    {
+        _eliminatingTime = 0;
+        _eliminatingDuration = 10;
+        _bulletColor = _renderer.color;
+        _isEliminating = true;
+        // 偏移一点角度
+        //_trans.Rotate(new Vector3(0, 0, Random.Range(-10,10)));
+    }
+
+    /// <summary>
+    /// 消弹动画
+    /// </summary>
+    protected virtual void UpdateEliminating()
+    {
+        if ( _eliminatingTime < _eliminatingDuration )
+        {
+            float alhpa = 1 - (float)_eliminatingTime / _eliminatingDuration;
+            _bulletColor.a = alhpa;
+            _renderer.color = _bulletColor;
+            _eliminatingTime++;
+
+        }
+        else
+        {
+            _isEliminating = false;
+            _clearFlag = 1;
+        }
+    }
+
     protected override int GetDamage()
     {
         return 2;
@@ -157,6 +203,7 @@ public class PlayerBulletSimple : PlayerBulletBase
 
     public override void Clear()
     {
+        _renderer.color = new Color(1, 1, 1, 1);
         UIManager.GetInstance().HideGo(_bullet);
         ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         _bullet = null;

@@ -46,7 +46,7 @@ public class MarisaA : CharacterBase
     public override void Init()
     {
         _charAniId = "1011";
-        _character = ResourceManager.GetInstance().GetPrefab("Prefab/Character", "MarisaA");
+        _character = ResourceManager.GetInstance().GetPrefab("Prefab/Character/MarisaA", "MarisaA");
         _aniChar = AnimationManager.GetInstance().CreateAnimation<AnimationCharacter>(_character, "MarisaAni", LayerId.Player);
         _aniChar.Play(_charAniId, AniActionType.Idle, Consts.DIR_NULL);
         base.Init();
@@ -89,6 +89,20 @@ public class MarisaA : CharacterBase
         _subPosOffset[Consts.SlowMove][3] = new Vector2[] { new Vector2(-28f, 4f), new Vector2(-12f, 28f), new Vector2(12f, 28f), new Vector2(28f, 4f) };
         _isSubMoving = false;
         _subMoveDuration = SubMoveDuration;
+    }
+
+    protected override void CreateMainBullets()
+    {
+        // 左侧子弹
+        PlayerBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Player_Simple) as PlayerBulletSimple;
+        bullet.ChangeStyleById(_mainBulletId);
+        bullet.DoMoveStraight(10f, 90f);
+        bullet.SetToPosition(_curPos.x + _leftBulletOffset.x, _curPos.y + _leftBulletOffset.y);
+        // 右侧子弹
+        bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Player_Simple) as PlayerBulletSimple;
+        bullet.ChangeStyleById(_mainBulletId);
+        bullet.DoMoveStraight(10f, 90f);
+        bullet.SetToPosition(_curPos.x + _rightBulletOffset.x, _curPos.y + _rightBulletOffset.y);
     }
 
     protected override void UpdateSubWeapons()

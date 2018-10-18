@@ -39,12 +39,28 @@ public class PlayerLaser : PlayerBulletBase
     public override void Init()
     {
         base.Init();
-        _laserTf = _trans.Find("Laser");
-        _laserSr = _laserTf.GetComponent<SpriteRenderer>();
-        UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.PlayerBarage);
-        _trans.localRotation = Quaternion.Euler(0f, 0f, 90f);
         BulletsManager.GetInstance().RegisterPlayerBullet(this);
         _isCached = false;
+    }
+
+    public override void ChangeStyleById(string id)
+    {
+        if (_bullet != null)
+        {
+            UIManager.GetInstance().HideGo(_bullet);
+            ObjectsPool.GetInstance().RestorePrefabToPool(_bulletCfg.textureName, _bullet);
+        }
+        _bulletCfg = BulletsManager.GetInstance().GetPlayerBulletCfgById(id);
+        _prefabName = id;
+        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Player_Laser, int.Parse(id));
+        _trans = _bullet.transform;
+        _laserTf = _trans.Find("Laser");
+        _laserSr = _laserTf.GetComponent<SpriteRenderer>();
+        _laserSr.sprite = ResourceManager.GetInstance().GetSprite(_bulletCfg.packName, _bulletCfg.textureName);
+        UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.PlayerBarage);
+        _texWidth = 256;
+        _repeatCount = 2f;
+        _laserTf.localPosition = new Vector3(_texWidth * _repeatCount / 2, 0, 0);
     }
 
     /// <summary>
@@ -56,6 +72,11 @@ public class PlayerLaser : PlayerBulletBase
     /// <param name="repeatCount">平铺的次数</param>
     public void SetTextureProps(string packName,string texName,float texWidth,float repeatCount)
     {
+
+        _trans.localRotation = Quaternion.Euler(0f, 0f, 90f);
+        _laserTf = _trans.Find("Laser");
+        _laserSr = _laserTf.GetComponent<SpriteRenderer>();
+        UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.PlayerBarage);
         _laserSr.sprite = ResourceManager.GetInstance().GetSprite(packName, texName);
         _texWidth = texWidth;
         _repeatCount = repeatCount;
@@ -65,7 +86,7 @@ public class PlayerLaser : PlayerBulletBase
     {
         _curAngle = angle;
         // 角度
-        _laserTf.rotation = Quaternion.Euler(0, 0, _curAngle);
+        _trans.rotation = Quaternion.Euler(0, 0, _curAngle);
         _dirVec = new Vector2(Mathf.Cos(_curAngle * Mathf.Deg2Rad), Mathf.Sin(_curAngle * Mathf.Deg2Rad));
     }
 
@@ -77,6 +98,7 @@ public class PlayerLaser : PlayerBulletBase
         {
             RenderLaser();
         }
+        UpdatePos();
     }
 
     private void Cache()
@@ -140,7 +162,8 @@ public class PlayerLaser : PlayerBulletBase
 
     private void RenderLaser()
     {
-        _laserSr.material.SetFloat("_CurLen", _curLaserLen);
+        _laserSr.material.SetFloat("_CurLaserLen", _curLaserLen);
+        //Logger.Log("Set CurLaserLen To " + _curLaserLen);
         _preLaserLen = _curLaserLen;
     }
 
@@ -151,6 +174,8 @@ public class PlayerLaser : PlayerBulletBase
 
     public override void Clear()
     {
+        UIManager.GetInstance().HideGo(_bullet);
+        ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         _laserSr.sprite = null;
         _laserSr = null;
         _laserTf = null;

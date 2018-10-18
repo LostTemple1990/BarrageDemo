@@ -160,6 +160,9 @@ end
 CustomizedEnemyTable.TestKillEnemy = {}
 CustomizedEnemyTable.TestKillEnemy.Init = function(enemy)
 	do
+		lib.SetEnemyMaxHp(enemy,1000)
+	end
+	do
 		local itemDatas = {}
 		table.insert(itemDatas,{itemType = 1,itemCount = 5})
 		lib.SetEnemyDropItems(enemy,itemDatas,48,48)

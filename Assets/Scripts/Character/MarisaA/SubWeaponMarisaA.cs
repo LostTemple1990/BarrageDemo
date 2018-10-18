@@ -69,7 +69,8 @@ public class SubWeaponMarisaA : SubWeaponBase
                 if ( _laser == null )
                 {
                     _laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Player_Laser) as PlayerLaser;
-                    _laser.SetTextureProps(Consts.MarisaAtlasName, "MarisaALaser", 256, 2);
+                    _laser.ChangeStyleById("521000");
+                    //_laser.SetTextureProps(Consts.MarisaAtlasName, "MarisaALaser", 256, 2);
                 }
                 // 星星特效
                 _curStarScale = 1;

@@ -14,6 +14,14 @@ public class Logger
         }
     }
 
+    public static void LogWarn(object message)
+    {
+        if (logFlag)
+        {
+            Debug.LogWarning(message);
+        }
+    }
+
     public static void LogError(object message)
     {
         if (logFlag)

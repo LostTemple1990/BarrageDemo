@@ -31,6 +31,14 @@
     /// 解析stage.lua完成
     /// </summary>
     public const int STGLoadStageLuaComplete = 3002;
+    /// <summary>
+    /// STG每帧开始
+    /// </summary>
+    public const int STGFrameStart = 3003;
+    /// <summary>
+    /// 打印当前帧的一些统计数据
+    /// </summary>
+    public const int LogFrameStatistics = 3004;
 
     public const int RetryStage = 3010;
     public const int RetryGame = 3011;

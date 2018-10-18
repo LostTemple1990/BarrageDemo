@@ -34,7 +34,6 @@ public class NormalEnemy : EnemyBase
         _enemyGo = _enemyObj.GetObject();
         //SetEnemyAni(cfg.aniId);
         SetCollisionParams(cfg.collisionHalfWidth, cfg.collisionHalfWidth);
-        SetMaxHp(cfg.maxHp);
         _dropItemDatas = null;
     }
 

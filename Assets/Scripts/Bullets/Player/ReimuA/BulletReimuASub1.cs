@@ -20,6 +20,18 @@ public class BulletReimuASub1 : PlayerBulletSimple
     /// 标识该子弹是否已经锁定过目标
     /// </summary>
     private int _targetFlag = 0;
+    /// <summary>
+    /// 消弹特效对象
+    /// </summary>
+    protected GameObject _eliminateEffectObject;
+    /// <summary>
+    /// 消弹特效Tf
+    /// </summary>
+    protected Transform _eliminateEffectTf;
+    /// <summary>
+    /// 消弹特效spriteRenderer
+    /// </summary>
+    protected SpriteRenderer _eliminateEffectSr;
 
     public BulletReimuASub1()
     {
@@ -35,22 +47,29 @@ public class BulletReimuASub1 : PlayerBulletSimple
 
     public override void Update()
     {
-        _lastPos = _curPos;
-        if ( _targetFlag == 0 )
+        if ( !_isEliminating )
         {
-            GetRandomTarget();
+            _lastPos = _curPos;
+            if (_targetFlag == 0)
+            {
+                GetRandomTarget();
+            }
+            if (_target != null && !_target.CanHit())
+            {
+                _target = null;
+            }
+            if (_isMoving)
+            {
+                Move();
+            }
+            CheckRotated();
+            CheckHitEnemy();
+            UpdatePos();
         }
-        if ( _target != null && !_target.CanHit() )
+        else
         {
-            _target = null;
+            UpdateEliminating();
         }
-        if ( _isMoving )
-        {
-            Move();
-        }
-        CheckRotated();
-        CheckHitEnemy();
-        UpdatePos();
     }
 
     protected virtual void GetRandomTarget()
@@ -113,6 +132,37 @@ public class BulletReimuASub1 : PlayerBulletSimple
         _bullet.transform.Rotate(RotateEuler);
     }
 
+    protected override void BeginEliminating()
+    {
+        _eliminateEffectObject = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Player_Simple, 502000);
+        _eliminateEffectTf = _eliminateEffectObject.transform;
+        _eliminateEffectSr = _eliminateEffectTf.Find("BulletSprite").GetComponent<SpriteRenderer>();
+        // 设置初始旋转角度
+        float angle = _trans.localRotation.eulerAngles.z;
+        _eliminateEffectTf.localPosition = _curPos;
+        _eliminateEffectTf.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        // 消弹时间
+        _eliminatingTime = 0;
+        _eliminatingDuration = 20;
+        _isEliminating = true;
+        // 原子弹移动到看不见的地方
+        _curPos = new Vector2(2000, 2000);
+    }
+
+    protected override void UpdateEliminating()
+    {
+        if ( _eliminatingTime < _eliminatingDuration )
+        {
+            _eliminateEffectSr.color = new Color(1, 1, 1, 1 - (float)_eliminatingTime / _eliminatingDuration);
+            _eliminatingTime++;
+        }
+        else
+        {
+            _isEliminating = false;
+            _clearFlag = 1;
+        }
+    }
+
     protected override int GetDamage()
     {
         return 1;
@@ -121,6 +171,14 @@ public class BulletReimuASub1 : PlayerBulletSimple
     public override void Clear()
     {
         _target = null;
+        if ( _eliminateEffectObject != null )
+        {
+            _eliminateEffectSr.color = new Color(1, 1, 1, 1);
+            ObjectsPool.GetInstance().RestorePrefabToPool("502000", _eliminateEffectObject);
+            _eliminateEffectObject = null;
+            _eliminateEffectTf = null;
+            _eliminateEffectSr = null;
+        }
         base.Clear();
     }
 }

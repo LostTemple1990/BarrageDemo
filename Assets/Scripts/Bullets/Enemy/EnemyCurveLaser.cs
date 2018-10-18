@@ -22,6 +22,11 @@ public class EnemyCurveLaser : EnemyBulletBase
     /// 长度
     /// </summary>
     protected int _maxTrailLen;
+    /// <summary>
+    /// 当前激光的长度
+    /// <para>即，路径点的个数-1</para>
+    /// <para>在曲线激光的处理中，第一个加入的点为vec2(0,0)</para>
+    /// </summary>
     protected int _curTrailLen;
 
     protected float _laserHalfWidth;
@@ -345,7 +350,7 @@ public class EnemyCurveLaser : EnemyBulletBase
                 }
             }
         }
-        _trailsList.Add(new Vector3(_curPos.x, _curPos.y, 0));
+        _trailsList.Add(new Vector2(_curPos.x, _curPos.y));
     }
 
     private void PopulateMesh()
