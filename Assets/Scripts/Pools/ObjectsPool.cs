@@ -21,7 +21,7 @@ public class ObjectsPool
     /// <summary>
     /// 子弹原型字典
     /// </summary>
-    private Dictionary<int, GameObject> _bulletProtoTypeDic;
+    private Dictionary<string, GameObject> _protoTypeDic;
 
     private ObjectsPool()
     {
@@ -33,7 +33,7 @@ public class ObjectsPool
         _bulletsPool = new Dictionary<BulletId, Stack<BulletBase>>();
         _bulletPrefabsPool = new Dictionary<string, Stack<GameObject>>();
         _dataClassPool = new Dictionary<string, Stack<IPoolClass>>();
-        _bulletProtoTypeDic = new Dictionary<int, GameObject>();
+        _protoTypeDic = new Dictionary<string, GameObject>();
     }
 
     /// <summary>
@@ -85,6 +85,7 @@ public class ObjectsPool
             _stack = new Stack<GameObject>();
             _bulletPrefabsPool.Add(prefabName, _stack);
         }
+        UIManager.GetInstance().HideGo(go);
         _stack.Push(go);
     }
 
@@ -193,14 +194,14 @@ public class ObjectsPool
     }
 
     /// <summary>
-    /// 根据子弹贴图id获取贴图原型prefab
+    /// 根据原型名称获取原型
     /// </summary>
     /// <param name="textureId"></param>
     /// <returns></returns>
-    public GameObject GetBulletProtoType(int textureId)
+    public GameObject GetProtoType(string protoTypeName)
     {
         GameObject protoType;
-        if ( _bulletProtoTypeDic.TryGetValue(textureId,out protoType) )
+        if ( _protoTypeDic.TryGetValue(protoTypeName, out protoType) )
         {
             return protoType;
         }
@@ -212,15 +213,15 @@ public class ObjectsPool
     /// </summary>
     /// <param name="textureId"></param>
     /// <param name="protoType"></param>
-    public void AddBulletProtoType(int textureId,GameObject protoType)
+    public void AddProtoType(string protoTypeName,GameObject protoType)
     {
         try
         {
-            _bulletProtoTypeDic.Add(textureId, protoType);
+            _protoTypeDic.Add(protoTypeName, protoType);
         }
         catch
         {
-            throw new System.Exception("Add ProtoType to dic fail! TextureId = " + textureId);
+            throw new System.Exception("Add ProtoType to dic fail! ProtoTypeName = " + protoTypeName);
         }
     }
 
@@ -280,18 +281,18 @@ public class ObjectsPool
     /// <summary>
     /// 清除子弹的原型缓存
     /// </summary>
-    public void DestroyBulletProtoTypes()
+    public void DestroyProtoTypes()
     {
-        var keys = _bulletProtoTypeDic.Keys;
+        var keys = _protoTypeDic.Keys;
         GameObject protoType;
-        foreach (int id in keys)
+        foreach (string name in keys)
         {
-            if ( _bulletProtoTypeDic.TryGetValue(id,out protoType) )
+            if ( _protoTypeDic.TryGetValue(name, out protoType) )
             {
                 GameObject.Destroy(protoType);
             }
         }
-        _bulletProtoTypeDic.Clear();
+        _protoTypeDic.Clear();
     }
 }
 

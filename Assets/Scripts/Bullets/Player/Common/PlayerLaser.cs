@@ -52,7 +52,7 @@ public class PlayerLaser : PlayerBulletBase
         }
         _bulletCfg = BulletsManager.GetInstance().GetPlayerBulletCfgById(id);
         _prefabName = id;
-        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Player_Laser, int.Parse(id));
+        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Player_Laser, id);
         _trans = _bullet.transform;
         _laserTf = _trans.Find("Laser");
         _laserSr = _laserTf.GetComponent<SpriteRenderer>();
@@ -152,12 +152,22 @@ public class PlayerLaser : PlayerBulletBase
                 }
             }
         }
+        _curLaserLen = minDis;
         // 如果有击中敌机
         if ( hitEnemy != null )
         {
             hitEnemy.GetHit(GetDamage());
+            // 击中特效
+            Vector2 effectPos = _curPos + _dirVec * minDis;
+            SpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as SpriteEffect;
+            effect.SetSprite(_bulletCfg.eliminateEffectAtlas, _bulletCfg.elminaateEffectSprite, true);
+            effect.SetLayer(LayerId.STGNormalEffect);
+            effect.SetSpriteColor(_bulletCfg.eliminateColor.r, _bulletCfg.eliminateColor.g, _bulletCfg.eliminateColor.b, 1);
+            float offsetX = Random.Range(-5, 5);
+            float offsetY = Random.Range(-5, 5);
+            effect.SetToPos(effectPos.x+offsetX, effectPos.y+offsetY);
+            effect.DoFade(5);
         }
-        _curLaserLen = minDis;
     }
 
     private void RenderLaser()

@@ -64,7 +64,7 @@ public class DataManager
         XmlNode xmlNode = xmlDoc.SelectSingleNode("Data");
         XmlNodeList nodeList = xmlNode.ChildNodes;
         string parserName;
-        if (this._parserMap.TryGetValue(name, out parserName))
+        if (_parserMap.TryGetValue(name, out parserName))
         {
             Type type = Type.GetType(parserName);
             IParser parser = (IParser)type.Assembly.CreateInstance(type.Name);
@@ -74,7 +74,14 @@ public class DataManager
             {
                 newParser = parser.CreateNewInstance();
                 newParser.parse(xe);
+                //try
+                //{
                 dic.Add(xe.GetAttribute("id"), newParser);
+                //}
+                //catch (System.Exception e)
+                //{
+                //    Logger.Log("id already exist!XmlName = " + name + " id = " + xe.GetAttribute("id"));
+                //}
             }
             this._datasMap.Add(name, dic);
             return dic;

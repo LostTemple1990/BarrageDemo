@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Data>
-	<LinearLaser id="201000" comment="激光灰" laserTexName="Bullet201000" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" eliminateColor="0.5,0.5,0.5"/>
-	<LinearLaser id="201001" comment="激光灰" laserTexName="Bullet201000" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" eliminateColor="0.5,0.5,0.5"/>
-	<LinearLaser id="201010" comment="激光深红" laserTexName="Bullet201010" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.625,0.3,0.3"/>
-	<LinearLaser id="201011" comment="激光深红" laserTexName="Bullet201010" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.625,0.3,0.3"/>
-	<LinearLaser id="201020" comment="激光红" laserTexName="Bullet201020" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.8,0.3,0.3"/>
-	<LinearLaser id="201021" comment="激光红" laserTexName="Bullet201020" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.8,0.3,0.3"/>
-	<LinearLaser id="201030" comment="激光深紫" laserTexName="Bullet201030" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
-	<LinearLaser id="201031" comment="激光深紫" laserTexName="Bullet201030" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
-	<LinearLaser id="201040" comment="激光紫" laserTexName="Bullet201040" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
-	<LinearLaser id="201041" comment="激光紫" laserTexName="Bullet201040" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
-	<LinearLaser id="201050" comment="激光深蓝" laserTexName="Bullet201050" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
-	<LinearLaser id="201051" comment="激光深蓝" laserTexName="Bullet201050" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
-	<LinearLaser id="201060" comment="激光蓝" laserTexName="Bullet201060" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
-	<LinearLaser id="201061" comment="激光蓝" laserTexName="Bullet201060" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
-	<LinearLaser id="201070" comment="激光深青" laserTexName="Bullet201070" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
-	<LinearLaser id="201071" comment="激光深青" laserTexName="Bullet201070" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
-	<LinearLaser id="201080" comment="激光青" laserTexName="Bullet201080" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
-	<LinearLaser id="201081" comment="激光青" laserTexName="Bullet201080" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
-	<LinearLaser id="201090" comment="激光深绿" laserTexName="Bullet201090" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
-	<LinearLaser id="201091" comment="激光深绿" laserTexName="Bullet201090" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
-	<LinearLaser id="201100" comment="激光绿" laserTexName="Bullet201100" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
-	<LinearLaser id="201101" comment="激光绿" laserTexName="Bullet201100" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
-	<LinearLaser id="201110" comment="激光黄绿" laserTexName="Bullet201110" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="201111" comment="激光黄绿" laserTexName="Bullet201110" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="201120" comment="激光深黄" laserTexName="Bullet201120" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="201121" comment="激光深黄" laserTexName="Bullet201120" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="201130" comment="激光浅黄" laserTexName="Bullet201130" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="201131" comment="激光浅黄" laserTexName="Bullet201130" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="201140" comment="激光棕黄" laserTexName="Bullet201140" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="201141" comment="激光棕黄" laserTexName="Bullet201140" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="201150" comment="激光白" laserTexName="Bullet201150" laserHeadTexName="LaserHead_W0" laserSourceTexId="200150" eliminateColor="0.8,0.8,0.8"/>
-	<LinearLaser id="201151" comment="激光白" laserTexName="Bullet201150" laserHeadTexName="LaserHead_W0" laserSourceTexId="200150" eliminateColor="0.8,0.8,0.8"/>
-	<LinearLaser id="202000" comment="米弹灰" laserTexName="Bullet104000" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" eliminateColor="0.5,0.5,0.5"/>
-	<LinearLaser id="202001" comment="米弹灰" laserTexName="Bullet104000" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" eliminateColor="0.5,0.5,0.5"/>
-	<LinearLaser id="202010" comment="米弹深红" laserTexName="Bullet104010" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.625,0.3,0.3"/>
-	<LinearLaser id="202011" comment="米弹深红" laserTexName="Bullet104010" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.625,0.3,0.3"/>
-	<LinearLaser id="202020" comment="米弹红" laserTexName="Bullet104020" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.8,0.3,0.3"/>
-	<LinearLaser id="202021" comment="米弹红" laserTexName="Bullet104020" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.8,0.3,0.3"/>
-	<LinearLaser id="202030" comment="米弹深紫" laserTexName="Bullet104030" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
-	<LinearLaser id="202031" comment="米弹深紫" laserTexName="Bullet104030" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
-	<LinearLaser id="202040" comment="米弹紫" laserTexName="Bullet104040" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
-	<LinearLaser id="202041" comment="米弹紫" laserTexName="Bullet104040" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
-	<LinearLaser id="202050" comment="米弹深蓝" laserTexName="Bullet104050" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
-	<LinearLaser id="202051" comment="米弹深蓝" laserTexName="Bullet104050" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
-	<LinearLaser id="202060" comment="米弹蓝" laserTexName="Bullet104060" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
-	<LinearLaser id="202061" comment="米弹蓝" laserTexName="Bullet104060" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
-	<LinearLaser id="202070" comment="米弹深青" laserTexName="Bullet104070" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
-	<LinearLaser id="202071" comment="米弹深青" laserTexName="Bullet104070" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
-	<LinearLaser id="202080" comment="米弹青" laserTexName="Bullet104080" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
-	<LinearLaser id="202081" comment="米弹青" laserTexName="Bullet104080" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
-	<LinearLaser id="202090" comment="米弹深绿" laserTexName="Bullet104090" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
-	<LinearLaser id="202091" comment="米弹深绿" laserTexName="Bullet104090" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
-	<LinearLaser id="202100" comment="米弹绿" laserTexName="Bullet104100" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
-	<LinearLaser id="202101" comment="米弹绿" laserTexName="Bullet104100" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
-	<LinearLaser id="202110" comment="米弹黄绿" laserTexName="Bullet104110" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="202111" comment="米弹黄绿" laserTexName="Bullet104110" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="202120" comment="米弹深黄" laserTexName="Bullet104120" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="202121" comment="米弹深黄" laserTexName="Bullet104120" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="202130" comment="米弹浅黄" laserTexName="Bullet104130" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="202131" comment="米弹浅黄" laserTexName="Bullet104130" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="202140" comment="米弹棕黄" laserTexName="Bullet104140" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="202141" comment="米弹棕黄" laserTexName="Bullet104140" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
-	<LinearLaser id="202150" comment="米弹白" laserTexName="Bullet104150" laserHeadTexName="LaserHead_W0" laserSourceTexId="200150" eliminateColor="0.8,0.8,0.8"/>
-	<LinearLaser id="202151" comment="米弹白" laserTexName="Bullet104150" laserHeadTexName="LaserHead_W0" laserSourceTexId="200150" eliminateColor="0.8,0.8,0.8"/>
+	<LinearLaser id="201000" comment="激光灰" laserTexName="Bullet201000" materialType="0" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" eliminateColor="0.5,0.5,0.5"/>
+	<LinearLaser id="201001" comment="激光灰" laserTexName="Bullet201000" materialType="1" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" eliminateColor="0.5,0.5,0.5"/>
+	<LinearLaser id="201010" comment="激光深红" laserTexName="Bullet201010" materialType="0" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.625,0.3,0.3"/>
+	<LinearLaser id="201011" comment="激光深红" laserTexName="Bullet201010" materialType="1" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.625,0.3,0.3"/>
+	<LinearLaser id="201020" comment="激光红" laserTexName="Bullet201020" materialType="0" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.8,0.3,0.3"/>
+	<LinearLaser id="201021" comment="激光红" laserTexName="Bullet201020" materialType="1" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.8,0.3,0.3"/>
+	<LinearLaser id="201030" comment="激光深紫" laserTexName="Bullet201030" materialType="0" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
+	<LinearLaser id="201031" comment="激光深紫" laserTexName="Bullet201030" materialType="1" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
+	<LinearLaser id="201040" comment="激光紫" laserTexName="Bullet201040" materialType="0" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
+	<LinearLaser id="201041" comment="激光紫" laserTexName="Bullet201040" materialType="1" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
+	<LinearLaser id="201050" comment="激光深蓝" laserTexName="Bullet201050" materialType="0" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
+	<LinearLaser id="201051" comment="激光深蓝" laserTexName="Bullet201050" materialType="1" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
+	<LinearLaser id="201060" comment="激光蓝" laserTexName="Bullet201060" materialType="0" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
+	<LinearLaser id="201061" comment="激光蓝" laserTexName="Bullet201060" materialType="1" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
+	<LinearLaser id="201070" comment="激光深青" laserTexName="Bullet201070" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
+	<LinearLaser id="201071" comment="激光深青" laserTexName="Bullet201070" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
+	<LinearLaser id="201080" comment="激光青" laserTexName="Bullet201080" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
+	<LinearLaser id="201081" comment="激光青" laserTexName="Bullet201080" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
+	<LinearLaser id="201090" comment="激光深绿" laserTexName="Bullet201090" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
+	<LinearLaser id="201091" comment="激光深绿" laserTexName="Bullet201090" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
+	<LinearLaser id="201100" comment="激光绿" laserTexName="Bullet201100" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
+	<LinearLaser id="201101" comment="激光绿" laserTexName="Bullet201100" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
+	<LinearLaser id="201110" comment="激光黄绿" laserTexName="Bullet201110" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="201111" comment="激光黄绿" laserTexName="Bullet201110" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="201120" comment="激光深黄" laserTexName="Bullet201120" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="201121" comment="激光深黄" laserTexName="Bullet201120" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="201130" comment="激光浅黄" laserTexName="Bullet201130" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="201131" comment="激光浅黄" laserTexName="Bullet201130" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="201140" comment="激光棕黄" laserTexName="Bullet201140" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="201141" comment="激光棕黄" laserTexName="Bullet201140" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="201150" comment="激光白" laserTexName="Bullet201150" materialType="0" laserHeadTexName="LaserHead_W0" laserSourceTexId="200150" eliminateColor="0.8,0.8,0.8"/>
+	<LinearLaser id="201151" comment="激光白" laserTexName="Bullet201150" materialType="1" laserHeadTexName="LaserHead_W0" laserSourceTexId="200150" eliminateColor="0.8,0.8,0.8"/>
+	<LinearLaser id="202000" comment="米弹灰" laserTexName="Bullet104000" materialType="0" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" eliminateColor="0.5,0.5,0.5"/>
+	<LinearLaser id="202001" comment="米弹灰" laserTexName="Bullet104000" materialType="1" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" eliminateColor="0.5,0.5,0.5"/>
+	<LinearLaser id="202010" comment="米弹深红" laserTexName="Bullet104010" materialType="0" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.625,0.3,0.3"/>
+	<LinearLaser id="202011" comment="米弹深红" laserTexName="Bullet104010" materialType="1" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.625,0.3,0.3"/>
+	<LinearLaser id="202020" comment="米弹红" laserTexName="Bullet104020" materialType="0" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.8,0.3,0.3"/>
+	<LinearLaser id="202021" comment="米弹红" laserTexName="Bullet104020" materialType="1" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.8,0.3,0.3"/>
+	<LinearLaser id="202030" comment="米弹深紫" laserTexName="Bullet104030" materialType="0" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
+	<LinearLaser id="202031" comment="米弹深紫" laserTexName="Bullet104030" materialType="1" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
+	<LinearLaser id="202040" comment="米弹紫" laserTexName="Bullet104040" materialType="0" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
+	<LinearLaser id="202041" comment="米弹紫" laserTexName="Bullet104040" materialType="1" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
+	<LinearLaser id="202050" comment="米弹深蓝" laserTexName="Bullet104050" materialType="0" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
+	<LinearLaser id="202051" comment="米弹深蓝" laserTexName="Bullet104050" materialType="1" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
+	<LinearLaser id="202060" comment="米弹蓝" laserTexName="Bullet104060" materialType="0" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
+	<LinearLaser id="202061" comment="米弹蓝" laserTexName="Bullet104060" materialType="1" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
+	<LinearLaser id="202070" comment="米弹深青" laserTexName="Bullet104070" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
+	<LinearLaser id="202071" comment="米弹深青" laserTexName="Bullet104070" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
+	<LinearLaser id="202080" comment="米弹青" laserTexName="Bullet104080" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
+	<LinearLaser id="202081" comment="米弹青" laserTexName="Bullet104080" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
+	<LinearLaser id="202090" comment="米弹深绿" laserTexName="Bullet104090" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
+	<LinearLaser id="202091" comment="米弹深绿" laserTexName="Bullet104090" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
+	<LinearLaser id="202100" comment="米弹绿" laserTexName="Bullet104100" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
+	<LinearLaser id="202101" comment="米弹绿" laserTexName="Bullet104100" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
+	<LinearLaser id="202110" comment="米弹黄绿" laserTexName="Bullet104110" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="202111" comment="米弹黄绿" laserTexName="Bullet104110" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="202120" comment="米弹深黄" laserTexName="Bullet104120" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="202121" comment="米弹深黄" laserTexName="Bullet104120" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="202130" comment="米弹浅黄" laserTexName="Bullet104130" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="202131" comment="米弹浅黄" laserTexName="Bullet104130" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="202140" comment="米弹棕黄" laserTexName="Bullet104140" materialType="0" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="202141" comment="米弹棕黄" laserTexName="Bullet104140" materialType="1" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
+	<LinearLaser id="202150" comment="米弹白" laserTexName="Bullet104150" materialType="0" laserHeadTexName="LaserHead_W0" laserSourceTexId="200150" eliminateColor="0.8,0.8,0.8"/>
+	<LinearLaser id="202151" comment="米弹白" laserTexName="Bullet104150" materialType="1" laserHeadTexName="LaserHead_W0" laserSourceTexId="200150" eliminateColor="0.8,0.8,0.8"/>
 </Data>

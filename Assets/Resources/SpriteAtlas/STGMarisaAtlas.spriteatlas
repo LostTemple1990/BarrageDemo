@@ -73,7 +73,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: de21abf86e953af43a98849863b29636, type: 3}
   - {fileID: 21300000, guid: 62752f29e570aa049bcdb0469680eb05, type: 3}
   - {fileID: 21300000, guid: 3734de6914690e548995a342de08ffd4, type: 3}
-  - {fileID: 21300000, guid: ae3710a912f6b124b9e0b9b4a165154b, type: 3}
   - {fileID: 21300000, guid: fe5ef03a0c592ca47b2dab7e852ce7d7, type: 3}
   - {fileID: 21300000, guid: aa8a495ac01f62d4c8a30c00841fbd29, type: 3}
   - {fileID: 21300000, guid: 1bd24eaabb9f0cc429a2e73e11338223, type: 3}
@@ -84,6 +83,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 93ddfacb38de88c4e8632cb36fcfe08b, type: 3}
   - {fileID: 21300000, guid: 7e67f4fbeafa8e74583c824f6dcc116e, type: 3}
   - {fileID: 21300000, guid: 9c10d48c959cc2440bbfe8865403be6e, type: 3}
+  - {fileID: 21300000, guid: cec6399c5d1fca041b0bbc76b9df11cb, type: 3}
   - {fileID: 21300000, guid: 3e9531ac59489624381808c2e958c5e1, type: 3}
   - {fileID: 21300000, guid: b794136d9ffc2ec40b2fff301f9ac734, type: 3}
   - {fileID: 21300000, guid: f5bff69d79b2c8049b8e06d47d0ab727, type: 3}
@@ -126,7 +126,6 @@ SpriteAtlas:
   - Marisa_FadeToRight_0
   - Marisa_Right_2
   - pl01_7
-  - pl01_8
   - pl01_6
   - SubBg1
   - Marisa_FadeToLeft_1
@@ -137,6 +136,7 @@ SpriteAtlas:
   - pl01_24
   - Marisa_Left_1
   - Marisa_Idle_1
+  - MarisaLaserEliminateEffectSprite
   - Marisa_FadeToLeft_2
   - MarisaASub
   - Marisa_Left_0

@@ -194,7 +194,6 @@ public class EnemyBulletMovable : EnemyBulletBase
 
     public override void Clear()
     {
-        UIManager.GetInstance().RemoveGoFromLayer(_bullet);
         ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         _bullet = null;
         _trans = null;

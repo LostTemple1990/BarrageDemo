@@ -123,4 +123,17 @@ public class Consts
     /// 不执行对象回收的系统繁忙最小值
     /// </summary>
     public const int SysBusyValue = 200;
+
+    public const int STGBottomViewLayerPosZ = 22;
+    public const int STGEffectLayerPosZ = 20;
+    public const int STGItemLayerPosZ = 19;
+    public const int STGEnemyLayerPosZ = 18;
+    public const int STGHighLightEffectLayerPosZ = 17;
+    public const int STGPlayerBarrageLayerPosZ = 16;
+    public const int STGPlayerLayerPosZ = 15;
+    public const int STGEnemyBarrageLayerPosZ = 14;
+    public const int STGPlayerCollisionPointLayerPosZ = 13;
+    public const int STGTopEffectLayerPosZ = 12;
+    public const int STGInfoLayerPosZ = 10;
+
 }

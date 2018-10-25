@@ -54,6 +54,7 @@ public class BulletBase :ICollisionObject
         _curPos = Vector2.zero;
         _orderInLayer = 0;
         _checkOutOfBorder = true;
+        _detectCollision = true;
         Global.SysBusyValue += _sysBusyWeight;
     }
 

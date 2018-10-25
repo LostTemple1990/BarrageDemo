@@ -45,8 +45,8 @@ public class PlayerService
         _curPower = 300;
         _graze = 0;
         // todo 选择人物
-        _character = new Reimu();
-        //_character = new MarisaA();
+        //_character = new Reimu();
+        _character = new MarisaA();
         _character.Init();
     }
 

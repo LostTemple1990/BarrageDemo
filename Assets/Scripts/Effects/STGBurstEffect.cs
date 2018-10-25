@@ -31,7 +31,7 @@ public class STGBurstEffect : STGEffectBase
         if ( _effectContainerTf == null )
         {
             _effectContainerTf = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "STGEffectContainer").transform;
-            UIManager.GetInstance().AddGoToLayer(_effectContainerTf.gameObject, LayerId.GameEffect);
+            UIManager.GetInstance().AddGoToLayer(_effectContainerTf.gameObject, LayerId.STGNormalEffect);
         }
         // 炸开的圆形
         if ( _circleTf == null )
@@ -158,7 +158,7 @@ class BurstObject
         this.go = go;
         go.SetActive(true);
         tf = go.transform;
-        UIManager.GetInstance().AddGoToLayer(go, LayerId.GameEffect);
+        UIManager.GetInstance().AddGoToLayer(go, LayerId.STGNormalEffect);
         tf.localPosition = Vector3.zero;
         spRenderer = tf.Find("Sprite").GetComponent<SpriteRenderer>();
         tf.localScale = new Vector3(0, 0, 1);

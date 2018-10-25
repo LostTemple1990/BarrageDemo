@@ -73,3 +73,8 @@ Constants.eTweenType.Pos2D = 3
 Constants.eTweenType.Pos3D = 4
 Constants.eTweenType.Rotation = 5
 Constants.eTweenType.Scale = 6
+
+eEffectLayer = {}
+eEffectLayer.Bottom = 130
+eEffectLayer.Normal = 150
+eEffectLayer.Top = 650

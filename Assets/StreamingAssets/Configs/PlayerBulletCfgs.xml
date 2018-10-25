@@ -1,7 +1,8 @@
 <Data>
-	<Bullet id="500000" packName="STGReimuAtlas" texName="pl00_1" comment="灵梦A自机子弹" isRotatedByVAngle="1" selfRotationAngle="0" collisionRadius="8" eliminateColor="0.5,0.5,0.5"/>
-	<Bullet id="501000" packName="STGReimuAtlas" texName="pl00_14" comment="灵梦A子机子弹" isRotatedByVAngle="0" selfRotationAngle="20" collisionRadius="8" eliminateColor="0.5,0.5,0.5"/>
-	<Bullet id="502000" packName="STGReimuAtlas" texName="pl00_6" comment="灵梦A子机子弹消弹特效" isRotatedByVAngle="0" selfRotationAngle="20" collisionRadius="8" eliminateColor="0.5,0.5,0.5"/>
-	<Bullet id="520000" packName="STGMarisaAtlas" texName="MarisaAMain" comment="魔理沙A自机子弹" isRotatedByVAngle="1" selfRotationAngle="0" collisionRadius="8" eliminateColor="0.5,0.5,0.5"/>
-	<Bullet id="521000" packName="STGPlayerLaserAtlas" texName="MarisaALaser" comment="魔理沙A子机激光" isRotatedByVAngle="0" selfRotationAngle="0" collisionRadius="8" eliminateColor="0.5,0.5,0.5"/>
+	<Bullet id="500000" packName="STGReimuAtlas" texName="pl00_1" comment="灵梦A自机子弹" isRotatedByVAngle="1" selfRotationAngle="0" collisionRadius="8" eliminateSprite="1,1" eliminateColor="0.5,0.5,0.5"/>
+	<Bullet id="501000" packName="STGReimuAtlas" texName="pl00_14" comment="灵梦A子机子弹" isRotatedByVAngle="0" selfRotationAngle="20" collisionRadius="8" eliminateSprite="1,1" eliminateColor="0.5,0.5,0.5"/>
+	<Bullet id="502000" packName="STGReimuAtlas" texName="pl00_6" comment="灵梦A子机子弹消弹特效" isRotatedByVAngle="0" selfRotationAngle="20" collisionRadius="8" eliminateSprite="1,1" eliminateColor="0.5,0.5,0.5"/>
+	<Bullet id="520000" packName="STGMarisaAtlas" texName="MarisaAMain" comment="魔理沙A自机子弹" isRotatedByVAngle="1" selfRotationAngle="0" collisionRadius="8" eliminateSprite="1,1" eliminateColor="0.5,0.5,0.5"/>
+	<Bullet id="521000" packName="STGPlayerLaserAtlas" texName="MarisaALaser" comment="魔理沙A子机激光" isRotatedByVAngle="0" selfRotationAngle="0" collisionRadius="8" eliminateSprite="STGMarisaAtlas,MarisaLaserEliminateEffectSprite" eliminateColor="0.45,0.05,0.45"/>
+	<Bullet id="522000" packName="STGPlayerLaserAtlas" texName="MarisaALaser" comment="魔理沙A子机激光击中特效" isRotatedByVAngle="0" selfRotationAngle="0" collisionRadius="8" eliminateSprite="1,1" eliminateColor="0.5,0.5,0.5"/>
 </Data>

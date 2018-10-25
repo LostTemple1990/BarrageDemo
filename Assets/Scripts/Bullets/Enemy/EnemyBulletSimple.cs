@@ -121,7 +121,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
             ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         }
         _cfg = cfg;
-        SetBulletTexture(cfg.textureName);
+        SetBulletTexture(cfg.spriteName);
         SetToPosition(_curPos.x, _curPos.y);
         SetRotatedByVelocity(cfg.isRotatedByVAngle);
         SetSelfRotation(cfg.selfRotationAngle != 0, cfg.selfRotationAngle);

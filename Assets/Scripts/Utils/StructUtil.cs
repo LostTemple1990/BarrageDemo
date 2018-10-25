@@ -173,24 +173,6 @@ public enum eEnemyEliminateDef :int
     CodeRawEliminate = 8,
 }
 
-public enum eLaserHeadType :int
-{
-    Null = 0,
-    White = 1,
-    Red = 2,
-    Green = 3,
-    Blue = 4,
-}
-
-public enum eUIType : int
-{
-    Any = 0,
-    Image = 4,
-    RawImage = 5,
-    SpriteRenderer = 6,
-    Text = 8,
-}
-
 /// <summary>
 /// 播放模式
 /// </summary>

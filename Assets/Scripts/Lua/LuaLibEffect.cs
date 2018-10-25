@@ -57,8 +57,8 @@ public partial class LuaLib
     /// <summary>
     /// 创建一个精灵特效
     /// <para>string effectSpName</para>
-    /// <para>float width</para>
-    /// <para>float height</para>
+    /// <para>float scaleX</para>
+    /// <para>float scaleY</para>
     /// <para>float posX</para>
     /// <para>float posY</para>
     /// </summary>
@@ -67,17 +67,59 @@ public partial class LuaLib
     public static int CreateSpriteEffect(ILuaState luaState)
     {
         string effectSpName = luaState.ToString(-5);
-        float width = (float)luaState.ToNumber(-4);
-        float height = (float)luaState.ToNumber(-3);
+        float scaleX = (float)luaState.ToNumber(-4);
+        float scaleY = (float)luaState.ToNumber(-3);
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(5);
         SpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as SpriteEffect;
         effect.SetSprite(effectSpName);
-        effect.SetSize(width, height);
+        effect.SetScale(scaleX, scaleY);
         effect.SetToPos(posX, posY);
         luaState.PushLightUserData(effect);
         return 1;
+    }
+
+    /// <summary>
+    /// 根据属性创建指定的SpriteEffect
+    /// <para>atlasName</para>
+    /// <para>spriteName</para>
+    /// <para>cached 是否缓存</para>
+    /// <para>layerId 层级</para>
+    /// <para>在层级中的顺序</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int CreateSpriteEffectWithProps(ILuaState luaState)
+    {
+        string atlasName = luaState.ToString(-5);
+        string spriteName = luaState.ToString(-4);
+        bool cached = luaState.ToBoolean(-3);
+        LayerId layerId = (LayerId)luaState.ToInteger(-2);
+        int orderInLayer = luaState.ToInteger(-1);
+        luaState.Pop(5);
+        SpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as SpriteEffect;
+        effect.SetSprite(atlasName, spriteName, cached);
+        effect.SetLayer(layerId);
+        effect.SetOrderInLayer(orderInLayer);
+        return 1;
+    }
+
+    /// <summary>
+    /// 设置SpriteEffect的缩放
+    /// <para>scaleX</para>
+    /// <para>scaleY</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetSpriteEffectScale(ILuaState luaState)
+    {
+        SpriteEffect effect = luaState.ToUserData(-3) as SpriteEffect;
+        float scaleX = (float)luaState.ToNumber(-2);
+        float scaleY = (float)luaState.ToNumber(-1);
+        luaState.Pop(3);
+        effect.SetScale(scaleX, scaleY);
+        return 0;
     }
 
     public static int SetSpriteEffectColor(ILuaState luaState)

@@ -41,7 +41,7 @@ public class STGChargeEffect : STGEffectBase
         if (_effectContainerTf == null)
         {
             _effectContainerTf = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "STGEffectContainer").transform;
-            UIManager.GetInstance().AddGoToLayer(_effectContainerTf.gameObject, LayerId.GameEffect);
+            UIManager.GetInstance().AddGoToLayer(_effectContainerTf.gameObject, LayerId.STGNormalEffect);
         }
         if (_chargeCount == 0)
         {
@@ -187,7 +187,7 @@ class ChargeObject
         go = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "EffectMapleLeaf0");
         tf = go.transform;
         spRenderer = tf.Find("Sprite").GetComponent<SpriteRenderer>();
-        UIManager.GetInstance().AddGoToLayer(go, LayerId.GameEffect);
+        UIManager.GetInstance().AddGoToLayer(go, LayerId.STGNormalEffect);
         tf.localPosition = Vector3.zero;
         // 随机方向
         tf.localRotation = Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360)));

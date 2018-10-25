@@ -32,7 +32,7 @@ public class GameMain : MonoBehaviour
             ObjectsPool.GetInstance().CheckDestroyPoolObjects();
             if ( Global.SysBusyValue == 0 )
             {
-                ObjectsPool.GetInstance().DestroyBulletProtoTypes();
+                ObjectsPool.GetInstance().DestroyProtoTypes();
             }
         }
     }

@@ -654,7 +654,6 @@ public class EnemyCurveLaser : EnemyBulletBase
         _curTrailLen = _maxTrailLen = 0;
         _mesh.Clear();
         _mesh = null;
-        UIManager.GetInstance().RemoveGoFromLayer(_bullet);
         ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         _bullet = null;
         _trans = null;

@@ -50,7 +50,7 @@ CustomizedTable.ReboundLinearLaser.Init = function(laser,posX,posY,angle,rebound
 	lib.SetBulletPos(laser,posX,posY)
 	lib.SetLinearLaserProps(laser,"202060",45,3.5,angle,0,0)
 	lib.AddBulletTask(laser,function()
-		lib.SetLinearLaserHeadEnable(laser,true,consts.eLaserHeadTypeBlue)
+		lib.SetLinearLaserHeadEnable(laser,true)
 		lib.SetLinearLaserSourceEnable(laser,true,3)
 		for _=1,Infinite do
 			if reboundCount > 0 then
@@ -714,7 +714,7 @@ function Stage.StageTask()
 				for i=0,18 do
 					local posX,posY = lib.GetEnemyPos(enemy)
 					laser = lib.CreateLinearLaser("202060",45,posX,posY)
-					lib.SetLinearLaserHeadEnable(laser,true,consts.eLaserHeadTypeBlue)
+					lib.SetLinearLaserHeadEnable(laser,true)
 					lib.DoLinearLaserMove(laser,3,angle+i*20,0.02,60)
 					if ( coroutine.yield(3) == false ) then return end
 				end

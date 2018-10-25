@@ -49,7 +49,7 @@ public class BombReimuA : BombBase
         {
             go = ResourceManager.GetInstance().GetPrefab("Prefab/Character", "ReimuABomb");
             tf = go.transform;
-            UIManager.GetInstance().AddGoToLayer(go, LayerId.GameEffect);
+            UIManager.GetInstance().AddGoToLayer(go, LayerId.STGNormalEffect);
             _bombs.Add(go);
             _bombsTf.Add(tf);
             bombPos = new Vector2(playerPos.x + _posOffsets[i].x, playerPos.y + _posOffsets[i].y);

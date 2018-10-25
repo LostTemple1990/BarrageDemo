@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerBulletCfg : IParser
 {
-    public int id;
+    public string id;
     /// <summary>
     /// 贴图所在包名
     /// </summary>
@@ -15,7 +15,9 @@ public class PlayerBulletCfg : IParser
     public bool isRotatedByVAngle;
     public float selfRotationAngle;
     public float collisionRadius;
-    //public Color eliminateColor;
+    public string eliminateEffectAtlas;
+    public string elminaateEffectSprite;
+    public Color eliminateColor;
 
     public IParser CreateNewInstance()
     {
@@ -24,13 +26,20 @@ public class PlayerBulletCfg : IParser
 
     public void parse(XmlElement xmlElement)
     {
-        id = int.Parse(xmlElement.GetAttribute("id"));
+        id = xmlElement.GetAttribute("id");
         packName = xmlElement.GetAttribute("packName");
         textureName = xmlElement.GetAttribute("texName");
         isRotatedByVAngle = int.Parse(xmlElement.GetAttribute("isRotatedByVAngle")) == 1 ? true : false;
         selfRotationAngle = float.Parse(xmlElement.GetAttribute("selfRotationAngle"));
         collisionRadius = float.Parse(xmlElement.GetAttribute("collisionRadius"));
-        //string[] colorStrs = (xmlElement.GetAttribute("eliminateColor")).Split(',');
-        //eliminateColor = new Color(float.Parse(colorStrs[0]), float.Parse(colorStrs[1]), float.Parse(colorStrs[2]));
+        string str = xmlElement.GetAttribute("eliminateSprite");
+        if ( str != null && str != "" )
+        {
+            string[] eliminateStrs = (xmlElement.GetAttribute("eliminateSprite")).Split(',');
+            eliminateEffectAtlas = eliminateStrs[0];
+            elminaateEffectSprite = eliminateStrs[1];
+            string[] colorStrs = (xmlElement.GetAttribute("eliminateColor")).Split(',');
+            eliminateColor = new Color(float.Parse(colorStrs[0]), float.Parse(colorStrs[1]), float.Parse(colorStrs[2]));
+        }
     }
 }

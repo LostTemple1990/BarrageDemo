@@ -5,6 +5,7 @@ public class EnemyLinearLaserCfg : IParser
 {
     public string id;
     public string laserTexName;
+    public eBlendMode blendMode;
     public string laserHeadTexName;
     public string laserSourceTexId;
     public Color eliminateColor;
@@ -18,6 +19,7 @@ public class EnemyLinearLaserCfg : IParser
     {
         id = xmlElement.GetAttribute("id");
         laserTexName = xmlElement.GetAttribute("laserTexName");
+        blendMode = (eBlendMode)int.Parse(xmlElement.GetAttribute("materialType"));
         laserHeadTexName = xmlElement.GetAttribute("laserHeadTexName");
         laserSourceTexId = xmlElement.GetAttribute("laserSourceTexId");
         string[] colorStrs = (xmlElement.GetAttribute("eliminateColor")).Split(',');

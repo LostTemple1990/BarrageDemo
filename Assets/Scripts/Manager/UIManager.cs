@@ -51,19 +51,19 @@ public class UIManager {
         _stgRoot = GameObject.Find("GameMainCanvas");
         _stgLayerTf = _stgRoot.transform.Find("GameLayer");
         _stgCamera = _stgRoot.transform.Find("GameCamera").GetComponent<Camera>();
-        // 各个层级
+        // STG里面各个层级
         _layersMap = new Dictionary<LayerId, Transform>();
         _layersMap.Add(LayerId.STGBottomView, _stgLayerTf.Find("STGBottomViewLayer"));
-        _layersMap.Add(LayerId.Item, _stgLayerTf.Find("ItemLayer"));
-        _layersMap.Add(LayerId.Enemy, _stgLayerTf.Find("EnemyLayer"));
-        _layersMap.Add(LayerId.HighLightEffect, _stgLayerTf.Find("STGHighLightEffectLayer"));
-        _layersMap.Add(LayerId.EnemyBarrage, _stgLayerTf.Find("EnemyBarrageLayer"));
+        _layersMap.Add(LayerId.STGBottomEffect, _stgLayerTf.Find("STGBottomEffectLayer"));
         _layersMap.Add(LayerId.PlayerBarage, _stgLayerTf.Find("PlayerBarrageLayer"));
         _layersMap.Add(LayerId.Player, _stgLayerTf.Find("PlayerLayer"));
+        _layersMap.Add(LayerId.Enemy, _stgLayerTf.Find("EnemyLayer"));
+        _layersMap.Add(LayerId.Item, _stgLayerTf.Find("ItemLayer"));
+        _layersMap.Add(LayerId.STGNormalEffect, _stgLayerTf.Find("STGNormalEffectLayer"));
+        _layersMap.Add(LayerId.EnemyBarrage, _stgLayerTf.Find("EnemyBarrageLayer"));
         _layersMap.Add(LayerId.PlayerCollisionPoint, _stgLayerTf.Find("PlayerCollisionPointLayer"));
-        _layersMap.Add(LayerId.GameEffect, _stgLayerTf.Find("GameEffectLayer"));
+        _layersMap.Add(LayerId.STGTopEffect, _stgLayerTf.Find("STGTopEffectLayer"));
         _layersMap.Add(LayerId.GameInfo, _stgLayerTf.Find("GameInfoLayer"));
-        _layersMap.Add(LayerId.TopEffect, _stgLayerTf.Find("TopEffectLayer"));
         if ( _viewsMap == null )
         {
             _viewsMap = new Dictionary<string, ViewBase>();
@@ -288,7 +288,9 @@ public class UIManager {
 
 public enum LayerId : int
 {
-    GameEffect = 150,
+    STGBottomView = 110,
+    STGBottomEffect = 130,
+    STGNormalEffect = 150,
     Item = 250,
     Enemy = 300,
     HighLightEffect = 350,
@@ -296,10 +298,9 @@ public enum LayerId : int
     Player = 400,
     PlayerBarage = 200,
     PlayerCollisionPoint = 600,
-    TopEffect = 650,
+    STGTopEffect = 650,
     GameInfo = 700,
     UI = 100,
-    STGBottomView = 110,
     GameUI_Bottom = 900,
     GameUI_Normal = 1000,
     GameUI_Top = 1100,

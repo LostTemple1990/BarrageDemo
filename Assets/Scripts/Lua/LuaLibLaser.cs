@@ -104,11 +104,10 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetLinearLaserHeadEnable(ILuaState luaState)
     {
-        EnemyLinearLaser laser = luaState.ToUserData(-3) as EnemyLinearLaser;
-        bool isEnable = luaState.ToBoolean(-2);
-        eLaserHeadType type = (eLaserHeadType)luaState.ToInteger(-1);
+        EnemyLinearLaser laser = luaState.ToUserData(-2) as EnemyLinearLaser;
+        bool isEnable = luaState.ToBoolean(-1);
         luaState.Pop(3);
-        laser.SetHeadEnable(isEnable, type);
+        laser.SetHeadEnable(isEnable);
         return 0;
     }
 

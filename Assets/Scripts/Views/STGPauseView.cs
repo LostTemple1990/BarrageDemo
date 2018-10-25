@@ -88,7 +88,12 @@ public class STGPauseView : ViewBase
         TweenManager.GetInstance().RemoveTweenByGo(_curSelectItem);
         ResetImgColor(_curSelectItem);
         _curSelectItem = null;
-        _curYesNoItem = null;
+        if ( _curYesNoItem != null )
+        {
+            TweenManager.GetInstance().RemoveTweenByGo(_curYesNoItem);
+            ResetImgColor(_curYesNoItem);
+            _curYesNoItem = null;
+        }
     }
 
     /// <summary>

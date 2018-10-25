@@ -38,7 +38,7 @@ public class PlayerBulletSimple : PlayerBulletBase
         }
         _bulletCfg = BulletsManager.GetInstance().GetPlayerBulletCfgById(id);
         _prefabName = id;
-        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Player_Simple, int.Parse(id));
+        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Player_Simple, id);
         _trans = _bullet.transform;
         _renderer = _trans.Find("BulletSprite").GetComponent<SpriteRenderer>();
         _trans.localPosition = _curPos;
@@ -169,8 +169,9 @@ public class PlayerBulletSimple : PlayerBulletBase
     protected virtual void BeginEliminating()
     {
         _eliminatingTime = 0;
-        _eliminatingDuration = 10;
+        _eliminatingDuration = 5;
         _bulletColor = _renderer.color;
+        _detectCollision = false;
         _isEliminating = true;
         // 偏移一点角度
         //_trans.Rotate(new Vector3(0, 0, Random.Range(-10,10)));
@@ -204,7 +205,6 @@ public class PlayerBulletSimple : PlayerBulletBase
     public override void Clear()
     {
         _renderer.color = new Color(1, 1, 1, 1);
-        UIManager.GetInstance().HideGo(_bullet);
         ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         _bullet = null;
         _bulletCfg = null;

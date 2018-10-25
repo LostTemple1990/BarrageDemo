@@ -24,22 +24,6 @@ public class EnemyLinearLaser : EnemyBulletBase
     /// </summary>
     private const int GrazeCoolDown = 2;
 
-    private static string GetHeadSpriteNameByType(eLaserHeadType type)
-    {
-        switch ( type )
-        {
-            case eLaserHeadType.Blue:
-                return HeadSpriteNameBlue;
-            case eLaserHeadType.Green:
-                return HeadSpriteNameGreen;
-            case eLaserHeadType.White:
-                return HeadSpriteNameWhite;
-            case eLaserHeadType.Red:
-                return HeadSpriteNameRed;
-        }
-        return "";
-    }
-
     class LaserSegment
     {
         private GameObject _segmentObj;
@@ -264,7 +248,6 @@ public class EnemyLinearLaser : EnemyBulletBase
     /// 激光头部是否显示
     /// </summary>
     protected bool _isHeadEnable;
-    protected eLaserHeadType _headType;
     protected int _headAniTime;
     protected int _headAniIndex;
 
@@ -398,7 +381,7 @@ public class EnemyLinearLaser : EnemyBulletBase
             return;
         }
         _prefabName = _cfg.id.ToString();
-        _laserObj = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Enemy_LinearLaser, int.Parse(_cfg.id));
+        _laserObj = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Enemy_LinearLaser, _cfg.id);
         _objTrans = _laserObj.transform;
         _objTrans.localPosition = new Vector3(0, 0, -_orderInLayer);
         // 发射源
@@ -588,7 +571,7 @@ public class EnemyLinearLaser : EnemyBulletBase
     /// </summary>
     /// <param name="isEnable"></param>
     /// <param name="headType"></param>
-    public virtual void SetHeadEnable(bool isEnable,eLaserHeadType headType)
+    public virtual void SetHeadEnable(bool isEnable)
     {
         if ( _isHeadEnable != isEnable )
         {
@@ -921,7 +904,6 @@ public class EnemyLinearLaser : EnemyBulletBase
         _laserSourceGo = null;
         _laserSourceTf = null;
         // LaserObject
-        UIManager.GetInstance().HideGo(_laserObj);
         ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _laserObj);
         _laserObj = null;
         _objTrans = null;

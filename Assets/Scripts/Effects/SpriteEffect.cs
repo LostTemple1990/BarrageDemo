@@ -23,10 +23,53 @@ public class SpriteEffect : STGEffectBase
     private InterpolationMode _scaleHeightMode;
     private float _fromHeightScale;
     private float _toHeightScale;
+    /// <summary>
+    /// 标识显示对象是否缓存在ObjectsPool中
+    /// </summary>
+    private bool _isUsingCache;
+    /// <summary>
+    /// 缓存名称标识
+    /// <para>"SpriteEffect_"+AtlasName+"_"+SpriteName</para>
+    /// </summary>
+    private string _effectGoName;
+
+    /// <summary>
+    /// 是否正在渐隐消失
+    /// </summary>
+    private bool _isFading;
+    /// <summary>
+    /// 渐隐时间
+    /// </summary>
+    private int _fadeTime;
+    /// <summary>
+    /// 渐隐总时长
+    /// </summary>
+    private int _fadeDuration;
+    private Color _spriteColor;
+    /// <summary>
+    /// 渐隐起始时候的alpha
+    /// </summary>
+    private float _fadeBeginAlhpa;
+    /// <summary>
+    /// 在层级的顺序
+    /// </summary>
+    private int _orderInLayer;
+
+    private float _curPosX;
+    private float _curPosY;
 
     public override void Clear()
     {
-        GameObject.Destroy(_effectGo);
+        if ( _isUsingCache )
+        {
+            _effectTf.localScale = Vector3.one;
+            _spRenderer.color = new Color(1, 1, 1, 1);
+            ObjectsPool.GetInstance().RestorePrefabToPool(_effectGoName, _effectGo);
+        }
+        else
+        {
+            GameObject.Destroy(_effectGo);
+        }
         _effectGo = null;
         _effectTf = null;
         _spRenderer = null;
@@ -35,22 +78,23 @@ public class SpriteEffect : STGEffectBase
     public override void Init()
     {
         base.Init();
-        _effectGo = ResourceManager.GetInstance().GetPrefab("Prefab/Effects","SpriteEffect");
-        _effectTf = _effectGo.transform;
-        _spRenderer = _effectTf.Find("Sprite").GetComponent<SpriteRenderer>();
         _isFinish = false;
-        UIManager.GetInstance().AddGoToLayer(_effectGo, LayerId.GameEffect);
+        _isUsingCache = false;
+        _isFading = false;
+        _orderInLayer = 0;
     }
 
     public override void SetToPos(float posX, float posY)
     {
-        _effectTf.localPosition = new Vector2(posX, posY);
+        _curPosX = posX;
+        _curPosY = posY;
+        _effectTf.localPosition = new Vector3(posX, posY, -_orderInLayer);
     }
 
-    public void SetSize(float width,float height)
+    public void SetScale(float scaleX,float scaleY)
     {
-        _curWidthScale = width / 32;
-        _curHeightScale = height / 32;
+        _curWidthScale = scaleX;
+        _curHeightScale = scaleY;
         _effectTf.localScale = new Vector3(_curWidthScale, _curHeightScale, 1);
     }
 
@@ -67,6 +111,10 @@ public class SpriteEffect : STGEffectBase
         if ( _isScalingWidth || _isScalingHeight )
         {
             _effectTf.localScale = new Vector3(_curWidthScale, _curHeightScale, 1);
+        }
+        if ( _isFading )
+        {
+            Fade();
         }
     }
 
@@ -144,9 +192,90 @@ public class SpriteEffect : STGEffectBase
         }
     }
 
+    public void DoFade(int duration)
+    {
+        _isFading = true;
+        _fadeTime = 0;
+        _fadeDuration = duration;
+        _spriteColor = _spRenderer.material.color;
+        _fadeBeginAlhpa = _spriteColor.a;
+    }
+
+    private void Fade()
+    {
+        _fadeTime++;
+        if ( _fadeTime < _fadeDuration )
+        {
+            _spriteColor.a = Mathf.Lerp(_fadeBeginAlhpa, 0, (float)_fadeTime / _fadeDuration);
+            _spRenderer.material.color = _spriteColor;
+        }
+        else
+        {
+            _isFading = false;
+            _isFinish = true;
+        }
+    }
+
     public void SetSprite(string spName)
     {
+        _effectGo = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "SpriteEffect");
+        _effectTf = _effectGo.transform;
+        _spRenderer = _effectTf.Find("Sprite").GetComponent<SpriteRenderer>();
         _spRenderer.sprite = ResourceManager.GetInstance().GetSprite(Consts.EffectAtlasName, spName);
+        _isUsingCache = false;
+        UIManager.GetInstance().AddGoToLayer(_effectGo, LayerId.STGNormalEffect);
+    }
+
+    public void SetSprite(string atlasName,string spName,bool isUsingCache=false)
+    {
+        _isUsingCache = isUsingCache;
+        // 不使用缓存，直接创建
+        if ( !isUsingCache)
+        {
+            _effectGo = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "SpriteEffect");
+            _effectTf = _effectGo.transform;
+            _spRenderer = _effectTf.Find("Sprite").GetComponent<SpriteRenderer>();
+            _spRenderer.sprite = ResourceManager.GetInstance().GetSprite(atlasName, spName);
+        }
+        else
+        {
+            _effectGoName = "SpriteEffect_" + atlasName + "_" + spName;
+            _effectGo = ObjectsPool.GetInstance().GetPrefabAtPool(_effectGoName);
+            if ( _effectGo == null )
+            {
+                GameObject protoType = ObjectsPool.GetInstance().GetProtoType(_effectGoName);
+                if ( protoType == null )
+                {
+                    protoType = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "SpriteEffect");
+                    protoType.name = _effectGoName;
+                    Transform tf = protoType.transform;
+                    tf.localPosition = new Vector3(2000, 2000, 0);
+                    SpriteRenderer sr = tf.Find("Sprite").GetComponent<SpriteRenderer>();
+                    sr.sprite = ResourceManager.GetInstance().GetSprite(atlasName, spName);
+                    UIManager.GetInstance().AddGoToLayer(protoType, LayerId.STGNormalEffect);
+                    ObjectsPool.GetInstance().AddProtoType(_effectGoName, protoType);
+                }
+                _effectGo = GameObject.Instantiate<GameObject>(protoType);
+                UIManager.GetInstance().AddGoToLayer(_effectGo, LayerId.STGNormalEffect);
+            }
+            _effectTf = _effectGo.transform;
+            _spRenderer = _effectTf.Find("Sprite").GetComponent<SpriteRenderer>();
+        }
+    }
+
+    /// <summary>
+    /// 设置特效所在的层级
+    /// </summary>
+    /// <param name="layerId"></param>
+    public void SetLayer(LayerId layerId)
+    {
+        UIManager.GetInstance().AddGoToLayer(_effectGo, layerId);
+    }
+
+    public void SetOrderInLayer(int orderInLayer)
+    {
+        _orderInLayer = orderInLayer;
+        _effectTf.localPosition = new Vector3(_curPosX, _curPosY, -orderInLayer);
     }
 
     public void SetSpriteColor(float rValue,float gValue,float bValue,float aValue)

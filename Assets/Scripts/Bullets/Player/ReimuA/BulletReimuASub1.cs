@@ -12,6 +12,8 @@ public class BulletReimuASub1 : PlayerBulletSimple
     private const float DefaultSpeedX = 0f;
     private const float DefaultSpeedY = 10f;
 
+    private const string EliminateEffectId = "502000";
+
     /// <summary>
     /// 跟踪目标
     /// </summary>
@@ -134,7 +136,7 @@ public class BulletReimuASub1 : PlayerBulletSimple
 
     protected override void BeginEliminating()
     {
-        _eliminateEffectObject = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Player_Simple, 502000);
+        _eliminateEffectObject = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Player_Simple, EliminateEffectId);
         _eliminateEffectTf = _eliminateEffectObject.transform;
         _eliminateEffectSr = _eliminateEffectTf.Find("BulletSprite").GetComponent<SpriteRenderer>();
         // 设置初始旋转角度
@@ -153,7 +155,12 @@ public class BulletReimuASub1 : PlayerBulletSimple
     {
         if ( _eliminatingTime < _eliminatingDuration )
         {
-            _eliminateEffectSr.color = new Color(1, 1, 1, 1 - (float)_eliminatingTime / _eliminatingDuration);
+            float factor = (float)_eliminatingTime / _eliminatingDuration;
+            // 透明度渐变
+            _eliminateEffectSr.color = new Color(1, 1, 1, 1 - factor);
+            // 缩放
+            float scale = Mathf.Lerp(0.5f, 1.5f, factor);
+            _eliminateEffectTf.localScale = new Vector3(factor, factor, 1);
             _eliminatingTime++;
         }
         else
@@ -174,8 +181,9 @@ public class BulletReimuASub1 : PlayerBulletSimple
         if ( _eliminateEffectObject != null )
         {
             _eliminateEffectSr.color = new Color(1, 1, 1, 1);
-            ObjectsPool.GetInstance().RestorePrefabToPool("502000", _eliminateEffectObject);
+            ObjectsPool.GetInstance().RestorePrefabToPool(EliminateEffectId, _eliminateEffectObject);
             _eliminateEffectObject = null;
+            _eliminateEffectTf.localScale = Vector3.one;
             _eliminateEffectTf = null;
             _eliminateEffectSr = null;
         }

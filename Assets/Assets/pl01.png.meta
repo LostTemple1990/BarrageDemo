@@ -10,7 +10,7 @@ TextureImporter:
     21300010: MarisaShootEffect1
     21300012: pl01_6
     21300014: pl01_7
-    21300016: pl01_8
+    21300016: MarisaLaserEliminateEffectSprite
     21300018: MarisaALaser
     21300020: pl01_10
     21300022: pl01_11
@@ -323,12 +323,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pl01_8
+      name: MarisaLaserEliminateEffectSprite
       rect:
         serializedVersion: 2
         x: 192
         y: 48
-        width: 32
+        width: 16
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}

@@ -176,7 +176,7 @@ public class STGBreakScreenEffect : STGEffectBase
     {
         GameObject fragment = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "ScreenFragmentObject");
         // 添加到TopEffectLayer
-        UIManager.GetInstance().AddGoToLayer(fragment,LayerId.TopEffect);
+        UIManager.GetInstance().AddGoToLayer(fragment,LayerId.STGTopEffect);
         // 获取组件
         MeshFilter meshFilter = fragment.GetComponent<MeshFilter>();
         MeshRenderer meshRenderer = fragment.GetComponent<MeshRenderer>();

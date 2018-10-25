@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class EnemyBulletDefaultCfg : IParser
 {
-    public int id;
-    public string textureName;
+    public string id;
+    public string spriteName;
+    public eBlendMode blendMode;
     public bool isRotatedByVAngle;
     public float selfRotationAngle;
     public float grazeHalfWidth;
@@ -19,8 +20,9 @@ public class EnemyBulletDefaultCfg : IParser
 
     public void parse(XmlElement xmlElement)
     {
-        id = int.Parse(xmlElement.GetAttribute("id"));
-        textureName = xmlElement.GetAttribute("textureName");
+        id = xmlElement.GetAttribute("id");
+        spriteName = xmlElement.GetAttribute("spriteName");
+        blendMode = (eBlendMode)int.Parse(xmlElement.GetAttribute("materialType"));
         isRotatedByVAngle = int.Parse(xmlElement.GetAttribute("isRotatedByVAngle")) == 1 ? true : false;
         selfRotationAngle = float.Parse(xmlElement.GetAttribute("selfRotationAngle"));
         grazeHalfWidth = float.Parse(xmlElement.GetAttribute("grazeHalfWidth"));
