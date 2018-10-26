@@ -67,7 +67,7 @@ public class MarisaA : CharacterBase
             _subWeapons[i].SubWeaponIndex = i;
         }
         // 初始化炸弹
-        _bomb = new BombReimuA();
+        _bomb = new BombMarisaA();
         // 初始化碰撞、擦弹半径
         _collisionRadius = 2.0f;
         _grazeRadius = 4f;

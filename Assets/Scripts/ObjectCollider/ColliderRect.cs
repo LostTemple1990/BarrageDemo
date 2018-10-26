@@ -4,8 +4,22 @@ using System.Collections.Generic;
 
 public class ColliderRect : ObjectColliderBase
 {
-    private float _width;
-    private float _height;
+    /// <summary>
+    /// 矩形的宽
+    /// </summary>
+    private float _rectWidth;
+    /// <summary>
+    /// 矩形的高
+    /// </summary>
+    private float _rectHeight;
+    /// <summary>
+    /// 宽度的一半
+    /// </summary>
+    private float _halfWidth;
+    /// <summary>
+    /// 高度的一半
+    /// </summary>
+    private float _halfHeight;
     private float _fromWidth;
     private float _fromHeight;
     private float _toWidth;
@@ -19,15 +33,17 @@ public class ColliderRect : ObjectColliderBase
 
     public override void SetSize(float arg0, float arg1)
     {
-        _width = arg0;
-        _height = arg1;
+        _rectWidth = arg0;
+        _halfWidth = _rectWidth / 2;
+        _rectHeight = arg1;
+        _halfHeight = _rectHeight / 2;
     }
 
     public override void ScaleToSize(float toArg0, float toArg1, int duration)
     {
-        _fromWidth = _width;
+        _fromWidth = _halfWidth;
         _toWidth = toArg0;
-        _fromHeight = _height;
+        _fromHeight = _halfHeight;
         _toHeight = toArg1;
         base.ScaleToSize(toArg0, toArg1, duration);
     }
@@ -37,23 +53,24 @@ public class ColliderRect : ObjectColliderBase
         _scaleTime++;
         if (_scaleTime >= _scaleDuration)
         {
-            _width = _toWidth;
-            _height = _toHeight;
+            _halfWidth = _toWidth;
+            _halfHeight = _toHeight;
             _isScaling = false;
         }
         else
         {
-            _width = MathUtil.GetLinearInterpolation(_fromWidth, _toWidth, _scaleTime, _scaleDuration);
-            _height = MathUtil.GetLinearInterpolation(_fromHeight, _toHeight, _scaleTime, _scaleDuration);
+            _halfWidth = MathUtil.GetLinearInterpolation(_fromWidth, _toWidth, _scaleTime, _scaleDuration);
+            _halfHeight = MathUtil.GetLinearInterpolation(_fromHeight, _toHeight, _scaleTime, _scaleDuration);
         }
     }
 
     protected override void CheckCollisionWithPlayer()
     {
-        //float disX = Mathf.Abs(_cur)
-        float dis = Vector2.Distance(_curPos, Global.PlayerPos);
-        if (dis <= Global.PlayerCollisionVec.z + _width)
-        {
+        Vector2 playerPos = Global.PlayerPos;
+        float playerCollisionRadius = Global.PlayerCollisionVec.z;
+        if ( Mathf.Abs(playerPos.x-_curPosX) <= _halfWidth + playerCollisionRadius &&
+            Mathf.Abs(playerPos.y - _curPosY) <= _halfHeight + playerCollisionRadius )
+        { 
             PlayerService.GetInstance().GetCharacter().BeingHit();
         }
     }
@@ -63,8 +80,35 @@ public class ColliderRect : ObjectColliderBase
         //List<PlayerBulletBase> _bulletList = BulletsManager.GetInstance().
     }
 
+    protected override void CheckCollisionWithEnemy()
+    {
+        List<EnemyBase> enemyList = EnemyManager.GetInstance().GetEnemyList();
+        int count = enemyList.Count;
+        EnemyBase enemy;
+        CollisionDetectParas para;
+        float dx, dy;
+        for (int i = 0; i < count; i++)
+        {
+            enemy = enemyList[i];
+            if (enemy != null && enemy.IsInteractive)
+            {
+                para = enemy.GetCollisionDetectParas();
+                // 敌机全部使用矩形判定
+                dx = Mathf.Abs(_curPosX - para.centerPos.x);
+                dy = Mathf.Abs(_curPosY - para.centerPos.y);
+                if (dx <= _halfWidth + para.halfWidth && dy <= _halfHeight + para.halfHeight)
+                {
+                    enemy.GetHit(_hitEnemyDamage);
+                }
+            }
+        }
+    }
+
     protected override void CheckCollisionWithEnemyBullet()
     {
+        // 计算碰撞盒参数
+        Vector2 lbPos = new Vector2(_curPosX - _halfWidth, _curPosY - _halfHeight);
+        Vector2 rtPos = new Vector2(_curPosX + _halfWidth, _curPosY + _halfHeight);
         int i, bulletCount;
         List<EnemyBulletBase> bulletList = BulletsManager.GetInstance().GetEnemyBulletList();
         EnemyBulletBase bullet;
@@ -73,9 +117,12 @@ public class ColliderRect : ObjectColliderBase
         {
             bullet = bulletList[i];
             // 判断是否要进行碰撞检测
-            if (bullet != null && bullet.ClearFlag == 0 && bullet.CanBeEliminated(eEliminateDef.HitObject))
+            if (bullet != null &&
+                bullet.ClearFlag == 0 &&
+                bullet.CanBeEliminated(eEliminateDef.HitObject) &&
+                bullet.CheckBoundingBoxesIntersect(lbPos, rtPos))
             {
-                DetectCollision(bullet);
+                DetectCollisionWithEnemyBullet(bullet);
             }
         }
     }
@@ -85,98 +132,74 @@ public class ColliderRect : ObjectColliderBase
     /// </summary>
     /// <param name="collParas"></param>
     /// <returns></returns>
-    private bool DetectCollision(EnemyBulletBase bullet)
+    private bool DetectCollisionWithEnemyBullet(EnemyBulletBase bullet)
     {
-        CollisionDetectParas collParas = bullet.GetCollisionDetectParas();
-        if (collParas.type == CollisionDetectType.Circle)
+        int nextColliderIndex = 0;
+        int curColliderIndex;
+        bool isCollided = false;
+        do
         {
-            // 子弹为圆形判定，先检测外切正方形
-            float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
-            float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
-            // 两圆的半径和
-            float sumOfRadius = _width + collParas.radius;
-            if (dx <= sumOfRadius && dy <= sumOfRadius)
+            CollisionDetectParas collParas = bullet.GetCollisionDetectParas(nextColliderIndex);
+            curColliderIndex = nextColliderIndex;
+            nextColliderIndex = collParas.nextIndex;
+            if (collParas.type == CollisionDetectType.Circle)
             {
-                if (dx * dx + dy * dy <= sumOfRadius * sumOfRadius)
+                // 子弹为圆形判定，方形判定来检测
+                float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
+                float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
+                // 检测该碰撞剧情与方形是否相交
+                if (dx <= _halfWidth + collParas.radius && dy <= _halfHeight + collParas.radius)
                 {
-                    bullet.Eliminate(eEliminateDef.HitObject);
-                    return true;
+                    bullet.CollidedByObject(curColliderIndex);
+                    isCollided = true;
                 }
             }
-        }
-        else if (collParas.type == CollisionDetectType.Rect)
-        {
-            // 子弹为矩形判定
-            // 以子弹中心点为圆心，将B的判定中心旋转angle的角度计算判定
-            Vector2 vec = new Vector2(_curPosX - collParas.centerPos.x, _curPosY - collParas.centerPos.y);
-            float cos = Mathf.Cos(collParas.angle * Mathf.Deg2Rad);
-            float sin = Mathf.Sin(collParas.angle * Mathf.Deg2Rad);
-            Vector2 relativeVec = new Vector2();
-            // 向量顺时针旋转laserAngle的度数
-            relativeVec.x = cos * vec.x + sin * vec.y;
-            relativeVec.y = -sin * vec.x + cos * vec.y;
-            // 计算圆和矩形的碰撞
-            float len = relativeVec.magnitude;
-            float rate = (len - _width) / len;
-            relativeVec *= rate;
-            if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
+            else if (collParas.type == CollisionDetectType.Rect)
             {
-                bullet.Eliminate(eEliminateDef.HitObject);
-                return true;
-            }
-        }
-        else if (collParas.type == CollisionDetectType.Line)
-        {
-            float dis = MathUtil.GetMinDisFromPointToLineSegment(collParas.linePointA, collParas.linePointB, _curPos);
-            if (dis <= _width + collParas.radius)
-            {
-                bullet.Eliminate(eEliminateDef.HitObject);
-                return true;
-            }
-        }
-        // 多线段集合，判断圆心到每个点的距离即可
-        else if (collParas.type == CollisionDetectType.MultiSegments)
-        {
-            if (bullet.Id == BulletId.Enemy_CurveLaser)
-            {
-                EnemyCurveLaser curveLaser = bullet as EnemyCurveLaser;
-                List<Vector2> pointList = collParas.multiSegmentPointList;
-                int pointCount = pointList.Count;
-                float dx, dy, sum;
-                int eliminateStart = -1;
-                int eliminateEnd = -1;
-                for (int i = 0; i < pointCount; i++)
+                // 计算rect1的分离轴向量
+                float angle0 = 0;
+                float angle1 = collParas.angle;
+                float cos0 = Mathf.Cos(Mathf.Deg2Rad * angle0);
+                float sin0 = Mathf.Sin(Mathf.Deg2Rad * angle0);
+                float cos1 = Mathf.Cos(Mathf.Deg2Rad * angle1);
+                float sin1 = Mathf.Sin(Mathf.Deg2Rad * angle1);
+                //rect0分离轴
+                Vector2 rect0Vec0 = new Vector2(cos0, sin0);
+                Vector2 rect0Vec1 = new Vector2(-sin0, cos0);
+                // rect1分离轴
+                Vector2 rect1Vec0 = new Vector2(cos1, sin1);
+                Vector2 rect1Vec1 = new Vector2(-sin1, cos1);
+                List<Vector2> rectVecList = new List<Vector2> { rect0Vec0, rect0Vec1, rect1Vec0, rect1Vec1 };
+                // 两矩形中心的向量
+                Vector2 centerVec = new Vector2(collParas.centerPos.x - _curPos.x, collParas.centerPos.y - _curPos.y);
+                bool rectIsCollided = true;
+                for (int i = 0; i < rectVecList.Count; i++)
                 {
-                    dx = pointList[i].x - _curPosX;
-                    dy = pointList[i].y - _curPosY;
-                    sum = collParas.radius + _width;
-                    if (dx * dx + dy * dy <= sum * sum)
+                    // 投影轴
+                    Vector2 vec = rectVecList[i];
+                    // rect0的投影半径对于该投影轴的投影
+                    float projectionRadius0 = Mathf.Abs(Vector2.Dot(rect0Vec0, vec) * _halfWidth) + Mathf.Abs(Vector2.Dot(rect0Vec1, vec) * _halfHeight);
+                    projectionRadius0 = Mathf.Abs(projectionRadius0);
+                    // rect1的投影半径对于投影轴的投影
+                    float projectionRadius1 = Mathf.Abs(Vector2.Dot(rect1Vec0, vec) * collParas.halfWidth) + Mathf.Abs(Vector2.Dot(rect1Vec1, vec) * collParas.halfHeight);
+                    projectionRadius1 = Mathf.Abs(projectionRadius1);
+                    // 连线对于投影轴的投影
+                    float centerVecProjection = Vector2.Dot(centerVec, vec);
+                    centerVecProjection = Mathf.Abs(centerVecProjection);
+                    // 投影的和小于轴半径的长度,说明没有碰撞
+                    if (projectionRadius0 + projectionRadius1 <= centerVecProjection)
                     {
-                        if (eliminateStart == -1)
-                        {
-                            eliminateStart = i;
-                        }
-                        eliminateEnd = i;
-                    }
-                    else
-                    {
-                        if (eliminateStart != -1)
-                        {
-                            curveLaser.EliminateByRange(eliminateStart, eliminateEnd);
-                            eliminateStart = -1;
-                        }
+                        rectIsCollided = false;
+                        break;
                     }
                 }
-                if (eliminateStart != -1)
+                if ( rectIsCollided )
                 {
-                    curveLaser.EliminateByRange(eliminateStart, eliminateEnd);
+                    bullet.CollidedByObject(curColliderIndex);
+                    isCollided = true;
                 }
             }
-            else if (bullet.Id == BulletId.Enemy_LinearLaser)
-            {
-
-            }
-        }
-        return false;
+        } while (nextColliderIndex != -1);
+        return isCollided;
     }
 }

@@ -24,11 +24,16 @@ public class ObjectColliderBase
     protected int _scaleDuration;
 
     protected eColliderType _type;
+    /// <summary>
+    /// 与敌机发生碰撞时对敌机造成的伤害
+    /// </summary>
+    protected int _hitEnemyDamage;
 
     public ObjectColliderBase()
     {
         _clearFlag = 0;
         _existDuration = 0;
+        _hitEnemyDamage = 0;
         _isScaling = false;
     }
 
@@ -132,6 +137,11 @@ public class ObjectColliderBase
     protected virtual void CheckCollisionWithItem()
     {
 
+    }
+
+    protected void SetHitEnemyDamage(int damage)
+    {
+        _hitEnemyDamage = damage;
     }
 
     /// <summary>

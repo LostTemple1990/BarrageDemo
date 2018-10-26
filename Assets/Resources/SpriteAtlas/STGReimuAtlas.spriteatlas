@@ -49,7 +49,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: fcb699445b1a8a248aac9258282d4d20, type: 3}
   - {fileID: 21300000, guid: 78e961b4927c9d547b57bfc9b9724535, type: 3}
   - {fileID: 21300000, guid: 50c714c446281584fb8a2968ceab9ba5, type: 3}
-  - {fileID: 21300000, guid: 64bac7f4db0345a478cc70b9b328b611, type: 3}
   - {fileID: 21300000, guid: bae889f492207e74b9247503a5582e3c, type: 3}
   - {fileID: 21300000, guid: 6ab49a053aeb9bd41a474eb19710efec, type: 3}
   - {fileID: 21300000, guid: c544cd25ab1fb3948b132f80b107d450, type: 3}
@@ -104,7 +103,6 @@ SpriteAtlas:
   - pl00_22
   - pl00_16
   - Reimu_Idle_7
-  - circle2
   - Reimu_FadeToLeft_2
   - pl00_8
   - pl00_5

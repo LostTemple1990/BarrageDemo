@@ -36,6 +36,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e7e00211465e3b84d892ec84c39f86c8, type: 3}
   - {fileID: 21300000, guid: 7ad487217f366bf4fbbaf5f53950deed, type: 3}
   - {fileID: 21300000, guid: 8aad0982c8844d34cbeba33c1c90caa9, type: 3}
+  - {fileID: 21300000, guid: 64bac7f4db0345a478cc70b9b328b611, type: 3}
   - {fileID: 21300000, guid: fe254ab51be65804a8822a479b7912e1, type: 3}
   - {fileID: 21300000, guid: d9e6044628127bb429da24c6aa6a5cf7, type: 3}
   - {fileID: 21300000, guid: 2403f1b717ede6144b84e9f31de050f3, type: 3}
@@ -51,6 +52,7 @@ SpriteAtlas:
   - etama8_45
   - PPointNormal
   - PPointBig
+  - Circle
   - etama2_33
   - etama8_50
   - CircleBorder

@@ -54,6 +54,30 @@ public class ColliderCircle : ObjectColliderBase
         //List<PlayerBulletBase> _bulletList = BulletsManager.GetInstance().
     }
 
+    protected override void CheckCollisionWithEnemy()
+    {
+        List<EnemyBase> enemyList = EnemyManager.GetInstance().GetEnemyList();
+        int count = enemyList.Count;
+        EnemyBase enemy;
+        CollisionDetectParas para;
+        float dx, dy;
+        for (int i=0;i<count;i++)
+        {
+            enemy = enemyList[i];
+            if ( enemy != null && enemy.IsInteractive )
+            {
+                para = enemy.GetCollisionDetectParas();
+                // 敌机全部使用矩形判定
+                dx = Mathf.Abs(_curPosX - para.centerPos.x);
+                dy = Mathf.Abs(_curPosY - para.centerPos.y);
+                if ( dx <= _radius + para.halfWidth && dy <= _radius + para.halfHeight )
+                {
+                    enemy.GetHit(_hitEnemyDamage);
+                }
+            }
+        }
+    }
+
     protected override void CheckCollisionWithEnemyBullet()
     {
         // 计算碰撞盒参数
