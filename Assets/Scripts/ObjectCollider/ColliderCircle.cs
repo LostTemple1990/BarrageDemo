@@ -72,7 +72,7 @@ public class ColliderCircle : ObjectColliderBase
                 dy = Mathf.Abs(_curPosY - para.centerPos.y);
                 if ( dx <= _radius + para.halfWidth && dy <= _radius + para.halfHeight )
                 {
-                    enemy.GetHit(_hitEnemyDamage);
+                    enemy.GetHit(_hitEnemyDamage,_eliminateType);
                 }
             }
         }
@@ -93,7 +93,7 @@ public class ColliderCircle : ObjectColliderBase
             // 判断是否要进行碰撞检测
             if (bullet != null && 
                 bullet.ClearFlag == 0 && 
-                bullet.CanBeEliminated(eEliminateDef.HitObject) &&
+                bullet.CanBeEliminated(eEliminateDef.HitObjectCollider) &&
                 bullet.CheckBoundingBoxesIntersect(lbPos,rtPos) )
             {
                 DetectCollisionWithEnemyBullet(bullet);
@@ -158,7 +158,7 @@ public class ColliderCircle : ObjectColliderBase
                 float dis = MathUtil.GetMinDisFromPointToLineSegment(collParas.linePointA, collParas.linePointB, _curPos);
                 if (dis <= _radius + collParas.radius)
                 {
-                    bullet.Eliminate(eEliminateDef.HitObject);
+                    bullet.Eliminate(eEliminateDef.HitObjectCollider);
                     return true;
                 }
             }

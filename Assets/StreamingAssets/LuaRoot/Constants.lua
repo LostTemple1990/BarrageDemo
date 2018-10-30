@@ -49,15 +49,15 @@ Constants.eLaserHeadTypeRed = 2
 Constants.eLaserHeadTypeGreen = 3
 Constants.eLaserHeadTypeBlue = 4
 
-Constants.eBulletResistEliminated = {}
-Constants.eBulletResistEliminated.ForcedDelete = 0
-Constants.eBulletResistEliminated.PlayerBomb = 1
-Constants.eBulletResistEliminated.PlayerDead = 2
-Constants.eBulletResistEliminated.HitPlayer = 4
-Constants.eBulletResistEliminated.SpellCardEnd = 8
-Constants.eBulletResistEliminated.HitObject = 16
-Constants.eBulletResistEliminated.CodeEliminate = 32
-Constants.eBulletResistEliminated.CodeRawEliminate = 64
+Constants.eEliminateType = {}
+Constants.eEliminateType.ForcedDelete = 0
+Constants.eEliminateType.PlayerSpellCard = 1
+Constants.eEliminateType.PlayerDead = 2
+Constants.eEliminateType.HitPlayer = 4
+Constants.eEliminateType.SpellCardEnd = 8
+Constants.eEliminateType.HitObject = 16
+Constants.eEliminateType.CodeEliminate = 32
+Constants.eEliminateType.CodeRawEliminate = 64
 
 
 Constants.eSpellCardCondition = {}
@@ -78,3 +78,9 @@ eEffectLayer = {}
 eEffectLayer.Bottom = 130
 eEffectLayer.Normal = 150
 eEffectLayer.Top = 650
+
+eColliderType = {}
+eColliderType.Circle = 1
+eColliderType.Rect = 2
+
+eColliderGroup = {}

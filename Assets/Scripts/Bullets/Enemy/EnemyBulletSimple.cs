@@ -255,7 +255,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         return paras;
     }
 
-    public override void CollidedByObject(int n = 0, eEliminateDef eliminateType = eEliminateDef.HitObject)
+    public override void CollidedByObject(int n = 0, eEliminateDef eliminateType = eEliminateDef.HitObjectCollider)
     {
         Eliminate(eliminateType);
     }
@@ -323,7 +323,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
     {
         if ( base.Eliminate(eliminateType) )
         {
-            if ( eliminateType != eEliminateDef.PlayerBomb && eliminateType != eEliminateDef.ForcedDelete )
+            if ( eliminateType != eEliminateDef.PlayerSpellCard && eliminateType != eEliminateDef.ForcedDelete )
             {
                 Color eliminateColor = _cfg.eliminateColor;
                 STGBulletEliminateEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.BulletEliminate) as STGBulletEliminateEffect;

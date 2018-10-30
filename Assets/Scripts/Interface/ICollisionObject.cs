@@ -36,5 +36,5 @@ public interface ICollisionObject
     /// 物体第n个碰撞盒被物体碰撞了
     /// </summary>
     /// <param name="index"></param>
-    void CollidedByObject(int n = 0,eEliminateDef eliminateDef=eEliminateDef.HitObject);
+    void CollidedByObject(int n = 0,eEliminateDef eliminateDef=eEliminateDef.HitObjectCollider);
 }

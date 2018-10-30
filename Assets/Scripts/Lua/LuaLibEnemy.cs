@@ -45,17 +45,33 @@ public partial class LuaLib
         return 0;
     }
 
+    /// <summary>
+    /// 设置敌机不会被某些东西所消除
+    /// <para>enemyBase</para>
+    /// <para>resistFlag</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetEnemyResistEliminateFlag(ILuaState luaState)
+    {
+        EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
+        int resistFlag = luaState.ToInteger(-1);
+        luaState.Pop(2);
+        enemy.SetResistEliminateFlag(resistFlag);
+        return 0;
+    }
+
     public static int EliminateEnemy(ILuaState luaState)
     {
         EnemyBase enemy = luaState.ToUserData(-1) as EnemyBase;
-        enemy.Eliminate(eEnemyEliminateDef.CodeEliminate);
+        enemy.Eliminate(eEliminateDef.CodeEliminate);
         return 0;
     }
 
     public static int RawEliminateEnemy(ILuaState luaState)
     {
         EnemyBase enemy = luaState.ToUserData(-1) as EnemyBase;
-        enemy.Eliminate(eEnemyEliminateDef.CodeRawEliminate);
+        enemy.Eliminate(eEliminateDef.CodeRawEliminate);
         return 0;
     }
 

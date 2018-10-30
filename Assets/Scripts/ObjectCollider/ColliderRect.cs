@@ -98,7 +98,7 @@ public class ColliderRect : ObjectColliderBase
                 dy = Mathf.Abs(_curPosY - para.centerPos.y);
                 if (dx <= _halfWidth + para.halfWidth && dy <= _halfHeight + para.halfHeight)
                 {
-                    enemy.GetHit(_hitEnemyDamage);
+                    enemy.GetHit(_hitEnemyDamage,_eliminateType);
                 }
             }
         }
@@ -119,7 +119,7 @@ public class ColliderRect : ObjectColliderBase
             // 判断是否要进行碰撞检测
             if (bullet != null &&
                 bullet.ClearFlag == 0 &&
-                bullet.CanBeEliminated(eEliminateDef.HitObject) &&
+                bullet.CanBeEliminated(eEliminateDef.HitObjectCollider) &&
                 bullet.CheckBoundingBoxesIntersect(lbPos, rtPos))
             {
                 DetectCollisionWithEnemyBullet(bullet);

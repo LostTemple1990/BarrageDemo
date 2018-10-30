@@ -31,6 +31,7 @@ public partial class LuaLib
             new NameFuncPair("CreateNormalEnemyById",CreateNormalEnemyById),
             new NameFuncPair("CreateCustomizedEnemy",CreateCustomizedEnemy),
             new NameFuncPair("HitEnemy",HitEnemy),
+            new NameFuncPair("SetEnemyResistEliminateFlag",SetEnemyResistEliminateFlag),
             new NameFuncPair("EliminateEnemy",EliminateEnemy),
             new NameFuncPair("RawEliminateEnemy",RawEliminateEnemy),
             new NameFuncPair("SetEnemyWanderRange",SetEnemyWanderRange),

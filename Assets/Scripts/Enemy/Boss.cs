@@ -148,7 +148,7 @@ public class Boss : EnemyBase
     {
         if ( _isInvincible )
         {
-            UpdateInvincibleStatue();
+            UpdateInvincibleStatus();
         }
         UpdateTask();
         _movableObj.Update();
@@ -185,6 +185,8 @@ public class Boss : EnemyBase
         _remainingWeight -= _weights[_curSubPhase];
         _beginRate = _remainingWeight / _totalWeight;
         _curTotalRate = _weights[_curSubPhase] / _totalWeight;
+        // 重置抵抗消除标识
+        _resistEliminateFlag = 0;
         base.SetMaxHp(maxHp);
     }
 
@@ -219,7 +221,7 @@ public class Boss : EnemyBase
         ClearTasks();
     }
 
-    protected void UpdateInvincibleStatue()
+    protected void UpdateInvincibleStatus()
     {
         _invincibleTimeLeft--;
         if ( _invincibleTimeLeft <= 0 )
@@ -255,8 +257,9 @@ public class Boss : EnemyBase
         return true;
     }
 
-    public override void GetHit(int damage)
+    public override void GetHit(int damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
     {
+        if ((_resistEliminateFlag & (int)eliminateType) != 0) return;
         if ( !_isInvincible )
         {
             _curHp -= damage;

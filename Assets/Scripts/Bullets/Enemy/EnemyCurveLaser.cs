@@ -282,7 +282,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         _isCachedCollisionSegments = true;
     }
 
-    public override void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObject)
+    public override void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObjectCollider)
     {
         _eliminateRangeList.Add(_collisionSegmentsList[n]);
         _eliminateRangeListCount++;

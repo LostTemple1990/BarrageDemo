@@ -247,7 +247,7 @@ public class EnemyManager
             {
                 if ( enemy.Type != EnemyType.Boss || isIncludingBoss )
                 {
-                    enemy.Eliminate(eEnemyEliminateDef.CodeEliminate);
+                    enemy.Eliminate(eEliminateDef.CodeEliminate);
                 }
             }
         }
@@ -264,7 +264,7 @@ public class EnemyManager
             {
                 if (enemy.Type != EnemyType.Boss || isIncludingBoss)
                 {
-                    enemy.Eliminate(eEnemyEliminateDef.CodeRawEliminate);
+                    enemy.Eliminate(eEliminateDef.CodeRawEliminate);
                 }
             }
         }

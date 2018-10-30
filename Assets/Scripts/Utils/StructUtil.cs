@@ -136,7 +136,7 @@ public enum eEliminateDef : int
     /// <summary>
     /// 玩家B触发的消除
     /// </summary>
-    PlayerBomb = 1,
+    PlayerSpellCard = 1,
     /// <summary>
     /// 玩家死亡触发的消除
     /// </summary>
@@ -146,13 +146,13 @@ public enum eEliminateDef : int
     /// </summary>
     HitPlayer = 4,
     /// <summary>
-    /// 符卡结束触发的消除
+    /// 玩家子弹击中触发的消除(针对敌机)
     /// </summary>
-    SpellCardEnd = 8,
+    PlayerBullet = 8,
     /// <summary>
     /// 击中某些物体触发的消除
     /// </summary>
-    HitObject = 16,
+    HitObjectCollider = 16,
     /// <summary>
     /// 直接调用代码触发的消除
     /// </summary>
@@ -161,16 +161,6 @@ public enum eEliminateDef : int
     /// 直接调用代码，不触发消除触发的函数
     /// </summary>
     CodeRawEliminate = 64,
-}
-
-[Flags]
-public enum eEnemyEliminateDef :int
-{
-    ForcedDelete = 0,
-    Player = 1,
-    SpellCardEnd = 2,
-    CodeEliminate = 4,
-    CodeRawEliminate = 8,
 }
 
 /// <summary>

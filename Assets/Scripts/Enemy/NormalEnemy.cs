@@ -103,15 +103,16 @@ public class NormalEnemy : EnemyBase
         }
     }
 
-    public override void GetHit(int damage)
+    public override void GetHit(int damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
     {
+        if ((_resistEliminateFlag & (int)eliminateType) != 0) return;
         if (!_isInteractive) return;
         _curHp -= damage;
         if ( _curHp <= 0 )
         {
             _isInteractive = false;
             _curHp = 0;
-            Eliminate(eEnemyEliminateDef.Player);
+            Eliminate(eliminateType);
         }
     }
 
@@ -141,16 +142,16 @@ public class NormalEnemy : EnemyBase
         ItemManager.GetInstance().DropItems(_dropItemDatas, _curPos.x, _curPos.y, _dropHalfWidth, _dropHalfHeight);
     }
 
-    public override bool Eliminate(eEnemyEliminateDef eliminateType = eEnemyEliminateDef.ForcedDelete)
+    public override bool Eliminate(eEliminateDef eliminateType = eEliminateDef.ForcedDelete)
     {
         _curHp = 0;
         if ( base.Eliminate(eliminateType) )
         {
-            if ( eliminateType != eEnemyEliminateDef.ForcedDelete )
+            if ( eliminateType != eEliminateDef.ForcedDelete )
             {
                 SoundManager.GetInstance().Play("se_tan02", false);
             }
-            if ( eliminateType != eEnemyEliminateDef.ForcedDelete || eliminateType != eEnemyEliminateDef.CodeRawEliminate )
+            if ( eliminateType != eEliminateDef.ForcedDelete || eliminateType != eEliminateDef.CodeRawEliminate )
             {
                 if ( _dropItemDatas != null )
                 {

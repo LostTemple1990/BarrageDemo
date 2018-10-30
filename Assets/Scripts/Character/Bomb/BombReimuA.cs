@@ -176,7 +176,7 @@ public class BombReimuA : BombBase
             {
                 bullet = bulletList[j];
                 // 判断是否要进行碰撞检测
-                if ( bullet != null && bullet.CanBeEliminated(eEliminateDef.PlayerBomb) && bullet.ClearFlag == 0 )
+                if ( bullet != null && bullet.CanBeEliminated(eEliminateDef.PlayerSpellCard) && bullet.ClearFlag == 0 )
                 {
                     DetectCollision(bullet);
                 }
@@ -272,7 +272,7 @@ public class BombReimuA : BombBase
             {
                 if ( dx * dx + dy * dy <= sumOfRadius * sumOfRadius )
                 {
-                    bullet.Eliminate(eEliminateDef.PlayerBomb);
+                    bullet.Eliminate(eEliminateDef.PlayerSpellCard);
                     return true;
                 }
             }
@@ -294,7 +294,7 @@ public class BombReimuA : BombBase
             relativeVec *= rate;
             if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
             {
-                bullet.Eliminate(eEliminateDef.PlayerBomb);
+                bullet.Eliminate(eEliminateDef.PlayerSpellCard);
                 return true;
             }
         }
@@ -303,7 +303,7 @@ public class BombReimuA : BombBase
             float dis = MathUtil.GetMinDisFromPointToLineSegment(collParas.linePointA, collParas.linePointB, _detectCenter);
             if (dis <= _detectRadius + collParas.radius)
             {
-                bullet.Eliminate(eEliminateDef.PlayerBomb);
+                bullet.Eliminate(eEliminateDef.PlayerSpellCard);
                 return true;
             }
         }

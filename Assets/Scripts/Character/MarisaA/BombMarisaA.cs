@@ -324,7 +324,7 @@ public class BombMarisaA : BombBase
             {
                 if (dx * dx + dy * dy <= sumOfRadius * sumOfRadius)
                 {
-                    bullet.Eliminate(eEliminateDef.PlayerBomb);
+                    bullet.Eliminate(eEliminateDef.PlayerSpellCard);
                     return true;
                 }
             }
@@ -346,7 +346,7 @@ public class BombMarisaA : BombBase
             relativeVec *= rate;
             if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
             {
-                bullet.Eliminate(eEliminateDef.PlayerBomb);
+                bullet.Eliminate(eEliminateDef.PlayerSpellCard);
                 return true;
             }
         }
@@ -355,7 +355,7 @@ public class BombMarisaA : BombBase
             float dis = MathUtil.GetMinDisFromPointToLineSegment(collParas.linePointA, collParas.linePointB, _detectCenter);
             if (dis <= _detectRadius + collParas.radius)
             {
-                bullet.Eliminate(eEliminateDef.PlayerBomb);
+                bullet.Eliminate(eEliminateDef.PlayerSpellCard);
                 return true;
             }
         }

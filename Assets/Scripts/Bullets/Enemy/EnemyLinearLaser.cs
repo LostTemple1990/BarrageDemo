@@ -732,7 +732,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         _isCachedCollisionSegment = true;
     }
 
-    public override void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObject)
+    public override void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObjectCollider)
     {
         if ( _collidedSegmentIndexList.IndexOf(n) == -1 )
         {

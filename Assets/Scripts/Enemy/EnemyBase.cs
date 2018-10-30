@@ -66,6 +66,12 @@ public class EnemyBase
     /// 被消灭的时候调用函数
     /// </summary>
     protected int _onEliminateFuncRef;
+    /// <summary>
+    /// 表示不会被某些东西消除
+    /// <para>Enemy部分基本使用</para>
+    /// <para>PlayerSpellCard,PlayerBullet</para>
+    /// </summary>
+    protected int _resistEliminateFlag;
 
     public virtual void Init()
     {
@@ -85,6 +91,7 @@ public class EnemyBase
         _isInteractive = true;
         _onHitFuncRef = 0;
         _onEliminateFuncRef = 0;
+        _resistEliminateFlag = 0;
     }
 
     public virtual void Update()
@@ -156,10 +163,10 @@ public class EnemyBase
         }
     }
 
-    public virtual bool Eliminate(eEnemyEliminateDef eliminateType=0)
+    public virtual bool Eliminate(eEliminateDef eliminateType=0)
     {
-        if ( eliminateType != eEnemyEliminateDef.ForcedDelete || 
-            eliminateType != eEnemyEliminateDef.CodeRawEliminate )
+        if ( eliminateType != eEliminateDef.ForcedDelete || 
+            eliminateType != eEliminateDef.CodeRawEliminate )
         {
             if ( _onEliminateFuncRef != 0 )
             {
@@ -193,7 +200,7 @@ public class EnemyBase
         
     }
 
-    public virtual void GetHit(int damage)
+    public virtual void GetHit(int damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
     {
 
     }
@@ -357,6 +364,15 @@ public class EnemyBase
     public void SetInteractive(bool value)
     {
         _isInteractive = value;
+    }
+
+    /// <summary>
+    /// 设置不会被某些东西消除
+    /// </summary>
+    /// <param name="flag"></param>
+    public void SetResistEliminateFlag(int flag)
+    {
+        _resistEliminateFlag = flag;
     }
 
     public EnemyType GetEnemyType()

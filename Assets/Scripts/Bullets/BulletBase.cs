@@ -202,7 +202,7 @@ public class BulletBase :ICollisionObject
         throw new System.NotImplementedException();
     }
 
-    public virtual void CollidedByObject(int n = 0,eEliminateDef eliminateDef = eEliminateDef.HitObject)
+    public virtual void CollidedByObject(int n = 0,eEliminateDef eliminateDef = eEliminateDef.HitObjectCollider)
     {
         throw new System.NotImplementedException();
     }

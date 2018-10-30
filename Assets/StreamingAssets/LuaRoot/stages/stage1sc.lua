@@ -1,6 +1,6 @@
 local SC = SpellCard
 local Condition = Constants.eSpellCardCondition
-local BulletResist = Constants.eBulletResistEliminated
+local EliminateType = Constants.eEliminateType
 lib = require "LuaLib"
 
 local CustomizedBulletTable = {}
@@ -10,7 +10,7 @@ local CustomizedEnemyTable = {}
 --waitTime之后变换成札弹的子弹
 CustomizedBulletTable.NazrinSC1Bullet0 = {}
 CustomizedBulletTable.NazrinSC1Bullet0.Init = function(bullet,waitTime,maxRadius)
-	lib.SetBulletResistEliminatedFlag(bullet,BulletResist.PlayerBomb + BulletResist.PlayerDead + BulletResist.HitPlayer)
+	lib.SetBulletResistEliminatedFlag(bullet,EliminateType.PlayerSpellCard + EliminateType.PlayerDead + EliminateType.HitPlayer)
 	lib.AddBulletTask(bullet,function()
 		local posX,posY = lib.GetBulletPos(bullet)
 		lib.AddBulletComponent(bullet,Constants.BCTypeMoveParasChange)
@@ -592,7 +592,7 @@ end
 
 CustomizedBulletTable.NazrinSC2Laser = {}
 CustomizedBulletTable.NazrinSC2Laser.Init = function(laser,posX,posY,angle,existDuration,createRandomBulletInterval)
-	--lib.SetBulletResistEliminatedFlag(bullet,BulletResist.PlayerBomb + BulletResist.PlayerDead + BulletResist.HitPlayer)
+	--lib.SetBulletResistEliminatedFlag(bullet,EliminateType.PlayerSpellCard + EliminateType.PlayerDead + EliminateType.HitPlayer)
 	lib.SetBulletTexture(laser,"201060")
 	lib.SetLaserProps(laser,posX,posY,angle,2,500,150)
 	lib.SetBulletDetectCollision(laser,false)
@@ -632,7 +632,7 @@ CustomizedBulletTable.NazrinSC2Spark.Init = function(laser,posX,posY,canRotate)
 	local laserAngle = lib.GetAimToPlayerAngle(posX,posY)
 	lib.SetLaserProps(laser,posX,posY,laserAngle,2,0,500)
 	lib.SetBulletDetectCollision(laser,false)
-	lib.SetBulletResistEliminatedFlag(laser,BulletResist.PlayerBomb + BulletResist.PlayerDead + BulletResist.HitPlayer)
+	lib.SetBulletResistEliminatedFlag(laser,EliminateType.PlayerSpellCard + EliminateType.PlayerDead + EliminateType.HitPlayer)
 	lib.SetLaserCollisionFactor(laser,0.8)
 	lib.AddBulletTask(laser,function()
 		lib.ChangeLaserHeight(laser,500,30,0)

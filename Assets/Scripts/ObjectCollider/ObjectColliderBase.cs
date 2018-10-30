@@ -25,6 +25,10 @@ public class ObjectColliderBase
 
     protected eColliderType _type;
     /// <summary>
+    /// 与物体碰撞的消除方式
+    /// </summary>
+    protected eEliminateDef _eliminateType;
+    /// <summary>
     /// 与敌机发生碰撞时对敌机造成的伤害
     /// </summary>
     protected int _hitEnemyDamage;
@@ -34,6 +38,7 @@ public class ObjectColliderBase
         _clearFlag = 0;
         _existDuration = 0;
         _hitEnemyDamage = 0;
+        _eliminateType = eEliminateDef.HitObjectCollider;
         _isScaling = false;
     }
 
@@ -137,6 +142,11 @@ public class ObjectColliderBase
     protected virtual void CheckCollisionWithItem()
     {
 
+    }
+
+    protected void SetEliminateType(eEliminateDef eliminateType)
+    {
+        _eliminateType = eliminateType;
     }
 
     protected void SetHitEnemyDamage(int damage)
