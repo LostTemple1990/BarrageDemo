@@ -61,7 +61,7 @@ public partial class LuaLib
         ObjectColliderBase collider = luaState.ToUserData(-2) as ObjectColliderBase;
         int colliderGroup = luaState.ToInteger(-1);
         luaState.Pop(2);
-        collider.SetColliderGroup(colliderGroup);
+        collider.SetColliderGroup((eColliderGroup)colliderGroup);
         return 0;
     }
 
@@ -77,6 +77,66 @@ public partial class LuaLib
         int duration = luaState.ToInteger(-1);
         luaState.Pop(2);
         collider.SetExistDuration(duration);
+        return 0;
+    }
+
+    /// <summary>
+    /// 将ObjectCollider缩放至指定尺寸
+    /// <para>toWidth 圆的半径、矩形的宽</para>
+    /// <para>toHeight</para>
+    /// <para>duration 持续时间</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int ObjectColliderScaleToSize(ILuaState luaState)
+    {
+        ObjectColliderBase collider = luaState.ToUserData(-4) as ObjectColliderBase;
+        float toWidth = (float)luaState.ToNumber(-3);
+        float toHeight = (float)luaState.ToNumber(-2);
+        int duration = luaState.ToInteger(-1);
+        luaState.Pop(4);
+        collider.ScaleToSize(toWidth, toHeight, duration);
+        return 0;
+    }
+
+    /// <summary>
+    /// ObjectCollider清除自身
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int ObjectColliderClearSelf(ILuaState luaState)
+    {
+        ObjectColliderBase collider = luaState.ToUserData(-1) as ObjectColliderBase;
+        luaState.Pop(1);
+        collider.ClearSelf();
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置ObjectCollider的清除类型
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetObjectColliderEliminateType(ILuaState luaState)
+    {
+        ObjectColliderBase collider = luaState.ToUserData(-2) as ObjectColliderBase;
+        eEliminateDef eliminateType = (eEliminateDef)luaState.ToInteger(-1);
+        luaState.Pop(2);
+        collider.SetEliminateType(eliminateType);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置ObjectCollider击中敌机的伤害
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetObjectColliderHitEnemyDamage(ILuaState luaState)
+    {
+        ObjectColliderBase collider = luaState.ToUserData(-2) as ObjectColliderBase;
+        int damage = luaState.ToInteger(-1);
+        luaState.Pop(2);
+        collider.SetHitEnemyDamage(damage);
         return 0;
     }
 }

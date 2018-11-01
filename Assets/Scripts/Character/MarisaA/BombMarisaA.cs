@@ -6,8 +6,15 @@ public class BombMarisaA : BombBase
 {
     private const int MasterSparkPosZ = -5;
     public const int MovementObjectCount = 5;
-    private const int BombCount = 3;
-    private const float DefaultRadius = 32;
+    /// <summary>
+    /// 魔炮宽度
+    /// </summary>
+    private const float MasterSparkWidth = 256;
+    /// <summary>
+    /// 魔炮高度
+    /// </summary>
+    private const float MasterSparkHeight = 512;
+
     /// <summary>
     /// 魔炮位置与自机位置的偏移量
     /// </summary>
@@ -42,9 +49,10 @@ public class BombMarisaA : BombBase
     /// 魔炮时候的黑底SpriteEffect
     /// </summary>
     private SpriteEffect _effect;
-
-    private float _detectRadius;
-    private Vector2 _detectCenter;
+    /// <summary>
+    /// 魔炮的碰撞矩形
+    /// </summary>
+    private ColliderRect _colliderRect;
 
     public BombMarisaA()
     {
@@ -128,6 +136,13 @@ public class BombMarisaA : BombBase
             _curState = 2;
             _nextMovementIndex = 0;
             _time = 0;
+            // 设置碰撞
+            _colliderRect = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Rect) as ColliderRect;
+            _colliderRect.SetSize(MasterSparkWidth, MasterSparkHeight);
+            _colliderRect.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy);
+            _colliderRect.SetEliminateType(eEliminateDef.PlayerSpellCard);
+            _colliderRect.SetHitEnemyDamage(3);
+            _colliderRect.SetToPositon(Global.PlayerPos.x + _posOffset.x, Global.PlayerPos.y + _posOffset.y);
             _duration = 180;
         }
         _time++;
@@ -187,6 +202,8 @@ public class BombMarisaA : BombBase
                 _movementDataList[i] = data;
             }
         }
+        // 更新物体碰撞器的位置
+        _colliderRect.SetToPositon(Global.PlayerPos.x + _posOffset.x, Global.PlayerPos.y + _posOffset.y);
         if ( _time >= _duration )
         {
             // 黑底Sprite消失
@@ -194,6 +211,7 @@ public class BombMarisaA : BombBase
             _curState = 3;
             _time = 0;
             _duration = 10;
+            _colliderRect.ClearSelf();
         }
         _time++;
     }
@@ -209,202 +227,6 @@ public class BombMarisaA : BombBase
         _time++;
     }
 
-    //private void CheckCollisionWithEnemy()
-    //{
-    //    List<EnemyBase> enemyList = EnemyManager.GetInstance().GetEnemyList();
-    //    // 对敌机依然采用矩形检测即可
-    //    EnemyBase enemy;
-    //    int count = enemyList.Count;
-    //    int i, j;
-    //    for (i = 0; i < BombCount; i++)
-    //    {
-    //        _detectCenter = _bombsTf[i].localPosition;
-    //        for (j = 0; j < count; j++)
-    //        {
-    //            enemy = enemyList[j];
-    //            if (enemy != null && enemy.IsInteractive)
-    //            {
-    //                CollisionDetectParas collParas = enemy.GetCollisionDetectParas();
-    //                if (Mathf.Abs(_detectCenter.x - collParas.centerPos.x) <= _detectRadius + collParas.halfWidth &&
-    //                    Mathf.Abs(_detectCenter.y - collParas.centerPos.y) <= _detectRadius + collParas.halfHeight)
-    //                {
-    //                    // 造成1点伤害
-    //                    enemy.GetHit(1);
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
-
-    /// <summary>
-    /// 碰撞检测，为计算简便，圆形B暂时统一使用方形判定
-    /// </summary>
-    /// <param name="collParas"></param>
-    /// <returns></returns>
-    private bool DetectCollision(CollisionDetectParas collParas)
-    {
-        if (collParas.type == CollisionDetectType.Circle)
-        {
-            // 子弹为圆周判定，近似取外切正四边形
-            if (Mathf.Abs(_detectCenter.x - collParas.centerPos.x) <= _detectRadius + collParas.radius &&
-                Mathf.Abs(_detectCenter.y - collParas.centerPos.y) <= _detectRadius + collParas.radius)
-            {
-                return true;
-            }
-        }
-        else if (collParas.type == CollisionDetectType.Rect)
-        {
-            // 子弹为矩形判定
-            // 以子弹中心点为圆心，将B的判定中心旋转angle的角度计算判定
-            Vector2 vec = new Vector2(_detectCenter.x - collParas.centerPos.x, _detectCenter.y - collParas.centerPos.y);
-            float cos = Mathf.Cos(collParas.angle * Mathf.Deg2Rad);
-            float sin = Mathf.Sin(collParas.angle * Mathf.Deg2Rad);
-            Vector2 relativeVec = new Vector2();
-            // 向量顺时针旋转laserAngle的度数
-            relativeVec.x = cos * vec.x + sin * vec.y;
-            relativeVec.y = -sin * vec.x + cos * vec.y;
-            // 计算圆和矩形的碰撞
-            float len = relativeVec.magnitude;
-            float rate = (len - _detectRadius) / len;
-            relativeVec *= rate;
-            if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
-            {
-                return true;
-            }
-        }
-        else if (collParas.type == CollisionDetectType.Line)
-        {
-            float dis = MathUtil.GetMinDisFromPointToLineSegment(collParas.linePointA, collParas.linePointB, _detectCenter);
-            if (dis <= _detectRadius + collParas.radius)
-            {
-                return true;
-            }
-        }
-        else if (collParas.type == CollisionDetectType.MultiSegments)
-        {
-            List<Vector2> pointList = collParas.multiSegmentPointList;
-            int pointCount = pointList.Count;
-            int groupNum = Consts.NumInMultiSegmentsGroup;
-            int lastIndex;
-            for (int i = 1; i < pointCount - 1; i = i + groupNum)
-            {
-                lastIndex = i + groupNum - 1;
-                if (lastIndex >= pointCount - 1)
-                {
-                    lastIndex = pointCount - 1;
-                }
-                Vector2 vecA = new Vector2(pointList[i].x + collParas.centerPos.x, pointList[i].y + collParas.centerPos.y);
-                Vector2 vecB = new Vector2(pointList[lastIndex].x + collParas.centerPos.x, pointList[lastIndex].y + collParas.centerPos.y);
-                float minDis = MathUtil.GetMinDisFromPointToLineSegment(vecA, vecB, _detectCenter);
-                if (minDis <= collParas.radius + _detectRadius)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /// <summary>
-    /// 碰撞检测
-    /// </summary>
-    /// <param name="collParas"></param>
-    /// <returns></returns>
-    private bool DetectCollision(EnemyBulletBase bullet)
-    {
-        CollisionDetectParas collParas = bullet.GetCollisionDetectParas();
-        if (collParas.type == CollisionDetectType.Circle)
-        {
-            // 子弹为圆形判定，先检测外切正方形
-            float dx = Mathf.Abs(_detectCenter.x - collParas.centerPos.x);
-            float dy = Mathf.Abs(_detectCenter.y - collParas.centerPos.y);
-            // 两圆的半径和
-            float sumOfRadius = _detectRadius + collParas.radius;
-            if (dx <= sumOfRadius && dy <= sumOfRadius)
-            {
-                if (dx * dx + dy * dy <= sumOfRadius * sumOfRadius)
-                {
-                    bullet.Eliminate(eEliminateDef.PlayerSpellCard);
-                    return true;
-                }
-            }
-        }
-        else if (collParas.type == CollisionDetectType.Rect)
-        {
-            // 子弹为矩形判定
-            // 以子弹中心点为圆心，将B的判定中心旋转angle的角度计算判定
-            Vector2 vec = new Vector2(_detectCenter.x - collParas.centerPos.x, _detectCenter.y - collParas.centerPos.y);
-            float cos = Mathf.Cos(collParas.angle * Mathf.Deg2Rad);
-            float sin = Mathf.Sin(collParas.angle * Mathf.Deg2Rad);
-            Vector2 relativeVec = new Vector2();
-            // 向量顺时针旋转laserAngle的度数
-            relativeVec.x = cos * vec.x + sin * vec.y;
-            relativeVec.y = -sin * vec.x + cos * vec.y;
-            // 计算圆和矩形的碰撞
-            float len = relativeVec.magnitude;
-            float rate = (len - _detectRadius) / len;
-            relativeVec *= rate;
-            if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
-            {
-                bullet.Eliminate(eEliminateDef.PlayerSpellCard);
-                return true;
-            }
-        }
-        else if (collParas.type == CollisionDetectType.Line)
-        {
-            float dis = MathUtil.GetMinDisFromPointToLineSegment(collParas.linePointA, collParas.linePointB, _detectCenter);
-            if (dis <= _detectRadius + collParas.radius)
-            {
-                bullet.Eliminate(eEliminateDef.PlayerSpellCard);
-                return true;
-            }
-        }
-        // 多线段集合，判断圆心到每个点的距离即可
-        else if (collParas.type == CollisionDetectType.MultiSegments)
-        {
-            if (bullet.Id == BulletId.Enemy_CurveLaser)
-            {
-                EnemyCurveLaser curveLaser = bullet as EnemyCurveLaser;
-                List<Vector2> pointList = collParas.multiSegmentPointList;
-                int pointCount = pointList.Count;
-                float dx, dy, sum;
-                int eliminateStart = -1;
-                int eliminateEnd = -1;
-                for (int i = 0; i < pointCount; i++)
-                {
-                    dx = pointList[i].x - _detectCenter.x;
-                    dy = pointList[i].y - _detectCenter.y;
-                    sum = collParas.radius + _detectRadius;
-                    if (dx * dx + dy * dy <= sum * sum)
-                    {
-                        if (eliminateStart == -1)
-                        {
-                            eliminateStart = i;
-                        }
-                        eliminateEnd = i;
-                    }
-                    else
-                    {
-                        if (eliminateStart != -1)
-                        {
-                            curveLaser.EliminateByRange(eliminateStart, eliminateEnd);
-                            eliminateStart = -1;
-                        }
-                    }
-                }
-                if (eliminateStart != -1)
-                {
-                    curveLaser.EliminateByRange(eliminateStart, eliminateEnd);
-                }
-            }
-            else if (bullet.Id == BulletId.Enemy_LinearLaser)
-            {
-
-            }
-        }
-        return false;
-    }
-
     public override void Clear()
     {
         _effect = null;
@@ -415,5 +237,6 @@ public class BombMarisaA : BombBase
         _masterSparkTf = null;
         _movementBodyTf = null;
         _movementCount = 0;
+        _colliderRect = null;
     }
 }

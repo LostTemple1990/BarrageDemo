@@ -54,9 +54,14 @@ public class ObjectColliderBase
 
     }
 
-    public void SetColliderGroup(int groups)
+    /// <summary>
+    /// 设置与物体碰撞器产生碰撞的碰撞组
+    /// 类型 eColliderGroup
+    /// </summary>
+    /// <param name="groups"></param>
+    public void SetColliderGroup(eColliderGroup groups)
     {
-        _colliderGroups = groups;
+        _colliderGroups = (int)groups;
     }
 
     /// <summary>
@@ -144,12 +149,21 @@ public class ObjectColliderBase
 
     }
 
-    protected void SetEliminateType(eEliminateDef eliminateType)
+    /// <summary>
+    /// 设置ObjectCollider的消除类型
+    /// 自机符卡/碰撞物体
+    /// </summary>
+    /// <param name="eliminateType"></param>
+    public void SetEliminateType(eEliminateDef eliminateType)
     {
         _eliminateType = eliminateType;
     }
 
-    protected void SetHitEnemyDamage(int damage)
+    /// <summary>
+    /// 设置ObjectCollider击中敌机时造成的伤害
+    /// </summary>
+    /// <param name="damage"></param>
+    public void SetHitEnemyDamage(int damage)
     {
         _hitEnemyDamage = damage;
     }

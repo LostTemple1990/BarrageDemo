@@ -109,6 +109,16 @@ public partial class LuaLib
             // 子弹组件
             new NameFuncPair("AddBulletComponent",AddBulletComponent),
             new NameFuncPair("AddBulletParaChangeEvent",AddBulletParaChangeEvent),
+            // ObjectCollider
+            new NameFuncPair("CreateObjectColliderByType",CreateObjectColliderByType),
+            new NameFuncPair("SetObjectColliderToPos",SetObjectColliderToPos),
+            new NameFuncPair("SetObjectColliderSize",SetObjectColliderSize),
+            new NameFuncPair("SetObjectColliderColliderGroup",SetObjectColliderColliderGroup),
+            new NameFuncPair("SetObjectColliderExistDuration",SetObjectColliderExistDuration),
+            new NameFuncPair("ObjectColliderScaleToSize",ObjectColliderScaleToSize),
+            new NameFuncPair("ObjectColliderClearSelf",ObjectColliderClearSelf),
+            new NameFuncPair("SetObjectColliderEliminateType",SetObjectColliderEliminateType),
+            new NameFuncPair("SetObjectColliderHitEnemyDamage",SetObjectColliderHitEnemyDamage),
             // 清理子弹
             new NameFuncPair("ClearEnemyBulletsInRange",ClearEnemyBulletsInRange),
             new NameFuncPair("ClearAllEnemyBullets",ClearAllEnemyBullets),
