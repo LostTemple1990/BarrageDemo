@@ -97,6 +97,7 @@ public class EnemyLaser : EnemyBulletBase
         _rotateFlag = false;
         _moveFlag = false;
         _curPos = Vector3.zero;
+        _existTime = 0;
         _existDuration = -1;
         _id = BulletId.Enemy_Laser;
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
@@ -390,8 +391,9 @@ public class EnemyLaser : EnemyBulletBase
 
     protected void UpdateExistTime()
     {
+        if (_existDuration == -1) return;
         _existTime++;
-        if ( _existDuration != -1 && _existTime >= _existDuration )
+        if ( _existTime >= _existDuration )
         {
             _clearFlag = 1;
         }
@@ -404,37 +406,17 @@ public class EnemyLaser : EnemyBulletBase
         return true;
     }
 
-    public override CollisionDetectParas GetCollisionDetectParas(int index = 0)
+    public override CollisionDetectParas GetCollisionDetectParas(int index=0)
     {
-        return base.GetCollisionDetectParas(index);
-    }
-
-    public override void SetGrazeDetectParas(GrazeDetectParas paras)
-    {
-        _grazeHalfWidth = paras.halfWidth;
-        _grazeHalfHeight = paras.halfHeight;
-        base.SetGrazeDetectParas(paras);
-    }
-    public override void SetCollisionDetectParas(CollisionDetectParas paras)
-    {
-        _collisionHalfWidth = paras.halfWidth;
-        _collisionHalfHeight = paras.halfHeight;
-        base.SetCollisionDetectParas(paras);
-    }
-
-    public override CollisionDetectParas GetCollisionDetectParas()
-    {
-        CollisionDetectParas paras = new CollisionDetectParas()
+        CollisionDetectParas paras = new CollisionDetectParas();
+        paras.nextIndex = -1;
+        if (!_detectCollision)
         {
-            type = CollisionDetectType.Rect,
-        };
-        if ( !_detectCollision )
-        {
-            paras.halfWidth = paras.halfHeight = paras.angle = 0;
-            paras.centerPos = Vector2.zero;
+            paras.type = CollisionDetectType.Null;
         }
         else
         {
+            paras.type = CollisionDetectType.Rect;
             paras.halfWidth = _laserHalfWidth;
             paras.halfHeight = _laserHalfHeight;
             paras.angle = _laserAngle;
@@ -448,6 +430,18 @@ public class EnemyLaser : EnemyBulletBase
             paras.centerPos = center;
         }
         return paras;
+    }
+
+    public override void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObjectCollider)
+    {
+        Eliminate(eliminateDef);
+    }
+
+    public override void SetGrazeDetectParas(GrazeDetectParas paras)
+    {
+        _grazeHalfWidth = paras.halfWidth;
+        _grazeHalfHeight = paras.halfHeight;
+        base.SetGrazeDetectParas(paras);
     }
 
     protected virtual void CheckCollisionWithCharacter()

@@ -229,7 +229,7 @@ public class EnemyBase
         _enemyGo.transform.localPosition = _curPos;
     }
 
-    public virtual CollisionDetectParas GetCollisionDetectParas()
+    public virtual CollisionDetectParas GetCollisionDetectParas(int index=0)
     {
         CollisionDetectParas paras = new CollisionDetectParas
         {
@@ -238,6 +238,7 @@ public class EnemyBase
             halfWidth = _collisionHalfWidth,
             halfHeight = _collisionHalfHeight,
             radius = Mathf.Min(_collisionHalfWidth,_collisionHalfHeight),
+            nextIndex = -1,
             angle = 0,
         };
         return paras;

@@ -651,12 +651,6 @@ public class EnemyLinearLaser : EnemyBulletBase
         _grazeHalfHeight = paras.halfHeight;
         base.SetGrazeDetectParas(paras);
     }
-    public override void SetCollisionDetectParas(CollisionDetectParas paras)
-    {
-        _collisionHalfWidth = paras.halfWidth;
-        _collisionHalfHeight = paras.halfHeight;
-        base.SetCollisionDetectParas(paras);
-    }
 
     public override bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
     {

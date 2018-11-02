@@ -174,16 +174,6 @@ public class PlayerBulletSimple : PlayerBulletBase
         BeginEliminating();
     }
 
-    public override CollisionDetectParas GetCollisionDetectParas()
-    {
-        return new CollisionDetectParas
-        {
-            type = CollisionDetectType.Circle,
-            centerPos = _curPos,
-            radius = _collisionRadius,
-        };
-    }
-
     /// <summary>
     /// 开始消弹
     /// </summary>

@@ -14,6 +14,14 @@ public class BombMarisaA : BombBase
     /// 魔炮高度
     /// </summary>
     private const float MasterSparkHeight = 512;
+    /// <summary>
+    /// 魔炮判定盒的宽度
+    /// </summary>
+    private const float MasterSparkHitBoxWidth = 240;
+    /// <summary>
+    /// 魔炮判定盒的高度
+    /// </summary>
+    private const float MasterSpartHitBoxHeight = 512;
 
     /// <summary>
     /// 魔炮位置与自机位置的偏移量
@@ -138,7 +146,7 @@ public class BombMarisaA : BombBase
             _time = 0;
             // 设置碰撞
             _colliderRect = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Rect) as ColliderRect;
-            _colliderRect.SetSize(MasterSparkWidth, MasterSparkHeight);
+            _colliderRect.SetSize(MasterSparkHitBoxWidth, MasterSpartHitBoxHeight);
             _colliderRect.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy);
             _colliderRect.SetEliminateType(eEliminateDef.PlayerSpellCard);
             _colliderRect.SetHitEnemyDamage(3);

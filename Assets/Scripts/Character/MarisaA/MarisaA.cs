@@ -9,6 +9,14 @@ public class MarisaA : CharacterBase
     /// 子机总个数
     /// </summary>
     private const int SubWeaponTotalCount = 4;
+    /// <summary>
+    /// 高速状态下的移动速度
+    /// </summary>
+    private const float HighSpeedStateSpeed = 5f;
+    /// <summary>
+    /// 低速状态下的移动速度
+    /// </summary>
+    private const float LowSpeedStateSpeed = 2f;
 
     /// <summary>
     /// 子机在高低速切换下的移动时间
@@ -188,6 +196,13 @@ public class MarisaA : CharacterBase
             _subMoveToMode = _curMoveMode;
             _isSubMoving = true;
         }
+    }
+
+    public override float GetMoveSpeed()
+    {
+        if (_isCastingBomb) return LowSpeedStateSpeed;
+        float speed = _inputMoveMode == Consts.SpeedMove ? HighSpeedStateSpeed : LowSpeedStateSpeed;
+        return speed;
     }
 
     protected override void ResetSubWeapons()

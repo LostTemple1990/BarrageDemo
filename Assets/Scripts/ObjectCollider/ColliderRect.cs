@@ -136,7 +136,7 @@ public class ColliderRect : ObjectColliderBase
             enemy = enemyList[i];
             if (enemy != null && enemy.IsInteractive)
             {
-                para = enemy.GetCollisionDetectParas();
+                para = enemy.GetCollisionDetectParas(0);
                 // 敌机全部使用矩形判定
                 dx = Mathf.Abs(_curPosX - para.centerPos.x);
                 dy = Mathf.Abs(_curPosY - para.centerPos.y);

@@ -125,11 +125,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
         SetToPosition(_curPos.x, _curPos.y);
         SetRotatedByVelocity(cfg.isRotatedByVAngle);
         SetSelfRotation(cfg.selfRotationAngle != 0, cfg.selfRotationAngle);
-        CollisionDetectParas detectParas = new CollisionDetectParas
-        {
-            type = CollisionDetectType.Circle,
-            radius = cfg.collisionRadius,
-        };
         GrazeDetectParas grazeParas = new GrazeDetectParas
         {
             type = GrazeDetectType.Rect,
@@ -144,7 +139,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
         value = Global.PlayerCollisionVec.z + cfg.collisionRadius * _scaleFactor;
         _detCollisonValue = value * value;
 
-        SetCollisionDetectParas(detectParas);
         SetGrazeDetectParas(grazeParas);
         _cfg = cfg;
     }
@@ -224,12 +218,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _grazeParas = paras;
     }
 
-    public override void SetCollisionDetectParas(CollisionDetectParas paras)
-    {
-        _collisionRadius = paras.radius;
-        _collisionParas = paras;
-    }
-
     public override bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
     {
         Vector2 bulletBoundingBoxLBPos = new Vector2(_curPos.x - _collisionRadius, _curPos.y - _collisionRadius);
@@ -258,17 +246,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
     public override void CollidedByObject(int n = 0, eEliminateDef eliminateType = eEliminateDef.HitObjectCollider)
     {
         Eliminate(eliminateType);
-    }
-
-    public override CollisionDetectParas GetCollisionDetectParas()
-    {
-        CollisionDetectParas paras = new CollisionDetectParas
-        {
-            type = CollisionDetectType.Circle,
-            centerPos = _curPos,
-            radius = _collisionRadius,
-        };
-        return paras;
     }
 
     /// <summary>

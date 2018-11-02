@@ -396,7 +396,7 @@ public class CharacterBase
         {
             return;
         }
-        float speed = _inputMoveMode == Consts.SpeedMove ? Consts.HighSpeed : Consts.SlowSpeed;
+        float speed = GetMoveSpeed();
         Vector3 pos = _curPos;
         bool isIdle = true;
         if ((_inputDir & Consts.DIR_LEFT) != 0)
@@ -441,6 +441,15 @@ public class CharacterBase
         {
             _aniChar.Play(AniActionType.Idle, Consts.DIR_NULL);
         }
+    }
+
+    /// <summary>
+    /// 获取移动速度
+    /// </summary>
+    public virtual float GetMoveSpeed()
+    {
+        float speed = _inputMoveMode == Consts.SpeedMove ? Consts.HighSpeed : Consts.SlowSpeed;
+        return speed;
     }
 
     public void CastBomb()

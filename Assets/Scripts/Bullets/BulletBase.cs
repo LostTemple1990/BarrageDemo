@@ -207,19 +207,9 @@ public class BulletBase :ICollisionObject
         throw new System.NotImplementedException();
     }
 
-    public virtual void SetCollisionDetectParas(CollisionDetectParas paras)
-    {
-        _collisionParas = paras;
-    }
-
     public virtual void SetGrazeDetectParas(GrazeDetectParas paras)
     {
         _grazeParas = paras;
-    }
-
-    public virtual CollisionDetectParas GetCollisionDetectParas()
-    {
-        throw new System.NotImplementedException();
     }
 
     public virtual GrazeDetectParas GetGrazeDetectParas()

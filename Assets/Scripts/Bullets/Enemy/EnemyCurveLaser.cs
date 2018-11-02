@@ -206,11 +206,6 @@ public class EnemyCurveLaser : EnemyBulletBase
     }
 
     #region 设置碰撞检测相关参数
-    public override void SetCollisionDetectParas(CollisionDetectParas paras)
-    {
-        _collisionParas = paras;
-        _collisionRadius = paras.radius;
-    }
 
     public override void SetGrazeDetectParas(GrazeDetectParas paras)
     {

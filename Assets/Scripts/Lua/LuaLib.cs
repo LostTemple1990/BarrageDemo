@@ -637,6 +637,7 @@ public partial class LuaLib
 
     public static int SetLaserCollisionDetectParas(ILuaState luaState)
     {
+        Logger.LogError("Try to call unused Method LuaLib:SetLaserCollisionDetectParas");
         EnemyLaser laser = luaState.ToUserData(-3) as EnemyLaser;
         CollisionDetectParas detectParas = new CollisionDetectParas()
         {
@@ -645,7 +646,7 @@ public partial class LuaLib
             halfHeight = (float)luaState.ToNumber(-1),
         };
         luaState.Pop(3);
-        laser.SetCollisionDetectParas(detectParas);
+        //laser.SetCollisionDetectParas(detectParas);
         return 0;
     }
 
