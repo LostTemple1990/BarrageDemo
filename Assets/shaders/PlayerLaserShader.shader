@@ -55,6 +55,7 @@
 			float _LaserTexWidth;
 			float _CurLaserLen;
 			float _RepeatCount;
+			float _FrameSinceCreate;
 
 			fixed4 frag(v2f i) : SV_Target
 			{
@@ -65,10 +66,11 @@
 				// 当前uv对应应该取到原图uv的位置
 				float2 texUV = float2(fmod(i.uv.x, blockLen) / blockLen, i.uv.y);
 				// 计算滚动的比例，默认速度是1秒完成一次全图uv滚动
-				float rate = fmod(_Time.y,1) / 1;
+				float rate = fmod(_FrameSinceCreate,32) / 32;
 				float u = fmod(texUV.x-rate+1,1);
 				float2 uv = float2(u,i.uv.y);
 				fixed4 col = tex2D(_MainTex, uv);
+				//fixed4 col = tex2D(_MainTex, texUV);
 				col *= i.color;
 				col.rgb *= col.a;
 				return col;

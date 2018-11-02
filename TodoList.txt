@@ -5,7 +5,7 @@ interpreterManager里面的tableToVec2/Vec3/Color方法修改，不弹出顶部t
 废掉原本boss遗留下来的boss task --finish
 增加一个机制，重开当前关卡的话不清除stage.lua以及对应的sc.lua --finish
 测试soundManager在重开的时候是否clear了
-增加ObjectEliminator B、额外物体的碰撞全部统一使用这个对象 
+增加ObjectEliminator B、额外物体的碰撞全部统一使用这个对象  --finish
 优化BOSS的符卡文字、立绘的显示
 优化stage1.lua 把boss多余部分全部删除
 思考魔炮的构成 --finish
@@ -19,10 +19,13 @@ protoType没有被回收的bug --finish
 playerBullet也统一成protoType的样式 --finish
 自机子弹击中敌机的函数修改 --finish
 laser相关问题的修复  --finish
-完成魔机
+完成魔机  --finish
 统一bullet的curPos，全部改成Vector2 --finish
 移除playerBullet的GetCollisionParams方法，全部使用GetCollisionDetectParas的统一接口 --废弃
-重新修改ICollisionObject，统一所有物体的碰撞判定
-魔机激光的暂停问题
+重新修改ICollisionObject，统一所有物体的碰撞判定 --finish
+魔机激光的暂停问题 --finish
 优化魔炮的显示效果
-Enemy的GetHit函数要加入伤害来源，用于判断是否吃B
+Enemy的GetHit函数要加入伤害来源，用于判断是否吃B --finish
+魔炮发动时魔机应该只能以低速移动
+如何清除指定的ObjectCollider
+废弃原有的GetCollisionDetectParas(),统一使用GetCollisionDetectParas(int index)

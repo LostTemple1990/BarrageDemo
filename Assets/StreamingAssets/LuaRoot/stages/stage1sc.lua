@@ -74,6 +74,147 @@ CustomizedEnemyTable.NazrinSC1Enemy.Init = function(enemy,toPosX,toPosY,duration
 	end)
 end
 
+function SC.NazrinTest(boss)
+	lib.SetSpellCardProperties("Easy-SpellCard",60,Condition.EliminateAll,true,function()
+		local effect = lib.GetGlobalUserData("SC1Effect0")
+		lib.SetEffectFinish(effect)
+		lib.RemoveGlobalUserData("SC1Effect0")
+		effect = lib.GetGlobalUserData("SC1Effect1")
+		lib.SetEffectFinish(effect)
+		lib.RemoveGlobalUserData("SC1Effect1")
+	end)
+	--bossCG
+	do
+		local tweenList = {}
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=0,duration=30,beginValue={x=200,y=200},endValue={x=0,y=0},mode=Constants.ModeEaseInQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=60,duration=60,beginValue={x=0,y=0},endValue={x=-200,y=-200},mode=Constants.ModeEaseOutQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=0,duration=0,beginValue=1,endValue=1,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=90,duration=30,beginValue=1,endValue=0,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Scale,delay=0,duration=0,beginValue={x=0.75,y=0.75,z=1},endValue={x=0.75,y=0.75,z=1},mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		lib.PlayCharacterCG("CG/face04ct",tweenList)
+	end
+	lib.SetBossInvincible(boss,5)
+	lib.SetEnemyMaxHp(boss,5000)
+	lib.ShowBossBloodBar(boss,true)
+	--圈形子弹的task
+	lib.AddEnemyTask(boss,function()
+		local k = 1
+		for _=1,Infinite do
+			local i
+			local posX,posY = lib.GetEnemyPos(boss)
+			lib.SetGlobalVector2("SC1CircleCache",posX,posY)
+			for i=0,15 do
+				local bullet = lib.CreateCustomizedBullet("NazrinSC1Bullet0","113020",posX,posY,i,75,2)
+				lib.SetBulletCurvePara(bullet,0,23.5*i*k,0,1*k)
+				if coroutine.yield(1)==false then return end
+			end
+			k = -k
+			if coroutine.yield(90)==false then return end
+		end
+	end)
+	--圈形防护罩0
+	lib.AddEnemyTask(boss,function()
+		local spriteEffect = lib.CreateSpriteEffectWithProps("STGEffectAtlas","TransparentCircle",false,eEffectLayer.Bottom,0)
+		lib.SetEffectToPos(spriteEffect,2000,2000)
+		lib.SetSpriteEffectScale(spriteEffect,5,5)
+		lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
+		lib.SetGlobalUserData("SC1Effect0",spriteEffect)
+		--ObjectCollider
+		local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
+		lib.SetObjectColliderSize(collider,80,80)
+		lib.SetObjectColliderToPos(collider,2000,2000)
+		lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
+		--
+		if coroutine.yield(80)==false then return end
+		for _=1,Infinite do
+			--等待圈形子弹发射
+			--if coroutine.yield(80)==false then return end
+			local posX,posY = lib.GetGlobalVector2("SC1CircleCache")
+			local angle = lib.GetAimToPlayerAngle(posX,posY)
+			local vx = 2.5 * math.cos(math.rad(angle))
+			local vy = 2.5 * math.sin(math.rad(angle))
+			for _=0,211 do
+				posX = posX + vx
+				posY = posY + vy
+				lib.SetGlobalVector2("SC1CircleCenter0",posX,posY)
+				lib.SetEffectToPos(spriteEffect,posX,posY)
+				lib.SetObjectColliderToPos(collider,posX,posY)
+				if coroutine.yield(1)==false then return end
+			end
+		end
+	end)
+	--圈形防护罩1
+	lib.AddEnemyTask(boss,function()
+		local spriteEffect = lib.CreateSpriteEffectWithProps("STGEffectAtlas","TransparentCircle",false,eEffectLayer.Bottom,0)
+		lib.SetEffectToPos(spriteEffect,2000,2000)
+		lib.SetSpriteEffectScale(spriteEffect,5,5)
+		lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
+		lib.SetGlobalUserData("SC1Effect1",spriteEffect)
+		--ObjectCollider
+		local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
+		lib.SetObjectColliderSize(collider,80,80)
+		lib.SetObjectColliderToPos(collider,2000,2000)
+		lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
+		--
+		if coroutine.yield(186)==false then return end
+		for _=1,Infinite do
+			--等待圈形子弹发射
+			--if coroutine.yield(80)==false then return end
+			local posX,posY = lib.GetGlobalVector2("SC1CircleCache")
+			local angle = lib.GetAimToPlayerAngle(posX,posY)
+			local vx = 2.5 * math.cos(math.rad(angle))
+			local vy = 2.5 * math.sin(math.rad(angle))
+			for _=0,211 do
+				posX = posX + vx
+				posY = posY + vy
+				lib.SetGlobalVector2("SC1CircleCenter1",posX,posY)
+				lib.SetEffectToPos(spriteEffect,posX,posY)
+				lib.SetObjectColliderToPos(collider,posX,posY)
+				if coroutine.yield(1)==false then return end
+			end
+		end
+	end)
+	--使魔的task
+	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(300)==false then return end
+		for _=1,Infinite do
+			local hpRate = lib.GetBossSpellCardHpRate(0)
+			local timeLeftRate = lib.GetSpellCardTimeLeftRate()
+			local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
+			local posX,posY = lib.GetEnemyPos(boss)
+			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,-170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,170,205,duration,3)
+			if coroutine.yield(180)==false then return end
+		end
+	end)
+	--移动的task
+	lib.AddEnemyTask(boss,function()
+		lib.SetEnemyWanderRange(boss,-150,150,80,125)
+		lib.SetEnemyWanderAmplitude(boss,-100,100,-15,15)
+		lib.SetEnemyWanderMode(boss,Constants.ModeLinear,Constants.DirModeMoveRandom)
+		if coroutine.yield(300)==false then return end
+		for _=0,Infinite do
+			lib.EnemyDoWander(boss,120)
+			if coroutine.yield(420)==false then return end
+		end
+	end)
+end
+
 function SC.NazrinSC1_0(boss)
 	lib.SetSpellCardProperties("Easy-SpellCard",60,Condition.EliminateAll,true,function()
 		local effect = lib.GetGlobalUserData("SC1Effect0")

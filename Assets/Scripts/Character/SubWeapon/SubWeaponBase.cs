@@ -37,7 +37,25 @@ public class SubWeaponBase
         _character = character;
     }
 
-    public virtual void Update(int moveMode)
+    public virtual void Update()
+    {
+
+    }
+
+    /// <summary>
+    /// 当玩家进入某状态时
+    /// </summary>
+    /// <param name="state"></param>
+    public virtual void OnCharacterStateEnter(eCharacterState state)
+    {
+
+    }
+
+    /// <summary>
+    /// 当玩家离开某状态时
+    /// </summary>
+    /// <param name="state"></param>
+    public virtual void OnCharacterStateExit(eCharacterState state)
     {
 
     }

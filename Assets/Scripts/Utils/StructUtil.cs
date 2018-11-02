@@ -230,6 +230,33 @@ public enum eColliderType : int
     Rect = 2,
 }
 
+/// <summary>
+/// 自机状态
+/// </summary>
+public enum eCharacterState : int
+{
+    /// <summary>
+    /// 未被赋值的状态
+    /// </summary>
+    Undefined = -1,
+    /// <summary>
+    /// 通常状态
+    /// </summary>
+    Normal = 1,
+    /// <summary>
+    /// 从屏幕下方出现的状态
+    /// </summary>
+    Appear = 2,
+    /// <summary>
+    /// 决死状态
+    /// </summary>
+    Dying = 3,
+    /// <summary>
+    /// 死亡，等待复活状态
+    /// </summary>
+    WaitReborn = 4,
+}
+
 #region struct ItemWithFramentsCounter
 /// <summary>
 /// 带碎片的道具计数器

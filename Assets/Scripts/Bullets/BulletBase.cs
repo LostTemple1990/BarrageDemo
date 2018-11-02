@@ -132,7 +132,7 @@ public class BulletBase :ICollisionObject
     /// <returns></returns>
     public virtual bool DetectCollision()
     {
-        return false;
+        return _detectCollision;
     }
 
     public float PosX

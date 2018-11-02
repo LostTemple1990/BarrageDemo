@@ -153,6 +153,27 @@ public class PlayerBulletSimple : PlayerBulletBase
         }
     }
 
+    public override bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
+    {
+        return true;
+    }
+
+    public override CollisionDetectParas GetCollisionDetectParas(int index = 0)
+    {
+        return new CollisionDetectParas
+        {
+            type = CollisionDetectType.Circle,
+            centerPos = _curPos,
+            radius = _collisionRadius,
+            nextIndex = -1,
+        };
+    }
+
+    public override void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObjectCollider)
+    {
+        BeginEliminating();
+    }
+
     public override CollisionDetectParas GetCollisionDetectParas()
     {
         return new CollisionDetectParas

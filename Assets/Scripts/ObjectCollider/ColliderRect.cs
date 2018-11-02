@@ -77,7 +77,51 @@ public class ColliderRect : ObjectColliderBase
 
     protected override void CheckCollisionWithPlayerBullet()
     {
-        //List<PlayerBulletBase> _bulletList = BulletsManager.GetInstance().
+        // 计算碰撞盒参数
+        Vector2 lbPos = new Vector2(_curPosX - _halfWidth, _curPosY - _halfHeight);
+        Vector2 rtPos = new Vector2(_curPosX + _halfWidth, _curPosY + _halfHeight);
+        int i, bulletCount;
+        List<PlayerBulletBase> bulletList = BulletsManager.GetInstance().GetPlayerBulletList();
+        PlayerBulletBase bullet;
+        bulletCount = bulletList.Count;
+        for (i = 0; i < bulletCount; i++)
+        {
+            bullet = bulletList[i];
+            // 判断是否要进行碰撞检测
+            if (bullet != null &&
+                bullet.ClearFlag == 0 &&
+                bullet.DetectCollision() &&
+                bullet.CheckBoundingBoxesIntersect(lbPos, rtPos))
+            {
+                DetectCollisionWithPlayerBullet(bullet);
+            }
+        }
+    }
+
+    private bool DetectCollisionWithPlayerBullet(PlayerBulletBase bullet)
+    {
+        int nextColliderIndex = 0;
+        int curColliderIndex;
+        bool isCollided = false;
+        do
+        {
+            CollisionDetectParas collParas = bullet.GetCollisionDetectParas(nextColliderIndex);
+            curColliderIndex = nextColliderIndex;
+            nextColliderIndex = collParas.nextIndex;
+            if (collParas.type == CollisionDetectType.Circle)
+            {
+                // 子弹为圆形判定，方形判定来检测
+                float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
+                float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
+                // 检测该碰撞剧情与方形是否相交
+                if (dx <= _halfWidth + collParas.radius && dy <= _halfHeight + collParas.radius)
+                {
+                    bullet.CollidedByObject(curColliderIndex);
+                    isCollided = true;
+                }
+            }
+        } while (nextColliderIndex != -1);
+        return isCollided;
     }
 
     protected override void CheckCollisionWithEnemy()

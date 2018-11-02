@@ -102,6 +102,7 @@ public partial class LuaLib
         effect.SetSprite(atlasName, spriteName, cached);
         effect.SetLayer(layerId);
         effect.SetOrderInLayer(orderInLayer);
+        luaState.PushLightUserData(effect);
         return 1;
     }
 

@@ -267,9 +267,22 @@ public class BulletsManager : ICommand
         return parser as EnemyLinearLaserCfg;
     }
 
+    /// <summary>
+    /// 获取敌机子弹列表
+    /// </summary>
+    /// <returns></returns>
     public List<EnemyBulletBase> GetEnemyBulletList()
     {
         return _enemyBullets;
+    }
+
+    /// <summary>
+    /// 获取自机子弹列表
+    /// </summary>
+    /// <returns></returns>
+    public List<PlayerBulletBase> GetPlayerBulletList()
+    {
+        return _playerBullets;
     }
 
     public void ClearEnemyBulletsInRange(Vector2 center,float radius)

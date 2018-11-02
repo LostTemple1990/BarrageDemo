@@ -51,7 +51,55 @@ public class ColliderCircle : ObjectColliderBase
 
     protected override void CheckCollisionWithPlayerBullet()
     {
-        //List<PlayerBulletBase> _bulletList = BulletsManager.GetInstance().
+        // 计算碰撞盒参数
+        Vector2 lbPos = new Vector2(_curPosX - _radius, _curPosY - _radius);
+        Vector2 rtPos = new Vector2(_curPosX + _radius, _curPosY + _radius);
+        int i, bulletCount;
+        List<PlayerBulletBase> bulletList = BulletsManager.GetInstance().GetPlayerBulletList();
+        PlayerBulletBase bullet;
+        bulletCount = bulletList.Count;
+        for (i = 0; i < bulletCount; i++)
+        {
+            bullet = bulletList[i];
+            // 判断是否要进行碰撞检测
+            if (bullet != null &&
+                bullet.ClearFlag == 0 &&
+                bullet.DetectCollision() &&
+                bullet.CheckBoundingBoxesIntersect(lbPos, rtPos))
+            {
+                DetectCollisionWithPlayerBullet(bullet);
+            }
+        }
+    }
+
+    private bool DetectCollisionWithPlayerBullet(PlayerBulletBase bullet)
+    {
+        int nextColliderIndex = 0;
+        int curColliderIndex;
+        bool isCollided = false;
+        do
+        {
+            CollisionDetectParas collParas = bullet.GetCollisionDetectParas(nextColliderIndex);
+            curColliderIndex = nextColliderIndex;
+            nextColliderIndex = collParas.nextIndex;
+            if (collParas.type == CollisionDetectType.Circle)
+            {
+                // 子弹为圆形判定，先检测外切正方形
+                float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
+                float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
+                // 两圆的半径和
+                float sumOfRadius = _radius + collParas.radius;
+                if (dx <= sumOfRadius && dy <= sumOfRadius)
+                {
+                    if (dx * dx + dy * dy <= sumOfRadius * sumOfRadius)
+                    {
+                        bullet.CollidedByObject(curColliderIndex);
+                        isCollided = true;
+                    }
+                }
+            }
+        } while (nextColliderIndex != -1);
+        return isCollided;
     }
 
     protected override void CheckCollisionWithEnemy()

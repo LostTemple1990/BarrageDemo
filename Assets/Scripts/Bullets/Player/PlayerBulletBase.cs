@@ -17,6 +17,7 @@ public class PlayerBulletBase : BulletBase
     public override void Init()
     {
         base.Init();
+        _detectCollision = true;
     }
 
 

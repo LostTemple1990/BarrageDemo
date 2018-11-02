@@ -50,7 +50,7 @@ public class SubWeaponMarisaA : SubWeaponBase
         _highLightStarTf = _subTf.Find("HighLightStar");
     }
 
-    public override void Update(int moveMode)
+    public override void Update()
     {
         Shoot();
         UpdateAni();
@@ -134,6 +134,20 @@ public class SubWeaponMarisaA : SubWeaponBase
                 _scaleDelta = ScaleDelta;
             }
             _highLightStarTf.localScale = new Vector3(_curStarScale, _curStarScale, 1);
+        }
+    }
+
+    public override void OnCharacterStateExit(eCharacterState state)
+    {
+        // 自机离开普通状态，隐藏激光
+        if ( state == eCharacterState.Normal )
+        {
+            if ( _laser != null )
+            {
+                _laser.SetToPosition(new Vector2(2000, 2000));
+                _laser.SetDetectCollision(false);
+                _isShooting = false;
+            }
         }
     }
 

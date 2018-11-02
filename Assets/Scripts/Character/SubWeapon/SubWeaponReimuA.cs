@@ -29,9 +29,9 @@ public class SubWeaponReimuA : SubWeaponBase
         _subWeaponRenderer.sprite = ResourceManager.GetInstance().GetSprite(Consts.ReimuAtlasName, "pl00_21");
     }
 
-    public override void Update(int moveMode)
+    public override void Update()
     {
-        _moveMode = moveMode;
+        _moveMode = _character.CurModeMode;
         _powerLevel = PlayerService.GetInstance().GetPower() / 100;
         UpdatePos();
         Shoot();

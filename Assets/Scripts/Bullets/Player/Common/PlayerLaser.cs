@@ -2,8 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerLaser : PlayerBulletBase
+public class PlayerLaser : PlayerBulletBase,ICommand
 {
+    /// <summary>
+    /// 碰撞线段组的半径
+    /// 即碰撞线段长度的一半
+    /// </summary>
+    private const float CollisionSegmentRadius = 5;
+
     /// <summary>
     /// 是否已经生成贴图
     /// </summary>
@@ -29,11 +35,35 @@ public class PlayerLaser : PlayerBulletBase
     /// 射线的方向向量
     /// </summary>
     private Vector2 _dirVec;
+    /// <summary>
+    /// 是否已经缓存了碰撞线段组
+    /// </summary>
+    private bool _isCachedCollisionSegments;
+    /// <summary>
+    /// 线段碰撞组
+    /// </summary>
+    private List<Vector2> _collisionSegments;
+    /// <summary>
+    /// 线段碰撞组的数量
+    /// </summary>
+    private int _collisionSegmentsCount;
+    /// <summary>
+    /// 被限制的最大长度
+    /// <para>默认为-1，说明未被限制</para>
+    /// <para>被限制的原因为</para>
+    /// <para>1.与ObjectCollider发生碰撞</para>
+    /// </summary>
+    private float _laserLimitLen;
+    /// <summary>
+    /// 射线从创建开始经过的帧数
+    /// </summary>
+    private int _frameCountSinceCreate;
 
     public PlayerLaser()
     {
         _id = BulletId.Player_Laser;
         _prefabName = "PlayerLaser";
+        _collisionSegments = new List<Vector2>();
     }
 
     public override void Init()
@@ -41,6 +71,10 @@ public class PlayerLaser : PlayerBulletBase
         base.Init();
         BulletsManager.GetInstance().RegisterPlayerBullet(this);
         _isCached = false;
+        _isCachedCollisionSegments = false;
+        _laserLimitLen = -1;
+        _frameCountSinceCreate = 0;
+        CommandManager.GetInstance().Register(CommandConsts.STGFrameStart, this);
     }
 
     public override void ChangeStyleById(string id)
@@ -93,11 +127,12 @@ public class PlayerLaser : PlayerBulletBase
     public override void Update()
     {
         if (!_isCached) Cache();
-        CheckHitEnemy();
-        if ( _preLaserLen != _curLaserLen )
+        _frameCountSinceCreate++;
+        if ( _detectCollision )
         {
-            RenderLaser();
+            CalLaserLen();
         }
+        RenderLaser();
         UpdatePos();
     }
 
@@ -112,7 +147,10 @@ public class PlayerLaser : PlayerBulletBase
         _isCached = true;
     }
 
-    public void CheckHitEnemy()
+    /// <summary>
+    /// 计算射线的长度
+    /// </summary>
+    private void CalLaserLen()
     {
         List<EnemyBase> enemyList = EnemyManager.GetInstance().GetEnemyList();
         int enemyCount = enemyList.Count;
@@ -123,7 +161,7 @@ public class PlayerLaser : PlayerBulletBase
         // dis 从射线起始点指向敌机中心的向量的长度
         // minDis 击中敌人的最小距离,即射线第一个击中的敌人
         float verticalDis,angle,dis,minDis,horizonDis;
-        minDis = _laserTotalLen;
+        minDis = _laserLimitLen == -1 ? _laserTotalLen : _laserLimitLen;
         // vecA为射线发射点到敌机的向量
         Vector2 vecA;
         // 遍历所有敌机，检测激光最先碰到的敌机
@@ -154,9 +192,12 @@ public class PlayerLaser : PlayerBulletBase
         }
         _curLaserLen = minDis;
         // 如果有击中敌机
-        if ( hitEnemy != null )
+        if ( hitEnemy != null || _laserLimitLen != -1 )
         {
-            hitEnemy.GetHit(GetDamage());
+            if ( hitEnemy != null )
+            {
+                hitEnemy.GetHit(GetDamage());
+            }
             // 击中特效
             Vector2 effectPos = _curPos + _dirVec * minDis;
             SpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as SpriteEffect;
@@ -167,14 +208,22 @@ public class PlayerLaser : PlayerBulletBase
             float offsetY = Random.Range(-5, 5);
             effect.SetToPos(effectPos.x+offsetX, effectPos.y+offsetY);
             effect.DoFade(5);
+            _trans.localScale = new Vector3(1, 0.5f, 1);
+        }
+        else
+        {
+            _trans.localScale = new Vector3(1, 1, 1);
         }
     }
 
     private void RenderLaser()
     {
-        _laserSr.material.SetFloat("_CurLaserLen", _curLaserLen);
-        //Logger.Log("Set CurLaserLen To " + _curLaserLen);
-        _preLaserLen = _curLaserLen;
+        if ( _preLaserLen != _curLaserLen )
+        {
+            _laserSr.material.SetFloat("_CurLaserLen", _curLaserLen);
+            _preLaserLen = _curLaserLen;
+        }
+        _laserSr.material.SetFloat("_FrameSinceCreate", _frameCountSinceCreate);
     }
 
     protected override int GetDamage()
@@ -182,8 +231,96 @@ public class PlayerLaser : PlayerBulletBase
         return 2;
     }
 
+    public override bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
+    {
+        // 计算对角的坐标
+        Vector2 diagonalPos = _curPos + _dirVec * _curLaserLen;
+        float laserLBPosX = _curPos.x < diagonalPos.x ? _curPos.x : diagonalPos.x;
+        float laserLBPosY = _curPos.y < diagonalPos.y ? _curPos.y : diagonalPos.y;
+        float laserRTPosX = _curPos.x > diagonalPos.x ? _curPos.x : diagonalPos.x;
+        float laserRTPosY = _curPos.y > diagonalPos.y ? _curPos.y : diagonalPos.y;
+        // 快速排斥试验
+        if ( laserLBPosX >= rtPos.x || laserLBPosY >= rtPos.y || laserRTPosX <= lbPos.x || laserRTPosY <= rtPos.y )
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public override CollisionDetectParas GetCollisionDetectParas(int index = 0)
+    {
+        if (!_isCachedCollisionSegments) CacheCollisionSegments();
+        CollisionDetectParas paras = new CollisionDetectParas();
+        if ( index >= _collisionSegmentsCount )
+        {
+            paras.type = CollisionDetectType.Null;
+            paras.nextIndex = -1;
+        }
+        else
+        {
+            int nextIndex = index + 1 >= _collisionSegmentsCount ? -1 : index + 1;
+            paras.type = CollisionDetectType.Circle;
+            paras.radius = CollisionSegmentRadius;
+            paras.centerPos = _collisionSegments[index];
+            paras.nextIndex = nextIndex;
+        }
+        return paras;
+    }
+
+    /// <summary>
+    /// 缓存碰撞线段组
+    /// </summary>
+    private void CacheCollisionSegments()
+    {
+        _collisionSegments.Clear();
+        _collisionSegmentsCount = 0;
+        float tmpLen = 0;
+        Vector2 centerPos;
+        Vector2 startPos = _curPos + _dirVec * CollisionSegmentRadius;
+        for (int i=0; ;i++)
+        {
+            tmpLen = (i * 2 + 1) * CollisionSegmentRadius;
+            // 检测长度已经超过实际长度
+            if ( tmpLen > _curLaserLen )
+            {
+                if ( i != 0 )
+                {
+                    centerPos = _curPos + (_curLaserLen - CollisionSegmentRadius) * _dirVec;
+                    _collisionSegments.Add(centerPos);
+                    _collisionSegmentsCount++;
+                }
+                break;
+            }
+            centerPos = _curPos + tmpLen * _dirVec;
+            _collisionSegments.Add(centerPos);
+            _collisionSegmentsCount++;
+        }
+        _isCachedCollisionSegments = true;
+    }
+
+    public override void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObjectCollider)
+    {
+        if ( _collisionSegmentsCount > n )
+        {
+            _laserLimitLen = (_collisionSegments[n] - _curPos).magnitude;
+            // 截取掉之后的碰撞组
+            _collisionSegmentsCount = n;
+        }
+    }
+
+    public void Execute(int cmd, object[] data)
+    {
+        if ( cmd == CommandConsts.STGFrameStart )
+        {
+            _isCachedCollisionSegments = false;
+            _laserLimitLen = -1;
+            _curLaserLen = _laserTotalLen;
+        }
+    }
+
     public override void Clear()
     {
+        CommandManager.GetInstance().Remove(CommandConsts.STGFrameStart, this);
         UIManager.GetInstance().HideGo(_bullet);
         ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         _laserSr.sprite = null;

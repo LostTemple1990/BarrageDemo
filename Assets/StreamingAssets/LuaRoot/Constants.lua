@@ -84,3 +84,8 @@ eColliderType.Circle = 1
 eColliderType.Rect = 2
 
 eColliderGroup = {}
+eColliderGroup.Player = 1
+eColliderGroup.PlayerBullet = 2
+eColliderGroup.Enemy = 4
+eColliderGroup.EnemyBullet = 8
+eColliderGroup.Item = 16

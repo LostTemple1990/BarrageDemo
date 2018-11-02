@@ -74,15 +74,11 @@ public class CharacterBase
     protected delegate void StateUpdateFunc();
     protected delegate void StateExitFunc();
 
-    protected const int StateNormal = 1;
-    protected const int StateAppear = 2;
-    protected const int StateDying = 3;
-    protected const int StateWaitReborn = 4;
     /// <summary>
     /// 当前状态
     /// </summary>
-    protected int _curState;
-    protected int _nextState;
+    protected eCharacterState _curState;
+    protected eCharacterState _nextState;
 
     protected StateEnterFunc _stateEnterFunc;
     protected StateUpdateFunc _stateUpdateFunc;
@@ -120,7 +116,7 @@ public class CharacterBase
     #region 状态机基本函数
     protected void UpdateState()
     {
-        if ( _nextState != -1 && _curState != _nextState )
+        if ( _nextState != eCharacterState.Undefined && _curState != _nextState )
         {
             OnStateExit();
             _stateUpdateFunc = null;
@@ -135,19 +131,19 @@ public class CharacterBase
     {
         switch ( _curState )
         {
-            case StateAppear:
+            case eCharacterState.Appear:
                 _stateEnterFunc = OnStateAppearEnter;
                 //Logger.Log("Player Enter State : Appear");
                 break;
-            case StateNormal:
+            case eCharacterState.Normal:
                 _stateEnterFunc = OnStateNormalEnter;
                 //Logger.Log("Player Enter State : Nromal");
                 break;
-            case StateDying:
+            case eCharacterState.Dying:
                 _stateEnterFunc = OnStateDyingEnter;
                 //Logger.Log("Player Enter State : Dying");
                 break;
-            case StateWaitReborn:
+            case eCharacterState.WaitReborn:
                 _stateEnterFunc = OnStateWaitRebornEnter;
                 //Logger.Log("Player Enter State : WaitBorn");
                 break;
@@ -189,7 +185,7 @@ public class CharacterBase
         _appearTime++;
         if ( _appearTime >= _appearDuration )
         {
-            _nextState = StateNormal;
+            _nextState = eCharacterState.Normal;
         }
         UpdateInvincibleStatus();
         UpdatePosition();
@@ -237,6 +233,7 @@ public class CharacterBase
         // 隐藏所有副武器
         for (i=0;i<4;i++)
         {
+            _subWeapons[i].OnCharacterStateExit(eCharacterState.Normal);
             _subWeapons[i].SetActive(false);
         }
         _availableSubCount = -1;
@@ -263,14 +260,14 @@ public class CharacterBase
         CastBomb();
         if ( _isCastingBomb )
         {
-            _nextState = StateNormal;
+            _nextState = eCharacterState.Normal;
             _character.SetActive(true);
             return;
         }
         _dyingTime++;
         if ( _dyingTime >= _dyingDuration )
         {
-            _nextState = StateWaitReborn;
+            _nextState = eCharacterState.WaitReborn;
         }
     }
 
@@ -293,7 +290,7 @@ public class CharacterBase
         _waitRebornTime++;
         if (_waitRebornTime >= _waitRebornDuration)
         {
-            _nextState = StateAppear;
+            _nextState = eCharacterState.Appear;
         }
     }
     #endregion
@@ -332,7 +329,7 @@ public class CharacterBase
         _availableSubCount = 5;
         // 设置状态
         _curState = 0;
-        _nextState = StateAppear;
+        _nextState = eCharacterState.Appear;
         _isCastingBomb = false;
     }
 
@@ -505,7 +502,7 @@ public class CharacterBase
         for (i = 0; i < _availableSubCount; i++)
         {
             subWeapon = _subWeapons[i];
-            subWeapon.Update(_curMoveMode);
+            subWeapon.Update();
         }
     }
 
@@ -601,7 +598,11 @@ public class CharacterBase
 
     public bool CanShoot()
     {
-        return true;
+        if ( _curState == eCharacterState.Normal )
+        {
+            return true;
+        }
+        return false;
     }
 
     protected bool IsInShootCD()
@@ -632,7 +633,7 @@ public class CharacterBase
     {
         if ( !_isInvincible )
         {
-            _nextState = StateDying;
+            _nextState = eCharacterState.Dying;
         }
     }
 

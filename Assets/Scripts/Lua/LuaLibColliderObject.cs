@@ -139,4 +139,9 @@ public partial class LuaLib
         collider.SetHitEnemyDamage(damage);
         return 0;
     }
+
+    public static int RemoveAllObjectCollider(ILuaState luaState)
+    {
+        return 0;
+    }
 }

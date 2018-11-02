@@ -112,7 +112,7 @@ public class MarisaA : CharacterBase
         UpdateSubWeaponsPosition();
         for (int i=0;i<_availableSubCount;i++)
         {
-            _subWeapons[i].Update(_curMoveMode);
+            _subWeapons[i].Update();
         }
     }
 
