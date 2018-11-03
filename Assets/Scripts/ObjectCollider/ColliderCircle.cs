@@ -141,7 +141,7 @@ public class ColliderCircle : ObjectColliderBase
             // 判断是否要进行碰撞检测
             if (bullet != null && 
                 bullet.ClearFlag == 0 && 
-                bullet.CanBeEliminated(eEliminateDef.HitObjectCollider) &&
+                bullet.CanBeEliminated(_eliminateType) &&
                 bullet.CheckBoundingBoxesIntersect(lbPos,rtPos) )
             {
                 DetectCollisionWithEnemyBullet(bullet);
@@ -182,6 +182,7 @@ public class ColliderCircle : ObjectColliderBase
             }
             else if (collParas.type == CollisionDetectType.Rect)
             {
+                if (_radius == 0) continue;
                 // 子弹为矩形判定
                 // 以子弹中心点为圆心，将B的判定中心旋转angle的角度计算判定
                 Vector2 vec = new Vector2(_curPosX - collParas.centerPos.x, _curPosY - collParas.centerPos.y);
@@ -193,12 +194,23 @@ public class ColliderCircle : ObjectColliderBase
                 relativeVec.y = -sin * vec.x + cos * vec.y;
                 // 计算圆和矩形的碰撞
                 float len = relativeVec.magnitude;
-                float rate = (len - _radius) / len;
-                relativeVec *= rate;
-                if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
+                float dLen = len - _radius;
+                // 若圆心和矩形中心的连线长度小于圆的半径，说明矩形肯定有一部分在圆内
+                // 因此直接认定为碰撞
+                if ( dLen <= 0 )
                 {
                     bullet.CollidedByObject(curColliderIndex);
                     isCollided = true;
+                }
+                else
+                {
+                    float rate = dLen / len;
+                    relativeVec *= rate;
+                    if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
+                    {
+                        bullet.CollidedByObject(curColliderIndex);
+                        isCollided = true;
+                    }
                 }
             }
             else if (collParas.type == CollisionDetectType.Line)

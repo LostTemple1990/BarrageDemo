@@ -34,6 +34,7 @@ public class STGBulletEliminateEffect : STGEffectBase
         // 恢复透明度
         _tmpColor.a = 1;
         _spRenderer.color = _tmpColor;
+        ObjectsPool.GetInstance().RestorePrefabToPool("BulletEliminateEffect", _effectGo);
         GameObject.Destroy(_effectGo);
         _effectGo = null;
         _effectTf = null;
@@ -51,7 +52,7 @@ public class STGBulletEliminateEffect : STGEffectBase
         _state = StateAppearance;
         _time = 0;
         _effectTf.localScale = new Vector3(AppearanceStartScale, AppearanceStartScale, 1);
-        UIManager.GetInstance().AddGoToLayer(_effectGo, LayerId.HighLightEffect);
+        UIManager.GetInstance().AddGoToLayer(_effectGo, LayerId.STGNormalEffect);
     }
 
     public override void SetToPos(float posX, float posY)

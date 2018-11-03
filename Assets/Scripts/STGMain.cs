@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//#define CheckSTGFrameTime
+
+using UnityEngine;
 using System.Collections;
 
 public class STGMain
@@ -13,7 +15,65 @@ public class STGMain
             return;
         }
         CommandManager.GetInstance().RunCommand(CommandConsts.STGFrameStart);
+
+#if CheckSTGFrameTime
+        long[] timeArr = new long[10];
         long frameBeginTime = System.DateTime.Now.Ticks;
+        _opController.Update();
+        _char.Update();
+        timeArr[0] = System.DateTime.Now.Ticks - frameBeginTime;
+        ColliderManager.GetInstance().Update();
+        timeArr[1] = System.DateTime.Now.Ticks - timeArr[0];
+        EnemyManager.GetInstance().Update();
+        timeArr[2] = System.DateTime.Now.Ticks - timeArr[1];
+        BulletsManager.GetInstance().Update();
+        timeArr[3] = System.DateTime.Now.Ticks - timeArr[2];
+        ItemManager.GetInstance().Update();
+        timeArr[4] = System.DateTime.Now.Ticks - timeArr[3];
+        AnimationManager.GetInstance().Update();
+        timeArr[5] = System.DateTime.Now.Ticks - timeArr[4];
+        ExtraTaskManager.GetInstance().Update();
+        timeArr[6] = System.DateTime.Now.Ticks - timeArr[5];
+        STGStageManager.GetInstance().Update();
+        timeArr[7] = System.DateTime.Now.Ticks - timeArr[6];
+        BackgroundManager.GetInstance().Update();
+        timeArr[8] = System.DateTime.Now.Ticks - timeArr[7];
+        EffectsManager.GetInstance().Update();
+        timeArr[9] = System.DateTime.Now.Ticks - timeArr[8];
+        frameNode++;
+        // 背景部分暂时写这，之后转移到lua
+        if (frameNode % 30 == 0)
+        {
+            BgSpriteObject spObj = BackgroundManager.GetInstance().CreateBgSpriteObject("MapleLeaf1");
+            float posX = Random.Range(80, 150);
+            float posY = Random.Range(200, 225);
+            spObj.SetToPos(posX, posY);
+            float scale = Random.Range(0.2f, 1);
+            spObj.SetScale(new Vector3(scale, scale));
+            spObj.SetVelocity(Random.Range(1f, 3f), Random.Range(-150, -30));
+            spObj.SetSelfRotateAngle(new Vector3(0, 0, Random.Range(1f, 2f)));
+            spObj.DoFade(Random.Range(90, 180), Random.Range(180, 300));
+            BackgroundManager.GetInstance().AddBgSpriteObject(spObj);
+        }
+        long frameEndTime = System.DateTime.Now.Ticks;
+        if ( frameEndTime - frameBeginTime >= 50000 )
+        {
+            string logStr = "Frame " + STGStageManager.GetInstance().GetFrameSinceStageStart() + " cost time " + (frameEndTime - frameBeginTime) / 10000f + "ms\n";
+            logStr += "Character Update Cost Time = " + timeArr[0] / 10000f + "ms\n";
+            logStr += "ColliderManager Update Cost Time = " + timeArr[1] / 10000f + "ms\n";
+            logStr += "EnemyManager Update Cost Time = " + timeArr[2] / 10000f + "ms\n";
+            logStr += "BulletsManager Update Cost Time = " + timeArr[3] / 10000f + "ms\n";
+            logStr += "ItemManager Update Cost Time = " + timeArr[4] / 10000f + "ms\n";
+            logStr += "AnimationManager Update Cost Time = " + timeArr[5] / 10000f + "ms\n";
+            logStr += "ExtraTaskManager Update Cost Time = " + timeArr[6] / 10000f + "ms\n";
+            logStr += "STGStageManager Update Cost Time = " + timeArr[7] / 10000f + "ms\n";
+            logStr += "BackgroundManager Update Cost Time = " + timeArr[8] / 10000f + "ms\n";
+            logStr += "EffectsManager Update Cost Time = " + timeArr[9] / 10000f + "ms\n";
+            Logger.LogWarn(logStr);
+            CommandManager.GetInstance().RunCommand(CommandConsts.LogFrameStatistics);
+            Logger.Log("------------------------------------------------");
+        }
+#else
         _opController.Update();
         _char.Update();
         ColliderManager.GetInstance().Update();
@@ -40,12 +100,7 @@ public class STGMain
             spObj.DoFade(Random.Range(90, 180), Random.Range(180, 300));
             BackgroundManager.GetInstance().AddBgSpriteObject(spObj);
         }
-        long frameEndTime = System.DateTime.Now.Ticks;
-        if ( frameEndTime - frameBeginTime >= 50000 )
-        {
-            Logger.LogWarn("Frame " + STGStageManager.GetInstance().GetFrameSinceStageStart() + " cost time " + (frameEndTime-frameBeginTime)/10000f + "ms");
-            CommandManager.GetInstance().RunCommand(CommandConsts.LogFrameStatistics);
-        }
+#endif
         //if ( frameNode == 200 )
         //{
         //    List<object> datas = new List<object>();

@@ -387,7 +387,7 @@ function SC.NazrinSC1_1(boss)
 			local posX,posY = lib.GetEnemyPos(boss)
 			lib.SetGlobalVector2("SC1CircleCache",posX,posY)
 			for i=0,15 do
-				local bullet = lib.CreateCustomizedBullet("NazrinSC1Bullet0","0010",posX,posY,i,75,2)
+				local bullet = lib.CreateCustomizedBullet("NazrinSC1Bullet0","113020",posX,posY,i,75,2)
 				lib.SetBulletCurvePara(bullet,0,23.5*i*k,0,1*k)
 				if coroutine.yield(1)==false then return end
 			end
@@ -518,7 +518,7 @@ function SC.NazrinSC1_2(boss)
 			local posX,posY = lib.GetEnemyPos(boss)
 			lib.SetGlobalVector2("SC1CircleCache",posX,posY)
 			for i=0,15 do
-				local bullet = lib.CreateCustomizedBullet("NazrinSC1Bullet0","0010",posX,posY,i,75,2)
+				local bullet = lib.CreateCustomizedBullet("NazrinSC1Bullet0","113020",posX,posY,i,75,2)
 				lib.SetBulletCurvePara(bullet,0,23.5*i*k,0,1*k)
 				if coroutine.yield(1)==false then return end
 			end
@@ -647,7 +647,7 @@ function SC.NazrinSC1_3(boss)
 			local posX,posY = lib.GetEnemyPos(boss)
 			lib.SetGlobalVector2("SC1CircleCache",posX,posY)
 			for i=0,15 do
-				local bullet = lib.CreateCustomizedBullet("NazrinSC1Bullet0","0010",posX,posY,i,75,2)
+				local bullet = lib.CreateCustomizedBullet("NazrinSC1Bullet0","113020",posX,posY,i,75,2)
 				lib.SetBulletCurvePara(bullet,0,23.5*i*k,0,1*k)
 				if coroutine.yield(1)==false then return end
 			end
@@ -830,6 +830,7 @@ function SC.NazrinSC2_0(boss)
 	lib.ShowBossBloodBar(boss,true)
 	--散射激光部分
 	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(60) == false then return end
 		for _=1,Infinite do
 			local posX,posY = lib.GetEnemyPos(boss)
 			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
@@ -843,6 +844,7 @@ function SC.NazrinSC2_0(boss)
 	end)
 	--自机狙激光
 	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(60) == false then return end
 		if coroutine.yield(60) == false then return end
 		for _=1,Infinite do
 			local laserPosX,laserPosY = lib.GetEnemyPos(boss)
@@ -884,6 +886,7 @@ function SC.NazrinSC2_1(boss)
 	lib.ShowBossBloodBar(boss,true)
 	--散射激光部分
 	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(120) == false then return end
 		for _=1,Infinite do
 			local posX,posY = lib.GetEnemyPos(boss)
 			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
@@ -897,6 +900,7 @@ function SC.NazrinSC2_1(boss)
 	end)
 	--自机狙激光
 	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(120) == false then return end
 		if coroutine.yield(60) == false then return end
 		for _=1,Infinite do
 			local laserPosX,laserPosY = lib.GetEnemyPos(boss)
@@ -938,6 +942,7 @@ function SC.NazrinSC2_2(boss)
 	lib.ShowBossBloodBar(boss,true)
 	--散射激光部分
 	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(120) == false then return end
 		for _=1,Infinite do
 			local posX,posY = lib.GetEnemyPos(boss)
 			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
@@ -951,6 +956,7 @@ function SC.NazrinSC2_2(boss)
 	end)
 	--自机狙激光
 	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(120) == false then return end
 		if coroutine.yield(60) == false then return end
 		for _=1,Infinite do
 			local laserPosX,laserPosY = lib.GetEnemyPos(boss)
@@ -992,6 +998,7 @@ function SC.NazrinSC2_3(boss)
 	lib.ShowBossBloodBar(boss,true)
 	--散射激光部分
 	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(120) == false then return end
 		for _=1,Infinite do
 			local posX,posY = lib.GetEnemyPos(boss)
 			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
@@ -1005,6 +1012,7 @@ function SC.NazrinSC2_3(boss)
 	end)
 	--自机狙激光
 	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(120) == false then return end
 		if coroutine.yield(60) == false then return end
 		for _=1,Infinite do
 			local laserPosX,laserPosY = lib.GetEnemyPos(boss)

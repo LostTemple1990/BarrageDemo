@@ -88,6 +88,7 @@ public class EnemyLaser : EnemyBulletBase
     {
         _prefabName = "Laser";
         _sysBusyWeight = 3;
+        _id = BulletId.Enemy_Laser;
     }
 
     public override void Init()
@@ -99,7 +100,6 @@ public class EnemyLaser : EnemyBulletBase
         _curPos = Vector3.zero;
         _existTime = 0;
         _existDuration = -1;
-        _id = BulletId.Enemy_Laser;
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
         _isChangingWidth = false;
         _isChangingHeight = false;
@@ -184,6 +184,7 @@ public class EnemyLaser : EnemyBulletBase
         _laserAngle = angle;
         _moveFlag = true;
         _rotateFlag = true;
+        //Logger.Log("Set EnemyLaser To Pos (" + posX + "," + posY + ") , angle = " + angle);
     }
 
     public virtual void SetLaserAngle(float angle)
@@ -410,25 +411,18 @@ public class EnemyLaser : EnemyBulletBase
     {
         CollisionDetectParas paras = new CollisionDetectParas();
         paras.nextIndex = -1;
-        if (!_detectCollision)
-        {
-            paras.type = CollisionDetectType.Null;
-        }
-        else
-        {
-            paras.type = CollisionDetectType.Rect;
-            paras.halfWidth = _laserHalfWidth;
-            paras.halfHeight = _laserHalfHeight;
-            paras.angle = _laserAngle;
-            // 计算矩形中心坐标
-            Vector2 center = new Vector2();
-            float cos = Mathf.Cos(_laserAngle * Mathf.Deg2Rad);
-            float sin = Mathf.Sin(_laserAngle * Mathf.Deg2Rad);
-            // 矩形中心坐标
-            center.x = _collisionHalfHeight * cos + _curPos.x;
-            center.y = _collisionHalfHeight * sin + _curPos.y;
-            paras.centerPos = center;
-        }
+        paras.type = CollisionDetectType.Rect;
+        paras.halfWidth = _laserHalfWidth;
+        paras.halfHeight = _laserHalfHeight;
+        paras.angle = _laserAngle;
+        // 计算矩形中心坐标
+        Vector2 center = new Vector2();
+        float cos = Mathf.Cos(_laserAngle * Mathf.Deg2Rad);
+        float sin = Mathf.Sin(_laserAngle * Mathf.Deg2Rad);
+        // 矩形中心坐标
+        center.x = _laserHalfHeight * cos + _curPos.x;
+        center.y = _laserHalfHeight * sin + _curPos.y;
+        paras.centerPos = center;
         return paras;
     }
 

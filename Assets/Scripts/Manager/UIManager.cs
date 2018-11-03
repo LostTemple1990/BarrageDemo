@@ -293,7 +293,6 @@ public enum LayerId : int
     STGNormalEffect = 150,
     Item = 250,
     Enemy = 300,
-    HighLightEffect = 350,
     EnemyBarrage = 500,
     Player = 400,
     PlayerBarage = 200,

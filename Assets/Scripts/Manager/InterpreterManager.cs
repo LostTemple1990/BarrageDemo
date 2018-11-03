@@ -1,4 +1,4 @@
-﻿#define LogLuaFuncRef
+﻿//#define LogLuaFuncRef
 
 using System;
 using System.Collections.Generic;

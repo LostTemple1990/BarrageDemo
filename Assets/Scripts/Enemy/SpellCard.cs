@@ -149,6 +149,12 @@ public class SpellCard
             }
             return false;
         }
+        // 判断是否超时
+        if ( _frameLeft <= 0 )
+        {
+            Logger.Log("SpellCard Over Time!");
+            return true;
+        }
         return false;
     }
 
@@ -158,12 +164,12 @@ public class SpellCard
         // 符卡尚未开始
         if ( !_isStarted )
         {
-            Logger.Log("Start Casting SpellCard " + name);
             for (int i=0;i<_bossCount;i++)
             {
                 InterpreterManager.GetInstance().AddPara(bossList[i], LuaParaType.LightUserData);
             }
             InterpreterManager.GetInstance().CallTaskCoroutine(scTask, _bossCount);
+            Logger.Log("Start Casting SpellCard " + name);
             _isStarted = true;
         }
         // update
@@ -196,8 +202,23 @@ public class SpellCard
         {
             bossList[i].OnSpellCardFinish();
         }
-        BulletsManager.GetInstance().ClearAllEnemyBullets();
-        EnemyManager.GetInstance().RawEliminateAllEnemyByCode(false);
+        EliminateAllEnemyObjects();
+        //BulletsManager.GetInstance().ClearAllEnemyBullets();
+        //EnemyManager.GetInstance().RawEliminateAllEnemyByCode(false);
+    }
+
+    /// <summary>
+    /// 创建一个销毁敌机子弹以及敌机的ObjectCollider
+    /// </summary>
+    private void EliminateAllEnemyObjects()
+    {
+        ColliderCircle collider = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Circle) as ColliderCircle;
+        collider.SetToPositon(0, 120);
+        collider.SetSize(0, 0);
+        collider.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.EnemyBullet);
+        collider.SetHitEnemyDamage(9999);
+        collider.ScaleToSize(400, 400, 30);
+        collider.SetExistDuration(30);
     }
 
     /// <summary>

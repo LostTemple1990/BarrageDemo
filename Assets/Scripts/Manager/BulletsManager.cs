@@ -140,17 +140,16 @@ public class BulletsManager : ICommand
     private void UpdateEnemyBullets()
     {
         EnemyBulletBase tmpBullet;
-        int tmpCount, i, j, findFlag;
-        tmpCount = _enemyBulletsCount;
+        int i, j, findFlag;
         //Logger.Log(tmpCount);
-        for (i = 0, j = 1; i < tmpCount; i++, j++)
+        for (i = 0, j = 1; i < _enemyBulletsCount; i++, j++)
         {
             findFlag = 1;
             if (_enemyBullets[i] == null)
             {
                 j = j == 1 ? i + 1 : j;
                 findFlag = 0;
-                for (; j < tmpCount; j++)
+                for (; j < _enemyBulletsCount; j++)
                 {
                     if (_enemyBullets[j] != null)
                     {
@@ -168,7 +167,7 @@ public class BulletsManager : ICommand
             }
             if (findFlag == 0)
             {
-                _enemyBullets.RemoveRange(i, tmpCount - i);
+                _enemyBullets.RemoveRange(i, _enemyBulletsCount - i);
                 _enemyBulletsCount = i;
                 break;
             }
@@ -183,6 +182,10 @@ public class BulletsManager : ICommand
         for (i = 0, tmpCount = list.Count; i < tmpCount; i++)
         {
             tmpBullet = list[i];
+            if ( tmpBullet == null )
+            {
+                int pause = 1;
+            }
             if (tmpBullet.ClearFlag == 1)
             {
                 list[i] = null;
