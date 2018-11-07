@@ -9,6 +9,10 @@ public class NormalEnemy : EnemyBase
     //protected AnimationCharacter _enemyAni;
     protected EnemyObjectBase _enemyObj;
     /// <summary>
+    /// 对应普通敌机的配置
+    /// </summary>
+    protected EnemyCfg _cfg;
+    /// <summary>
     /// 掉落的道具数据
     /// </summary>
     protected List<int> _dropItemDatas;
@@ -29,23 +33,13 @@ public class NormalEnemy : EnemyBase
     public void Init(EnemyCfg cfg)
     {
         base.Init();
+        _cfg = cfg;
         _enemyObj = EnemyManager.GetInstance().CreateEnemyObjectByType(cfg.type);
         _enemyObj.SetEnemyAni(cfg.aniId);
         _enemyGo = _enemyObj.GetObject();
-        //SetEnemyAni(cfg.aniId);
         SetCollisionParams(cfg.collisionHalfWidth, cfg.collisionHalfWidth);
         _dropItemDatas = null;
     }
-
-    /// <summary>
-    /// 设置敌机贴图
-    /// </summary>
-    //public virtual void SetEnemyAni(string aniId)
-    //{
-    //    _enemyAni = AnimationManager.GetInstance().CreateAnimation<AnimationCharacter>(LayerId.Enemy);
-    //    _enemyGo = _enemyAni.GetAniParent();
-    //    _enemyAni.Play(aniId, AniActionType.Idle,Consts.DIR_NULL);
-    //}
 
     public override void Update()
     {
@@ -54,15 +48,6 @@ public class NormalEnemy : EnemyBase
         UpdatePos();
         CheckCollisionWithCharacter();
         _enemyObj.Update();
-        //if ( _isMoving )
-        //{
-        //    _moveTime++;
-        //    if ( _moveTime >= _moveDuration )
-        //    {
-        //        _isMoving = false;
-        //        _enemyAni.Play(AniActionType.Idle, Consts.DIR_NULL);
-        //    }
-        //}
     }
 
     public override void MoveToPos(float posX, float posY, int duration, InterpolationMode mode)
@@ -119,6 +104,7 @@ public class NormalEnemy : EnemyBase
     public override void Clear()
     {
         EnemyManager.GetInstance().RestoreEnemyObjectToPool(_enemyObj);
+        _cfg = null;
         _enemyObj = null;
         _dropItemDatas = null;
         base.Clear();
@@ -149,7 +135,13 @@ public class NormalEnemy : EnemyBase
         {
             if ( eliminateType != eEliminateDef.ForcedDelete )
             {
-                SoundManager.GetInstance().Play("se_tan02", false);
+                SoundManager.GetInstance().Play("killenemy", false);
+                if ( _cfg.eliminatedEffectStyle != 0 )
+                {
+                    STGEnemyEliminatedEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.EnemyEliminated) as STGEnemyEliminatedEffect;
+                    effect.SetEliminateEffectStyle(_cfg.eliminatedEffectStyle);
+                    effect.SetToPos(_curPos.x, _curPos.y);
+                }
             }
             if ( eliminateType != eEliminateDef.ForcedDelete || eliminateType != eEliminateDef.CodeRawEliminate )
             {

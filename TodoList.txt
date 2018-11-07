@@ -26,6 +26,9 @@ laser相关问题的修复  --finish
 魔机激光的暂停问题 --finish
 优化魔炮的显示效果
 Enemy的GetHit函数要加入伤害来源，用于判断是否吃B --finish
-魔炮发动时魔机应该只能以低速移动
-如何清除指定的ObjectCollider
-废弃原有的GetCollisionDetectParas(),统一使用GetCollisionDetectParas(int index)
+魔炮发动时魔机应该只能以低速移动 --finish
+如何清除指定的ObjectCollider --finish
+废弃原有的GetCollisionDetectParas(),统一使用GetCollisionDetectParas(int index) --finish
+擦弹部分的代码优化，重新考虑擦弹的计算方式
+生成时候的雾化子弹
+魔机激光的自身运动动画优化

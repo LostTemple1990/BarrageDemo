@@ -279,7 +279,10 @@ public class Boss : EnemyBase
         _bloodBarSp = null;
         _bloodBarLayerTf = null;
         _segmentGoList.Clear();
-        _weights.Clear();
+        if ( _weights != null )
+        {
+            _weights.Clear();
+        }
         GameObject.Destroy(_enemyGo);
         // movableObject
         ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObj);

@@ -182,10 +182,6 @@ public class BulletsManager : ICommand
         for (i = 0, tmpCount = list.Count; i < tmpCount; i++)
         {
             tmpBullet = list[i];
-            if ( tmpBullet == null )
-            {
-                int pause = 1;
-            }
             if (tmpBullet.ClearFlag == 1)
             {
                 list[i] = null;

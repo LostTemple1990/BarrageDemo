@@ -1,4 +1,4 @@
-﻿//#define CheckSTGFrameTime
+﻿#define CheckSTGFrameTime
 
 using UnityEngine;
 using System.Collections;
@@ -19,27 +19,27 @@ public class STGMain
 #if CheckSTGFrameTime
         long[] timeArr = new long[10];
         long frameBeginTime = System.DateTime.Now.Ticks;
+        ColliderManager.GetInstance().Update();
+        timeArr[0] = System.DateTime.Now.Ticks;
         _opController.Update();
         _char.Update();
-        timeArr[0] = System.DateTime.Now.Ticks - frameBeginTime;
-        ColliderManager.GetInstance().Update();
-        timeArr[1] = System.DateTime.Now.Ticks - timeArr[0];
+        timeArr[1] = System.DateTime.Now.Ticks;
         EnemyManager.GetInstance().Update();
-        timeArr[2] = System.DateTime.Now.Ticks - timeArr[1];
+        timeArr[2] = System.DateTime.Now.Ticks;
         BulletsManager.GetInstance().Update();
-        timeArr[3] = System.DateTime.Now.Ticks - timeArr[2];
+        timeArr[3] = System.DateTime.Now.Ticks;
         ItemManager.GetInstance().Update();
-        timeArr[4] = System.DateTime.Now.Ticks - timeArr[3];
+        timeArr[4] = System.DateTime.Now.Ticks;
         AnimationManager.GetInstance().Update();
-        timeArr[5] = System.DateTime.Now.Ticks - timeArr[4];
+        timeArr[5] = System.DateTime.Now.Ticks;
         ExtraTaskManager.GetInstance().Update();
-        timeArr[6] = System.DateTime.Now.Ticks - timeArr[5];
+        timeArr[6] = System.DateTime.Now.Ticks;
         STGStageManager.GetInstance().Update();
-        timeArr[7] = System.DateTime.Now.Ticks - timeArr[6];
+        timeArr[7] = System.DateTime.Now.Ticks;
         BackgroundManager.GetInstance().Update();
-        timeArr[8] = System.DateTime.Now.Ticks - timeArr[7];
+        timeArr[8] = System.DateTime.Now.Ticks;
         EffectsManager.GetInstance().Update();
-        timeArr[9] = System.DateTime.Now.Ticks - timeArr[8];
+        timeArr[9] = System.DateTime.Now.Ticks;
         frameNode++;
         // 背景部分暂时写这，之后转移到lua
         if (frameNode % 30 == 0)
@@ -59,24 +59,24 @@ public class STGMain
         if ( frameEndTime - frameBeginTime >= 50000 )
         {
             string logStr = "Frame " + STGStageManager.GetInstance().GetFrameSinceStageStart() + " cost time " + (frameEndTime - frameBeginTime) / 10000f + "ms\n";
-            logStr += "Character Update Cost Time = " + timeArr[0] / 10000f + "ms\n";
-            logStr += "ColliderManager Update Cost Time = " + timeArr[1] / 10000f + "ms\n";
-            logStr += "EnemyManager Update Cost Time = " + timeArr[2] / 10000f + "ms\n";
-            logStr += "BulletsManager Update Cost Time = " + timeArr[3] / 10000f + "ms\n";
-            logStr += "ItemManager Update Cost Time = " + timeArr[4] / 10000f + "ms\n";
-            logStr += "AnimationManager Update Cost Time = " + timeArr[5] / 10000f + "ms\n";
-            logStr += "ExtraTaskManager Update Cost Time = " + timeArr[6] / 10000f + "ms\n";
-            logStr += "STGStageManager Update Cost Time = " + timeArr[7] / 10000f + "ms\n";
-            logStr += "BackgroundManager Update Cost Time = " + timeArr[8] / 10000f + "ms\n";
-            logStr += "EffectsManager Update Cost Time = " + timeArr[9] / 10000f + "ms\n";
+            logStr += "ColliderManager Update Cost Time = " + (timeArr[0]-frameBeginTime) / 10000f + "ms\n";
+            logStr += "Character Update Cost Time = " + (timeArr[1]-timeArr[0]) / 10000f + "ms\n";
+            logStr += "EnemyManager Update Cost Time = " + (timeArr[2] - timeArr[1]) / 10000f + "ms\n";
+            logStr += "BulletsManager Update Cost Time = " + (timeArr[3] - timeArr[2]) / 10000f + "ms\n";
+            logStr += "ItemManager Update Cost Time = " + (timeArr[4] - timeArr[3]) / 10000f + "ms\n";
+            logStr += "AnimationManager Update Cost Time = " + (timeArr[5] - timeArr[4]) / 10000f + "ms\n";
+            logStr += "ExtraTaskManager Update Cost Time = " + (timeArr[6] - timeArr[5]) / 10000f + "ms\n";
+            logStr += "STGStageManager Update Cost Time = " + (timeArr[7] - timeArr[6]) / 10000f + "ms\n";
+            logStr += "BackgroundManager Update Cost Time = " + (timeArr[8] - timeArr[7]) / 10000f + "ms\n";
+            logStr += "EffectsManager Update Cost Time = " + (timeArr[9] - timeArr[8]) / 10000f + "ms\n";
             Logger.LogWarn(logStr);
             CommandManager.GetInstance().RunCommand(CommandConsts.LogFrameStatistics);
             Logger.Log("------------------------------------------------");
         }
 #else
+        ColliderManager.GetInstance().Update();
         _opController.Update();
         _char.Update();
-        ColliderManager.GetInstance().Update();
         EnemyManager.GetInstance().Update();
         BulletsManager.GetInstance().Update();
         ItemManager.GetInstance().Update();
@@ -203,6 +203,7 @@ public class STGMain
         BackgroundManager.GetInstance().Init();
 
         CommandManager.GetInstance().RunCommand(CommandConsts.STGInitComplete);
+        frameNode = 0;
     }
 
     public void EnterStage(int stageId)

@@ -22,6 +22,8 @@ public class STGBottomView : ViewBase,ICommand
         _charCGGo = _viewTf.Find("CG").gameObject;
         _charCGImg = _charCGGo.GetComponent<Image>();
         CommandManager.GetInstance().Register(CommandConsts.PlayCharacterCGAni, this);
+        CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
+        CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
         Reset();
     }
 

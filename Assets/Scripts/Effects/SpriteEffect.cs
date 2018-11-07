@@ -23,6 +23,20 @@ public class SpriteEffect : STGEffectBase
     private InterpolationMode _scaleHeightMode;
     private float _fromHeightScale;
     private float _toHeightScale;
+
+    private bool _isRotating;
+    /// <summary>
+    /// 每帧旋转的角度
+    /// </summary>
+    private float _rotateAngle;
+    /// <summary>
+    /// 旋转时间
+    /// </summary>
+    private int _rotateTime;
+    /// <summary>
+    /// 旋转持续时间
+    /// </summary>
+    private int _rotateDuration;
     /// <summary>
     /// 标识显示对象是否缓存在ObjectsPool中
     /// </summary>
@@ -82,6 +96,9 @@ public class SpriteEffect : STGEffectBase
         _isUsingCache = false;
         _isFading = false;
         _orderInLayer = 0;
+        _isScalingWidth = false;
+        _isScalingHeight = false;
+        _isRotating = false;
     }
 
     public override void SetToPos(float posX, float posY)
@@ -111,6 +128,10 @@ public class SpriteEffect : STGEffectBase
         if ( _isScalingWidth || _isScalingHeight )
         {
             _effectTf.localScale = new Vector3(_curWidthScale, _curHeightScale, 1);
+        }
+        if ( _isRotating )
+        {
+            Rotate();
         }
         if ( _isFading )
         {
@@ -281,5 +302,28 @@ public class SpriteEffect : STGEffectBase
     public void SetSpriteColor(float rValue,float gValue,float bValue,float aValue)
     {
         _spRenderer.material.color = new Color(rValue, gValue, bValue, aValue);
+    }
+
+    public void SetRotation(float angle)
+    {
+        _effectTf.localRotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    public void DoRotation(float rotateAngle,int duration)
+    {
+        _rotateAngle = rotateAngle;
+        _rotateTime = 0;
+        _rotateDuration = duration;
+        _isRotating = true;
+    }
+
+    private void Rotate()
+    {
+        _rotateTime++;
+        _effectTf.Rotate(0, 0, _rotateAngle);
+        if ( _rotateTime >= _rotateAngle )
+        {
+            _isRotating = false;
+        }
     }
 }

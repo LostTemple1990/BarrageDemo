@@ -32,10 +32,6 @@ public class EnemyBulletBase :BulletBase
     /// <para>用作激光的擦弹判断</para>
     /// </summary>
     protected int _grazeCoolDown;
-    /// <summary>
-    /// 本体的缩放系数
-    /// </summary>
-    protected float _scaleFactor;
 
     public EnemyBulletBase()
     {
@@ -49,7 +45,6 @@ public class EnemyBulletBase :BulletBase
         _detectCollision = true;
         _isGrazed = false;
         _grazeCoolDown = 0;
-        _scaleFactor = 1f;
         _resistEliminateFlag = 0;
     }
 

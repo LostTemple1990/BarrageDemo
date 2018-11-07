@@ -295,8 +295,3 @@ public class ObjectsPool
         _protoTypeDic.Clear();
     }
 }
-
-public enum PoolObjectType :int
-{
-
-}

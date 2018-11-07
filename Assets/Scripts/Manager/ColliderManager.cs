@@ -47,13 +47,58 @@ public class ColliderManager
     public void Update()
     {
         ObjectColliderBase collider;
+        // 列表中至少有一个collider
+        bool hasNotNullCollider = false;
         for (int i=0;i<_colliderCount;i++)
         {
             collider = _colliderList[i];
             if ( collider != null )
             {
+                hasNotNullCollider = true;
                 collider.Update();
                 if ( collider.ClearFlag == 1)
+                {
+                    collider.Clear();
+                    _colliderList[i] = null;
+                }
+            }
+        }
+        if ( !hasNotNullCollider )
+        {
+            _colliderList.Clear();
+            _colliderCount = 0;
+        }
+    }
+
+    /// <summary>
+    /// 清除所有的ObjectCollider
+    /// </summary>
+    /// <param name="exceptList">例外列表，即消除类型在这个列表里面的不会被清除</param>
+    public void ClearAllObjectCollider(List<eEliminateDef> exceptList=null)
+    {
+        if ( exceptList == null )
+        {
+            exceptList = new List<eEliminateDef>();
+        }
+        ObjectColliderBase collider;
+        int exceptListCount = exceptList.Count;
+        int i, j;
+        bool isInExceptList;
+        for (i=0;i<_colliderCount;i++)
+        {
+            collider = _colliderList[i];
+            if ( collider != null && collider.ClearFlag != 1 )
+            {
+                isInExceptList = false;
+                for (j=0;j<exceptListCount;j++)
+                {
+                    if ( collider.GetEliminateType() == exceptList[j] )
+                    {
+                        isInExceptList = true;
+                        break;
+                    }
+                }
+                if ( !isInExceptList )
                 {
                     collider.Clear();
                     _colliderList[i] = null;

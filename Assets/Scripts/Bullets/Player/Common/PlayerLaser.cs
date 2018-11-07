@@ -9,6 +9,11 @@ public class PlayerLaser : PlayerBulletBase,ICommand
     /// 即碰撞线段长度的一半
     /// </summary>
     private const float CollisionSegmentRadius = 5;
+    /// <summary>
+    /// 射线发射速度
+    /// <para>即，laser的长度会以该速度拉长，直到达到最大长度</para>
+    /// </summary>
+    private const float LaserSpeedPerFrame = 20f;
 
     /// <summary>
     /// 是否已经生成贴图
@@ -48,16 +53,13 @@ public class PlayerLaser : PlayerBulletBase,ICommand
     /// </summary>
     private int _collisionSegmentsCount;
     /// <summary>
-    /// 被限制的最大长度
-    /// <para>默认为-1，说明未被限制</para>
-    /// <para>被限制的原因为</para>
-    /// <para>1.与ObjectCollider发生碰撞</para>
-    /// </summary>
-    private float _laserLimitLen;
-    /// <summary>
     /// 射线从创建开始经过的帧数
     /// </summary>
     private int _frameCountSinceCreate;
+    /// <summary>
+    /// 当前是否击中某些物体
+    /// </summary>
+    private bool _hitObject;
 
     public PlayerLaser()
     {
@@ -72,7 +74,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
         BulletsManager.GetInstance().RegisterPlayerBullet(this);
         _isCached = false;
         _isCachedCollisionSegments = false;
-        _laserLimitLen = -1;
+        _curLaserLen = 0;
         _frameCountSinceCreate = 0;
         CommandManager.GetInstance().Register(CommandConsts.STGFrameStart, this);
     }
@@ -140,9 +142,9 @@ public class PlayerLaser : PlayerBulletBase,ICommand
     {
         _laserTotalLen = _texWidth * _repeatCount;
         _preLaserLen = -1;
-        _curLaserLen = _laserTotalLen;
+        _curLaserLen = 0;
         // shader赋值
-        _laserSr.material.SetFloat("_TotalLen", _texWidth);
+        _laserSr.material.SetFloat("_LaserTexWidth", _texWidth);
         _laserSr.material.SetFloat("_RepeatCount", _repeatCount);
         _isCached = true;
     }
@@ -161,7 +163,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
         // dis 从射线起始点指向敌机中心的向量的长度
         // minDis 击中敌人的最小距离,即射线第一个击中的敌人
         float verticalDis,angle,dis,minDis,horizonDis;
-        minDis = _laserLimitLen == -1 ? _laserTotalLen : _laserLimitLen;
+        minDis = _curLaserLen;
         // vecA为射线发射点到敌机的向量
         Vector2 vecA;
         // 遍历所有敌机，检测激光最先碰到的敌机
@@ -184,6 +186,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
                     horizonDis = dis * Mathf.Cos(Mathf.Deg2Rad * angle);
                     if ( horizonDis < minDis )
                     {
+                        _hitObject = true;
                         hitEnemy = enemy;
                         minDis = horizonDis;
                     }
@@ -192,7 +195,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
         }
         _curLaserLen = minDis;
         // 如果有击中敌机
-        if ( hitEnemy != null || _laserLimitLen != -1 )
+        if ( _hitObject )
         {
             if ( hitEnemy != null )
             {
@@ -240,7 +243,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
         float laserRTPosX = _curPos.x > diagonalPos.x ? _curPos.x : diagonalPos.x;
         float laserRTPosY = _curPos.y > diagonalPos.y ? _curPos.y : diagonalPos.y;
         // 快速排斥试验
-        if ( laserLBPosX >= rtPos.x || laserLBPosY >= rtPos.y || laserRTPosX <= lbPos.x || laserRTPosY <= rtPos.y )
+        if ( laserLBPosX >= rtPos.x || laserLBPosY >= rtPos.y || laserRTPosX <= lbPos.x || laserRTPosY <= lbPos.y )
         {
             return false;
         }
@@ -302,9 +305,10 @@ public class PlayerLaser : PlayerBulletBase,ICommand
     {
         if ( _collisionSegmentsCount > n )
         {
-            _laserLimitLen = (_collisionSegments[n] - _curPos).magnitude;
+            _curLaserLen = (_collisionSegments[n] - _curPos).magnitude;
             // 截取掉之后的碰撞组
             _collisionSegmentsCount = n;
+            _hitObject = true;
         }
     }
 
@@ -313,8 +317,9 @@ public class PlayerLaser : PlayerBulletBase,ICommand
         if ( cmd == CommandConsts.STGFrameStart )
         {
             _isCachedCollisionSegments = false;
-            _laserLimitLen = -1;
-            _curLaserLen = _laserTotalLen;
+            // 计算该帧开始之后laser的起始长度
+            _curLaserLen = _curLaserLen + LaserSpeedPerFrame > _laserTotalLen ? _laserTotalLen : _curLaserLen + LaserSpeedPerFrame;
+            _hitObject = false;
         }
     }
 

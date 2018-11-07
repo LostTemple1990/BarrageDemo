@@ -160,6 +160,15 @@ public class ObjectColliderBase
     }
 
     /// <summary>
+    /// 获取ObjectCollider的消除类型
+    /// </summary>
+    /// <returns></returns>
+    public eEliminateDef GetEliminateType()
+    {
+        return _eliminateType;
+    }
+
+    /// <summary>
     /// 设置ObjectCollider击中敌机时造成的伤害
     /// </summary>
     /// <param name="damage"></param>

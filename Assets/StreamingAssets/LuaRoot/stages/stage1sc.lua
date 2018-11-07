@@ -46,6 +46,7 @@ end
 
 CustomizedEnemyTable.NazrinSC1Enemy = {}
 CustomizedEnemyTable.NazrinSC1Enemy.Init = function(enemy,toPosX,toPosY,duration)
+	lib.SetEnemyMaxHp(enemy,50)
 	--冲向玩家
 	lib.AddEnemyTask(enemy,function()
 		lib.EnemyMoveToPos(enemy,toPosX,toPosY,60,Constants.ModeEaseInQuad)
@@ -324,8 +325,8 @@ function SC.NazrinSC1_0(boss)
 			local timeLeftRate = lib.GetSpellCardTimeLeftRate()
 			local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 			local posX,posY = lib.GetEnemyPos(boss)
-			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,-170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,170,205,duration,3)
+			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,205,duration,3)
 			if coroutine.yield(180)==false then return end
 		end
 	end)
@@ -451,12 +452,12 @@ function SC.NazrinSC1_1(boss)
 			local timeLeftRate = lib.GetSpellCardTimeLeftRate()
 			local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 			local posX,posY = lib.GetEnemyPos(boss)
-			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,-170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,170,205,duration,3)
+			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,205,duration,3)
 			if coroutine.yield(180)==false then return end
 			posX,posY = lib.GetEnemyPos(boss)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,-170,-205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,170,-205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,-205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,-205,duration,3)
 			if coroutine.yield(180)==false then return end
 		end
 	end)
@@ -582,10 +583,10 @@ function SC.NazrinSC1_2(boss)
 			local timeLeftRate = lib.GetSpellCardTimeLeftRate()
 			local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 			local posX,posY = lib.GetEnemyPos(boss)
-			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,-170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,-170,-205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,170,-205,duration,3)
+			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,-205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,-205,duration,3)
 			if coroutine.yield(180)==false then return end
 		end
 	end)
@@ -711,10 +712,10 @@ function SC.NazrinSC1_3(boss)
 			local timeLeftRate = lib.GetSpellCardTimeLeftRate()
 			local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 			local posX,posY = lib.GetEnemyPos(boss)
-			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,-170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,-170,-205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,170,-205,duration,3)
+			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,-205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,-205,duration,3)
 			if coroutine.yield(180)==false then return end
 		end
 	end)

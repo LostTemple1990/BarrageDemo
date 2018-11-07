@@ -52,12 +52,44 @@ public class EnemyBulletSimple : EnemyBulletMovable
     /// </summary>
     protected float _detGrazeValue;
 
+    #region 缩放相关参数
+    /// <summary>
+    /// 当前正在改变尺寸
+    /// </summary>
+    protected bool _isScalingSize;
+    /// <summary>
+    /// 本体的缩放系数
+    /// </summary>
+    protected float _scaleFactor;
+    /// <summary>
+    /// 源缩放尺寸
+    /// </summary>
+    protected float _scaleFrom;
+    /// <summary>
+    /// 目标缩放尺寸
+    /// </summary>
+    protected float _scaleTo;
+    /// <summary>
+    /// 缩放时间
+    /// </summary>
+    protected int _scaleTime;
+    /// <summary>
+    /// 缩放持续时间
+    /// </summary>
+    protected int _scaleDuration;
+    /// <summary>
+    /// 缩放延迟
+    /// </summary>
+    protected int _scaleDelay;
+    #endregion
+
     public override void Init()
     {
         base.Init();
         _id = BulletId.Enemy_Simple;
         _orderInLayer = 0;
         _isInUnrealState = false;
+        _isScalingSize = false;
     }
 
     public override void Update()
@@ -131,12 +163,13 @@ public class EnemyBulletSimple : EnemyBulletMovable
             halfWidth = cfg.grazeHalfWidth,
             halfHeight = cfg.grazeHalfHeight,
         };
+        _collisionRadius = cfg.collisionRadius * _scaleFactor;
         // 计算用于擦弹以及碰撞检测的两个数值
         // 擦弹
-        float value = Global.PlayerGrazeRadius + cfg.collisionRadius * _scaleFactor;
+        float value = Global.PlayerGrazeRadius + _collisionRadius;
         _detGrazeValue = value * value;
         // 碰撞
-        value = Global.PlayerCollisionVec.z + cfg.collisionRadius * _scaleFactor;
+        value = Global.PlayerCollisionVec.z + _collisionRadius;
         _detCollisonValue = value * value;
 
         SetGrazeDetectParas(grazeParas);
@@ -172,6 +205,65 @@ public class EnemyBulletSimple : EnemyBulletMovable
         }
     }
 
+    /// <summary>
+    /// 缩放
+    /// </summary>
+    protected void UpdateScaling()
+    {
+        if ( _scaleDelay > 0 )
+        {
+            _scaleDelay--;
+            return;
+        }
+        _scaleTime++;
+        float scaleFactor;
+        if ( _scaleTime >= _scaleDuration )
+        {
+            _isScalingSize = false;
+            scaleFactor = _scaleTo;
+        }
+        else
+        {
+            scaleFactor = Mathf.Lerp(_scaleFrom, _scaleTo, _scaleTime / _scaleDuration);
+        }
+        SetToScale(scaleFactor);
+    }
+
+    /// <summary>
+    /// 设置缩放
+    /// </summary>
+    /// <param name="scale"></param>
+    public void SetToScale(float scale)
+    {
+        _scaleFactor = scale;
+        // 计算碰撞参数
+        // 计算用于擦弹以及碰撞检测的两个数值
+        // 擦弹
+        float value = Global.PlayerGrazeRadius + _collisionRadius;
+        _detGrazeValue = value * value;
+        // 碰撞
+        value = Global.PlayerCollisionVec.z + _collisionRadius;
+        _detCollisonValue = value * value;
+        // 设置scale
+        _trans.localScale = new Vector3(_scaleFactor, _scaleFactor, 1);
+    }
+
+    /// <summary>
+    /// 执行缩放
+    /// </summary>
+    /// <param name="toScale"></param>
+    /// <param name="delay"></param>
+    /// <param name="duration"></param>
+    public void DoScale(float toScale,int delay,int duration)
+    {
+        _scaleFrom = _scaleFactor;
+        _scaleTo = toScale;
+        _scaleDelay = delay;
+        _scaleTime = 0;
+        _scaleDuration = duration;
+        _isScalingSize = true;
+    }
+
     protected virtual void RotateImgByVelocity()
     {
         Vector2 dv = _curPos - _lastPos;
@@ -196,18 +288,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
                 }
             }
             _imgRotatedFlag = 1;
-            //if ( _isMovingCurve )
-            //{
-            //    _imgRotatedFlag = 1;
-            //}
-            //else if (_curAcceleration == 0 || _curAngle == _curAccAngle)
-            //{
-            //    _imgRotatedFlag = 0;
-            //}
-            //else
-            //{
-            //    _imgRotatedFlag = 1;
-            //}
         }
     }
 
@@ -290,6 +370,10 @@ public class EnemyBulletSimple : EnemyBulletMovable
         {
             _spRenderer.color = _originalColor;
             _colorIsChange = false;
+        }
+        if ( _scaleFactor != 1 )
+        {
+            _trans.localScale = Vector3.one;
         }
         _spRenderer = null;
         _cfg = null;

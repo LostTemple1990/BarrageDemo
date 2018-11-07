@@ -1,14 +1,14 @@
 <Data>
-	<Enemy id="0000" name="enemy000" type="1" aniId="0001" maxHp="50" collHW="16" collHH="16" dropId="0001" dropHW="32" dropHH="32" />
-	<Enemy id="0001" name="enemy001" type="1" aniId="0002" maxHp="100" collHW="16" collHH="16" dropId="0001" dropHW="32" dropHH="32" />
-	<Enemy id="0002" name="enemy002" type="1" aniId="0003" maxHp="100" collHW="16" collHH="16" dropId="0001" dropHW="32" dropHH="32" />
-	<Enemy id="0010" name="enemy010" type="1" aniId="0010" maxHp="100" collHW="64" collHH="64" dropId="0001" dropHW="32" dropHH="32" />
+	<Enemy id="0000" name="enemy000" type="1" aniId="0001" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
+	<Enemy id="0001" name="enemy001" type="1" aniId="0002" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
+	<Enemy id="0002" name="enemy002" type="1" aniId="0003" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
+	<Enemy id="0010" name="enemy010" type="1" aniId="0010" collHW="64" collHH="64" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
 	<!--阴阳玉-->
-	<Enemy id="0020" name="enemy020" type="2" aniId="SpinningEnemy0" maxHp="20" collHW="20" collHH="20" dropId="0000" dropHW="32" dropHH="32" />
-	<Enemy id="0021" name="enemy021" type="2" aniId="SpinningEnemy1" maxHp="20" collHW="20" collHH="20" dropId="0000" dropHW="32" dropHH="32" />
-	<Enemy id="0022" name="enemy022" type="2" aniId="SpinningEnemy2" maxHp="20" collHW="20" collHH="20" dropId="0000" dropHW="32" dropHH="32" />
-	<Enemy id="0023" name="enemy023" type="2" aniId="SpinningEnemy3" maxHp="20" collHW="20" collHH="20" dropId="0000" dropHW="32" dropHH="32" />
+	<Enemy id="0020" name="enemy020" type="2" aniId="SpinningEnemy0" eliminateEffectStyle="3" collHW="20" collHH="20" dropHW="32" dropHH="32" />
+	<Enemy id="0021" name="enemy021" type="2" aniId="SpinningEnemy1" eliminateEffectStyle="3" collHW="20" collHH="20" dropHW="32" dropHH="32" />
+	<Enemy id="0022" name="enemy022" type="2" aniId="SpinningEnemy2" eliminateEffectStyle="3" collHW="20" collHH="20" dropHW="32" dropHH="32" />
+	<Enemy id="0023" name="enemy023" type="2" aniId="SpinningEnemy3" eliminateEffectStyle="3" collHW="20" collHH="20" dropHW="32" dropHH="32" />
 	
-	<Enemy id="0998" name="enemy020" type="2" aniId="SpinningEnemy0" maxHp="20" collHW="20" collHH="20" dropId="0000" dropHW="32" dropHH="32" />
-	<Enemy id="0999" name="enemy000" type="1" aniId="0001" maxHp="50" collHW="32" collHH="32" dropId="0000" dropHW="32" dropHH="32" />
+	<Enemy id="0998" name="enemy020" type="2" aniId="SpinningEnemy0" eliminateEffectStyle="3" collHW="20" collHH="20" dropHW="32" dropHH="32" />
+	<Enemy id="0999" name="enemy000" type="1" aniId="0001" eliminateEffectStyle="3" collHW="32" collHH="32" dropHW="32" dropHH="32" />
 </Data>

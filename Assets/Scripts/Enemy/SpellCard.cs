@@ -202,7 +202,8 @@ public class SpellCard
         {
             bossList[i].OnSpellCardFinish();
         }
-        EliminateAllEnemyObjects();
+        ColliderManager.GetInstance().ClearAllObjectCollider(new List<eEliminateDef>{ eEliminateDef.PlayerSpellCard });
+        CreateEliminateEnemyCollider();
         //BulletsManager.GetInstance().ClearAllEnemyBullets();
         //EnemyManager.GetInstance().RawEliminateAllEnemyByCode(false);
     }
@@ -210,12 +211,14 @@ public class SpellCard
     /// <summary>
     /// 创建一个销毁敌机子弹以及敌机的ObjectCollider
     /// </summary>
-    private void EliminateAllEnemyObjects()
+    private void CreateEliminateEnemyCollider()
     {
+        // 清除子弹用的collider
         ColliderCircle collider = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Circle) as ColliderCircle;
         collider.SetToPositon(0, 120);
         collider.SetSize(0, 0);
-        collider.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.EnemyBullet);
+        collider.SetEliminateType(eEliminateDef.CodeEliminate);
+        collider.SetColliderGroup(eColliderGroup.Enemy | eColliderGroup.EnemyBullet);
         collider.SetHitEnemyDamage(9999);
         collider.ScaleToSize(400, 400, 30);
         collider.SetExistDuration(30);

@@ -158,6 +158,41 @@ public partial class LuaLib
     }
 
     /// <summary>
+    /// 设置SpriteEffect的旋转角度
+    /// <para>effect</para>
+    /// <para>angle 旋转的角度</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetSpriteRotation(ILuaState luaState)
+    {
+        SpriteEffect effect = luaState.ToUserData(-2) as SpriteEffect;
+        float angle = (float)luaState.ToNumber(-1);
+        luaState.Pop(2);
+        effect.SetRotation(angle);
+        return 0;
+    }
+
+    /// <summary>
+    /// 使SpriteEffect在duration帧内旋转
+    /// <para>旋转速度为rotateAngle</para>
+    /// <para>SpriteEffect</para>
+    /// <para>rotateAngle 旋转角速度</para>
+    /// <para>duration 旋转周期</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SpriteEffectRotate(ILuaState luaState)
+    {
+        SpriteEffect effect = luaState.ToUserData(-3) as SpriteEffect;
+        float rotateAngle = (float)luaState.ToNumber(-2);
+        int duration = luaState.ToInteger(-1);
+        luaState.Pop(3);
+        effect.DoRotation(rotateAngle, duration);
+        return 0;
+    }
+
+    /// <summary>
     /// 执行抖动
     /// </summary>
     /// <param name="luaState"></param>

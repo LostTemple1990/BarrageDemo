@@ -28,7 +28,7 @@ Shader "YKShaders/LinearFogShader"
 
         Pass
         {
-        CGPROGRAM
+			CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile DUMMY PIXELSNAP_ON
