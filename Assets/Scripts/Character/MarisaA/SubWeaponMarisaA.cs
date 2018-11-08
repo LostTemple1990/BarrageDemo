@@ -58,7 +58,7 @@ public class SubWeaponMarisaA : SubWeaponBase
 
     protected void Shoot()
     {
-        if (_character.CanShoot() && _character.InputShoot)
+        if ( _character.CanShoot() && _character.IsInShootingStatus() )
         {
             int subAvailable = PlayerService.GetInstance().GetPower() / 100;
             if ( !_isShooting )
@@ -85,7 +85,7 @@ public class SubWeaponMarisaA : SubWeaponBase
             _laser.SetToPosition(laserPos);
             // 更新激光角度
             int mode = _character.CurModeMode;
-            float laserAngle = mode == Consts.SlowMove ? 90f : _shootAngles[subAvailable - 1][_subIndex];
+            float laserAngle = mode == Consts.ModeModeLowSpeed ? 90f : _shootAngles[subAvailable - 1][_subIndex];
             _laser.SetAngle(laserAngle);
             _isShooting = true;
         }

@@ -110,6 +110,18 @@ public class CharacterBase
     protected int _curBombCD;
     protected bool _isCastingBomb;
     protected int _bombInvincibleDuration;
+    /// <summary>
+    /// 松开射击键之后经过的时间
+    /// </summary>
+    protected int _shootTimeAfterKeyUp;
+    /// <summary>
+    /// 标识当前帧是否按下射击键
+    /// </summary>
+    protected bool _isInputShootKey;
+    /// <summary>
+    /// 当前是否在射击状态
+    /// </summary>
+    protected bool _isInShootingStatus;
 
     #region 状态机相关
 
@@ -170,7 +182,7 @@ public class CharacterBase
         _invincibleDuration = Consts.AppearInvincibleDuration;
         _stateUpdateFunc = StateAppearUpdate;
         _character.SetActive(true);
-        _preMoveMode = _curMoveMode = Consts.SpeedMove;
+        _preMoveMode = _curMoveMode = Consts.MoveModeHighSpeed;
         // 显示副武器
         //UpdateSubWeaponsVisible();
         ResetSubWeapons();
@@ -198,6 +210,9 @@ public class CharacterBase
         _stateUpdateFunc = StateNormalUpdate;
         _stateExitFunc = OnStateNormalExit;
         UpdateCollisionData();
+        // 射击相关
+        _shootTimeAfterKeyUp = Consts.MaxShootDurationAfterKeyUp + 1;
+        _isInputShootKey = false;
     }
 
     protected virtual void StateNormalUpdate()
@@ -317,8 +332,8 @@ public class CharacterBase
         _collisionPointTf = collisionPointGo.transform;
         _rotatePointTf = _collisionPointTf.Find("Point");
         UIManager.GetInstance().AddGoToLayer(collisionPointGo, LayerId.PlayerCollisionPoint);
-        _preMoveMode = Consts.SpeedMove;
-        _curMoveMode = Consts.SpeedMove;
+        _preMoveMode = Consts.MoveModeHighSpeed;
+        _curMoveMode = Consts.MoveModeHighSpeed;
         collisionPointGo.SetActive(false);
         _collisionPointRotateVec3 = new Vector3(0, 0, 3f);
         // 初始化副武器的层
@@ -344,7 +359,7 @@ public class CharacterBase
         if ( _curMoveMode != _inputMoveMode )
         {
             _curMoveMode = _inputMoveMode;
-            if ( _curMoveMode == Consts.SpeedMove )
+            if ( _curMoveMode == Consts.MoveModeHighSpeed )
             {
                 _collisionPointTf.gameObject.SetActive(false);
             }
@@ -353,7 +368,7 @@ public class CharacterBase
                 _collisionPointTf.gameObject.SetActive(true);
             }
         }
-        if ( _curMoveMode == Consts.SlowMove )
+        if ( _curMoveMode == Consts.ModeModeLowSpeed )
         {
             RotateCollisionPoint();
         }
@@ -372,10 +387,12 @@ public class CharacterBase
     /// </summary>
     public void Shoot()
     {
-        if (!CanShoot() || IsInShootCD() || !_inputShoot )
-        {
-            return;
-        }
+        // 当前不能射击，直接返回
+        if (!CanShoot()) return;
+        _isInShootingStatus = UpdateShootingStatus();
+        if (!_isInShootingStatus) return;
+        // 当前处于射击间隔，直接返回
+        if (IsInShootCD()) return;
         CreateMainBullets();
         // 设置发射冷却
         _curShootCD = _shootCoolDown;
@@ -448,7 +465,7 @@ public class CharacterBase
     /// </summary>
     public virtual float GetMoveSpeed()
     {
-        float speed = _inputMoveMode == Consts.SpeedMove ? Consts.HighSpeed : Consts.SlowSpeed;
+        float speed = _inputMoveMode == Consts.MoveModeHighSpeed ? Consts.HighSpeed : Consts.SlowSpeed;
         return speed;
     }
 
@@ -612,6 +629,43 @@ public class CharacterBase
             return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// 更新射击状态
+    /// </summary>
+    /// <returns></returns>
+    protected bool UpdateShootingStatus()
+    {
+        if (!_inputShoot)
+        {
+            // 刚好在上一帧松开射击键
+            if (_isInputShootKey)
+            {
+                _shootTimeAfterKeyUp = 0;
+            }
+            else
+            {
+                _shootTimeAfterKeyUp++;
+            }
+            _isInputShootKey = _inputShoot;
+            // 射击键松开的时间超过了松开之后的射击最大持续时间
+            if (_shootTimeAfterKeyUp >= Consts.MaxShootDurationAfterKeyUp) return false;
+        }
+        else
+        {
+            _isInputShootKey = _inputShoot;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// 当前是否在射击状态
+    /// </summary>
+    /// <returns></returns>
+    public bool IsInShootingStatus()
+    {
+        return _isInShootingStatus;
     }
 
     protected bool IsInShootCD()

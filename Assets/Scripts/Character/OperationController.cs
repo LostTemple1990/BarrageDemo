@@ -74,7 +74,7 @@ public class OperationController
         {
             dir |= Consts.DIR_RIGHT;
         }
-        int moveMode = Input.GetKey(KeyCode.LeftShift) ? Consts.SlowMove : Consts.SpeedMove;
+        int moveMode = Input.GetKey(KeyCode.LeftShift) ? Consts.ModeModeLowSpeed : Consts.MoveModeHighSpeed;
         _character.InputMoveMode = moveMode;
         _character.InputDir = dir;
     }

@@ -1,4 +1,4 @@
-﻿#define CheckSTGFrameTime
+﻿//#define CheckSTGFrameTime
 
 using UnityEngine;
 using System.Collections;

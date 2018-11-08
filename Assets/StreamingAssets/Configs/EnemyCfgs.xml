@@ -8,7 +8,4 @@
 	<Enemy id="0021" name="enemy021" type="2" aniId="SpinningEnemy1" eliminateEffectStyle="3" collHW="20" collHH="20" dropHW="32" dropHH="32" />
 	<Enemy id="0022" name="enemy022" type="2" aniId="SpinningEnemy2" eliminateEffectStyle="3" collHW="20" collHH="20" dropHW="32" dropHH="32" />
 	<Enemy id="0023" name="enemy023" type="2" aniId="SpinningEnemy3" eliminateEffectStyle="3" collHW="20" collHH="20" dropHW="32" dropHH="32" />
-	
-	<Enemy id="0998" name="enemy020" type="2" aniId="SpinningEnemy0" eliminateEffectStyle="3" collHW="20" collHH="20" dropHW="32" dropHH="32" />
-	<Enemy id="0999" name="enemy000" type="1" aniId="0001" eliminateEffectStyle="3" collHW="32" collHH="32" dropHW="32" dropHH="32" />
 </Data>

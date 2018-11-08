@@ -90,6 +90,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _orderInLayer = 0;
         _isInUnrealState = false;
         _isScalingSize = false;
+        _scaleFactor = 1;
     }
 
     public override void Update()

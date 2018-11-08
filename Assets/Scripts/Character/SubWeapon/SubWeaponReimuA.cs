@@ -50,7 +50,7 @@ public class SubWeaponReimuA : SubWeaponBase
         {
             _curShootCD--;
         }
-        if ( _character.CanShoot() && _character.InputShoot )
+        if ( _character.CanShoot() && _character.IsInShootingStatus() )
         {
             if ( _curShootCD == 0 )
             {
@@ -77,7 +77,7 @@ public class SubWeaponReimuA : SubWeaponBase
     private float GetShootBulletAngle()
     {
         float angle;
-        if ( _moveMode == Consts.SlowMove )
+        if ( _moveMode == Consts.ModeModeLowSpeed )
         {
             angle = 90f;
         }

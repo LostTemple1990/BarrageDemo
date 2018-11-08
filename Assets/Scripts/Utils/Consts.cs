@@ -10,8 +10,14 @@ public class Consts
     public const int DIR_UP = 4;
     public const int DIR_DOWN = 8;
 
-    public const int SpeedMove = 0;
-    public const int SlowMove = 1;
+    /// <summary>
+    /// 高速移动
+    /// </summary>
+    public const int MoveModeHighSpeed = 0;
+    /// <summary>
+    /// 低速移动
+    /// </summary>
+    public const int ModeModeLowSpeed = 1;
 
     public const float HighSpeed = 4.5f;
     public const float SlowSpeed = 2f;
@@ -63,6 +69,12 @@ public class Consts
     public const float OriginalHeight = -1;
 
     /// <summary>
+    /// 松开射击键之后的持续射击时间
+    /// <para>单位：帧</para>
+    /// </summary>
+    public const int MaxShootDurationAfterKeyUp = 20;
+
+    /// <summary>
     /// 自机出现的无敌时间
     /// </summary>
     public const int AppearInvincibleDuration = 300;
@@ -96,7 +108,7 @@ public class Consts
     /// </summary>
     public const int PlayerMaxSpellCardFragmentCount = 5;
     /// <summary>
-    /// 初始残疾数目
+    /// 初始残机数目
     /// </summary>
     public const int STGInitLifeCount = 2;
     /// <summary>
