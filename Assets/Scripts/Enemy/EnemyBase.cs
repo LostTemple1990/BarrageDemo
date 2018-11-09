@@ -200,7 +200,12 @@ public class EnemyBase
         
     }
 
-    public virtual void GetHit(int damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
+    /// <summary>
+    /// 受到伤害
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="eliminateType"></param>
+    public virtual void TakeDamage(int damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
     {
 
     }

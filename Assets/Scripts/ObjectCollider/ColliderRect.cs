@@ -142,7 +142,7 @@ public class ColliderRect : ObjectColliderBase
                 dy = Mathf.Abs(_curPosY - para.centerPos.y);
                 if (dx <= _halfWidth + para.halfWidth && dy <= _halfHeight + para.halfHeight)
                 {
-                    enemy.GetHit(_hitEnemyDamage,_eliminateType);
+                    enemy.TakeDamage(_hitEnemyDamage,_eliminateType);
                 }
             }
         }

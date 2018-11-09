@@ -146,7 +146,7 @@ public class PlayerBulletSimple : PlayerBulletBase
                 if ( Mathf.Abs(_curPos.x-paras.centerPos.x) <= _collisionRadius + paras.halfWidth &&
                     Mathf.Abs(_curPos.y - paras.centerPos.y) <= _collisionRadius + paras.halfHeight )
                 {
-                    enemy.GetHit(GetDamage());
+                    enemy.TakeDamage(GetDamage());
                     BeginEliminating();
                 }
             }

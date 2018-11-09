@@ -41,7 +41,7 @@ public partial class LuaLib
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
         int damage = luaState.ToInteger(-1);
         luaState.Pop(2);
-        enemy.GetHit(damage);
+        enemy.TakeDamage(damage);
         return 0;
     }
 

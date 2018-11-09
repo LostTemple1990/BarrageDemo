@@ -77,7 +77,7 @@ public class MarisaA : CharacterBase
         // 初始化炸弹
         _bomb = new BombMarisaA();
         // 初始化碰撞、擦弹半径
-        _collisionRadius = 2.0f;
+        _collisionRadius = 3.0f;
         _grazeRadius = 4f;
         _bombCoolDown = 300;
         _bombInvincibleDuration = 300;
@@ -217,5 +217,10 @@ public class MarisaA : CharacterBase
             Vector2 pos = _subPosOffset[_curMoveMode][_availableSubCount - 1][i];
             subWeapon.SetToPosition(pos);
         }
+    }
+
+    protected override void OnCastSpellCard()
+    {
+        SetShootAvailable(false, 300);
     }
 }

@@ -90,10 +90,9 @@ public class StateSTGMain : IState,ICommand
         // 设置需要载入的stageId
         _nextStageId = (int)datas[0];
         // 实例化STGMain
-        if ( Global.STGMain == null )
+        if (_stgMain == null )
         {
             _stgMain = new STGMain();
-            Global.STGMain = _stgMain;
         }
     }
 

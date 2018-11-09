@@ -120,7 +120,7 @@ public class ColliderCircle : ObjectColliderBase
                 dy = Mathf.Abs(_curPosY - para.centerPos.y);
                 if ( dx <= _radius + para.halfWidth && dy <= _radius + para.halfHeight )
                 {
-                    enemy.GetHit(_hitEnemyDamage,_eliminateType);
+                    enemy.TakeDamage(_hitEnemyDamage,_eliminateType);
                 }
             }
         }

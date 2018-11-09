@@ -29,6 +29,12 @@ public class STGStageManager
     /// 从关卡开始经过的帧数
     /// </summary>
     private int _frameSinceStageStart;
+    /// <summary>
+    /// 当前是否允许射击
+    /// <para>优先级最高</para>
+    /// <para>优先判断该值，若为false，则不允许射击</para>
+    /// </summary>
+    private bool _isEnableToShoot;
 
     public STGStageManager()
     {
@@ -76,6 +82,7 @@ public class STGStageManager
         _curStageTask = InterpreterManager.GetInstance().LoadStage(stageId);
         _state = StateUpdateStageTask;
         _frameSinceStageStart = 0;
+        _isEnableToShoot = true;
     }
 
     /// <summary>
@@ -131,6 +138,24 @@ public class STGStageManager
     public int GetFrameSinceStageStart()
     {
         return _frameSinceStageStart;
+    }
+
+    /// <summary>
+    /// 设置当前是否允许射击
+    /// </summary>
+    /// <param name="vale"></param>
+    public void SetIsEnableToShoot(bool vale)
+    {
+        _isEnableToShoot = vale;
+    }
+
+    /// <summary>
+    /// 当前是否允许射击
+    /// </summary>
+    /// <returns></returns>
+    public bool GetIsEnableToShoot()
+    {
+        return _isEnableToShoot;
     }
 
     public void Clear()

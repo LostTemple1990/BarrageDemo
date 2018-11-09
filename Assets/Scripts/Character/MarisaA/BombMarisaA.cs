@@ -9,19 +9,25 @@ public class BombMarisaA : BombBase
     /// <summary>
     /// 魔炮宽度
     /// </summary>
-    private const float MasterSparkWidth = 256;
+    private const float MasterSparkWidth = 128;
     /// <summary>
     /// 魔炮高度
     /// </summary>
-    private const float MasterSparkHeight = 512;
+    private const float MasterSparkHeight = 256;
+    /// <summary>
+    /// 魔炮本体相对于原图的缩放尺寸
+    /// </summary>
+    private const float MasterSparkScale = 2.5f;
     /// <summary>
     /// 魔炮判定盒的宽度
     /// </summary>
-    private const float MasterSparkHitBoxWidth = 240;
+    private const float MasterSparkHitBoxWidth = MasterSparkWidth * MasterSparkScale * 0.95f;
     /// <summary>
     /// 魔炮判定盒的高度
     /// </summary>
-    private const float MasterSpartHitBoxHeight = 512;
+    private const float MasterSpartHitBoxHeight = MasterSparkHeight * MasterSparkScale;
+
+    private const float MasterSparkWaveSpeedY = 18f;
 
     /// <summary>
     /// 魔炮位置与自机位置的偏移量
@@ -29,6 +35,10 @@ public class BombMarisaA : BombBase
     private Vector3 _posOffset;
     private GameObject _masterSparkObject;
     private Transform _masterSparkTf;
+    /// <summary>
+    /// 魔炮主体的容器Panel
+    /// </summary>
+    private Transform _sparkContainerTf;
     private Transform _movementBodyTf;
     private List<Transform> _movementObjectTfList;
     private List<MovementObjectData> _movementDataList;
@@ -80,10 +90,11 @@ public class BombMarisaA : BombBase
         Transform tf;
         for (int i=0;i< MovementObjectCount; i++)
         {
-            tf = _masterSparkTf.Find("MovementBody" + i);
+            tf = _masterSparkTf.Find("SparkWave" + i);
             _movementObjectTfList.Add(tf);
         }
-        _movementBodyTf = _masterSparkTf.Find("MovementBody");
+        _sparkContainerTf = _masterSparkTf.Find("SparkContainer");
+        _movementBodyTf = _sparkContainerTf.Find("MovementBody");
         // 黑底
         _effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as SpriteEffect;
         _effect.SetSprite("STGCommonAtlas","Circle",false);
@@ -96,7 +107,7 @@ public class BombMarisaA : BombBase
         // 基础属性
         _curState = 1;
         _time = 0;
-        _duration = 20;
+        _duration = 30;
         _isFinish = false;
     }
 
@@ -138,7 +149,7 @@ public class BombMarisaA : BombBase
     public void UpdateState1()
     {
         _curScaleX = MathUtil.GetEaseInQuadInterpolation(0, 1, _time, _duration);
-        _masterSparkTf.localScale = new Vector3(_curScaleX, 1, 1);
+        _sparkContainerTf.localScale = new Vector3(_curScaleX, 1, 1);
         if (_time >= _duration)
         {
             _curState = 2;
@@ -151,7 +162,7 @@ public class BombMarisaA : BombBase
             _colliderRect.SetEliminateType(eEliminateDef.PlayerSpellCard);
             _colliderRect.SetHitEnemyDamage(3);
             _colliderRect.SetToPositon(Global.PlayerPos.x + _posOffset.x, Global.PlayerPos.y + _posOffset.y);
-            _duration = 180;
+            _duration = 240;
         }
         _time++;
     }
@@ -161,39 +172,58 @@ public class BombMarisaA : BombBase
     /// </summary>
     public void UpdateState2()
     {
-        // 每20帧一个动画
-        if ( _time % 20 == 0 )
+        // 每10帧一个动画
+        if ( _time % 10 == 0 )
         {
             MovementObjectData data = new MovementObjectData();
             data.tf = _movementObjectTfList[_nextMovementIndex];
-            data.tf.localPosition = new Vector3(0, -270, -2);
+            data.tf.localPosition = new Vector3(0, -336, -2);
             data.state = 1;
             data.time = 0;
-            data.duration = 20;
+            data.duration = 12;
             _movementDataList.Add(data);
             _movementCount++;
             // 计算下一个需要取的下标
             _nextMovementIndex = (_nextMovementIndex + 1) % MovementObjectCount;
         }
+        UpdateSparkWaves();
+        // 更新物体碰撞器的位置
+        _colliderRect.SetToPositon(Global.PlayerPos.x + _posOffset.x, Global.PlayerPos.y + _posOffset.y);
+        if ( _time >= _duration )
+        {
+            // 黑底Sprite消失
+            _effect.DoFade(20);
+            _curState = 3;
+            _time = 0;
+            _duration = 30;
+            _colliderRect.ClearSelf();
+        }
+        _time++;
+    }
+
+    private void UpdateSparkWaves()
+    {
         float scale;
         Transform tf;
         Vector3 pos;
-        for (int i=0;i<_movementCount;i++)
+        for (int i = 0; i < _movementCount; i++)
         {
             MovementObjectData data = _movementDataList[i];
             tf = data.tf;
-            if ( data.state == 1 )
+            if (data.state == 1)
             {
-                scale = Mathf.Lerp(50, 125, (float)data.time / data.duration);
+                //scale = data.time <= 15 ? 1.5f : (float)data.time / 10;
+                //scale *= 100;
+                scale = Mathf.Lerp(50, 150, (float)data.time / data.duration);
                 tf.localScale = new Vector3(scale, scale, 1);
-                if ( data.time >= data.duration )
+                if (data.time >= data.duration)
                 {
                     data.state = 2;
                 }
             }
             pos = tf.localPosition;
-            pos.y += 10f;
-            if ( pos.y >= 300 )
+            pos.y += MasterSparkWaveSpeedY;
+            if (pos.y >= 300)
             {
                 // 将scale设置成0当做是隐藏
                 tf.localScale = new Vector3(0, 0, 1);
@@ -210,24 +240,13 @@ public class BombMarisaA : BombBase
                 _movementDataList[i] = data;
             }
         }
-        // 更新物体碰撞器的位置
-        _colliderRect.SetToPositon(Global.PlayerPos.x + _posOffset.x, Global.PlayerPos.y + _posOffset.y);
-        if ( _time >= _duration )
-        {
-            // 黑底Sprite消失
-            _effect.DoFade(20);
-            _curState = 3;
-            _time = 0;
-            _duration = 10;
-            _colliderRect.ClearSelf();
-        }
-        _time++;
     }
 
     public void UpdateState3()
     {
         _curScaleX = MathUtil.GetEaseInQuadInterpolation(1, 0, _time, _duration);
-        _masterSparkTf.localScale = new Vector3(_curScaleX, 1, 1);
+        _sparkContainerTf.localScale = new Vector3(_curScaleX, 1, 1);
+        UpdateSparkWaves();
         if (_time >= _duration)
         {
             _curState = 4;
@@ -243,6 +262,7 @@ public class BombMarisaA : BombBase
         GameObject.Destroy(_masterSparkObject);
         _masterSparkObject = null;
         _masterSparkTf = null;
+        _sparkContainerTf = null;
         _movementBodyTf = null;
         _movementCount = 0;
         _colliderRect = null;

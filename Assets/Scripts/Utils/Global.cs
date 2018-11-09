@@ -60,6 +60,4 @@ public class Global
     /// 系统繁忙数值
     /// </summary>
     public static int SysBusyValue = 0;
-
-    public static STGMain STGMain;
 }

@@ -88,7 +88,7 @@ public class NormalEnemy : EnemyBase
         }
     }
 
-    public override void GetHit(int damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
+    public override void TakeDamage(int damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
     {
         if ((_resistEliminateFlag & (int)eliminateType) != 0) return;
         if (!_isInteractive) return;

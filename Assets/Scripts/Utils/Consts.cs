@@ -57,6 +57,10 @@ public class Consts
 
     public const float AutoGetItemY = 140;
     public const float ItemBottomBorderY = -240;
+    /// <summary>
+    /// 最大信号强度
+    /// </summary>
+    public const float MaxSignalValue = 130f;
 
     public const int ReboundLeft = 0x01;
     public const int ReboundRight = 0x02;

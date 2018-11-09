@@ -122,6 +122,14 @@ public class CharacterBase
     /// 当前是否在射击状态
     /// </summary>
     protected bool _isInShootingStatus;
+    /// <summary>
+    /// 当前是否允许射击
+    /// </summary>
+    protected bool _isShootAvailable;
+    /// <summary>
+    /// 禁止射击的时间
+    /// </summary>
+    protected int _shootUnavailableDuration;
 
     #region 状态机相关
 
@@ -213,6 +221,7 @@ public class CharacterBase
         // 射击相关
         _shootTimeAfterKeyUp = Consts.MaxShootDurationAfterKeyUp + 1;
         _isInputShootKey = false;
+        _isShootAvailable = true;
     }
 
     protected virtual void StateNormalUpdate()
@@ -231,8 +240,6 @@ public class CharacterBase
                 _bomb.Clear();
             }
         }
-        //UpdateSubWeaponsVisible();
-        //UpdateSubWeaponsShoot();
         UpdateSubWeapons();
         UpdateCollisionData();
         if ( _isInvincible )
@@ -252,6 +259,9 @@ public class CharacterBase
             _subWeapons[i].SetActive(false);
         }
         _availableSubCount = -1;
+        _isShootAvailable = false;
+        // 信号相关
+        PlayerService.GetInstance().SetSignalValue(0);
     }
     #endregion
 
@@ -389,7 +399,6 @@ public class CharacterBase
     {
         // 当前不能射击，直接返回
         if (!CanShoot()) return;
-        _isInShootingStatus = UpdateShootingStatus();
         if (!_isInShootingStatus) return;
         // 当前处于射击间隔，直接返回
         if (IsInShootCD()) return;
@@ -477,11 +486,21 @@ public class CharacterBase
         }
         if ( PlayerService.GetInstance().CastSpellCard() )
         {
+            OnCastSpellCard();
             _bomb.Start();
             _curBombCD = _bombCoolDown;
             SetInvincible(true, _bombInvincibleDuration);
             _isCastingBomb = true;
         }
+    }
+
+    /// <summary>
+    /// 自机施放符卡时调用
+    /// <para>用于设置一些参数</para>
+    /// </summary>
+    protected virtual void OnCastSpellCard()
+    {
+
     }
 
     public void SetInvincible(bool isInvincible,int duration)
@@ -491,6 +510,20 @@ public class CharacterBase
         {
             _invincibleDuration = duration;
             _invincibleTime = 0;
+        }
+    }
+
+    /// <summary>
+    /// 设置玩家射击是否可用
+    /// </summary>
+    /// <param name="isAvailable"></param>
+    /// <param name="duration"></param>
+    public void SetShootAvailable(bool isAvailable,int duration=-1)
+    {
+        _isShootAvailable = isAvailable;
+        if ( !isAvailable )
+        {
+            _shootUnavailableDuration = duration;
         }
     }
 
@@ -582,6 +615,30 @@ public class CharacterBase
         Global.PlayerCollisionVec.z = _collisionRadius;
     }
 
+    /// <summary>
+    /// 更新信号
+    /// </summary>
+    protected void UpdateSignal()
+    {
+        if ( _curPos.y > Consts.AutoGetItemY )
+        {
+            float value = PlayerService.GetInstance().GetSignalValue();
+            if ( value <= 100 )
+            {
+                value = value + 50f >= 100 ? 100 : value + 50;
+                PlayerService.GetInstance().SetSignalValue(value);
+            }
+            else
+            {
+                PlayerService.GetInstance().AddToSignalValue(0.09f);
+            }
+        }
+        else
+        {
+            PlayerService.GetInstance().AddToSignalValue(-0.3f);
+        }
+    }
+
     public void Clear()
     {
         // 人物动画
@@ -624,11 +681,9 @@ public class CharacterBase
 
     public bool CanShoot()
     {
-        if ( _curState == eCharacterState.Normal )
-        {
-            return true;
-        }
-        return false;
+        if (!STGStageManager.GetInstance().GetIsEnableToShoot()) return false;
+        if (!_isShootAvailable) return false;
+        return true;
     }
 
     /// <summary>
@@ -690,6 +745,15 @@ public class CharacterBase
         {
             _curBombCD--;
         }
+        if ( !_isShootAvailable && _shootUnavailableDuration > 0 )
+        {
+            _shootUnavailableDuration--;
+            if ( _shootUnavailableDuration == 0 )
+            {
+                _isShootAvailable = true;
+            }
+        }
+        _isInShootingStatus = UpdateShootingStatus();
     }
 
     public void BeingHit()

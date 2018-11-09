@@ -199,7 +199,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
         {
             if ( hitEnemy != null )
             {
-                hitEnemy.GetHit(GetDamage());
+                hitEnemy.TakeDamage(GetDamage());
             }
             // 击中特效
             Vector2 effectPos = _curPos + _dirVec * minDis;

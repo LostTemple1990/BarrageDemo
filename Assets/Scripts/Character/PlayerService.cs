@@ -24,6 +24,14 @@ public class PlayerService
     /// 符卡计数器
     /// </summary>
     private ItemWithFramentsCounter _spellCardCounter;
+    /// <summary>
+    /// 信号数值
+    /// </summary>
+    private float _signalValue;
+    /// <summary>
+    /// 信仰值
+    /// </summary>
+    private float _faithValue;
 
     public PlayerService()
     {
@@ -44,9 +52,10 @@ public class PlayerService
         //_curPower = Consts.PlayerInitPower;
         _curPower = 100;
         _graze = 0;
+        _signalValue = 0;
         // todo 选择人物
-        _character = new Reimu();
-        //_character = new MarisaA();
+        //_character = new Reimu();
+        _character = new MarisaA();
         _character.Init();
     }
 
@@ -82,6 +91,7 @@ public class PlayerService
     public void AddGraze(int value)
     {
         _graze += value;
+        AddToSignalValue(value * 8);
     }
 
     /// <summary>
@@ -186,6 +196,34 @@ public class PlayerService
         return _spellCardCounter.CostItem(1);
     }
     #endregion
+
+    /// <summary>
+    /// 设置信号值
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetSignalValue(float value)
+    {
+        _signalValue = Mathf.Clamp(value, 0, Consts.MaxSignalValue);
+    }
+
+    /// <summary>
+    /// 增加信号值
+    /// </summary>
+    /// <param name="value">增加的值</param>
+    public void AddToSignalValue(float value)
+    {
+        _signalValue += value;
+        _signalValue = Mathf.Clamp(value, 0, Consts.MaxSignalValue);
+    }
+
+    /// <summary>
+    /// 取得当前信号值
+    /// </summary>
+    /// <returns></returns>
+    public float GetSignalValue()
+    {
+        return _signalValue;
+    }
 
     public void Clear()
     {
