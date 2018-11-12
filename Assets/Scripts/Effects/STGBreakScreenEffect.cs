@@ -39,6 +39,11 @@ public class STGBreakScreenEffect : STGEffectBase
     /// </summary>
     private bool _isCalculated;
 
+    public STGBreakScreenEffect()
+    {
+        _effectType = EffectType.BreakScreenEffect;
+    }
+
     public override void Init()
     {
         base.Init();

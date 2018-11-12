@@ -60,7 +60,7 @@ public class MarisaA : CharacterBase
         base.Init();
         _charID = Consts.CharID_Marisa;
         _subID = 0;
-        _shootCoolDown = 12;
+        _shootCoolDown = 6;
         _mainBulletId = "520000";
         int i;
         GameObject subWeapon;
@@ -104,12 +104,12 @@ public class MarisaA : CharacterBase
         // 左侧子弹
         PlayerBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Player_Simple) as PlayerBulletSimple;
         bullet.ChangeStyleById(_mainBulletId);
-        bullet.DoMoveStraight(10f, 90f);
+        bullet.DoMoveStraight(18f, 90f);
         bullet.SetToPosition(_curPos.x + _leftBulletOffset.x, _curPos.y + _leftBulletOffset.y);
         // 右侧子弹
         bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Player_Simple) as PlayerBulletSimple;
         bullet.ChangeStyleById(_mainBulletId);
-        bullet.DoMoveStraight(10f, 90f);
+        bullet.DoMoveStraight(18f, 90f);
         bullet.SetToPosition(_curPos.x + _rightBulletOffset.x, _curPos.y + _rightBulletOffset.y);
     }
 

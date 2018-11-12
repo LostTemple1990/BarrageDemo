@@ -147,6 +147,10 @@ public class MovableObject : IPoolClass
     protected void MoveTo()
     {
         _moveToTime++;
+        // 临时记录
+        _dx = _curPos.x;
+        _dy = _curPos.y;
+        // 计算新的位置
         _curPos.x = _moveFunc(_beginX, _endX, _moveToTime, _moveToDuration);
         _curPos.y = _moveFunc(_beginY, _endY, _moveToTime, _moveToDuration);
         if ( _moveToTime >= _moveToDuration )
@@ -156,6 +160,9 @@ public class MovableObject : IPoolClass
             _moveFunc = null;
             _isMovingTo = false;
         }
+        // 计算位置增量
+        _dx = _curPos.x - _dx;
+        _dy = _curPos.y - _dy;
     }
 
     protected virtual void MoveStraight()
@@ -250,6 +257,24 @@ public class MovableObject : IPoolClass
     public Vector2 GetPos()
     {
         return _curPos;
+    }
+
+    /// <summary>
+    /// 获取直线运动的角度
+    /// </summary>
+    /// <returns></returns>
+    public float GetVAngle()
+    {
+        return _curVAngle;
+    }
+
+    /// <summary>
+    /// 获取与上一帧的距离增量
+    /// </summary>
+    /// <returns></returns>
+    public Vector2 GetDeltaPos()
+    {
+        return new Vector2(_dx, _dy);
     }
 
     public virtual void Clear()

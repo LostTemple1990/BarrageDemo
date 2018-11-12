@@ -24,6 +24,11 @@ public class STGBurstEffect : STGEffectBase
     private int _circleBurstTime;
     private int _burstTime;
 
+    public STGBurstEffect()
+    {
+        _effectType = EffectType.BurstEffect;
+    }
+
     public override void Init()
     {
         base.Init();

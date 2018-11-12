@@ -99,10 +99,10 @@ SpriteAtlas:
   - pl01_3
   - pl01_26
   - pl01_17
-  - MarisaAMain
+  - MarisaAMainBullet
   - Marisa_FadeToRight_2
   - Marisa_Idle_2
-  - pl01_21
+  - MarisaAMainEES
   - Marisa_Right_0
   - pl01_4
   - Marisa_FadeToRight_1

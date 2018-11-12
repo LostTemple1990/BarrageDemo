@@ -147,8 +147,10 @@ public class BulletReimuASub1 : PlayerBulletSimple
         _eliminatingTime = 0;
         _eliminatingDuration = 20;
         _isEliminating = true;
+        _detectCollision = false;
         // 原子弹移动到看不见的地方
         _curPos = new Vector2(2000, 2000);
+        _trans.localPosition = new Vector2(2000, 2000);
     }
 
     protected override void UpdateEliminating()

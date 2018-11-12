@@ -31,6 +31,7 @@ public class STGEnemyEliminatedEffect : STGEffectBase
     {
         _tfList = new List<Transform>();
         _srList = new List<SpriteRenderer>();
+        _effectType = EffectType.EnemyEliminated;
     }
 
     public override void Clear()

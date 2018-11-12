@@ -18,6 +18,14 @@ public class PlayerBulletCfg : IParser
     public string eliminateEffectAtlas;
     public string elminaateEffectSprite;
     public Color eliminateColor;
+    /// <summary>
+    /// 被消除时需要播放的消除特效类型
+    /// </summary>
+    public int eliminatedEffectType;
+    /// <summary>
+    /// 消除特效的参数
+    /// </summary>
+    public string[] eliminatedEffectParas;
 
     public IParser CreateNewInstance()
     {
@@ -35,11 +43,13 @@ public class PlayerBulletCfg : IParser
         string str = xmlElement.GetAttribute("eliminateSprite");
         if ( str != null && str != "" )
         {
-            string[] eliminateStrs = (xmlElement.GetAttribute("eliminateSprite")).Split(',');
+            string[] eliminateStrs = xmlElement.GetAttribute("eliminateSprite").Split(',');
             eliminateEffectAtlas = eliminateStrs[0];
             elminaateEffectSprite = eliminateStrs[1];
             string[] colorStrs = (xmlElement.GetAttribute("eliminateColor")).Split(',');
             eliminateColor = new Color(float.Parse(colorStrs[0]), float.Parse(colorStrs[1]), float.Parse(colorStrs[2]));
         }
+        eliminatedEffectType = int.Parse(xmlElement.GetAttribute("eliminatedEffectType"));
+        eliminatedEffectParas = xmlElement.GetAttribute("eliminatedEffectParas").Split(',');
     }
 }

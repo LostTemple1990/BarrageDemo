@@ -41,6 +41,11 @@ public class ShakeEffect : STGEffectBase
     /// </summary>
     private Vector3 _curGameLayerOffset;
 
+    public ShakeEffect()
+    {
+        _effectType = EffectType.ShakeEffect;
+    }
+
     public override void Init()
     {
         base.Init();

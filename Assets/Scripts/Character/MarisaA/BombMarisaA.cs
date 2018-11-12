@@ -66,7 +66,7 @@ public class BombMarisaA : BombBase
     /// <summary>
     /// 魔炮时候的黑底SpriteEffect
     /// </summary>
-    private SpriteEffect _effect;
+    private STGSpriteEffect _effect;
     /// <summary>
     /// 魔炮的碰撞矩形
     /// </summary>
@@ -96,9 +96,8 @@ public class BombMarisaA : BombBase
         _sparkContainerTf = _masterSparkTf.Find("SparkContainer");
         _movementBodyTf = _sparkContainerTf.Find("MovementBody");
         // 黑底
-        _effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as SpriteEffect;
-        _effect.SetSprite("STGCommonAtlas","Circle",false);
-        _effect.SetLayer(LayerId.STGBottomEffect);
+        _effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
+        _effect.SetSprite("STGCommonAtlas", "Circle",eBlendMode.Normal, LayerId.STGBottomEffect, false);
         _effect.SetScale(0, 0);
         _effect.SetSpriteColor(0, 0, 0, 1);
         _effect.DoScaleWidth(16, 30, InterpolationMode.EaseInQuad);

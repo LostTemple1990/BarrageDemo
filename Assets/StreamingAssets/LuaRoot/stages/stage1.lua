@@ -676,11 +676,10 @@ end
 
 function Stage.StageTask()
 	lib.PlaySound("bgm",true)
-	--local spriteEffect = lib.CreateSpriteEffectWithProps("STGEffectAtlas","TransparentCircle",false,eEffectLayer.Bottom,0)
+	--local spriteEffect = lib.CreateSpriteEffectWithProps("STGEffectAtlas","TransparentCircle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
 	--lib.SetEffectToPos(spriteEffect,0,0)
 	--lib.SetSpriteEffectScale(spriteEffect,5,5)
 	--lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
-	--ObjectCollider
 	--local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
 	--lib.SetObjectColliderSize(collider,80,80)
 	--lib.SetObjectColliderToPos(collider,0,0)

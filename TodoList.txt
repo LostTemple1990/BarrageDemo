@@ -31,4 +31,5 @@ Enemy的GetHit函数要加入伤害来源，用于判断是否吃B --finish
 废弃原有的GetCollisionDetectParas(),统一使用GetCollisionDetectParas(int index) --finish
 擦弹部分的代码优化，重新考虑擦弹的计算方式
 生成时候的雾化子弹
-魔机激光的自身运动动画优化
+魔机激光的自身运动动画优化 --finish
+随便添加一个积分方式，加入信仰点、蓝点

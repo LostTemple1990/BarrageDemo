@@ -203,9 +203,8 @@ public class PlayerLaser : PlayerBulletBase,ICommand
             }
             // 击中特效
             Vector2 effectPos = _curPos + _dirVec * minDis;
-            SpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as SpriteEffect;
-            effect.SetSprite(_bulletCfg.eliminateEffectAtlas, _bulletCfg.elminaateEffectSprite, true);
-            effect.SetLayer(LayerId.STGNormalEffect);
+            STGSpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
+            effect.SetSprite(_bulletCfg.eliminateEffectAtlas, _bulletCfg.elminaateEffectSprite, eBlendMode.Normal, LayerId.STGNormalEffect, true);
             effect.SetSpriteColor(_bulletCfg.eliminateColor.r, _bulletCfg.eliminateColor.g, _bulletCfg.eliminateColor.b, 1);
             float offsetX = Random.Range(-5, 5);
             float offsetY = Random.Range(-5, 5);

@@ -33,6 +33,10 @@ public class STGChargeEffect : STGEffectBase
     private int _circleShrinkTime;
     private int _chargeTime;
 
+    public STGChargeEffect()
+    {
+        _effectType = EffectType.ChargeEffect;
+    }
 
     public override void Init()
     {

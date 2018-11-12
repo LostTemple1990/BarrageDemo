@@ -89,3 +89,7 @@ eColliderGroup.PlayerBullet = 2
 eColliderGroup.Enemy = 4
 eColliderGroup.EnemyBullet = 8
 eColliderGroup.Item = 16
+
+eBlendMode = {}
+eBlendMode.Normal = 0
+eBlendMode.SoftAdditive = 1

@@ -14,6 +14,7 @@ public class EffectsManager
     private List<STGEffectBase> _effectList;
     private int _effectsCount;
     private int _clearTime;
+    private Dictionary<EffectType, Stack<STGEffectBase>> _effectPools;
 
     public void Init()
     {
@@ -22,41 +23,64 @@ public class EffectsManager
             _effectList = new List<STGEffectBase>();
         }
         _effectsCount = 0;
+        _effectPools = new Dictionary<EffectType, Stack<STGEffectBase>>();
         _clearTime = 0;
     }
 
     public STGEffectBase CreateEffectByType(EffectType type)
     {
-        STGEffectBase effect = null;
-        switch ( type )
+        STGEffectBase effect = GetEffectFromPool(type);
+        if ( effect == null )
         {
-            case EffectType.SpriteEffect:
-                effect = new SpriteEffect();
-                break;
-            case EffectType.ShakeEffect:
-                effect = new ShakeEffect();
-                break;
-            case EffectType.BreakScreenEffect:
-                effect = new STGBreakScreenEffect();
-                break;
-            case EffectType.BurstEffect:
-                effect = new STGBurstEffect();
-                break;
-            case EffectType.ChargeEffect:
-                effect = new STGChargeEffect();
-                break;
-            case EffectType.BulletEliminate:
-                effect = new STGBulletEliminateEffect();
-                break;
-            case EffectType.EnemyEliminated:
-                effect = new STGEnemyEliminatedEffect();
-                break;
+            switch (type)
+            {
+                case EffectType.SpriteEffect:
+                    effect = new STGSpriteEffect();
+                    break;
+                case EffectType.ShakeEffect:
+                    effect = new ShakeEffect();
+                    break;
+                case EffectType.BreakScreenEffect:
+                    effect = new STGBreakScreenEffect();
+                    break;
+                case EffectType.BurstEffect:
+                    effect = new STGBurstEffect();
+                    break;
+                case EffectType.ChargeEffect:
+                    effect = new STGChargeEffect();
+                    break;
+                case EffectType.BulletEliminate:
+                    effect = new STGBulletEliminateEffect();
+                    break;
+                case EffectType.EnemyEliminated:
+                    effect = new STGEnemyEliminatedEffect();
+                    break;
+            }
         }
         if ( effect != null )
         {
             effect.Init();
             _effectList.Add(effect);
             _effectsCount++;
+        }
+        return effect;
+    }
+
+    /// <summary>
+    /// 获取STGEffect的实例
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    private STGEffectBase GetEffectFromPool(EffectType type)
+    {
+        Stack<STGEffectBase> stack = null;
+        STGEffectBase effect = null;
+        if ( _effectPools.TryGetValue(type,out stack ) )
+        {
+            if ( stack.Count > 0 )
+            {
+                effect = stack.Pop();
+            }
         }
         return effect;
     }
@@ -73,6 +97,10 @@ public class EffectsManager
                 if (effect.IsFinish())
                 {
                     effect.Clear();
+                    if ( effect.NeedToBeRestoredToPool() )
+                    {
+                        RestoreEffectToPool(effect);
+                    }
                     _effectList[i] = null;
                 }
                 else
@@ -121,6 +149,20 @@ public class EffectsManager
         }
     }
 
+    /// <summary>
+    /// 将特效缓存到对象池中
+    /// </summary>
+    /// <param name="effect"></param>
+    private void RestoreEffectToPool(STGEffectBase effect)
+    {
+        EffectType type = effect.GetEffectType();
+        Stack<STGEffectBase> stack;
+        if ( _effectPools.TryGetValue(type,out stack) )
+        {
+            stack.Push(effect);
+        }
+    }
+
     public void Clear()
     {
         int i;
@@ -140,6 +182,7 @@ public class EffectsManager
 
 public enum EffectType : byte
 {
+    Null = 0,
     SpriteEffect = 1,
     ShakeEffect = 2,
     BreakScreenEffect = 3,

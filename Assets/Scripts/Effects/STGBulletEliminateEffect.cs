@@ -29,6 +29,11 @@ public class STGBulletEliminateEffect : STGEffectBase
     /// </summary>
     private Color _tmpColor;
 
+    public STGBulletEliminateEffect()
+    {
+        _effectType = EffectType.BulletEliminate;
+    }
+
     public override void Clear()
     {
         // 恢复透明度

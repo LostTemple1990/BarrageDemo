@@ -72,7 +72,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(5);
-        SpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as SpriteEffect;
+        STGSpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
         effect.SetSprite(effectSpName);
         effect.SetScale(scaleX, scaleY);
         effect.SetToPos(posX, posY);
@@ -92,15 +92,15 @@ public partial class LuaLib
     /// <returns></returns>
     public static int CreateSpriteEffectWithProps(ILuaState luaState)
     {
-        string atlasName = luaState.ToString(-5);
-        string spriteName = luaState.ToString(-4);
-        bool cached = luaState.ToBoolean(-3);
-        LayerId layerId = (LayerId)luaState.ToInteger(-2);
+        string atlasName = luaState.ToString(-6);
+        string spriteName = luaState.ToString(-5);
+        eBlendMode blendMode = (eBlendMode)luaState.ToInteger(-4);
+        LayerId layerId = (LayerId)luaState.ToInteger(-3);
+        bool cached = luaState.ToBoolean(-2);
         int orderInLayer = luaState.ToInteger(-1);
-        luaState.Pop(5);
-        SpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as SpriteEffect;
-        effect.SetSprite(atlasName, spriteName, cached);
-        effect.SetLayer(layerId);
+        luaState.Pop(6);
+        STGSpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
+        effect.SetSprite(atlasName, spriteName, blendMode, layerId, cached);
         effect.SetOrderInLayer(orderInLayer);
         luaState.PushLightUserData(effect);
         return 1;
@@ -115,7 +115,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetSpriteEffectScale(ILuaState luaState)
     {
-        SpriteEffect effect = luaState.ToUserData(-3) as SpriteEffect;
+        STGSpriteEffect effect = luaState.ToUserData(-3) as STGSpriteEffect;
         float scaleX = (float)luaState.ToNumber(-2);
         float scaleY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
@@ -125,7 +125,7 @@ public partial class LuaLib
 
     public static int SetSpriteEffectColor(ILuaState luaState)
     {
-        SpriteEffect effect = luaState.ToUserData(-5) as SpriteEffect;
+        STGSpriteEffect effect = luaState.ToUserData(-5) as STGSpriteEffect;
         float rValue = (float)luaState.ToNumber(-4);
         float gValue = (float)luaState.ToNumber(-3);
         float bValue = (float)luaState.ToNumber(-2);
@@ -137,7 +137,7 @@ public partial class LuaLib
 
     public static int SpriteEffectScaleWidth(ILuaState luaState)
     {
-        SpriteEffect effect = luaState.ToUserData(-4) as SpriteEffect;
+        STGSpriteEffect effect = luaState.ToUserData(-4) as STGSpriteEffect;
         float toScale = (float)luaState.ToNumber(-3);
         int duration = luaState.ToInteger(-2);
         InterpolationMode scaleMode = (InterpolationMode)luaState.ToInteger(-1);
@@ -148,7 +148,7 @@ public partial class LuaLib
 
     public static int SpriteEffectScaleHeight(ILuaState luaState)
     {
-        SpriteEffect effect = luaState.ToUserData(-4) as SpriteEffect;
+        STGSpriteEffect effect = luaState.ToUserData(-4) as STGSpriteEffect;
         float toScale = (float)luaState.ToNumber(-3);
         int duration = luaState.ToInteger(-2);
         InterpolationMode scaleMode = (InterpolationMode)luaState.ToInteger(-1);
@@ -166,7 +166,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetSpriteRotation(ILuaState luaState)
     {
-        SpriteEffect effect = luaState.ToUserData(-2) as SpriteEffect;
+        STGSpriteEffect effect = luaState.ToUserData(-2) as STGSpriteEffect;
         float angle = (float)luaState.ToNumber(-1);
         luaState.Pop(2);
         effect.SetRotation(angle);
@@ -184,7 +184,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SpriteEffectRotate(ILuaState luaState)
     {
-        SpriteEffect effect = luaState.ToUserData(-3) as SpriteEffect;
+        STGSpriteEffect effect = luaState.ToUserData(-3) as STGSpriteEffect;
         float rotateAngle = (float)luaState.ToNumber(-2);
         int duration = luaState.ToInteger(-1);
         luaState.Pop(3);

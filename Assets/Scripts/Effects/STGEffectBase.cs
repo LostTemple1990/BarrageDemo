@@ -5,6 +5,7 @@ public class STGEffectBase
 {
     protected string _effectName;
     protected bool _isFinish;
+    protected EffectType _effectType;
 
     public virtual void Init()
     {
@@ -41,5 +42,19 @@ public class STGEffectBase
     public string GetName()
     {
         return _effectName;
+    }
+
+    public EffectType GetEffectType()
+    {
+        return _effectType;
+    }
+
+    /// <summary>
+    /// 是否需要在特效完成之后存储回对象池
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool NeedToBeRestoredToPool()
+    {
+        return false;
     }
 }
