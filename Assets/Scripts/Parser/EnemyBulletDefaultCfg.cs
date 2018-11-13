@@ -5,6 +5,8 @@ public class EnemyBulletDefaultCfg : IParser
 {
     public string id;
     public string spriteName;
+    public string appearEffectName;
+    public float size;
     public eBlendMode blendMode;
     public bool isRotatedByVAngle;
     public float selfRotationAngle;
@@ -22,6 +24,8 @@ public class EnemyBulletDefaultCfg : IParser
     {
         id = xmlElement.GetAttribute("id");
         spriteName = xmlElement.GetAttribute("spriteName");
+        appearEffectName = xmlElement.GetAttribute("appearEffectName");
+        size = float.Parse(xmlElement.GetAttribute("size"));
         blendMode = (eBlendMode)int.Parse(xmlElement.GetAttribute("materialType"));
         isRotatedByVAngle = int.Parse(xmlElement.GetAttribute("isRotatedByVAngle")) == 1 ? true : false;
         selfRotationAngle = float.Parse(xmlElement.GetAttribute("selfRotationAngle"));

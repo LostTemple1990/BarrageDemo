@@ -117,6 +117,7 @@ public class STGSpriteEffect : STGEffectBase
         if ( _isUsingCache )
         {
             _effectTf.localScale = Vector3.one;
+            _effectTf.localRotation = Quaternion.Euler(0, 0, 0);
             _spRenderer.color = new Color(1, 1, 1, 1);
             ObjectsPool.GetInstance().RestorePrefabToPool(_effectGoName, _effectGo);
         }
@@ -309,7 +310,7 @@ public class STGSpriteEffect : STGEffectBase
         if (_tweenAlphaTime < _tweenAlphaDuration)
         {
             _spriteColor.a = Mathf.Lerp(_startAlhpa, _endAlpha, (float)_tweenAlphaTime / _tweenAlphaDuration);
-            _spRenderer.material.color = _spriteColor;
+            _spRenderer.color = _spriteColor;
         }
         else
         {

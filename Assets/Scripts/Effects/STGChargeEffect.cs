@@ -32,6 +32,11 @@ public class STGChargeEffect : STGEffectBase
     private bool _isCircleShrinking;
     private int _circleShrinkTime;
     private int _chargeTime;
+    /// <summary>
+    /// 是否已经初始化了枫叶对象
+    /// </summary>
+    private bool _isInitChargeObjects;
+    private Vector2 _curPos;
 
     public STGChargeEffect()
     {
@@ -47,10 +52,6 @@ public class STGChargeEffect : STGEffectBase
             _effectContainerTf = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "STGEffectContainer").transform;
             UIManager.GetInstance().AddGoToLayer(_effectContainerTf.gameObject, LayerId.STGNormalEffect);
         }
-        if (_chargeCount == 0)
-        {
-            InitChargeObjects();
-        }
         // 收缩的圆形
         if (_circleTf == null)
         {
@@ -65,6 +66,8 @@ public class STGChargeEffect : STGEffectBase
         _circleShrinkTime = 0;
         _isCircleShrinking = true;
         _chargeTime = 0;
+        _isInitChargeObjects = false;
+        _curPos = Vector2.zero;
         SoundManager.GetInstance().Play("castcharge", false);
     }
 
@@ -79,13 +82,19 @@ public class STGChargeEffect : STGEffectBase
             Vector3 startPos = GetRandomStartPos();
             Vector3 rotateAngle = new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 2f));
             int easeDuration = Random.Range(ChargeMinDuration, ChargeMaxDuration);
-            chargeObj.SetParas(startPos, rotateAngle, easeDuration);
+            chargeObj.SetParas(startPos, _curPos, rotateAngle, easeDuration);
             _chargeList.Add(chargeObj);
         }
+        _isInitChargeObjects = true;
     }
 
     public override void Update()
     {
+        if (!_isInitChargeObjects)
+        {
+            InitChargeObjects();
+            return;
+        }
         _chargeTime++;
         if (_isCircleShrinking)
         {
@@ -136,11 +145,13 @@ public class STGChargeEffect : STGEffectBase
         posX = factor * Random.Range(LimitMinX, LimitMaxX);
         factor = Random.Range(0, 2) * 2 - 1;
         posY = factor * Random.Range(LimitMinY, LimitMaxY);
-        return new Vector3(posX, posY, 0);
+        // 加上起始点偏移量
+        return new Vector3(posX + _curPos.x, posY + _curPos.y, 0);
     }
 
     public override void SetToPos(float posX, float posY)
     {
+        _curPos = new Vector2(posX, posY);
         _effectContainerTf.localPosition = new Vector3(posX, posY, 0);
     }
 
@@ -208,13 +219,13 @@ class ChargeObject
         isComplete = false;
     }
 
-    public void SetParas(Vector3 startPos,Vector3 rotateAngle,int easeDuration)
+    public void SetParas(Vector3 startPos,Vector3 endPos,Vector3 rotateAngle,int easeDuration)
     {
         // 设置初始位置
         tf.localPosition = startPos;
         // 缓动的起始、结束位置
         this.startPos = startPos;
-        endPos = Vector3.zero;
+        this.endPos = endPos;
         this.rotateAngle = rotateAngle;
         // 设置时间
         time = 0;

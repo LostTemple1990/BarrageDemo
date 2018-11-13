@@ -321,6 +321,10 @@ public class InterpreterManager
             Logger.Log("TaskLua complete! LuaFunc = " + task.funcRef);
 #endif
         }
+        else
+        {
+            Logger.LogError("Call Coroutine Error!");
+        }
     }
 
     public void StopTaskThread(Task task)

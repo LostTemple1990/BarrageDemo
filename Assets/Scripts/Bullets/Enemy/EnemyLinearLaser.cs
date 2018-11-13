@@ -431,6 +431,7 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     public override void Update()
     {
+        base.Update();
         UpdateComponents();
         CheckDivideIntoMutiple();
         UpdatePath();

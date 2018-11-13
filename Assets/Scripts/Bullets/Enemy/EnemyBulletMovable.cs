@@ -58,6 +58,7 @@ public class EnemyBulletMovable : EnemyBulletBase
 
     public override void Update()
     {
+        base.Update();
         _dx = 0;
         _dy = 0;
         if ( _isMovingStraight )

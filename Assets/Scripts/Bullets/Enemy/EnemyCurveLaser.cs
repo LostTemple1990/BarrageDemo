@@ -191,6 +191,7 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     public override void Update()
     {
+        base.Update();
         _triModified = false;
         _uvModified = false;
         CheckDivideIntoMultiple();

@@ -44,6 +44,10 @@ public class BulletBase :ICollisionObject
     /// <para>当系统不繁忙时，会从对象池中destroy多余的prefab</para>
     /// </summary>
     protected int _sysBusyWeight = 1;
+    /// <summary>
+    /// 从创建之后经过的时间
+    /// </summary>
+    protected int _timeSinceCreated;
 
     public virtual void Init()
     {
@@ -55,12 +59,13 @@ public class BulletBase :ICollisionObject
         _orderInLayer = 0;
         _checkOutOfBorder = true;
         _detectCollision = true;
+        _timeSinceCreated = 0;
         Global.SysBusyValue += _sysBusyWeight;
     }
 
     public virtual void Update()
     {
-
+        _timeSinceCreated++;
     }
 
     public virtual void SetToPosition(Vector2 pos)

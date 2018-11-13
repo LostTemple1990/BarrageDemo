@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class EnemyBulletSimple : EnemyBulletMovable
 {
+    /// <summary>
+    /// 子弹出现特效的存在时间
+    /// </summary>
+    public const int AppearEffectExistDuration = 11;
+
     #region 碰撞相关参数
     /// <summary>
     /// 擦弹检测类型，默认为矩形
@@ -83,6 +88,11 @@ public class EnemyBulletSimple : EnemyBulletMovable
     protected int _scaleDelay;
     #endregion
 
+    /// <summary>
+    /// 子弹出现的特效
+    /// </summary>
+    protected STGSpriteEffect _appearEffect;
+
     public override void Init()
     {
         base.Init();
@@ -97,6 +107,10 @@ public class EnemyBulletSimple : EnemyBulletMovable
     {
         _lastPos = _curPos;
         base.Update();
+        if (_appearEffect != null)
+        {
+            UpdateAppearEffect();
+        }
         CheckRotateImg();
         if ( _isInUnrealState )
         {
@@ -175,6 +189,29 @@ public class EnemyBulletSimple : EnemyBulletMovable
 
         SetGrazeDetectParas(grazeParas);
         _cfg = cfg;
+    }
+
+    public void CreateAppearEffect()
+    {
+        if (_timeSinceCreated != 0) return;
+        _appearEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
+        _appearEffect.SetSprite(Consts.STGBulletsAtlasName, _cfg.appearEffectName, _cfg.blendMode, LayerId.EnemyBarrage, true);
+        _appearEffect.SetOrderInLayer(10);
+        _appearEffect.SetToPos(_curPos.x, _curPos.y);
+        _appearEffect.SetScale(_cfg.size * 4, _cfg.size * 4);
+        _appearEffect.DoScaleWidth(_cfg.size, AppearEffectExistDuration, InterpolationMode.Linear);
+        _appearEffect.DoScaleHeight(_cfg.size, AppearEffectExistDuration, InterpolationMode.Linear);
+        _appearEffect.DoFade(AppearEffectExistDuration);
+    }
+
+    private void UpdateAppearEffect()
+    {
+        _appearEffect.SetToPos(_curPos.x, _curPos.y);
+        if ( _timeSinceCreated >= AppearEffectExistDuration)
+        {
+            //_appearEffect.FinishEffect();
+            _appearEffect = null;
+        }
     }
 
     /// <summary>
@@ -366,6 +403,11 @@ public class EnemyBulletSimple : EnemyBulletMovable
 
     public override void Clear()
     {
+        if ( _appearEffect != null )
+        {
+            _appearEffect.FinishEffect();
+            _appearEffect = null;
+        }
         SetOrderInLayer(0);
         if ( _colorIsChange )
         {

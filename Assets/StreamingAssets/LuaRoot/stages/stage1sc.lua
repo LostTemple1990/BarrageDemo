@@ -1023,6 +1023,94 @@ function SC.NazrinSC2_3(boss)
 	end)
 end
 
+CustomizedBulletTable.WriggleBullet = {}
+CustomizedBulletTable.WriggleBullet.Init = function(bullet,velocity,angle,waitTime,finalStyleId)
+	lib.CreateAppearEffectForSimpleBullet(bullet)
+	lib.AddBulletTask(bullet,function()
+		if coroutine.yield(150) == false then return end
+		lib.ChangeBulletStyleById(bullet,"113120")
+		if coroutine.yield(waitTime) == false then return end
+		lib.ChangeBulletStyleById(bullet,"102120")
+		lib.SetBulletStraightParas(bullet,velocity*0.1,angle,false,0.05/60,angle)
+		--lib.SetBulletStraightParas(bullet,velocity*0.1,angle,false,0,0)
+		if coroutine.yield(90) == false then return end
+		lib.ChangeBulletStyleById(bullet,finalStyleId)
+		lib.SetBulletStraightParas(bullet,velocity,angle,false,0,0)
+	end)
+end
+
+function SC.WriggleSC(boss)
+	lib.SetSpellCardProperties("WriggleSign",60,Condition.EliminateAll,true,nil)
+	lib.EnemyMoveToPos(boss,0,128,120,Constants.ModeEaseOutQuad)
+	lib.SetBossInvincible(boss,5)
+	lib.SetEnemyMaxHp(boss,1000)
+	lib.ShowBossBloodBar(boss,true)
+	--bossCG
+	do
+		local tweenList = {}
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=0,duration=30,beginValue={x=200,y=200},endValue={x=0,y=0},mode=Constants.ModeEaseInQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=60,duration=60,beginValue={x=0,y=0},endValue={x=-200,y=-200},mode=Constants.ModeEaseOutQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=0,duration=0,beginValue=1,endValue=1,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=90,duration=30,beginValue=1,endValue=0,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Scale,delay=0,duration=0,beginValue={x=0.75,y=0.75,z=1},endValue={x=0.75,y=0.75,z=1},mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		lib.PlayCharacterCG("CG/face04ct",tweenList)
+	end
+	if coroutine.yield(121) == false then return end
+	lib.SetEnemyWanderRange(boss,-96,96,128,144)
+	lib.SetEnemyWanderAmplitude(boss,-32,32,-32,32)
+	lib.SetEnemyWanderMode(boss,Constants.ModeEaseOutQuad,Constants.DirModeMoveXTowardsPlayer)
+	local i , di = 0 , 1
+	local finalIds={"103021","103041","103061","103081","103101","103121","103141"}
+	for _=1,Infinite do
+		local startAngle = lib.GetRandomFloat(0,360)
+		local dStartAngle = 0
+		local bossPosX,bossPosY = lib.GetEnemyPos(boss)
+		lib.CreateChargeEffect(bossPosX,bossPosY)
+		if coroutine.yield(60) == false then return end
+		do
+			--曲线半径
+			local radius,dRadius = 16,10
+			local v,dv = 2,-0.03
+			for _=1,45 do
+				local angle,dAngle = startAngle,30
+				local playerPosX,playerPosY = lib.GetPlayerPos()
+				for _=1,12 do
+					local posX = bossPosX + radius * math.cos(math.rad(angle))
+					local posY = bossPosY + radius * math.sin(math.rad(angle))
+					if lib.GetVectorLength(posX,posY,playerPosX,playerPosY) > 48 and math.abs(posX) < 320 and math.abs(posY) < 240 then
+						lib.CreateCustomizedBullet("WriggleBullet","102100",posX,posY,v,angle+dAngle,30,finalIds[i%7+1],4)
+					end
+					angle = angle + dAngle
+				end
+				startAngle = startAngle + 350/radius*(-1)^i
+				dStartAngle = dStartAngle + 23
+				if coroutine.yield(2) == false then return end
+				radius = radius + dRadius
+				v = v + dv
+			end
+			if coroutine.yield(60) == false then return end
+			lib.EnemyDoWander(boss,30)
+			if coroutine.yield(60) == false then return end
+			i = i + di
+		end
+	end
+end
+
 return
 {
 	CustomizedBulletTable = CustomizedBulletTable,

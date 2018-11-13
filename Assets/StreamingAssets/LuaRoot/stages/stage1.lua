@@ -696,7 +696,7 @@ function Stage.StageTask()
 			lib.EnemyMoveTowards(enemy,0.5,180,700);
 		end)
 		lib.AddEnemyTask(enemy,function()
-			if ( coroutine.yield(10000)==false ) then return end
+			--if ( coroutine.yield(10000)==false ) then return end
 			for _=1,10 do
 				for _=1,6 do
 					lib.PlaySound("se_tan00",false)
@@ -704,6 +704,7 @@ function Stage.StageTask()
 					local bullet
 					do local angle=-35 for _=1,3 do
 						bullet = lib.CreateSimpleBulletById("104060",posX,posY)
+						lib.CreateAppearEffectForSimpleBullet(bullet)
 						--lib.SetBulletStraightParas(bullet,0.5,angle,true,0.25,Constants.VelocityAngle)
 						lib.SetBulletStraightParas(bullet,2,angle,true,0.25,Constants.VelocityAngle)
 						angle = angle+35
@@ -743,7 +744,7 @@ function Stage.StageTask()
 		end)
 		--测试曲线激光
 		lib.AddEnemyTask(enemy,function()
-			--if coroutine.yield(10000) == false then return end
+			if coroutine.yield(10000) == false then return end
 			local laser,i
 			for i=1,18 do
 				local posX,posY = lib.GetEnemyPos(enemy)
@@ -761,7 +762,8 @@ function Stage.StageTask()
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
 		if coroutine.yield(100) == false then return end
 		lib.SetBossCurPhaseData(boss,1,1,1,1,4)
-		lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
+		lib.StartSpellCard(SpellCard.WriggleSC,boss)
+		--lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
 		lib.StartSpellCard(SpellCard.NazrinSC2_1,boss)
 		if lib.WaitForSpellCardFinish() == false then return end

@@ -129,6 +129,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
     public override void Update()
     {
         if (!_isCached) Cache();
+        base.Update();
         _frameCountSinceCreate++;
         if ( _detectCollision )
         {

@@ -241,4 +241,15 @@ public partial class LuaLib
         effect.DoShake(delay, shakeDuration, shakeInterval, shakeDelta, shakeLevel,minShakeLevel, maxRange);
         return 0;
     }
+
+    public static int CreateChargeEffect(ILuaState luaState)
+    {
+        float posX = (float)luaState.ToNumber(-2);
+        float posY = (float)luaState.ToNumber(-1);
+        luaState.Pop(2);
+        STGChargeEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ChargeEffect) as STGChargeEffect;
+        effect.SetToPos(posX, posY);
+        luaState.PushLightUserData(effect);
+        return 1;
+    }
 }

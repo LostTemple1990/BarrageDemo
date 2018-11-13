@@ -258,6 +258,7 @@ public class EnemyLaser : EnemyBulletBase
 
     public override void Update()
     {
+        base.Update();
         UpdateComponents();
         if ( _isChangingWidth )
         {

@@ -23,7 +23,7 @@ public class PlayerBulletBase : BulletBase
 
     public override void Update()
     {
-
+        base.Update();
     }
 
     public virtual void ChangeStyleById(string id)

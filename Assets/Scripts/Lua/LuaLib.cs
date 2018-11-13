@@ -10,6 +10,7 @@ public partial class LuaLib
         var define = new NameFuncPair[]
         {
             new NameFuncPair("CreateSimpleBulletById", CreateSimpleBulletById),
+            new NameFuncPair("CreateAppearEffectForSimpleBullet", CreateAppearEffectForSimpleBullet),
             new NameFuncPair("SetBulletStraightParas",SetBulletStraightParas),
             new NameFuncPair("SetBulletCurvePara",SetBulletCurvePara),
             new NameFuncPair("DoBulletAcceleration",DoBulletAcceleration),
@@ -106,6 +107,7 @@ public partial class LuaLib
             new NameFuncPair("SpriteEffectScaleHeight",SpriteEffectScaleHeight),
             new NameFuncPair("ShakeEffectDoShake",ShakeEffectDoShake),
             new NameFuncPair("ShakeEffectDoShakeWithLimitation",ShakeEffectDoShakeWithLimitation),
+            new NameFuncPair("CreateChargeEffect",CreateChargeEffect),
             // 子弹组件
             new NameFuncPair("AddBulletComponent",AddBulletComponent),
             new NameFuncPair("AddBulletParaChangeEvent",AddBulletParaChangeEvent),
@@ -173,6 +175,19 @@ public partial class LuaLib
         bullet.SetToPosition(posX, posY);
         luaState.PushLightUserData(bullet);
         return 1;
+    }
+
+    /// <summary>
+    /// 创建子弹出场特效
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int CreateAppearEffectForSimpleBullet(ILuaState luaState)
+    {
+        EnemyBulletSimple bullet = luaState.ToUserData(-1) as EnemyBulletSimple;
+        luaState.Pop(1);
+        bullet.CreateAppearEffect();
+        return 0;
     }
 
     /// <summary>

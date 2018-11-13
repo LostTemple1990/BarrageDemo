@@ -50,6 +50,7 @@ public class PlayerBulletSimple : PlayerBulletBase
 
     public override void Update()
     {
+        base.Update();
         if ( !_isEliminating )
         {
             _lastPos = _curPos;
