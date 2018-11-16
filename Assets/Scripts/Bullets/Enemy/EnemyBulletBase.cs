@@ -33,6 +33,11 @@ public class EnemyBulletBase :BulletBase
     /// </summary>
     protected int _grazeCoolDown;
 
+    /// <summary>
+    /// 当前透明度
+    /// </summary>
+    protected float _curAlpha;
+
     public EnemyBulletBase()
     {
         _components = new List<BulletComponent>();
@@ -54,6 +59,20 @@ public class EnemyBulletBase :BulletBase
     /// <param name="texture"></param>
     /// <param name="rotation">是否根据子弹当前速度方向旋转图像</param>
     public virtual void SetBulletTexture(string texture)
+    {
+
+    }
+
+    /// <summary>
+    /// 根据id设置子弹的类型
+    /// </summary>
+    /// <param name="id"></param>
+    public virtual void SetStyleById(string id)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void SetAlpha(float alpha)
     {
 
     }

@@ -311,8 +311,8 @@ public class BulletsManager : ICommand
     /// <returns></returns>
     public GameObject CreateBulletGameObject(BulletId type,string bulletId)
     {
-        string textureName = "Bullet" + bulletId;
-        GameObject prefab = ObjectsPool.GetInstance().GetPrefabAtPool(bulletId.ToString());
+        //string textureName = "Bullet" + bulletId;
+        GameObject prefab = ObjectsPool.GetInstance().GetPrefabAtPool(bulletId);
         if ( prefab == null )
         {
             // 缓存中没有，先取原型
@@ -327,6 +327,20 @@ public class BulletsManager : ICommand
             //UIManager.GetInstance().AddGoToLayer(prefab, LayerId.EnemyBarrage);
         }
         return prefab;
+    }
+
+    /// <summary>
+    /// 根据子弹类型以及id获取子弹原型的名称
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="bulletId"></param>
+    /// <returns></returns>
+    private string GetProtoTypeNameByBulletTypeAndId(BulletId type,string bulletId)
+    {
+        if (type == BulletId.Enemy_Laser) return "EnemyLaser" + bulletId;
+        if (type == BulletId.Enemy_LinearLaser) return "EnemyLinearLaser" + bulletId;
+        if (type == BulletId.Enemy_CurveLaser) return "EnemyCurveLaser" + bulletId;
+        return bulletId;
     }
 
     private GameObject CreateBulletProtoType(BulletId type,string bulletId)
@@ -346,6 +360,9 @@ public class BulletsManager : ICommand
             case BulletId.Player_Laser:
                 protoType = CreatePlayerLaserProtoType(bulletId);
                 break;
+            case BulletId.Enemy_Laser:
+                protoType = CreateEnemyLaserProtoType(bulletId);
+                break;
         }
         return protoType;
     }
@@ -360,7 +377,7 @@ public class BulletsManager : ICommand
         GameObject original = Resources.Load<GameObject>("BulletPrefab/SimpleBullet");
         GameObject protoType = GameObject.Instantiate<GameObject>(original);
         EnemyBulletDefaultCfg cfg = BulletsManager.GetInstance().GetBulletDefaultCfgById(bulletId);
-        string protoTypeName = "Bullet" + bulletId;
+        string protoTypeName = "EnemySimpleBullet" + bulletId;
         // 设置sprite以及material
         protoType.name = protoTypeName;
         SpriteRenderer sp = protoType.transform.Find("BulletSprite").GetComponent<SpriteRenderer>();
@@ -372,7 +389,7 @@ public class BulletsManager : ICommand
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
-        Logger.Log("Create EnemySimpleBullet ProtoType " + bulletId);
+        Logger.Log("Create Bullet ProtoType " + protoTypeName);
         return protoType;
     }
 
@@ -385,19 +402,21 @@ public class BulletsManager : ICommand
     {
         GameObject original = Resources.Load<GameObject>("BulletPrefab/Laser");
         GameObject protoType = GameObject.Instantiate<GameObject>(original);
-        string textureName = "Bullet" + bulletId;
+        // 读取配置
+        EnemyLinearLaserCfg cfg = GetLinearLaserCfgById(bulletId.ToString());
+        string protoTypeName = "EnemyLaser" + bulletId;
         // 设置sprite以及material
-        protoType.name = textureName;
+        protoType.name = protoTypeName;
         SpriteRenderer sp = protoType.transform.Find("LaserSprite").GetComponent<SpriteRenderer>();
-        sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, textureName);
-        //eBlendMode blendMode = (eBlendMode)(bulletId % 10);
-        //if (blendMode != eBlendMode.Normal)
-        //{
-        //    sp.material = ResourceManager.GetInstance().GetSpriteMatByBlendMode(blendMode);
-        //}
+        sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, cfg.laserTexName);
+        if (cfg.blendMode != eBlendMode.Normal)
+        {
+            sp.material = ResourceManager.GetInstance().GetSpriteMatByBlendMode(cfg.blendMode);
+        }
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
+        Logger.Log("Create Bullet ProtoType " + protoTypeName);
         return protoType;
     }
 
@@ -407,7 +426,7 @@ public class BulletsManager : ICommand
         GameObject protoType = GameObject.Instantiate<GameObject>(original);
         // 读取配置
         EnemyLinearLaserCfg cfg = GetLinearLaserCfgById(bulletId.ToString());
-        string protoTypeName = "Bullet" + bulletId;
+        string protoTypeName = "EnemyLinearLaser" + bulletId;
         // 激光发射源
         SpriteRenderer sourceSp = protoType.transform.Find("Source").GetComponent<SpriteRenderer>();
         sourceSp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, "Bullet" + cfg.laserSourceTexId);
@@ -431,7 +450,7 @@ public class BulletsManager : ICommand
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
-        Logger.Log("Create EnemyLinearLaser ProtoType " + bulletId);
+        Logger.Log("Create Bullet ProtoType " + protoTypeName);
         return protoType;
     }
 
@@ -447,13 +466,13 @@ public class BulletsManager : ICommand
         // 读取配置
         PlayerBulletCfg cfg = BulletsManager.GetInstance().GetPlayerBulletCfgById(bulletId.ToString());
         // 设置sprite以及material
-        protoType.name = cfg.textureName;
+        protoType.name = "PlayerSimpleBullet" + cfg.id;
         SpriteRenderer sp = protoType.transform.Find("BulletSprite").GetComponent<SpriteRenderer>();
         sp.sprite = ResourceManager.GetInstance().GetSprite(cfg.packName, cfg.textureName);
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.PlayerBarage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
-        Logger.Log("Create PlayerSimpleBullet ProtoType " + bulletId);
+        Logger.Log("Create ProtoType " + protoType.name);
         return protoType;
     }
 
@@ -469,13 +488,13 @@ public class BulletsManager : ICommand
         // 读取配置
         PlayerBulletCfg cfg = BulletsManager.GetInstance().GetPlayerBulletCfgById(bulletId.ToString());
         // 设置sprite以及material
-        protoType.name = cfg.textureName;
+        protoType.name = "PlayerLaser " + cfg.id;
         SpriteRenderer sp = protoType.transform.Find("Laser").GetComponent<SpriteRenderer>();
         sp.sprite = ResourceManager.GetInstance().GetSprite(cfg.packName, cfg.textureName);
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.PlayerBarage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
-        Logger.Log("Create PlayerLaser ProtoType " + bulletId);
+        Logger.Log("Create ProtoType " + protoType.name);
         return protoType;
     }
 

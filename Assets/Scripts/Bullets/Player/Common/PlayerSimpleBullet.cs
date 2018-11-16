@@ -113,9 +113,9 @@ public class PlayerBulletSimple : PlayerBulletBase
     /// <param name="acce"></param>
     /// <param name="accAngle"></param>
     /// <param name="accDuration"></param>
-    public void DoAccelerationWithLimitation(float acce, float accAngle,int accDuration)
+    public void DoAccelerationWithLimitation(float acce, float accAngle,float maxVelocity)
     {
-        _movableObject.DoAccelerationWithLimitation(acce, accAngle, accDuration);
+        _movableObject.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
     }
 
     protected void CheckRotated()

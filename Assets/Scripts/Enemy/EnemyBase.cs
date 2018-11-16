@@ -14,6 +14,10 @@ public class EnemyBase
     /// 敌机本体gameobject
     /// </summary>
     protected GameObject _enemyGo;
+    /// <summary>
+    /// 敌机本体tf
+    /// </summary>
+    protected Transform _enemyTf;
 
     /// <summary>
     /// 当前速度
@@ -72,6 +76,10 @@ public class EnemyBase
     /// <para>PlayerSpellCard,PlayerBullet</para>
     /// </summary>
     protected int _resistEliminateFlag;
+    /// <summary>
+    /// 标识进行边界检测以便回收
+    /// </summary>
+    protected bool _checkOutOfBorder;
 
     public virtual void Init()
     {
@@ -152,20 +160,47 @@ public class EnemyBase
         _moveDuration = duration;
     }
 
+    /// <summary>
+    /// 加速移动
+    /// </summary>
+    /// <param name="velocity"></param>
+    /// <param name="angle"></param>
+    /// <param name="acc"></param>
+    public virtual void AccMoveTowards(float velocity,float angle,float acc)
+    {
+        _movableObj.DoMoveStraight(velocity, angle);
+        _movableObj.DoAcceleration(acc, angle);
+        _isMoving = true;
+    }
+
+    /// <summary>
+    /// 加速移动(最大速度限制)
+    /// </summary>
+    /// <param name="velocity"></param>
+    /// <param name="angle"></param>
+    /// <param name="acc"></param>
+    /// <param name="maxVelocity"></param>
+    public virtual void AccMoveTowardsWithLimitation(float velocity,float angle,float acc,float maxVelocity)
+    {
+        _movableObj.DoMoveStraight(velocity, angle);
+        _movableObj.DoAccelerationWithLimitation(acc, angle, maxVelocity);
+        _isMoving = true;
+    }
+
     protected void CheckCollisionWithCharacter()
     {
         Vector2 playerPos = Global.PlayerPos;
         if ( Mathf.Abs(playerPos.x-_curPos.x) <= _collisionHalfWidth + Global.PlayerCollisionVec.z &&
             Mathf.Abs(playerPos.y - _curPos.y) <= _collisionHalfHeight + Global.PlayerCollisionVec.z )
         {
-            Logger.Log("Hit By Enemy!");
+            //Logger.Log("Hit By Enemy!");
             PlayerService.GetInstance().GetCharacter().BeingHit();
         }
     }
 
     public virtual bool Eliminate(eEliminateDef eliminateType=0)
     {
-        if ( eliminateType != eEliminateDef.ForcedDelete || 
+        if ( eliminateType != eEliminateDef.ForcedDelete && 
             eliminateType != eEliminateDef.CodeRawEliminate )
         {
             if ( _onEliminateFuncRef != 0 )
@@ -230,8 +265,7 @@ public class EnemyBase
 
     protected virtual void UpdatePos()
     {
-        _curPos = _movableObj.GetPos();
-        _enemyGo.transform.localPosition = _curPos;
+        _enemyTf.localPosition = _curPos;
     }
 
     public virtual CollisionDetectParas GetCollisionDetectParas(int index=0)
@@ -247,6 +281,23 @@ public class EnemyBase
             angle = 0,
         };
         return paras;
+    }
+
+    /// <summary>
+    /// 检测是否越界
+    /// </summary>
+    /// <returns></returns>
+    protected bool IsOutOfBorder()
+    {
+        if (!_checkOutOfBorder) return false;
+        if (_curPos.x < Global.BulletLBBorderPos.x ||
+            _curPos.y < Global.BulletLBBorderPos.y ||
+            _curPos.x > Global.BulletRTBorderPos.x ||
+            _curPos.y > Global.BulletRTBorderPos.y)
+        {
+            return true;
+        }
+        return false;
     }
 
     public virtual void SetCollisionParams(float collisionHW,float collisionHH)
@@ -342,6 +393,7 @@ public class EnemyBase
         ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObj);
         _movableObj = null;
         _enemyGo = null;
+        _enemyTf = null;
     }
 
     protected virtual void ClearTasks()
@@ -361,6 +413,15 @@ public class EnemyBase
         }
         _tasks.Clear();
         _taskCount = 0;
+    }
+
+    /// <summary>
+    /// 设置是否进行边界检测
+    /// </summary>
+    /// <param name="value"></param>
+    public virtual void SetCheckOutOfBorder(bool value)
+    {
+        _checkOutOfBorder = value;
     }
 
     /// <summary>

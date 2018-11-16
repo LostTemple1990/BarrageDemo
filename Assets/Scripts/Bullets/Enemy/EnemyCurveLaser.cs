@@ -51,10 +51,6 @@ public class EnemyCurveLaser : EnemyBulletBase
     protected float _endV;
 
     #region 碰撞相关参数
-    /// <summary>
-    /// 擦弹检测类型，默认为矩形
-    /// </summary>
-    protected int _grazeType = Consts.GrazeType_Rect;
     protected float _grazeHalfWidth;
     protected float _grazeHalfHeight;
     /// <summary>

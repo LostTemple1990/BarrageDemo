@@ -181,7 +181,6 @@ public class BulletBase :ICollisionObject
             _curPos.x > Global.BulletRTBorderPos.x ||
             _curPos.y > Global.BulletRTBorderPos.y)
         {
-            //Logger.Log("bullet is out of border");
             return true;
         }
         return false;

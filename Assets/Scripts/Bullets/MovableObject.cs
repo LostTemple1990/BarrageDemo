@@ -12,8 +12,14 @@ public class MovableObject : IPoolClass
     protected float _dvx, _dvy;
     protected int _curStraightTime;
     protected int _moveStraightDuration;
-    protected int _accTime;
-    protected int _accDuration;
+    /// <summary>
+    /// 加速运动的最大速度限制
+    /// </summary>
+    protected float _maxVelocity;
+    /// <summary>
+    /// 加速运动最大速度的平方
+    /// </summary>
+    protected float _sqrMaxV;
 
     #region 极坐标运动相关参数
     protected Vector2 _centerPos;
@@ -92,20 +98,19 @@ public class MovableObject : IPoolClass
     {
         _curAcce = acce;
         _curAccAngle = accAngle == Consts.VelocityAngle ? _curVAngle : accAngle;
-        _accTime = 0;
-        _accDuration = Consts.MaxDuration;
+        _maxVelocity = -1;
         // 计算速度增量
         _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
         _dvy = _curAcce * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
         _isMovingStraight = true;
     }
 
-    public virtual void DoAccelerationWithLimitation(float acce, float accAngle, int accDuration)
+    public virtual void DoAccelerationWithLimitation(float acce, float accAngle, float maxVelocity)
     {
         _curAcce = acce;
         _curAccAngle = accAngle == Consts.VelocityAngle ? _curVAngle : accAngle;
-        _accTime = 0;
-        _accDuration = accDuration;
+        _maxVelocity = maxVelocity;
+        _sqrMaxV = _maxVelocity * _maxVelocity;
         // 计算速度增量
         _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
         _dvy = _curAcce * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
@@ -172,17 +177,21 @@ public class MovableObject : IPoolClass
         {
             _vx += _dvx;
             _vy += _dvy;
-            _accTime++;
-            if (_accTime >= _accDuration)
+            if ( _maxVelocity != -1 )
             {
-                _curAcce = 0;
-                _dvx = _dvy = 0;
+                float value = _vx * _vx + _vy * _vy;
+                if ( value > _sqrMaxV )
+                {
+                    value = Mathf.Sqrt(_sqrMaxV / value);
+                    _vx *= value;
+                    _vy *= value;
+                }
             }
         }
+        _dx += _vx;
+        _dy += _vy;
         if (_moveStraightDuration > 0)
         {
-            _dx += _vx;
-            _dy += _vy;
             _curStraightTime++;
             if (_curStraightTime >= _moveStraightDuration)
             {
@@ -190,12 +199,6 @@ public class MovableObject : IPoolClass
                 _moveStraightDuration = 0;
                 _isMovingStraight = false;
             }
-        }
-        else
-        {
-            // 更新位置增量
-            _dx += _vx;
-            _dy += _vy;
         }
     }
     #endregion
@@ -240,6 +243,8 @@ public class MovableObject : IPoolClass
         _isMovingTo = false;
         _isMovingStraight = false;
         _isMovingCurve = false;
+        _vx = _vy = _dvx = _dvy = 0;
+        _maxVelocity = -1;
     }
 
     public void Reset(float x,float y)

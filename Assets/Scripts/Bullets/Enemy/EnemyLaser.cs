@@ -7,7 +7,7 @@ public class EnemyLaser : EnemyBulletBase
     /// <summary>
     /// 擦弹冷却时间
     /// </summary>
-    private const int GrazeCoolDown = 2;
+    private const int GrazeCoolDown = 3;
 
     protected float _laserAngle;
     protected float _laserRotateOmega;
@@ -32,7 +32,6 @@ public class EnemyLaser : EnemyBulletBase
     protected float _laserHeight;
     protected float _laserHalfHeight;
     protected float _laserHalfWidth;
-    protected bool _isSized;
 
     /// <summary>
     /// 激光容器object
@@ -83,10 +82,13 @@ public class EnemyLaser : EnemyBulletBase
     /// 是否需要Resize激光
     /// </summary>
     protected bool _isDirty;
+    /// <summary>
+    /// 对应激光的配置
+    /// </summary>
+    protected EnemyLinearLaserCfg _cfg;
 
     public EnemyLaser()
     {
-        _prefabName = "Laser";
         _sysBusyWeight = 3;
         _id = BulletId.Enemy_Laser;
     }
@@ -94,7 +96,6 @@ public class EnemyLaser : EnemyBulletBase
     public override void Init()
     {
         base.Init();
-        _isSized = false;
         _rotateFlag = false;
         _moveFlag = false;
         _curPos = Vector3.zero;
@@ -120,10 +121,29 @@ public class EnemyLaser : EnemyBulletBase
             UIManager.GetInstance().AddGoToLayer(_laserObj, LayerId.EnemyBarrage);
         }
         _laser.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName,"Bullet" + texture);
-        if ( _isSized )
+        _isDirty = true;
+    }
+
+    public override void SetStyleById(string id)
+    {
+        EnemyLinearLaserCfg cfg = BulletsManager.GetInstance().GetLinearLaserCfgById(id);
+        if (cfg == null)
         {
-            Resize();
+            Logger.LogError("LaserCfg with id " + id + " is not exist!");
+            return;
         }
+        if ( _laserObj != null )
+        {
+            ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _laserObj);
+        }
+        _cfg = cfg;
+        _prefabName = _cfg.id;
+        _laserObj = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Enemy_Laser, _cfg.id);
+        _objTrans = _laserObj.transform;
+        _laserTrans = _objTrans.Find("LaserSprite");
+        _laser = _laserTrans.GetComponent<SpriteRenderer>();
+        _moveFlag = true;
+        _isDirty = true;
     }
 
     public override void SetToPosition(Vector2 vec)
@@ -177,16 +197,6 @@ public class EnemyLaser : EnemyBulletBase
         _isChangingHeight = true;
     }
 
-    public virtual void SetPosition(float posX,float posY,float angle)
-    {
-        _curPos.x = posX;
-        _curPos.y = posY;
-        _laserAngle = angle;
-        _moveFlag = true;
-        _rotateFlag = true;
-        //Logger.Log("Set EnemyLaser To Pos (" + posX + "," + posY + ") , angle = " + angle);
-    }
-
     public virtual void SetLaserAngle(float angle)
     {
         _laserAngle = angle;
@@ -205,18 +215,18 @@ public class EnemyLaser : EnemyBulletBase
         {
             _laserWidth = width;
             _laserHalfWidth = width / 2;
-            _isSized = true;
+            _isDirty = true;
         }
         if ( height != Consts.OriginalHeight )
         {
             _laserHeight = height;
             _laserHalfHeight = height / 2;
-            _isSized = true;
+            _isDirty = true;
         }
-        if (_laser != null && _isSized)
-        {
-            Resize();
-        }
+        //if (_laser != null && _isSized)
+        //{
+            //Resize();
+        //}
     }
 
     public void DoMove(Vector3 endPos,int duration)
@@ -490,11 +500,13 @@ public class EnemyLaser : EnemyBulletBase
 
     public override void Clear()
     {
-        UIManager.GetInstance().HideGo(_laserObj);
-        ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _laserObj);
+        if ( _laserObj != null )
+        {
+            _laser.size = Vector2.zero;
+            ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _laserObj);
+        }
         _laserObj = null;
         _objTrans = null;
-        _laser.sprite = null;
         _laser = null;
         _laserTrans = null;
         base.Clear();

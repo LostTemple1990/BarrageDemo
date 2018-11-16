@@ -10,10 +10,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
     public const int AppearEffectExistDuration = 11;
 
     #region 碰撞相关参数
-    /// <summary>
-    /// 擦弹检测类型，默认为矩形
-    /// </summary>
-    protected int _grazeType = Consts.GrazeType_Rect;
     protected float _grazeHalfWidth;
     protected float _grazeHalfHeight;
     /// <summary>
@@ -32,12 +28,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
     protected float _collisionRadius;
 
     #endregion
-    /// <summary>
-    /// 表示当前是否虚化状态
-    /// </summary>
-    protected bool _isInUnrealState;
-    protected int _unRealTime;
-    protected int _unRealDuration;
     /// <summary>
     /// 原先的颜色设置
     /// </summary>
@@ -98,9 +88,10 @@ public class EnemyBulletSimple : EnemyBulletMovable
         base.Init();
         _id = BulletId.Enemy_Simple;
         _orderInLayer = 0;
-        _isInUnrealState = false;
         _isScalingSize = false;
         _scaleFactor = 1;
+        _curAlpha = 1;
+        _originalColor = new Color(1, 1, 1, 1);
     }
 
     public override void Update()
@@ -112,10 +103,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
             UpdateAppearEffect();
         }
         CheckRotateImg();
-        if ( _isInUnrealState )
-        {
-            UpdateUnrealState();
-        }
         CheckCollisionWithCharacter();
         if ( IsOutOfBorder() )
         {
@@ -164,7 +151,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
         if ( _bullet != null )
         {
             // 回收现有的prefab
-            UIManager.GetInstance().RemoveGoFromLayer(_bullet);
             ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         }
         _cfg = cfg;
@@ -188,7 +174,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _detCollisonValue = value * value;
 
         SetGrazeDetectParas(grazeParas);
-        _cfg = cfg;
     }
 
     public void CreateAppearEffect()
@@ -214,33 +199,11 @@ public class EnemyBulletSimple : EnemyBulletMovable
         }
     }
 
-    /// <summary>
-    /// 将子弹设置成虚化状态
-    /// </summary>
-    /// <param name="time"></param>
-    public virtual void SetToUnrealState(int duration)
+    public override void SetAlpha(float alpha)
     {
-        // 保存原有的颜色数据
-        _originalColor = _spRenderer.color;
-        Color unrealColor = _originalColor;
-        unrealColor.a = 0.3f;
-        _spRenderer.color = unrealColor;
-        _colorIsChange = true;
-        // 设置时间
-        _unRealTime = 0;
-        _unRealDuration = duration;
-        _isInUnrealState = true;
-    }
-
-    protected void UpdateUnrealState()
-    {
-        _unRealTime++;
-        if ( _unRealTime >= _unRealDuration )
-        {
-            _spRenderer.color = _originalColor;
-            _colorIsChange = false;
-            _isInUnrealState = false;
-        }
+        _curAlpha = alpha;
+        Color newColor = new Color(_originalColor.r, _originalColor.g, _originalColor.b, alpha);
+        _spRenderer.color = newColor;
     }
 
     /// <summary>
@@ -305,7 +268,15 @@ public class EnemyBulletSimple : EnemyBulletMovable
     protected virtual void RotateImgByVelocity()
     {
         Vector2 dv = _curPos - _lastPos;
-        float rotateAngle = MathUtil.GetAngleBetweenXAxis(dv.x, dv.y, false) - 90;
+        float rotateAngle;
+        if ( dv.x == 0 && dv.y == 0 )
+        {
+            rotateAngle = _curAngle - 90;
+        }
+        else
+        {
+            rotateAngle = MathUtil.GetAngleBetweenXAxis(dv.x, dv.y, false) - 90;
+        }
         _trans.localRotation = Quaternion.Euler(new Vector3(0, 0, rotateAngle));
     }
 
@@ -371,11 +342,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
     /// </summary>
     protected virtual void CheckCollisionWithCharacter()
     {
-        // 虚化状态不进行碰撞判定
-        if ( _isInUnrealState )
-        {
-            return;
-        }
         if ( !_detectCollision )
         {
             return;
@@ -409,10 +375,9 @@ public class EnemyBulletSimple : EnemyBulletMovable
             _appearEffect = null;
         }
         SetOrderInLayer(0);
-        if ( _colorIsChange )
+        if ( _curAlpha != 1 || _colorIsChange )
         {
-            _spRenderer.color = _originalColor;
-            _colorIsChange = false;
+            _spRenderer.color = new Color(1, 1, 1, 1);
         }
         if ( _scaleFactor != 1 )
         {

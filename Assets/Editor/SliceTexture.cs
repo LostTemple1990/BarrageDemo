@@ -163,10 +163,26 @@ public static class SliceTexture
         //    0, 160, 32, 48, 8,
         //    0, 208, 32, 48, 8
         //};//pl01
+        //int[] sliceDataArr = new int[]
+        //{
+        //    0, 0, 32, 32, 8,
+        //    0, 64, 32, 32, 8,
+        //    0, 96, 32, 32, 8,
+        //    0, 160, 32, 32, 8,
+        //    0, 192, 32, 32, 8,
+        //    0, 224, 32, 32, 8,
+        //}; //BulletSprite0
+        //int[] sliceDataArr = new int[]
+        //{
+        //    0, 128, 64, 64, 4,
+        //    0, 192, 64, 64, 4,
+        //}; //BulletSprite1
         int[] sliceDataArr = new int[]
         {
-
-        }; //MarisaSC
+            0, 160, 32, 32, 8,
+            0, 192, 32, 32, 6,
+            0, 224, 32, 32, 6,
+        }; //BulletSprite2
         List<int> sliceData = new List<int>(sliceDataArr);
         ProcessSlicing(selectionImg, sliceData);
         //创建导出路径

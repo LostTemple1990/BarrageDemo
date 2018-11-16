@@ -13,8 +13,18 @@ public class EnemyBulletMovable : EnemyBulletBase
     protected Vector3 _moveStraightEndPos;
     protected int _curStraightTime;
     protected int _moveStraightDuration;
-    protected int _accTime;
-    protected int _accDuration;
+    /// <summary>
+    /// 加速运动的最大速度限制
+    /// </summary>
+    protected float _maxVelocity;
+    /// <summary>
+    /// 加速运动最大速度的平方
+    /// </summary>
+    protected float _sqrMaxV;
+    /// <summary>
+    /// 是否设置过初始速度
+    /// </summary>
+    protected bool _isInitVelocity;
 
     #region 极坐标运动相关参数
     protected Vector2 _centerPos;
@@ -50,9 +60,9 @@ public class EnemyBulletMovable : EnemyBulletBase
         _isMoving = false;
         _isMovingStraight = false;
         _isMovingCurve = false;
-        _vx = 0;
-        _vy = 0;
-        _curVelocity = 0;
+        _vx = _vy = _dvx = _dvy = _curVelocity = 0;
+        _maxVelocity = -1;
+        _isInitVelocity = false;
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
     }
 
@@ -83,6 +93,7 @@ public class EnemyBulletMovable : EnemyBulletBase
         _moveStraightDuration = Consts.MaxDuration;
         _vx = _curVelocity * Mathf.Cos(_curAngle * Mathf.Deg2Rad);
         _vy = _curVelocity * Mathf.Sin(_curAngle * Mathf.Deg2Rad);
+        _isInitVelocity = true;
         _isMovingStraight = true;
     }
 
@@ -92,6 +103,7 @@ public class EnemyBulletMovable : EnemyBulletBase
         _curAngle = angle;
         _curStraightTime = 0;
         _moveStraightDuration = duration;
+        _isInitVelocity = true;
         _isMovingStraight = true;
     }
 
@@ -99,20 +111,29 @@ public class EnemyBulletMovable : EnemyBulletBase
     {
         _curAcceleration = acce;
         _curAccAngle = accAngle==Consts.VelocityAngle ? _curAngle : accAngle;
-        _accTime = 0;
-        _accDuration = Consts.MaxDuration;
+        if ( !_isInitVelocity )
+        {
+            _curAngle = _curAccAngle;
+            _isInitVelocity = true;
+        }
+        _maxVelocity = -1;
         // 计算速度增量
         _dvx = _curAcceleration * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
         _dvy = _curAcceleration * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
         _isMovingStraight = true;
     }
 
-    public virtual void DoAccelerationWithLimitation(float acce, float accAngle,int accDuration)
+    public virtual void DoAccelerationWithLimitation(float acce, float accAngle,float maxVelocity)
     {
         _curAcceleration = acce;
         _curAccAngle = accAngle == Consts.VelocityAngle ? _curAngle : accAngle;
-        _accTime = 0;
-        _accDuration = accDuration;
+        if (!_isInitVelocity)
+        {
+            _curAngle = _curAccAngle;
+            _isInitVelocity = true;
+        }
+        _maxVelocity = maxVelocity;
+        _sqrMaxV = _maxVelocity * _maxVelocity;
         // 计算速度增量
         _dvx = _curAcceleration * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
         _dvy = _curAcceleration * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
@@ -121,22 +142,22 @@ public class EnemyBulletMovable : EnemyBulletBase
 
     protected virtual void MoveStraight()
     {
-        // 根据加速度计算新的速度
-        if ( _curAcceleration != 0 )
+        _vx += _dvx;
+        _vy += _dvy;
+        if ( _maxVelocity != -1 )
         {
-            _vx += _dvx;
-            _vy += _dvy;
-            _accTime++;
-            if ( _accTime >= _accDuration )
+            float value = _vx * _vx + _vy * _vy;
+            if ( value > _sqrMaxV )
             {
-                _curAcceleration = 0;
-                _dvx = _dvy = 0;
+                value = Mathf.Sqrt(_sqrMaxV / value);
+                _vx *= value;
+                _vy *= value;
             }
         }
+        _dx += _vx;
+        _dy += _vy;
         if ( _moveStraightDuration > 0 )
         {
-            _dx += _vx;
-            _dy += _vy;
             _curStraightTime++;
             if ( _curStraightTime >= _moveStraightDuration )
             {
@@ -144,12 +165,6 @@ public class EnemyBulletMovable : EnemyBulletBase
                 _moveStraightDuration = 0;
                 _isMovingStraight = false;
             }
-        }
-        else
-        {
-            // 更新位置增量
-            _dx += _vx;
-            _dy += _vy;
         }
     }
     #endregion

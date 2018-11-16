@@ -762,7 +762,7 @@ function Stage.StageTask()
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
 		if coroutine.yield(100) == false then return end
 		lib.SetBossCurPhaseData(boss,1,1,1,1,4)
-		lib.StartSpellCard(SpellCard.WriggleSC,boss)
+		lib.StartSpellCard(SpellCard.OrionidsSC,boss)
 		--lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
 		lib.StartSpellCard(SpellCard.NazrinSC2_1,boss)

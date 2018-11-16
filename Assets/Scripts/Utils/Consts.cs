@@ -48,11 +48,6 @@ public class Consts
     public const int PlayerHalfWidth = 16;
     public const int PlayerHalfHeight = 24;
 
-    public const int CollisionType_Rect = 1;
-    public const int CollisionType_Circle = 2;
-
-    public const int GrazeType_Rect = 1;
-
     public const int TargetFrameRate = 60;
 
     public const float AutoGetItemY = 140;
@@ -67,8 +62,18 @@ public class Consts
     public const int ReboundTop = 0x04;
     public const int ReboundBottom = 0x08;
 
+    /// <summary>
+    /// 最大持续时间
+    /// </summary>
     public const int MaxDuration = 9999;
+    /// <summary>
+    /// 当前速度对应的角度
+    /// </summary>
     public const float VelocityAngle = -999;
+    /// <summary>
+    /// 最大速度限制
+    /// </summary>
+    public const float MaxVelocity = 9999f;
     public const float OriginalWidth = -1;
     public const float OriginalHeight = -1;
 

@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BCMoveParasChange : BulletComponent
+public class BCParasChange : BulletComponent
 {
     private EnemyBulletMovable _bullet;
     private int _listCount;
-    private List<MoveParasChangeData> _changeList;
+    private List<BulletParasChangeData> _changeList;
 
     public override void Init(EnemyBulletBase bullet)
     {
         _bullet = bullet as EnemyBulletMovable;
-        _changeList = new List<MoveParasChangeData>();
+        _changeList = new List<BulletParasChangeData>();
         _listCount = 0;
     }
 
@@ -30,7 +30,7 @@ public class BCMoveParasChange : BulletComponent
     public void AddParaChangeEvent(MovePara para, ParaChangeMode changeMode,float changeValue,int delay,
         InterpolationMode intMode,float duration)
     {
-        MoveParasChangeData changeData = CreateChangeData(para, intMode);
+        BulletParasChangeData changeData = CreateChangeData(para, intMode);
         changeData.delay = delay;
         changeData.changeTime = 0;
         changeData.changeDuration = duration;
@@ -50,9 +50,9 @@ public class BCMoveParasChange : BulletComponent
         _listCount++;
     }
 
-    private MoveParasChangeData CreateChangeData(MovePara movePara,InterpolationMode intMode)
+    private BulletParasChangeData CreateChangeData(MovePara movePara,InterpolationMode intMode)
     {
-        MoveParasChangeData changeData = new MoveParasChangeData();
+        BulletParasChangeData changeData = new BulletParasChangeData();
         changeData.para = movePara;
         switch (changeData.para)
         {
@@ -99,33 +99,13 @@ public class BCMoveParasChange : BulletComponent
 
         }
         changeData.mode = intMode;
-        switch (changeData.mode)
-        {
-            case InterpolationMode.None:
-                changeData.GetInterpolationValueFunc = MathUtil.GetNoneInterpolation;
-                break;
-            case InterpolationMode.Linear:
-                changeData.GetInterpolationValueFunc = MathUtil.GetLinearInterpolation;
-                break;
-            case InterpolationMode.EaseInQuad:
-                changeData.GetInterpolationValueFunc = MathUtil.GetEaseInQuadInterpolation;
-                break;
-            case InterpolationMode.EaseOutQuad:
-                changeData.GetInterpolationValueFunc = MathUtil.GetEaseOutQuadInterpolation;
-                break;
-            case InterpolationMode.EaseInOutQuad:
-                changeData.GetInterpolationValueFunc = MathUtil.GetEaseInOutQuadInterpolation;
-                break;
-            case InterpolationMode.Sin:
-                changeData.GetInterpolationValueFunc = MathUtil.GetSinInterpolation;
-                break;
-        }
+        changeData.GetInterpolationValueFunc = MathUtil.GetInterpolationFloatFunc(changeData.mode);
         return changeData;
     }
 
     private void UpdateChangeData(int idx)
     {
-        MoveParasChangeData changeData = _changeList[idx];
+        BulletParasChangeData changeData = _changeList[idx];
         if ( !changeData.isFinish )
         {
             if ( changeData.delay > 0 )
@@ -149,7 +129,7 @@ public class BCMoveParasChange : BulletComponent
      
     public override void Clear()
     {
-        MoveParasChangeData changeData;
+        BulletParasChangeData changeData;
         for (int i = 0; i < _listCount; i++)
         {
             changeData = _changeList[i];
@@ -164,7 +144,7 @@ public class BCMoveParasChange : BulletComponent
     }
 }
 
-public class MoveParasChangeData
+public class BulletParasChangeData
 {
     /// <summary>
     /// 延迟执行的帧数
@@ -177,9 +157,8 @@ public class MoveParasChangeData
     public float changeTime;
     public float changeDuration;
     public bool isFinish;
-    public delegate float GetInterpolationValue(float start, float end, float time, float duration);
     public delegate void SetPara(float value);
-    public GetInterpolationValue GetInterpolationValueFunc;
+    public MathUtil.InterpolationFloatFunc GetInterpolationValueFunc;
     public SetPara SetParaFunc;
 }
 

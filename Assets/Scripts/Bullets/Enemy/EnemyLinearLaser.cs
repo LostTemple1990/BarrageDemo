@@ -372,7 +372,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
     }
 
-    public void SetStyleById(string id)
+    public override void SetStyleById(string id)
     {
         _cfg = BulletsManager.GetInstance().GetLinearLaserCfgById(id);
         if ( _cfg == null )

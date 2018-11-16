@@ -37,17 +37,27 @@ public class NormalEnemy : EnemyBase
         _enemyObj = EnemyManager.GetInstance().CreateEnemyObjectByType(cfg.type);
         _enemyObj.SetEnemyAni(cfg.aniId);
         _enemyGo = _enemyObj.GetObject();
+        _enemyTf = _enemyGo.transform;
         SetCollisionParams(cfg.collisionHalfWidth, cfg.collisionHalfWidth);
         _dropItemDatas = null;
+        _checkOutOfBorder = true;
     }
 
     public override void Update()
     {
         UpdateTask();
         _movableObj.Update();
-        UpdatePos();
-        CheckCollisionWithCharacter();
-        _enemyObj.Update();
+        _curPos = _movableObj.GetPos();
+        if ( !IsOutOfBorder() )
+        {
+            CheckCollisionWithCharacter();
+            _enemyObj.Update();
+            UpdatePos();
+        }
+        else
+        {
+            Eliminate(eEliminateDef.ForcedDelete);
+        }
     }
 
     public override void MoveToPos(float posX, float posY, int duration, InterpolationMode mode)
@@ -65,26 +75,57 @@ public class NormalEnemy : EnemyBase
         }
     }
 
+    /// <summary>
+    /// 朝某个方向做匀速直线运动
+    /// </summary>
+    /// <param name="velocity"></param>
+    /// <param name="angle"></param>
+    /// <param name="duration"></param>
     public override void MoveTowards(float velocity, float angle, int duration)
     {
-        while (angle < 0)
-        {
-            angle += 360f;
-        }
-        while (angle >= 360)
-        {
-            angle -= 360f;
-        }
+        angle = MathUtil.ClampAngle(angle);
         base.MoveTowards(velocity, angle, duration);
         if ( angle > 90 && angle < 270 )
         {
             _enemyObj.DoAction(AniActionType.Move, Consts.DIR_LEFT);
-            //_enemyAni.Play(AniActionType.Move, Consts.DIR_LEFT);
         }
         else if ( angle < 90 || angle > 270 )
         {
             _enemyObj.DoAction(AniActionType.Move, Consts.DIR_RIGHT);
-            //_enemyAni.Play(AniActionType.Move, Consts.DIR_RIGHT);
+        }
+    }
+
+    /// <summary>
+    /// 朝某个方向做加速直线运动
+    /// </summary>
+    /// <param name="velocity"></param>
+    /// <param name="angle"></param>
+    /// <param name="acc"></param>
+    public override void AccMoveTowards(float velocity, float angle, float acc)
+    {
+        angle = MathUtil.ClampAngle(angle);
+        base.AccMoveTowards(velocity, angle, acc);
+        if (angle > 90 && angle < 270)
+        {
+            _enemyObj.DoAction(AniActionType.Move, Consts.DIR_LEFT);
+        }
+        else if (angle < 90 || angle > 270)
+        {
+            _enemyObj.DoAction(AniActionType.Move, Consts.DIR_RIGHT);
+        }
+    }
+
+    public override void AccMoveTowardsWithLimitation(float velocity, float angle, float acc, float maxVelocity)
+    {
+        angle = MathUtil.ClampAngle(angle);
+        base.AccMoveTowardsWithLimitation(velocity, angle, acc, maxVelocity);
+        if (angle > 90 && angle < 270)
+        {
+            _enemyObj.DoAction(AniActionType.Move, Consts.DIR_LEFT);
+        }
+        else if (angle < 90 || angle > 270)
+        {
+            _enemyObj.DoAction(AniActionType.Move, Consts.DIR_RIGHT);
         }
     }
 
@@ -143,7 +184,7 @@ public class NormalEnemy : EnemyBase
                     effect.SetToPos(_curPos.x, _curPos.y);
                 }
             }
-            if ( eliminateType != eEliminateDef.ForcedDelete || eliminateType != eEliminateDef.CodeRawEliminate )
+            if ( eliminateType != eEliminateDef.ForcedDelete && eliminateType != eEliminateDef.CodeRawEliminate )
             {
                 if ( _dropItemDatas != null )
                 {

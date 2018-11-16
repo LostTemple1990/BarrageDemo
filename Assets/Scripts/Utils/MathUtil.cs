@@ -96,6 +96,21 @@ public class MathUtil
         return vec;
     }
 
+    /// <summary>
+    /// 将指定角度转换成0~360之间
+    /// </summary>
+    /// <param name="angle"></param>
+    /// <returns></returns>
+    public static float ClampAngle(float angle)
+    {
+        while (angle < 0)
+        {
+            angle += 360f;
+        }
+        if (angle >= 360) angle %= 360;
+        return angle;
+    }
+
 #region 插值相关
     /// <summary>
     /// 二次函数的缓动插值 从0开始加速

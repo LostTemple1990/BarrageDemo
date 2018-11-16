@@ -61,8 +61,7 @@ CustomizedEnemyTable.NazrinSC1Enemy.Init = function(enemy,toPosX,toPosY,duration
 			local posX,posY = lib.GetEnemyPos(enemy)
 			local bullet
 			local k = lib.GetRandomInt(0,1)
-			if k == 0 
-			then
+			if k == 0 then
 				bullet = lib.CreateCustomizedBullet("NazrinSC1Bullet1","118010",posX,posY,100,1)
 				--bullet = lib.CreateSimpleBulletById("0000",posX,posY)
 			else
@@ -761,7 +760,7 @@ CustomizedBulletTable.NazrinSC2Laser.Init = function(laser,posX,posY,angle,exist
 				local a = lib.GetRandomInt(0,360)
 				local bullet = lib.CreateSimpleBulletById("104060",x,y)
 				lib.SetBulletOrderInLayer(bullet,1)
-				lib.DoBulletAccelerationWithLimitation(bullet,0.05,a,60)
+				lib.DoBulletAccelerationWithLimitation(bullet,0.05,a,3)
 				--lib.SetBulletStraightParas(bullet,3,a,false,0,0)
 			end
 		end)
@@ -1031,11 +1030,10 @@ CustomizedBulletTable.WriggleBullet.Init = function(bullet,velocity,angle,waitTi
 		lib.ChangeBulletStyleById(bullet,"113120")
 		if coroutine.yield(waitTime) == false then return end
 		lib.ChangeBulletStyleById(bullet,"102120")
-		lib.SetBulletStraightParas(bullet,velocity*0.1,angle,false,0.05/60,angle)
-		--lib.SetBulletStraightParas(bullet,velocity*0.1,angle,false,0,0)
+		lib.DoBulletAccelerationWithLimitation(bullet,0.05,angle,velocity*0.1)
 		if coroutine.yield(90) == false then return end
 		lib.ChangeBulletStyleById(bullet,finalStyleId)
-		lib.SetBulletStraightParas(bullet,velocity,angle,false,0,0)
+		lib.DoBulletAccelerationWithLimitation(bullet,0.05,angle,velocity)
 	end)
 end
 
@@ -1109,6 +1107,185 @@ function SC.WriggleSC(boss)
 			i = i + di
 		end
 	end
+end
+
+CustomizedBulletTable.OrionidsLaser = {}
+CustomizedBulletTable.OrionidsLaser.Init = function(laser,posX,posY,angle,isAimToPlayer,styleId)
+	lib.SetBulletStyleById(laser,styleId)
+	if isAimToPlayer then 
+		angle = angle + lib.GetAimToPlayerAngle(posX,posY)
+	end
+	lib.SetLaserProps(laser,posX,posY,angle,2,0,180)
+	lib.SetBulletDetectCollision(laser,false)
+	lib.ChangeLaserHeight(laser,900,50,0)
+end
+
+CustomizedBulletTable.OrionidsBullet0 = {}
+CustomizedBulletTable.OrionidsBullet0.Init = function(bullet)
+	lib.SetBulletStraightParas(bullet,0,270,false,0,0)
+	lib.AddBulletTask(bullet,function()
+		if coroutine.yield(30) == false then return end
+		local alpha,dAlpha = 255,-5
+		for _ = 1,52 do
+			lib.SetBulletAlpha(bullet,alpha/255)
+			alpha = alpha + dAlpha
+			if coroutine.yield(1) == false then return end
+		end
+	end)
+	lib.AddBulletTask(bullet,function()
+		if coroutine.yield(41) == false then return end
+		lib.SetBulletDetectCollision(bullet,false)
+		if coroutine.yield(82) == false then return end
+		lib.EliminateBullet(bullet)
+	end)
+end
+
+CustomizedBulletTable.OrionidsBullet1 = {}
+CustomizedBulletTable.OrionidsBullet1.Init = function(bullet,angle,interval,v)
+	lib.AddBulletTask(bullet,function()
+		local posX,posY
+		for _=1,Infinite do
+			posX,posY = lib.GetBulletPos(bullet)
+			posX = posX + v / math.cos(math.rad(interval+1)) * math.cos(math.rad(angle+interval))
+			posY = posY + v / math.cos(math.rad(interval+1)) * math.sin(math.rad(angle+interval))
+			lib.SetBulletPos(bullet,posX,posY)
+			if coroutine.yield(1) == false then return end
+		end
+	end)
+end
+
+CustomizedEnemyTable.OrionidsEnemy = {}
+CustomizedEnemyTable.OrionidsEnemy.Init = function(enemy,startPosX,startPosY,angle,isAimToPlayer)
+	lib.SetEnemyMaxHp(enemy,5)
+	lib.SetEnemyInteractive(enemy,false)
+	if isAimToPlayer then
+		angle = angle + lib.GetAimToPlayerAngle(startPosX,startPosY)
+	end
+	lib.AddEnemyTask(enemy,function()
+		if coroutine.yield(60) == false then return end
+		lib.SetEnemyPos(enemy,startPosX,startPosY)
+		lib.SetEnemyInteractive(enemy,true)
+		lib.EnemyAccMoveTowardsWithLimitation(enemy,0,angle,0.15,10)
+	end)
+	lib.AddEnemyTask(enemy,function()
+		if coroutine.yield(60) == false then return end
+		for _=1,Infinite do
+			local posX,posY = lib.GetEnemyPos(enemy)
+			lib.CreateCustomizedBullet("OrionidsBullet0","125051",posX,posY,0)
+			if coroutine.yield(4) == false then return end
+		end
+	end)
+	lib.AddEnemyTask(enemy,function()
+		for _=1,Infinite do
+			local posX,posY = lib.GetEnemyPos(enemy)
+			if posY <= -224 then
+				local angle,dAngle = 0,20
+				local bullet
+				for _= 1,10 do
+					bullet = lib.CreateSimpleBulletById("124031",posX,posY)
+					lib.SetBulletStraightParas(bullet,1.5,angle+lib.GetRandomFloat(-3,3),false,0,0)
+					angle = angle + dAngle
+				end
+				break
+			end
+			if coroutine.yield(1) == false then return end
+		end
+	end)
+end
+
+CustomizedEnemyTable.OrionidsEnemy.OnKill = function(enemy)
+	local posX,posY = lib.GetEnemyPos(enemy)
+	local angle,dAngle = 0,36
+	local bullet
+	for _= 1,10 do
+		bullet = lib.CreateSimpleBulletById("124031",posX,posY)
+		lib.SetBulletStraightParas(bullet,1.5,angle+lib.GetRandomFloat(-9,9),false,0,0)
+		angle = angle + dAngle
+	end
+end
+
+function SC.OrionidsSC(boss)
+	lib.SetSpellCardProperties("Orionid Meteor Shower",60,Condition.EliminateAll,true,nil)
+	--lib.EnemyMoveToPos(boss,0,128,120,Constants.ModeEaseOutQuad)
+	lib.SetBossInvincible(boss,5)
+	lib.SetEnemyMaxHp(boss,1200)
+	lib.ShowBossBloodBar(boss,true)
+	--bossCG
+	do
+		local tweenList = {}
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=0,duration=30,beginValue={x=200,y=200},endValue={x=0,y=0},mode=Constants.ModeEaseInQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=60,duration=60,beginValue={x=0,y=0},endValue={x=-200,y=-200},mode=Constants.ModeEaseOutQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=0,duration=0,beginValue=1,endValue=1,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=90,duration=30,beginValue=1,endValue=0,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Scale,delay=0,duration=0,beginValue={x=0.75,y=0.75,z=1},endValue={x=0.75,y=0.75,z=1},mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		lib.PlayCharacterCG("CG/face04ct",tweenList)
+	end
+	lib.AddEnemyTask(boss,function()
+		local bossPosX,bossPosY = lib.GetEnemyPos(boss)
+		lib.CreateChargeEffect(bossPosX,bossPosY)
+		if coroutine.yield(90) == false then return end
+		for _=1,Infinite do
+			do
+				local angle,dAngle = 0,-11
+				for _=1,25 do
+					local laser = lib.CreateCustomizedLaser("OrionidsLaser",320*math.cos(math.rad(angle)),274+25*math.sin(math.rad(angle)),angle,false,"201060",5)
+					local enemy = lib.CreateCustomizedEnemy("OrionidsEnemy","0022",0,300,320*math.cos(math.rad(angle)),274+25*math.sin(math.rad(angle)),angle,false,4)
+					if coroutine.yield(4) == false then return end
+					angle = angle + dAngle
+				end
+			end
+			lib.CreateChargeEffect(bossPosX,bossPosY)
+			if coroutine.yield(90) == false then return end
+			do
+				local angle,dAngle = 0,-20
+				for _=1,9 do
+					local angleOffset = lib.GetRandomFloat(-5,5)
+					local laser = lib.CreateCustomizedLaser("OrionidsLaser",320*math.cos(math.rad(angle)),254+15*math.sin(math.rad(angle)),angleOffset,true,"201060",5)
+					local enemy = lib.CreateCustomizedEnemy("OrionidsEnemy","0022",0,300,320*math.cos(math.rad(angle)),254+15*math.sin(math.rad(angle)),angleOffset,true,4)
+					if coroutine.yield(5) == false then return end
+					angle = angle + dAngle
+				end
+			end
+			if coroutine.yield(180) == false then return end
+		end 
+	end)
+	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(360) == false then return end
+		local bossPosX,bossPosY = lib.GetEnemyPos(boss)
+		lib.CreateChargeEffect(bossPosX,bossPosY)
+		if coroutine.yield(90) == false then return end
+		do
+			local angle,dAngle = 0,37
+			for _=1,Infinite do
+				local angle1,dAngle1 = angle,60
+				for _=1,6 do
+					local interval,dInterval = -30,10
+					for _=1,7 do
+						lib.CreateCustomizedBullet("OrionidsBullet1","111061",bossPosX,bossPosY,angle1,interval,1.5,3)
+						interval = interval + dInterval
+					end
+					angle1 = angle1 + dAngle1
+				end
+				if coroutine.yield(60) == false then return end
+				angle = angle + dAngle
+			end
+		end
+	end)
 end
 
 return

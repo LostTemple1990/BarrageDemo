@@ -18,10 +18,11 @@ public partial class LuaLib
             new NameFuncPair("ChangeBulletStyleById",ChangeBulletStyleById),
             new NameFuncPair("SetBulletOrderInLayer",SetBulletOrderInLayer),
             new NameFuncPair("EliminateBullet",EliminateBullet),
-            new NameFuncPair("SetBulletToUnrealState",SetBulletToUnrealState),
+            new NameFuncPair("SetBulletAlpha",SetBulletAlpha),
             new NameFuncPair("SetBulletDetectCollision",SetBulletDetectCollision),
             new NameFuncPair("SetBulletResistEliminatedFlag",SetBulletResistEliminatedFlag),
             new NameFuncPair("SetBulletTexture",SetBulletTexture),
+            new NameFuncPair("SetBulletStyleById",SetBulletStyleById),
             // 设置、获取子弹相关参数
             new NameFuncPair("GetBulletPos",GetBulletPos),
             new NameFuncPair("SetBulletPos",SetBulletPos),
@@ -72,15 +73,18 @@ public partial class LuaLib
             new NameFuncPair("CreateCustomizedCurveLaser",CreateCustomizedCurveLaser),
             new NameFuncPair("SetCurveLaserLength",SetCurveLaserLength),
             new NameFuncPair("SetCurveLaserWidth",SetCurveLaserWidth),
-
+            // 敌机
             new NameFuncPair("AddEnemyTask",AddEnemyTask),
-            //new NameFuncPair("EnemyMoveTo",EnemyMoveTo),
             new NameFuncPair("EnemyMoveTowards",EnemyMoveTowards),
+            new NameFuncPair("EnemyAccMoveTowards",EnemyAccMoveTowards),
+            new NameFuncPair("EnemyAccMoveTowardsWithLimitation",EnemyAccMoveTowardsWithLimitation),
             new NameFuncPair("EnemyMoveToPos",EnemyMoveToPos),
             new NameFuncPair("GetEnemyPos", GetEnemyPos),
+            new NameFuncPair("SetEnemyPos", SetEnemyPos),
             new NameFuncPair("PlaySound", PlaySound),
             new NameFuncPair("SetEnemyDropItems",SetEnemyDropItems),
             new NameFuncPair("DropItems",DropItems),
+            new NameFuncPair("SetEnemyInteractive",SetEnemyInteractive),
             // Boss相关
             new NameFuncPair("CreateBoss",CreateBoss),
             new NameFuncPair("SetBossPos",SetBossPos),
@@ -255,7 +259,7 @@ public partial class LuaLib
     /// <para>bullet</para>
     /// <para>acce</para>
     /// <para>accAngle</para>
-    /// <para>duration</para>
+    /// <para>maxVelocity  速度最大值</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
@@ -264,9 +268,9 @@ public partial class LuaLib
         EnemyBulletSimple bullet = luaState.ToUserData(-4) as EnemyBulletSimple;
         float acce = (float)luaState.ToNumber(-3);
         float accAngle = (float)luaState.ToNumber(-2);
-        int duration = luaState.ToInteger(-1);
+        float maxVelocity = (float)luaState.ToNumber(-1);
         luaState.Pop(4);
-        bullet.DoAccelerationWithLimitation(acce, accAngle, duration);
+        bullet.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
         return 0;
     }
 
@@ -318,18 +322,18 @@ public partial class LuaLib
     }
 
     /// <summary>
-    /// 将子弹设置为虚化状态
+    /// 设置子弹的透明度
     /// <para>bullet</para>
-    /// <para>int unrealDuration 虚化的时间</para>
+    /// <para>float alpha 透明度</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int SetBulletToUnrealState(ILuaState luaState)
+    public static int SetBulletAlpha(ILuaState luaState)
     {
-        EnemyBulletSimple bullet = luaState.ToUserData(-2) as EnemyBulletSimple;
-        int unrealDuration = luaState.ToInteger(-1);
+        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
+        float alpha = (float)luaState.ToNumber(-1);
         luaState.Pop(2);
-        bullet.SetToUnrealState(unrealDuration);
+        bullet.SetAlpha(alpha);
         return 0;
     }
 
@@ -364,6 +368,20 @@ public partial class LuaLib
         string texture = luaState.ToString(-1);
         luaState.Pop(2);
         bullet.SetBulletTexture(texture);
+        return 0;
+    }
+
+    /// <summary>
+    /// 根据id设置bullet的形状
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetBulletStyleById(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
+        string id = luaState.ToString(-1);
+        luaState.Pop(2);
+        bullet.SetStyleById(id);
         return 0;
     }
 
@@ -426,20 +444,18 @@ public partial class LuaLib
 		bullet.SetToPosition(posX, posY);
         // 设置自定义的数据
         BCCustomizedTask bc = bullet.AddComponent<BCCustomizedTask>();
-        //InterpreterManager.GetInstance().CallCostomizedInitFunc(bullet, customizedName,numArgs);
+        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, InterpreterManager.GetInstance().GetTracebackIndex());
         int funcRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         if (!luaState.IsFunction(-1))
         {
-            Logger.Log("InitFuncRef of " + customizedName + " is not point to a function");
+            Logger.LogError("InitFuncRef of " + customizedName + " is not point to a function");
         }
         luaState.PushLightUserData(bullet);
-        // todo 以后有配置文件之后这个写法一定要改
-        // 将函数和第一个参数bullet移动到指定位置
-        //Logger.Log(luaState.GetTop());
-        luaState.Replace(-3 - numArgs);
-        luaState.Replace(-3 - numArgs);
-        luaState.Call(numArgs + 1, 0);
+        luaState.Replace(-4 - numArgs);
+        luaState.Replace(-4 - numArgs);
+        luaState.Replace(-4 - numArgs);
+        luaState.PCall(numArgs + 1, 0, -numArgs - 3);
         // 弹出剩余两个参数
         luaState.Pop(2);
         luaState.PushLightUserData(bullet);
@@ -465,7 +481,7 @@ public partial class LuaLib
 
     public static int CreateLaser(ILuaState luaState)
     {
-        string texture = luaState.ToString(-7);
+        string id = luaState.ToString(-7);
         float posX = (float)luaState.ToNumber(-6);
         float posY = (float)luaState.ToNumber(-5);
         float angle = (float)luaState.ToNumber(-4);
@@ -474,14 +490,23 @@ public partial class LuaLib
         int existDuration = luaState.ToInteger(-1);
         luaState.Pop(7);
         EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Laser) as EnemyLaser;
-        laser.SetBulletTexture(texture);
-        laser.SetPosition(posX, posY, angle);
+        laser.SetStyleById(id);
+        laser.SetToPosition(posX, posY);
+        laser.SetLaserAngle(angle);
         laser.SetLaserSize(width, height);
         laser.SetLaserExistDuration(existDuration);
         luaState.PushLightUserData(laser);
         return 1;
     }
 
+    /// <summary>
+    /// 创建自定义的直线激光
+    /// <para>customizedName 自定义直线激光类名</para>
+    /// <para>...自定义参数</para>
+    /// <para>numArgs 参数个数</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
     public static int CreateCustomizedLaser(ILuaState luaState)
     {
         int numArgs = luaState.ToInteger(-1);
@@ -491,16 +516,19 @@ public partial class LuaLib
         EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Laser) as EnemyLaser;
         // 设置自定义的数据
         BCCustomizedTask bc = laser.AddComponent<BCCustomizedTask>();
+        // 加入TraceBack函数
+        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, InterpreterManager.GetInstance().GetTracebackIndex());
+        luaState.Replace(-2 - numArgs);
         int funcRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         if (!luaState.IsFunction(-1))
         {
             Logger.Log("InitFuncRef of " + customizedName + " is not point to a function");
         }
-        luaState.Replace(-2 - numArgs);
+        luaState.Insert(-1 - numArgs);
         luaState.PushLightUserData(laser);
         luaState.Insert(-1 - numArgs);
-        luaState.Call(numArgs + 1, 0);
+        luaState.PCall(numArgs + 1, 0, -numArgs - 3);
         // 将laser压入栈
         luaState.PushLightUserData(laser);
         return 1;
@@ -571,7 +599,8 @@ public partial class LuaLib
         float height = (float)luaState.ToNumber(-2);
         int existDuration = luaState.ToInteger(-1);
         luaState.Pop(7);
-        laser.SetPosition(posX, posY, angle);
+        laser.SetToPosition(posX, posY);
+        laser.SetLaserAngle(angle);
         laser.SetLaserSize(width, height);
         laser.SetLaserExistDuration(existDuration);
         luaState.PushLightUserData(laser);
@@ -669,73 +698,6 @@ public partial class LuaLib
 
 
     #region 创建敌机相关
-    /// <summary>
-    /// 创建普通敌机
-    /// <para>string enemyId 敌机id</para>
-    /// <para>float posX 起始X坐标</para>
-    /// <para>float posY 起始Y坐标</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int CreateNormalEnemyById(ILuaState luaState)
-    {
-        string enemyId = luaState.ToString(-3);
-        float posX = (float)luaState.ToNumber(-2);
-        float posY = (float)luaState.ToNumber(-1);
-        luaState.Pop(3);
-        EnemyCfg cfg = EnemyManager.GetInstance().GetEnemyCfgById(enemyId);
-        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.NormalEnemy) as NormalEnemy;
-        enemy.Init(cfg);
-        enemy.SetToPosition(new Vector3(posX, posY, 0));
-        luaState.PushLightUserData(enemy);
-        Logger.Log("Create Normal Enemy Complete");
-        return 1;
-    }
-
-    public static int AddEnemyTask(ILuaState luaState)
-    {
-        EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
-        int funcRef = InterpreterManager.GetInstance().RefLuaFunction(luaState);
-        luaState.Pop(1);
-        Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
-        task.funcRef = funcRef;
-        task.isFinish = false;
-        task.luaState = null;
-        enemy.AddTask(task);
-        return 0;
-    }
-
-    public static int CreateCustomizedEnemy(ILuaState luaState)
-    {
-        int numArgs = luaState.ToInteger(-1);
-        luaState.Pop(1);
-        string customizedName = luaState.ToString(-4 - numArgs);
-        string enemyId = luaState.ToString(-3 - numArgs);
-        float posX = (float)luaState.ToNumber(-2 - numArgs);
-        float posY = (float)luaState.ToNumber(-1 - numArgs);
-        // 创建敌机
-        EnemyCfg cfg = EnemyManager.GetInstance().GetEnemyCfgById(enemyId);
-        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.NormalEnemy) as NormalEnemy;
-        enemy.Init(cfg);
-        enemy.SetToPosition(new Vector3(posX, posY, 0));
-        int onEliminateFuncRef = InterpreterManager.GetInstance().GetEnemyOnEliminateFuncRef(customizedName);
-        if (onEliminateFuncRef != 0 )
-        {
-            enemy.SetOnEliminateFuncRef(onEliminateFuncRef);
-        }
-        // init函数
-        int initFuncRef = InterpreterManager.GetInstance().GetEnemyInitFuncRef(customizedName);
-        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
-        luaState.PushLightUserData(enemy);
-        luaState.Replace(-3 - numArgs);
-        luaState.Replace(-3 - numArgs);
-        luaState.Call(numArgs + 1, 0);
-        // 弹出剩余两个参数
-        luaState.Pop(2);
-        // 将返回值压入栈
-        luaState.PushLightUserData(enemy);
-        return 1;
-    }
 
     //public static int EnemyMoveTo(ILuaState luaState)
     //{

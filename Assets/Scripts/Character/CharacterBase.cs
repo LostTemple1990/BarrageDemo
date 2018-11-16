@@ -764,24 +764,6 @@ public class CharacterBase
         }
     }
 
-    public virtual int GetCollisionParams(out float arg1, out float arg2, out float arg3, out float arg4)
-    {
-        arg1 = _curPos.x;
-        arg2 = _curPos.y;
-        arg3 = _collisionRadius;
-        arg4 = _collisionRadius;
-        return Consts.CollisionType_Circle;
-    }
-
-    public virtual int GetGrazeParams(out float arg1, out float arg2, out float arg3, out float arg4)
-    {
-        arg1 = _curPos.x;
-        arg2 = _curPos.y;
-        arg3 = _grazeRadius;
-        arg4 = _grazeRadius;
-        return Consts.GrazeType_Rect;
-    }
-
     /// <summary>
     /// 键盘输入的高低速模式
     /// </summary>

@@ -69,7 +69,7 @@ public class InterpreterManager
         _luaState.Pop(_luaState.GetTop());
         // 添加错误log函数
         _luaState.PushCSharpFunction(Traceback);
-        _traceBackIndex = _luaState.GetTop();
+        _traceBackIndex = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
         // 加载Constants.lua
         var status = _luaState.L_DoFile("Constants.lua");
         if (status != ThreadStatus.LUA_OK)
@@ -323,7 +323,8 @@ public class InterpreterManager
         }
         else
         {
-            Logger.LogError("Call Coroutine Error!");
+            Logger.LogError("Call Coroutine Error!Status = " + status + "\n" + task.luaState.ToString(-1));
+            //Logger.LogError("Call Coroutine Error!Status = " + status);
         }
     }
 
@@ -451,6 +452,7 @@ public class InterpreterManager
 
     public int CallLuaFunction(int funcRef,int paraCount,int retCount=0)
     {
+        _luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, _traceBackIndex);
         _luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         if ( !_luaState.IsFunction(-1) )
         {
@@ -463,7 +465,7 @@ public class InterpreterManager
             return 0;
         }
         PushParasToStack(_luaState);
-        _luaState.PCall(paraCount, retCount,_traceBackIndex);
+        _luaState.PCall(paraCount, retCount, -paraCount - 2);
         return 1;
     }
 
@@ -637,6 +639,11 @@ public class InterpreterManager
             }
         }
         return 1;
+    }
+
+    public int GetTracebackIndex()
+    {
+        return _traceBackIndex;
     }
 
     public void Clear(eSTGClearType type)

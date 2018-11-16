@@ -17,7 +17,7 @@ public partial class LuaLib
         luaState.Pop(2);
         if ( type == BulletComponentType.MoveParasChange )
         {
-            bullet.AddComponent<BCMoveParasChange>();
+            bullet.AddComponent<BCParasChange>();
         }
         else if ( type == BulletComponentType.Rebound )
         {
@@ -43,7 +43,7 @@ public partial class LuaLib
         InterpolationMode intMode = (InterpolationMode)luaState.ToInteger(-2);
         int duration = luaState.ToInteger(-1);
         luaState.Pop(7);
-        BCMoveParasChange bc = bullet.GetComponent<BCMoveParasChange>();
+        BCParasChange bc = bullet.GetComponent<BCParasChange>();
         bc.AddParaChangeEvent(para, changeMode, changeValue, delay, intMode, duration);
         return 0;
     }

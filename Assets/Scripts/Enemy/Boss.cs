@@ -47,6 +47,7 @@ public class Boss : EnemyBase
         int initFuncRef = InterpreterManager.GetInstance().GetEnemyInitFuncRef(_bossName);
         InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
         InterpreterManager.GetInstance().CallLuaFunction(initFuncRef, 1);
+        _checkOutOfBorder = false;
         Logger.Log("Call InitFunc of Boss " + _bossName + " Complete!");
     }
 
@@ -152,7 +153,7 @@ public class Boss : EnemyBase
         }
         UpdateTask();
         _movableObj.Update();
-        UpdatePos();
+        _curPos = _movableObj.GetPos();
         if ( _isShowBloodBar )
         {
             UpdateBloodBar();
@@ -162,6 +163,7 @@ public class Boss : EnemyBase
         {
             CheckPlayAni();
         }
+        UpdatePos();
     }
 
     public void PlayAni(AniActionType at,int dir,int duration)
