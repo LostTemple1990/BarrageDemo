@@ -36,7 +36,7 @@ public partial class LuaLib
     public static int AddBulletParaChangeEvent(ILuaState luaState)
     {
         EnemyBulletBase bullet = luaState.ToUserData(-7) as EnemyBulletBase;
-        MovePara para = (MovePara)luaState.ToInteger(-6);
+        BulletParaType para = (BulletParaType)luaState.ToInteger(-6);
         ParaChangeMode changeMode  = (ParaChangeMode)luaState.ToInteger(-5);
         float changeValue = (float)luaState.ToNumber(-4);
         int delay = luaState.ToInteger(-3);

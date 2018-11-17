@@ -9,26 +9,31 @@ public partial class LuaLib
     {
         var define = new NameFuncPair[]
         {
+            new NameFuncPair("ChangeBulletStyleById",ChangeBulletStyleById),
+            new NameFuncPair("SetBulletOrderInLayer",SetBulletOrderInLayer),
+            new NameFuncPair("SetBulletTexture",SetBulletTexture),
+            // BulletBase
+            new NameFuncPair("SetBulletPara",SetBulletPara),
+            new NameFuncPair("GetBulletPos",GetBulletPos),
+            new NameFuncPair("SetBulletPos",SetBulletPos),
+            new NameFuncPair("SetBulletColor",SetBulletColor),
+            new NameFuncPair("SetBulletColorWithAlpha",SetBulletColorWithAlpha),
+            new NameFuncPair("SetBulletStyleById",SetBulletStyleById),
+            new NameFuncPair("EliminateBullet",EliminateBullet),
+            new NameFuncPair("SetBulletAlpha",SetBulletAlpha),
+            new NameFuncPair("SetBulletDetectCollision",SetBulletDetectCollision),
+            new NameFuncPair("SetBulletResistEliminatedFlag",SetBulletResistEliminatedFlag),
+            new NameFuncPair("AddBulletTask",AddBulletTask),
+            // SimpleBullet
             new NameFuncPair("CreateSimpleBulletById", CreateSimpleBulletById),
+            new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet),
+            new NameFuncPair("SetBulletScale",SetBulletScale),
+            new NameFuncPair("BulletDoScale",BulletDoScale),
             new NameFuncPair("CreateAppearEffectForSimpleBullet", CreateAppearEffectForSimpleBullet),
             new NameFuncPair("SetBulletStraightParas",SetBulletStraightParas),
             new NameFuncPair("SetBulletCurvePara",SetBulletCurvePara),
             new NameFuncPair("DoBulletAcceleration",DoBulletAcceleration),
             new NameFuncPair("DoBulletAccelerationWithLimitation",DoBulletAccelerationWithLimitation),
-            new NameFuncPair("ChangeBulletStyleById",ChangeBulletStyleById),
-            new NameFuncPair("SetBulletOrderInLayer",SetBulletOrderInLayer),
-            new NameFuncPair("EliminateBullet",EliminateBullet),
-            new NameFuncPair("SetBulletAlpha",SetBulletAlpha),
-            new NameFuncPair("SetBulletDetectCollision",SetBulletDetectCollision),
-            new NameFuncPair("SetBulletResistEliminatedFlag",SetBulletResistEliminatedFlag),
-            new NameFuncPair("SetBulletTexture",SetBulletTexture),
-            new NameFuncPair("SetBulletStyleById",SetBulletStyleById),
-            // 设置、获取子弹相关参数
-            new NameFuncPair("GetBulletPos",GetBulletPos),
-            new NameFuncPair("SetBulletPos",SetBulletPos),
-            // 自定义子弹
-            new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet),
-            new NameFuncPair("AddBulletTask",AddBulletTask),
 
             new NameFuncPair("CreateNormalEnemyById",CreateNormalEnemyById),
             new NameFuncPair("CreateCustomizedEnemy",CreateCustomizedEnemy),
@@ -161,40 +166,6 @@ public partial class LuaLib
     }
 
     /// <summary>
-    /// 根据id创建SimpleBullet
-    /// <para>id 配置里面的id</para>
-    /// <para>float posX</para>
-    /// <para>float posY</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int CreateSimpleBulletById(ILuaState luaState)
-    {
-        string sysId = luaState.ToString(-3);
-        float posX = (float)luaState.ToNumber(-2);
-        float posY = (float)luaState.ToNumber(-1);
-        luaState.Pop(3);
-        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Simple) as EnemyBulletSimple;
-        bullet.ChangeStyleById(sysId);
-        bullet.SetToPosition(posX, posY);
-        luaState.PushLightUserData(bullet);
-        return 1;
-    }
-
-    /// <summary>
-    /// 创建子弹出场特效
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int CreateAppearEffectForSimpleBullet(ILuaState luaState)
-    {
-        EnemyBulletSimple bullet = luaState.ToUserData(-1) as EnemyBulletSimple;
-        luaState.Pop(1);
-        bullet.CreateAppearEffect();
-        return 0;
-    }
-
-    /// <summary>
     /// 创建一颗简单的子弹
     /// <para>id 配置里面的id</para>
     /// <para>float posX</para>
@@ -209,98 +180,13 @@ public partial class LuaLib
         return 0;
     }
 
-    /// <summary>
-    /// <para>bullet</para>
-    /// <para>velocity</para>
-    /// <para>vAngle</para>
-    /// <para>isAimToPlayer</para>
-    /// <para>acce</para>
-    /// <para>accAngle</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int SetBulletStraightParas(ILuaState luaState)
-    {
-        EnemyBulletSimple bullet = luaState.ToUserData(-6) as EnemyBulletSimple;
-        float velocity = (float)luaState.ToNumber(-5);
-        float vAngle = (float)luaState.ToNumber(-4);
-        bool isAimToPlayer = luaState.ToBoolean(-3);
-        float acce = (float)luaState.ToNumber(-2);
-        float accAngle = (float)luaState.ToNumber(-1);
-        luaState.Pop(6);
-        // 设置子弹线性运动
-        if (isAimToPlayer)
-        {
-            vAngle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - bullet.PosX, Global.PlayerPos.y - bullet.PosY, false);
-        }
-        bullet.DoMoveStraight(velocity, vAngle);
-        bullet.DoAcceleration(acce, accAngle);
-        return 0;
-    }
-
-    /// <summary> 赋予子弹加速度
-    /// <para>bullet</para>
-    /// <para>acce</para>
-    /// <para>accAngle</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int DoBulletAcceleration(ILuaState luaState)
-    {
-        EnemyBulletSimple bullet = luaState.ToUserData(-3) as EnemyBulletSimple;
-        float acce = (float)luaState.ToNumber(-2);
-        float accAngle = (float)luaState.ToNumber(-1);
-        luaState.Pop(3);
-        bullet.DoAcceleration(acce, accAngle);
-        return 0;
-    }
-
-    /// <summary> 赋予子弹加速度
-    /// <para>bullet</para>
-    /// <para>acce</para>
-    /// <para>accAngle</para>
-    /// <para>maxVelocity  速度最大值</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int DoBulletAccelerationWithLimitation(ILuaState luaState)
-    {
-        EnemyBulletSimple bullet = luaState.ToUserData(-4) as EnemyBulletSimple;
-        float acce = (float)luaState.ToNumber(-3);
-        float accAngle = (float)luaState.ToNumber(-2);
-        float maxVelocity = (float)luaState.ToNumber(-1);
-        luaState.Pop(4);
-        bullet.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
-        return 0;
-    }
-
-    /// <summary>
-    /// <para>bullet</para>
-    /// <para>radius</para>
-    /// <para>curveAngle</para>
-    /// <para>deltaR</para>
-    /// <para>omiga</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int SetBulletCurvePara(ILuaState luaState)
-    {
-        EnemyBulletSimple bullet = luaState.ToUserData(-5) as EnemyBulletSimple;
-        float radius = (float)luaState.ToNumber(-4);
-        float curveAngle = (float)luaState.ToNumber(-3);
-        float deltaR = (float)luaState.ToNumber(-2);
-        float omiga = (float)luaState.ToNumber(-1);
-        luaState.Pop(5);
-        bullet.DoMoveCurve(radius, curveAngle, deltaR, omiga);
-        return 0;
-    }
-
     public static int ChangeBulletStyleById(ILuaState luaState)
     {
+        Logger.LogWarn("Try to use abandon API,please use SetBulletStyleById");
         EnemyBulletSimple bullet = luaState.ToUserData(-2) as EnemyBulletSimple;
         string id = luaState.ToString(-1);
         luaState.Pop(2);
-        bullet.ChangeStyleById(id);
+        bullet.SetStyleById(id);
         return 0;
     }
 
@@ -313,55 +199,6 @@ public partial class LuaLib
         return 0;
     }
 
-    public static int EliminateBullet(ILuaState luaState)
-    {
-        EnemyBulletBase bullet = luaState.ToUserData(-1) as EnemyBulletBase;
-        luaState.Pop(1);
-        bullet.Eliminate();
-        return 0;
-    }
-
-    /// <summary>
-    /// 设置子弹的透明度
-    /// <para>bullet</para>
-    /// <para>float alpha 透明度</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int SetBulletAlpha(ILuaState luaState)
-    {
-        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
-        float alpha = (float)luaState.ToNumber(-1);
-        luaState.Pop(2);
-        bullet.SetAlpha(alpha);
-        return 0;
-    }
-
-    public static int SetBulletDetectCollision(ILuaState luaState)
-    {
-        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
-        bool value = luaState.ToBoolean(-1);
-        luaState.Pop(2);
-        bullet.SetDetectCollision(value);
-        return 0;
-    }
-
-    /// <summary>
-    /// 设置子弹的消除抗性
-    /// <para>bullet</para>
-    /// <para>flag 不能被消除的标识</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int SetBulletResistEliminatedFlag(ILuaState luaState)
-    {
-        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
-        int flag = luaState.ToInteger(-1);
-        luaState.Pop(2);
-        bullet.SetResistEliminateFlag(flag);
-        return 0;
-    }
-
     public static int SetBulletTexture(ILuaState luaState)
     {
         EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
@@ -370,112 +207,6 @@ public partial class LuaLib
         bullet.SetBulletTexture(texture);
         return 0;
     }
-
-    /// <summary>
-    /// 根据id设置bullet的形状
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int SetBulletStyleById(ILuaState luaState)
-    {
-        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
-        string id = luaState.ToString(-1);
-        luaState.Pop(2);
-        bullet.SetStyleById(id);
-        return 0;
-    }
-
-    #region 获取、设置子弹相关的参数
-
-    /// <summary>
-    /// 获取子弹当前位置
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int GetBulletPos(ILuaState luaState)
-    {
-        EnemyBulletBase bullet = luaState.ToUserData(-1) as EnemyBulletBase;
-        luaState.Pop(1);
-        luaState.PushNumber(bullet.PosX);
-        luaState.PushNumber(bullet.PosY);
-        return 2;
-    }
-
-    /// <summary>
-    /// 设置子弹位置
-    /// <para>bullet</para>
-    /// <para>posX</para>
-    /// <para>posY</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int SetBulletPos(ILuaState luaState)
-    {
-        EnemyBulletBase bullet = luaState.ToUserData(-3) as EnemyBulletBase;
-        float posX = (float)luaState.ToNumber(-2);
-        float posY = (float)luaState.ToNumber(-1);
-        luaState.Pop(3);
-        bullet.SetToPosition(posX, posY);
-        return 0;
-    }
-    #endregion
-
-    #region 自定义simpleBullet
-
-    /// <summary>
-    /// 创建自定义的simpleBullet
-    /// <para>customizedName 自定义的子弹名称</para>
-    /// <para>id 默认的id</para>
-    /// <para>float posX</para>
-    /// <para>float posY</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int CreateCustomizedBullet(ILuaState luaState)
-    {
-        int numArgs = luaState.ToInteger(-1);
-        string customizedName = luaState.ToString(-5-numArgs);
-        string sysId = luaState.ToString(-4-numArgs);
-        float posX = (float)luaState.ToNumber(-3-numArgs);
-        float posY = (float)luaState.ToNumber(-2-numArgs);
-        luaState.Pop(1);
-        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Simple) as EnemyBulletSimple;
-        bullet.ChangeStyleById(sysId);
-		bullet.SetToPosition(posX, posY);
-        // 设置自定义的数据
-        BCCustomizedTask bc = bullet.AddComponent<BCCustomizedTask>();
-        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, InterpreterManager.GetInstance().GetTracebackIndex());
-        int funcRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
-        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
-        if (!luaState.IsFunction(-1))
-        {
-            Logger.LogError("InitFuncRef of " + customizedName + " is not point to a function");
-        }
-        luaState.PushLightUserData(bullet);
-        luaState.Replace(-4 - numArgs);
-        luaState.Replace(-4 - numArgs);
-        luaState.Replace(-4 - numArgs);
-        luaState.PCall(numArgs + 1, 0, -numArgs - 3);
-        // 弹出剩余两个参数
-        luaState.Pop(2);
-        luaState.PushLightUserData(bullet);
-        return 1;
-    }
-
-    public static int AddBulletTask(ILuaState luaState)
-    {
-        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
-        int funcRef = InterpreterManager.GetInstance().RefLuaFunction(luaState);
-        luaState.Pop(1);
-        Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
-        task.funcRef = funcRef;
-        task.isFinish = false;
-        task.luaState = null;
-        BCCustomizedTask bc = bullet.GetComponent<BCCustomizedTask>();
-        bc.AddTask(task);
-        return 0;
-    }
-    #endregion
 
     #region 直线激光相关
 

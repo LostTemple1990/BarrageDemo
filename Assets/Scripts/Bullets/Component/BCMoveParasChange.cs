@@ -27,7 +27,7 @@ public class BCParasChange : BulletComponent
         }
     }
 
-    public void AddParaChangeEvent(MovePara para, ParaChangeMode changeMode,float changeValue,int delay,
+    public void AddParaChangeEvent(BulletParaType para, ParaChangeMode changeMode,float changeValue,int delay,
         InterpolationMode intMode,float duration)
     {
         BulletParasChangeData changeData = CreateChangeData(para, intMode);
@@ -50,49 +50,49 @@ public class BCParasChange : BulletComponent
         _listCount++;
     }
 
-    private BulletParasChangeData CreateChangeData(MovePara movePara,InterpolationMode intMode)
+    private BulletParasChangeData CreateChangeData(BulletParaType movePara,InterpolationMode intMode)
     {
         BulletParasChangeData changeData = new BulletParasChangeData();
         changeData.para = movePara;
         switch (changeData.para)
         {
-            case MovePara.Velocity:
+            case BulletParaType.Velocity:
                 changeData.begin = _bullet.getVelocity();
                 changeData.SetParaFunc = _bullet.SetVelocity;
                 break;
-            case MovePara.VAngel:
+            case BulletParaType.VAngel:
                 changeData.begin = _bullet.GetVAnlge();
                 changeData.SetParaFunc = _bullet.SetVAngle;
                 break;
-            case MovePara.Acc:
+            case BulletParaType.Acc:
                 changeData.begin = _bullet.GetAcce();
                 changeData.SetParaFunc = _bullet.SetAcce;
                 break;
-            case MovePara.AccAngle:
+            case BulletParaType.AccAngle:
                 changeData.begin = _bullet.GetAccAngle();
                 changeData.SetParaFunc = _bullet.SetAccAngle;
                 break;
-            case MovePara.CircleRadius:
+            case BulletParaType.CurveRadius:
                 changeData.begin = _bullet.GetCirRadius();
                 changeData.SetParaFunc = _bullet.SetCirRadius;
                 break;
-            case MovePara.CircleAngle:
+            case BulletParaType.CurveAngle:
                 changeData.begin = _bullet.GetCirAngle();
                 changeData.SetParaFunc = _bullet.SetCirAngle;
                 break;
-            case MovePara.CircleDeltaR:
+            case BulletParaType.CurveDeltaR:
                 changeData.begin = _bullet.GetCirDeltaR();
                 changeData.SetParaFunc = _bullet.SetCirDeltaR;
                 break;
-            case MovePara.CircleOmiga:
+            case BulletParaType.CurveOmiga:
                 changeData.begin = _bullet.GetCirOmiga();
                 changeData.SetParaFunc = _bullet.SetCirOmiga;
                 break;
-            case MovePara.CircleCenterX:
+            case BulletParaType.CurveCenterX:
                 changeData.begin = _bullet.GetCirCenterX();
                 changeData.SetParaFunc = _bullet.SetCirCenterX;
                 break;
-            case MovePara.CircleCenterY:
+            case BulletParaType.CurveCenterY:
                 changeData.begin = _bullet.GetCirCenterY();
                 changeData.SetParaFunc = _bullet.SetCirCenterY;
                 break;
@@ -150,7 +150,7 @@ public class BulletParasChangeData
     /// 延迟执行的帧数
     /// </summary>
     public int delay;
-    public MovePara para;
+    public BulletParaType para;
     public InterpolationMode mode;
     public float begin;
     public float end;
@@ -165,7 +165,7 @@ public class BulletParasChangeData
 /// <summary>
 /// 子弹移动相关的变量对应enum
 /// </summary>
-public enum MovePara :byte
+public enum BulletParaType :byte
 {
     /// <summary>
     /// 当前速度
@@ -186,21 +186,24 @@ public enum MovePara :byte
     /// <summary>
     /// 极坐标半径
     /// </summary>
-    CircleRadius = 5,
+    CurveRadius = 5,
     /// <summary>
     /// 圆周运动角度
     /// </summary>
-    CircleAngle = 6,
+    CurveAngle = 6,
     /// <summary>
     /// 圆周运动半径增量
     /// </summary>
-    CircleDeltaR = 7,
+    CurveDeltaR = 7,
     /// <summary>
     /// 圆周运动角速度增量
     /// </summary>
-    CircleOmiga = 8,
-    CircleCenterX = 9,
-    CircleCenterY = 10,
+    CurveOmiga = 8,
+    CurveCenterX = 9,
+    CurveCenterY = 10,
+    Alpha = 15,
+    ScaleX = 20,
+    ScaleY = 21,
 }
 
 /// <summary>

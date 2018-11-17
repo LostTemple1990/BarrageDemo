@@ -100,7 +100,7 @@ CustomizedTable.XiongBullet0.Init = function(bullet,waitTime,maxRadius)
 		lib.AddBulletParaChangeEvent(bullet,5,Constants.ParaChangeMode_ChangeTo,maxRadius,0,Constants.ModeLinear,30)
 		--lib.AddBulletParaChangeEvent(bullet,8,Constants.ParaChangeMode_ChangeTo,1.5,50-waitTime,Constants.ModeLinear,10)
 		if coroutine.yield(80-waitTime) == false then return end
-		lib.ChangeBulletStyleById(bullet,"107060")
+		lib.SetBulletStyleById(bullet,"107060")
 		--lib.SetBulletOrderInLayer(bullet,1)
 		local angle = lib.GetAimToPlayerAngle(posX,posY)
 		lib.SetBulletStraightParas(bullet,2.5,angle,false,0,0)
@@ -187,7 +187,7 @@ local BossTable = {}
 BossTable.MidBoss = {}
 BossTable.MidBoss.Init = function(boss)
 	lib.SetBossAni(boss,"2001")
-	lib.SetBossPos(boss,0,280)
+	lib.SetEnemyPos(boss,0,280)
 	lib.SetEnemyCollisionParas(boss,32,32)
 end
 BossTable.MidBoss.Task = function(boss)
@@ -676,10 +676,11 @@ end
 
 function Stage.StageTask()
 	lib.PlaySound("bgm",true)
-	--local spriteEffect = lib.CreateSpriteEffectWithProps("STGEffectAtlas","TransparentCircle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
+	--local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
 	--lib.SetEffectToPos(spriteEffect,0,0)
 	--lib.SetSpriteEffectScale(spriteEffect,5,5)
 	--lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
+	--lib.SetSpriteEffectColor(spriteEffect,0,0,0,0.9)
 	--local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
 	--lib.SetObjectColliderSize(collider,80,80)
 	--lib.SetObjectColliderToPos(collider,0,0)
@@ -762,7 +763,7 @@ function Stage.StageTask()
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
 		if coroutine.yield(100) == false then return end
 		lib.SetBossCurPhaseData(boss,1,1,1,1,4)
-		lib.StartSpellCard(SpellCard.OrionidsSC,boss)
+		lib.StartSpellCard(SpellCard.MarisaSC0,boss)
 		--lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
 		lib.StartSpellCard(SpellCard.NazrinSC2_1,boss)

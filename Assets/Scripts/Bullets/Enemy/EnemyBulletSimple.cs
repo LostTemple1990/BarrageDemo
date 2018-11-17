@@ -13,17 +13,13 @@ public class EnemyBulletSimple : EnemyBulletMovable
     protected float _grazeHalfWidth;
     protected float _grazeHalfHeight;
     /// <summary>
-    /// 碰撞检测类型
-    /// </summary>
-    protected int _collisionType;
-    /// <summary>
     /// 碰撞检测参数0，圆的半径/宽的一半
     /// </summary>
-    protected float _collisionArg0;
+    protected float _collisionHalfWidth;
     /// <summary>
     /// 碰撞检测参数1，圆的半径/高的一半
     /// </summary>
-    protected float _collisionArg1;
+    protected float _collisionHalfHeight;
 
     protected float _collisionRadius;
 
@@ -32,7 +28,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
     /// 原先的颜色设置
     /// </summary>
     protected Color _originalColor;
-    protected bool _colorIsChange;
 
     protected SpriteRenderer _spRenderer;
     protected EnemyBulletDefaultCfg _cfg;
@@ -53,10 +48,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
     /// </summary>
     protected bool _isScalingSize;
     /// <summary>
-    /// 本体的缩放系数
-    /// </summary>
-    protected float _scaleFactor;
-    /// <summary>
     /// 源缩放尺寸
     /// </summary>
     protected float _scaleFrom;
@@ -76,6 +67,13 @@ public class EnemyBulletSimple : EnemyBulletMovable
     /// 缩放延迟
     /// </summary>
     protected int _scaleDelay;
+
+    protected float _scaleX;
+    protected float _scaleY;
+    /// <summary>
+    /// 当前帧缩放是否改变
+    /// </summary>
+    protected bool _isScaleChanged;
     #endregion
 
     /// <summary>
@@ -89,8 +87,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _id = BulletId.Enemy_Simple;
         _orderInLayer = 0;
         _isScalingSize = false;
-        _scaleFactor = 1;
-        _curAlpha = 1;
+        _scaleX = _scaleY = 1;
         _originalColor = new Color(1, 1, 1, 1);
     }
 
@@ -103,6 +100,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
             UpdateAppearEffect();
         }
         CheckRotateImg();
+        if (_isScalingSize) UpdateScaling();
         CheckCollisionWithCharacter();
         if ( IsOutOfBorder() )
         {
@@ -110,6 +108,8 @@ public class EnemyBulletSimple : EnemyBulletMovable
         }
         else
         {
+            if (_isScaleChanged) UpdateScale();
+            if (_isColorChanged) UpdateColor();
             UpdatePos();
         }
     }
@@ -139,7 +139,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _imgRotatedFlag = 1;
     }
 
-    public virtual void ChangeStyleById(string id)
+    public override void SetStyleById(string id)
     {
         // 根据传入的id读取配置，重新生成数据
         EnemyBulletDefaultCfg cfg = BulletsManager.GetInstance().GetBulletDefaultCfgById(id);
@@ -164,7 +164,9 @@ public class EnemyBulletSimple : EnemyBulletMovable
             halfWidth = cfg.grazeHalfWidth,
             halfHeight = cfg.grazeHalfHeight,
         };
-        _collisionRadius = cfg.collisionRadius * _scaleFactor;
+        _collisionHalfWidth = cfg.collisionRadius * _scaleX;
+        _collisionHalfHeight = cfg.collisionRadius * _scaleY;
+        _collisionRadius = cfg.collisionRadius * _scaleX;
         // 计算用于擦弹以及碰撞检测的两个数值
         // 擦弹
         float value = Global.PlayerGrazeRadius + _collisionRadius;
@@ -202,8 +204,29 @@ public class EnemyBulletSimple : EnemyBulletMovable
     public override void SetAlpha(float alpha)
     {
         _curAlpha = alpha;
-        Color newColor = new Color(_originalColor.r, _originalColor.g, _originalColor.b, alpha);
-        _spRenderer.color = newColor;
+        _isColorChanged = true;
+        _isOriginalColor = false;
+    }
+
+    public override void SetColor(float r, float g, float b)
+    {
+        _curColor = new Color(r / 255, g / 255, b / 255);
+        _isColorChanged = true;
+        _isOriginalColor = false;
+    }
+
+    public override void SetColor(float r, float g, float b, float a)
+    {
+        _curColor = new Color(r / 255, g / 255, b / 255, a);
+        _curAlpha = a;
+        _isColorChanged = true;
+        _isOriginalColor = false;
+    }
+
+    protected void UpdateColor()
+    {
+        _spRenderer.color = new Color(_curColor.r, _curColor.g, _curColor.b, _curAlpha);
+        _isColorChanged = false;
     }
 
     /// <summary>
@@ -227,26 +250,28 @@ public class EnemyBulletSimple : EnemyBulletMovable
         {
             scaleFactor = Mathf.Lerp(_scaleFrom, _scaleTo, _scaleTime / _scaleDuration);
         }
-        SetToScale(scaleFactor);
+        SetScale(scaleFactor);
     }
 
     /// <summary>
     /// 设置缩放
     /// </summary>
     /// <param name="scale"></param>
-    public void SetToScale(float scale)
+    public void SetScale(float scale)
     {
-        _scaleFactor = scale;
+        _scaleX = _scaleY = scale;
+        _isScaleChanged = true;
         // 计算碰撞参数
+        _collisionHalfWidth = _cfg.collisionRadius * _scaleX;
+        _collisionHalfHeight = _cfg.collisionRadius * _scaleY;
         // 计算用于擦弹以及碰撞检测的两个数值
         // 擦弹
-        float value = Global.PlayerGrazeRadius + _collisionRadius;
+        float value = Global.PlayerGrazeRadius + _collisionHalfWidth;
         _detGrazeValue = value * value;
         // 碰撞
-        value = Global.PlayerCollisionVec.z + _collisionRadius;
+        value = Global.PlayerCollisionVec.z + _collisionHalfWidth;
         _detCollisonValue = value * value;
-        // 设置scale
-        _trans.localScale = new Vector3(_scaleFactor, _scaleFactor, 1);
+        _isScaleChanged = true;
     }
 
     /// <summary>
@@ -255,14 +280,22 @@ public class EnemyBulletSimple : EnemyBulletMovable
     /// <param name="toScale"></param>
     /// <param name="delay"></param>
     /// <param name="duration"></param>
-    public void DoScale(float toScale,int delay,int duration)
+    public void DoScale(float toScale,int duration,int delay)
     {
-        _scaleFrom = _scaleFactor;
+        // X，Y轴缩放不相等，则不执行这个方法
+        if (_scaleX != _scaleY) return;
+        _scaleFrom = _scaleX;
         _scaleTo = toScale;
         _scaleDelay = delay;
         _scaleTime = 0;
         _scaleDuration = duration;
         _isScalingSize = true;
+    }
+
+    protected void UpdateScale()
+    {
+        _trans.localScale = new Vector3(_scaleX, _scaleY, 1);
+        _isScaleChanged = false;
     }
 
     protected virtual void RotateImgByVelocity()
@@ -279,6 +312,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         }
         _trans.localRotation = Quaternion.Euler(new Vector3(0, 0, rotateAngle));
     }
+
 
     protected void CheckRotateImg()
     {
@@ -309,27 +343,48 @@ public class EnemyBulletSimple : EnemyBulletMovable
 
     public override bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
     {
-        Vector2 bulletBoundingBoxLBPos = new Vector2(_curPos.x - _collisionRadius, _curPos.y - _collisionRadius);
-        Vector2 bulletBoundingBoxRTPos = new Vector2(_curPos.x + _collisionRadius, _curPos.y + _collisionRadius);
-        // 由于通常情况下大部分子弹都是不在包围盒范围内的
-        // 因此选择判断不相交的方式尽可能减少判断的次数
-        bool notHit =  bulletBoundingBoxRTPos.x < lbPos.x ||    // 子弹包围盒右边缘X坐标小于检测包围盒的左边缘X坐标
-            bulletBoundingBoxLBPos.x > rtPos.x ||   // 子弹包围盒左边缘X坐标大于检测包围盒的左右边缘X坐标
-            bulletBoundingBoxRTPos.y < lbPos.y ||   // 子弹包围盒上边缘Y坐标小于检测包围盒的下边缘Y坐标
-            bulletBoundingBoxLBPos.y > rtPos.y;     // 子弹包围盒下边缘Y坐标大于检测包围盒的上边缘Y坐标
-        return !notHit;
+        // 当碰撞宽度 = 碰撞宽度时，采取正常的矩形检测
+        if ( _collisionHalfWidth == _collisionHalfHeight )
+        {
+            Vector2 bulletBoundingBoxLBPos = new Vector2(_curPos.x - _collisionHalfWidth, _curPos.y - _collisionHalfHeight);
+            Vector2 bulletBoundingBoxRTPos = new Vector2(_curPos.x + _collisionHalfWidth, _curPos.y + _collisionHalfHeight);
+            // 由于通常情况下大部分子弹都是不在包围盒范围内的
+            // 因此选择判断不相交的方式尽可能减少判断的次数
+            bool notHit = bulletBoundingBoxRTPos.x < lbPos.x ||    // 子弹包围盒右边缘X坐标小于检测包围盒的左边缘X坐标
+                bulletBoundingBoxLBPos.x > rtPos.x ||   // 子弹包围盒左边缘X坐标大于检测包围盒的左右边缘X坐标
+                bulletBoundingBoxRTPos.y < lbPos.y ||   // 子弹包围盒上边缘Y坐标小于检测包围盒的下边缘Y坐标
+                bulletBoundingBoxLBPos.y > rtPos.y;     // 子弹包围盒下边缘Y坐标大于检测包围盒的上边缘Y坐标
+            return !notHit;
+        }
+        return true;
     }
 
     public override CollisionDetectParas GetCollisionDetectParas(int index = 0)
     {
-        CollisionDetectParas paras = new CollisionDetectParas
+        if ( _collisionHalfWidth == _collisionHalfHeight )
         {
-            type = CollisionDetectType.Circle,
-            centerPos = _curPos,
-            radius = _collisionRadius,
-            nextIndex = -1,
-        };
-        return paras;
+            CollisionDetectParas paras = new CollisionDetectParas
+            {
+                type = CollisionDetectType.Circle,
+                centerPos = _curPos,
+                radius = _collisionHalfWidth,
+                nextIndex = -1,
+            };
+            return paras;
+        }
+        else
+        {
+            CollisionDetectParas paras = new CollisionDetectParas
+            {
+                type = CollisionDetectType.ItalicRect,
+                centerPos = _curPos,
+                halfWidth = _collisionHalfWidth,
+                halfHeight = _collisionHalfHeight,
+                angle = _curAngle,
+                nextIndex = -1,
+            };
+            return paras;
+        }
     }
 
     public override void CollidedByObject(int n = 0, eEliminateDef eliminateType = eEliminateDef.HitObjectCollider)
@@ -342,27 +397,64 @@ public class EnemyBulletSimple : EnemyBulletMovable
     /// </summary>
     protected virtual void CheckCollisionWithCharacter()
     {
-        if ( !_detectCollision )
+        if (!_detectCollision) return;
+        if ( _collisionHalfWidth == _collisionHalfHeight )
         {
-            return;
-        }
-        float dx = Mathf.Abs(_curPos.x - Global.PlayerPos.x);
-        float dy = Mathf.Abs(_curPos.y - Global.PlayerPos.y);
-        // 子弹中心与玩家中心的距离的平方
-        float detValue = dx * dx + dy * dy;
-        // 首先检测是否在擦弹范围
-        if ( detValue <= _detGrazeValue )
-        {
-            if ( !_isGrazed )
+            float dx = Mathf.Abs(_curPos.x - Global.PlayerPos.x);
+            float dy = Mathf.Abs(_curPos.y - Global.PlayerPos.y);
+            // 子弹中心与玩家中心的距离的平方
+            float detValue = dx * dx + dy * dy;
+            // 首先检测是否在擦弹范围
+            if (detValue <= _detGrazeValue)
             {
-                PlayerService.GetInstance().AddGraze(1);
-                _isGrazed = true;
+                if (!_isGrazed)
+                {
+                    PlayerService.GetInstance().AddGraze(1);
+                    _isGrazed = true;
+                }
+                // 在擦弹范围内，进行实际的碰撞检测
+                if (detValue <= _detCollisonValue)
+                {
+                    Eliminate(eEliminateDef.HitPlayer);
+                    PlayerService.GetInstance().GetCharacter().BeingHit();
+                }
             }
-            // 在擦弹范围内，进行实际的碰撞检测
-            if (detValue <= _detCollisonValue)
+        }
+        else
+        {
+            // 碰撞判定宽高不相等时，采用矩形检测
+            Vector2 relativePos = Global.PlayerPos - _curPos;
+            Vector2 relativeVec = MathUtil.GetVec2AfterRotate(relativePos.x, relativePos.y, 0, 0, _curAngle);
+            // 判定是否在矩形内
+            float len = relativeVec.magnitude;
+            float rate = (len - Global.PlayerGrazeRadius) / len;
+            bool isGrazing = false;
+            if (rate < 0)
             {
-                Eliminate(eEliminateDef.HitPlayer);
-                PlayerService.GetInstance().GetCharacter().BeingHit();
+                isGrazing = true;
+            }
+            else
+            {
+                Vector2 tmpVec = relativeVec * rate;
+                if (Mathf.Abs(tmpVec.x) < _collisionHalfHeight && Mathf.Abs(tmpVec.y) < _collisionHalfWidth)
+                {
+                    isGrazing = true;
+                }
+            }
+            if (isGrazing)
+            {
+                if (!_isGrazed)
+                {
+                    _isGrazed = true;
+                    PlayerService.GetInstance().AddGraze(1);
+                }
+                rate = (len - Global.PlayerCollisionVec.z) / len;
+                relativeVec *= rate;
+                if (rate <= 0 || (Mathf.Abs(relativeVec.x) < _collisionHalfHeight && Mathf.Abs(relativeVec.y) < _collisionHalfWidth))
+                {
+                    Eliminate(eEliminateDef.HitPlayer);
+                    PlayerService.GetInstance().GetCharacter().BeingHit();
+                }
             }
         }
     }
@@ -375,11 +467,11 @@ public class EnemyBulletSimple : EnemyBulletMovable
             _appearEffect = null;
         }
         SetOrderInLayer(0);
-        if ( _curAlpha != 1 || _colorIsChange )
+        if ( _curAlpha != 1 || !_isOriginalColor )
         {
             _spRenderer.color = new Color(1, 1, 1, 1);
         }
-        if ( _scaleFactor != 1 )
+        if ( _scaleX != 1 || _scaleY != 1 )
         {
             _trans.localScale = Vector3.one;
         }
@@ -402,5 +494,69 @@ public class EnemyBulletSimple : EnemyBulletMovable
             return true;
         }
         return false;
+    }
+
+    public override bool GetBulletPara(BulletParaType paraType, out float value)
+    {
+        float returnValue;
+        if ( base.GetBulletPara(paraType, out returnValue) )
+        {
+            value = returnValue;
+            return true;
+        }
+        switch (paraType)
+        {
+            case BulletParaType.Alpha:
+                value = _curAlpha;
+                return true;
+            case BulletParaType.ScaleX:
+                value = _scaleX;
+                return true;
+            case BulletParaType.ScaleY:
+                value = _scaleY;
+                return true;
+        }
+        value = 0;
+        return false;
+    }
+
+    public override bool SetBulletPara(BulletParaType paraType, float value)
+    {
+        if (base.SetBulletPara(paraType, value)) return true;
+        switch (paraType)
+        {
+            case BulletParaType.Alpha:
+                SetAlpha(value);
+                return true;
+            case BulletParaType.ScaleX:
+                SetScaleX(value);
+                return true;
+            case BulletParaType.ScaleY:
+                SetScaleY(value);
+                return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// 设置scaleX
+    /// </summary>
+    /// <param name="value"></param>
+    private void SetScaleX(float value)
+    {
+        _scaleX = value;
+        _collisionHalfWidth = _cfg.collisionRadius * value;
+        _isScaleChanged = true;
+    }
+
+    /// <summary>
+    /// 设置scaleY
+    /// </summary>
+    /// <param name="value"></param>
+    private void SetScaleY(float value)
+    {
+        _scaleY = value;
+        _collisionHalfHeight = _cfg.collisionRadius * value;
+        _isScaleChanged = true;
     }
 }

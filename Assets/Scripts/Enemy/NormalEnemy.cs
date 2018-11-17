@@ -46,8 +46,11 @@ public class NormalEnemy : EnemyBase
     public override void Update()
     {
         UpdateTask();
-        _movableObj.Update();
-        _curPos = _movableObj.GetPos();
+        if ( _movableObj.IsActive() )
+        {
+            _movableObj.Update();
+            _curPos = _movableObj.GetPos();
+        }
         if ( !IsOutOfBorder() )
         {
             CheckCollisionWithCharacter();

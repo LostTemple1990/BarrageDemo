@@ -42,11 +42,14 @@ public class MovableObject : IPoolClass
 
     float _dx, _dy;
 
-    private delegate float InterpolationFunc(float begin, float end, float time, float duration);
-    private InterpolationFunc _moveFunc;
+    private MathUtil.InterpolationFloatFunc _moveFunc;
     private float _beginX, _beginY, _endX, _endY;
     private int _moveToTime;
     private int _moveToDuration;
+    /// <summary>
+    /// 是否在运动中
+    /// </summary>
+    private bool _isActive;
 
     public void Update()
     {
@@ -69,6 +72,10 @@ public class MovableObject : IPoolClass
             _curPos.x += _dx;
             _curPos.y += _dy;
         }
+        if ( !_isMovingTo && !_isMovingStraight && !_isMovingCurve )
+        {
+            _isActive = false;
+        }
     }
 
     #region 直线运动
@@ -81,6 +88,7 @@ public class MovableObject : IPoolClass
         _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
         _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
         _isMovingStraight = true;
+        _isActive = true;
     }
 
     public virtual void DoMoveStraightWithLimitation(float v, float angle, int duration)
@@ -92,6 +100,7 @@ public class MovableObject : IPoolClass
         _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
         _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
         _isMovingStraight = true;
+        _isActive = true;
     }
 
     public virtual void DoAcceleration(float acce, float accAngle)
@@ -103,6 +112,7 @@ public class MovableObject : IPoolClass
         _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
         _dvy = _curAcce * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
         _isMovingStraight = true;
+        _isActive = true;
     }
 
     public virtual void DoAccelerationWithLimitation(float acce, float accAngle, float maxVelocity)
@@ -115,6 +125,7 @@ public class MovableObject : IPoolClass
         _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
         _dvy = _curAcce * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
         _isMovingStraight = true;
+        _isActive = true;
     }
 
     public virtual void DoMoveTo(float endX,float endY,int duration,InterpolationMode mode)
@@ -125,28 +136,9 @@ public class MovableObject : IPoolClass
         _endY = endY;
         _moveToTime = 0;
         _moveToDuration = duration;
-        switch ( mode )
-        {
-            case InterpolationMode.None:
-                _moveFunc = MathUtil.GetNoneInterpolation;
-                break;
-            case InterpolationMode.Linear:
-                _moveFunc = MathUtil.GetLinearInterpolation;
-                break;
-            case InterpolationMode.EaseInQuad:
-                _moveFunc= MathUtil.GetEaseInQuadInterpolation;
-                break;
-            case InterpolationMode.EaseOutQuad:
-                _moveFunc = MathUtil.GetEaseOutQuadInterpolation;
-                break;
-            case InterpolationMode.EaseInOutQuad:
-                _moveFunc = MathUtil.GetEaseInOutQuadInterpolation;
-                break;
-            case InterpolationMode.Sin:
-                _moveFunc = MathUtil.GetSinInterpolation;
-                break;
-        }
+        _moveFunc = MathUtil.GetInterpolationFloatFunc(mode);
         _isMovingTo = true;
+        _isActive = true;
     }
 
     protected void MoveTo()
@@ -221,6 +213,7 @@ public class MovableObject : IPoolClass
         _curOmiga = omiga;
         _lastCurvePos = _centerPos;
         _isMovingCurve = true;
+        _isActive = true;
     }
 
     protected virtual void MoveCurve()
@@ -245,6 +238,7 @@ public class MovableObject : IPoolClass
         _isMovingCurve = false;
         _vx = _vy = _dvx = _dvy = 0;
         _maxVelocity = -1;
+        _isActive = false;
     }
 
     public void Reset(float x,float y)
@@ -280,6 +274,15 @@ public class MovableObject : IPoolClass
     public Vector2 GetDeltaPos()
     {
         return new Vector2(_dx, _dy);
+    }
+
+    /// <summary>
+    /// 当前是否激活
+    /// </summary>
+    /// <returns></returns>
+    public bool IsActive()
+    {
+        return _isActive;
     }
 
     public virtual void Clear()

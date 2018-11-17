@@ -37,6 +37,19 @@ public class EnemyBulletBase :BulletBase
     /// 当前透明度
     /// </summary>
     protected float _curAlpha;
+    /// <summary>
+    /// 当前颜色值，只计算rgb,a分量不考虑
+    /// </summary>
+    protected Color _curColor;
+    /// <summary>
+    /// 标识当前颜色是否是初始颜色
+    /// <para>即没有更改过颜色</para>
+    /// </summary>
+    protected bool _isOriginalColor;
+    /// <summary>
+    /// 当前帧颜色是否被改变
+    /// </summary>
+    protected bool _isColorChanged;
 
     public EnemyBulletBase()
     {
@@ -51,6 +64,10 @@ public class EnemyBulletBase :BulletBase
         _isGrazed = false;
         _grazeCoolDown = 0;
         _resistEliminateFlag = 0;
+        // 颜色相关
+        _curColor = new Color(1, 1, 1);
+        _isOriginalColor = true;
+        _curAlpha = 1;
     }
 
     /// <summary>
@@ -74,7 +91,31 @@ public class EnemyBulletBase :BulletBase
 
     public virtual void SetAlpha(float alpha)
     {
+        throw new System.NotImplementedException();
+    }
 
+    /// <summary>
+    /// 设置rgb颜色
+    /// <para>取值为0~255</para>
+    /// </summary>
+    /// <param name="r"></param>
+    /// <param name="g"></param>
+    /// <param name="b"></param>
+    public virtual void SetColor(float r,float g,float b)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    /// <summary>
+    /// 设置完成的rgba值
+    /// </summary>
+    /// <param name="r">0~255</param>
+    /// <param name="g">0~255</param>
+    /// <param name="b">0~255</param>
+    /// <param name="a">0~1</param>
+    public virtual void SetColor(float r,float g,float b,float a)
+    {
+        throw new System.NotImplementedException();
     }
 
     public virtual T AddComponent<T>()
@@ -174,6 +215,16 @@ public class EnemyBulletBase :BulletBase
             return false;
         }
         return true;
+    }
+
+    public virtual bool SetBulletPara(BulletParaType paraType,float value)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual bool GetBulletPara(BulletParaType paraType,out float value)
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void Clear()

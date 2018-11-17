@@ -116,7 +116,7 @@ public class EnemyBase
     {
         _curPos = pos;
         _movableObj.SetPos(_curPos.x, _curPos.y);
-        _enemyGo.transform.localPosition = pos;
+        _enemyTf.localPosition = pos;
     }
 
     public virtual void AddTask(Task task)

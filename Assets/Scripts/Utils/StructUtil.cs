@@ -61,6 +61,10 @@ public enum CollisionDetectType : int
     /// 多个线段集合
     /// </summary>
     MultiSegments = 4,
+    /// <summary>
+    /// 旋转矩形
+    /// </summary>
+    ItalicRect = 5,
 }
 
 public enum GrazeDetectType : int

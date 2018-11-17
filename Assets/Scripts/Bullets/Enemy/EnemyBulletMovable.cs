@@ -217,6 +217,83 @@ public class EnemyBulletMovable : EnemyBulletBase
     }
 
     #region 设置/获取移动参数的相关public方法
+    public override bool GetBulletPara(BulletParaType paraType, out float value)
+    {
+        value = 0;
+        switch ( paraType )
+        {
+            case BulletParaType.Velocity:
+                value = _curVelocity;
+                return true;
+            case BulletParaType.VAngel:
+                value = _curAngle;
+                return true;
+            case BulletParaType.Acc:
+                value = _curAcceleration;
+                return true;
+            case BulletParaType.AccAngle:
+                value = _curAccAngle;
+                return true;
+            case BulletParaType.CurveAngle:
+                value = _curCurveAngle;
+                return true;
+            case BulletParaType.CurveRadius:
+                value = _curRadius;
+                return true;
+            case BulletParaType.CurveDeltaR:
+                value = _deltaRadius;
+                return true;
+            case BulletParaType.CurveOmiga:
+                value = _curOmiga;
+                return true;
+            case BulletParaType.CurveCenterX:
+                value = _centerPos.x;
+                return true;
+            case BulletParaType.CurveCenterY:
+                value = _centerPos.y;
+                return true;
+        }
+        return false;
+    }
+
+    public override bool SetBulletPara(BulletParaType paraType, float value)
+    {
+        switch (paraType)
+        {
+            case BulletParaType.Velocity:
+                _curVelocity = value;
+                return true;
+            case BulletParaType.VAngel:
+                _curAngle = value;
+                return true;
+            case BulletParaType.Acc:
+                _curAcceleration = value;
+                return true;
+            case BulletParaType.AccAngle:
+                _curAccAngle = value;
+                return true;
+            case BulletParaType.CurveAngle:
+                _curCurveAngle = value;
+                return true;
+            case BulletParaType.CurveRadius:
+                _curRadius = value;
+                return true;
+            case BulletParaType.CurveDeltaR:
+                _deltaRadius = value;
+                return true;
+            case BulletParaType.CurveOmiga:
+                _curOmiga = value;
+                return true;
+            case BulletParaType.CurveCenterX:
+                _centerPos.x = value;
+                return true;
+            case BulletParaType.CurveCenterY:
+                _centerPos.y = value;
+                return true;
+        }
+        return false;
+    }
+
     public void SetVelocity(float value)
     {
         _curVelocity = value;

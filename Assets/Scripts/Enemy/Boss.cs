@@ -40,10 +40,6 @@ public class Boss : EnemyBase
     public void Init(string bossName)
     {
         _bossName = bossName;
-        if ( _movableObj == null )
-        {
-            _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
-        }
         int initFuncRef = InterpreterManager.GetInstance().GetEnemyInitFuncRef(_bossName);
         InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
         InterpreterManager.GetInstance().CallLuaFunction(initFuncRef, 1);
@@ -57,6 +53,7 @@ public class Boss : EnemyBase
         {
             _enemyGo = ResourceManager.GetInstance().GetPrefab("Prefab/Boss", "Boss");
         }
+        _enemyTf = _enemyGo.transform;
         _bossAni = AnimationManager.GetInstance().CreateAnimation<AnimationCharacter>(_enemyGo, "Animation",LayerId.Enemy);
         _bloodBarLayerTf = _enemyGo.transform.Find("BloodBarLayer");
         _bloodBarLayerTf.gameObject.SetActive(false);
@@ -152,8 +149,11 @@ public class Boss : EnemyBase
             UpdateInvincibleStatus();
         }
         UpdateTask();
-        _movableObj.Update();
-        _curPos = _movableObj.GetPos();
+        if ( _movableObj.IsActive() )
+        {
+            _movableObj.Update();
+            _curPos = _movableObj.GetPos();
+        }
         if ( _isShowBloodBar )
         {
             UpdateBloodBar();
@@ -242,12 +242,6 @@ public class Boss : EnemyBase
         }
     }
 
-    protected override void UpdatePos()
-    {
-        _curPos = _movableObj.GetPos();
-        _enemyGo.transform.localPosition = _curPos;
-    }
-
     public override void SetCollisionParams(float collisionHW, float collisionHH)
     {
         _collisionHalfWidth = collisionHW;
@@ -286,9 +280,6 @@ public class Boss : EnemyBase
             _weights.Clear();
         }
         GameObject.Destroy(_enemyGo);
-        // movableObject
-        ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObj);
-        _movableObj = null;
         base.Clear();
     }
 }
