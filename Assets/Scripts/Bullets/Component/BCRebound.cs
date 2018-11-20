@@ -46,7 +46,8 @@ public class BCRebound : BulletComponent
     {
         int reboundFlag = 0;
         Vector2 curPos = new Vector2(_bullet.PosX, _bullet.PosY);
-        float vAngle = _bullet.GetVAnlge();
+        float vAngle;
+        _bullet.GetBulletPara(BulletParaType.VAngel, out vAngle);
         if ((_reboundPara & Consts.ReboundLeft) > 0 && curPos.x < _left)
         {
             curPos.x = 2 * _left - curPos.x;
@@ -78,7 +79,9 @@ public class BCRebound : BulletComponent
         if (reboundFlag == 1)
         {
             //DoMove(_curVelocity * Consts.TargetFrameRate, _curAngle, _curAcceleration * Consts.TargetFrameRate, _curAccAngle);
-            _bullet.DoMoveStraight(_bullet.getVelocity(), vAngle);
+            float velocity;
+            _bullet.GetBulletPara(BulletParaType.Velocity, out velocity);
+            _bullet.DoMoveStraight(velocity, vAngle);
             _reboundCount--;
         }
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MathUtil
 {
-    public static float GetAngleBetweenXAxis(Vector3 vec,bool isRadius)
+    public static float GetAngleBetweenXAxis(Vector2 vec,bool isRadius)
     {
         float length = vec.magnitude;
         if ( length == 0 )

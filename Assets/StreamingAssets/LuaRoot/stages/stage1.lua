@@ -96,8 +96,8 @@ CustomizedTable.XiongBullet0 = {}
 CustomizedTable.XiongBullet0.Init = function(bullet,waitTime,maxRadius)
 	lib.AddBulletTask(bullet,function()
 		local posX,posY = lib.GetBulletPos(bullet)
-		lib.AddBulletComponent(bullet,Constants.BCTypeMoveParasChange)
-		lib.AddBulletParaChangeEvent(bullet,5,Constants.ParaChangeMode_ChangeTo,maxRadius,0,Constants.ModeLinear,30)
+		lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.CurveRadius,eParaChangeMode.ChangeTo,maxRadius,0,30,Constants.ModeLinear)
 		--lib.AddBulletParaChangeEvent(bullet,8,Constants.ParaChangeMode_ChangeTo,1.5,50-waitTime,Constants.ModeLinear,10)
 		if coroutine.yield(80-waitTime) == false then return end
 		lib.SetBulletStyleById(bullet,"107060")

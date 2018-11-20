@@ -40,11 +40,11 @@ public partial class LuaLib
         ParaChangeMode changeMode  = (ParaChangeMode)luaState.ToInteger(-5);
         float changeValue = (float)luaState.ToNumber(-4);
         int delay = luaState.ToInteger(-3);
-        InterpolationMode intMode = (InterpolationMode)luaState.ToInteger(-2);
-        int duration = luaState.ToInteger(-1);
+        int duration = luaState.ToInteger(-2);
+        InterpolationMode intMode = (InterpolationMode)luaState.ToInteger(-1);
         luaState.Pop(7);
         BCParasChange bc = bullet.GetComponent<BCParasChange>();
-        bc.AddParaChangeEvent(para, changeMode, changeValue, delay, intMode, duration);
+        bc.AddParaChangeEvent(para, changeMode, changeValue, delay, duration, intMode);
         return 0;
     }
 }

@@ -24,13 +24,15 @@ Constants.ReboundRight = 2
 Constants.ReboundTop = 4
 Constants.ReboundBottom = 8
 
-Constants.BCTypeCustomizedTask = 1
-Constants.BCTypeMoveParasChange = 2
-Constants.BCTypeRebound = 3
+eBulletComponentType = {}
+eBulletComponentType.CustomizedTask = 1
+eBulletComponentType.ParasChange = 2
+eBulletComponentType.Rebound = 3
 
-Constants.ParaChangeMode_ChangeTo = 1
-Constants.ParaChangeMode_IncBy = 2
-Constants.ParaChangeMode_DecBy = 3
+eParaChangeMode = {}
+eParaChangeMode.ChangeTo = 1
+eParaChangeMode.IncBy = 2
+eParaChangeMode.DecBy = 3
 
 Constants.DirModeMoveXTowardsPlayer = 1
 Constants.DirModeMoveYTowardsPlayer = 2

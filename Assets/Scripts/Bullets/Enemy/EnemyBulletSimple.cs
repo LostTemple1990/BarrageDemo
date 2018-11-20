@@ -99,7 +99,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
         {
             UpdateAppearEffect();
         }
-        CheckRotateImg();
         if (_isScalingSize) UpdateScaling();
         CheckCollisionWithCharacter();
         if ( IsOutOfBorder() )
@@ -110,6 +109,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         {
             if (_isScaleChanged) UpdateScale();
             if (_isColorChanged) UpdateColor();
+            CheckRotateImg();
             UpdatePos();
         }
     }
@@ -130,6 +130,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         if (_isSelfRotation)
         {
             _selfRotationAngle = new Vector3(0, 0, angle);
+            _imgRotatedFlag = 1;
         }
     }
 
@@ -181,19 +182,24 @@ public class EnemyBulletSimple : EnemyBulletMovable
     public void CreateAppearEffect()
     {
         if (_timeSinceCreated != 0) return;
+        if (_cfg.appearEffectSizeFrom == 0) return;
         _appearEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
         _appearEffect.SetSprite(Consts.STGBulletsAtlasName, _cfg.appearEffectName, _cfg.blendMode, LayerId.EnemyBarrage, true);
-        _appearEffect.SetOrderInLayer(10);
+        //_appearEffect.SetOrderInLayer(10);
         _appearEffect.SetToPos(_curPos.x, _curPos.y);
-        _appearEffect.SetScale(_cfg.size * 4, _cfg.size * 4);
-        _appearEffect.DoScaleWidth(_cfg.size, AppearEffectExistDuration, InterpolationMode.Linear);
-        _appearEffect.DoScaleHeight(_cfg.size, AppearEffectExistDuration, InterpolationMode.Linear);
+        _appearEffect.SetScale(_cfg.appearEffectSizeFrom, _cfg.appearEffectSizeFrom);
+        //_appearEffect.DoScaleWidth(_cfg.appearEffectSizeTo, AppearEffectExistDuration, InterpolationMode.Linear);
+        //_appearEffect.DoScaleHeight(_cfg.appearEffectSizeTo, AppearEffectExistDuration, InterpolationMode.Linear);
         _appearEffect.DoFade(AppearEffectExistDuration);
     }
 
     private void UpdateAppearEffect()
     {
         _appearEffect.SetToPos(_curPos.x, _curPos.y);
+        float factor = (float)_timeSinceCreated / AppearEffectExistDuration;
+        float scaleX = Mathf.Lerp(_cfg.appearEffectSizeFrom, _cfg.appearEffectSizeTo, factor) * _scaleX;
+        float scaleY = Mathf.Lerp(_cfg.appearEffectSizeFrom, _cfg.appearEffectSizeTo, factor) * _scaleY;
+        _appearEffect.SetScale(scaleX, scaleY);
         if ( _timeSinceCreated >= AppearEffectExistDuration)
         {
             //_appearEffect.FinishEffect();
@@ -248,7 +254,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         }
         else
         {
-            scaleFactor = Mathf.Lerp(_scaleFrom, _scaleTo, _scaleTime / _scaleDuration);
+            scaleFactor = Mathf.Lerp(_scaleFrom, _scaleTo, (float)_scaleTime / _scaleDuration);
         }
         SetScale(scaleFactor);
     }
@@ -280,7 +286,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
     /// <param name="toScale"></param>
     /// <param name="delay"></param>
     /// <param name="duration"></param>
-    public void DoScale(float toScale,int duration,int delay)
+    public void DoScale(float toScale,int delay,int duration)
     {
         // X，Y轴缩放不相等，则不执行这个方法
         if (_scaleX != _scaleY) return;
@@ -318,7 +324,14 @@ public class EnemyBulletSimple : EnemyBulletMovable
     {
         if (_imgRotatedFlag == 1)
         {
-            RotateImgByVelocity();
+            if ( _isRotatedByVelocity )
+            {
+                RotateImgByVelocity();
+            }
+            else
+            {
+                _trans.Rotate(0, 0, _cfg.selfRotationAngle);
+            }
         }
         if ( _isRotatedByVelocity )
         {
@@ -330,8 +343,8 @@ public class EnemyBulletSimple : EnemyBulletMovable
                     return;
                 }
             }
-            _imgRotatedFlag = 1;
         }
+        _imgRotatedFlag = 1;
     }
 
     public override void SetGrazeDetectParas(GrazeDetectParas paras)

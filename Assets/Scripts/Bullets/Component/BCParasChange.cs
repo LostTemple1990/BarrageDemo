@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class BCParasChange : BulletComponent
 {
-    private EnemyBulletMovable _bullet;
+    private EnemyBulletBase _bullet;
     private int _listCount;
     private List<BulletParasChangeData> _changeList;
 
     public override void Init(EnemyBulletBase bullet)
     {
-        _bullet = bullet as EnemyBulletMovable;
+        _bullet = bullet;
         _changeList = new List<BulletParasChangeData>();
         _listCount = 0;
     }
@@ -28,76 +28,22 @@ public class BCParasChange : BulletComponent
     }
 
     public void AddParaChangeEvent(BulletParaType para, ParaChangeMode changeMode,float changeValue,int delay,
-        InterpolationMode intMode,float duration)
+        float duration, InterpolationMode intMode)
     {
         BulletParasChangeData changeData = CreateChangeData(para, intMode);
+        changeData.changeMode = changeMode;
+        changeData.changeValue = changeValue;
         changeData.delay = delay;
         changeData.changeTime = 0;
         changeData.changeDuration = duration;
-        switch ( changeMode )
-        {
-            case ParaChangeMode.ChangeTo:
-                changeData.end = changeValue;
-                break;
-            case ParaChangeMode.IncBy:
-                changeData.end = changeData.begin + changeValue;
-                break;
-            case ParaChangeMode.DecBy:
-                changeData.end = changeData.begin - changeValue;
-                break;
-        }
         _changeList.Add(changeData);
         _listCount++;
     }
 
-    private BulletParasChangeData CreateChangeData(BulletParaType movePara,InterpolationMode intMode)
+    private BulletParasChangeData CreateChangeData(BulletParaType paraType,InterpolationMode intMode)
     {
-        BulletParasChangeData changeData = new BulletParasChangeData();
-        changeData.para = movePara;
-        switch (changeData.para)
-        {
-            case BulletParaType.Velocity:
-                changeData.begin = _bullet.getVelocity();
-                changeData.SetParaFunc = _bullet.SetVelocity;
-                break;
-            case BulletParaType.VAngel:
-                changeData.begin = _bullet.GetVAnlge();
-                changeData.SetParaFunc = _bullet.SetVAngle;
-                break;
-            case BulletParaType.Acc:
-                changeData.begin = _bullet.GetAcce();
-                changeData.SetParaFunc = _bullet.SetAcce;
-                break;
-            case BulletParaType.AccAngle:
-                changeData.begin = _bullet.GetAccAngle();
-                changeData.SetParaFunc = _bullet.SetAccAngle;
-                break;
-            case BulletParaType.CurveRadius:
-                changeData.begin = _bullet.GetCirRadius();
-                changeData.SetParaFunc = _bullet.SetCirRadius;
-                break;
-            case BulletParaType.CurveAngle:
-                changeData.begin = _bullet.GetCirAngle();
-                changeData.SetParaFunc = _bullet.SetCirAngle;
-                break;
-            case BulletParaType.CurveDeltaR:
-                changeData.begin = _bullet.GetCirDeltaR();
-                changeData.SetParaFunc = _bullet.SetCirDeltaR;
-                break;
-            case BulletParaType.CurveOmiga:
-                changeData.begin = _bullet.GetCirOmiga();
-                changeData.SetParaFunc = _bullet.SetCirOmiga;
-                break;
-            case BulletParaType.CurveCenterX:
-                changeData.begin = _bullet.GetCirCenterX();
-                changeData.SetParaFunc = _bullet.SetCirCenterX;
-                break;
-            case BulletParaType.CurveCenterY:
-                changeData.begin = _bullet.GetCirCenterY();
-                changeData.SetParaFunc = _bullet.SetCirCenterY;
-                break;
-
-        }
+        BulletParasChangeData changeData = ObjectsPool.GetInstance().GetPoolClassAtPool<BulletParasChangeData>();
+        changeData.paraType = paraType;
         changeData.mode = intMode;
         changeData.GetInterpolationValueFunc = MathUtil.GetInterpolationFloatFunc(changeData.mode);
         return changeData;
@@ -106,6 +52,32 @@ public class BCParasChange : BulletComponent
     private void UpdateChangeData(int idx)
     {
         BulletParasChangeData changeData = _changeList[idx];
+        if ( !changeData.isCached )
+        {
+            changeData.isCached = true;
+            float beginValue;
+            if ( !_bullet.GetBulletPara(changeData.paraType, out beginValue) )
+            {
+                changeData.isFinish = true;
+                Logger.LogWarn("ParasChange Warn :ParaType is not valid for bullet");
+            }
+            else
+            {
+                changeData.begin = beginValue;
+                switch (changeData.changeMode)
+                {
+                    case ParaChangeMode.ChangeTo:
+                        changeData.end = changeData.changeValue;
+                        break;
+                    case ParaChangeMode.IncBy:
+                        changeData.end = changeData.begin + changeData.changeValue;
+                        break;
+                    case ParaChangeMode.DecBy:
+                        changeData.end = changeData.begin - changeData.changeValue;
+                        break;
+                }
+            }
+        }
         if ( !changeData.isFinish )
         {
             if ( changeData.delay > 0 )
@@ -116,12 +88,11 @@ public class BCParasChange : BulletComponent
             {
                 changeData.changeTime++;
                 float changeValue = changeData.GetInterpolationValueFunc(changeData.begin, changeData.end, changeData.changeTime, changeData.changeDuration);
-                changeData.SetParaFunc(changeValue);
+                _bullet.SetBulletPara(changeData.paraType, changeValue);
                 if (changeData.changeTime >= changeData.changeDuration)
                 {
                     changeData.isFinish = true;
                     changeData.GetInterpolationValueFunc = null;
-                    changeData.SetParaFunc = null;
                 }
             }
         }
@@ -133,33 +104,42 @@ public class BCParasChange : BulletComponent
         for (int i = 0; i < _listCount; i++)
         {
             changeData = _changeList[i];
-            if ( !changeData.isFinish )
-            {
-                changeData.isFinish = true;
-                changeData.GetInterpolationValueFunc = null;
-                changeData.SetParaFunc = null;
-            }
+            ObjectsPool.GetInstance().RestorePoolClassToPool<BulletParasChangeData>(changeData);
         }
         _changeList.Clear();
     }
 }
 
-public class BulletParasChangeData
+public class BulletParasChangeData : IPoolClass
 {
     /// <summary>
     /// 延迟执行的帧数
     /// </summary>
     public int delay;
-    public BulletParaType para;
+    public BulletParaType paraType;
+    public ParaChangeMode changeMode;
     public InterpolationMode mode;
+    public float changeValue;
     public float begin;
     public float end;
     public float changeTime;
     public float changeDuration;
+    public bool isCached;
     public bool isFinish;
-    public delegate void SetPara(float value);
     public MathUtil.InterpolationFloatFunc GetInterpolationValueFunc;
-    public SetPara SetParaFunc;
+
+    public BulletParasChangeData()
+    {
+        isCached = false;
+        isFinish = false;
+    }
+
+    public void Clear()
+    {
+        isCached = false;
+        isFinish = false;
+        GetInterpolationValueFunc = null;
+    }
 }
 
 /// <summary>

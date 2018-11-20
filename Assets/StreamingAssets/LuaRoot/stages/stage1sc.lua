@@ -13,8 +13,8 @@ CustomizedBulletTable.NazrinSC1Bullet0.Init = function(bullet,waitTime,maxRadius
 	lib.SetBulletResistEliminatedFlag(bullet,EliminateType.PlayerSpellCard + EliminateType.PlayerDead + EliminateType.HitPlayer)
 	lib.AddBulletTask(bullet,function()
 		local posX,posY = lib.GetBulletPos(bullet)
-		lib.AddBulletComponent(bullet,Constants.BCTypeMoveParasChange)
-		lib.AddBulletParaChangeEvent(bullet,5,Constants.ParaChangeMode_ChangeTo,maxRadius,0,Constants.ModeLinear,30)
+		lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
+		lib.AddBulletParaChangeEvent(bullet,5,eParaChangeMode.ChangeTo,maxRadius,0,30,Constants.ModeLinear)
 		--lib.AddBulletParaChangeEvent(bullet,8,Constants.ParaChangeMode_ChangeTo,1.5,50-waitTime,Constants.ModeLinear,10)
 		if coroutine.yield(80-waitTime) == false then return end
 		lib.ChangeBulletStyleById(bullet,"107060")
@@ -1328,6 +1328,127 @@ CustomizedBulletTable.MarisaSC0Bullet0.Init = function(bullet,vAngle)
 	end)
 end
 
+CustomizedBulletTable.MarisaSC0Bullet1 = {}
+CustomizedBulletTable.MarisaSC0Bullet1.Init = function(bullet,vAngle)
+	lib.SetBulletStraightParas(bullet,3,vAngle,false,0,0)
+	lib.SetBulletScale(bullet,3)
+	lib.AddBulletTask(bullet,function()
+		local angle = 0
+		for _=1,Infinite do
+			local posX,posY = lib.GetBulletPos(bullet)
+			if posX > 192 then
+				lib.SetBulletAlpha(bullet,0)
+				lib.SetBulletDetectCollision(bullet,false)
+				angle = lib.GetRandomFloat(178,182)
+				lib.SetBulletStraightParas(bullet,30,angle,false,0,0)
+				break
+			end
+			if posX < -192 then
+				lib.SetBulletAlpha(bullet,0)
+				lib.SetBulletDetectCollision(bullet,false)
+				angle = lib.GetRandomFloat(-2,2)
+				lib.SetBulletStraightParas(bullet,30,angle,false,0,0)
+				break
+			end
+			if posY > 224 then
+				lib.SetBulletAlpha(bullet,0)
+				lib.SetBulletDetectCollision(bullet,false)
+				angle = lib.GetRandomFloat(268,272)
+				lib.SetBulletStraightParas(bullet,30,angle,false,0,0)
+				break
+			end
+			if coroutine.yield(1) == false then return end
+		end
+		for _=1,Infinite do
+			local posX,posY = lib.GetBulletPos(bullet)
+			lib.CreateCustomizedBullet("MarisaSC0LaserBullet2","123031",posX,posY,angle,1)
+			lib.CreateCustomizedBullet("MarisaSC0LaserBullet3","122031",posX,posY,angle,1)
+			if coroutine.yield(1) == false then return end
+		end
+	end)
+end
+
+CustomizedBulletTable.MarisaSC0Bullet2 = {}
+CustomizedBulletTable.MarisaSC0Bullet2.Init = function(bullet,angle,extraVelocity)
+	lib.AddBulletTask(bullet,function()
+		local v,dv = 5,-4/19
+		for _=1,20 do
+			lib.SetBulletStraightParas(bullet,v+extraVelocity,angle,false,0,0)
+			if coroutine.yield(1) == false then return end
+			v = v + dv
+		end
+	end)
+end
+
+CustomizedBulletTable.MarisaSC0Bullet3 = {}
+CustomizedBulletTable.MarisaSC0Bullet3.Init = function(bullet,angleOffsetRange)
+	lib.CreateAppearEffectForSimpleBullet(bullet)
+	local angleOffset = lib.GetRandomFloat(-angleOffsetRange,angleOffsetRange)
+	local angle = lib.GetAimToPlayerAngle(lib.GetBulletPos(bullet)) + angleOffset
+	lib.AddBulletTask(bullet,function()
+		do
+			local v,dv = 0,0.02
+			for _=1,Infinite do
+				lib.SetBulletStraightParas(bullet,v*v,angle,false,0,0)
+				local bulletPosX,bulletPosY = lib.GetBulletPos(bullet)
+				lib.CreateCustomizedBullet("MarisaSC0Bullet5","122051",bulletPosX+lib.GetRandomFloat(-2,2),bulletPosY+lib.GetRandomFloat(-2,2),angle,1)
+				if coroutine.yield(1) == false then return end
+				v = v + dv
+			end
+		end
+	end)
+end
+
+CustomizedBulletTable.MarisaSC0Bullet4 = {}
+CustomizedBulletTable.MarisaSC0Bullet4.Init = function(bullet,angle)
+	lib.SetBulletColor(bullet,0,0,100)
+	lib.SetBulletDetectCollision(bullet,false)
+	lib.AddBulletTask(bullet,function()
+		do
+			local alpha,dAlpha = 1,-1/19
+			local scale,dScale = 1,-1/19
+			for _=1,20 do
+				lib.SetBulletScale(bullet,scale)
+				lib.SetBulletColorWithAlpha(bullet,50,50,100,alpha)
+				if coroutine.yield(1) == false then return end
+				scale = scale + dScale
+				alpha = alpha + dAlpha
+			end
+			lib.EliminateBullet(bullet)
+		end
+	end)
+	lib.AddBulletTask(bullet,function()
+		do
+			local v = lib.GetRandomFloat(1,1.5)
+			local dv = -v/49
+			for _=1,50 do
+				lib.SetBulletStraightParas(bullet,v+0.1,angle,false,0,0)
+				if coroutine.yield(1) == false then return end
+				v = v + dv
+			end
+		end
+	end)
+end
+
+CustomizedBulletTable.MarisaSC0Bullet5 = {}
+CustomizedBulletTable.MarisaSC0Bullet5.Init = function(bullet,angle)
+	lib.SetBulletColor(bullet,50,50,100)
+	lib.SetBulletDetectCollision(bullet,false)
+	lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
+	lib.AddBulletParaChangeEvent(bullet,eBulletParaType.Alpha,eParaChangeMode.ChangeTo,0,0,20,Constants.ModeLinear)
+	local v = lib.GetRandomFloat(1,1.5)
+	lib.SetBulletStraightParas(bullet,v+0.1,angle,false,0,0)
+	lib.AddBulletParaChangeEvent(bullet,eBulletParaType.Velocity,eParaChangeMode.DecBy,v/50*20,0,20,Constants.ModeLinear)
+	lib.BulletDoScale(bullet,0,0,20)
+	--lib.CreateAppearEffectForSimpleBullet(bullet)
+	lib.AddBulletTask(bullet,function()
+		do
+			if coroutine.yield(20) == false then return end
+			lib.EliminateBullet(bullet)
+		end
+	end)
+end
+
 CustomizedBulletTable.MarisaSC0LaserBullet0 = {}
 CustomizedBulletTable.MarisaSC0LaserBullet0.Init = function(bullet,bulletAngle)
 	lib.SetBulletPara(bullet,eBulletParaType.ScaleX,0.4)
@@ -1360,6 +1481,48 @@ CustomizedBulletTable.MarisaSC0LaserBullet1.Init = function(bullet,bulletAngle)
 		if coroutine.yield(50) == false then return end
 		lib.SetBulletDetectCollision(bullet,true)
 		lib.SetBulletColorWithAlpha(bullet,50,50,255,0.2)
+		local angle,dAngle = 0,180/48
+		for _=1,50 do
+			lib.SetBulletPara(bullet,eBulletParaType.ScaleX,math.sin(math.rad(angle))*1+0.2)
+			if coroutine.yield(1) == false then return end
+			angle = angle + dAngle
+		end
+		lib.EliminateBullet(bullet)
+	end)
+end
+
+CustomizedBulletTable.MarisaSC0LaserBullet2 = {}
+CustomizedBulletTable.MarisaSC0LaserBullet2.Init = function(bullet,bulletAngle)
+	lib.SetBulletPara(bullet,eBulletParaType.ScaleX,0.4)
+	lib.SetBulletPara(bullet,eBulletParaType.ScaleY,12)
+	lib.SetBulletColorWithAlpha(bullet,180,100,180,0.1)
+	lib.SetBulletStraightParas(bullet,0,bulletAngle,false,0,0)
+	lib.SetBulletDetectCollision(bullet,false)
+	lib.AddBulletTask(bullet,function()
+		if coroutine.yield(50) == false then return end
+		lib.SetBulletDetectCollision(bullet,true)
+		lib.SetBulletColorWithAlpha(bullet,180,100,180,1)
+		local angle,dAngle = 0,180/48
+		for _=1,50 do
+			lib.SetBulletPara(bullet,eBulletParaType.ScaleX,math.sin(math.rad(angle))*1.7+0.2)
+			if coroutine.yield(1) == false then return end
+			angle = angle + dAngle
+		end
+		lib.EliminateBullet(bullet)
+	end)
+end
+
+CustomizedBulletTable.MarisaSC0LaserBullet3 = {}
+CustomizedBulletTable.MarisaSC0LaserBullet3.Init = function(bullet,bulletAngle)
+	lib.SetBulletPara(bullet,eBulletParaType.ScaleX,0.4)
+	lib.SetBulletPara(bullet,eBulletParaType.ScaleY,6)
+	lib.SetBulletColorWithAlpha(bullet,180,100,180,0)
+	lib.SetBulletStraightParas(bullet,0,bulletAngle,false,0,0)
+	lib.SetBulletDetectCollision(bullet,false)
+	lib.AddBulletTask(bullet,function()
+		if coroutine.yield(50) == false then return end
+		lib.SetBulletDetectCollision(bullet,true)
+		lib.SetBulletColorWithAlpha(bullet,180,50,180,0.2)
 		local angle,dAngle = 0,180/48
 		for _=1,50 do
 			lib.SetBulletPara(bullet,eBulletParaType.ScaleX,math.sin(math.rad(angle))*1+0.2)
@@ -1408,30 +1571,127 @@ function SC.MarisaSC0(boss)
 		for _=1,Infinite do
 			lib.EnemyMoveToPos(boss,145,160,70,Constants.ModeEaseOutQuad)
 			if coroutine.yield(70) == false then return end
-			local san,dSan = 0,90/99
-			for _=1,100 do
-				local posY = -160 * math.sin(math.rad(san*2-90))
-				local posX = 145 - 290 * math.sin(math.rad(san))
-				lib.SetEnemyPos(boss,posX,posY)
-				if coroutine.yield(1) == false then return end
-				san = san + dSan
+			do
+				local san,dSan = 0,90/99
+				for _=1,100 do
+					local posY = -160 * math.sin(math.rad(san*2-90))
+					local posX = 145 - 290 * math.sin(math.rad(san))
+					lib.SetEnemyPos(boss,posX,posY)
+					if coroutine.yield(1) == false then return end
+					san = san + dSan
+				end
 			end
-			--以下暂时省略
-			if coroutine.yield(300) == false then return end
+			do
+				local playerPosX,playerPosY = lib.GetPlayerPos()
+				lib.EnemyMoveToPos(boss,playerPosX+lib.GetRandomFloat(-20,20),lib.GetRandomFloat(150,170),70,Constants.ModeEaseOutQuad)
+				if coroutine.yield(70) == false then return end
+			end
+			if coroutine.yield(75) == false then return end
+			lib.EnemyMoveToPos(boss,-145,160,70,Constants.ModeEaseOutQuad)
+			if coroutine.yield(70) == false then return end
+			do
+				local san,dSan = 0,90/99
+				for _=1,100 do
+					local posY = -160 * math.sin(math.rad(san*2-90))
+					local posX = -145 + 290 * math.sin(math.rad(san))
+					lib.SetEnemyPos(boss,posX,posY)
+					if coroutine.yield(1) == false then return end
+					san = san + dSan
+				end
+			end
+			do
+				local playerPosX,playerPosY = lib.GetPlayerPos()
+				lib.EnemyMoveToPos(boss,playerPosX+lib.GetRandomFloat(-20,20),lib.GetRandomFloat(150,170),70,Constants.ModeEaseOutQuad)
+				if coroutine.yield(70) == false then return end
+			end
+			if coroutine.yield(75) == false then return end
+			do
+				lib.EnemyMoveToPos(boss,lib.GetRandomFloat(-20,20),lib.GetRandomFloat(150,170),70,Constants.ModeEaseOutQuad)
+				if coroutine.yield(70) == false then return end
+			end
+			do
+				lib.EnemyMoveToPos(boss,lib.GetRandomFloat(-20,20),lib.GetRandomFloat(150,170),40,Constants.ModeEaseOutQuad)
+			end
+			if coroutine.yield(80) == false then return end
+			if coroutine.yield(60) == false then return end
 		end
 	end)
 	lib.AddEnemyTask(boss,function()
 		for _=1,Infinite do
 			if coroutine.yield(70) == false then return end
-			local angle,dAngle = 90,150/19
-			for _=1,20 do
-				local posX,posY = lib.GetEnemyPos(boss)
-				lib.CreateCustomizedBullet("MarisaSC0Bullet0","111060",posX,posY,angle,1)
-				if coroutine.yield(5) == false then return end
-				angle = angle + dAngle
+			do --星弹，撞墙产生激光
+				local angle,dAngle = 90,150/19
+				for _=1,20 do
+					local posX,posY = lib.GetEnemyPos(boss)
+					lib.CreateCustomizedBullet("MarisaSC0Bullet0","111060",posX,posY,angle,1)
+					if coroutine.yield(5) == false then return end
+					angle = angle + dAngle
+				end
 			end
-			--以下暂时省略
-			if coroutine.yield(300) == false then return end
+			if coroutine.yield(70) == false then return end
+			do
+				for _=1,5 do
+					local posX,posY = lib.GetEnemyPos(boss)
+					local angleToPlayer = lib.GetAimToPlayerAngle(posX,posY)
+					local angle,dAngle = angleToPlayer - 135 + lib.GetRandomFloat(-10,10),270/24
+					for _=1,25 do
+						lib.CreateCustomizedBullet("MarisaSC0Bullet2","111130",posX+math.cos(math.rad(angle))*20,posY+math.sin(math.rad(angle))*20,angle,1,2)
+						lib.CreateCustomizedBullet("MarisaSC0Bullet2","111130",posX+math.cos(math.rad(angle))*20,posY+math.sin(math.rad(angle))*20,angle,0.2,2)
+						angle = angle + dAngle
+					end
+					if coroutine.yield(15) == false then return end
+				end
+			end
+			if coroutine.yield(70) == false then return end
+			do --星弹，撞墙产生激光
+				local angle,dAngle = 90,-150/19
+				for _=1,20 do
+					local posX,posY = lib.GetEnemyPos(boss)
+					lib.CreateCustomizedBullet("MarisaSC0Bullet1","111040",posX,posY,angle,1)
+					if coroutine.yield(5) == false then return end
+					angle = angle + dAngle
+				end
+			end
+			if coroutine.yield(70) == false then return end
+			do
+				for _=1,5 do
+					local posX,posY = lib.GetEnemyPos(boss)
+					local angleToPlayer = lib.GetAimToPlayerAngle(posX,posY)
+					local angle,dAngle = angleToPlayer - 135 + lib.GetRandomFloat(-10,10),270/24
+					for _=1,25 do
+						lib.CreateCustomizedBullet("MarisaSC0Bullet2","111130",posX+math.cos(math.rad(angle))*20,posY+math.sin(math.rad(angle))*20,angle,1,2)
+						lib.CreateCustomizedBullet("MarisaSC0Bullet2","111130",posX+math.cos(math.rad(angle))*20,posY+math.sin(math.rad(angle))*20,angle,0.2,2)
+						angle = angle + dAngle
+					end
+					if coroutine.yield(15) == false then return end
+				end
+			end
+			if coroutine.yield(70) == false then return end
+			do
+				local posX,posY = lib.GetEnemyPos(boss)
+				local angle,dAngle = 0,-180/19
+				local m,dm = 0,1
+				for _=1,20 do
+					if m%2 == 0 then
+						lib.CreateCustomizedBullet("MarisaSC0Bullet0","111040",posX,posY,angle,1)
+					else
+						lib.CreateCustomizedBullet("MarisaSC0Bullet0","111060",posX,posY,angle,1)
+					end
+					angle = angle + dAngle
+					m = m + dm
+				end
+			end
+			do
+				local range,dRange = 120,-80/39
+				for _=1,40 do
+					local posX,posY = lib.GetEnemyPos(boss)
+					lib.CreateCustomizedBullet("MarisaSC0Bullet3","117051",posX,posY,range,1)
+					if coroutine.yield(2) == false then return end
+				end
+			end
+			do
+				if coroutine.yield(60) == false then return end
+			end
 		end
 	end)
 end

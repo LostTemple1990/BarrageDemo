@@ -277,7 +277,7 @@ public class STGSpriteEffect : STGEffectBase
     /// <param name="duration">持续时间</param>
     public void DoTweenAlpha(float startAlhpa,float endAlpha,int duration)
     {
-        _spriteColor = _spRenderer.material.color;
+        _spriteColor = _spRenderer.color;
         _startAlhpa = startAlhpa;
         _endAlpha = endAlpha;
         _tweenAlphaTime = 0;
@@ -293,7 +293,7 @@ public class STGSpriteEffect : STGEffectBase
     /// <param name="duration">持续时间</param>
     public void DoTweenAlpha(float endAlpha,int duration)
     {
-        _spriteColor = _spRenderer.material.color;
+        _spriteColor = _spRenderer.color;
         _startAlhpa = _spriteColor.a;
         _endAlpha = endAlpha;
         _tweenAlphaTime = 0;

@@ -66,10 +66,10 @@ public partial class LuaLib
     {
         EnemyBulletSimple bullet = luaState.ToUserData(-4) as EnemyBulletSimple;
         float toScale = (float)luaState.ToNumber(-3);
-        int duration = luaState.ToInteger(-2);
-        int delay = luaState.ToInteger(-1);
+        int delay = luaState.ToInteger(-2);
+        int duration = luaState.ToInteger(-1);
         luaState.Pop(4);
-        bullet.DoScale(toScale, duration, delay);
+        bullet.DoScale(toScale, delay, duration);
         return 0;
     }
 
