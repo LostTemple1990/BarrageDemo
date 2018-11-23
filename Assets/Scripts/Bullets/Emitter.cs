@@ -1,12 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniLua;
 
-public class Emitter
+public class Emitter : IPoolClass
 {
+    public void Init(ILuaState luaState)
+    {
+
+    }
+
     public void Update()
     {
 
+    }
+
+    public void Clear()
+    {
+        throw new System.NotImplementedException();
     }
 }
 //if ( frameNode%2 == 0 && frameNode >= 300 )

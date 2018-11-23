@@ -276,12 +276,26 @@ public class BulletsManager : ICommand
     }
 
     /// <summary>
+    /// 获取敌机子弹计数
+    /// </summary>
+    /// <returns></returns>
+    public int GetEnemyBulletsCount()
+    {
+        return _enemyBulletsCount;
+    }
+
+    /// <summary>
     /// 获取自机子弹列表
     /// </summary>
     /// <returns></returns>
     public List<PlayerBulletBase> GetPlayerBulletList()
     {
         return _playerBullets;
+    }
+
+    public int GetPlayerBulletsCount()
+    {
+        return _playerBulletsCount;
     }
 
     public void ClearEnemyBulletsInRange(Vector2 center,float radius)

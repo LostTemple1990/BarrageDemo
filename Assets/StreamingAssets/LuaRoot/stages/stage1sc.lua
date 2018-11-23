@@ -1451,7 +1451,7 @@ end
 
 CustomizedBulletTable.MarisaSC0LaserBullet0 = {}
 CustomizedBulletTable.MarisaSC0LaserBullet0.Init = function(bullet,bulletAngle)
-	lib.SetBulletPara(bullet,eBulletParaType.ScaleX,0.4)
+	lib.SetBulletPara(bullet,eBulletParaType.ScaleX,0.2)
 	lib.SetBulletPara(bullet,eBulletParaType.ScaleY,12)
 	lib.SetBulletColorWithAlpha(bullet,100,100,255,0.1)
 	lib.SetBulletStraightParas(bullet,0,bulletAngle,false,0,0)
@@ -1461,18 +1461,22 @@ CustomizedBulletTable.MarisaSC0LaserBullet0.Init = function(bullet,bulletAngle)
 		lib.SetBulletDetectCollision(bullet,true)
 		lib.SetBulletColorWithAlpha(bullet,100,100,255,1)
 		local angle,dAngle = 0,180/48
-		for _=1,50 do
-			lib.SetBulletPara(bullet,eBulletParaType.ScaleX,math.sin(math.rad(angle))*1.7+0.2)
-			if coroutine.yield(1) == false then return end
-			angle = angle + dAngle
-		end
+		--for _=1,50 do
+			--lib.SetBulletPara(bullet,eBulletParaType.ScaleX,math.sin(math.rad(angle))*1.7+0.2)
+			--if coroutine.yield(1) == false then return end
+			--angle = angle + dAngle
+		--end
+		lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,1.9,0,25,Constants.ModeSin)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0.2,25,25,Constants.ModeCos)
+		if coroutine.yield(50) == false then return end
 		lib.EliminateBullet(bullet)
 	end)
 end
 
 CustomizedBulletTable.MarisaSC0LaserBullet1 = {}
 CustomizedBulletTable.MarisaSC0LaserBullet1.Init = function(bullet,bulletAngle)
-	lib.SetBulletPara(bullet,eBulletParaType.ScaleX,0.4)
+	lib.SetBulletPara(bullet,eBulletParaType.ScaleX,0.2)
 	lib.SetBulletPara(bullet,eBulletParaType.ScaleY,6)
 	lib.SetBulletColorWithAlpha(bullet,100,100,255,0)
 	lib.SetBulletStraightParas(bullet,0,bulletAngle,false,0,0)
@@ -1482,18 +1486,22 @@ CustomizedBulletTable.MarisaSC0LaserBullet1.Init = function(bullet,bulletAngle)
 		lib.SetBulletDetectCollision(bullet,true)
 		lib.SetBulletColorWithAlpha(bullet,50,50,255,0.2)
 		local angle,dAngle = 0,180/48
-		for _=1,50 do
-			lib.SetBulletPara(bullet,eBulletParaType.ScaleX,math.sin(math.rad(angle))*1+0.2)
-			if coroutine.yield(1) == false then return end
-			angle = angle + dAngle
-		end
+		--for _=1,50 do
+			--lib.SetBulletPara(bullet,eBulletParaType.ScaleX,math.sin(math.rad(angle))*1+0.2)
+			--if coroutine.yield(1) == false then return end
+			--angle = angle + dAngle
+		--end
+		lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,1.2,0,25,Constants.ModeSin)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0.2,25,25,Constants.ModeCos)
+		if coroutine.yield(50) == false then return end
 		lib.EliminateBullet(bullet)
 	end)
 end
 
 CustomizedBulletTable.MarisaSC0LaserBullet2 = {}
 CustomizedBulletTable.MarisaSC0LaserBullet2.Init = function(bullet,bulletAngle)
-	lib.SetBulletPara(bullet,eBulletParaType.ScaleX,0.4)
+	lib.SetBulletPara(bullet,eBulletParaType.ScaleX,0.2)
 	lib.SetBulletPara(bullet,eBulletParaType.ScaleY,12)
 	lib.SetBulletColorWithAlpha(bullet,180,100,180,0.1)
 	lib.SetBulletStraightParas(bullet,0,bulletAngle,false,0,0)
@@ -1503,18 +1511,22 @@ CustomizedBulletTable.MarisaSC0LaserBullet2.Init = function(bullet,bulletAngle)
 		lib.SetBulletDetectCollision(bullet,true)
 		lib.SetBulletColorWithAlpha(bullet,180,100,180,1)
 		local angle,dAngle = 0,180/48
-		for _=1,50 do
-			lib.SetBulletPara(bullet,eBulletParaType.ScaleX,math.sin(math.rad(angle))*1.7+0.2)
-			if coroutine.yield(1) == false then return end
-			angle = angle + dAngle
-		end
+		--for _=1,50 do
+			--lib.SetBulletPara(bullet,eBulletParaType.ScaleX,math.sin(math.rad(angle))*1.7+0.2)
+			--if coroutine.yield(1) == false then return end
+			--angle = angle + dAngle
+		--end
+		lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,1.9,0,25,Constants.ModeSin)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0.2,25,25,Constants.ModeCos)
+		if coroutine.yield(50) == false then return end
 		lib.EliminateBullet(bullet)
 	end)
 end
 
 CustomizedBulletTable.MarisaSC0LaserBullet3 = {}
 CustomizedBulletTable.MarisaSC0LaserBullet3.Init = function(bullet,bulletAngle)
-	lib.SetBulletPara(bullet,eBulletParaType.ScaleX,0.4)
+	lib.SetBulletPara(bullet,eBulletParaType.ScaleX,0.2)
 	lib.SetBulletPara(bullet,eBulletParaType.ScaleY,6)
 	lib.SetBulletColorWithAlpha(bullet,180,100,180,0)
 	lib.SetBulletStraightParas(bullet,0,bulletAngle,false,0,0)
@@ -1524,11 +1536,15 @@ CustomizedBulletTable.MarisaSC0LaserBullet3.Init = function(bullet,bulletAngle)
 		lib.SetBulletDetectCollision(bullet,true)
 		lib.SetBulletColorWithAlpha(bullet,180,50,180,0.2)
 		local angle,dAngle = 0,180/48
-		for _=1,50 do
-			lib.SetBulletPara(bullet,eBulletParaType.ScaleX,math.sin(math.rad(angle))*1+0.2)
-			if coroutine.yield(1) == false then return end
-			angle = angle + dAngle
-		end
+		--for _=1,50 do
+			--lib.SetBulletPara(bullet,eBulletParaType.ScaleX,math.sin(math.rad(angle))*1+0.2)
+			--if coroutine.yield(1) == false then return end
+			--angle = angle + dAngle
+		--end
+		lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,1.2,0,25,Constants.ModeSin)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0.2,25,25,Constants.ModeCos)
+		if coroutine.yield(50) == false then return end
 		lib.EliminateBullet(bullet)
 	end)
 end

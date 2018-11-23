@@ -71,6 +71,10 @@ public class Consts
     /// </summary>
     public const float VelocityAngle = -999;
     /// <summary>
+    /// 原本的旋转角度
+    /// </summary>
+    public const float OriginalRotation = -9999.5f;
+    /// <summary>
     /// 最大速度限制
     /// </summary>
     public const float MaxVelocity = 9999f;

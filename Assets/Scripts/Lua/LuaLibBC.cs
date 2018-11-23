@@ -15,7 +15,7 @@ public partial class LuaLib
         EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
         BulletComponentType type = (BulletComponentType)luaState.ToInteger(-1);
         luaState.Pop(2);
-        if ( type == BulletComponentType.MoveParasChange )
+        if ( type == BulletComponentType.ParasChange )
         {
             bullet.AddComponent<BCParasChange>();
         }

@@ -130,14 +130,20 @@ public class EnemyBulletSimple : EnemyBulletMovable
         if (_isSelfRotation)
         {
             _selfRotationAngle = new Vector3(0, 0, angle);
-            _imgRotatedFlag = 1;
+            _isRotationDirty = true;
         }
     }
 
     public virtual void SetRotatedByVelocity(bool value)
     {
         _isRotatedByVelocity = value;
-        _imgRotatedFlag = 1;
+        _isRotationDirty = true;
+    }
+
+    public override void SetRotation(float rotation)
+    {
+        _curRotation = rotation;
+        _isRotationDirty = true;
     }
 
     public override void SetStyleById(string id)
@@ -304,47 +310,39 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _isScaleChanged = false;
     }
 
-    protected virtual void RotateImgByVelocity()
+    protected virtual void CheckRotateImgByVelocity()
     {
         Vector2 dv = _curPos - _lastPos;
-        float rotateAngle;
         if ( dv.x == 0 && dv.y == 0 )
         {
-            rotateAngle = _curAngle - 90;
+            SetRotation(_curAngle);
         }
         else
         {
-            rotateAngle = MathUtil.GetAngleBetweenXAxis(dv.x, dv.y, false) - 90;
+            SetRotation(MathUtil.GetAngleBetweenXAxis(dv.x, dv.y, false));
         }
-        _trans.localRotation = Quaternion.Euler(new Vector3(0, 0, rotateAngle));
     }
 
 
     protected void CheckRotateImg()
     {
-        if (_imgRotatedFlag == 1)
-        {
-            if ( _isRotatedByVelocity )
-            {
-                RotateImgByVelocity();
-            }
-            else
-            {
-                _trans.Rotate(0, 0, _cfg.selfRotationAngle);
-            }
-        }
         if ( _isRotatedByVelocity )
         {
-            if ( _isMovingStraight )
-            {
-                if (_curAcceleration == 0 || _curAngle == _curAccAngle)
-                {
-                    _imgRotatedFlag = 0;
-                    return;
-                }
-            }
+            CheckRotateImgByVelocity();
         }
-        _imgRotatedFlag = 1;
+        if ( _isSelfRotation )
+        {
+            SetRotation(_curRotation + _selfRotationAngle.z);
+        }
+        if ( _attachableMaster!= null && _isFollowMasterRotation )
+        {
+            SetRotation(_relativeRotationToMaster == Consts.OriginalRotation ? _attachableMaster.GetRotation() : _attachableMaster.GetRotation() + _relativeRotationToMaster);
+        }
+        if ( _isRotationDirty )
+        {
+            _trans.localRotation = Quaternion.Euler(new Vector3(0, 0, _curRotation - 90));
+            _isRotationDirty = false;
+        }
     }
 
     public override void SetGrazeDetectParas(GrazeDetectParas paras)

@@ -269,24 +269,56 @@ public class MathUtil
     /// <returns></returns>
     public static float GetSinInterpolation(float start, float end, float time, float duration)
     {
-        return start + (end - start) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
+        return start + (end - start) * Mathf.Sin(time / duration * Mathf.PI / 2);
     }
 
     public static Vector3 GetSinInterpolation(Vector3 start, Vector3 end, float time, float duration)
     {
         float posX, posY, posZ;
-        posX = start.x + (end.x - start.x) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
-        posY = start.y + (end.y - start.y) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
-        posZ = start.z + (end.z - start.z) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
+        float sin = Mathf.Sin(time / duration * Mathf.PI / 2);
+        posX = start.x + (end.x - start.x) * sin;
+        posY = start.y + (end.y - start.y) * sin;
+        posZ = start.z + (end.z - start.z) * sin;
         return new Vector3(posX, posY, posZ);
     }
 
     public static Vector2 GetSinInterpolation(Vector2 start, Vector2 end, float time, float duration)
     {
         float posX, posY;
-        posX = start.x + (end.x - start.x) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
-        posY = start.y + (end.y - start.y) * Mathf.Sin(time / duration * Mathf.PI / 2 * Mathf.Deg2Rad);
+        float sin = Mathf.Sin(time / duration * Mathf.PI / 2);
+        posX = start.x + (end.x - start.x) * sin;
+        posY = start.y + (end.y - start.y) * sin;
         return new Vector2(posX, posY);
+    }
+
+    /// <summary>
+    /// 余弦插值
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <param name="time"></param>
+    /// <param name="duration"></param>
+    /// <returns></returns>
+    public static float GetCosInterpolation(float start,float end,float time,float duration)
+    {
+        return end + (start - end) * Mathf.Cos(time / duration * Mathf.PI / 2);
+    }
+    
+    public static Vector2 GetCosInterpolation(Vector2 start, Vector2 end, float time, float duration)
+    {
+        float cos = Mathf.Cos(time / duration * Mathf.PI / 2);
+        float x = end.x + (start.x - end.x) * cos;
+        float y = end.y + (start.y - end.y) * cos;
+        return new Vector2(x, y);
+    }
+
+    public static Vector3 GetCosInterpolation(Vector3 start, Vector3 end, float time, float duration)
+    {
+        float cos = Mathf.Cos(time / duration * Mathf.PI / 2);
+        float x = end.x + (start.x - end.x) * cos;
+        float y = end.y + (start.y - end.y) * cos;
+        float z = end.y + (start.z - end.z) * cos;
+        return new Vector3(x, y, z);
     }
 
     public static float GetNoneInterpolation(float start, float end, float time, float duration)
@@ -327,6 +359,8 @@ public class MathUtil
                 return GetEaseInOutQuadInterpolation;
             case InterpolationMode.Sin:
                 return GetSinInterpolation;
+            case InterpolationMode.Cos:
+                return GetCosInterpolation;
         }
         return null;
     }
@@ -347,6 +381,8 @@ public class MathUtil
                 return GetEaseInOutQuadInterpolation;
             case InterpolationMode.Sin:
                 return GetSinInterpolation;
+            case InterpolationMode.Cos:
+                return GetCosInterpolation;
         }
         return null;
     }
@@ -367,6 +403,8 @@ public class MathUtil
                 return GetEaseInOutQuadInterpolation;
             case InterpolationMode.Sin:
                 return GetSinInterpolation;
+            case InterpolationMode.Cos:
+                return GetCosInterpolation;
         }
         return null;
     }

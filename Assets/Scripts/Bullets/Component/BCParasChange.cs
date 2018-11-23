@@ -52,32 +52,6 @@ public class BCParasChange : BulletComponent
     private void UpdateChangeData(int idx)
     {
         BulletParasChangeData changeData = _changeList[idx];
-        if ( !changeData.isCached )
-        {
-            changeData.isCached = true;
-            float beginValue;
-            if ( !_bullet.GetBulletPara(changeData.paraType, out beginValue) )
-            {
-                changeData.isFinish = true;
-                Logger.LogWarn("ParasChange Warn :ParaType is not valid for bullet");
-            }
-            else
-            {
-                changeData.begin = beginValue;
-                switch (changeData.changeMode)
-                {
-                    case ParaChangeMode.ChangeTo:
-                        changeData.end = changeData.changeValue;
-                        break;
-                    case ParaChangeMode.IncBy:
-                        changeData.end = changeData.begin + changeData.changeValue;
-                        break;
-                    case ParaChangeMode.DecBy:
-                        changeData.end = changeData.begin - changeData.changeValue;
-                        break;
-                }
-            }
-        }
         if ( !changeData.isFinish )
         {
             if ( changeData.delay > 0 )
@@ -86,14 +60,41 @@ public class BCParasChange : BulletComponent
             }
             else
             {
+                if (!changeData.isCached) CacheChangeData(changeData);
                 changeData.changeTime++;
                 float changeValue = changeData.GetInterpolationValueFunc(changeData.begin, changeData.end, changeData.changeTime, changeData.changeDuration);
                 _bullet.SetBulletPara(changeData.paraType, changeValue);
                 if (changeData.changeTime >= changeData.changeDuration)
                 {
                     changeData.isFinish = true;
-                    changeData.GetInterpolationValueFunc = null;
                 }
+            }
+        }
+    }
+
+    private void CacheChangeData(BulletParasChangeData changeData)
+    {
+        changeData.isCached = true;
+        float beginValue;
+        if (!_bullet.GetBulletPara(changeData.paraType, out beginValue))
+        {
+            changeData.isFinish = true;
+            Logger.LogWarn("ParasChange Warn :ParaType is not valid for bullet");
+        }
+        else
+        {
+            changeData.begin = beginValue;
+            switch (changeData.changeMode)
+            {
+                case ParaChangeMode.ChangeTo:
+                    changeData.end = changeData.changeValue;
+                    break;
+                case ParaChangeMode.IncBy:
+                    changeData.end = changeData.begin + changeData.changeValue;
+                    break;
+                case ParaChangeMode.DecBy:
+                    changeData.end = changeData.begin - changeData.changeValue;
+                    break;
             }
         }
     }
@@ -197,6 +198,7 @@ public enum InterpolationMode : byte
     EaseOutQuad = 3,
     EaseInOutQuad = 4,
     Sin = 9,
+    Cos = 10,
 }
 
 public enum ParaChangeMode : byte

@@ -180,6 +180,19 @@ CustomizedEnemyTable.TestKillEnemy.OnKill = function(enemy)
 			end
 		end
 	end
+	do
+		local master = lib.CreateSimpleBulletById("122151",0,250)
+		lib.SetBulletStraightParas(master,3,255,false,0,0)
+		local relativeRotation = 0
+		for _=1,4 do
+			local bullet = lib.CreateSimpleBulletById("104151",0,250)
+			lib.AttatchToMaster(bullet,master,true)
+			local posX = 16 * (math.cos(math.rad(relativeRotation)) * 1 - math.sin(math.rad(relativeRotation)) * 0)
+			local posY = 16 * (math.sin(math.rad(relativeRotation)) * 1 - math.cos(math.rad(relativeRotation)) * 0)
+			lib.SetAttachmentRelativePos(bullet,posX,posY,relativeRotation,true)
+			relativeRotation = relativeRotation + 90
+		end
+	end
 end
 
 

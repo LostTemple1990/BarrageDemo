@@ -143,6 +143,9 @@ public partial class LuaLib
             new NameFuncPair("BgSpriteObjectDoFade",BgSpriteObjectDoFade),
             new NameFuncPair("SetBgSpriteObjectAcce",SetBgSpriteObjectAcce),
             new NameFuncPair("SetBgSpriteObjectAcceWithLimitation",SetBgSpriteObjectAcceWithLimitation),
+            // 绑定附加组件
+            new NameFuncPair("AttatchToMaster",AttachToMaster),
+            new NameFuncPair("SetAttachmentRelativePos",SetAttachmentRelativePos),
             // 通用类相关
             new NameFuncPair("GetRandomInt", GetRandomInt),
             new NameFuncPair("GetRandomFloat", GetRandomFloat),
@@ -223,7 +226,7 @@ public partial class LuaLib
         EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Laser) as EnemyLaser;
         laser.SetStyleById(id);
         laser.SetToPosition(posX, posY);
-        laser.SetLaserAngle(angle);
+        laser.SetRotation(angle);
         laser.SetLaserSize(width, height);
         laser.SetLaserExistDuration(existDuration);
         luaState.PushLightUserData(laser);
@@ -331,7 +334,7 @@ public partial class LuaLib
         int existDuration = luaState.ToInteger(-1);
         luaState.Pop(7);
         laser.SetToPosition(posX, posY);
-        laser.SetLaserAngle(angle);
+        laser.SetRotation(angle);
         laser.SetLaserSize(width, height);
         laser.SetLaserExistDuration(existDuration);
         luaState.PushLightUserData(laser);
@@ -353,7 +356,7 @@ public partial class LuaLib
         EnemyLaser laser = luaState.ToUserData(-2) as EnemyLaser;
         float angle = (float)luaState.ToNumber(-1);
         luaState.Pop(2);
-        laser.SetLaserAngle(angle);
+        laser.SetRotation(angle);
         return 0;
     }
 

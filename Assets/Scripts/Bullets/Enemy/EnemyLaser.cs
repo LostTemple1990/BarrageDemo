@@ -9,14 +9,11 @@ public class EnemyLaser : EnemyBulletBase
     /// </summary>
     private const int GrazeCoolDown = 3;
 
-    protected float _laserAngle;
     protected float _laserRotateOmega;
     protected int _rotateCounter;
     protected int _rotateDuration;
     protected float _rotateToAngle;
     protected bool _isRotating;
-
-    protected bool _rotateFlag;
     protected bool _moveFlag;
 
     protected Vector3 _endPos;
@@ -96,7 +93,6 @@ public class EnemyLaser : EnemyBulletBase
     public override void Init()
     {
         base.Init();
-        _rotateFlag = false;
         _moveFlag = false;
         _curPos = Vector3.zero;
         _existTime = 0;
@@ -197,12 +193,6 @@ public class EnemyLaser : EnemyBulletBase
         _isChangingHeight = true;
     }
 
-    public virtual void SetLaserAngle(float angle)
-    {
-        _laserAngle = angle;
-        _rotateFlag = true;
-    }
-
     public virtual void SetLaserExistDuration(int existDuration)
     {
         _existTime = 0;
@@ -223,10 +213,6 @@ public class EnemyLaser : EnemyBulletBase
             _laserHalfHeight = height / 2;
             _isDirty = true;
         }
-        //if (_laser != null && _isSized)
-        //{
-            //Resize();
-        //}
     }
 
     public void DoMove(Vector3 endPos,int duration)
@@ -244,13 +230,13 @@ public class EnemyLaser : EnemyBulletBase
         _rotateToAngle = toAngle;
         _rotateCounter = 0;
         _rotateDuration = duration;
-        _laserRotateOmega = (toAngle - _laserAngle) / duration;
+        _laserRotateOmega = (toAngle - _curRotation) / duration;
         _isRotating = true;
     }
 
     public void DoRotateWithOmega(float omega,int duration)
     {
-        _rotateToAngle = _laserAngle + duration * omega;
+        _rotateToAngle = _curRotation + duration * omega;
         _rotateCounter = 0;
         _rotateDuration = duration;
         _laserRotateOmega = omega;
@@ -363,27 +349,27 @@ public class EnemyLaser : EnemyBulletBase
 
     protected virtual void Rotate()
     {
-        _laserAngle += _laserRotateOmega;
+        _curRotation += _laserRotateOmega;
         _rotateCounter++;
         if ( _rotateCounter >= _rotateDuration )
         {
-            _laserAngle = _rotateToAngle;
-            while ( _laserAngle < 0 )
+            _curRotation = _rotateToAngle;
+            while (_curRotation < 0 )
             {
-                _laserAngle += 360;
+                _curRotation += 360;
             }
-            _laserAngle = _laserAngle % 360;
+            _curRotation = _curRotation % 360;
             _isRotating = false;
         }
-        _rotateFlag = true;
+        _isRotationDirty = true;
     }
 
     protected virtual void UpdatePosition()
     {
-        if ( _rotateFlag )
+        if ( _isRotationDirty )
         {
-            _rotateFlag = false;
-            _objTrans.localRotation = Quaternion.Euler(0, 0, _laserAngle - 90);
+            _isRotationDirty = false;
+            _objTrans.localRotation = Quaternion.Euler(0, 0, _curRotation - 90);
         }
         if ( _moveFlag )
         {
@@ -425,11 +411,11 @@ public class EnemyLaser : EnemyBulletBase
         paras.type = CollisionDetectType.Rect;
         paras.halfWidth = _laserHalfWidth;
         paras.halfHeight = _laserHalfHeight;
-        paras.angle = _laserAngle;
+        paras.angle = _curRotation;
         // 计算矩形中心坐标
         Vector2 center = new Vector2();
-        float cos = Mathf.Cos(_laserAngle * Mathf.Deg2Rad);
-        float sin = Mathf.Sin(_laserAngle * Mathf.Deg2Rad);
+        float cos = Mathf.Cos(_curRotation * Mathf.Deg2Rad);
+        float sin = Mathf.Sin(_curRotation * Mathf.Deg2Rad);
         // 矩形中心坐标
         center.x = _laserHalfHeight * cos + _curPos.x;
         center.y = _laserHalfHeight * sin + _curPos.y;
@@ -453,8 +439,8 @@ public class EnemyLaser : EnemyBulletBase
     {
         if (!_detectCollision) return;
         Vector2 center = new Vector2();
-        float cos = Mathf.Cos(_laserAngle * Mathf.Deg2Rad);
-        float sin = Mathf.Sin(_laserAngle * Mathf.Deg2Rad);
+        float cos = Mathf.Cos(_curRotation * Mathf.Deg2Rad);
+        float sin = Mathf.Sin(_curRotation * Mathf.Deg2Rad);
         // 矩形中心坐标
         center.x = _laserHalfHeight * cos + _curPos.x;
         center.y = _laserHalfHeight * sin + _curPos.y;

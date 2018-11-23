@@ -111,7 +111,7 @@ public struct BossRefData
 public enum BulletComponentType : byte
 {
     CustomizedTask = 1,
-    MoveParasChange = 2,
+    ParasChange = 2,
     Rebound = 3,
 }
 

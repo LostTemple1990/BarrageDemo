@@ -48,7 +48,6 @@ public class EnemyBulletMovable : EnemyBulletBase
     protected Vector3 _selfRotationAngle;
 
     protected bool _isRotatedByVelocity;
-    protected int _imgRotatedFlag;
 
     protected bool _isMovingStraight;
     protected bool _isMovingCurve;
@@ -71,16 +70,31 @@ public class EnemyBulletMovable : EnemyBulletBase
         base.Update();
         _dx = 0;
         _dy = 0;
-        if ( _isMovingStraight )
+        if ( !_isSetRelativePosToMaster )
         {
-            MoveStraight();
+            if (_isMovingStraight)
+            {
+                MoveStraight();
+            }
+            if (_isMovingCurve)
+            {
+                MoveCurve();
+            }
+            _curPos.x += _dx;
+            _curPos.y += _dy;
         }
-        if (_isMovingCurve)
+        else
         {
-            MoveCurve();
+            if ( _attachableMaster != null )
+            {
+                Vector2 relativePos = _relativePosToMaster;
+                if ( _isFollowMasterRotation )
+                {
+                    relativePos = MathUtil.GetVec2AfterRotate(relativePos.x, relativePos.y, 0, 0, _attachableMaster.GetRotation());
+                }
+                _curPos = relativePos + _attachableMaster.GetPosition();
+            }
         }
-        _curPos.x += _dx;
-        _curPos.y += _dy;
         UpdateComponents();
     }
 

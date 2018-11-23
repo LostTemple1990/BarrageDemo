@@ -3,12 +3,14 @@ Constants = {}
 
 Constants.VelocityAngle = -999
 Constants.OriginalAngle = 999
+Constants.OriginalRotation = -9999.5
 Infinite = 9999
 Constants.ModeLinear = 1
 Constants.ModeEaseInQuad = 2
 Constants.ModeEaseOutQuad = 3
 Constants.ModeEaseInOutQuad = 4
 Constants.ModeSin = 9
+Constants.ModeCos = 10
 
 Constants.DirNull = 0
 Constants.DirLeft = 1

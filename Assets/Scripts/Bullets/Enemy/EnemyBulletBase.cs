@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBulletBase :BulletBase
+public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
 {
     /// <summary>
     /// bulletId
@@ -50,6 +50,38 @@ public class EnemyBulletBase :BulletBase
     /// 当前帧颜色是否被改变
     /// </summary>
     protected bool _isColorChanged;
+    /// <summary>
+    /// 附件物体的列表
+    /// </summary>
+    protected List<IAttachment> _attachmentsList;
+    /// <summary>
+    /// 依附物体的个数
+    /// </summary>
+    protected int _attachmentsCount;
+    /// <summary>
+    /// 依附到的对象
+    /// </summary>
+    protected IAttachable _attachableMaster;
+    /// <summary>
+    /// 是否在master被销毁的时候一同销毁
+    /// </summary>
+    protected bool _isEliminatedWithMaster;
+    /// <summary>
+    /// 是否设置了相对于依附对象的相对位置
+    /// </summary>
+    protected bool _isSetRelativePosToMaster;
+    /// <summary>
+    /// 相对于依附对象的位置
+    /// </summary>
+    protected Vector2 _relativePosToMaster;
+    /// <summary>
+    /// 相对于依附对象的旋转角度
+    /// </summary>
+    protected float _relativeRotationToMaster;
+    /// <summary>
+    /// 是否随着依附对象的旋转而改变角度
+    /// </summary>
+    protected bool _isFollowMasterRotation;
 
     public EnemyBulletBase()
     {
@@ -68,6 +100,10 @@ public class EnemyBulletBase :BulletBase
         _curColor = new Color(1, 1, 1);
         _isOriginalColor = true;
         _curAlpha = 1;
+        // 依附物体
+        _attachmentsList = new List<IAttachment>();
+        _attachmentsCount = 0;
+        _isSetRelativePosToMaster = false;
     }
 
     /// <summary>
@@ -166,9 +202,15 @@ public class EnemyBulletBase :BulletBase
     /// <returns></returns>
     public virtual bool Eliminate(eEliminateDef eliminateType=0)
     {
+        if (_clearFlag == 1) return false;
         if ( ((int)eliminateType & _resistEliminateFlag) != 0 )
         {
             return false;
+        }
+        if ( _attachableMaster != null )
+        {
+            _attachableMaster.OnAttachmentEliminated(this);
+            _attachableMaster = null;
         }
         _clearFlag = 1;
         return true;
@@ -227,6 +269,56 @@ public class EnemyBulletBase :BulletBase
         throw new System.NotImplementedException();
     }
 
+    public void AddAttachment(IAttachment attachment)
+    {
+        for (int i = 0; i < _attachmentsCount; i++)
+        {
+            if (_attachmentsList[i] == attachment)
+            {
+                return;
+            }
+        }
+        _attachmentsList.Add(attachment);
+        _attachmentsCount++;
+    }
+
+    public void OnAttachmentEliminated(IAttachment attachment)
+    {
+        for (int i=0;i<_attachmentsCount;i++)
+        {
+            if ( _attachmentsList[i] == attachment )
+            {
+                _attachmentsList[i] = null;
+            }
+        }
+    }
+
+    public void AttachTo(IAttachable master, bool eliminatedWithMaster)
+    {
+        if (_attachableMaster != null) return;
+        _attachableMaster = (IAttachable)master;
+        if (_attachableMaster == null) return;
+        master.AddAttachment(this);
+        _isEliminatedWithMaster = eliminatedWithMaster;
+    }
+
+    public void SetRelativePos(float offsetX, float offsetY, float rotation, bool followMasterRotation)
+    {
+        _relativePosToMaster = new Vector2(offsetX, offsetY);
+        _relativeRotationToMaster = rotation;
+        SetRotation(rotation);
+        _isFollowMasterRotation = followMasterRotation;
+        _isSetRelativePosToMaster = true;
+    }
+
+    public void OnMasterEliminated(eEliminateDef eliminateType)
+    {
+        _attachableMaster = null;
+        _isSetRelativePosToMaster = false;
+        if (!_isEliminatedWithMaster) return;
+        Eliminate(eliminateType);
+    }
+
     public override void Clear()
     {
         for (int i=0;i<_componentsCount;i++)
@@ -235,6 +327,8 @@ public class EnemyBulletBase :BulletBase
         }
         _components.Clear();
         _componentsCount = 0;
+        _attachmentsList.Clear();
+        _attachmentsCount = 0;
         base.Clear();
     }
 }

@@ -181,7 +181,7 @@ public partial class LuaLib
         bullet.SetToPosition(posX, posY);
         // 设置自定义的数据
         BCCustomizedTask bc = bullet.AddComponent<BCCustomizedTask>();
-        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, InterpreterManager.GetInstance().GetTracebackIndex());
+        //luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, InterpreterManager.GetInstance().GetTracebackIndex());
         int funcRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         if (!luaState.IsFunction(-1))
@@ -189,10 +189,11 @@ public partial class LuaLib
             Logger.LogError("InitFuncRef of " + customizedName + " is not point to a function");
         }
         luaState.PushLightUserData(bullet);
-        luaState.Replace(-4 - numArgs);
-        luaState.Replace(-4 - numArgs);
-        luaState.Replace(-4 - numArgs);
-        luaState.PCall(numArgs + 1, 0, -numArgs - 3);
+        //luaState.Replace(-4 - numArgs);
+        luaState.Replace(-3 - numArgs);
+        luaState.Replace(-3 - numArgs);
+        luaState.Call(numArgs + 1, 0);
+        //luaState.PCall(numArgs + 1, 0, -numArgs - 3);
         // 弹出剩余两个参数
         luaState.Pop(2);
         luaState.PushLightUserData(bullet);

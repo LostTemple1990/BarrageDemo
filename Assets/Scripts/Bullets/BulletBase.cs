@@ -2,10 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletBase :ICollisionObject
+public class BulletBase :IPosition,ICollisionObject
 {
+    /// <summary>
+    /// 上一帧的坐标
+    /// </summary>
     protected Vector2 _lastPos;
+    /// <summary>
+    /// 当前坐标
+    /// </summary>
     protected Vector2 _curPos;
+    /// <summary>
+    /// 当前旋转的角度
+    /// </summary>
+    protected float _curRotation;
+    /// <summary>
+    /// 旋转角度是否需要更新
+    /// </summary>
+    protected bool _isRotationDirty;
     protected int _clearFlag;
     protected int _destroyFlag;
     protected BulletId _id;
@@ -56,6 +70,8 @@ public class BulletBase :ICollisionObject
         _isMoving = false;
         _lastPos = Vector2.zero;
         _curPos = Vector2.zero;
+        _curRotation = 0;
+        _isRotationDirty = true;
         _orderInLayer = 0;
         _checkOutOfBorder = true;
         _detectCollision = true;
@@ -77,6 +93,29 @@ public class BulletBase :ICollisionObject
     {
         _curPos.x = posX;
         _curPos.y = posY;
+    }
+
+    public virtual Vector2 GetPosition()
+    {
+        return _curPos;
+    }
+
+    /// <summary>
+    /// 设置旋转角度
+    /// </summary>
+    /// <param name="value"></param>
+    public virtual void SetRotation(float value)
+    {
+        if ( _curRotation != value )
+        {
+            _curRotation = value;
+            _isRotationDirty = true;
+        }
+    }
+
+    public virtual float GetRotation()
+    {
+        return _curRotation;
     }
 
     /// <summary>
