@@ -101,7 +101,7 @@ public class EnemyCurveLaser : EnemyBulletBase
     public EnemyCurveLaser()
     {
         _trailsList = new List<Vector2>();
-        _id = BulletId.Enemy_CurveLaser;
+        _type = BulletType.Enemy_CurveLaser;
         _prefabName = "CurveLaser";
         _sysBusyWeight = 20;
         _availableIndexRangeList = new List<Vector2>();

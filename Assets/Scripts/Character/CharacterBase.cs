@@ -46,7 +46,7 @@ public class CharacterBase
     protected Vector3 _leftBulletOffset, _rightBulletOffset;
 
     protected string _mainBulletId;
-    protected BulletId _subBulletId;
+    protected BulletType _subBulletId;
 
     protected int _preMoveMode;
     protected int _curMoveMode;

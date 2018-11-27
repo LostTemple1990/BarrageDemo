@@ -63,7 +63,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
 
     public PlayerLaser()
     {
-        _id = BulletId.Player_Laser;
+        _type = BulletType.Player_Laser;
         _prefabName = "PlayerLaser";
         _collisionSegments = new List<Vector2>();
     }
@@ -88,7 +88,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
         }
         _bulletCfg = BulletsManager.GetInstance().GetPlayerBulletCfgById(id);
         _prefabName = id;
-        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Player_Laser, id);
+        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(BulletType.Player_Laser, id);
         _trans = _bullet.transform;
         _laserTf = _trans.Find("Laser");
         _laserSr = _laserTf.GetComponent<SpriteRenderer>();

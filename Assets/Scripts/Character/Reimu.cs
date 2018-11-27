@@ -101,12 +101,12 @@ public class Reimu : CharacterBase
     protected override void CreateMainBullets()
     {
         // 左侧子弹
-        PlayerBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Player_Simple) as PlayerBulletSimple;
+        PlayerBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Player_Simple) as PlayerBulletSimple;
         bullet.ChangeStyleById(_mainBulletId);
         bullet.DoMoveStraight(18f, 90f);
         bullet.SetToPosition(_curPos.x + _leftBulletOffset.x, _curPos.y + _leftBulletOffset.y);
         // 右侧子弹
-        bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Player_Simple) as PlayerBulletSimple;
+        bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Player_Simple) as PlayerBulletSimple;
         bullet.ChangeStyleById(_mainBulletId);
         bullet.DoMoveStraight(18f, 90f);
         bullet.SetToPosition(_curPos.x + _rightBulletOffset.x, _curPos.y + _rightBulletOffset.y);

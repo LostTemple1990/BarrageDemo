@@ -15,7 +15,7 @@ public class ObjectsPool
         return _instance;
     }
 
-    private Dictionary<BulletId, Stack<BulletBase>> _bulletsPool;
+    private Dictionary<BulletType, Stack<BulletBase>> _bulletsPool;
     private Dictionary<string, Stack<GameObject>> _bulletPrefabsPool;
     private Dictionary<string, Stack<IPoolClass>> _dataClassPool;
     /// <summary>
@@ -30,7 +30,7 @@ public class ObjectsPool
 
     private void Init()
     {
-        _bulletsPool = new Dictionary<BulletId, Stack<BulletBase>>();
+        _bulletsPool = new Dictionary<BulletType, Stack<BulletBase>>();
         _bulletPrefabsPool = new Dictionary<string, Stack<GameObject>>();
         _dataClassPool = new Dictionary<string, Stack<IPoolClass>>();
         _protoTypeDic = new Dictionary<string, GameObject>();
@@ -41,7 +41,7 @@ public class ObjectsPool
     /// </summary>
     /// <param name="bulletID"></param>
     /// <returns></returns>
-    public BulletBase CreateBullet(BulletId bulletID)
+    public BulletBase CreateBullet(BulletType bulletID)
     {
         BulletBase bullet = NewBullet(bulletID);
         if ( bullet != null )
@@ -89,7 +89,7 @@ public class ObjectsPool
         _stack.Push(go);
     }
 
-    private BulletBase NewBullet(BulletId bulletID)
+    private BulletBase NewBullet(BulletType bulletID)
     {
         BulletBase bullet = null;
         Stack<BulletBase> _stack;
@@ -111,25 +111,25 @@ public class ObjectsPool
         {
             switch (bulletID)
             {
-                case BulletId.ReimuA_Sub1:
+                case BulletType.ReimuA_Sub1:
                     bullet = new BulletReimuASub1();
                     break;
-                case BulletId.Player_Laser:
+                case BulletType.Player_Laser:
                     bullet = new PlayerLaser();
                     break;
-                case BulletId.Player_Simple:
+                case BulletType.Player_Simple:
                     bullet = new PlayerBulletSimple();
                     break;
-                case BulletId.Enemy_Laser:
+                case BulletType.Enemy_Laser:
                     bullet = new EnemyLaser();
                     break;
-                case BulletId.Enemy_CurveLaser:
+                case BulletType.Enemy_CurveLaser:
                     bullet = new EnemyCurveLaser();
                     break;
-                case BulletId.Enemy_Simple:
+                case BulletType.Enemy_Simple:
                     bullet = new EnemyBulletSimple();
                     break;
-                case BulletId.Enemy_LinearLaser:
+                case BulletType.Enemy_LinearLaser:
                     bullet = new EnemyLinearLaser();
                     break;
                 default:
@@ -142,7 +142,7 @@ public class ObjectsPool
 
     public void RestoreBullet(BulletBase bullet)
     {
-        BulletId id = bullet.Id;
+        BulletType id = bullet.Type;
         Stack<BulletBase> _stack;
         if ( _bulletsPool.TryGetValue(id,out _stack) )
         {
@@ -256,7 +256,7 @@ public class ObjectsPool
         }
         // 2.子弹类
         var keys1 = _bulletsPool.Keys;
-        foreach (BulletId id in keys1)
+        foreach (BulletType id in keys1)
         {
             Stack<BulletBase> stack;
             if (_bulletsPool.TryGetValue(id, out stack))

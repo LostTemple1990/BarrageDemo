@@ -183,6 +183,7 @@ CustomizedEnemyTable.TestKillEnemy.OnKill = function(enemy)
 	do
 		local master = lib.CreateSimpleBulletById("122151",0,250)
 		lib.SetBulletStraightParas(master,3,255,false,0,0)
+		lib.SetBulletSelfRotation(master,1)
 		local relativeRotation = 0
 		for _=1,4 do
 			local bullet = lib.CreateSimpleBulletById("104151",0,250)
@@ -776,7 +777,7 @@ function Stage.StageTask()
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
 		if coroutine.yield(100) == false then return end
 		lib.SetBossCurPhaseData(boss,1,1,1,1,4)
-		lib.StartSpellCard(SpellCard.MarisaSC0,boss)
+		lib.StartSpellCard(SpellCard.PatchouliNonSC0,boss)
 		--lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
 		lib.StartSpellCard(SpellCard.NazrinSC2_1,boss)

@@ -212,6 +212,16 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
             _attachableMaster.OnAttachmentEliminated(this);
             _attachableMaster = null;
         }
+        int attachmentsCount = _attachmentsCount;
+        _attachmentsCount = 0;
+        for (int i=0;i< attachmentsCount; i++)
+        {
+            if ( _attachmentsList[i] != null )
+            {
+                _attachmentsList[i].OnMasterEliminated(eliminateType);
+                _attachmentsList[i] = null;
+            }
+        }
         _clearFlag = 1;
         return true;
     }

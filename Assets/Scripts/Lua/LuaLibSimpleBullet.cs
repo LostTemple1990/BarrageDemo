@@ -18,7 +18,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
-        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Simple) as EnemyBulletSimple;
+        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Simple) as EnemyBulletSimple;
         bullet.SetStyleById(sysId);
         bullet.SetToPosition(posX, posY);
         luaState.PushLightUserData(bullet);
@@ -35,6 +35,23 @@ public partial class LuaLib
         EnemyBulletSimple bullet = luaState.ToUserData(-1) as EnemyBulletSimple;
         luaState.Pop(1);
         bullet.CreateAppearEffect();
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置子弹是否自旋
+    /// <para>SimpleBullet bullet</para>
+    /// <para>float omega 自旋角度，为0说明不自旋</para>
+    /// <para></para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetBulletSelfRotation(ILuaState luaState)
+    {
+        EnemyBulletSimple bullet = luaState.ToUserData(-2) as EnemyBulletSimple;
+        float omega = (float)luaState.ToNumber(-1);
+        luaState.Pop(2);
+        bullet.SetSelfRotation(omega);
         return 0;
     }
 
@@ -176,7 +193,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-3 - numArgs);
         float posY = (float)luaState.ToNumber(-2 - numArgs);
         luaState.Pop(1);
-        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Simple) as EnemyBulletSimple;
+        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Simple) as EnemyBulletSimple;
         bullet.SetStyleById(sysId);
         bullet.SetToPosition(posX, posY);
         // 设置自定义的数据

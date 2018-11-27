@@ -37,7 +37,7 @@ public class BulletReimuASub1 : PlayerBulletSimple
 
     public BulletReimuASub1()
     {
-        _id = BulletId.ReimuA_Sub1;
+        _type = BulletType.ReimuA_Sub1;
     }
 
     public override void Init()
@@ -136,7 +136,7 @@ public class BulletReimuASub1 : PlayerBulletSimple
 
     protected override void BeginEliminating()
     {
-        _eliminateEffectObject = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Player_Simple, EliminateEffectId);
+        _eliminateEffectObject = BulletsManager.GetInstance().CreateBulletGameObject(BulletType.Player_Simple, EliminateEffectId);
         _eliminateEffectTf = _eliminateEffectObject.transform;
         _eliminateEffectSr = _eliminateEffectTf.Find("BulletSprite").GetComponent<SpriteRenderer>();
         // 设置初始旋转角度

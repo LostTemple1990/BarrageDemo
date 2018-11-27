@@ -71,7 +71,7 @@ public class SubWeaponBase
     /// <summary>
     /// 生成的子弹id
     /// </summary>
-    protected virtual BulletId BulletId
+    protected virtual BulletType BulletId
     {
         get { return 0; }
     }

@@ -323,7 +323,7 @@ public class BulletsManager : ICommand
     /// <param name="bulletId"></param>
     /// <param name="textureId"></param>
     /// <returns></returns>
-    public GameObject CreateBulletGameObject(BulletId type,string bulletId)
+    public GameObject CreateBulletGameObject(BulletType type,string bulletId)
     {
         //string textureName = "Bullet" + bulletId;
         GameObject prefab = ObjectsPool.GetInstance().GetPrefabAtPool(bulletId);
@@ -349,32 +349,32 @@ public class BulletsManager : ICommand
     /// <param name="type"></param>
     /// <param name="bulletId"></param>
     /// <returns></returns>
-    private string GetProtoTypeNameByBulletTypeAndId(BulletId type,string bulletId)
+    private string GetProtoTypeNameByBulletTypeAndId(BulletType type,string bulletId)
     {
-        if (type == BulletId.Enemy_Laser) return "EnemyLaser" + bulletId;
-        if (type == BulletId.Enemy_LinearLaser) return "EnemyLinearLaser" + bulletId;
-        if (type == BulletId.Enemy_CurveLaser) return "EnemyCurveLaser" + bulletId;
+        if (type == BulletType.Enemy_Laser) return "EnemyLaser" + bulletId;
+        if (type == BulletType.Enemy_LinearLaser) return "EnemyLinearLaser" + bulletId;
+        if (type == BulletType.Enemy_CurveLaser) return "EnemyCurveLaser" + bulletId;
         return bulletId;
     }
 
-    private GameObject CreateBulletProtoType(BulletId type,string bulletId)
+    private GameObject CreateBulletProtoType(BulletType type,string bulletId)
     {
         GameObject protoType = null;
         switch ( type )
         {
-            case BulletId.Enemy_Simple:
+            case BulletType.Enemy_Simple:
                 protoType = CreateEnemySimpleProtoType(bulletId);
                 break;
-            case BulletId.Player_Simple:
+            case BulletType.Player_Simple:
                 protoType = CreatePlayerSimpleBulletProtoType(bulletId);
                 break;
-            case BulletId.Enemy_LinearLaser:
+            case BulletType.Enemy_LinearLaser:
                 protoType = CreateEnemyLinearLaserProtoType(bulletId);
                 break;
-            case BulletId.Player_Laser:
+            case BulletType.Player_Laser:
                 protoType = CreatePlayerLaserProtoType(bulletId);
                 break;
-            case BulletId.Enemy_Laser:
+            case BulletType.Enemy_Laser:
                 protoType = CreateEnemyLaserProtoType(bulletId);
                 break;
         }
@@ -417,12 +417,12 @@ public class BulletsManager : ICommand
         GameObject original = Resources.Load<GameObject>("BulletPrefab/Laser");
         GameObject protoType = GameObject.Instantiate<GameObject>(original);
         // 读取配置
-        EnemyLinearLaserCfg cfg = GetLinearLaserCfgById(bulletId.ToString());
+        EnemyLinearLaserCfg cfg = GetLinearLaserCfgById(bulletId);
         string protoTypeName = "EnemyLaser" + bulletId;
         // 设置sprite以及material
         protoType.name = protoTypeName;
         SpriteRenderer sp = protoType.transform.Find("LaserSprite").GetComponent<SpriteRenderer>();
-        sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, cfg.laserTexName);
+        sp.sprite = ResourceManager.GetInstance().GetSprite(cfg.laserAtlasName, cfg.laserTexName);
         if (cfg.blendMode != eBlendMode.Normal)
         {
             sp.material = ResourceManager.GetInstance().GetSpriteMatByBlendMode(cfg.blendMode);
@@ -517,18 +517,18 @@ public class BulletsManager : ICommand
     /// </summary>
     /// <param name="type"></param>
     /// <param name="prefab"></param>
-    private void AddBulletGoToLayer(BulletId type,GameObject prefab)
+    private void AddBulletGoToLayer(BulletType type,GameObject prefab)
     {
         switch ( type )
         {
-            case BulletId.Enemy_Simple:
-            case BulletId.Enemy_Laser:
-            case BulletId.Enemy_LinearLaser:
-            case BulletId.Enemy_CurveLaser:
+            case BulletType.Enemy_Simple:
+            case BulletType.Enemy_Laser:
+            case BulletType.Enemy_LinearLaser:
+            case BulletType.Enemy_CurveLaser:
                 UIManager.GetInstance().AddGoToLayer(prefab, LayerId.EnemyBarrage);
                 break;
-            case BulletId.Player_Simple:
-            case BulletId.Player_Laser:
+            case BulletType.Player_Simple:
+            case BulletType.Player_Laser:
                 UIManager.GetInstance().AddGoToLayer(prefab, LayerId.PlayerBarage);
                 break;
         }

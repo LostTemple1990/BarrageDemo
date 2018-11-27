@@ -68,7 +68,7 @@ public class SubWeaponMarisaA : SubWeaponBase
                 // 创建激光
                 if ( _laser == null )
                 {
-                    _laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Player_Laser) as PlayerLaser;
+                    _laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Player_Laser) as PlayerLaser;
                     _laser.ChangeStyleById("521000");
                     //_laser.SetTextureProps(Consts.MarisaAtlasName, "MarisaALaser", 256, 2);
                 }
@@ -159,11 +159,11 @@ public class SubWeaponMarisaA : SubWeaponBase
         get { return 12; }
     }
 
-    protected override BulletId BulletId
+    protected override BulletType BulletId
     {
         get
         {
-            return BulletId.ReimuA_Sub1;
+            return BulletType.ReimuA_Sub1;
         }
     }
 

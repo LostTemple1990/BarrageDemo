@@ -18,7 +18,7 @@ public class PlayerBulletSimple : PlayerBulletBase
 
     public PlayerBulletSimple()
     {
-        _id = BulletId.Player_Simple;
+        _type = BulletType.Player_Simple;
     }
 
     public override void Init()
@@ -38,7 +38,7 @@ public class PlayerBulletSimple : PlayerBulletBase
         }
         _bulletCfg = BulletsManager.GetInstance().GetPlayerBulletCfgById(id);
         _prefabName = id;
-        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Player_Simple, id);
+        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(BulletType.Player_Simple, id);
         _trans = _bullet.transform;
         _renderer = _trans.Find("BulletSprite").GetComponent<SpriteRenderer>();
         _trans.localPosition = _curPos;

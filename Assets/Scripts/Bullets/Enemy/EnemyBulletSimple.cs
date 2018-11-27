@@ -84,7 +84,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
     public override void Init()
     {
         base.Init();
-        _id = BulletId.Enemy_Simple;
+        _type = BulletType.Enemy_Simple;
         _orderInLayer = 0;
         _isScalingSize = false;
         _scaleX = _scaleY = 1;
@@ -103,7 +103,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         CheckCollisionWithCharacter();
         if ( IsOutOfBorder() )
         {
-            _clearFlag = 1;
+            Eliminate(eEliminateDef.ForcedDelete);
         }
         else
         {
@@ -119,14 +119,14 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _prefabName = _cfg.id.ToString();
         //_bullet = ResourceManager.GetInstance().GetPrefab("BulletPrefab", _prefabName);
         //UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.EnemyBarrage);
-        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(_id, _cfg.id);
+        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(_type, _cfg.id);
         _trans = _bullet.transform;
         _spRenderer = _trans.Find("BulletSprite").GetComponent<SpriteRenderer>();
     }
 
-    public virtual void SetSelfRotation(bool isSelfRotation, float angle)
+    public virtual void SetSelfRotation(float angle)
     {
-        _isSelfRotation = isSelfRotation;
+        _isSelfRotation = angle != 0;
         if (_isSelfRotation)
         {
             _selfRotationAngle = new Vector3(0, 0, angle);
@@ -164,7 +164,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         SetBulletTexture(cfg.spriteName);
         SetToPosition(_curPos.x, _curPos.y);
         SetRotatedByVelocity(cfg.isRotatedByVAngle);
-        SetSelfRotation(cfg.selfRotationAngle != 0, cfg.selfRotationAngle);
+        SetSelfRotation(cfg.selfRotationAngle);
         GrazeDetectParas grazeParas = new GrazeDetectParas
         {
             type = GrazeDetectType.Rect,
@@ -569,5 +569,13 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _scaleY = value;
         _collisionHalfHeight = _cfg.collisionRadius * value;
         _isScaleChanged = true;
+    }
+
+    public override string BulletId
+    {
+        get
+        {
+            return _cfg.id;
+        }
     }
 }

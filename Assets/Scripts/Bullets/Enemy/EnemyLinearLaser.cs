@@ -320,7 +320,7 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     public EnemyLinearLaser()
     {
-        _id = BulletId.Enemy_LinearLaser;
+        _type = BulletType.Enemy_LinearLaser;
         _pathList = new List<Vector2>();
         _prefabName = "LinearLaser";
         _laserSegmentList = new List<LaserSegment>();
@@ -381,7 +381,7 @@ public class EnemyLinearLaser : EnemyBulletBase
             return;
         }
         _prefabName = _cfg.id.ToString();
-        _laserObj = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Enemy_LinearLaser, _cfg.id);
+        _laserObj = BulletsManager.GetInstance().CreateBulletGameObject(BulletType.Enemy_LinearLaser, _cfg.id);
         _objTrans = _laserObj.transform;
         _objTrans.localPosition = new Vector3(0, 0, -_orderInLayer);
         // 发射源
@@ -849,9 +849,12 @@ public class EnemyLinearLaser : EnemyBulletBase
     }
     #endregion
 
-    public string GetId()
+    public override string BulletId
     {
-        return _cfg.id;
+        get
+        {
+            return _cfg.id;
+        }
     }
 
     public float GetVelocity()

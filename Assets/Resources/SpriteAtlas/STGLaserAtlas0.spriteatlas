@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: STGLaserAtlas0
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: f39b1a397e852f44388b2e7eac16ee6e, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: a8c79c6059010ba4399eade79002f43e, type: 3}
+  - {fileID: 21300000, guid: b4b229314fa30514a91d5e81208e2976, type: 3}
+  - {fileID: 21300000, guid: 3660e8511ec78434a8f770c6c172c270, type: 3}
+  - {fileID: 21300000, guid: 486612f19ce71674e8cfb4de65a32e25, type: 3}
+  - {fileID: 21300000, guid: 08df155459c0ab64e94eefdea6498be5, type: 3}
+  - {fileID: 21300000, guid: d10ba5d4dc0f759479c21d59945cf7d6, type: 3}
+  - {fileID: 21300000, guid: 20f55125e3452b44a8ab024a42eb78b8, type: 3}
+  - {fileID: 21300000, guid: 36901845b7d696f4294aa51293fc3635, type: 3}
+  - {fileID: 21300000, guid: 8d0ed43660f3c7942a219c40edd95144, type: 3}
+  - {fileID: 21300000, guid: beacca7648c593b41ace17809717723a, type: 3}
+  - {fileID: 21300000, guid: 22e469965feee6b4caab8b313c3c72d9, type: 3}
+  - {fileID: 21300000, guid: ccc2fa0748f29594595fb5666966902d, type: 3}
+  - {fileID: 21300000, guid: b1b2369761def664fbc725182c0196a8, type: 3}
+  - {fileID: 21300000, guid: bd3371d782aba26419989bf0d5e2d23b, type: 3}
+  - {fileID: 21300000, guid: 8b3c57d73ccc3e2449177330b45e1c4e, type: 3}
+  - {fileID: 21300000, guid: 5795ff888973e9640ba6d4832999c6d7, type: 3}
+  - {fileID: 21300000, guid: 1c688f98bc3fb7341abe8d7b7e7d155d, type: 3}
+  - {fileID: 21300000, guid: 8db70549be7916e45aa78547ad7dffb7, type: 3}
+  - {fileID: 21300000, guid: 5edf3e7a95f242243b647f63658ffbac, type: 3}
+  - {fileID: 21300000, guid: 88c8708aa05669c4ca42866066b2f64b, type: 3}
+  - {fileID: 21300000, guid: c1bd50aad3177a442983abaecc7e9e9f, type: 3}
+  - {fileID: 21300000, guid: 4690712bb6282134cb1248dc8699482c, type: 3}
+  - {fileID: 21300000, guid: d429319b560c6ca4da8cf6625e362b10, type: 3}
+  - {fileID: 21300000, guid: 96056b9b58f92db459061f3458b35419, type: 3}
+  - {fileID: 21300000, guid: 6e53bf2caa1914346ac393b4d8a3dfcd, type: 3}
+  - {fileID: 21300000, guid: 48ccae5c64fe56a4e94de09ef7aba8aa, type: 3}
+  - {fileID: 21300000, guid: dc906d9c1d82e024c8a41cf9d44ad237, type: 3}
+  - {fileID: 21300000, guid: 3300221d30b89074fa9b0a0d1ba1a349, type: 3}
+  - {fileID: 21300000, guid: 33ea6b3dbf2bc5544b0d3cda1936988e, type: 3}
+  - {fileID: 21300000, guid: fb9903fd07a9e664eaabf2840099d9ad, type: 3}
+  - {fileID: 21300000, guid: 1bfb47be34706f2458333805a4ebb533, type: 3}
+  - {fileID: 21300000, guid: 8edbd9fea2a4c0a46a5898d3071ad611, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Laser202120
+  - Laser203040
+  - Laser202140
+  - Laser203030
+  - Laser202100
+  - Laser203070
+  - Laser202040
+  - Laser202050
+  - Laser203000
+  - Laser203100
+  - Laser203110
+  - Laser202010
+  - Laser203020
+  - Laser202130
+  - Laser203050
+  - Laser202020
+  - Laser202030
+  - Laser203060
+  - Laser202090
+  - Laser203140
+  - Laser203080
+  - Laser203150
+  - Laser202070
+  - Laser203010
+  - Laser202110
+  - Laser203120
+  - Laser202000
+  - Laser202150
+  - Laser202080
+  - Laser203090
+  - Laser203130
+  - Laser202060
+  m_Tag: STGLaserAtlas0
+  m_IsVariant: 0

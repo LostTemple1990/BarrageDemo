@@ -51,9 +51,9 @@ public class PlayerBulletBase : BulletBase
         _clearFlag = 1;
     }
 
-    public BulletId id
+    public BulletType id
     {
-        set { _id = value; }
+        set { _type = value; }
     }
 
     /// <summary>

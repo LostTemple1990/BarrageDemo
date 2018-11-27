@@ -22,7 +22,7 @@ public class BulletBase :IPosition,ICollisionObject
     protected bool _isRotationDirty;
     protected int _clearFlag;
     protected int _destroyFlag;
-    protected BulletId _id;
+    protected BulletType _type;
 
     protected bool _isMoving;
     protected float _curVelocity;
@@ -204,9 +204,17 @@ public class BulletBase :IPosition,ICollisionObject
         get { return _clearFlag; }
     }
 
-    public BulletId Id
+    public BulletType Type
     {
-        get { return _id; }
+        get { return _type; }
+    }
+
+    /// <summary>
+    /// 子弹配置的id
+    /// </summary>
+    public virtual string BulletId
+    {
+        get { throw new System.NotImplementedException(); }
     }
 
     protected virtual bool IsOutOfBorder()

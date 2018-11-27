@@ -73,8 +73,8 @@ public enum GrazeDetectType : int
 }
 #endregion
 
-#region 子弹id
-public enum BulletId : int
+#region 子弹类型
+public enum BulletType : int
 {
     ReimuA_Main = 110,
     ReimuA_Sub1 = 111,

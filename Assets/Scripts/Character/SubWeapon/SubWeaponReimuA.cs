@@ -56,7 +56,7 @@ public class SubWeaponReimuA : SubWeaponBase
             {
                 float posX, posY;
                 _character.GetPosition(out posX, out posY);
-                BulletReimuASub1 bullet = ObjectsPool.GetInstance().CreateBullet(BulletId.ReimuA_Sub1) as BulletReimuASub1;
+                BulletReimuASub1 bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.ReimuA_Sub1) as BulletReimuASub1;
                 bullet.ChangeStyleById("501000");
                 bullet.SetToPosition(posX + _subWeapon.transform.localPosition.x, posY + _subWeapon.transform.localPosition.y);
                 bullet.DoMove(8,GetShootBulletAngle());
@@ -96,11 +96,11 @@ public class SubWeaponReimuA : SubWeaponBase
         get { return 12; }
     }
 
-    protected override BulletId BulletId
+    protected override BulletType BulletId
     {
         get
         {
-            return BulletId.ReimuA_Sub1;
+            return BulletType.ReimuA_Sub1;
         }
     }
 }

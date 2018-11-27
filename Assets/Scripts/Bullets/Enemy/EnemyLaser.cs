@@ -87,7 +87,7 @@ public class EnemyLaser : EnemyBulletBase
     public EnemyLaser()
     {
         _sysBusyWeight = 3;
-        _id = BulletId.Enemy_Laser;
+        _type = BulletType.Enemy_Laser;
     }
 
     public override void Init()
@@ -102,7 +102,7 @@ public class EnemyLaser : EnemyBulletBase
         _isChangingHeight = false;
         _laserHalfWidth = _laserHalfHeight = 0;
         _isDirty = false;
-        _collisionFactor = 1;
+        _collisionFactor = 0.8f;
         _isRotating = false;
     }
 
@@ -134,7 +134,7 @@ public class EnemyLaser : EnemyBulletBase
         }
         _cfg = cfg;
         _prefabName = _cfg.id;
-        _laserObj = BulletsManager.GetInstance().CreateBulletGameObject(BulletId.Enemy_Laser, _cfg.id);
+        _laserObj = BulletsManager.GetInstance().CreateBulletGameObject(BulletType.Enemy_Laser, _cfg.id);
         _objTrans = _laserObj.transform;
         _laserTrans = _objTrans.Find("LaserSprite");
         _laser = _laserTrans.GetComponent<SpriteRenderer>();
@@ -151,7 +151,7 @@ public class EnemyLaser : EnemyBulletBase
 
     public override void SetToPosition(float posX, float posY)
     {
-        base.SetToPosition(posX, posY);
+        _curPos = new Vector2(posX, posY);
         _moveFlag = true;
     }
 
@@ -264,7 +264,21 @@ public class EnemyLaser : EnemyBulletBase
         {
             ChangingHeight();
         }
-        if ( _isMoving )
+        if ( _isSetRelativePosToMaster )
+        {
+            if ( _attachableMaster != null )
+            {
+                Vector2 relativePos = _relativePosToMaster;
+                if ( _isFollowMasterRotation )
+                {
+                    relativePos = MathUtil.GetVec2AfterRotate(relativePos.x, relativePos.y, 0, 0, _attachableMaster.GetRotation());
+                    SetRotation(_attachableMaster.GetRotation() + _relativeRotationToMaster);
+                }
+                _curPos = relativePos + _attachableMaster.GetPosition();
+                _moveFlag = true;
+            }
+        }
+        else if ( _isMoving )
         {
             Move();
         }
@@ -369,7 +383,7 @@ public class EnemyLaser : EnemyBulletBase
         if ( _isRotationDirty )
         {
             _isRotationDirty = false;
-            _objTrans.localRotation = Quaternion.Euler(0, 0, _curRotation - 90);
+            _objTrans.localRotation = Quaternion.Euler(0, 0, _curRotation - _cfg.texDefaultRotation);
         }
         if ( _moveFlag )
         {
@@ -382,7 +396,7 @@ public class EnemyLaser : EnemyBulletBase
     {
         _laser.size = new Vector2(_laserHalfWidth * 2, _laserHalfHeight * 2);
         Vector3 pos = Vector3.zero;
-        pos.y = _laserHalfHeight;
+        pos.x = _laserHalfWidth;
         _laserTrans.localPosition = pos;
         _isDirty = false;
     }
@@ -483,6 +497,14 @@ public class EnemyLaser : EnemyBulletBase
         }
     }
     #endregion
+
+    public override string BulletId
+    {
+        get
+        {
+            return _cfg.id;
+        }
+    }
 
     public override void Clear()
     {

@@ -13,6 +13,8 @@ public partial class LuaLib
             new NameFuncPair("SetBulletOrderInLayer",SetBulletOrderInLayer),
             new NameFuncPair("SetBulletTexture",SetBulletTexture),
             // BulletBase
+            new NameFuncPair("GetBulletId",GetBulletId),
+            new NameFuncPair("GetBulletPara",GetBulletPara),
             new NameFuncPair("SetBulletPara",SetBulletPara),
             new NameFuncPair("GetBulletPos",GetBulletPos),
             new NameFuncPair("SetBulletPos",SetBulletPos),
@@ -27,6 +29,7 @@ public partial class LuaLib
             // SimpleBullet
             new NameFuncPair("CreateSimpleBulletById", CreateSimpleBulletById),
             new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet),
+            new NameFuncPair("SetBulletSelfRotation",SetBulletSelfRotation),
             new NameFuncPair("SetBulletScale",SetBulletScale),
             new NameFuncPair("BulletDoScale",BulletDoScale),
             new NameFuncPair("CreateAppearEffectForSimpleBullet", CreateAppearEffectForSimpleBullet),
@@ -223,7 +226,7 @@ public partial class LuaLib
         float height = (float)luaState.ToNumber(-2);
         int existDuration = luaState.ToInteger(-1);
         luaState.Pop(7);
-        EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Laser) as EnemyLaser;
+        EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Laser) as EnemyLaser;
         laser.SetStyleById(id);
         laser.SetToPosition(posX, posY);
         laser.SetRotation(angle);
@@ -247,7 +250,7 @@ public partial class LuaLib
         // 弹出参数个数
         luaState.Pop(1);
         string customizedName = luaState.ToString(-1 - numArgs);
-        EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletId.Enemy_Laser) as EnemyLaser;
+        EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Laser) as EnemyLaser;
         // 设置自定义的数据
         BCCustomizedTask bc = laser.AddComponent<BCCustomizedTask>();
         // 加入TraceBack函数

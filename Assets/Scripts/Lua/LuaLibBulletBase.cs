@@ -5,6 +5,20 @@ using UniLua;
 public partial class LuaLib
 {
     /// <summary>
+    /// 获取子弹的配置id
+    /// <para>bullet</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int GetBulletId(ILuaState luaState)
+    {
+        BulletBase bullet = luaState.ToUserData(-1) as BulletBase;
+        luaState.Pop(1);
+        luaState.PushString(bullet.BulletId);
+        return 1;
+    }
+
+    /// <summary>
     /// 根据id设置bullet的形状
     /// </summary>
     /// <param name="luaState"></param>
@@ -52,6 +66,28 @@ public partial class LuaLib
         return 0;
     }
     #endregion
+
+    /// <summary>
+    /// 获取子弹的属性
+    /// <para>bullet</para>
+    /// <para>BulletParaType paraType</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int GetBulletPara(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
+        BulletParaType paraType = (BulletParaType)luaState.ToInteger(-1);
+        luaState.Pop(2);
+        float value;
+        if ( bullet.GetBulletPara(paraType, out value) )
+        {
+            luaState.PushNumber(value);
+            return 1;
+        }
+        Logger.LogWarn("BulletPara " + paraType + " in " + bullet.Type + " is not exist!");
+        return 0;
+    }
 
     /// <summary>
     /// 设置子弹的属性

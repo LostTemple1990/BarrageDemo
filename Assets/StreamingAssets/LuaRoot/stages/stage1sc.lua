@@ -1712,6 +1712,100 @@ function SC.MarisaSC0(boss)
 	end)
 end
 
+CustomizedBulletTable.PatchouliNonSC0Bullet0 = {}
+CustomizedBulletTable.PatchouliNonSC0Bullet0.Init = function(bullet,laserId,acce,accAngle,omega)
+	lib.SetBulletSelfRotation(bullet,omega)
+	lib.SetBulletStraightParas(bullet,0,0,false,acce,accAngle)
+	do
+		local laserStartAngle,dAngle = lib.GetRandomFloat(0,360),90
+		local posX,posY = lib.GetBulletPos(bullet)
+		for _=1,4 do
+			local laser = lib.CreateLaser(laserId,posX,posY,laserStartAngle,40,8,-1)
+			lib.AttatchToMaster(laser,bullet,true)
+			lib.SetAttachmentRelativePos(laser,0,0,laserStartAngle,true)
+			laserStartAngle = laserStartAngle + dAngle
+		end
+	end
+	do
+		lib.AddBulletTask(bullet,function()
+			for _=1,Infinite do
+				local posX,posY = lib.GetBulletPos(bullet)
+				local rotation = lib.GetBulletPara(bullet,eBulletParaType.VAngel)
+				local id = lib.GetBulletId(bullet)
+				lib.CreateCustomizedBullet("PatchouliNonSC0Bullet1",id,posX,posY,rotation,1)
+				if coroutine.yield(5) == false then return end
+			end
+		end)
+	end
+end
+
+CustomizedBulletTable.PatchouliNonSC0Bullet1 = {}
+CustomizedBulletTable.PatchouliNonSC0Bullet1.Init = function(bullet,angle)
+	lib.SetBulletDetectCollision(bullet,false)
+	lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
+	lib.AddBulletParaChangeEvent(bullet,eBulletParaType.Alpha,eParaChangeMode.ChangeTo,0,0,20,Constants.ModeLinear)
+	lib.SetBulletStraightParas(bullet,0,angle,false,0,0)
+	lib.BulletDoScale(bullet,0,0,20)
+	lib.AddBulletTask(bullet,function()
+		do
+			if coroutine.yield(20) == false then return end
+			lib.EliminateBullet(bullet)
+		end
+	end)
+end
+
+function SC.PatchouliNonSC0(boss)
+	lib.SetSpellCardProperties("",60,Condition.EliminateAll,false,nil)
+	lib.EnemyMoveToPos(boss,0,128,120,Constants.ModeLinear)
+	lib.SetBossInvincible(boss,5)
+	lib.SetEnemyMaxHp(boss,1400)
+	lib.ShowBossBloodBar(boss,true)
+	if coroutine.yield(120) == false then return end
+	local i , di = 0 , 1
+	local lightBallIds = {"122001","122011","122031","122051","122071","122091","122131","122151"}
+	local laserIds = {"202001","202011","202031","202051","202071","202091","202131","202151"}
+	lib.AddEnemyTask(boss,function()
+		for _=1,Infinite do
+			for _=1,30 do
+				local index = lib.GetRandomInt(1,8)
+				local posX = lib.GetRandomFloat(-60,192)
+				local posY = 224
+				local acce = lib.GetRandomFloat(0.01,0.1)
+				local accAngle = lib.GetRandomFloat(240,260)
+				lib.CreateCustomizedBullet("PatchouliNonSC0Bullet0",lightBallIds[index],posX,posY,laserIds[index],acce,accAngle,-1,4)
+				index = lib.GetRandomInt(1,8)
+				posX = 192
+				local posY = lib.GetRandomFloat(-90,224)
+				local acce = lib.GetRandomFloat(0.01,0.1)
+				local accAngle = lib.GetRandomFloat(240,260)
+				lib.CreateCustomizedBullet("PatchouliNonSC0Bullet0",lightBallIds[index],posX,posY,laserIds[index],acce,accAngle,-1,4)
+				if coroutine.yield(20) == false then return end
+			end
+		end
+	end)
+	lib.AddEnemyTask(boss,function()
+		if coroutine.yield(60) == false then return end
+		for _=1,Infinite do
+			for _=1,30 do
+				local index = lib.GetRandomInt(1,8)
+				local posX = lib.GetRandomFloat(-192,60)
+				local posY = 224
+				local acce = lib.GetRandomFloat(0.01,0.1)
+				local accAngle = lib.GetRandomFloat(-80,-30)
+				lib.CreateCustomizedBullet("PatchouliNonSC0Bullet0",lightBallIds[index],posX,posY,laserIds[index],acce,accAngle,1,4)
+				index = lib.GetRandomInt(1,8)
+				posX = -192
+				local posY = lib.GetRandomFloat(-90,224)
+				local acce = lib.GetRandomFloat(0.01,0.1)
+				local accAngle = lib.GetRandomFloat(-80,-30)
+				lib.CreateCustomizedBullet("PatchouliNonSC0Bullet0",lightBallIds[index],posX,posY,laserIds[index],acce,accAngle,1,4)
+				if coroutine.yield(20) == false then return end
+			end
+		end
+	end)
+end
+
+
 return
 {
 	CustomizedBulletTable = CustomizedBulletTable,

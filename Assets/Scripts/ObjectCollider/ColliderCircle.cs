@@ -225,7 +225,7 @@ public class ColliderCircle : ObjectColliderBase
             // 多线段集合，判断圆心到每个点的距离即可
             else if (collParas.type == CollisionDetectType.MultiSegments)
             {
-                if (bullet.Id == BulletId.Enemy_CurveLaser)
+                if (bullet.Type == BulletType.Enemy_CurveLaser)
                 {
                     EnemyCurveLaser curveLaser = bullet as EnemyCurveLaser;
                     List<Vector2> pointList = collParas.multiSegmentPointList;
@@ -260,7 +260,7 @@ public class ColliderCircle : ObjectColliderBase
                         curveLaser.EliminateByRange(eliminateStart, eliminateEnd);
                     }
                 }
-                else if (bullet.Id == BulletId.Enemy_LinearLaser)
+                else if (bullet.Type == BulletType.Enemy_LinearLaser)
                 {
 
                 }
