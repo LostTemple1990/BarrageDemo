@@ -32,6 +32,22 @@ public partial class LuaLib
         return 0;
     }
 
+    /// <summary>
+    /// 设置子弹在z轴上的顺序
+    /// <para>bullet</para>
+    /// <para>orderInLayer</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetBulletOrderInLayer(ILuaState luaState)
+    {
+        BulletBase bullet = luaState.ToUserData(-2) as BulletBase;
+        int order = luaState.ToInteger(-1);
+        luaState.Pop(2);
+        bullet.SetOrderInLayer(order);
+        return 0;
+    }
+
     #region 获取、设置子弹相关的参数
 
     /// <summary>

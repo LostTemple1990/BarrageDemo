@@ -5,6 +5,21 @@ using UniLua;
 public partial class LuaLib
 {
     /// <summary>
+    /// 获取IPosition对象相对于自机的角度
+    /// <para>IPosition</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int GetAngleToPlayer(ILuaState luaState)
+    {
+        IPosition positionCls = luaState.ToUserData(-1) as IPosition;
+        luaState.Pop(1);
+        Vector2 pos = positionCls.GetPosition();
+        float angle = MathUtil.GetAngleBetweenXAxis(Global.PlayerPos - pos, false);
+        luaState.PushNumber(angle);
+        return 1;
+    }
+    /// <summary>
     /// 绑定一个附件到Master上
     /// <para>attachment</para>
     /// <para>master</para>

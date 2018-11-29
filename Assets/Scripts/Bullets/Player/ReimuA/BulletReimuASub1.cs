@@ -107,7 +107,7 @@ public class BulletReimuASub1 : PlayerBulletSimple
         // 目标不为空的时候跟踪目标
         if ( _target != null )
         {
-            Vector2 targetPos = _target.CurPos;
+            Vector2 targetPos = _target.GetPosition();
             Vector2 vecToTarget = targetPos - _curPos;
             Vector2 vVec = new Vector2(_vx, _vy);
             // 计算加速度

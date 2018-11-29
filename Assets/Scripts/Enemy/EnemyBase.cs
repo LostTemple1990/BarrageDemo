@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase
+public class EnemyBase :IAttachable,IAttachment
 {
+    /// <summary>
+    /// 当前生命值
+    /// </summary>
     protected int _curHp;
+    /// <summary>
+    /// 最大生命值
+    /// </summary>
     protected int _maxHp;
    /// <summary>
    /// 当前位置
    /// </summary>
-    protected Vector3 _curPos;
+    protected Vector2 _curPos;
     /// <summary>
     /// 敌机本体gameobject
     /// </summary>
@@ -80,6 +86,43 @@ public class EnemyBase
     /// 标识进行边界检测以便回收
     /// </summary>
     protected bool _checkOutOfBorder;
+    /// <summary>
+    /// 附件物体的列表
+    /// </summary>
+    protected List<IAttachment> _attachmentsList;
+    /// <summary>
+    /// 依附物体的个数
+    /// </summary>
+    protected int _attachmentsCount;
+    /// <summary>
+    /// 依附到的对象
+    /// </summary>
+    protected IAttachable _attachableMaster;
+    /// <summary>
+    /// 是否在master被销毁的时候一同销毁
+    /// </summary>
+    protected bool _isEliminatedWithMaster;
+    /// <summary>
+    /// 是否设置了相对于依附对象的相对位置
+    /// </summary>
+    protected bool _isSetRelativePosToMaster;
+    /// <summary>
+    /// 相对于依附对象的位置
+    /// </summary>
+    protected Vector2 _relativePosToMaster;
+    /// <summary>
+    /// 相对于依附对象的旋转角度
+    /// </summary>
+    protected float _relativeRotationToMaster;
+    /// <summary>
+    /// 是否随着依附对象的旋转而改变角度
+    /// </summary>
+    protected bool _isFollowMasterRotation;
+
+    public EnemyBase()
+    {
+        _attachmentsList = new List<IAttachment>();
+    }
 
     public virtual void Init()
     {
@@ -100,6 +143,9 @@ public class EnemyBase
         _onHitFuncRef = 0;
         _onEliminateFuncRef = 0;
         _resistEliminateFlag = 0;
+        _attachmentsCount = 0;
+        _isSetRelativePosToMaster = false;
+        _isFollowMasterRotation = false;
     }
 
     public virtual void Update()
@@ -108,15 +154,22 @@ public class EnemyBase
         {
             Move();
         }
-        UpdatePos();
+        UpdateTransform();
         _isDirty = false;
     }
 
-    public virtual void SetToPosition(Vector3 pos)
+    public virtual void SetToPosition(float posX,float posY)
+    {
+        _curPos = new Vector2(posX, posY);
+        _movableObj.SetPos(posX, posY);
+        //_enemyTf.localPosition = _curPos;
+    }
+
+    public virtual void SetToPosition(Vector2 pos)
     {
         _curPos = pos;
         _movableObj.SetPos(_curPos.x, _curPos.y);
-        _enemyTf.localPosition = pos;
+        //_enemyTf.localPosition = pos;
     }
 
     public virtual void AddTask(Task task)
@@ -200,14 +253,9 @@ public class EnemyBase
 
     public virtual bool Eliminate(eEliminateDef eliminateType=0)
     {
-        if ( eliminateType != eEliminateDef.ForcedDelete && 
-            eliminateType != eEliminateDef.CodeRawEliminate )
-        {
-            if ( _onEliminateFuncRef != 0 )
-            {
-                OnEliminate();
-            }
-        }
+        if (_clearFlag == 1) return false;
+        if ((_resistEliminateFlag & (int)eliminateType) != 0) return false;
+        OnEliminate(eliminateType);
         _clearFlag = 1;
         return true;
     }
@@ -248,10 +296,37 @@ public class EnemyBase
     /// <summary>
     /// 被消除的时候调用
     /// </summary>
-    protected void OnEliminate()
+    protected void OnEliminate(eEliminateDef eliminateType)
     {
-        InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
-        InterpreterManager.GetInstance().CallLuaFunction(_onEliminateFuncRef, 1);
+        if ( eliminateType != eEliminateDef.ForcedDelete && eliminateType != eEliminateDef.CodeRawEliminate )
+        {
+            if (_onEliminateFuncRef != 0)
+            {
+                InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
+                InterpreterManager.GetInstance().CallLuaFunction(_onEliminateFuncRef, 1);
+            }
+        }
+        if ( _attachableMaster != null )
+        {
+            IAttachable master = _attachableMaster;
+            _attachableMaster = null;
+            master.OnAttachmentEliminated(this);
+        }
+        if ( _attachmentsCount != 0 )
+        {
+            int count = _attachmentsCount;
+            _attachmentsCount = 0;
+            IAttachment attachment;
+            for (int i=0;i<count;i++)
+            {
+                attachment = _attachmentsList[i];
+                if ( attachment != null )
+                {
+                    attachment.OnMasterEliminated(eliminateType);
+                }
+            }
+            _attachmentsList.Clear();
+        }
     }
 
     /// <summary>
@@ -263,7 +338,7 @@ public class EnemyBase
         InterpreterManager.GetInstance().CallLuaFunction(_onHitFuncRef, 1);
     }
 
-    protected virtual void UpdatePos()
+    protected virtual void UpdateTransform()
     {
         _enemyTf.localPosition = _curPos;
     }
@@ -344,46 +419,100 @@ public class EnemyBase
         _dirMode = dirMode;
     }
 
+    /// <summary>
+    /// 敌机在duration的持续时间内进行移动
+    /// <para>移动的目标地点以及方式在之前设置的范围、振幅、模式里面</para>
+    /// </summary>
+    /// <param name="duration"></param>
     public virtual void DoWander(int duration)
     {
-        // 先计算下一次需要移动到的点
-        // 计算移动边界
-        float minX = _curPos.x + _wanderAmplitudeX.x < _wanderRangeX.x ? _wanderRangeX.x : _curPos.x + _wanderAmplitudeX.x;
-        float maxX = _curPos.x + _wanderAmplitudeX.y > _wanderRangeX.y ? _wanderRangeX.y : _curPos.x + _wanderAmplitudeX.y;
-        float minY = _curPos.y + _wanderAmplitudeY.x < _wanderRangeY.x ? _wanderRangeY.x : _curPos.y + _wanderAmplitudeY.x;
-        float maxY = _curPos.y + _wanderAmplitudeY.y > _wanderRangeY.y ? _wanderRangeY.y : _curPos.y + _wanderAmplitudeY.y;
+        // 记录移动方向是否有效的数组
+        bool[] dirAvailable = {true,true};
+        int dir;
+        float minX, maxX, minY, maxY,toX,toY;
         // 根据dirMode计算重新计算边界
         Vector2 playerPos = Global.PlayerPos;
-        // X的范围
-        if ( _dirMode == DirectionMode.MoveXTowardsPlayer || _dirMode == DirectionMode.MoveTowardsPlayer )
+        if (_curPos.x - _wanderAmplitudeX.x < _wanderRangeX.x) dirAvailable[0] = false;
+        if (_curPos.x + _wanderAmplitudeX.x > _wanderRangeX.y) dirAvailable[1] = false;
+        if (!dirAvailable[0] && !dirAvailable[1])
         {
-            if ( playerPos.x < _curPos.x ) //往左移动
-            {
-                minX = minX > playerPos.x ? minX : playerPos.x;
-                maxX = _curPos.x;
-            }
-            else // 往右移动
-            {
-                minX = _curPos.x;
-                maxX = maxX > playerPos.x ? playerPos.x : maxX;
-            }
+            toX = _curPos.x;
         }
-        // Y的范围
-        if (_dirMode == DirectionMode.MoveYTowardsPlayer || _dirMode == DirectionMode.MoveTowardsPlayer)
+        else
         {
-            if (playerPos.y < _curPos.y) //往下移动
+            dir = MTRandom.GetNextInt(0, 1);
+            if (_dirMode == DirectionMode.MoveXTowardsPlayer || _dirMode == DirectionMode.MoveTowardsPlayer)
             {
-                minY = minY > playerPos.y ? minY : playerPos.y;
-                maxY = _curPos.y;
+                //往左移动
+                if (playerPos.x < _curPos.x)
+                {
+                    dir = 0;
+                }
+                else
+                {
+                    dir = 1;
+                }
             }
-            else // 往上移动
+            // 这步算出来的dir一定是有效的
+            if ( dirAvailable[dir] == false )
             {
-                minY = _curPos.y;
-                maxY = maxY > playerPos.y ? playerPos.y : maxY;
+                dir = 1 - dir;
             }
+            // 左移动，计算左移动的最大值和最小值
+            if ( dir == 0 )
+            {
+                maxX = _curPos.x - _wanderAmplitudeX.x;
+                minX = _curPos.x - _wanderAmplitudeX.y < _wanderRangeX.x ? _wanderRangeX.x : _curPos.x - _wanderAmplitudeX.y;
+            }
+            else
+            {
+                minX = _curPos.x + _wanderAmplitudeX.x;
+                maxX = _curPos.x + _wanderAmplitudeX.y > _wanderRangeX.y ? _wanderRangeX.y : _curPos.x + _wanderAmplitudeX.y;
+            }
+            toX = MTRandom.GetNextFloat(minX, maxX);
         }
-        float toX = MTRandom.GetNextFloat(minX, maxX);
-        float toY = MTRandom.GetNextFloat(minY, maxY); ;
+        // 计算Y的范围 0 = 下, 1 = 上
+        dirAvailable[0] = true;
+        dirAvailable[1] = true;
+        if (_curPos.y - _wanderAmplitudeY.x < _wanderRangeY.x) dirAvailable[0] = false;
+        if (_curPos.y + _wanderAmplitudeY.x > _wanderRangeY.y) dirAvailable[1] = false;
+        if (!dirAvailable[0] && !dirAvailable[1])
+        {
+            toY = _curPos.y;
+        }
+        else
+        {
+            dir = MTRandom.GetNextInt(0, 1);
+            if (_dirMode == DirectionMode.MoveYTowardsPlayer || _dirMode == DirectionMode.MoveTowardsPlayer)
+            {
+                //往下移动
+                if (playerPos.y < _curPos.y)
+                {
+                    dir = 0;
+                }
+                else
+                {
+                    dir = 1;
+                }
+            }
+            // 这步算出来的dir一定是有效的
+            if (dirAvailable[dir] == false)
+            {
+                dir = 1 - dir;
+            }
+            // 向下移动
+            if (dir == 0)
+            {
+                maxY = _curPos.y - _wanderAmplitudeY.x;
+                minY = _curPos.y - _wanderAmplitudeY.y < _wanderRangeY.y ? _wanderRangeY.y : _curPos.y - _wanderAmplitudeY.y;
+            }
+            else
+            {
+                minY = _curPos.y + _wanderAmplitudeY.x;
+                maxY = _curPos.y + _wanderAmplitudeY.y > _wanderRangeY.y ? _wanderRangeY.y : _curPos.y + _wanderAmplitudeY.y;
+            }
+            toY = MTRandom.GetNextFloat(minY, maxY);
+        }
         MoveToPos(toX, toY, duration, _wanderMode);
     }
 
@@ -394,6 +523,12 @@ public class EnemyBase
         _movableObj = null;
         _enemyGo = null;
         _enemyTf = null;
+        _attachableMaster = null;
+        if ( _attachmentsCount != 0 )
+        {
+            _attachmentsList.Clear();
+            _attachmentsCount = 0;
+        }
     }
 
     protected virtual void ClearTasks()
@@ -491,11 +626,80 @@ public class EnemyBase
         get { return _clearFlag; }
     }
 
-    public Vector3 CurPos
+    public Vector2 GetPosition()
     {
-        get { return _curPos; }
+        return _curPos;
     }
 
+    public float GetRotation()
+    {
+        return 0;
+    }
+
+    public void SetRotation(float rotation)
+    {
+
+    }
+
+    public void AddAttachment(IAttachment attachment)
+    {
+        for (int i=0;i<_attachmentsCount;i++)
+        {
+            if ( _attachmentsList[i] == attachment )
+            {
+                return;
+            }
+        }
+        _attachmentsList.Add(attachment);
+        _attachmentsCount++;
+    }
+
+    public void OnAttachmentEliminated(IAttachment attachment)
+    {
+        for (int i = 0; i < _attachmentsCount; i++)
+        {
+            if (_attachmentsList[i] == attachment)
+            {
+                _attachmentsList[i] = null;
+            }
+        }
+    }
+
+    public void AttachTo(IAttachable master, bool eliminatedWithMaster)
+    {
+        if (_attachableMaster != null || master == null) return;
+        _attachableMaster = master;
+        _isEliminatedWithMaster = eliminatedWithMaster;
+        master.AddAttachment(this);
+    }
+
+    public void SetRelativePos(float offsetX, float offsetY, float rotation, bool followMasterRotation)
+    {
+        _relativePosToMaster = new Vector2(offsetX, offsetY);
+        _isSetRelativePosToMaster = true;
+        _relativeRotationToMaster = rotation;
+        SetRotation(rotation);
+        _isFollowMasterRotation = followMasterRotation;
+        if (_attachableMaster != null)
+        {
+            Vector2 relativePos = _relativePosToMaster;
+            if (_isFollowMasterRotation)
+            {
+                relativePos = MathUtil.GetVec2AfterRotate(relativePos.x, relativePos.y, 0, 0, _attachableMaster.GetRotation());
+            }
+            _curPos = relativePos + _attachableMaster.GetPosition();
+        }
+    }
+
+    public void OnMasterEliminated(eEliminateDef eliminateType)
+    {
+        _attachableMaster = null;
+        _isSetRelativePosToMaster = false;
+        if ( _isEliminatedWithMaster )
+        {
+            Eliminate(eliminateType);
+        }
+    }
 }
 
 public enum EnemyType : byte

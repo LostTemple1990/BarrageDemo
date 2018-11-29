@@ -163,7 +163,7 @@ public class Boss : EnemyBase
         {
             CheckPlayAni();
         }
-        UpdatePos();
+        UpdateTransform();
     }
 
     public void PlayAni(AniActionType at,int dir,int duration)

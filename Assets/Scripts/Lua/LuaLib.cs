@@ -60,8 +60,9 @@ public partial class LuaLib
             new NameFuncPair("SetLaserSize",SetLaserSize),
             new NameFuncPair("SetLaserRotatePara",SetLaserRotatePara),
             new NameFuncPair("SetLaserRotateParaWithOmega",SetLaserRotateParaWithOmega),
-            new NameFuncPair("ChangeLaserWidth",ChangeLaserWidth),
-            new NameFuncPair("ChangeLaserHeight",ChangeLaserHeight),
+            new NameFuncPair("ChangeLaserWidthTo",ChangeLaserWidthTo),
+            new NameFuncPair("ChangeLaserLengthTo",ChangeLaserLengthTo),
+            new NameFuncPair("ChangeLaserAlphaTo",ChangeLaserAlphaTo),
             new NameFuncPair("SetLaserGrazeDetectParas",SetLaserGrazeDetectParas),
             new NameFuncPair("SetLaserCollisionDetectParas",SetLaserCollisionDetectParas),
 
@@ -153,6 +154,7 @@ public partial class LuaLib
             new NameFuncPair("GetRandomInt", GetRandomInt),
             new NameFuncPair("GetRandomFloat", GetRandomFloat),
             new NameFuncPair("GetPosAfterRotate", GetPosAfterRotate),
+            new NameFuncPair("GetAngleToPlayer", GetAngleToPlayer),
             new NameFuncPair("GetAimToPlayerAngle", GetAimToPlayerAngle),
             new NameFuncPair("GetPlayerPos",GetPlayerPos),
             new NameFuncPair("LogLuaNumber", LogLuaNumber),
@@ -193,15 +195,6 @@ public partial class LuaLib
         string id = luaState.ToString(-1);
         luaState.Pop(2);
         bullet.SetStyleById(id);
-        return 0;
-    }
-
-    public static int SetBulletOrderInLayer(ILuaState luaState)
-    {
-        EnemyBulletSimple bullet = luaState.ToUserData(-2) as EnemyBulletSimple;
-        int order = luaState.ToInteger(-1);
-        luaState.Pop(2);
-        bullet.SetOrderInLayer(order);
         return 0;
     }
 
@@ -253,9 +246,6 @@ public partial class LuaLib
         EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Laser) as EnemyLaser;
         // 设置自定义的数据
         BCCustomizedTask bc = laser.AddComponent<BCCustomizedTask>();
-        // 加入TraceBack函数
-        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, InterpreterManager.GetInstance().GetTracebackIndex());
-        luaState.Replace(-2 - numArgs);
         int funcRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         if (!luaState.IsFunction(-1))
@@ -265,7 +255,7 @@ public partial class LuaLib
         luaState.Insert(-1 - numArgs);
         luaState.PushLightUserData(laser);
         luaState.Insert(-1 - numArgs);
-        luaState.PCall(numArgs + 1, 0, -numArgs - 3);
+        luaState.Call(numArgs + 1, 0);
         // 将laser压入栈
         luaState.PushLightUserData(laser);
         return 1;
@@ -282,35 +272,55 @@ public partial class LuaLib
 
     /// <summary>
     /// 更改laser的宽度
-    /// <para>toWidth为实际宽度的一半</para>
+    /// <para>toWidth为实际宽度</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int ChangeLaserWidth(ILuaState luaState)
+    public static int ChangeLaserWidthTo(ILuaState luaState)
     {
         EnemyLaser laser = luaState.ToUserData(-4) as EnemyLaser;
         float toWidth = (float)luaState.ToNumber(-3);
-        int changeDuration = luaState.ToInteger(-2);
-        int changeDelay = luaState.ToInteger(-1);
+        int changeDelay = luaState.ToInteger(-2);
+        int changeDuration = luaState.ToInteger(-1);
         luaState.Pop(4);
-        laser.ChangeToWidth(toWidth, changeDuration, changeDelay);
+        laser.ChangeToWidth(toWidth, changeDelay, changeDuration);
         return 0;
     }
 
     /// <summary>
-    /// 更改laser的高度
-    /// <para>toHeight为实际高度的一半</para>
+    /// 更改laser的高度长度
+    /// <para>toHeight为实际长度</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int ChangeLaserHeight(ILuaState luaState)
+    public static int ChangeLaserLengthTo(ILuaState luaState)
     {
         EnemyLaser laser = luaState.ToUserData(-4) as EnemyLaser;
-        float toHeight = (float)luaState.ToNumber(-3);
-        int changeDuration = luaState.ToInteger(-2);
-        int changeDelay = luaState.ToInteger(-1);
+        float toLength = (float)luaState.ToNumber(-3);
+        int changeDelay = luaState.ToInteger(-2);
+        int changeDuration = luaState.ToInteger(-1);
         luaState.Pop(4);
-        laser.ChangeToHeight(toHeight, changeDuration, changeDelay);
+        laser.ChangeToLength(toLength, changeDelay, changeDuration);
+        return 0;
+    }
+
+    /// <summary>
+    /// 更改laser的alpha
+    /// <para>laser</para>
+    /// <para>toAlpha 变更到的alpha</para>
+    /// <para>delay延迟执行的时间</para>
+    /// <para>duration</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int ChangeLaserAlphaTo(ILuaState luaState)
+    {
+        EnemyLaser laser = luaState.ToUserData(-4) as EnemyLaser;
+        float toAlpha = (float)luaState.ToNumber(-3);
+        int changeDelay = luaState.ToInteger(-2);
+        int changeDuration = luaState.ToInteger(-1);
+        luaState.Pop(4);
+        laser.ChangeToAlpha(toAlpha, changeDelay, changeDuration);
         return 0;
     }
 
@@ -320,8 +330,8 @@ public partial class LuaLib
     /// <para>posX</para>
     /// <para>posY</para>
     /// <para>angle 激光的角度，x正半轴为0,逆时针增加角度</para>
+    /// <para>length 激光长度</para>
     /// <para>width 激光宽度</para>
-    /// <para>height 激光高度</para>
     /// <para>existDuration 存活时间 todo:随时砍掉这个</para>
     /// </summary>
     /// <param name="luaState"></param>
@@ -332,13 +342,13 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-6);
         float posY = (float)luaState.ToNumber(-5);
         float angle = (float)luaState.ToNumber(-4);
-        float width = (float)luaState.ToNumber(-3);
-        float height = (float)luaState.ToNumber(-2);
+        float length = (float)luaState.ToNumber(-3);
+        float width = (float)luaState.ToNumber(-2);
         int existDuration = luaState.ToInteger(-1);
         luaState.Pop(7);
         laser.SetToPosition(posX, posY);
         laser.SetRotation(angle);
-        laser.SetLaserSize(width, height);
+        laser.SetLaserSize(length, width);
         laser.SetLaserExistDuration(existDuration);
         luaState.PushLightUserData(laser);
         return 1;
@@ -375,10 +385,10 @@ public partial class LuaLib
     public static int SetLaserSize(ILuaState luaState)
     {
         EnemyLaser laser = luaState.ToUserData(-3) as EnemyLaser;
-        float halfWidht = (float)luaState.ToNumber(-2);
-        float halfHeight = (float)luaState.ToNumber(-1);
+        float length = (float)luaState.ToNumber(-2);
+        float width = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
-        laser.SetLaserSize(halfWidht, halfHeight);
+        laser.SetLaserSize(length, width);
         return 0;
     }
 

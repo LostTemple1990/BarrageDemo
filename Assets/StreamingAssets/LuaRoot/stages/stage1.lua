@@ -32,7 +32,7 @@ CustomizedTable.NazrinLaser.Init = function(laser,enemy,angle,existDuration,toAn
 	lib.ShowLaserWarningLine(laser,60)
 	lib.SetLaserCollisionDetectParas(laser,7,300)
 	lib.AddBulletTask(laser,function()
-		lib.ChangeLaserWidth(laser,60,60,0)
+		lib.ChangeLaserWidthTo(laser,60,0,60)
 		if coroutine.yield(60)==false then return end
 		lib.SetBulletDetectCollision(laser,true)
 	end)
@@ -777,7 +777,7 @@ function Stage.StageTask()
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
 		if coroutine.yield(100) == false then return end
 		lib.SetBossCurPhaseData(boss,1,1,1,1,4)
-		lib.StartSpellCard(SpellCard.PatchouliNonSC0,boss)
+		lib.StartSpellCard(SpellCard.PatchouliNonSC1,boss)
 		--lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
 		lib.StartSpellCard(SpellCard.NazrinSC2_1,boss)

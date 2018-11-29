@@ -8,7 +8,7 @@ public interface IAttachment
     /// </summary>
     /// <param name="attachableObject"></param>
     /// <param name="elimnatedWithMaster">是否跟随本体一同销毁</param>
-    void AttachTo(IAttachable master,bool elimnatedWithMaster);
+    void AttachTo(IAttachable master,bool eliminatedWithMaster);
     /// <summary>
     /// 设置相对坐标
     /// </summary>

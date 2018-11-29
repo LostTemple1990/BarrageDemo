@@ -40,6 +40,17 @@ public partial class LuaLib
         return 0;
     }
 
+    /// <summary>
+    /// 创建自定义的敌机
+    /// <para>customizedName 自定义的名称</para>
+    /// <para>enemyId 配置的id</para>
+    /// <para>posX</para>
+    /// <para>posY</para>
+    /// <para>paras...</para>
+    /// <para>numArgs 参数个数</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
     public static int CreateCustomizedEnemy(ILuaState luaState)
     {
         int numArgs = luaState.ToInteger(-1);
@@ -58,16 +69,13 @@ public partial class LuaLib
         {
             enemy.SetOnEliminateFuncRef(onEliminateFuncRef);
         }
-        // TraceBack函数
-        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, InterpreterManager.GetInstance().GetTracebackIndex());
         // init函数
         int initFuncRef = InterpreterManager.GetInstance().GetEnemyInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
         luaState.PushLightUserData(enemy);
-        luaState.Replace(-4 - numArgs);
-        luaState.Replace(-4 - numArgs);
-        luaState.Replace(-4 - numArgs);
-        luaState.PCall(numArgs + 1, 0, -numArgs - 3);
+        luaState.Replace(-3 - numArgs);
+        luaState.Replace(-3 - numArgs);
+        luaState.Call(numArgs + 1, 0);
         // 弹出剩余两个参数
         luaState.Pop(2);
         // 将返回值压入栈
@@ -150,8 +158,9 @@ public partial class LuaLib
     {
         EnemyBase enemy = luaState.ToUserData(-1) as EnemyBase;
         luaState.Pop(1);
-        luaState.PushNumber(enemy.CurPos.x);
-        luaState.PushNumber(enemy.CurPos.y);
+        Vector2 pos = enemy.GetPosition();
+        luaState.PushNumber(pos.x);
+        luaState.PushNumber(pos.y);
         return 2;
     }
 

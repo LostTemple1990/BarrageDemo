@@ -179,12 +179,20 @@ public enum BulletParaType :byte
     /// <summary>
     /// 圆周运动角速度增量
     /// </summary>
-    CurveOmiga = 8,
+    CurveOmega = 8,
     CurveCenterX = 9,
     CurveCenterY = 10,
     Alpha = 15,
     ScaleX = 20,
     ScaleY = 21,
+    /// <summary>
+    /// 激光的长度
+    /// </summary>
+    LaserLength = 25,
+    /// <summary>
+    /// 激光的宽度
+    /// </summary>
+    LaserWidth = 26,
 }
 
 /// <summary>

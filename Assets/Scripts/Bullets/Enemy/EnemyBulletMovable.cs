@@ -257,7 +257,7 @@ public class EnemyBulletMovable : EnemyBulletBase
             case BulletParaType.CurveDeltaR:
                 value = _deltaRadius;
                 return true;
-            case BulletParaType.CurveOmiga:
+            case BulletParaType.CurveOmega:
                 value = _curOmiga;
                 return true;
             case BulletParaType.CurveCenterX:
@@ -295,7 +295,7 @@ public class EnemyBulletMovable : EnemyBulletBase
             case BulletParaType.CurveDeltaR:
                 _deltaRadius = value;
                 return true;
-            case BulletParaType.CurveOmiga:
+            case BulletParaType.CurveOmega:
                 _curOmiga = value;
                 return true;
             case BulletParaType.CurveCenterX:

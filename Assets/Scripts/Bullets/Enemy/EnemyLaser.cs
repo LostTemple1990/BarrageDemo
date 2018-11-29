@@ -24,10 +24,21 @@ public class EnemyLaser : EnemyBulletBase
     protected float _grazeHalfHeight;
     protected float _collisionHalfWidth;
     protected float _collisionHalfHeight;
-
+    /// <summary>
+    /// 激光的宽度
+    /// </summary>
     protected float _laserWidth;
-    protected float _laserHeight;
-    protected float _laserHalfHeight;
+    /// <summary>
+    /// 激光的长度
+    /// </summary>
+    protected float _laserLength;
+    /// <summary>
+    /// 激光长度的一半
+    /// </summary>
+    protected float _laserHalfLength;
+    /// <summary>
+    /// 激光宽度的一半
+    /// </summary>
     protected float _laserHalfWidth;
 
     /// <summary>
@@ -61,14 +72,24 @@ public class EnemyLaser : EnemyBulletBase
     protected float _changeToWidth;
 
     /// <summary>
-    /// 表示当前正在改变高度
+    /// 表示当前正在改变长度
     /// </summary>
-    protected bool _isChangingHeight;
-    protected int _changeHeightDuration;
-    protected int _changeHeightTime;
-    protected int _changeHeightDelay;
-    protected float _changeFromHeight;
-    protected float _changeToHeight;
+    protected bool _isChangingLength;
+    protected int _changeLengthDuration;
+    protected int _changeLengthTime;
+    protected int _changeLengthDelay;
+    protected float _changeFromLength;
+    protected float _changeToLength;
+
+    /// <summary>
+    /// 当前是否正在改变alpha
+    /// </summary>
+    protected bool _isChangingAlpha;
+    protected int _changeAlphaDelay;
+    protected int _changeAlphaDuration;
+    protected int _changeAlphaTime;
+    protected float _changeFromAlpha;
+    protected float _changeToAlpha;
 
     /// <summary>
     /// 设置激光碰撞宽度和宽度的比例
@@ -94,16 +115,18 @@ public class EnemyLaser : EnemyBulletBase
     {
         base.Init();
         _moveFlag = false;
-        _curPos = Vector3.zero;
+        _curPos = Vector2.zero;
         _existTime = 0;
         _existDuration = -1;
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
         _isChangingWidth = false;
-        _isChangingHeight = false;
-        _laserHalfWidth = _laserHalfHeight = 0;
+        _isChangingLength = false;
+        _isChangingAlpha = false;
+        _laserLength = _laserHalfWidth = -1;
         _isDirty = false;
         _collisionFactor = 0.8f;
         _isRotating = false;
+        _resistEliminateFlag |= (int)(eEliminateDef.HitPlayer | eEliminateDef.PlayerSpellCard);
     }
 
     public override void SetBulletTexture(string texture)
@@ -161,14 +184,14 @@ public class EnemyLaser : EnemyBulletBase
     /// <param name="toWidth"></param>
     /// <param name="duration"></param>
     /// <param name="delay"></param>
-    public virtual void ChangeToWidth(float toWidth,int duration,int delay)
+    public virtual void ChangeToWidth(float toWidth,int delay, int duration)
     {
         _changeWidthDelay = delay;
         if ( delay == 0 )
         {
-            _changeFromWidth = _laserHalfWidth;
+            _changeFromWidth = _laserWidth;
         }
-        _changeToWidth = toWidth / 2;
+        _changeToWidth = toWidth;
         _changeWidthDuration = duration;
         _changeWidthTime = 0;
         _isChangingWidth = true;
@@ -180,17 +203,30 @@ public class EnemyLaser : EnemyBulletBase
     /// <param name="toWidth"></param>
     /// <param name="duration"></param>
     /// <param name="delay"></param>
-    public virtual void ChangeToHeight(float toHeight, int duration, int delay)
+    public virtual void ChangeToLength(float toLength, int delay, int duration)
     {
-        _changeHeightDelay = delay;
+        _changeLengthDelay = delay;
         if ( delay == 0 )
         {
-            _changeFromHeight = _laserHalfHeight;
+            _changeFromLength = _laserLength;
         }
-        _changeToHeight = toHeight / 2;
-        _changeHeightDuration = duration;
-        _changeHeightTime = 0;
-        _isChangingHeight = true;
+        _changeToLength = toLength;
+        _changeLengthDuration = duration;
+        _changeLengthTime = 0;
+        _isChangingLength = true;
+    }
+
+    public void ChangeToAlpha(float toAlpha,int delay,int duration)
+    {
+        _changeAlphaDelay = delay;
+        if ( delay == 0 )
+        {
+            _changeFromAlpha = _curAlpha;
+        }
+        _changeToAlpha = toAlpha;
+        _changeAlphaDuration = duration;
+        _changeAlphaTime = 0;
+        _isChangingAlpha = true;
     }
 
     public virtual void SetLaserExistDuration(int existDuration)
@@ -199,19 +235,15 @@ public class EnemyLaser : EnemyBulletBase
         _existDuration = existDuration;
     }
 
-    public virtual void SetLaserSize(float width,float height)
+    public virtual void SetLaserSize(float length,float width)
     {
+        if (length != Consts.OriginalHeight)
+        {
+            SetLength(length);
+        }
         if ( width != Consts.OriginalWidth )
         {
-            _laserWidth = width;
-            _laserHalfWidth = width / 2;
-            _isDirty = true;
-        }
-        if ( height != Consts.OriginalHeight )
-        {
-            _laserHeight = height;
-            _laserHalfHeight = height / 2;
-            _isDirty = true;
+            SetWidth(width);
         }
     }
 
@@ -256,14 +288,9 @@ public class EnemyLaser : EnemyBulletBase
     {
         base.Update();
         UpdateComponents();
-        if ( _isChangingWidth )
-        {
-            ChangingWidth();
-        }
-        if ( _isChangingHeight )
-        {
-            ChangingHeight();
-        }
+        if (_isChangingWidth) ChangingWidth();
+        if (_isChangingLength) ChangingLength();
+        if (_isChangingAlpha) ChangingAlpha();
         if ( _isSetRelativePosToMaster )
         {
             if ( _attachableMaster != null )
@@ -286,14 +313,18 @@ public class EnemyLaser : EnemyBulletBase
         {
             Rotate();
         }
-        if ( _isDirty )
-        {
-            Resize();
-        }
         UpdateGrazeCoolDown();
         UpdatePosition();
         CheckCollisionWithCharacter();
         UpdateExistTime();
+        if (_isDirty)
+        {
+            Resize();
+        }
+        if ( _isColorChanged )
+        {
+            _laser.color = new Color(1, 1, 1, _curAlpha);
+        }
     }
 
     /// <summary>
@@ -306,43 +337,67 @@ public class EnemyLaser : EnemyBulletBase
             _changeWidthDelay--;
             if ( _changeWidthDelay == 0 )
             {
-                _changeFromWidth = _laserHalfWidth;
+                _changeFromWidth = _laserWidth;
             }
         }
         else
         {
             _changeWidthTime++;
-            _laserHalfWidth = MathUtil.GetLinearInterpolation(_changeFromWidth, _changeToWidth, _changeWidthTime, _changeWidthDuration);
+            float newWidth = MathUtil.GetLinearInterpolation(_changeFromWidth, _changeToWidth, _changeWidthTime, _changeWidthDuration);
+            SetWidth(newWidth);
             if ( _changeWidthTime >= _changeWidthDuration )
             {
                 _isChangingWidth = false;
             }
-            _isDirty = true;
         }
     }
 
     /// <summary>
-    /// update-高度变更
+    /// update-长度变更
     /// </summary>
-    protected void ChangingHeight()
+    protected void ChangingLength()
     {
-        if (_changeHeightDelay > 0)
+        if (_changeLengthDelay > 0)
         {
-            _changeHeightDelay--;
-            if (_changeHeightDelay == 0)
+            _changeLengthDelay--;
+            if (_changeLengthDelay == 0)
             {
-                _changeFromHeight = _laserHalfHeight;
+                _changeFromLength = _laserLength;
             }
         }
         else
         {
-            _changeHeightTime++;
-            _laserHalfHeight = MathUtil.GetLinearInterpolation(_changeFromHeight, _changeToHeight, _changeHeightTime, _changeHeightDuration);
-            if (_changeHeightTime >= _changeHeightDuration)
+            _changeLengthTime++;
+            float newLen = MathUtil.GetLinearInterpolation(_changeFromLength, _changeToLength, _changeLengthTime, _changeLengthDuration);
+            SetLength(newLen);
+            if (_changeLengthTime >= _changeLengthDuration)
             {
-                _isChangingHeight = false;
+                _isChangingLength = false;
             }
-            _isDirty = true;
+        }
+    }
+
+    /// <summary>
+    /// update--alpha变更
+    /// </summary>
+    protected void ChangingAlpha()
+    {
+        if ( _changeAlphaDelay > 0 )
+        {
+            _changeAlphaDelay--;
+            if ( _changeAlphaDelay == 0 )
+            {
+                _changeFromAlpha = _curAlpha;
+            }
+        }
+        else
+        {
+            _changeAlphaTime++;
+            SetAlpha(Mathf.Lerp(_changeFromAlpha,_changeToAlpha,(float)_changeAlphaTime/_changeAlphaDuration));
+            if ( _changeAlphaTime >= _changeAlphaDuration )
+            {
+                _isChangingAlpha = false;
+            }
         }
     }
 
@@ -363,19 +418,18 @@ public class EnemyLaser : EnemyBulletBase
 
     protected virtual void Rotate()
     {
-        _curRotation += _laserRotateOmega;
+        float curRotation = _curRotation + _laserRotateOmega;
         _rotateCounter++;
         if ( _rotateCounter >= _rotateDuration )
         {
-            _curRotation = _rotateToAngle;
-            while (_curRotation < 0 )
+            while (curRotation < 0 )
             {
-                _curRotation += 360;
+                curRotation += 360;
             }
-            _curRotation = _curRotation % 360;
+            curRotation = curRotation % 360;
             _isRotating = false;
         }
-        _isRotationDirty = true;
+        SetRotation(curRotation);
     }
 
     protected virtual void UpdatePosition()
@@ -394,9 +448,9 @@ public class EnemyLaser : EnemyBulletBase
 
     protected virtual void Resize()
     {
-        _laser.size = new Vector2(_laserHalfWidth * 2, _laserHalfHeight * 2);
+        _laser.size = new Vector2(_laserLength, _laserWidth);
         Vector3 pos = Vector3.zero;
-        pos.x = _laserHalfWidth;
+        pos.x = _laserHalfLength;
         _laserTrans.localPosition = pos;
         _isDirty = false;
     }
@@ -407,7 +461,7 @@ public class EnemyLaser : EnemyBulletBase
         _existTime++;
         if ( _existTime >= _existDuration )
         {
-            _clearFlag = 1;
+            Eliminate(eEliminateDef.CodeEliminate);
         }
     }
 
@@ -424,15 +478,15 @@ public class EnemyLaser : EnemyBulletBase
         paras.nextIndex = -1;
         paras.type = CollisionDetectType.Rect;
         paras.halfWidth = _laserHalfWidth;
-        paras.halfHeight = _laserHalfHeight;
+        paras.halfHeight = _laserHalfLength;
         paras.angle = _curRotation;
         // 计算矩形中心坐标
         Vector2 center = new Vector2();
         float cos = Mathf.Cos(_curRotation * Mathf.Deg2Rad);
         float sin = Mathf.Sin(_curRotation * Mathf.Deg2Rad);
         // 矩形中心坐标
-        center.x = _laserHalfHeight * cos + _curPos.x;
-        center.y = _laserHalfHeight * sin + _curPos.y;
+        center.x = _laserHalfLength * cos + _curPos.x;
+        center.y = _laserHalfLength * sin + _curPos.y;
         paras.centerPos = center;
         return paras;
     }
@@ -456,8 +510,8 @@ public class EnemyLaser : EnemyBulletBase
         float cos = Mathf.Cos(_curRotation * Mathf.Deg2Rad);
         float sin = Mathf.Sin(_curRotation * Mathf.Deg2Rad);
         // 矩形中心坐标
-        center.x = _laserHalfHeight * cos + _curPos.x;
-        center.y = _laserHalfHeight * sin + _curPos.y;
+        center.x = _laserHalfLength * cos + _curPos.x;
+        center.y = _laserHalfLength * sin + _curPos.y;
         Vector2 vec = Global.PlayerPos - center;
         Vector2 relativeVec = new Vector2();
         // 向量顺时针旋转laserAngle的度数
@@ -474,7 +528,7 @@ public class EnemyLaser : EnemyBulletBase
         else
         {
             Vector2 tmpVec = relativeVec * rate;
-            if (Mathf.Abs(tmpVec.x) < _laserHalfHeight && Mathf.Abs(tmpVec.y) < _laserHalfWidth)
+            if (Mathf.Abs(tmpVec.x) < _laserHalfLength && Mathf.Abs(tmpVec.y) < _laserHalfWidth)
             {
                 isGrazing = true;
             }
@@ -489,7 +543,7 @@ public class EnemyLaser : EnemyBulletBase
             }
             rate = (len - Global.PlayerCollisionVec.z) / len;
             relativeVec *= rate;
-            if (rate <= 0 || (Mathf.Abs(relativeVec.x) < _laserHalfHeight && Mathf.Abs(relativeVec.y) < _laserHalfWidth * _collisionFactor))
+            if (rate <= 0 || (Mathf.Abs(relativeVec.x) < _laserHalfLength && Mathf.Abs(relativeVec.y) < _laserHalfWidth * _collisionFactor))
             {
                 Eliminate(eEliminateDef.HitPlayer);
                 PlayerService.GetInstance().GetCharacter().BeingHit();
@@ -497,6 +551,34 @@ public class EnemyLaser : EnemyBulletBase
         }
     }
     #endregion
+
+    /// <summary>
+    /// 设置激光的宽度
+    /// </summary>
+    /// <param name="value"></param>
+    private void SetWidth(float value)
+    {
+        if ( value != _laserWidth )
+        {
+            _laserWidth = value;
+            _laserHalfWidth = value / 2;
+            _isDirty = true;
+        }
+    }
+
+    /// <summary>
+    /// 设置激光的高度
+    /// </summary>
+    /// <param name="value"></param>
+    private void SetLength(float value)
+    {
+        if ( value != _laserLength )
+        {
+            _laserLength = value;
+            _laserHalfLength = value / 2;
+            _isDirty = true;
+        }
+    }
 
     public override string BulletId
     {
@@ -506,11 +588,58 @@ public class EnemyLaser : EnemyBulletBase
         }
     }
 
+    #region 设置/获取子弹参数的相关public方法
+    public override bool GetBulletPara(BulletParaType paraType, out float value)
+    {
+        value = 0;
+        switch (paraType)
+        {
+            case BulletParaType.Alpha:
+                value = _curAlpha;
+                return true;
+            case BulletParaType.LaserLength:
+                value = _laserLength;
+                return true;
+            case BulletParaType.LaserWidth:
+                value = _laserWidth;
+                return true;
+            case BulletParaType.CurveOmega:
+                value = _laserRotateOmega;
+                return true;
+        }
+        return false;
+    }
+
+    public override bool SetBulletPara(BulletParaType paraType, float value)
+    {
+        switch (paraType)
+        {
+            case BulletParaType.Alpha:
+                SetAlpha(value);
+                return true;
+            case BulletParaType.LaserLength:
+                SetLength(value);
+                return true;
+            case BulletParaType.LaserWidth:
+                SetWidth(value);
+                return true;
+            case BulletParaType.CurveOmega:
+                _laserRotateOmega = value;
+                return true;
+        }
+        return false;
+    }
+    #endregion
+
     public override void Clear()
     {
         if ( _laserObj != null )
         {
             _laser.size = Vector2.zero;
+            if ( !_isOriginalColor )
+            {
+                _laser.color = new Color(1, 1, 1, 1);
+            }
             ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _laserObj);
         }
         _laserObj = null;

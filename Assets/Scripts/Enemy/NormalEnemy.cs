@@ -46,20 +46,40 @@ public class NormalEnemy : EnemyBase
     public override void Update()
     {
         UpdateTask();
-        if ( _movableObj.IsActive() )
-        {
-            _movableObj.Update();
-            _curPos = _movableObj.GetPos();
-        }
+        UpdatePos();
         if ( !IsOutOfBorder() )
         {
             CheckCollisionWithCharacter();
             _enemyObj.Update();
-            UpdatePos();
+            UpdateTransform();
         }
         else
         {
             Eliminate(eEliminateDef.ForcedDelete);
+        }
+    }
+
+    private void UpdatePos()
+    {
+        if ( !_isSetRelativePosToMaster )
+        {
+            if (_movableObj.IsActive())
+            {
+                _movableObj.Update();
+                _curPos = _movableObj.GetPos();
+            }
+        }
+        else
+        {
+            if ( _attachableMaster != null )
+            {
+                Vector2 relativePos = _relativePosToMaster;
+                if ( _isFollowMasterRotation )
+                {
+                    relativePos = MathUtil.GetVec2AfterRotate(relativePos.x, relativePos.y, 0, 0, _attachableMaster.GetRotation());
+                }
+                _curPos = relativePos + _attachableMaster.GetPosition();
+            }
         }
     }
 
@@ -69,12 +89,10 @@ public class NormalEnemy : EnemyBase
         if ( posX > _curPos.x )
         {
             _enemyObj.DoAction(AniActionType.Move, Consts.DIR_RIGHT);
-            //_enemyAni.Play(AniActionType.Move, Consts.DIR_RIGHT);
         }
         else if ( posX < _curPos.x )
         {
             _enemyObj.DoAction(AniActionType.Move, Consts.DIR_LEFT);
-            //_enemyAni.Play(AniActionType.Move, Consts.DIR_LEFT);
         }
     }
 

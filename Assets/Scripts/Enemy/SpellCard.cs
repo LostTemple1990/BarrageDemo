@@ -35,7 +35,11 @@ public class SpellCard
     /// <summary>
     /// 符卡是否已经开始
     /// </summary>
-    private bool _isStarted;
+    private bool _isSCStarted;
+    /// <summary>
+    /// 符卡的task是否已经开始
+    /// </summary>
+    private bool _isSCTaskStarted;
     /// <summary>
     /// 是否符卡，false表示非符，不显示符卡信息
     /// </summary>
@@ -72,6 +76,7 @@ public class SpellCard
             object[] scDatas = { this.name };
             CommandManager.GetInstance().RunCommand(CommandConsts.ShowSpellCardInfo, scDatas);
         }
+        _isSCStarted = true;
     }
 
     public void SetFinishFuncRef(int funcRef)
@@ -91,7 +96,8 @@ public class SpellCard
         scTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
         scTask.funcRef = funcRef;
         // 初始化一些属性
-        _isStarted = false;
+        _isSCStarted = false;
+        _isSCTaskStarted = false;
         finishFuncRef = 0;
     }
 
@@ -101,7 +107,18 @@ public class SpellCard
     /// <returns></returns>
     public bool IsComplete()
     {
-        if (!_isStarted) return false;
+        if (!_isSCStarted) return false;
+        if (_frameLeft <= 0)
+        {
+            // 优先判断时符
+            if (_condition == eSpellCardCondition.TimeOver)
+            {
+                Logger.Log("TimeSpellCard TimeOver");
+                return true;
+            }
+            Logger.Log("SpellCard Over Time!");
+            return true;
+        }
         if ( _condition == eSpellCardCondition.EliminateAll )
         {
             Boss boss;
@@ -140,21 +157,6 @@ public class SpellCard
             Logger.Log("SpellCard EliminateSpecificOne");
             return true;
         }
-        else if ( _condition == eSpellCardCondition.TimeOver )
-        {
-            if ( _frameLeft <= 0 )
-            {
-                Logger.Log("SpellCard TimeOver");
-                return true;
-            }
-            return false;
-        }
-        // 判断是否超时
-        if ( _frameLeft <= 0 )
-        {
-            Logger.Log("SpellCard Over Time!");
-            return true;
-        }
         return false;
     }
 
@@ -162,15 +164,15 @@ public class SpellCard
     {
         //Logger.Log("CurFrame = " + STGStageManager.GetInstance().GetFrameSinceStageStart());
         // 符卡尚未开始
-        if ( !_isStarted )
+        if ( !_isSCTaskStarted )
         {
             for (int i=0;i<_bossCount;i++)
             {
                 InterpreterManager.GetInstance().AddPara(bossList[i], LuaParaType.LightUserData);
             }
             InterpreterManager.GetInstance().CallTaskCoroutine(scTask, _bossCount);
+            _isSCTaskStarted = true;
             Logger.Log("Start Casting SpellCard " + name);
-            _isStarted = true;
         }
         // update
         else

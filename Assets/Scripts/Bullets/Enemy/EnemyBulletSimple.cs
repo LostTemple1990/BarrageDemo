@@ -213,13 +213,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
         }
     }
 
-    public override void SetAlpha(float alpha)
-    {
-        _curAlpha = alpha;
-        _isColorChanged = true;
-        _isOriginalColor = false;
-    }
-
     public override void SetColor(float r, float g, float b)
     {
         _curColor = new Color(r / 255, g / 255, b / 255);

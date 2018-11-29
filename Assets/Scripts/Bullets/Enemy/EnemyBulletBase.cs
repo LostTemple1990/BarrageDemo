@@ -86,6 +86,7 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
     public EnemyBulletBase()
     {
         _components = new List<BulletComponent>();
+        _attachmentsList = new List<IAttachment>();
     }
 
     public override void Init()
@@ -101,7 +102,6 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
         _isOriginalColor = true;
         _curAlpha = 1;
         // 依附物体
-        _attachmentsList = new List<IAttachment>();
         _attachmentsCount = 0;
         _isSetRelativePosToMaster = false;
     }
@@ -127,7 +127,12 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
 
     public virtual void SetAlpha(float alpha)
     {
-        throw new System.NotImplementedException();
+        if ( _curAlpha != alpha )
+        {
+            _curAlpha = alpha;
+            _isColorChanged = true;
+            _isOriginalColor = false;
+        }
     }
 
     /// <summary>
@@ -209,18 +214,22 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
         }
         if ( _attachableMaster != null )
         {
-            _attachableMaster.OnAttachmentEliminated(this);
+            IAttachable master = _attachableMaster;
             _attachableMaster = null;
+            master.OnAttachmentEliminated(this);
         }
-        int attachmentsCount = _attachmentsCount;
-        _attachmentsCount = 0;
-        for (int i=0;i< attachmentsCount; i++)
+        if ( _attachmentsCount != 0 )
         {
-            if ( _attachmentsList[i] != null )
+            int attachmentsCount = _attachmentsCount;
+            _attachmentsCount = 0;
+            for (int i = 0; i < attachmentsCount; i++)
             {
-                _attachmentsList[i].OnMasterEliminated(eliminateType);
-                _attachmentsList[i] = null;
+                if (_attachmentsList[i] != null)
+                {
+                    _attachmentsList[i].OnMasterEliminated(eliminateType);
+                }
             }
+            _attachmentsList.Clear();
         }
         _clearFlag = 1;
         return true;
@@ -305,9 +314,8 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
 
     public void AttachTo(IAttachable master, bool eliminatedWithMaster)
     {
-        if (_attachableMaster != null) return;
-        _attachableMaster = (IAttachable)master;
-        if (_attachableMaster == null) return;
+        if (_attachableMaster != null || master == null) return;
+        _attachableMaster = master;
         master.AddAttachment(this);
         _isEliminatedWithMaster = eliminatedWithMaster;
     }
@@ -319,6 +327,15 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
         SetRotation(rotation);
         _isFollowMasterRotation = followMasterRotation;
         _isSetRelativePosToMaster = true;
+        if (_attachableMaster != null)
+        {
+            Vector2 relativePos = _relativePosToMaster;
+            if (_isFollowMasterRotation)
+            {
+                relativePos = MathUtil.GetVec2AfterRotate(relativePos.x, relativePos.y, 0, 0, _attachableMaster.GetRotation());
+            }
+            _curPos = relativePos + _attachableMaster.GetPosition();
+        }
     }
 
     public void OnMasterEliminated(eEliminateDef eliminateType)
@@ -331,6 +348,12 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
 
     public override void Clear()
     {
+        _attachableMaster = null;
+        if ( _attachmentsCount != 0 )
+        {
+            _attachmentsList.Clear();
+            _attachmentsCount = 0;
+        }
         for (int i=0;i<_componentsCount;i++)
         {
             _components[i].Clear();
