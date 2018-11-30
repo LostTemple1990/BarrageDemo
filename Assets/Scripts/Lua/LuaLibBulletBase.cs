@@ -218,6 +218,29 @@ public partial class LuaLib
         return 0;
     }
 
+    /// <summary>
+    /// 获取子弹的碰撞参数
+    /// <para>bullet</para>
+    /// <para>collisionIndex 第n个碰撞体</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int GetBulletCollisionDetectParas(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
+        int index = luaState.ToInteger(-1);
+        luaState.Pop(2);
+        CollisionDetectParas collParas = bullet.GetCollisionDetectParas(index);
+        luaState.PushInteger((int)collParas.type);
+        luaState.PushNumber(collParas.centerPos.x);
+        luaState.PushNumber(collParas.centerPos.y);
+        luaState.PushNumber(collParas.radius);
+        luaState.PushNumber(collParas.halfWidth);
+        luaState.PushNumber(collParas.halfHeight);
+        luaState.PushNumber(collParas.angle);
+        return 7;
+    }
+
     public static int AddBulletTask(ILuaState luaState)
     {
         EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;

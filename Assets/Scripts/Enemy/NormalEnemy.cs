@@ -61,7 +61,7 @@ public class NormalEnemy : EnemyBase
 
     private void UpdatePos()
     {
-        if ( !_isSetRelativePosToMaster )
+        if ( !_isFollowingMasterContinuously )
         {
             if (_movableObj.IsActive())
             {

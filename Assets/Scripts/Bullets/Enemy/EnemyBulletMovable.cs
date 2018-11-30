@@ -70,7 +70,7 @@ public class EnemyBulletMovable : EnemyBulletBase
         base.Update();
         _dx = 0;
         _dy = 0;
-        if ( !_isSetRelativePosToMaster )
+        if ( !_isFollowingMasterContinuously )
         {
             if (_isMovingStraight)
             {

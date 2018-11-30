@@ -77,6 +77,10 @@ public class EnemyBulletSimple : EnemyBulletMovable
     #endregion
 
     /// <summary>
+    /// 生成时是否播放出现特效
+    /// </summary>
+    protected bool _isAppearEffectAvailable;
+    /// <summary>
     /// 子弹出现的特效
     /// </summary>
     protected STGSpriteEffect _appearEffect;
@@ -89,16 +93,15 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _isScalingSize = false;
         _scaleX = _scaleY = 1;
         _originalColor = new Color(1, 1, 1, 1);
+        _isAppearEffectAvailable = true;
     }
 
     public override void Update()
     {
         _lastPos = _curPos;
+        if (_timeSinceCreated == 0 && _isAppearEffectAvailable) CreateAppearEffect();
         base.Update();
-        if (_appearEffect != null)
-        {
-            UpdateAppearEffect();
-        }
+        if (_appearEffect != null) UpdateAppearEffect();
         if (_isScalingSize) UpdateScaling();
         CheckCollisionWithCharacter();
         if ( IsOutOfBorder() )
@@ -185,9 +188,20 @@ public class EnemyBulletSimple : EnemyBulletMovable
         SetGrazeDetectParas(grazeParas);
     }
 
-    public void CreateAppearEffect()
+    /// <summary>
+    /// 设置生成时是否播放生成特效
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetAppearEffectAvailable(bool value)
     {
-        if (_timeSinceCreated != 0) return;
+        _isAppearEffectAvailable = value;
+    }
+
+    /// <summary>
+    /// 创建生成子弹时候的特效
+    /// </summary>
+    private void CreateAppearEffect()
+    {
         if (_cfg.appearEffectSizeFrom == 0) return;
         _appearEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
         _appearEffect.SetSprite(Consts.STGBulletsAtlasName, _cfg.appearEffectName, _cfg.blendMode, LayerId.EnemyBarrage, true);

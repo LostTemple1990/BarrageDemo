@@ -105,7 +105,7 @@ public class EnemyBase :IAttachable,IAttachment
     /// <summary>
     /// 是否设置了相对于依附对象的相对位置
     /// </summary>
-    protected bool _isSetRelativePosToMaster;
+    protected bool _isFollowingMasterContinuously;
     /// <summary>
     /// 相对于依附对象的位置
     /// </summary>
@@ -144,7 +144,7 @@ public class EnemyBase :IAttachable,IAttachment
         _onEliminateFuncRef = 0;
         _resistEliminateFlag = 0;
         _attachmentsCount = 0;
-        _isSetRelativePosToMaster = false;
+        _isFollowingMasterContinuously = false;
         _isFollowMasterRotation = false;
     }
 
@@ -673,10 +673,10 @@ public class EnemyBase :IAttachable,IAttachment
         master.AddAttachment(this);
     }
 
-    public void SetRelativePos(float offsetX, float offsetY, float rotation, bool followMasterRotation)
+    public void SetRelativePos(float offsetX, float offsetY, float rotation, bool followMasterRotation,bool isFollowingMasterContinuously)
     {
         _relativePosToMaster = new Vector2(offsetX, offsetY);
-        _isSetRelativePosToMaster = true;
+        _isFollowingMasterContinuously = isFollowingMasterContinuously;
         _relativeRotationToMaster = rotation;
         SetRotation(rotation);
         _isFollowMasterRotation = followMasterRotation;
@@ -694,7 +694,7 @@ public class EnemyBase :IAttachable,IAttachment
     public void OnMasterEliminated(eEliminateDef eliminateType)
     {
         _attachableMaster = null;
-        _isSetRelativePosToMaster = false;
+        _isFollowingMasterContinuously = false;
         if ( _isEliminatedWithMaster )
         {
             Eliminate(eliminateType);

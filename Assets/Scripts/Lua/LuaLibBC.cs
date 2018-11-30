@@ -23,6 +23,10 @@ public partial class LuaLib
         {
             bullet.AddComponent<BCRebound>();
         }
+        else if (type == BulletComponentType.ColliderTrigger)
+        {
+            bullet.AddComponent<BCColliderTrigger>();
+        }
         return 0;
     }
 
@@ -45,6 +49,25 @@ public partial class LuaLib
         luaState.Pop(7);
         BCParasChange bc = bullet.GetComponent<BCParasChange>();
         bc.AddParaChangeEvent(para, changeMode, changeValue, delay, duration, intMode);
+        return 0;
+    }
+
+    /// <summary>
+    /// 添加子弹的自定义碰撞事件
+    /// <para>bullet</para>
+    /// <para>triggerType 触发碰撞事件的类型，从eEliminateDef.CustomizedType0~eEliminateDef.CustomizedType5</para>
+    /// <para>triggerFuncRef 触发的函数</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int AddBulletColliderTriggerEvent(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-3) as EnemyBulletBase;
+        int triggerType = luaState.ToInteger(-2);
+        int triggerFuncRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+        luaState.Pop(2);
+        BCColliderTrigger bc = bullet.GetComponent<BCColliderTrigger>();
+        bc.Register(triggerType, triggerFuncRef);
         return 0;
     }
 }

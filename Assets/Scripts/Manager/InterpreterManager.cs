@@ -277,6 +277,20 @@ public class InterpreterManager
         return funcRef;
     }
 
+    /// <summary>
+    /// 取消索引处对应的LuaFunction
+    /// </summary>
+    /// <param name="funcRef"></param>
+    /// <param name="luaState"></param>
+    public void UnrefLuaFunction(int funcRef,ILuaState luaState=null)
+    {
+        if (luaState == null) luaState = _luaState;
+        luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, funcRef);
+#if LogLuaFuncRef
+        _luaRefDic.Remove(funcRef);
+#endif
+    }
+
     public void CallTaskCoroutine(Task task,int numArgs=0)
     {
         ThreadStatus status;
@@ -330,10 +344,7 @@ public class InterpreterManager
 
     public void StopTaskThread(Task task)
     {
-        if ( task.isFinish )
-        {
-            return;
-        }
+        if (task.isFinish) return;
         ILuaState luaState = task.luaState;
         luaState.PushBoolean(false);
         ThreadStatus status = luaState.Resume(luaState, 1);
@@ -367,30 +378,6 @@ public class InterpreterManager
         {
             Logger.LogError("StopTask Fail");
         }
-    }
-
-    public void CallCostomizedInitFunc(EnemyBulletBase bullet,string customizedName,int numArgs)
-    {
-        int funcRef;
-        if ( _customizedInitFuncMap.TryGetValue(customizedName, out funcRef) )
-        {
-            _luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
-            if ( !_luaState.IsFunction(-1) )
-            {
-                Logger.Log("InitFuncRef of " + customizedName + " is not point to a function");
-            }
-            _luaState.PushLightUserData(bullet);
-            // todo 以后有配置文件之后这个写法一定要改
-            // 将函数和第一个参数bullet移动到指定位置
-            Logger.Log(_luaState.GetTop());
-            _luaState.Replace(-4 - numArgs);
-            _luaState.Replace(-4 - numArgs);
-            _luaState.Call(numArgs+1, 0);
-            // 弹出剩余两个参数
-            _luaState.Pop(2);
-            return;
-        }
-        Logger.LogError("CustomizedFunc by Name " + customizedName + " is not exist");
     }
 
     public int GetInitFuncRef(string customizedName)
@@ -466,6 +453,8 @@ public class InterpreterManager
         }
         PushParasToStack(_luaState);
         _luaState.PCall(paraCount, retCount, -paraCount - 2);
+        // 弹出traceback函数
+        _luaState.Pop(1);
         return 1;
     }
 

@@ -769,7 +769,7 @@ end
 
 CustomizedBulletTable.NazrinSC2Spark = {}
 CustomizedBulletTable.NazrinSC2Spark.Init = function(laser,posX,posY,canRotate)
-	lib.SetBulletTexture(laser,"201060")
+	lib.SetBulletStyleById(laser,"202060")
 	local laserAngle = lib.GetAimToPlayerAngle(posX,posY)
 	lib.SetLaserProps(laser,posX,posY,laserAngle,0,2,500)
 	lib.SetBulletDetectCollision(laser,false)
@@ -1024,7 +1024,6 @@ end
 
 CustomizedBulletTable.WriggleBullet = {}
 CustomizedBulletTable.WriggleBullet.Init = function(bullet,velocity,angle,waitTime,finalStyleId)
-	lib.CreateAppearEffectForSimpleBullet(bullet)
 	lib.AddBulletTask(bullet,function()
 		if coroutine.yield(150) == false then return end
 		lib.ChangeBulletStyleById(bullet,"113120")
@@ -1382,7 +1381,6 @@ end
 
 CustomizedBulletTable.MarisaSC0Bullet3 = {}
 CustomizedBulletTable.MarisaSC0Bullet3.Init = function(bullet,angleOffsetRange)
-	lib.CreateAppearEffectForSimpleBullet(bullet)
 	local angleOffset = lib.GetRandomFloat(-angleOffsetRange,angleOffsetRange)
 	local angle = lib.GetAimToPlayerAngle(lib.GetBulletPos(bullet)) + angleOffset
 	lib.AddBulletTask(bullet,function()
@@ -1440,7 +1438,7 @@ CustomizedBulletTable.MarisaSC0Bullet5.Init = function(bullet,angle)
 	lib.SetBulletStraightParas(bullet,v+0.1,angle,false,0,0)
 	lib.AddBulletParaChangeEvent(bullet,eBulletParaType.Velocity,eParaChangeMode.DecBy,v/50*20,0,20,Constants.ModeLinear)
 	lib.BulletDoScale(bullet,0,0,20)
-	--lib.CreateAppearEffectForSimpleBullet(bullet)
+	lib.SetBulletAppearEffectAvailable(bullet,false)
 	lib.AddBulletTask(bullet,function()
 		do
 			if coroutine.yield(20) == false then return end
@@ -1456,6 +1454,7 @@ CustomizedBulletTable.MarisaSC0LaserBullet0.Init = function(bullet,bulletAngle)
 	lib.SetBulletColorWithAlpha(bullet,100,100,255,0.1)
 	lib.SetBulletStraightParas(bullet,0,bulletAngle,false,0,0)
 	lib.SetBulletDetectCollision(bullet,false)
+	lib.SetBulletAppearEffectAvailable(bullet,false)
 	lib.AddBulletTask(bullet,function()
 		if coroutine.yield(50) == false then return end
 		lib.SetBulletDetectCollision(bullet,true)
@@ -1481,6 +1480,7 @@ CustomizedBulletTable.MarisaSC0LaserBullet1.Init = function(bullet,bulletAngle)
 	lib.SetBulletColorWithAlpha(bullet,100,100,255,0)
 	lib.SetBulletStraightParas(bullet,0,bulletAngle,false,0,0)
 	lib.SetBulletDetectCollision(bullet,false)
+	lib.SetBulletAppearEffectAvailable(bullet,false)
 	lib.AddBulletTask(bullet,function()
 		if coroutine.yield(50) == false then return end
 		lib.SetBulletDetectCollision(bullet,true)
@@ -1506,6 +1506,7 @@ CustomizedBulletTable.MarisaSC0LaserBullet2.Init = function(bullet,bulletAngle)
 	lib.SetBulletColorWithAlpha(bullet,180,100,180,0.1)
 	lib.SetBulletStraightParas(bullet,0,bulletAngle,false,0,0)
 	lib.SetBulletDetectCollision(bullet,false)
+	lib.SetBulletAppearEffectAvailable(bullet,false)
 	lib.AddBulletTask(bullet,function()
 		if coroutine.yield(50) == false then return end
 		lib.SetBulletDetectCollision(bullet,true)
@@ -1531,6 +1532,7 @@ CustomizedBulletTable.MarisaSC0LaserBullet3.Init = function(bullet,bulletAngle)
 	lib.SetBulletColorWithAlpha(bullet,180,100,180,0)
 	lib.SetBulletStraightParas(bullet,0,bulletAngle,false,0,0)
 	lib.SetBulletDetectCollision(bullet,false)
+	lib.SetBulletAppearEffectAvailable(bullet,false)
 	lib.AddBulletTask(bullet,function()
 		if coroutine.yield(50) == false then return end
 		lib.SetBulletDetectCollision(bullet,true)
@@ -1722,7 +1724,7 @@ CustomizedBulletTable.PatchouliNonSC0Bullet0.Init = function(bullet,laserId,acce
 		for _=1,4 do
 			local laser = lib.CreateLaser(laserId,posX,posY,laserStartAngle,40,8,-1)
 			lib.AttatchToMaster(laser,bullet,true)
-			lib.SetAttachmentRelativePos(laser,0,0,laserStartAngle,true)
+			lib.SetAttachmentRelativePos(laser,0,0,laserStartAngle,true,true)
 			laserStartAngle = laserStartAngle + dAngle
 		end
 	end
@@ -1746,6 +1748,7 @@ CustomizedBulletTable.PatchouliNonSC0Bullet1.Init = function(bullet,angle)
 	lib.AddBulletParaChangeEvent(bullet,eBulletParaType.Alpha,eParaChangeMode.ChangeTo,0,0,20,Constants.ModeLinear)
 	lib.SetBulletStraightParas(bullet,0,angle,false,0,0)
 	lib.BulletDoScale(bullet,0,0,20)
+	lib.SetBulletAppearEffectAvailable(bullet,false)
 	lib.AddBulletTask(bullet,function()
 		do
 			if coroutine.yield(20) == false then return end
@@ -1813,7 +1816,7 @@ CustomizedEnemyTable.PatchouliEnemy0.Init = function(enemy,startRotation,omega)
 	lib.AddEnemyTask(enemy,function()
 		local curRotation,dCurRotation = startRotation,omega
 		for _=1,210 do
-			lib.SetAttachmentRelativePos(enemy,80*math.cos(math.rad(curRotation)),80*math.sin(math.rad(curRotation)),0,false)
+			lib.SetAttachmentRelativePos(enemy,80*math.cos(math.rad(curRotation)),80*math.sin(math.rad(curRotation)),0,false,false)
 			if coroutine.yield(1) == false then return end
 			curRotation = curRotation + dCurRotation
 		end
@@ -1848,7 +1851,7 @@ CustomizedBulletTable.PatchouliNonSC1Laser.Init = function(laser,laserId,master,
 	lib.SetBulletDetectCollision(laser,false)
 	lib.ChangeLaserWidthTo(laser,80,0,45)
 	lib.AttatchToMaster(laser,master,true)
-	lib.SetAttachmentRelativePos(laser,0,0,startRotation,false)
+	lib.SetAttachmentRelativePos(laser,0,0,startRotation,false,true)
 	lib.SetBulletAlpha(laser,0)
 	lib.ChangeLaserAlphaTo(laser,1,0,45)
 	lib.AddBulletTask(laser,function()
@@ -1902,6 +1905,107 @@ function SC.PatchouliNonSC1(boss)
 			if coroutine.yield(60) == false then return end
 		end
 	end)
+end
+
+CustomizedBulletTable.PatchouliSC0_FireLine = {}
+CustomizedBulletTable.PatchouliSC0_FireLine.Init = function(bullet)
+	local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
+	lib.SetObjectColliderSize(collider,16,16)
+	lib.SetObjectColliderEliminateType(collider,eEliminateType.CustomizedType1)
+	lib.AttatchToMaster(collider,bullet,true)
+	lib.SetAttachmentRelativePos(collider,0,0,0,false,true)
+	lib.AddBulletTask(bullet,function()
+		if coroutine.yield(180) == false then return end
+		lib.SetBulletStraightParas(bullet,35/60,90,false,0,0)
+		if coroutine.yield(60) == false then return end
+		for _=1,Infinite do
+			lib.SetBulletStraightParas(bullet,70/120,-90,false,0,0)
+			if coroutine.yield(120) == false then return end
+			lib.SetBulletStraightParas(bullet,70/120,90,false,0,0)
+			if coroutine.yield(120) == false then return end
+			if coroutine.yield(120) == false then return end
+		end
+	end)
+end
+
+CustomizedBulletTable.PatchouliSC0_FireBall = {}
+CustomizedBulletTable.PatchouliSC0_FireBall.Init = function(bullet,vAngle)
+	local accAngle = -90 + lib.GetRandomFloat(-3,3)
+	lib.SetBulletStraightParas(bullet,3,vAngle,false,0,0)
+	lib.DoBulletAccelerationWithLimitation(bullet,0.03,accAngle,4)
+	lib.AddBulletComponent(bullet,eBulletComponentType.ColliderTrigger)
+	local count = 1
+	lib.AddBulletColliderTriggerEvent(bullet,eEliminateType.CustomizedType0,function(collider,collIndex)
+		if count == 0 then return end
+		local posX,posY = lib.GetBulletPos(bullet)
+		for _=1,7 do
+			local _tmpVar = lib.CreateSimpleBulletById("113130",posX,posY)
+			lib.SetBulletStraightParas(_tmpVar,lib.GetRandomFloat(2,5.7),lib.GetRandomFloat(45,135),false,0,0)
+			lib.DoBulletAccelerationWithLimitation(_tmpVar,0.04,-90 + lib.GetRandomFloat(-2,2),3)
+		end
+		lib.EliminateBullet(bullet)
+		count = 0
+	end)
+end
+
+function SC.PatchouliSC1(boss)
+	lib.SetSpellCardProperties("日金符 [Alchemy Furnace]",60,Condition.EliminateAll,true,nil)
+	lib.EnemyMoveToPos(boss,0,128,120,Constants.ModeEaseOutQuad)
+	lib.SetBossInvincible(boss,5)
+	lib.SetEnemyMaxHp(boss,1000)
+	lib.ShowBossBloodBar(boss,true)
+	--bossCG
+	do
+		local tweenList = {}
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=0,duration=30,beginValue={x=200,y=200},endValue={x=0,y=0},mode=Constants.ModeEaseInQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=60,duration=60,beginValue={x=0,y=0},endValue={x=-200,y=-200},mode=Constants.ModeEaseOutQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=0,duration=0,beginValue=1,endValue=1,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=90,duration=30,beginValue=1,endValue=0,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Scale,delay=0,duration=0,beginValue={x=0.75,y=0.75,z=1},endValue={x=0.75,y=0.75,z=1},mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		lib.PlayCharacterCG("CG/face04ct",tweenList)
+	end
+	if coroutine.yield(120) == false then return end
+	do
+		local x,dx = 0,4.5
+		for _=1,51 do
+			local _tmpVar = lib.CreateCustomizedBullet("PatchouliSC0_FireLine","124131",-224+x,0,0)
+			_tmpVar = lib.CreateCustomizedBullet("PatchouliSC0_FireLine","124131",224-x,0,0)
+			if coroutine.yield(1) == false then return end
+			x = x + dx
+		end
+	end
+	if coroutine.yield(120) == false then return end
+	do
+		lib.SetEnemyWanderRange(boss,-105,105,128,144)
+		lib.SetEnemyWanderAmplitude(boss,30,60,0,8)
+		lib.SetEnemyWanderMode(boss,Constants.ModeLinear,Constants.DirModeMoveXTowardsPlayer)
+		for _=1,Infinite do
+			lib.EnemyDoWander(boss,60)
+			if coroutine.yield(60) == false then return end
+			local angle,dAngle = lib.GetRandomFloat(0,360),30
+			local posX,posY = lib.GetEnemyPos(boss)
+			for _=1,12 do
+				lib.CreateCustomizedBullet("PatchouliSC0_FireBall","118130",posX,posY,angle,1)
+				angle = angle + dAngle
+			end
+			if coroutine.yield(90) == false then return end
+		end
+	end
 end
 
 return

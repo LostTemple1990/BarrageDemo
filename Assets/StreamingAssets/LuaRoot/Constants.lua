@@ -30,6 +30,7 @@ eBulletComponentType = {}
 eBulletComponentType.CustomizedTask = 1
 eBulletComponentType.ParasChange = 2
 eBulletComponentType.Rebound = 3
+eBulletComponentType.ColliderTrigger = 4
 
 eParaChangeMode = {}
 eParaChangeMode.ChangeTo = 1
@@ -62,6 +63,13 @@ Constants.eEliminateType.SpellCardEnd = 8
 Constants.eEliminateType.HitObject = 16
 Constants.eEliminateType.CodeEliminate = 32
 Constants.eEliminateType.CodeRawEliminate = 64
+Constants.eEliminateType.CustomizedType0 = 2^10
+Constants.eEliminateType.CustomizedType1 = 2^11
+Constants.eEliminateType.CustomizedType2 = 2^12
+Constants.eEliminateType.CustomizedType3 = 2^13
+Constants.eEliminateType.CustomizedType4 = 2^14
+Constants.eEliminateType.CustomizedType5 = 2^15
+eEliminateType = Constants.eEliminateType
 
 
 Constants.eSpellCardCondition = {}

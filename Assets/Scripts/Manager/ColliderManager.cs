@@ -107,6 +107,17 @@ public class ColliderManager
         }
     }
 
+    /// <summary>
+    /// 获取所有碰撞组
+    /// </summary>
+    /// <param name="listCount"></param>
+    /// <returns></returns>
+    public List<ObjectColliderBase> GetColliderList(out int listCount)
+    {
+        listCount = _colliderCount;
+        return _colliderList;
+    }
+
     public void Clear()
     {
         _colliderList.Clear();

@@ -164,108 +164,63 @@ public class ColliderCircle : ObjectColliderBase
             CollisionDetectParas collParas = bullet.GetCollisionDetectParas(nextColliderIndex);
             curColliderIndex = nextColliderIndex;
             nextColliderIndex = collParas.nextIndex;
-            if (collParas.type == CollisionDetectType.Circle)
+            if ( DetectCollisionWithCollisionParas(collParas) )
             {
-                // 子弹为圆形判定，先检测外切正方形
-                float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
-                float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
-                // 两圆的半径和
-                float sumOfRadius = _radius + collParas.radius;
-                if (dx <= sumOfRadius && dy <= sumOfRadius)
-                {
-                    if (dx * dx + dy * dy <= sumOfRadius * sumOfRadius)
-                    {
-                        bullet.CollidedByObject(curColliderIndex);
-                        isCollided = true;
-                    }
-                }
-            }
-            else if (collParas.type == CollisionDetectType.Rect)
-            {
-                if (_radius == 0) continue;
-                // 子弹为矩形判定
-                // 以子弹中心点为圆心，将B的判定中心旋转angle的角度计算判定
-                Vector2 vec = new Vector2(_curPosX - collParas.centerPos.x, _curPosY - collParas.centerPos.y);
-                float cos = Mathf.Cos(collParas.angle * Mathf.Deg2Rad);
-                float sin = Mathf.Sin(collParas.angle * Mathf.Deg2Rad);
-                Vector2 relativeVec = new Vector2();
-                // 向量顺时针旋转laserAngle的度数
-                relativeVec.x = cos * vec.x + sin * vec.y;
-                relativeVec.y = -sin * vec.x + cos * vec.y;
-                // 计算圆和矩形的碰撞
-                float len = relativeVec.magnitude;
-                float dLen = len - _radius;
-                // 若圆心和矩形中心的连线长度小于圆的半径，说明矩形肯定有一部分在圆内
-                // 因此直接认定为碰撞
-                if ( dLen <= 0 )
-                {
-                    bullet.CollidedByObject(curColliderIndex);
-                    isCollided = true;
-                }
-                else
-                {
-                    float rate = dLen / len;
-                    relativeVec *= rate;
-                    if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
-                    {
-                        bullet.CollidedByObject(curColliderIndex);
-                        isCollided = true;
-                    }
-                }
-            }
-            else if (collParas.type == CollisionDetectType.Line)
-            {
-                float dis = MathUtil.GetMinDisFromPointToLineSegment(collParas.linePointA, collParas.linePointB, _curPos);
-                if (dis <= _radius + collParas.radius)
-                {
-                    bullet.Eliminate(eEliminateDef.HitObjectCollider);
-                    return true;
-                }
-            }
-            // 多线段集合，判断圆心到每个点的距离即可
-            else if (collParas.type == CollisionDetectType.MultiSegments)
-            {
-                if (bullet.Type == BulletType.Enemy_CurveLaser)
-                {
-                    EnemyCurveLaser curveLaser = bullet as EnemyCurveLaser;
-                    List<Vector2> pointList = collParas.multiSegmentPointList;
-                    int pointCount = pointList.Count;
-                    float dx, dy, sum;
-                    int eliminateStart = -1;
-                    int eliminateEnd = -1;
-                    for (int i = 0; i < pointCount; i++)
-                    {
-                        dx = pointList[i].x - _curPosX;
-                        dy = pointList[i].y - _curPosY;
-                        sum = collParas.radius + _radius;
-                        if (dx * dx + dy * dy <= sum * sum)
-                        {
-                            if (eliminateStart == -1)
-                            {
-                                eliminateStart = i;
-                            }
-                            eliminateEnd = i;
-                        }
-                        else
-                        {
-                            if (eliminateStart != -1)
-                            {
-                                curveLaser.EliminateByRange(eliminateStart, eliminateEnd);
-                                eliminateStart = -1;
-                            }
-                        }
-                    }
-                    if (eliminateStart != -1)
-                    {
-                        curveLaser.EliminateByRange(eliminateStart, eliminateEnd);
-                    }
-                }
-                else if (bullet.Type == BulletType.Enemy_LinearLaser)
-                {
-
-                }
+                bullet.CollidedByObject(curColliderIndex);
+                isCollided = true;
             }
         } while (nextColliderIndex != -1);
         return isCollided;
+    }
+
+    public override bool DetectCollisionWithCollisionParas(CollisionDetectParas collParas)
+    {
+        if (collParas.type == CollisionDetectType.Circle)
+        {
+            // 子弹为圆形判定，先检测外切正方形
+            float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
+            float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
+            // 两圆的半径和
+            float sumOfRadius = _radius + collParas.radius;
+            if (dx <= sumOfRadius && dy <= sumOfRadius)
+            {
+                if (dx * dx + dy * dy <= sumOfRadius * sumOfRadius)
+                {
+                    return true;
+                }
+            }
+        }
+        else if (collParas.type == CollisionDetectType.Rect || collParas.type == CollisionDetectType.ItalicRect )
+        {
+            if (_radius == 0) return false;
+            // 子弹为矩形判定
+            // 以子弹中心点为圆心，将B的判定中心旋转angle的角度计算判定
+            Vector2 vec = new Vector2(_curPosX - collParas.centerPos.x, _curPosY - collParas.centerPos.y);
+            float cos = Mathf.Cos(collParas.angle * Mathf.Deg2Rad);
+            float sin = Mathf.Sin(collParas.angle * Mathf.Deg2Rad);
+            Vector2 relativeVec = new Vector2();
+            // 向量顺时针旋转laserAngle的度数
+            relativeVec.x = cos * vec.x + sin * vec.y;
+            relativeVec.y = -sin * vec.x + cos * vec.y;
+            // 计算圆和矩形的碰撞
+            float len = relativeVec.magnitude;
+            float dLen = len - _radius;
+            // 若圆心和矩形中心的连线长度小于圆的半径，说明矩形肯定有一部分在圆内
+            // 因此直接认定为碰撞
+            if (dLen <= 0)
+            {
+                return true;
+            }
+            else
+            {
+                float rate = dLen / len;
+                relativeVec *= rate;
+                if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

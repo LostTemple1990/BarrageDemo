@@ -26,13 +26,14 @@ public partial class LuaLib
             new NameFuncPair("SetBulletDetectCollision",SetBulletDetectCollision),
             new NameFuncPair("SetBulletResistEliminatedFlag",SetBulletResistEliminatedFlag),
             new NameFuncPair("AddBulletTask",AddBulletTask),
+            new NameFuncPair("GetBulletCollisionDetectParas",GetBulletCollisionDetectParas),
             // SimpleBullet
             new NameFuncPair("CreateSimpleBulletById", CreateSimpleBulletById),
             new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet),
             new NameFuncPair("SetBulletSelfRotation",SetBulletSelfRotation),
             new NameFuncPair("SetBulletScale",SetBulletScale),
             new NameFuncPair("BulletDoScale",BulletDoScale),
-            new NameFuncPair("CreateAppearEffectForSimpleBullet", CreateAppearEffectForSimpleBullet),
+            new NameFuncPair("SetBulletAppearEffectAvailable", SetBulletAppearEffectAvailable),
             new NameFuncPair("SetBulletStraightParas",SetBulletStraightParas),
             new NameFuncPair("SetBulletCurvePara",SetBulletCurvePara),
             new NameFuncPair("DoBulletAcceleration",DoBulletAcceleration),
@@ -124,6 +125,7 @@ public partial class LuaLib
             // 子弹组件
             new NameFuncPair("AddBulletComponent",AddBulletComponent),
             new NameFuncPair("AddBulletParaChangeEvent",AddBulletParaChangeEvent),
+            new NameFuncPair("AddBulletColliderTriggerEvent",AddBulletColliderTriggerEvent),
             // ObjectCollider
             new NameFuncPair("CreateObjectColliderByType",CreateObjectColliderByType),
             new NameFuncPair("SetObjectColliderToPos",SetObjectColliderToPos),

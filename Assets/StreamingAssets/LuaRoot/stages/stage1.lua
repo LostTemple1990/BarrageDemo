@@ -190,7 +190,7 @@ CustomizedEnemyTable.TestKillEnemy.OnKill = function(enemy)
 			lib.AttatchToMaster(bullet,master,true)
 			local posX = 16 * (math.cos(math.rad(relativeRotation)) * 1 - math.sin(math.rad(relativeRotation)) * 0)
 			local posY = 16 * (math.sin(math.rad(relativeRotation)) * 1 - math.cos(math.rad(relativeRotation)) * 0)
-			lib.SetAttachmentRelativePos(bullet,posX,posY,relativeRotation,true)
+			lib.SetAttachmentRelativePos(bullet,posX,posY,relativeRotation,true,true)
 			relativeRotation = relativeRotation + 90
 		end
 	end
@@ -719,7 +719,6 @@ function Stage.StageTask()
 					local bullet
 					do local angle=-35 for _=1,3 do
 						bullet = lib.CreateSimpleBulletById("104060",posX,posY)
-						lib.CreateAppearEffectForSimpleBullet(bullet)
 						--lib.SetBulletStraightParas(bullet,0.5,angle,true,0.25,Constants.VelocityAngle)
 						lib.SetBulletStraightParas(bullet,2,angle,true,0.25,Constants.VelocityAngle)
 						angle = angle+35
@@ -777,10 +776,10 @@ function Stage.StageTask()
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
 		if coroutine.yield(100) == false then return end
 		lib.SetBossCurPhaseData(boss,1,1,1,1,4)
-		lib.StartSpellCard(SpellCard.PatchouliNonSC1,boss)
+		lib.StartSpellCard(SpellCard.PatchouliSC1,boss)
 		--lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
-		lib.StartSpellCard(SpellCard.NazrinSC2_1,boss)
+		lib.StartSpellCard(SpellCard.PatchouliNonSC1,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
 		lib.StartSpellCard(SpellCard.NazrinSC2_2,boss)
 		if lib.WaitForSpellCardFinish() == false then return end

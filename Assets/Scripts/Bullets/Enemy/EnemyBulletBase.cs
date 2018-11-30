@@ -67,9 +67,9 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
     /// </summary>
     protected bool _isEliminatedWithMaster;
     /// <summary>
-    /// 是否设置了相对于依附对象的相对位置
+    /// 是否设置了持续跟随本体移动
     /// </summary>
-    protected bool _isSetRelativePosToMaster;
+    protected bool _isFollowingMasterContinuously;
     /// <summary>
     /// 相对于依附对象的位置
     /// </summary>
@@ -103,7 +103,7 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
         _curAlpha = 1;
         // 依附物体
         _attachmentsCount = 0;
-        _isSetRelativePosToMaster = false;
+        _isFollowingMasterContinuously = false;
     }
 
     /// <summary>
@@ -320,13 +320,13 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
         _isEliminatedWithMaster = eliminatedWithMaster;
     }
 
-    public void SetRelativePos(float offsetX, float offsetY, float rotation, bool followMasterRotation)
+    public void SetRelativePos(float offsetX, float offsetY, float rotation, bool followMasterRotation,bool isFollowingMasterContinuously)
     {
         _relativePosToMaster = new Vector2(offsetX, offsetY);
         _relativeRotationToMaster = rotation;
         SetRotation(rotation);
         _isFollowMasterRotation = followMasterRotation;
-        _isSetRelativePosToMaster = true;
+        _isFollowingMasterContinuously = isFollowingMasterContinuously;
         if (_attachableMaster != null)
         {
             Vector2 relativePos = _relativePosToMaster;
@@ -341,9 +341,9 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
     public void OnMasterEliminated(eEliminateDef eliminateType)
     {
         _attachableMaster = null;
-        _isSetRelativePosToMaster = false;
+        _isFollowingMasterContinuously = false;
         if (!_isEliminatedWithMaster) return;
-        Eliminate(eliminateType);
+        Eliminate(eEliminateDef.CodeEliminate);
     }
 
     public override void Clear()

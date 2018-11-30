@@ -291,7 +291,7 @@ public class EnemyLaser : EnemyBulletBase
         if (_isChangingWidth) ChangingWidth();
         if (_isChangingLength) ChangingLength();
         if (_isChangingAlpha) ChangingAlpha();
-        if ( _isSetRelativePosToMaster )
+        if ( _isFollowingMasterContinuously )
         {
             if ( _attachableMaster != null )
             {

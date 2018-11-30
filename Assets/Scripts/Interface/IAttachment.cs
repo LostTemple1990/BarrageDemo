@@ -16,7 +16,8 @@ public interface IAttachment
     /// <param name="offsetY"></param>
     /// <param name="rotation"></param>
     /// <param name="followMasterRotation"></param>
-    void SetRelativePos(float offsetX, float offsetY, float rotation, bool followMasterRotation);
+    /// <param name="isFollowingMasterContinuously">是否持续跟随本体一起移动</param>
+    void SetRelativePos(float offsetX, float offsetY, float rotation, bool followMasterRotation,bool isFollowingMasterContinuously);
     /// <summary>
     /// 当被绑定的物体被消除时调用
     /// </summary>

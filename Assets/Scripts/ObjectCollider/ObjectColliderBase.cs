@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ObjectColliderBase
+public class ObjectColliderBase : IAttachment
 {
     protected float _curPosX;
     protected float _curPosY;
@@ -32,6 +32,20 @@ public class ObjectColliderBase
     /// 与敌机发生碰撞时对敌机造成的伤害
     /// </summary>
     protected int _hitEnemyDamage;
+
+    protected IAttachable _master;
+    /// <summary>
+    /// 标识是否随着master被销毁一同消失
+    /// </summary>
+    protected bool _isEliminatedWithMaster;
+    /// <summary>
+    /// 与master的相对位置
+    /// </summary>
+    protected Vector2 _relativePosToMaster;
+    /// <summary>
+    /// 是否连续跟随master
+    /// </summary>
+    protected bool _isFollowingMasterContinuously;
 
     public ObjectColliderBase()
     {
@@ -90,9 +104,12 @@ public class ObjectColliderBase
     public void Update()
     {
         if (_clearFlag == 1) return;
-        if ( _isScaling )
+        if (_isScaling) Scale();
+        if ( _isFollowingMasterContinuously && _master != null )
         {
-            Scale();
+            _curPos = _relativePosToMaster + _master.GetPosition();
+            _curPosX = _curPos.x;
+            _curPosY = _curPos.y;
         }
         if ( (_colliderGroups & (int)eColliderGroup.Player) != 0 )
         {
@@ -149,6 +166,11 @@ public class ObjectColliderBase
 
     }
 
+    public virtual bool DetectCollisionWithCollisionParas(CollisionDetectParas collParas)
+    {
+        throw new System.NotImplementedException();
+    }
+
     /// <summary>
     /// 设置ObjectCollider的消除类型
     /// 自机符卡/碰撞物体
@@ -195,9 +217,32 @@ public class ObjectColliderBase
         get { return _clearFlag; }
     }
 
+    public void AttachTo(IAttachable master, bool eliminatedWithMaster)
+    {
+        if (_master != null) return;
+        _master = master;
+        _master.AddAttachment(this);
+        _isEliminatedWithMaster = eliminatedWithMaster;
+    }
+
+    public void SetRelativePos(float offsetX, float offsetY, float rotation, bool followMasterRotation,bool isFollowingMasterContinuously)
+    {
+        _relativePosToMaster = new Vector2(offsetX, offsetY);
+        _isFollowingMasterContinuously = isFollowingMasterContinuously;
+        if ( _master != null )
+        {
+            _curPos = _master.GetPosition() + _relativePosToMaster;
+        }
+    }
+
+    public void OnMasterEliminated(eEliminateDef eliminateType)
+    {
+        _master = null;
+        _clearFlag = 1;
+    }
 
     public void Clear()
     {
-
+        _master = null;
     }
 }

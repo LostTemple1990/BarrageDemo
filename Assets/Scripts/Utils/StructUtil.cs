@@ -22,14 +22,14 @@ public struct CollisionDetectParas
     /// 中心点
     /// </summary>
     public Vector2 centerPos;
-    public Vector2 linePointA;
-    public Vector2 linePointB;
+    //public Vector2 linePointA;
+    //public Vector2 linePointB;
     public float angle;
     /// <summary>
     /// 下一个碰撞盒的索引
     /// </summary>
     public int nextIndex;
-    public List<Vector2> multiSegmentPointList;
+    //public List<Vector2> multiSegmentPointList;
 }
 
 public struct GrazeDetectParas
@@ -113,6 +113,7 @@ public enum BulletComponentType : byte
     CustomizedTask = 1,
     ParasChange = 2,
     Rebound = 3,
+    ColliderTrigger = 4,
 }
 
 public enum DirectionMode : byte
@@ -165,6 +166,12 @@ public enum eEliminateDef : int
     /// 直接调用代码，不触发消除触发的函数
     /// </summary>
     CodeRawEliminate = 64,
+    CustomizedType0 = 2 << 10,
+    CustomizedType1 = 2 << 11,
+    CustomizedType2 = 2 << 12,
+    CustomizedType3 = 2 << 13,
+    CustomizedType4 = 2 << 14,
+    CustomizedType5 = 2 << 15,
 }
 
 /// <summary>

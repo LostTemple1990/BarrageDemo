@@ -186,64 +186,72 @@ public class ColliderRect : ObjectColliderBase
             CollisionDetectParas collParas = bullet.GetCollisionDetectParas(nextColliderIndex);
             curColliderIndex = nextColliderIndex;
             nextColliderIndex = collParas.nextIndex;
-            if (collParas.type == CollisionDetectType.Circle)
+            if ( DetectCollisionWithCollisionParas(collParas) )
             {
-                // 子弹为圆形判定，方形判定来检测
-                float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
-                float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
-                // 检测该碰撞剧情与方形是否相交
-                if (dx <= _halfWidth + collParas.radius && dy <= _halfHeight + collParas.radius)
-                {
-                    bullet.CollidedByObject(curColliderIndex);
-                    isCollided = true;
-                }
-            }
-            else if (collParas.type == CollisionDetectType.Rect)
-            {
-                // 计算rect1的分离轴向量
-                float angle0 = 0;
-                float angle1 = collParas.angle;
-                float cos0 = Mathf.Cos(Mathf.Deg2Rad * angle0);
-                float sin0 = Mathf.Sin(Mathf.Deg2Rad * angle0);
-                float cos1 = Mathf.Cos(Mathf.Deg2Rad * angle1);
-                float sin1 = Mathf.Sin(Mathf.Deg2Rad * angle1);
-                //rect0分离轴
-                Vector2 rect0Vec0 = new Vector2(cos0, sin0);
-                Vector2 rect0Vec1 = new Vector2(-sin0, cos0);
-                // rect1分离轴
-                Vector2 rect1Vec0 = new Vector2(cos1, sin1);
-                Vector2 rect1Vec1 = new Vector2(-sin1, cos1);
-                List<Vector2> rectVecList = new List<Vector2> { rect0Vec0, rect0Vec1, rect1Vec0, rect1Vec1 };
-                // 两矩形中心的向量
-                Vector2 centerVec = new Vector2(collParas.centerPos.x - _curPos.x, collParas.centerPos.y - _curPos.y);
-                bool rectIsCollided = true;
-                for (int i = 0; i < rectVecList.Count; i++)
-                {
-                    // 投影轴
-                    Vector2 vec = rectVecList[i];
-                    // rect0的投影半径对于该投影轴的投影
-                    float projectionRadius0 = Mathf.Abs(Vector2.Dot(rect0Vec0, vec) * _halfWidth) + Mathf.Abs(Vector2.Dot(rect0Vec1, vec) * _halfHeight);
-                    projectionRadius0 = Mathf.Abs(projectionRadius0);
-                    // rect1的投影半径对于投影轴的投影
-                    float projectionRadius1 = Mathf.Abs(Vector2.Dot(rect1Vec0, vec) * collParas.halfWidth) + Mathf.Abs(Vector2.Dot(rect1Vec1, vec) * collParas.halfHeight);
-                    projectionRadius1 = Mathf.Abs(projectionRadius1);
-                    // 连线对于投影轴的投影
-                    float centerVecProjection = Vector2.Dot(centerVec, vec);
-                    centerVecProjection = Mathf.Abs(centerVecProjection);
-                    // 投影的和小于轴半径的长度,说明没有碰撞
-                    if (projectionRadius0 + projectionRadius1 <= centerVecProjection)
-                    {
-                        rectIsCollided = false;
-                        break;
-                    }
-                }
-                if ( rectIsCollided )
-                {
-                    bullet.CollidedByObject(curColliderIndex);
-                    isCollided = true;
-                }
+                bullet.CollidedByObject(curColliderIndex);
+                isCollided = true;
             }
         } while (nextColliderIndex != -1);
         return isCollided;
+    }
+
+    public override bool DetectCollisionWithCollisionParas(CollisionDetectParas collParas)
+    {
+        if (collParas.type == CollisionDetectType.Circle)
+        {
+            // 子弹为圆形判定，方形判定来检测
+            float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
+            float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
+            // 检测该碰撞剧情与方形是否相交
+            if (dx <= _halfWidth + collParas.radius && dy <= _halfHeight + collParas.radius)
+            {
+                return true;
+            }
+        }
+        else if (collParas.type == CollisionDetectType.Rect || collParas.type == CollisionDetectType.ItalicRect)
+        {
+            // 计算rect1的分离轴向量
+            float angle0 = 0;
+            float angle1 = collParas.angle;
+            float cos0 = Mathf.Cos(Mathf.Deg2Rad * angle0);
+            float sin0 = Mathf.Sin(Mathf.Deg2Rad * angle0);
+            float cos1 = Mathf.Cos(Mathf.Deg2Rad * angle1);
+            float sin1 = Mathf.Sin(Mathf.Deg2Rad * angle1);
+            //rect0分离轴
+            Vector2 rect0Vec0 = new Vector2(cos0, sin0);
+            Vector2 rect0Vec1 = new Vector2(-sin0, cos0);
+            // rect1分离轴
+            Vector2 rect1Vec0 = new Vector2(cos1, sin1);
+            Vector2 rect1Vec1 = new Vector2(-sin1, cos1);
+            List<Vector2> rectVecList = new List<Vector2> { rect0Vec0, rect0Vec1, rect1Vec0, rect1Vec1 };
+            // 两矩形中心的向量
+            Vector2 centerVec = new Vector2(collParas.centerPos.x - _curPos.x, collParas.centerPos.y - _curPos.y);
+            bool rectIsCollided = true;
+            for (int i = 0; i < rectVecList.Count; i++)
+            {
+                // 投影轴
+                Vector2 vec = rectVecList[i];
+                // rect0的投影半径对于该投影轴的投影
+                float projectionRadius0 = Mathf.Abs(Vector2.Dot(rect0Vec0, vec) * _halfWidth) + Mathf.Abs(Vector2.Dot(rect0Vec1, vec) * _halfHeight);
+                projectionRadius0 = Mathf.Abs(projectionRadius0);
+                // rect1的投影半径对于投影轴的投影
+                float projectionRadius1 = Mathf.Abs(Vector2.Dot(rect1Vec0, vec) * collParas.halfWidth) + Mathf.Abs(Vector2.Dot(rect1Vec1, vec) * collParas.halfHeight);
+                projectionRadius1 = Mathf.Abs(projectionRadius1);
+                // 连线对于投影轴的投影
+                float centerVecProjection = Vector2.Dot(centerVec, vec);
+                centerVecProjection = Mathf.Abs(centerVecProjection);
+                // 投影的和小于轴半径的长度,说明没有碰撞
+                if (projectionRadius0 + projectionRadius1 <= centerVecProjection)
+                {
+                    rectIsCollided = false;
+                    break;
+                }
+            }
+            if (rectIsCollided)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

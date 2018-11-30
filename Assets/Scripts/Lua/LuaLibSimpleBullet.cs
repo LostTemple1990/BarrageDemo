@@ -26,15 +26,16 @@ public partial class LuaLib
     }
 
     /// <summary>
-    /// 创建子弹出场特效
+    /// 设置子弹生成时是否播放生成特效
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int CreateAppearEffectForSimpleBullet(ILuaState luaState)
+    public static int SetBulletAppearEffectAvailable(ILuaState luaState)
     {
-        EnemyBulletSimple bullet = luaState.ToUserData(-1) as EnemyBulletSimple;
-        luaState.Pop(1);
-        bullet.CreateAppearEffect();
+        EnemyBulletSimple bullet = luaState.ToUserData(-2) as EnemyBulletSimple;
+        bool isAvailable = luaState.ToBoolean(-1);
+        luaState.Pop(2);
+        bullet.SetAppearEffectAvailable(isAvailable);
         return 0;
     }
 
@@ -198,7 +199,20 @@ public partial class LuaLib
         bullet.SetToPosition(posX, posY);
         // 设置自定义的数据
         BCCustomizedTask bc = bullet.AddComponent<BCCustomizedTask>();
+        // 使用pcall
         //luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, InterpreterManager.GetInstance().GetTracebackIndex());
+        //int funcRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
+        //luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
+        //if (!luaState.IsFunction(-1))
+        //{
+        //    Logger.LogError("InitFuncRef of " + customizedName + " is not point to a function");
+        //}
+        //luaState.PushLightUserData(bullet);
+        //luaState.Replace(-4 - numArgs);
+        //luaState.Replace(-4 - numArgs);
+        //luaState.Replace(-4 - numArgs);
+        //luaState.PCall(numArgs + 1, 0, -numArgs - 3);
+        // 使用call
         int funcRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         if (!luaState.IsFunction(-1))
@@ -206,11 +220,9 @@ public partial class LuaLib
             Logger.LogError("InitFuncRef of " + customizedName + " is not point to a function");
         }
         luaState.PushLightUserData(bullet);
-        //luaState.Replace(-4 - numArgs);
         luaState.Replace(-3 - numArgs);
         luaState.Replace(-3 - numArgs);
         luaState.Call(numArgs + 1, 0);
-        //luaState.PCall(numArgs + 1, 0, -numArgs - 3);
         // 弹出剩余两个参数
         luaState.Pop(2);
         luaState.PushLightUserData(bullet);

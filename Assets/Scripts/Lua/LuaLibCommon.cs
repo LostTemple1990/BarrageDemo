@@ -49,13 +49,14 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetAttachmentRelativePos(ILuaState luaState)
     {
-        IAttachment attachment = luaState.ToUserData(-5) as IAttachment;
-        float offsetX = (float)luaState.ToNumber(-4);
-        float offsetY = (float)luaState.ToNumber(-3);
-        float relativeRotation = (float)luaState.ToNumber(-2);
-        bool isFollowMasterRotation = luaState.ToBoolean(-1);
+        IAttachment attachment = luaState.ToUserData(-6) as IAttachment;
+        float offsetX = (float)luaState.ToNumber(-5);
+        float offsetY = (float)luaState.ToNumber(-4);
+        float relativeRotation = (float)luaState.ToNumber(-3);
+        bool isFollowMasterRotation = luaState.ToBoolean(-2);
+        bool isFollowingContinuously = luaState.ToBoolean(-1);
         luaState.Pop(5);
-        attachment.SetRelativePos(offsetX, offsetY, relativeRotation, isFollowMasterRotation);
+        attachment.SetRelativePos(offsetX, offsetY, relativeRotation, isFollowMasterRotation, isFollowingContinuously);
         return 0;
     }
 

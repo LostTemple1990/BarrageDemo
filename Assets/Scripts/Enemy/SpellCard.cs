@@ -4,26 +4,25 @@ using System.Collections.Generic;
 
 public class SpellCard
 {
-    public int type;
-    public string name;
-    public float curHp;
-    public float maxHp;
+    /// <summary>
+    /// 符卡名称
+    /// </summary>
+    private string _scName;
     /// <summary>
     /// 符卡时间，单位：秒
     /// </summary>
-    public float spellDuration;
-    public float spellTime;
+    private float _scDuration;
+    /// <summary>
+    /// 符卡总帧数
+    /// </summary>
     private int _frameTotal;
     /// <summary>
     /// 符卡剩余帧数
     /// </summary>
     private int _frameLeft;
-    public int taskRef;
-    public float invincibleDuration;
-    public bool isFinish;
-    public int finishFuncRef;
-    public Task scTask;
-    public List<Boss> bossList;
+    private int _finishFuncRef;
+    private Task _scTask;
+    private List<Boss> _bossList;
     /// <summary>
     /// 符卡对应的boss数量
     /// </summary>
@@ -47,7 +46,7 @@ public class SpellCard
 
     public SpellCard()
     {
-        finishFuncRef = 0;
+        _finishFuncRef = 0;
     }
 
     /// <summary>
@@ -59,9 +58,9 @@ public class SpellCard
     /// <param name="isSpellCard">是否符卡，符卡的话需要显示信息</param>
     public void SetProperties(string name,float duration, eSpellCardCondition condition,bool isSpellCard)
     {
-        this.name = name;
+        _scName = name;
         // 时间
-        spellDuration = duration;
+        _scDuration = duration;
         _frameTotal = (int)(duration * 60);
         _frameLeft = _frameTotal;
         // 显示符卡时间
@@ -73,15 +72,16 @@ public class SpellCard
         _isSpellCard = isSpellCard;
         if ( _isSpellCard )
         {
-            object[] scDatas = { this.name };
+            object[] scDatas = { _scName };
             CommandManager.GetInstance().RunCommand(CommandConsts.ShowSpellCardInfo, scDatas);
         }
         _isSCStarted = true;
+        Logger.Log("Start SpellCard " + _scName);
     }
 
     public void SetFinishFuncRef(int funcRef)
     {
-        finishFuncRef = funcRef;
+        _finishFuncRef = funcRef;
     }
 
     /// <summary>
@@ -91,14 +91,14 @@ public class SpellCard
     /// <param name="bossList"></param>
     public void SetTask(int funcRef, List<Boss> bossList)
     {
-        this.bossList = bossList;
+        this._bossList = bossList;
         _bossCount = bossList.Count;
-        scTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
-        scTask.funcRef = funcRef;
+        _scTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
+        _scTask.funcRef = funcRef;
         // 初始化一些属性
         _isSCStarted = false;
         _isSCTaskStarted = false;
-        finishFuncRef = 0;
+        _finishFuncRef = 0;
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ public class SpellCard
             Boss boss;
             for (int i=0;i<_bossCount;i++)
             {
-                boss = bossList[i];
+                boss = _bossList[i];
                 if ( boss.GetCurHp() > 0 )
                 {
                     return false;
@@ -138,7 +138,7 @@ public class SpellCard
             Boss boss;
             for (int i = 0; i < _bossCount; i++)
             {
-                boss = bossList[i];
+                boss = _bossList[i];
                 if (boss.GetCurHp() <= 0 )
                 {
                     Logger.Log("SpellCard EliminateOne");
@@ -149,7 +149,7 @@ public class SpellCard
         }
         else if ( _condition == eSpellCardCondition.EliminateSpecificOne )
         {
-            Boss boss = bossList[0];
+            Boss boss = _bossList[0];
             if ( boss.GetCurHp() > 0 )
             {
                 return false;
@@ -162,17 +162,16 @@ public class SpellCard
 
     public void Update()
     {
-        //Logger.Log("CurFrame = " + STGStageManager.GetInstance().GetFrameSinceStageStart());
         // 符卡尚未开始
         if ( !_isSCTaskStarted )
         {
             for (int i=0;i<_bossCount;i++)
             {
-                InterpreterManager.GetInstance().AddPara(bossList[i], LuaParaType.LightUserData);
+                InterpreterManager.GetInstance().AddPara(_bossList[i], LuaParaType.LightUserData);
             }
-            InterpreterManager.GetInstance().CallTaskCoroutine(scTask, _bossCount);
+            InterpreterManager.GetInstance().CallTaskCoroutine(_scTask, _bossCount);
             _isSCTaskStarted = true;
-            Logger.Log("Start Casting SpellCard " + name);
+            Logger.Log("Call SpellCard Task");
         }
         // update
         else
@@ -180,14 +179,14 @@ public class SpellCard
             _frameLeft--;
             object[] data = { _frameLeft };
             CommandManager.GetInstance().RunCommand(CommandConsts.UpdateSpellCardTime, data);
-            if (scTask != null && !scTask.isFinish)
+            if (_scTask != null && !_scTask.isFinish)
             {
-                InterpreterManager.GetInstance().CallTaskCoroutine(scTask);
-                if (scTask.isFinish)
+                InterpreterManager.GetInstance().CallTaskCoroutine(_scTask);
+                if (_scTask.isFinish)
                 {
-                    Logger.Log("SpellCard " + name + " task finish!");
-                    ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(scTask);
-                    scTask = null;
+                    Logger.Log("SpellCard " + _scName + " task finish!");
+                    ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(_scTask);
+                    _scTask = null;
                 }
             }
         }
@@ -195,14 +194,14 @@ public class SpellCard
 
     public void OnFinish()
     {
-        if ( finishFuncRef != 0 )
+        if ( _finishFuncRef != 0 )
         {
-            InterpreterManager.GetInstance().CallLuaFunction(finishFuncRef, 0);
+            InterpreterManager.GetInstance().CallLuaFunction(_finishFuncRef, 0);
         }
         // 清除BossTask
         for (int i=0;i<_bossCount;i++)
         {
-            bossList[i].OnSpellCardFinish();
+            _bossList[i].OnSpellCardFinish();
         }
         ColliderManager.GetInstance().ClearAllObjectCollider(new List<eEliminateDef>{ eEliminateDef.PlayerSpellCard });
         CreateEliminateEnemyCollider();
@@ -243,17 +242,17 @@ public class SpellCard
     public Boss GetBossByIndex(int index)
     {
         index = Mathf.Clamp(index, 0, _bossCount - 1);
-        return bossList[index];
+        return _bossList[index];
     }
 
     public void Clear()
     {
-        bossList = null;
-        if ( scTask != null && !scTask.isFinish )
+        _bossList = null;
+        if ( _scTask != null && !_scTask.isFinish )
         {
-            InterpreterManager.GetInstance().StopTaskThread(scTask);
+            InterpreterManager.GetInstance().StopTaskThread(_scTask);
         }
-        scTask = null;
+        _scTask = null;
     }
 }
 
