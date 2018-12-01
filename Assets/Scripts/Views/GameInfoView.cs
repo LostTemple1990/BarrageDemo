@@ -129,10 +129,10 @@ public class GameInfoView : ViewBase,ICommand
     {
         _scNameText.text = scName;
         _scNameObject.SetActive(true);
-        _scNameObject.transform.localPosition = new Vector2(108, -140);
+        _scNameObject.transform.localPosition = new Vector2(192, -112);
         TweenPos2D tweenPos = TweenManager.GetInstance().Create<TweenPos2D>();
         tweenPos.SetParas(_scNameObject, 60, 60, ePlayMode.Once);
-        tweenPos.SetParas(new Vector2(108,-140), new Vector2(108,209), InterpolationMode.Linear);
+        tweenPos.SetParas(new Vector2(192,-112), new Vector2(192,224), InterpolationMode.Linear);
         tweenPos.SetIgnoreTimeScale(false);
         TweenManager.GetInstance().AddTween(tweenPos);
         _isShowSpellCardInfo = true;

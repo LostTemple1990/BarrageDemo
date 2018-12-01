@@ -10,18 +10,18 @@ TextureImporter:
     21300010: Bullet125090
     21300012: Bullet125130
     21300014: Bullet125150
-    21300016: BulletSprite2_8
-    21300018: BulletSprite2_9
-    21300020: BulletSprite2_10
-    21300022: BulletSprite2_11
-    21300024: BulletSprite2_12
-    21300026: BulletSprite2_13
-    21300028: BulletSprite2_14
-    21300030: BulletSprite2_15
-    21300032: BulletSprite2_16
-    21300034: BulletSprite2_17
-    21300036: BulletSprite2_18
-    21300038: BulletSprite2_19
+    21300016: Bullet27050_2
+    21300018: Bullet27050_1
+    21300020: Bullet27050_0
+    21300022: Bullet27010_2
+    21300024: Bullet27010_1
+    21300026: Bullet27010_0
+    21300028: Bullet27030_2
+    21300030: Bullet27030_1
+    21300032: Bullet27030_0
+    21300034: Bullet27130_2
+    21300036: Bullet27130_1
+    21300038: Bullet27130_0
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -105,8 +105,8 @@ TextureImporter:
       name: Bullet125000
       rect:
         serializedVersion: 2
-        x: 0
-        y: 160
+        x: 224
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -125,8 +125,8 @@ TextureImporter:
       name: Bullet125010
       rect:
         serializedVersion: 2
-        x: 32
-        y: 160
+        x: 192
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -145,8 +145,8 @@ TextureImporter:
       name: Bullet125030
       rect:
         serializedVersion: 2
-        x: 64
-        y: 160
+        x: 160
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -165,8 +165,8 @@ TextureImporter:
       name: Bullet125050
       rect:
         serializedVersion: 2
-        x: 96
-        y: 160
+        x: 128
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -185,8 +185,8 @@ TextureImporter:
       name: Bullet125070
       rect:
         serializedVersion: 2
-        x: 128
-        y: 160
+        x: 96
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -205,8 +205,8 @@ TextureImporter:
       name: Bullet125090
       rect:
         serializedVersion: 2
-        x: 160
-        y: 160
+        x: 64
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -225,8 +225,8 @@ TextureImporter:
       name: Bullet125130
       rect:
         serializedVersion: 2
-        x: 192
-        y: 160
+        x: 32
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -245,8 +245,8 @@ TextureImporter:
       name: Bullet125150
       rect:
         serializedVersion: 2
-        x: 224
-        y: 160
+        x: 0
+        y: 63
         width: 32
         height: 32
       alignment: 0
@@ -262,11 +262,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite2_8
+      name: Bullet27050_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 192
+        x: 64
+        y: 0
         width: 32
         height: 32
       alignment: 0
@@ -282,11 +282,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite2_9
+      name: Bullet27050_1
       rect:
         serializedVersion: 2
-        x: 32
-        y: 192
+        x: 96
+        y: 0
         width: 32
         height: 32
       alignment: 0
@@ -302,11 +302,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite2_10
+      name: Bullet27050_0
       rect:
         serializedVersion: 2
-        x: 64
-        y: 192
+        x: 128
+        y: 0
         width: 32
         height: 32
       alignment: 0
@@ -322,11 +322,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite2_11
+      name: Bullet27010_2
       rect:
         serializedVersion: 2
-        x: 96
-        y: 192
+        x: 160
+        y: 0
         width: 32
         height: 32
       alignment: 0
@@ -342,11 +342,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite2_12
+      name: Bullet27010_1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 192
+        x: 192
+        y: 0
         width: 32
         height: 32
       alignment: 0
@@ -362,11 +362,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite2_13
+      name: Bullet27010_0
       rect:
         serializedVersion: 2
-        x: 160
-        y: 192
+        x: 224
+        y: 0
         width: 32
         height: 32
       alignment: 0
@@ -382,11 +382,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite2_14
+      name: Bullet27030_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 224
+        x: 64
+        y: 32
         width: 32
         height: 32
       alignment: 0
@@ -402,11 +402,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite2_15
+      name: Bullet27030_1
       rect:
         serializedVersion: 2
-        x: 32
-        y: 224
+        x: 96
+        y: 32
         width: 32
         height: 32
       alignment: 0
@@ -422,11 +422,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite2_16
+      name: Bullet27030_0
       rect:
         serializedVersion: 2
-        x: 64
-        y: 224
+        x: 128
+        y: 32
         width: 32
         height: 32
       alignment: 0
@@ -442,11 +442,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite2_17
+      name: Bullet27130_2
       rect:
         serializedVersion: 2
-        x: 96
-        y: 224
+        x: 160
+        y: 32
         width: 32
         height: 32
       alignment: 0
@@ -462,11 +462,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite2_18
+      name: Bullet27130_1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 224
+        x: 192
+        y: 32
         width: 32
         height: 32
       alignment: 0
@@ -482,11 +482,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite2_19
+      name: Bullet27130_0
       rect:
         serializedVersion: 2
-        x: 160
-        y: 224
+        x: 224
+        y: 32
         width: 32
         height: 32
       alignment: 0

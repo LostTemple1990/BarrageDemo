@@ -1122,6 +1122,7 @@ end
 CustomizedBulletTable.OrionidsBullet0 = {}
 CustomizedBulletTable.OrionidsBullet0.Init = function(bullet)
 	lib.SetBulletStraightParas(bullet,0,270,false,0,0)
+	lib.SetBulletAppearEffectAvailable(bullet,false)
 	lib.AddBulletTask(bullet,function()
 		if coroutine.yield(30) == false then return end
 		local alpha,dAlpha = 255,-5
@@ -1170,7 +1171,7 @@ CustomizedEnemyTable.OrionidsEnemy.Init = function(enemy,startPosX,startPosY,ang
 		if coroutine.yield(60) == false then return end
 		for _=1,Infinite do
 			local posX,posY = lib.GetEnemyPos(enemy)
-			lib.CreateCustomizedBullet("OrionidsBullet0","125051",posX,posY,0)
+			lib.CreateCustomizedBullet("OrionidsBullet0","127051",posX,posY,0)
 			if coroutine.yield(4) == false then return end
 		end
 	end)
@@ -1923,6 +1924,7 @@ CustomizedBulletTable.PatchouliSC0_FireLine.Init = function(bullet)
 			if coroutine.yield(120) == false then return end
 			lib.SetBulletStraightParas(bullet,70/120,90,false,0,0)
 			if coroutine.yield(120) == false then return end
+			lib.SetBulletStraightParas(bullet,0,90,false,0,0)
 			if coroutine.yield(120) == false then return end
 		end
 	end)
@@ -1944,6 +1946,19 @@ CustomizedBulletTable.PatchouliSC0_FireBall.Init = function(bullet,vAngle)
 			lib.DoBulletAccelerationWithLimitation(_tmpVar,0.04,-90 + lib.GetRandomFloat(-2,2),3)
 		end
 		lib.EliminateBullet(bullet)
+		count = 0
+	end)
+end
+
+CustomizedBulletTable.PatchouliSC0_FireRain = {}
+CustomizedBulletTable.PatchouliSC0_FireRain.Init = function(bullet,vAngle)
+	lib.SetBulletScale(bullet,0.6)
+	lib.SetBulletStraightParas(bullet,2,-90,false,0,0)
+	lib.AddBulletComponent(bullet,eBulletComponentType.ColliderTrigger)
+	local count = 1
+	lib.AddBulletColliderTriggerEvent(bullet,eEliminateType.CustomizedType0,function(collider,collIndex)
+		if count == 0 then return end
+		lib.SetBulletStyleById(bullet,126130)
 		count = 0
 	end)
 end
@@ -1990,6 +2005,14 @@ function SC.PatchouliSC1(boss)
 		end
 	end
 	if coroutine.yield(120) == false then return end
+	do
+		lib.AddEnemyTask(boss,function()
+			for _=1,Infinite do
+				lib.CreateCustomizedBullet("PatchouliSC0_FireRain","124130",lib.GetRandomFloat(-185,185),220,0)
+				if coroutine.yield(4) == false then return end
+			end
+		end)
+	end
 	do
 		lib.SetEnemyWanderRange(boss,-105,105,128,144)
 		lib.SetEnemyWanderAmplitude(boss,30,60,0,8)

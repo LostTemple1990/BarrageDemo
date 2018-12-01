@@ -10,22 +10,22 @@ TextureImporter:
     21300010: BulletSprite0_5
     21300012: BulletSprite0_6
     21300014: BulletSprite0_7
-    21300016: BulletSprite0_8
-    21300018: BulletSprite0_9
-    21300020: BulletSprite0_10
-    21300022: BulletSprite0_11
-    21300024: BulletSprite0_12
-    21300026: BulletSprite0_13
-    21300028: BulletSprite0_14
-    21300030: BulletSprite0_15
-    21300032: BulletSprite0_16
-    21300034: BulletSprite0_17
-    21300036: BulletSprite0_18
-    21300038: BulletSprite0_19
-    21300040: BulletSprite0_20
-    21300042: BulletSprite0_21
-    21300044: BulletSprite0_22
-    21300046: BulletSprite0_23
+    21300016: Bullet126050_0
+    21300018: Bullet126050_1
+    21300020: Bullet126050_2
+    21300022: Bullet126050_3
+    21300024: Bullet126130_0
+    21300026: Bullet126130_1
+    21300028: Bullet126130_2
+    21300030: Bullet126130_3
+    21300032: Bullet126010_0
+    21300034: Bullet126010_1
+    21300036: Bullet126010_2
+    21300038: Bullet126010_3
+    21300040: Bullet126030_0
+    21300042: Bullet126030_1
+    21300044: Bullet126030_2
+    21300046: Bullet126030_3
     21300048: Bullet124000
     21300050: Bullet124010
     21300052: Bullet124030
@@ -303,7 +303,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_8
+      name: Bullet126050_0
       rect:
         serializedVersion: 2
         x: 0
@@ -323,7 +323,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_9
+      name: Bullet126050_1
       rect:
         serializedVersion: 2
         x: 32
@@ -343,7 +343,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_10
+      name: Bullet126050_2
       rect:
         serializedVersion: 2
         x: 64
@@ -363,7 +363,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_11
+      name: Bullet126050_3
       rect:
         serializedVersion: 2
         x: 96
@@ -383,7 +383,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_12
+      name: Bullet126130_0
       rect:
         serializedVersion: 2
         x: 128
@@ -403,7 +403,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_13
+      name: Bullet126130_1
       rect:
         serializedVersion: 2
         x: 160
@@ -423,7 +423,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_14
+      name: Bullet126130_2
       rect:
         serializedVersion: 2
         x: 192
@@ -443,7 +443,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_15
+      name: Bullet126130_3
       rect:
         serializedVersion: 2
         x: 224
@@ -463,7 +463,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_16
+      name: Bullet126010_0
       rect:
         serializedVersion: 2
         x: 0
@@ -483,7 +483,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_17
+      name: Bullet126010_1
       rect:
         serializedVersion: 2
         x: 32
@@ -503,7 +503,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_18
+      name: Bullet126010_2
       rect:
         serializedVersion: 2
         x: 64
@@ -523,7 +523,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_19
+      name: Bullet126010_3
       rect:
         serializedVersion: 2
         x: 96
@@ -543,7 +543,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_20
+      name: Bullet126030_0
       rect:
         serializedVersion: 2
         x: 128
@@ -563,7 +563,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_21
+      name: Bullet126030_1
       rect:
         serializedVersion: 2
         x: 160
@@ -583,7 +583,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_22
+      name: Bullet126030_2
       rect:
         serializedVersion: 2
         x: 192
@@ -603,7 +603,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BulletSprite0_23
+      name: Bullet126030_3
       rect:
         serializedVersion: 2
         x: 224

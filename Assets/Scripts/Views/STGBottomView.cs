@@ -173,7 +173,7 @@ public class STGBottomView : ViewBase,ICommand
                 }
             case eTweenType.Rotation:
                 {
-                    TweenPos3D tween = TweenManager.GetInstance().Create<TweenPos3D>();
+                    TweenRotation tween = TweenManager.GetInstance().Create<TweenRotation>();
                     Vector3 begin, end;
                     InterpolationMode mode;
                     luaState.GetField(-1, "beginValue");
@@ -189,7 +189,7 @@ public class STGBottomView : ViewBase,ICommand
                 }
             case eTweenType.Scale:
                 {
-                    TweenPos3D tween = TweenManager.GetInstance().Create<TweenPos3D>();
+                    TweenScale tween = TweenManager.GetInstance().Create<TweenScale>();
                     Vector3 begin, end;
                     InterpolationMode mode;
                     luaState.GetField(-1, "beginValue");

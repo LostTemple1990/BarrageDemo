@@ -84,6 +84,22 @@ public class EnemyBulletSimple : EnemyBulletMovable
     /// 子弹出现的特效
     /// </summary>
     protected STGSpriteEffect _appearEffect;
+    /// <summary>
+    /// 当前子弹的动画帧数
+    /// </summary>
+    protected int _aniFrameCount;
+    /// <summary>
+    /// 当前子弹的动画播放间隔
+    /// </summary>
+    protected int _aniFrameInterval;
+    /// <summary>
+    /// 当前动画索引
+    /// </summary>
+    protected int _curAniIndex;
+    /// <summary>
+    /// 当前动画帧切换计数器
+    /// </summary>
+    protected int _curAniTimeCounter;
 
     public override void Init()
     {
@@ -112,6 +128,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         {
             if (_isScaleChanged) UpdateScale();
             if (_isColorChanged) UpdateColor();
+            if (_aniFrameCount != 0) UpdateAni();
             CheckRotateImg();
             UpdatePos();
         }
@@ -164,7 +181,10 @@ public class EnemyBulletSimple : EnemyBulletMovable
             ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         }
         _cfg = cfg;
-        SetBulletTexture(cfg.spriteName);
+        _prefabName = _cfg.id;
+        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(_type, _cfg.id);
+        _trans = _bullet.transform;
+        _spRenderer = _trans.Find("BulletSprite").GetComponent<SpriteRenderer>();
         SetToPosition(_curPos.x, _curPos.y);
         SetRotatedByVelocity(cfg.isRotatedByVAngle);
         SetSelfRotation(cfg.selfRotationAngle);
@@ -184,8 +204,11 @@ public class EnemyBulletSimple : EnemyBulletMovable
         // 碰撞
         value = Global.PlayerCollisionVec.z + _collisionRadius;
         _detCollisonValue = value * value;
-
         SetGrazeDetectParas(grazeParas);
+        _aniFrameCount = _cfg.aniFrameCount;
+        _aniFrameInterval = _cfg.aniFrameInterval;
+        _curAniTimeCounter = 0;
+        _curAniIndex = 0;
     }
 
     /// <summary>
@@ -205,7 +228,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         if (_cfg.appearEffectSizeFrom == 0) return;
         _appearEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
         _appearEffect.SetSprite(Consts.STGBulletsAtlasName, _cfg.appearEffectName, _cfg.blendMode, LayerId.EnemyBarrage, true);
-        //_appearEffect.SetOrderInLayer(10);
+        _appearEffect.SetOrderInLayer(10);
         _appearEffect.SetToPos(_curPos.x, _curPos.y);
         _appearEffect.SetScale(_cfg.appearEffectSizeFrom, _cfg.appearEffectSizeFrom);
         //_appearEffect.DoScaleWidth(_cfg.appearEffectSizeTo, AppearEffectExistDuration, InterpolationMode.Linear);
@@ -246,6 +269,17 @@ public class EnemyBulletSimple : EnemyBulletMovable
     {
         _spRenderer.color = new Color(_curColor.r, _curColor.g, _curColor.b, _curAlpha);
         _isColorChanged = false;
+    }
+
+    protected void UpdateAni()
+    {
+        _curAniTimeCounter++;
+        if ( _curAniTimeCounter >= _aniFrameInterval )
+        {
+            _curAniTimeCounter = 0;
+            _curAniIndex = (_curAniIndex + 1) % _aniFrameCount;
+            _spRenderer.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, _cfg.spriteName + "_" + _curAniIndex);
+        }
     }
 
     /// <summary>

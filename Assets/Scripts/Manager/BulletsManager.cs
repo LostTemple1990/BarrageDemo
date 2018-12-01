@@ -395,7 +395,14 @@ public class BulletsManager : ICommand
         // 设置sprite以及material
         protoType.name = protoTypeName;
         SpriteRenderer sp = protoType.transform.Find("BulletSprite").GetComponent<SpriteRenderer>();
-        sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, cfg.spriteName);
+        if ( cfg.aniFrameCount == 0 )
+        {
+            sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, cfg.spriteName);
+        }
+        else
+        {
+            sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, cfg.spriteName + "_0");
+        }
         if (cfg.blendMode != eBlendMode.Normal)
         {
             sp.material = ResourceManager.GetInstance().GetSpriteMatByBlendMode(cfg.blendMode);

@@ -5,6 +5,8 @@ public class EnemyBulletDefaultCfg : IParser
 {
     public string id;
     public string spriteName;
+    public int aniFrameCount;
+    public int aniFrameInterval;
     public string appearEffectName;
     public float appearEffectSizeFrom;
     public float appearEffectSizeTo;
@@ -25,6 +27,8 @@ public class EnemyBulletDefaultCfg : IParser
     {
         id = xmlElement.GetAttribute("id");
         spriteName = xmlElement.GetAttribute("spriteName");
+        aniFrameCount = int.Parse(xmlElement.GetAttribute("aniFrameCount"));
+        aniFrameInterval = int.Parse(xmlElement.GetAttribute("aniFrameInterval"));
         appearEffectName = xmlElement.GetAttribute("appearEffectName");
         string[] sizeStrs = xmlElement.GetAttribute("size").Split(',');
         if ( sizeStrs.Length == 1 )
