@@ -356,7 +356,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         Vector2 dv = _curPos - _lastPos;
         if ( dv.x == 0 && dv.y == 0 )
         {
-            SetRotation(_curAngle);
+            SetRotation(_curVAngle);
         }
         else
         {
@@ -432,7 +432,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
                 centerPos = _curPos,
                 halfWidth = _collisionHalfWidth,
                 halfHeight = _collisionHalfHeight,
-                angle = _curAngle,
+                angle = _curVAngle,
                 nextIndex = -1,
             };
             return paras;
@@ -476,7 +476,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         {
             // 碰撞判定宽高不相等时，采用矩形检测
             Vector2 relativePos = Global.PlayerPos - _curPos;
-            Vector2 relativeVec = MathUtil.GetVec2AfterRotate(relativePos.x, relativePos.y, 0, 0, _curAngle);
+            Vector2 relativeVec = MathUtil.GetVec2AfterRotate(relativePos.x, relativePos.y, 0, 0, _curVAngle);
             // 判定是否在矩形内
             float len = relativeVec.magnitude;
             float rate = (len - Global.PlayerGrazeRadius) / len;

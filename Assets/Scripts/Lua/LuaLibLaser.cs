@@ -106,7 +106,7 @@ public partial class LuaLib
     {
         EnemyLinearLaser laser = luaState.ToUserData(-2) as EnemyLinearLaser;
         bool isEnable = luaState.ToBoolean(-1);
-        luaState.Pop(3);
+        luaState.Pop(2);
         laser.SetHeadEnable(isEnable);
         return 0;
     }

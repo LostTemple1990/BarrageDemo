@@ -102,11 +102,11 @@ public class EnemyBulletMovable : EnemyBulletBase
     public virtual void DoMoveStraight(float v,float angle)
     {
         _curVelocity = v;
-        _curAngle = angle;
+        _curVAngle = angle;
         _curStraightTime = 0;
         _moveStraightDuration = Consts.MaxDuration;
-        _vx = _curVelocity * Mathf.Cos(_curAngle * Mathf.Deg2Rad);
-        _vy = _curVelocity * Mathf.Sin(_curAngle * Mathf.Deg2Rad);
+        _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
+        _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
         _isInitVelocity = true;
         _isMovingStraight = true;
     }
@@ -114,7 +114,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     public virtual void DoMoveStraightWithLimitation(float v,float angle,int duration)
     {
         _curVelocity = v;
-        _curAngle = angle;
+        _curVAngle = angle;
         _curStraightTime = 0;
         _moveStraightDuration = duration;
         _isInitVelocity = true;
@@ -123,34 +123,34 @@ public class EnemyBulletMovable : EnemyBulletBase
 
     public virtual void DoAcceleration(float acce,float accAngle)
     {
-        _curAcceleration = acce;
-        _curAccAngle = accAngle==Consts.VelocityAngle ? _curAngle : accAngle;
+        _curAcce = acce;
+        _curAccAngle = accAngle==Consts.VelocityAngle ? _curVAngle : accAngle;
         if ( !_isInitVelocity )
         {
-            _curAngle = _curAccAngle;
+            _curVAngle = _curAccAngle;
             _isInitVelocity = true;
         }
         _maxVelocity = -1;
         // 计算速度增量
-        _dvx = _curAcceleration * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
-        _dvy = _curAcceleration * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
+        _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
+        _dvy = _curAcce * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
         _isMovingStraight = true;
     }
 
     public virtual void DoAccelerationWithLimitation(float acce, float accAngle,float maxVelocity)
     {
-        _curAcceleration = acce;
-        _curAccAngle = accAngle == Consts.VelocityAngle ? _curAngle : accAngle;
+        _curAcce = acce;
+        _curAccAngle = accAngle == Consts.VelocityAngle ? _curVAngle : accAngle;
         if (!_isInitVelocity)
         {
-            _curAngle = _curAccAngle;
+            _curVAngle = _curAccAngle;
             _isInitVelocity = true;
         }
         _maxVelocity = maxVelocity;
         _sqrMaxV = _maxVelocity * _maxVelocity;
         // 计算速度增量
-        _dvx = _curAcceleration * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
-        _dvy = _curAcceleration * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
+        _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
+        _dvy = _curAcce * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
         _isMovingStraight = true;
     }
 
@@ -240,10 +240,10 @@ public class EnemyBulletMovable : EnemyBulletBase
                 value = _curVelocity;
                 return true;
             case BulletParaType.VAngel:
-                value = _curAngle;
+                value = _curVAngle;
                 return true;
-            case BulletParaType.Acc:
-                value = _curAcceleration;
+            case BulletParaType.Acce:
+                value = _curAcce;
                 return true;
             case BulletParaType.AccAngle:
                 value = _curAccAngle;
@@ -278,10 +278,10 @@ public class EnemyBulletMovable : EnemyBulletBase
                 _curVelocity = value;
                 return true;
             case BulletParaType.VAngel:
-                _curAngle = value;
+                _curVAngle = value;
                 return true;
-            case BulletParaType.Acc:
-                _curAcceleration = value;
+            case BulletParaType.Acce:
+                _curAcce = value;
                 return true;
             case BulletParaType.AccAngle:
                 _curAccAngle = value;

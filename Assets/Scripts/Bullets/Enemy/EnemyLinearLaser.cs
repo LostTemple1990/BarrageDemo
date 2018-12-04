@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemyLinearLaser : EnemyBulletBase
 {
-    private const float DefaultLaserHalfHeight = 6f;
-    private const float DefaultCollisionHalfHeight = 3f;
+    private const float DefaultLaserHalfHeight = 8f;
+    private const float DefaultCollisionHalfHeight = 4f;
 
     private const string HeadSpriteNameWhite = "LaserHead_W";
     private const string HeadSpriteNameBlue = "LaserHead_B";
@@ -22,7 +22,7 @@ public class EnemyLinearLaser : EnemyBulletBase
     /// <summary>
     /// 擦弹冷却时间
     /// </summary>
-    private const int GrazeCoolDown = 2;
+    private const int GrazeCoolDown = 3;
 
     class LaserSegment
     {
@@ -34,6 +34,10 @@ public class EnemyLinearLaser : EnemyBulletBase
         private bool _isHeadEnable;
         private GameObject _headGo;
         private Transform _headTf;
+        /// <summary>
+        /// 激光头部的SpriteRenderer
+        /// </summary>
+        private SpriteRenderer _headSr;
         /// <summary>
         /// 激光的角度
         /// </summary>
@@ -54,6 +58,10 @@ public class EnemyLinearLaser : EnemyBulletBase
         /// 激光段的像素长度
         /// </summary>
         private float _width;
+        /// <summary>
+        /// 激光段创建出来的时间
+        /// </summary>
+        private int _timeSinceSegmentCreated;
 
         /// <summary>
         /// 
@@ -80,6 +88,8 @@ public class EnemyLinearLaser : EnemyBulletBase
             _isHeadEnable = false;
             _headTf = _segmentTf.Find("HeadSprite");
             _headGo = _headTf.gameObject;
+            _headSr = _headTf.GetComponent<SpriteRenderer>();
+            _timeSinceSegmentCreated = 0;
             return this;
         }
 
@@ -108,26 +118,38 @@ public class EnemyLinearLaser : EnemyBulletBase
             return this;
         }
 
+        public void Render(bool resize=false)
+        {
+            _timeSinceSegmentCreated++;
+            UpdatePos();
+            if (resize) Resize();
+            if ( _isHeadEnable )
+            {
+                int tmp = _timeSinceSegmentCreated % 7;
+                if (tmp == 0) _headSr.color = new Color(1, 1, 1, 1);
+                if (tmp == 4) _headSr.color = new Color(1, 1, 1, 0.8f);
+            }
+        }
+
         public void Resize()
         {
             // 分段长度小于1，不执行resize
             if (_segmentVec.y - _segmentVec.x <= 0) return;
             _width = (_pathList[(int)_segmentVec.y] - _pathList[(int)_segmentVec.x]).magnitude;
-            _laserSpriteRenderer.size = new Vector2(DefaultLaserHalfHeight * 2, _width);
+            _laserSpriteRenderer.size = new Vector2(_width, DefaultLaserHalfHeight * 2);
+            if (_isHeadEnable)
+            {
+                _headTf.localPosition = new Vector3(_width / 2, 0, 0);
+            }
         }
 
-        public void UpdatePos()
+        private void UpdatePos()
         {
             _segmentTf.localPosition = (_pathList[(int)_segmentVec.x] + _pathList[(int)_segmentVec.y]) * 0.5f;
             if ( !_isSetRotation )
             {
-                // 指定的激光图片是竖直向下的，因此需要做90度的翻转来保证与子弹方向一致
-                _segmentTf.localRotation = Quaternion.Euler(0, 0, _laserAngle-90);
+                _segmentTf.localRotation = Quaternion.Euler(0, 0, _laserAngle);
                 _isSetRotation = true;
-            }
-            if ( _isHeadEnable )
-            {
-                _headTf.localPosition = new Vector3(0, _width / 2, 0);
             }
         }
 
@@ -365,7 +387,7 @@ public class EnemyLinearLaser : EnemyBulletBase
     /// <param name="angle"></param>
     public void SetAngle(float angle)
     {
-        _curAngle = angle;
+        _curVAngle = angle;
         for (int i=0;i<_laserSegmentCount;i++)
         {
             _laserSegmentList[i].SetAngle(angle);
@@ -413,7 +435,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         _curVelocity = velocity;
         SetAngle(angle);
         //_curAngle = angle;
-        _curAcceleration = acce;
+        _curAcce = acce;
         _accDuration = accDuration;
         _movableObj.DoMoveStraight(velocity, angle);
         _movableObj.DoAccelerationWithLimitation(acce, Consts.VelocityAngle, accDuration);
@@ -423,7 +445,7 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     public virtual void DoAccelerationWithLimitation(float acce,float angle,int accDuration)
     {
-        _curAcceleration = acce;
+        _curAcce = acce;
         _movableObj.DoAccelerationWithLimitation(acce, angle, accDuration);
         SetAngle(angle);
         _isMoving = true;
@@ -438,25 +460,17 @@ public class EnemyLinearLaser : EnemyBulletBase
         if ( _laserSegmentCount > 0 )
         {
             UpdateGrazeCoolDown();
-            if (_isDirty)
-            {
-                Resize();
-            }
-            UpdatePos();
-            if (_isSourceEnable)
-            {
-                UpdateLaserSource();
-            }
             CheckCollisionWithCharacter();
+            Render();
             //UpdateExistTime();
             if (IsOutOfBorder())
             {
-                _clearFlag = 1;
+                Eliminate(eEliminateDef.ForcedDelete);
             }
         }
         else
         {
-            _clearFlag = 1;
+            Eliminate(eEliminateDef.ForcedDelete);
         }
     }
 
@@ -469,7 +483,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         if ( _pathCount > _laserLen )
         {
             // 加速度不为0，说明长度改变了，重绘激光图像
-            if ( _curAcceleration != 0 )
+            if ( _curAcce != 0 )
             {
                 _isDirty = true;
             }
@@ -529,7 +543,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         else
         {
             segment = new LaserSegment();
-            segment.Init(_laserSegmentProtoType,false).SetPath(_pathList).SetSegmentVec(startIndex, endIndex).SetAngle(_curAngle);
+            segment.Init(_laserSegmentProtoType,false).SetPath(_pathList).SetSegmentVec(startIndex, endIndex).SetAngle(_curVAngle);
         }
         return segment;
     }
@@ -597,13 +611,17 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
     }
 
-    protected virtual void UpdatePos()
+    private void Render()
     {
-        //_objTrans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
-        for (int i=0;i<_laserSegmentCount;i++)
+        if (_isSourceEnable)
         {
-            _laserSegmentList[i].UpdatePos();
+            UpdateLaserSource();
         }
+        for (int i = 0; i < _laserSegmentCount; i++)
+        {
+            _laserSegmentList[i].Render(_isDirty);
+        }
+        _isDirty = true;
     }
 
     /// <summary>
@@ -618,18 +636,6 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
         // 自旋
         _laserSourceTf.Rotate(SourceSpinSpeed);
-    }
-
-    /// <summary>
-    /// 重新渲染激光
-    /// </summary>
-    protected virtual void Resize()
-    {
-        for (int i=0;i<_laserSegmentCount;i++)
-        {
-            _laserSegmentList[i].Resize();
-        }
-        _isDirty = false;
     }
 
     protected override bool IsOutOfBorder()
@@ -857,6 +863,27 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
     }
 
+    public override bool GetBulletPara(BulletParaType paraType, out float value)
+    {
+        switch ( paraType )
+        {
+            case BulletParaType.Velocity:
+                value = _curVelocity;
+                return true;
+            case BulletParaType.VAngel:
+                value = _curVAngle;
+                return true;
+            case BulletParaType.Acce:
+                value = _curAcce;
+                return true;
+            case BulletParaType.AccAngle:
+                value = _curAccAngle;
+                return true;
+        }
+        value = 0;
+        return false;
+    }
+
     public float GetVelocity()
     {
         return _curVelocity;
@@ -864,12 +891,12 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     public float GetAngle()
     {
-        return _curAngle;
+        return _curVAngle;
     }
 
     public float GetAcceleration()
     {
-        return _curAcceleration;
+        return _curAcce;
     }
 
     public int GetAccDuration()

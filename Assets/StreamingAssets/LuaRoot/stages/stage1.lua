@@ -181,7 +181,8 @@ CustomizedEnemyTable.TestKillEnemy.OnKill = function(enemy)
 		end
 	end
 	do
-		local master = lib.CreateSimpleBulletById("122151",0,250)
+		local posX,posY = lib.GetEnemyPos(enemy)
+		local master = lib.CreateSimpleBulletById("122151",posX,posY)
 		lib.SetBulletStraightParas(master,3,255,false,0,0)
 		lib.SetBulletSelfRotation(master,1)
 		local relativeRotation = 0
@@ -711,7 +712,7 @@ function Stage.StageTask()
 			lib.EnemyMoveTowards(enemy,0.5,180,700);
 		end)
 		lib.AddEnemyTask(enemy,function()
-			--if ( coroutine.yield(10000)==false ) then return end
+			if ( coroutine.yield(10000)==false ) then return end
 			for _=1,10 do
 				for _=1,6 do
 					lib.PlaySound("se_tan00",false)
@@ -730,14 +731,14 @@ function Stage.StageTask()
 		end)
 		--测试直线激光
 		lib.AddEnemyTask(enemy,function()
-			if ( coroutine.yield(10000) == false ) then return end
+			--if coroutine.yield(10000) == false then return end
 			local laser,angle,i
 			angle = lib.GetAimToPlayerAngle(lib.GetEnemyPos(enemy))
 			for _=1,Infinite do
 				angle = lib.GetAimToPlayerAngle(lib.GetEnemyPos(enemy))
 				for i=0,18 do
 					local posX,posY = lib.GetEnemyPos(enemy)
-					laser = lib.CreateLinearLaser("202060",45,posX,posY)
+					laser = lib.CreateLinearLaser("304060",45,posX,posY)
 					lib.SetLinearLaserHeadEnable(laser,true)
 					lib.DoLinearLaserMove(laser,3,angle+i*20,0.02,60)
 					if ( coroutine.yield(3) == false ) then return end

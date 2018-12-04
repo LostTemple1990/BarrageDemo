@@ -159,7 +159,7 @@ public enum BulletParaType :byte
     /// <summary>
     /// 当前加速度
     /// </summary>
-    Acc = 3,
+    Acce = 3,
     /// <summary>
     /// 当前加速度方向
     /// </summary>
@@ -182,6 +182,10 @@ public enum BulletParaType :byte
     CurveOmega = 8,
     CurveCenterX = 9,
     CurveCenterY = 10,
+    /// <summary>
+    /// 最大运动速度
+    /// </summary>
+    MaxVelocity = 11,
     Alpha = 15,
     ScaleX = 20,
     ScaleY = 21,

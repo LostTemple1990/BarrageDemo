@@ -446,7 +446,7 @@ public class BulletsManager : ICommand
         GameObject original = Resources.Load<GameObject>("BulletPrefab/LinearLaser");
         GameObject protoType = GameObject.Instantiate<GameObject>(original);
         // 读取配置
-        EnemyLinearLaserCfg cfg = GetLinearLaserCfgById(bulletId.ToString());
+        EnemyLinearLaserCfg cfg = GetLinearLaserCfgById(bulletId);
         string protoTypeName = "EnemyLinearLaser" + bulletId;
         // 激光发射源
         SpriteRenderer sourceSp = protoType.transform.Find("Source").GetComponent<SpriteRenderer>();
@@ -457,7 +457,7 @@ public class BulletsManager : ICommand
         Transform segmentTf = protoType.transform.Find("Segment");
         // 激光本体
         SpriteRenderer sp = segmentTf.Find("LaserSprite").GetComponent<SpriteRenderer>();
-        sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, cfg.laserTexName);
+        sp.sprite = ResourceManager.GetInstance().GetSprite(cfg.laserAtlasName, cfg.laserTexName);
         if ( cfg.blendMode != eBlendMode.Normal )
         {
             sp.material = ResourceManager.GetInstance().GetSpriteMatByBlendMode(cfg.blendMode);

@@ -26,10 +26,10 @@ public class BulletBase :IPosition,ICollisionObject
 
     protected bool _isMoving;
     protected float _curVelocity;
-    protected float _curAngle;
+    protected float _curVAngle;
     protected float _curAngleVelocity;
-    protected float _curAcceleration;
-    protected float _curAngleAcceleration;
+    protected float _curAcce;
+    protected float _curAccAngle;
     protected float _vx, _vy;
 
     protected float _dx, _dy;
@@ -156,10 +156,10 @@ public class BulletBase :IPosition,ICollisionObject
     public virtual void DoMove(float v,float angle,float av=0f,float a=0f,float aa=0f)
     {
         _curVelocity = v;
-        _curAngle = angle;
+        _curVAngle = angle;
         _curAngleVelocity = av;
-        _curAcceleration = a;
-        _curAngleAcceleration = aa;
+        _curAcce = a;
+        _curAccAngle = aa;
         _vx = _curVelocity * Mathf.Cos(angle * Mathf.Deg2Rad);
         _vy = _curVelocity * Mathf.Sin(angle * Mathf.Deg2Rad);
         _isMoving = true;
@@ -177,6 +177,14 @@ public class BulletBase :IPosition,ICollisionObject
     public virtual bool DetectCollision()
     {
         return _detectCollision;
+    }
+
+    /// <summary>
+    /// 获取创建之后经过的时间
+    /// </summary>
+    public int TimeSinceCreated
+    {
+        get { return _timeSinceCreated; }
     }
 
     public float PosX

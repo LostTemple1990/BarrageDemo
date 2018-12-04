@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using UniLua;
+﻿using System.Collections.Generic;
 
 public class BCColliderTrigger : BulletComponent
 {
@@ -36,7 +33,7 @@ public class BCColliderTrigger : BulletComponent
             for (int i=0;i<listCount;i++)
             {
                 collider = colliderList[i];
-                // 非空，切满足触发条件
+                // 非空，且满足触发条件
                 if ( collider != null && ((int)collider.GetEliminateType() | _triggerType) != 0)
                 {
                     int nextColliderIndex = 0;

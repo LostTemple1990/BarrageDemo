@@ -120,10 +120,10 @@ public class PlayerLaser : PlayerBulletBase,ICommand
 
     public void SetAngle(float angle)
     {
-        _curAngle = angle;
+        _curVAngle = angle;
         // 角度
-        _trans.rotation = Quaternion.Euler(0, 0, _curAngle);
-        _dirVec = new Vector2(Mathf.Cos(_curAngle * Mathf.Deg2Rad), Mathf.Sin(_curAngle * Mathf.Deg2Rad));
+        _trans.rotation = Quaternion.Euler(0, 0, _curVAngle);
+        _dirVec = new Vector2(Mathf.Cos(_curVAngle * Mathf.Deg2Rad), Mathf.Sin(_curVAngle * Mathf.Deg2Rad));
     }
 
     public override void Update()
