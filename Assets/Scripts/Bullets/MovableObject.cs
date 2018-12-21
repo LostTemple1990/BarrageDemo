@@ -17,6 +17,10 @@ public class MovableObject : IPoolClass
     /// </summary>
     protected float _maxVelocity;
     /// <summary>
+    /// 是否有最大速度限制
+    /// </summary>
+    protected bool _isMaxVelocityLimit;
+    /// <summary>
     /// 加速运动最大速度的平方
     /// </summary>
     protected float _sqrMaxV;
@@ -33,7 +37,7 @@ public class MovableObject : IPoolClass
     /// <summary>
     /// 当前角速度
     /// </summary>
-    protected float _curOmiga;
+    protected float _curOmega;
     #endregion
 
     protected bool _isMovingStraight;
@@ -204,13 +208,13 @@ public class MovableObject : IPoolClass
     /// <param name="angle"></param>
     /// <param name="deltaR"></param>
     /// <param name="omiga"></param>
-    public virtual void DoMoveCurve(float radius, float angle, float deltaR, float omiga)
+    public virtual void DoMoveCurve(float radius, float angle, float deltaR, float omega)
     {
         _centerPos = new Vector2(_curPos.x, _curPos.y);
         _curRadius = radius;
         _curCurveAngle = angle;
         _deltaRadius = deltaR;
-        _curOmiga = omiga;
+        _curOmega = omega;
         _lastCurvePos = _centerPos;
         _isMovingCurve = true;
         _isActive = true;
@@ -219,7 +223,7 @@ public class MovableObject : IPoolClass
     protected virtual void MoveCurve()
     {
         _curRadius += _deltaRadius;
-        _curCurveAngle += _curOmiga;
+        _curCurveAngle += _curOmega;
         float dstX = _curRadius * Mathf.Cos(_curCurveAngle * Mathf.Deg2Rad) + _centerPos.x;
         float dstY = _curRadius * Mathf.Sin(_curCurveAngle * Mathf.Deg2Rad) + _centerPos.y;
         // 更新位置增量
@@ -237,7 +241,7 @@ public class MovableObject : IPoolClass
         _isMovingStraight = false;
         _isMovingCurve = false;
         _vx = _vy = _dvx = _dvy = 0;
-        _maxVelocity = -1;
+        _isMaxVelocityLimit = false;
         _isActive = false;
     }
 
@@ -258,15 +262,116 @@ public class MovableObject : IPoolClass
         return _curPos;
     }
 
+    #region 运动相关参数的get/set方法
     /// <summary>
-    /// 获取直线运动的角度
+    /// 速度
     /// </summary>
-    /// <returns></returns>
-    public float GetVAngle()
+    public float Velocity
     {
-        return _curVAngle;
+        get { return _curVelocity; }
+        set
+        {
+            if (!_isMaxVelocityLimit)
+            {
+                _curVelocity = value;
+            }
+            else
+            {
+                _curVelocity = value > _maxVelocity ? _maxVelocity : value;
+            }
+            _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
+            _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
+        }
     }
 
+    /// <summary>
+    /// 速度方向
+    /// </summary>
+    public float VAngle
+    {
+        get { return _curVAngle; }
+        set
+        {
+            _curVAngle = value;
+            _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
+            _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
+        }
+    }
+
+    /// <summary>
+    /// 加速度
+    /// </summary>
+    public float Acce
+    {
+        get { return _curAcce; }
+        set
+        {
+            _curAcce = value;
+            _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
+            _dvy = _curAcce * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
+        }
+    }
+
+    /// <summary>
+    /// 加速度方向
+    /// </summary>
+    public float AccAngle
+    {
+        get { return _curAccAngle; }
+        set
+        {
+            _curAccAngle = value;
+            _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
+            _dvy = _curAcce * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
+        }
+    }
+
+    /// <summary>
+    /// 最大速度限制
+    /// </summary>
+    public float MaxVelocity
+    {
+        get
+        {
+            if (!_isMaxVelocityLimit) return int.MaxValue;
+            return _maxVelocity;
+        }
+        set
+        {
+            _isMaxVelocityLimit = true;
+            _maxVelocity = value;
+            _sqrMaxV = value * value;
+            // 判断现有速度是否超过了最大的速度限制
+            float sqrV = _vx * _vx + _vy * _vy;
+            if (sqrV > _sqrMaxV)
+            {
+                float factor = Mathf.Sqrt(_sqrMaxV / sqrV);
+                _vx *= factor;
+                _vy *= factor;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 极坐标运动的半径
+    /// </summary>
+    public float CurveRadius
+    {
+        get { return _curRadius; }
+        set { _curRadius = value; }
+    }
+
+    /// <summary>
+    /// 极坐标运动的半径增量
+    /// </summary>
+    public float CurveDeltaRadius
+    {
+        get { return _deltaRadius; }
+        set { _deltaRadius = value; }
+    }
+
+
+    #endregion
     /// <summary>
     /// 获取与上一帧的距离增量
     /// </summary>

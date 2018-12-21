@@ -225,7 +225,7 @@ public class PlayerBulletSimple : PlayerBulletBase
             else if (paras[i] == "3")
             {
                 float velocity = float.Parse(paras[i + 1]);
-                float angle = _movableObject.GetVAngle() + float.Parse(paras[i + 2]);
+                float angle = _movableObject.VAngle + float.Parse(paras[i + 2]);
                 float acce = float.Parse(paras[i + 3]);
                 effect.DoMove(velocity, angle, acce);
                 i += 4;
@@ -244,7 +244,7 @@ public class PlayerBulletSimple : PlayerBulletBase
             // dRotationAngle,与当前子弹速度方向的差值
             else if (paras[i] == "5")
             {
-                float angle = _movableObject.GetVAngle() + float.Parse(paras[i + 1]);
+                float angle = _movableObject.VAngle + float.Parse(paras[i + 1]);
                 effect.SetRotation(angle);
                 i += 2;
             }

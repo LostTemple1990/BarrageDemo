@@ -879,6 +879,33 @@ public class EnemyLinearLaser : EnemyBulletBase
             case BulletParaType.AccAngle:
                 value = _curAccAngle;
                 return true;
+            case BulletParaType.Alpha:
+                value = _curAlpha;
+                return true;
+        }
+        value = 0;
+        return false;
+    }
+
+    public override bool SetBulletPara(BulletParaType paraType, float value)
+    {
+        switch (paraType)
+        {
+            case BulletParaType.Velocity:
+                _movableObj.
+                return true;
+            case BulletParaType.VAngel:
+                value = _curVAngle;
+                return true;
+            case BulletParaType.Acce:
+                value = _curAcce;
+                return true;
+            case BulletParaType.AccAngle:
+                value = _curAccAngle;
+                return true;
+            case BulletParaType.Alpha:
+                value = _curAlpha;
+                return true;
         }
         value = 0;
         return false;
