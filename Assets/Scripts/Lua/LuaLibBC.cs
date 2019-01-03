@@ -48,7 +48,7 @@ public partial class LuaLib
         InterpolationMode intMode = (InterpolationMode)luaState.ToInteger(-1);
         luaState.Pop(7);
         BCParasChange bc = bullet.GetComponent<BCParasChange>();
-        bc.AddParaChangeEvent(para, changeMode, changeValue, delay, duration, intMode);
+        bc.AddParaChangeEvent(para, changeMode, changeValue, 0, delay, duration, intMode, 1, 0);
         return 0;
     }
 

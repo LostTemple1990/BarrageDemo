@@ -29,71 +29,46 @@ public partial class LuaLib
     }
 
     /// <summary>
-    /// 设置直线激光的速度等基础属性
-    /// <para>laser 直线激光本体</para>
-    /// <para>velocity 速度</para>
-    /// <para>angle 速度方向</para>
-    /// <para>acce 加速度</para>
-    /// <para>accDuration 加速持续时间</para>
+    /// 设置直线激光的长度
+    /// <para>laser</para>
+    /// <para>int laserLen 激光的长度</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int DoLinearLaserMove(ILuaState luaState)
+    public static int SetLinearLaserLength(ILuaState luaState)
     {
-        EnemyLinearLaser laser = luaState.ToUserData(-5) as EnemyLinearLaser;
-        float velocity = (float)luaState.ToNumber(-4);
-        float angle = (float)luaState.ToNumber(-3);
-        float acce = (float)luaState.ToNumber(-2);
-        int accDuration = luaState.ToInteger(-1);
-        luaState.Pop(5);
-        laser.DoStraightMove(velocity, angle, acce, accDuration);
+        EnemyLinearLaser laser = luaState.ToUserData(-2) as EnemyLinearLaser;
+        int laserLen = luaState.ToInteger(-1);
+        luaState.Pop(2);
+        laser.SetLength(laserLen);
         return 0;
     }
 
     /// <summary>
-    /// 获取激光的所有基础属性
-    /// <para>laser 激光本体</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int GetLinearLaserProps(ILuaState luaState)
-    {
-        EnemyLinearLaser laser = luaState.ToUserData(-1) as EnemyLinearLaser;
-        luaState.Pop(-1);
-        luaState.PushString(laser.BulletId);
-        luaState.PushInteger(laser.GetLength());
-        luaState.PushNumber(laser.GetVelocity());
-        luaState.PushNumber(laser.GetAngle());
-        luaState.PushNumber(laser.GetAcceleration());
-        luaState.PushInteger(laser.GetAccDuration());
-        return 6;
-    }
-
-    /// <summary>
-    /// 设置直线激光所有的基础属性
-    /// <para>laser 激光本体</para>
-    /// <para>id 直线激光配置id</para>
-    /// <para>laserLen 激光长度</para>
+    /// 设置直线激光的速度等基础属性
+    /// <para>laser 直线激光本体</para>
     /// <para>velocity 速度</para>
-    /// <para>angle 速度方向</para>
+    /// <para>angle 方向</para>
+    /// <para>isAimToPlayer 是否朝向玩家</para>
     /// <para>acce 加速度</para>
-    /// <para>accDuration 加速持续时间</para>
+    /// <para>maxVelocity 最大速度限制</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int SetLinearLaserProps(ILuaState luaState)
+    public static int LinearLaserDoStraightMove(ILuaState luaState)
     {
-        EnemyLinearLaser laser = luaState.ToUserData(-7) as EnemyLinearLaser;
-        string id = luaState.ToString(-6);
-        int laserLen = luaState.ToInteger(-5);
-        float velocity = (float)luaState.ToNumber(-4);
-        float angle = (float)luaState.ToNumber(-3);
+        EnemyLinearLaser laser = luaState.ToUserData(-6) as EnemyLinearLaser;
+        float velocity = (float)luaState.ToNumber(-5);
+        float angle = (float)luaState.ToNumber(-4);
+        bool isAimToPlayer = luaState.ToBoolean(-3);
+        if ( isAimToPlayer )
+        {
+            angle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos - laser.GetPosition(), false);
+        }
         float acce = (float)luaState.ToNumber(-2);
-        int accDuration = luaState.ToInteger(-1);
-        luaState.Pop(7);
-        laser.SetStyleById(id);
-        laser.SetLength(laserLen);
-        laser.DoStraightMove(velocity, angle, acce, accDuration);
+        float maxVelocity = (float)luaState.ToNumber(-1);
+        luaState.Pop(6);
+        laser.DoStraightMove(velocity, angle, acce, maxVelocity);
         return 0;
     }
 

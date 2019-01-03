@@ -17,7 +17,7 @@ CustomizedBulletTable.NazrinSC1Bullet0.Init = function(bullet,waitTime,maxRadius
 		lib.AddBulletParaChangeEvent(bullet,5,eParaChangeMode.ChangeTo,maxRadius,0,30,Constants.ModeLinear)
 		--lib.AddBulletParaChangeEvent(bullet,8,Constants.ParaChangeMode_ChangeTo,1.5,50-waitTime,Constants.ModeLinear,10)
 		if coroutine.yield(80-waitTime) == false then return end
-		lib.ChangeBulletStyleById(bullet,"107060")
+		lib.SetBulletStyleById(bullet,"107060")
 		--lib.SetBulletOrderInLayer(bullet,1)
 		local angle = lib.GetAimToPlayerAngle(posX,posY)
 		lib.SetBulletStraightParas(bullet,2.5,angle,false,0,0)
@@ -1026,12 +1026,12 @@ CustomizedBulletTable.WriggleBullet = {}
 CustomizedBulletTable.WriggleBullet.Init = function(bullet,velocity,angle,waitTime,finalStyleId)
 	lib.AddBulletTask(bullet,function()
 		if coroutine.yield(150) == false then return end
-		lib.ChangeBulletStyleById(bullet,"113120")
+		lib.SetBulletStyleById(bullet,"113120")
 		if coroutine.yield(waitTime) == false then return end
-		lib.ChangeBulletStyleById(bullet,"102120")
+		lib.SetBulletStyleById(bullet,"102120")
 		lib.DoBulletAccelerationWithLimitation(bullet,0.05,angle,velocity*0.1)
 		if coroutine.yield(90) == false then return end
-		lib.ChangeBulletStyleById(bullet,finalStyleId)
+		lib.SetBulletStyleById(bullet,finalStyleId)
 		lib.DoBulletAccelerationWithLimitation(bullet,0.05,angle,velocity)
 	end)
 end

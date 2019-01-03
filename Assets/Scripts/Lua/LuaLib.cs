@@ -9,9 +9,7 @@ public partial class LuaLib
     {
         var define = new NameFuncPair[]
         {
-            new NameFuncPair("ChangeBulletStyleById",ChangeBulletStyleById),
             new NameFuncPair("SetBulletOrderInLayer",SetBulletOrderInLayer),
-            new NameFuncPair("SetBulletTexture",SetBulletTexture),
             // BulletBase
             new NameFuncPair("GetBulletId",GetBulletId),
             new NameFuncPair("GetBulletPara",GetBulletPara),
@@ -50,7 +48,7 @@ public partial class LuaLib
             new NameFuncPair("SetEnemyWanderMode",SetEnemyWanderMode),
             new NameFuncPair("EnemyDoWander",EnemyDoWander),
             new NameFuncPair("SetEnemyMaxHp",SetEnemyMaxHp),
-            // 直线激光相关
+            // Laser
             new NameFuncPair("CreateLaser",CreateLaser),
             new NameFuncPair("CreateCustomizedLaser",CreateCustomizedLaser),
             new NameFuncPair("SetLaserCollisionFactor",SetLaserCollisionFactor),
@@ -66,11 +64,10 @@ public partial class LuaLib
             new NameFuncPair("ChangeLaserAlphaTo",ChangeLaserAlphaTo),
             new NameFuncPair("SetLaserGrazeDetectParas",SetLaserGrazeDetectParas),
             new NameFuncPair("SetLaserCollisionDetectParas",SetLaserCollisionDetectParas),
-
+            // LinearLaser
             new NameFuncPair("CreateLinearLaser",CreateLinearLaser),
-            new NameFuncPair("DoLinearLaserMove",DoLinearLaserMove),
-            new NameFuncPair("GetLinearLaserProps",GetLinearLaserProps),
-            new NameFuncPair("SetLinearLaserProps",SetLinearLaserProps),
+            new NameFuncPair("SetLinearLaserLength",SetLinearLaserLength),
+            new NameFuncPair("LinearLaserDoStraightMove",LinearLaserDoStraightMove),
             new NameFuncPair("SetLinearLaserHeadEnable",SetLinearLaserHeadEnable),
             new NameFuncPair("SetLinearLaserSourceEnable",SetLinearLaserSourceEnable),
             new NameFuncPair("CreateCustomizedLinearLaser",CreateCustomizedLinearLaser),
@@ -187,25 +184,6 @@ public partial class LuaLib
     public static int CreateSimpleSectorBarrage(ILuaState luaState)
     {
 
-        return 0;
-    }
-
-    public static int ChangeBulletStyleById(ILuaState luaState)
-    {
-        Logger.LogWarn("Try to use abandon API,please use SetBulletStyleById");
-        EnemyBulletSimple bullet = luaState.ToUserData(-2) as EnemyBulletSimple;
-        string id = luaState.ToString(-1);
-        luaState.Pop(2);
-        bullet.SetStyleById(id);
-        return 0;
-    }
-
-    public static int SetBulletTexture(ILuaState luaState)
-    {
-        EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
-        string texture = luaState.ToString(-1);
-        luaState.Pop(2);
-        bullet.SetBulletTexture(texture);
         return 0;
     }
 

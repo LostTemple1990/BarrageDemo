@@ -119,7 +119,7 @@ public class BgSpriteObject : IPoolClass
 
     public void SetVelocity(float v,float angle)
     {
-        _movableObject.DoMoveStraight(v, angle);
+        _movableObject.DoStraightMove(v, angle);
     }
 
     public void SetAcce(float acce,float accAngle,int duration=Consts.MaxDuration)

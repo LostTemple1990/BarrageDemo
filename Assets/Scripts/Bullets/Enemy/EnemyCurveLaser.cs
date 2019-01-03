@@ -283,7 +283,7 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     public virtual void SetStraightParas(float v, float angle, float acce, float accAngle)
     {
-        _movableObj.DoMoveStraight(v, angle);
+        _movableObj.DoStraightMove(v, angle);
         _movableObj.DoAcceleration(acce, accAngle);
     }
 
@@ -294,7 +294,7 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     public virtual void SetCurveParas(float radius,float angle,float deltaR,float omiga)
     {
-        _movableObj.DoMoveCurve(radius, angle, deltaR, omiga);
+        _movableObj.DoCurvedMove(radius, angle, deltaR, omiga);
     }
 
     protected virtual void UpdatePath()

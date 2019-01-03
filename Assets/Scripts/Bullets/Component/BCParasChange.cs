@@ -27,15 +27,30 @@ public class BCParasChange : BulletComponent
         }
     }
 
-    public void AddParaChangeEvent(BulletParaType para, ParaChangeMode changeMode,float changeValue,int delay,
-        float duration, InterpolationMode intMode)
+    /// <summary>
+    /// 添加改变参数的事件
+    /// </summary>
+    /// <param name="para">参数类型</param>
+    /// <param name="changeMode">改变的模式，(增加到、减少到、变化到)</param>
+    /// <param name="changeValue">改变的值</param>
+    /// <param name="valueOffset">改变的值的上下偏移</param>
+    /// <param name="delay">延迟</param>
+    /// <param name="duration">变化的持续时间</param>
+    /// <param name="intMode">变化的插值方式</param>
+    /// <param name="repeatCount">重复次数</param>
+    /// <param name="repeatInterval">重复的时间间隔</param>
+    public void AddParaChangeEvent(BulletParaType para, ParaChangeMode changeMode,
+        float changeValue,float valueOffset,int delay,float duration, InterpolationMode intMode,int repeatCount,int repeatInterval)
     {
         BulletParasChangeData changeData = CreateChangeData(para, intMode);
         changeData.changeMode = changeMode;
         changeData.changeValue = changeValue;
+        changeData.valueOffset = valueOffset;
         changeData.delay = delay;
         changeData.changeTime = 0;
         changeData.changeDuration = duration;
+        changeData.repeatCount = repeatCount;
+        changeData.repeatInterval = repeatInterval;
         _changeList.Add(changeData);
         _listCount++;
     }
@@ -60,14 +75,28 @@ public class BCParasChange : BulletComponent
             }
             else
             {
-                if (!changeData.isCached) CacheChangeData(changeData);
-                changeData.changeTime++;
-                float changeValue = changeData.GetInterpolationValueFunc(changeData.begin, changeData.end, changeData.changeTime, changeData.changeDuration);
-                _bullet.SetBulletPara(changeData.paraType, changeValue);
-                if (changeData.changeTime >= changeData.changeDuration)
+                if (changeData.repeatIntervalTime == 0 )
                 {
-                    changeData.isFinish = true;
+                    if (!changeData.isCached) CacheChangeData(changeData);
+                    changeData.changeTime++;
+                    float changeValue = changeData.GetInterpolationValueFunc(changeData.begin, changeData.end, changeData.changeTime, changeData.changeDuration);
+                    _bullet.SetBulletPara(changeData.paraType, changeValue);
+                    if (changeData.changeTime >= changeData.changeDuration)
+                    {
+                        changeData.repeatCount--;
+                        if (changeData.repeatCount <= 0)
+                        {
+                            changeData.isFinish = true;
+                        }
+                        else
+                        {
+                            changeData.repeatIntervalTime = changeData.repeatInterval;
+                            // 再次执行时需要重新计算一下各个数值
+                            changeData.isCached = false;
+                        }
+                    }
                 }
+                if (changeData.repeatIntervalTime > 0) changeData.repeatIntervalTime--;
             }
         }
     }
@@ -120,7 +149,14 @@ public class BulletParasChangeData : IPoolClass
     public BulletParaType paraType;
     public ParaChangeMode changeMode;
     public InterpolationMode mode;
+    /// <summary>
+    /// 改变的量
+    /// </summary>
     public float changeValue;
+    /// <summary>
+    /// 改变的量的偏移
+    /// </summary>
+    public float valueOffset;
     public float begin;
     public float end;
     public float changeTime;
@@ -128,6 +164,18 @@ public class BulletParasChangeData : IPoolClass
     public bool isCached;
     public bool isFinish;
     public MathUtil.InterpolationFloatFunc GetInterpolationValueFunc;
+    /// <summary>
+    /// 重复执行次数
+    /// </summary>
+    public int repeatCount;
+    /// <summary>
+    /// 重复执行的间隔
+    /// </summary>
+    public int repeatInterval;
+    /// <summary>
+    /// 重复执行的时间间隔计数
+    /// </summary>
+    public int repeatIntervalTime;
 
     public BulletParasChangeData()
     {

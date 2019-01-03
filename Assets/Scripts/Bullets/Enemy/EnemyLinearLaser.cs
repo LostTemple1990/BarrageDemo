@@ -62,6 +62,19 @@ public class EnemyLinearLaser : EnemyBulletBase
         /// 激光段创建出来的时间
         /// </summary>
         private int _timeSinceSegmentCreated;
+        /// <summary>
+        /// 颜色是否已经改变
+        /// </summary>
+        private bool _isColorChanged;
+        /// <summary>
+        /// 透明度
+        /// </summary>
+        private float _segmentAlpha;
+        /// <summary>
+        /// 颜色
+        /// </summary>
+        private Color _segmentColor;
+
 
         /// <summary>
         /// 
@@ -90,6 +103,9 @@ public class EnemyLinearLaser : EnemyBulletBase
             _headGo = _headTf.gameObject;
             _headSr = _headTf.GetComponent<SpriteRenderer>();
             _timeSinceSegmentCreated = 0;
+            _isColorChanged = false;
+            _segmentColor = new Color(1, 1, 1);
+            _segmentAlpha = 1f;
             return this;
         }
 
@@ -123,6 +139,11 @@ public class EnemyLinearLaser : EnemyBulletBase
             _timeSinceSegmentCreated++;
             UpdatePos();
             if (resize) Resize();
+            if ( _isColorChanged )
+            {
+                _laserSpriteRenderer.color = new Color(_segmentColor.r, _segmentColor.g, _segmentColor.b, _segmentAlpha);
+                _isColorChanged = false;
+            }
             if ( _isHeadEnable )
             {
                 int tmp = _timeSinceSegmentCreated % 7;
@@ -184,6 +205,30 @@ public class EnemyLinearLaser : EnemyBulletBase
             return this;
         }
 
+        /// <summary>
+        /// 设置透明度
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public LaserSegment SetAlpha(float value)
+        {
+            _segmentAlpha = value;
+            _isColorChanged = true;
+            return this;
+        }
+
+        /// <summary>
+        /// 设置颜色
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public LaserSegment SetColor(Color value)
+        {
+            _segmentColor = value;
+            _isColorChanged = true;
+            return this;
+        }
+
         public void Clear()
         {
             // 销毁非原型的对象
@@ -193,6 +238,7 @@ public class EnemyLinearLaser : EnemyBulletBase
             }
             else
             {
+                if (!_isColorChanged) _laserSpriteRenderer.color = new Color(1, 1, 1, 1);
                 _laserSpriteRenderer.size = Vector2.zero;
             }
             _segmentObj = null;
@@ -233,6 +279,11 @@ public class EnemyLinearLaser : EnemyBulletBase
     protected float _laserHalfHeight;
     protected float _laserHalfWidth;
     protected bool _isSized;
+    /// <summary>
+    /// 是否已经初始化过角度
+    /// <para>直线激光初始化过角度之后不能再被赋值</para>
+    /// </summary>
+    private bool _isInitAngle;
 
     /// <summary>
     /// 激光容器Object
@@ -368,6 +419,8 @@ public class EnemyLinearLaser : EnemyBulletBase
         _laserSegmentCount = 0;
         _isCachedCollisionSegment = false;
         _collidedSegmentCount = 0;
+        _isInitAngle = false;
+        _laserLen = 0;
         if ( _movableObj == null )
         {
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
@@ -387,6 +440,8 @@ public class EnemyLinearLaser : EnemyBulletBase
     /// <param name="angle"></param>
     public void SetAngle(float angle)
     {
+        if (_isInitAngle) return;
+        _isInitAngle = true;
         _curVAngle = angle;
         for (int i=0;i<_laserSegmentCount;i++)
         {
@@ -419,8 +474,9 @@ public class EnemyLinearLaser : EnemyBulletBase
         _isDirty = true;
     }
 
-    public virtual void SetLength(int length)
+    public void SetLength(int length)
     {
+        if (_laserLen > 0) return;
         _laserLen = length;
         _isDirty = true;
     }
@@ -430,26 +486,16 @@ public class EnemyLinearLaser : EnemyBulletBase
         return _laserLen;
     }
 
-    public virtual void DoStraightMove(float velocity,float angle,float acce,int accDuration)
+    public void DoStraightMove(float velocity,float angle,float acce,float maxVelocity)
     {
         _curVelocity = velocity;
         SetAngle(angle);
-        //_curAngle = angle;
         _curAcce = acce;
-        _accDuration = accDuration;
-        _movableObj.DoMoveStraight(velocity, angle);
-        _movableObj.DoAccelerationWithLimitation(acce, Consts.VelocityAngle, accDuration);
-        //_objTrans.localRotation = Quaternion.Euler(0, 0, angle);
+        _movableObj.DoStraightMove(velocity, angle);
+        _movableObj.DoAccelerationWithLimitation(acce, Consts.VelocityAngle, maxVelocity);
         _isMoving = true;
     }
 
-    public virtual void DoAccelerationWithLimitation(float acce,float angle,int accDuration)
-    {
-        _curAcce = acce;
-        _movableObj.DoAccelerationWithLimitation(acce, angle, accDuration);
-        SetAngle(angle);
-        _isMoving = true;
-    }
 
     public override void Update()
     {
@@ -545,6 +591,7 @@ public class EnemyLinearLaser : EnemyBulletBase
             segment = new LaserSegment();
             segment.Init(_laserSegmentProtoType,false).SetPath(_pathList).SetSegmentVec(startIndex, endIndex).SetAngle(_curVAngle);
         }
+        if (!_isOriginalColor) segment.SetAlpha(_curAlpha).SetColor(_curColor);
         return segment;
     }
 
@@ -617,11 +664,18 @@ public class EnemyLinearLaser : EnemyBulletBase
         {
             UpdateLaserSource();
         }
+        LaserSegment segment;
         for (int i = 0; i < _laserSegmentCount; i++)
         {
-            _laserSegmentList[i].Render(_isDirty);
+            segment = _laserSegmentList[i];
+            if ( _isColorChanged )
+            {
+                segment.SetColor(_curColor).SetAlpha(_curAlpha);
+            }
+            segment.Render(_isDirty);
         }
-        _isDirty = true;
+        _isColorChanged = false;
+        _isDirty = false;
     }
 
     /// <summary>
@@ -892,44 +946,33 @@ public class EnemyLinearLaser : EnemyBulletBase
         switch (paraType)
         {
             case BulletParaType.Velocity:
-                _movableObj.
+                _movableObj.Velocity = value;
                 return true;
             case BulletParaType.VAngel:
-                value = _curVAngle;
+                if ( !_isInitAngle)
+                {
+                    _movableObj.VAngle = value;
+                    _isInitAngle = true;
+                }
                 return true;
             case BulletParaType.Acce:
-                value = _curAcce;
+                _movableObj.Acce = value;
                 return true;
             case BulletParaType.AccAngle:
-                value = _curAccAngle;
+                if ( !_isInitAngle )
+                {
+                    _movableObj.AccAngle = value;
+                    _isInitAngle = true;
+                }
                 return true;
             case BulletParaType.Alpha:
-                value = _curAlpha;
+                SetAlpha(value);
                 return true;
         }
         value = 0;
         return false;
     }
 
-    public float GetVelocity()
-    {
-        return _curVelocity;
-    }
-
-    public float GetAngle()
-    {
-        return _curVAngle;
-    }
-
-    public float GetAcceleration()
-    {
-        return _curAcce;
-    }
-
-    public int GetAccDuration()
-    {
-        return _accDuration;
-    }
 
     public override void Clear()
     {

@@ -221,7 +221,7 @@ public class EnemyBase :IAttachable,IAttachment
     /// <param name="acc"></param>
     public virtual void AccMoveTowards(float velocity,float angle,float acc)
     {
-        _movableObj.DoMoveStraight(velocity, angle);
+        _movableObj.DoStraightMove(velocity, angle);
         _movableObj.DoAcceleration(acc, angle);
         _isMoving = true;
     }
@@ -235,7 +235,7 @@ public class EnemyBase :IAttachable,IAttachment
     /// <param name="maxVelocity"></param>
     public virtual void AccMoveTowardsWithLimitation(float velocity,float angle,float acc,float maxVelocity)
     {
-        _movableObj.DoMoveStraight(velocity, angle);
+        _movableObj.DoStraightMove(velocity, angle);
         _movableObj.DoAccelerationWithLimitation(acc, angle, maxVelocity);
         _isMoving = true;
     }

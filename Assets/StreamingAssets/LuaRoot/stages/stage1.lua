@@ -48,7 +48,9 @@ end
 CustomizedTable.ReboundLinearLaser = {}
 CustomizedTable.ReboundLinearLaser.Init = function(laser,posX,posY,angle,reboundPara,reboundCount)
 	lib.SetBulletPos(laser,posX,posY)
-	lib.SetLinearLaserProps(laser,"202060",45,3.5,angle,0,0)
+	lib.SetBulletStyleById(laser,"202060")
+	lib.SetLinearLaserLength(laser,45)
+	lib.LinearLaserDoStraightMove(laser,3.5,angle,false,0,0)
 	lib.AddBulletTask(laser,function()
 		lib.SetLinearLaserHeadEnable(laser,true)
 		lib.SetLinearLaserSourceEnable(laser,true,3)
@@ -56,38 +58,38 @@ CustomizedTable.ReboundLinearLaser.Init = function(laser,posX,posY,angle,rebound
 			if reboundCount > 0 then
 				local reboundFlag = 0
 				local curPosX,curPosY = lib.GetBulletPos(laser)
-				local texture,length,v,angle,acce,accDuration = lib.GetLinearLaserProps(laser)
 				local tmpRebound = reboundPara
+				local reboundAngle = lib.GetBulletPara(eBulletParaType.VAngel)
 				if tmpRebound >= Constants.ReboundBottom and curPosY < -224 then
 					reboundFlag = 1
-					angle = -angle
+					reboundAngle = -reboundAngle
 					curPosY = -448 - curPosY
 					tmpRebound = tmpRebound - Constants.ReboundBottom
 				end
 				if tmpRebound >= Constants.ReboundTop and curPosY > 224 then
 					reboundFlag = 1
-					angle = -angle
+					reboundAngle = -reboundAngle
 					curPosY = 448 - curPosY
 					tmpRebound = tmpRebound - Constants.ReboundTop
 				end
 				if tmpRebound >= Constants.ReboundRight and curPosX > 192 then
 					reboundFlag = 1
-					angle = 180 - angle
+					reboundAngle = 180 - reboundAngle
 					curPosX = 384 - curPosX
 					tmpRebound = tmpRebound - Constants.ReboundRight
 				end
 				if tmpRebound >= Constants.ReboundLeft and curPosX < -192 then
 					reboundFlag = 1
-					angle = -180 - angle
+					reboundAngle = -180 - reboundAngle
 					curPosX = -384 - curPosX
 				end
 				if reboundFlag == 1 then
 					reboundCount = reboundCount - 1
-					laser = lib.CreateCustomizedLinearLaser("ReboundLinearLaser",curPosX,curPosY,angle,reboundPara,reboundCount,5)
+					lib.CreateCustomizedLinearLaser("ReboundLinearLaser",curPosX,curPosY,reboundAngle,reboundPara,reboundCount,5)
 					return
 				end
 			end
-			if ( coroutine.yield(1)==false ) then return end
+			if coroutine.yield(1)==false then return end
 		end
 	end)
 end
@@ -740,7 +742,7 @@ function Stage.StageTask()
 					local posX,posY = lib.GetEnemyPos(enemy)
 					laser = lib.CreateLinearLaser("304060",45,posX,posY)
 					lib.SetLinearLaserHeadEnable(laser,true)
-					lib.DoLinearLaserMove(laser,3,angle+i*20,0.02,60)
+					lib.LinearLaserDoStraightMove(laser,3,angle+i*20,0.02,60)
 					if ( coroutine.yield(3) == false ) then return end
 				end
 			end

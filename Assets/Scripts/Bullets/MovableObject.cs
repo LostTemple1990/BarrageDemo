@@ -39,8 +39,13 @@ public class MovableObject : IPoolClass
     /// </summary>
     protected float _curOmega;
     #endregion
-
+    /// <summary>
+    /// 标识当前是否在直线运动
+    /// </summary>
     protected bool _isMovingStraight;
+    /// <summary>
+    /// 标识当前是否在曲线运动
+    /// </summary>
     protected bool _isMovingCurve;
     protected bool _isMovingTo;
 
@@ -54,17 +59,21 @@ public class MovableObject : IPoolClass
     /// 是否在运动中
     /// </summary>
     private bool _isActive;
+    /// <summary>
+    /// 当前朝向
+    /// </summary>
+    private float _curRotation;
 
     public void Update()
     {
+        _dx = 0;
+        _dy = 0;
         if ( _isMovingTo )
         {
             MoveTo();
         }
         else
         {
-            _dx = 0;
-            _dy = 0;
             if (_isMovingStraight)
             {
                 MoveStraight();
@@ -76,6 +85,8 @@ public class MovableObject : IPoolClass
             _curPos.x += _dx;
             _curPos.y += _dy;
         }
+        // 计算面向
+        _curRotation = MathUtil.GetAngleBetweenXAxis(new Vector2(_dx, _dy), false);
         if ( !_isMovingTo && !_isMovingStraight && !_isMovingCurve )
         {
             _isActive = false;
@@ -83,7 +94,7 @@ public class MovableObject : IPoolClass
     }
 
     #region 直线运动
-    public virtual void DoMoveStraight(float v, float angle)
+    public virtual void DoStraightMove(float v, float angle)
     {
         _curVelocity = v;
         _curVAngle = angle;
@@ -173,7 +184,7 @@ public class MovableObject : IPoolClass
         {
             _vx += _dvx;
             _vy += _dvy;
-            if ( _maxVelocity != -1 )
+            if ( _maxVelocity > 0 )
             {
                 float value = _vx * _vx + _vy * _vy;
                 if ( value > _sqrMaxV )
@@ -208,7 +219,7 @@ public class MovableObject : IPoolClass
     /// <param name="angle"></param>
     /// <param name="deltaR"></param>
     /// <param name="omiga"></param>
-    public virtual void DoMoveCurve(float radius, float angle, float deltaR, float omega)
+    public virtual void DoCurvedMove(float radius, float angle, float deltaR, float omega)
     {
         _centerPos = new Vector2(_curPos.x, _curPos.y);
         _curRadius = radius;
@@ -243,6 +254,7 @@ public class MovableObject : IPoolClass
         _vx = _vy = _dvx = _dvy = 0;
         _isMaxVelocityLimit = false;
         _isActive = false;
+        _curRotation = 0;
     }
 
     public void Reset(float x,float y)
@@ -281,6 +293,7 @@ public class MovableObject : IPoolClass
             }
             _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
             _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
+            _isMovingStraight = true;
         }
     }
 
@@ -309,6 +322,7 @@ public class MovableObject : IPoolClass
             _curAcce = value;
             _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
             _dvy = _curAcce * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
+            _isMovingStraight = true;
         }
     }
 
@@ -388,6 +402,11 @@ public class MovableObject : IPoolClass
     public bool IsActive()
     {
         return _isActive;
+    }
+
+    public float Rotation
+    {
+        get { return _curRotation; }
     }
 
     public virtual void Clear()
