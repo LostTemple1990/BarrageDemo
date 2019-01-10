@@ -129,20 +129,6 @@ public class EnemyLaser : EnemyBulletBase
         _resistEliminateFlag |= (int)(eEliminateDef.HitPlayer | eEliminateDef.PlayerSpellCard);
     }
 
-    public override void SetBulletTexture(string texture)
-    {
-        if ( _laserObj == null )
-        {
-            _laserObj = ResourceManager.GetInstance().GetPrefab("BulletPrefab", _prefabName);
-            _objTrans = _laserObj.transform;
-            _laser = _objTrans.Find("LaserSprite").GetComponent<SpriteRenderer>();
-            _laserTrans = _laser.transform;
-            UIManager.GetInstance().AddGoToLayer(_laserObj, LayerId.EnemyBarrage);
-        }
-        _laser.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName,"Bullet" + texture);
-        _isDirty = true;
-    }
-
     public override void SetStyleById(string id)
     {
         EnemyLinearLaserCfg cfg = BulletsManager.GetInstance().GetLinearLaserCfgById(id);

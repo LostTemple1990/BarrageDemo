@@ -144,9 +144,9 @@ public class STGStageManager
     /// 设置当前是否允许射击
     /// </summary>
     /// <param name="vale"></param>
-    public void SetIsEnableToShoot(bool vale)
+    public void SetIsEnableToShoot(bool value)
     {
-        _isEnableToShoot = vale;
+        _isEnableToShoot = value;
     }
 
     /// <summary>

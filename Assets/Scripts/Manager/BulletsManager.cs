@@ -41,6 +41,7 @@ public class BulletsManager : ICommand
     private Dictionary<string, IParser> _enemyDefaultBulletDataBase;
     private Dictionary<string, IParser> _playerBulletDataBase;
     private Dictionary<string, IParser> _enemyLinearLaserDataBase;
+    private Dictionary<string, IParser> _enemyCurveLaserDataBase;
 
     #region 子弹生成统计数据相关
     // 一帧中创建的子弹数目
@@ -59,6 +60,7 @@ public class BulletsManager : ICommand
         _enemyDefaultBulletDataBase = DataManager.GetInstance().GetDatasByName("EnemyBulletDefaultCfgs") as Dictionary<string, IParser>;
         _playerBulletDataBase = DataManager.GetInstance().GetDatasByName("PlayerBulletCfgs") as Dictionary<string, IParser>;
         _enemyLinearLaserDataBase = DataManager.GetInstance().GetDatasByName("EnemyLinearLaserCfgs") as Dictionary<string, IParser>;
+        _enemyCurveLaserDataBase = DataManager.GetInstance().GetDatasByName("EnemyCurveLaserCfgs") as Dictionary<string, IParser>;
         CommandManager.GetInstance().Register(CommandConsts.STGFrameStart, this);
         CommandManager.GetInstance().Register(CommandConsts.LogFrameStatistics, this);
     }
@@ -267,6 +269,21 @@ public class BulletsManager : ICommand
     }
 
     /// <summary>
+    /// 获取曲线激光配置
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public EnemyCurveLaserCfg GetCurveLaserCfgById(string id)
+    {
+        IParser parser;
+        if (!_enemyCurveLaserDataBase.TryGetValue(id, out parser))
+        {
+            return null;
+        }
+        return parser as EnemyCurveLaserCfg;
+    }
+
+    /// <summary>
     /// 获取敌机子弹列表
     /// </summary>
     /// <returns></returns>
@@ -376,6 +393,9 @@ public class BulletsManager : ICommand
                 break;
             case BulletType.Enemy_Laser:
                 protoType = CreateEnemyLaserProtoType(bulletId);
+                break;
+            case BulletType.Enemy_CurveLaser:
+                protoType = CreateEnemyCurveLaserProtoType(bulletId);
                 break;
         }
         return protoType;
@@ -516,6 +536,31 @@ public class BulletsManager : ICommand
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
         Logger.Log("Create ProtoType " + protoType.name);
+        return protoType;
+    }
+
+    private GameObject CreateEnemyCurveLaserProtoType(string bulletId)
+    {
+        GameObject original = Resources.Load<GameObject>("BulletPrefab/CurveLaser");
+        GameObject protoType = GameObject.Instantiate<GameObject>(original);
+        // 读取配置
+        EnemyCurveLaserCfg cfg = GetCurveLaserCfgById(bulletId);
+        string protoTypeName = "EnemyCurveLaser" + cfg.id;
+        // 设置sprite以及material
+        protoType.name = protoTypeName;
+        // 设置曲线激光的材质
+        Transform laserObjectTf = protoType.transform.Find("LaserObject");
+        MeshRenderer meshRenderer = laserObjectTf.GetComponent<MeshRenderer>();
+        if ( cfg.materialName != "CurveLaserMat000")
+        {
+            meshRenderer.material = Resources.Load<Material>("materials/" + cfg.materialName);
+        }
+        meshRenderer.sortingLayerName = "STG";
+        // 将原型放置在敌机弹幕层
+        UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
+        // 添加原型到缓存池中
+        ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
+        Logger.Log("Create CurveLaser ProtoType " + protoTypeName);
         return protoType;
     }
 

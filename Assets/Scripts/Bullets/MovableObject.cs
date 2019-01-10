@@ -17,10 +17,6 @@ public class MovableObject : IPoolClass
     /// </summary>
     protected float _maxVelocity;
     /// <summary>
-    /// 是否有最大速度限制
-    /// </summary>
-    protected bool _isMaxVelocityLimit;
-    /// <summary>
     /// 加速运动最大速度的平方
     /// </summary>
     protected float _sqrMaxV;
@@ -184,15 +180,15 @@ public class MovableObject : IPoolClass
         {
             _vx += _dvx;
             _vy += _dvy;
-            if ( _maxVelocity > 0 )
+        }
+        if (_maxVelocity > 0)
+        {
+            float value = _vx * _vx + _vy * _vy;
+            if (value > _sqrMaxV)
             {
-                float value = _vx * _vx + _vy * _vy;
-                if ( value > _sqrMaxV )
-                {
-                    value = Mathf.Sqrt(_sqrMaxV / value);
-                    _vx *= value;
-                    _vy *= value;
-                }
+                value = Mathf.Sqrt(_sqrMaxV / value);
+                _vx *= value;
+                _vy *= value;
             }
         }
         _dx += _vx;
@@ -252,7 +248,7 @@ public class MovableObject : IPoolClass
         _isMovingStraight = false;
         _isMovingCurve = false;
         _vx = _vy = _dvx = _dvy = 0;
-        _isMaxVelocityLimit = false;
+        _maxVelocity = -1;
         _isActive = false;
         _curRotation = 0;
     }
@@ -283,7 +279,7 @@ public class MovableObject : IPoolClass
         get { return _curVelocity; }
         set
         {
-            if (!_isMaxVelocityLimit)
+            if ( _maxVelocity < 0 )
             {
                 _curVelocity = value;
             }
@@ -347,13 +343,14 @@ public class MovableObject : IPoolClass
     {
         get
         {
-            if (!_isMaxVelocityLimit) return int.MaxValue;
+            if (_maxVelocity<0) return int.MaxValue;
             return _maxVelocity;
         }
         set
         {
-            _isMaxVelocityLimit = true;
             _maxVelocity = value;
+            // 若value小于0，说明取消了速度限制，则直接返回
+            if (value < 0) return;
             _sqrMaxV = value * value;
             // 判断现有速度是否超过了最大的速度限制
             float sqrV = _vx * _vx + _vy * _vy;
@@ -382,6 +379,24 @@ public class MovableObject : IPoolClass
     {
         get { return _deltaRadius; }
         set { _deltaRadius = value; }
+    }
+
+    /// <summary>
+    /// 极坐标运动的当前角度
+    /// </summary>
+    public float CurveAngle
+    {
+        get { return _curCurveAngle; }
+        set { _curCurveAngle = value; }
+    }
+
+    /// <summary>
+    /// 极坐标运动的角速度
+    /// </summary>
+    public float CurveOmega
+    {
+        get { return _curOmega; }
+        set { _curOmega = value; }
     }
 
 

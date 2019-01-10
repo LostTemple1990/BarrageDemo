@@ -97,6 +97,10 @@ public class EnemyCurveLaser : EnemyBulletBase
     private bool _isCachedCollisionSegments;
     private List<Vector2> _collisionSegmentsList;
     private int _collisionSegmentsCount;
+    /// <summary>
+    /// 配置
+    /// </summary>
+    private EnemyCurveLaserCfg _cfg;
 
     public EnemyCurveLaser()
     {
@@ -127,24 +131,27 @@ public class EnemyCurveLaser : EnemyBulletBase
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
     }
 
-    public override void SetBulletTexture(string texture)
+    public override void SetStyleById(string id)
     {
-        if ( _bullet == null )
+        EnemyCurveLaserCfg cfg = BulletsManager.GetInstance().GetCurveLaserCfgById(id);
+        if ( cfg == null )
         {
-            _bullet = ResourceManager.GetInstance().GetPrefab("BulletPrefab", _prefabName);
-            UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.EnemyBarrage);
+            Logger.LogError("Bullet ChangeStyle Fail! SysId  " + id + " is not exist!");
+            return;
         }
+        if ( _bullet != null )
+        {
+            ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
+        }
+        _cfg = cfg;
+        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(BulletType.Enemy_CurveLaser, cfg.id);
+        _prefabName = cfg.id;
         _trans = _bullet.transform;
         Transform laserTrans = _trans.Find("LaserObject");
         _mesh = laserTrans.GetComponent<MeshFilter>().mesh;
-        // 设置sortingLayer
-        MeshRenderer renderer = laserTrans.GetComponent<MeshRenderer>();
-        renderer.sortingLayerName = "STG";
-        // todo 以后根据名称/配置来设置显示
-        int index = int.Parse(texture.Substring(texture.IndexOf('_') + 1));
-        //renderer.material.SetFloat("_Index", index);
+        int index = cfg.colorIndex;
         _textureIndex = index;
-        _vUnit = 1f / 16;
+        _vUnit = 1f / cfg.colorsCount;
         _startV = _vUnit * (index + 1);
         _endV = _vUnit * index;
     }
@@ -281,20 +288,20 @@ public class EnemyCurveLaser : EnemyBulletBase
     }
     #endregion
 
-    public virtual void SetStraightParas(float v, float angle, float acce, float accAngle)
+    public void SetStraightParas(float v, float angle, float acce, float accAngle)
     {
         _movableObj.DoStraightMove(v, angle);
         _movableObj.DoAcceleration(acce, accAngle);
     }
 
-    public virtual void SetAcceParas(float acce,float accAngle,int duration)
+    public void DoAccelerationWithLimitation(float acce,float accAngle,float maxVelocity)
     {
-        _movableObj.DoAccelerationWithLimitation(acce, accAngle, duration);
+        _movableObj.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
     }
 
-    public virtual void SetCurveParas(float radius,float angle,float deltaR,float omiga)
+    public void SetCurveParas(float radius,float angle,float deltaR,float omega)
     {
-        _movableObj.DoCurvedMove(radius, angle, deltaR, omiga);
+        _movableObj.DoCurvedMove(radius, angle, deltaR, omega);
     }
 
     protected virtual void UpdatePath()
@@ -638,6 +645,77 @@ public class EnemyCurveLaser : EnemyBulletBase
         }
         _eliminateRangeList.Clear();
         _eliminateRangeListCount = 0;
+    }
+
+    public override bool GetBulletPara(BulletParaType paraType, out float value)
+    {
+        switch ( paraType)
+        {
+            case BulletParaType.Velocity:
+                value = _movableObj.Velocity;
+                return true;
+            case BulletParaType.VAngel:
+                value = _movableObj.VAngle;
+                return true;
+            case BulletParaType.Acce:
+                value = _movableObj.Acce;
+                return true;
+            case BulletParaType.AccAngle:
+                value = _movableObj.AccAngle;
+                return true;
+            case BulletParaType.CurveRadius:
+                value = _movableObj.CurveRadius;
+                return true;
+            case BulletParaType.CurveAngle:
+                value = _movableObj.CurveAngle;
+                return true;
+            case BulletParaType.CurveDeltaR:
+                value = _movableObj.CurveDeltaRadius;
+                return true;
+            case BulletParaType.CurveOmega:
+                value = _movableObj.CurveOmega;
+                return true;
+            case BulletParaType.MaxVelocity:
+                value = _movableObj.MaxVelocity;
+                return true;
+        }
+        value = 0;
+        return false;
+    }
+
+    public override bool SetBulletPara(BulletParaType paraType, float value)
+    {
+        switch (paraType)
+        {
+            case BulletParaType.Velocity:
+                _movableObj.Velocity = value;
+                return true;
+            case BulletParaType.VAngel:
+                _movableObj.VAngle = value;
+                return true;
+            case BulletParaType.Acce:
+                _movableObj.Acce = value;
+                return true;
+            case BulletParaType.AccAngle:
+                _movableObj.AccAngle = value;
+                return true;
+            case BulletParaType.CurveRadius:
+                _movableObj.CurveRadius = value;
+                return true;
+            case BulletParaType.CurveAngle:
+                _movableObj.CurveAngle = value;
+                return true;
+            case BulletParaType.CurveDeltaR:
+                _movableObj.CurveDeltaRadius = value;
+                return true;
+            case BulletParaType.CurveOmega:
+                _movableObj.CurveOmega = value;
+                return true;
+            case BulletParaType.MaxVelocity:
+                _movableObj.MaxVelocity = value;
+                return true;
+        }
+        return false;
     }
 
     public override void Clear()

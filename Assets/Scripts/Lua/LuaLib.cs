@@ -75,7 +75,7 @@ public partial class LuaLib
             // 曲线激光
             new NameFuncPair("CreateCurveLaser",CreateCurveLaser),
             new NameFuncPair("SetCurveLaserStraightParas",SetCurveLaserStraightParas),
-            new NameFuncPair("SetCurveLaserAcceParas",SetCurveLaserAcceParas),
+            new NameFuncPair("DoCurveLaserAccelerationWithLimitation",DoCurveLaserAccelerationWithLimitation),
             new NameFuncPair("SetCurveLaserCurveParas",SetCurveLaserCurveParas),
             new NameFuncPair("CreateCustomizedCurveLaser",CreateCustomizedCurveLaser),
             new NameFuncPair("SetCurveLaserLength",SetCurveLaserLength),
@@ -149,13 +149,18 @@ public partial class LuaLib
             // 绑定附加组件
             new NameFuncPair("AttatchToMaster",AttachToMaster),
             new NameFuncPair("SetAttachmentRelativePos",SetAttachmentRelativePos),
+            //Player相关
+            new NameFuncPair("GetPlayerPos",GetPlayerPos),
+            new NameFuncPair("SetPlayerPos",SetPlayerPos),
+            new NameFuncPair("GetPlayerIsMovable",GetPlayerIsMovable),
+            new NameFuncPair("SetPlayerIsMovable",SetPlayerIsMovable),
+            new NameFuncPair("SetStageIsEnableToShoot",SetStageIsEnableToShoot),
             // 通用类相关
             new NameFuncPair("GetRandomInt", GetRandomInt),
             new NameFuncPair("GetRandomFloat", GetRandomFloat),
             new NameFuncPair("GetPosAfterRotate", GetPosAfterRotate),
             new NameFuncPair("GetAngleToPlayer", GetAngleToPlayer),
             new NameFuncPair("GetAimToPlayerAngle", GetAimToPlayerAngle),
-            new NameFuncPair("GetPlayerPos",GetPlayerPos),
             new NameFuncPair("LogLuaNumber", LogLuaNumber),
             new NameFuncPair("GetVectorLength",GetVectorLength),
             new NameFuncPair("SetGlobalVector2", SetGlobalVector2),
@@ -718,18 +723,6 @@ public partial class LuaLib
         luaState.Pop(count + 1);
         Logger.Log(str);
         return 0;
-    }
-
-    /// <summary>
-    /// 获取玩家坐标
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int GetPlayerPos(ILuaState luaState)
-    {
-        luaState.PushNumber(Global.PlayerPos.x);
-        luaState.PushNumber(Global.PlayerPos.y);
-        return 2;
     }
 
     public static int GetVectorLength(ILuaState luaState)

@@ -134,16 +134,6 @@ public class EnemyBulletSimple : EnemyBulletMovable
         }
     }
 
-    public override void SetBulletTexture(string texture)
-    {
-        _prefabName = _cfg.id.ToString();
-        //_bullet = ResourceManager.GetInstance().GetPrefab("BulletPrefab", _prefabName);
-        //UIManager.GetInstance().AddGoToLayer(_bullet, LayerId.EnemyBarrage);
-        _bullet = BulletsManager.GetInstance().CreateBulletGameObject(_type, _cfg.id);
-        _trans = _bullet.transform;
-        _spRenderer = _trans.Find("BulletSprite").GetComponent<SpriteRenderer>();
-    }
-
     public virtual void SetSelfRotation(float angle)
     {
         _isSelfRotation = angle != 0;
@@ -450,6 +440,8 @@ public class EnemyBulletSimple : EnemyBulletMovable
     protected virtual void CheckCollisionWithCharacter()
     {
         if (!_detectCollision) return;
+        // 弹雾生成时无判定
+        if (_isAppearEffectAvailable && _timeSinceCreated <= AppearEffectExistDuration) return;
         if ( _collisionHalfWidth == _collisionHalfHeight )
         {
             float dx = Mathf.Abs(_curPos.x - Global.PlayerPos.x);

@@ -48,6 +48,10 @@ public class CharacterBase
     protected string _mainBulletId;
     protected BulletType _subBulletId;
 
+    /// <summary>
+    /// 是否可以移动
+    /// </summary>
+    protected bool _isMovable;
     protected int _preMoveMode;
     protected int _curMoveMode;
     protected Transform _collisionPointTf;
@@ -356,6 +360,7 @@ public class CharacterBase
         _curState = 0;
         _nextState = eCharacterState.Appear;
         _isCastingBomb = false;
+        _isMovable = true;
     }
 
     public void Update()
@@ -418,10 +423,7 @@ public class CharacterBase
 
     public void Move()
     {
-        if (!IsMovable())
-        {
-            return;
-        }
+        if (!_isMovable) return;
         float speed = GetMoveSpeed();
         Vector3 pos = _curPos;
         bool isIdle = true;
@@ -606,6 +608,16 @@ public class CharacterBase
         return _curPos;
     }
 
+    public void SetToPosition(float posX,float posY)
+    {
+        _curPos = new Vector2(posX, posY);
+    }
+
+    public void SetToPositon(Vector2 pos)
+    {
+        _curPos = pos;
+    }
+
     protected void UpdateCollisionData()
     {
         Global.PlayerPos.x = _curPos.x;
@@ -673,10 +685,10 @@ public class CharacterBase
     /// <summary>
     /// 是否可以移动
     /// </summary>
-    /// <returns></returns>
-    protected bool IsMovable()
+    public bool IsMovable
     {
-        return true;
+        get { return _isMovable; }
+        set { _isMovable = value; }
     }
 
     public bool CanShoot()

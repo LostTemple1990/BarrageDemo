@@ -107,16 +107,6 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
     }
 
     /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="texture"></param>
-    /// <param name="rotation">是否根据子弹当前速度方向旋转图像</param>
-    public virtual void SetBulletTexture(string texture)
-    {
-
-    }
-
-    /// <summary>
     /// 根据id设置子弹的类型
     /// </summary>
     /// <param name="id"></param>

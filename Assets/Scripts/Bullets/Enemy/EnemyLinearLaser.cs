@@ -427,13 +427,6 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
     }
 
-    public override void SetBulletTexture(string texture)
-    {
-        _textureName = texture;
-        _laser.sprite = ResourceManager.GetInstance().GetResource<Sprite>("etama9", texture);
-        _laser.size = Vector2.zero;
-    }
-
     /// <summary>
     /// 设置直线激光的角度
     /// </summary>

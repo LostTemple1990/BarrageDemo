@@ -766,7 +766,7 @@ function Stage.StageTask()
 			for i=1,18 do
 				local posX,posY = lib.GetEnemyPos(enemy)
 				local angle = lib.GetAimToPlayerAngle(posX,posY)
-				laser = lib.CreateCurveLaser("etama9_10",45,posX,posY)
+				laser = lib.CreateCurveLaser("401100",45,posX,posY)
 				lib.SetCurveLaserCurveParas(laser,0,i*20,3,3)
 				lib.SetCurveLaserWidth(laser,5,3)
 				if coroutine.yield(5) == false then return end

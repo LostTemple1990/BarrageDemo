@@ -124,7 +124,7 @@ public partial class LuaLib
 
     /// <summary>
     /// 创建曲线激光
-    /// <para>texture 暂时指向于etama9的激光贴图</para>
+    /// <para>id 配置id</para>
     /// <para>laserLen 激光长度</para>
     /// <para>posX</para>
     /// <para>posY</para>
@@ -133,13 +133,13 @@ public partial class LuaLib
     /// <returns></returns>
     public static int CreateCurveLaser(ILuaState luaState)
     {
-        string texture = luaState.ToString(-4);
+        string id = luaState.ToString(-4);
         int laserLen = luaState.ToInteger(-3);
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(4);
         EnemyCurveLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_CurveLaser) as EnemyCurveLaser;
-        laser.SetBulletTexture(texture);
+        laser.SetStyleById(id);
         laser.SetLength(laserLen);
         laser.SetToPosition(posX, posY);
         luaState.PushLightUserData(laser);
@@ -181,14 +181,14 @@ public partial class LuaLib
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int SetCurveLaserAcceParas(ILuaState luaState)
+    public static int DoCurveLaserAccelerationWithLimitation(ILuaState luaState)
     {
         EnemyCurveLaser laser = luaState.ToUserData(-4) as EnemyCurveLaser;
         float acce = (float)luaState.ToNumber(-3);
         float accAngle = (float)luaState.ToNumber(-2);
-        int duration = luaState.ToInteger(-1);
+        float maxVelocity = (float)luaState.ToNumber(-1);
         luaState.Pop(4);
-        laser.SetAcceParas(acce, accAngle, duration);
+        laser.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
         return 0;
     }
 
@@ -197,7 +197,7 @@ public partial class LuaLib
     /// <para>radius 初始半径</para>
     /// <para>angle 初始角度</para>
     /// <para>deltaR 半径增量</para>
-    /// <para>omiga 角速度</para>
+    /// <para>omega 角速度</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
@@ -207,9 +207,9 @@ public partial class LuaLib
         float radius = (float)luaState.ToNumber(-4);
         float angle = (float)luaState.ToNumber(-3);
         float deltaR = (float)luaState.ToNumber(-2);
-        float omiga = (float)luaState.ToNumber(-1);
+        float omega = (float)luaState.ToNumber(-1);
         luaState.Pop(5);
-        laser.SetCurveParas(radius, angle, deltaR, omiga);
+        laser.SetCurveParas(radius, angle, deltaR, omega);
         return 0;
     }
 
@@ -219,7 +219,7 @@ public partial class LuaLib
         int numArgs = luaState.ToInteger(-1);
         luaState.Pop(1);
         string customizedName = luaState.ToString(-5 - numArgs);
-        string textureName = luaState.ToString(-4 - numArgs);
+        string id = luaState.ToString(-4 - numArgs);
         int laserLen = luaState.ToInteger(-3 - numArgs);
         float posX = (float)luaState.ToNumber(-2 - numArgs);
         float posY = (float)luaState.ToNumber(-1 - numArgs);
@@ -227,6 +227,7 @@ public partial class LuaLib
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
         // 将本体插入执行栈中
         EnemyCurveLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_CurveLaser) as EnemyCurveLaser;
+        laser.SetStyleById(id);
         laser.AddComponent<BCCustomizedTask>();
         luaState.PushLightUserData(laser);
         luaState.Replace(-3 - numArgs);
