@@ -135,6 +135,23 @@ public class CharacterBase
     /// </summary>
     protected int _shootUnavailableDuration;
 
+    /// <summary>
+    /// 被赋予的额外速度的x分量
+    /// </summary>
+    protected float _extraVelocityX;
+    /// <summary>
+    /// 被赋予的额外速度的y分量
+    /// </summary>
+    protected float _extraVelocityY;
+    /// <summary>
+    /// 被赋予的额外加速度x分量
+    /// </summary>
+    protected float _extraAcceX;
+    /// <summary>
+    /// 被赋予的额外加速度的y分量
+    /// </summary>
+    protected float _extraAcceY;
+
     #region 状态机相关
 
     #region 状态机基本函数
@@ -251,6 +268,7 @@ public class CharacterBase
             UpdateInvincibleStatus();
         }
         UpdatePosition();
+        ResetExtraStraightParas();
     }
 
     protected virtual void OnStateNormalExit()
@@ -464,6 +482,8 @@ public class CharacterBase
         {
             pos.y = Global.PlayerRTBorderPos.y;
         }
+        // 计算额外运动参数
+        //_extraVelocityX += _extra
         _curPos = pos;
         if (isIdle)
         {
@@ -696,6 +716,33 @@ public class CharacterBase
         if (!STGStageManager.GetInstance().GetIsEnableToShoot()) return false;
         if (!_isShootAvailable) return false;
         return true;
+    }
+
+    /// <summary>
+    /// 设置额外的直线运动的参数
+    /// <para>一般是被引力场影响</para>
+    /// </summary>
+    /// <param name="v"></param>
+    /// <param name="angle"></param>
+    /// <param name="acce"></param>
+    /// <param name="accAngle"></param>
+    public virtual void SetExtraStraightParas(float v,float angle,float acce,float accAngle)
+    {
+        _extraVelocityX += v * Mathf.Cos(angle * Mathf.Deg2Rad);
+        _extraVelocityY += v * Mathf.Sin(angle * Mathf.Deg2Rad);
+        _extraAcceX += acce * Mathf.Cos(accAngle * Mathf.Deg2Rad);
+        _extraAcceY += acce * Mathf.Cos(accAngle * Mathf.Deg2Rad);
+    }
+
+    /// <summary>
+    /// 重置额外直线运动的参数
+    /// </summary>
+    protected void ResetExtraStraightParas()
+    {
+        _extraVelocityX = 0;
+        _extraVelocityY = 0;
+        _extraAcceX = 0;
+        _extraAcceY = 0;
     }
 
     /// <summary>

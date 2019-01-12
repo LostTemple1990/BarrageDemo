@@ -111,7 +111,7 @@ public class ObjectColliderBase : IAttachment
             _curPosX = _curPos.x;
             _curPosY = _curPos.y;
         }
-        if ( (_colliderGroups & (int)eColliderGroup.Player) != 0 )
+        if ((_colliderGroups & (int)eColliderGroup.Player) != 0)
         {
             CheckCollisionWithPlayer();
         }

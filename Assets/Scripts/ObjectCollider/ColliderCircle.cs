@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class ColliderCircle : ObjectColliderBase
 {
-    private float _radius;
-    private float _fromRaidus;
-    private float _toRaidus;
+    protected float _radius;
+    protected float _fromRaidus;
+    protected float _toRaidus;
 
     public ColliderCircle()
         :base()
@@ -45,8 +45,16 @@ public class ColliderCircle : ObjectColliderBase
         float dis = Vector2.Distance(_curPos, Global.PlayerPos);
         if ( dis <= Global.PlayerCollisionVec.z + _radius )
         {
-            PlayerService.GetInstance().GetCharacter().BeingHit();
+            CollidedByPlayer();
         }
+    }
+
+    /// <summary>
+    /// 与玩家发生碰撞
+    /// </summary>
+    protected virtual void CollidedByPlayer()
+    {
+        PlayerService.GetInstance().GetCharacter().BeingHit();
     }
 
     protected override void CheckCollisionWithPlayerBullet()
@@ -93,13 +101,23 @@ public class ColliderCircle : ObjectColliderBase
                 {
                     if (dx * dx + dy * dy <= sumOfRadius * sumOfRadius)
                     {
-                        bullet.CollidedByObject(curColliderIndex);
+                        CollidedByPlayerBullet(bullet, curColliderIndex);
                         isCollided = true;
                     }
                 }
             }
         } while (nextColliderIndex != -1);
         return isCollided;
+    }
+
+    /// <summary>
+    /// 与玩家子弹发生碰撞
+    /// </summary>
+    /// <param name="bullet"></param>
+    /// <param name="curColliderIndex"></param>
+    protected virtual void CollidedByPlayerBullet(PlayerBulletBase bullet, int curColliderIndex)
+    {
+        bullet.CollidedByObject(curColliderIndex);
     }
 
     protected override void CheckCollisionWithEnemy()
@@ -120,10 +138,15 @@ public class ColliderCircle : ObjectColliderBase
                 dy = Mathf.Abs(_curPosY - para.centerPos.y);
                 if ( dx <= _radius + para.halfWidth && dy <= _radius + para.halfHeight )
                 {
-                    enemy.TakeDamage(_hitEnemyDamage,_eliminateType);
+                    CollidedByEnemy(enemy);
                 }
             }
         }
+    }
+
+    protected virtual void CollidedByEnemy(EnemyBase enemy)
+    {
+        enemy.TakeDamage(_hitEnemyDamage, _eliminateType);
     }
 
     protected override void CheckCollisionWithEnemyBullet()
@@ -166,11 +189,21 @@ public class ColliderCircle : ObjectColliderBase
             nextColliderIndex = collParas.nextIndex;
             if ( DetectCollisionWithCollisionParas(collParas) )
             {
-                bullet.CollidedByObject(curColliderIndex);
+                CollidedByEnemyBullet(bullet, curColliderIndex);
                 isCollided = true;
             }
         } while (nextColliderIndex != -1);
         return isCollided;
+    }
+
+    /// <summary>
+    /// 与敌机子弹发生碰撞
+    /// </summary>
+    /// <param name="bullet"></param>
+    /// <param name="curColliderIndex"></param>
+    protected virtual void CollidedByEnemyBullet(EnemyBulletBase bullet, int curColliderIndex)
+    {
+        bullet.CollidedByObject(curColliderIndex);
     }
 
     public override bool DetectCollisionWithCollisionParas(CollisionDetectParas collParas)

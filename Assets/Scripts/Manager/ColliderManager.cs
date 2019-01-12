@@ -28,7 +28,7 @@ public class ColliderManager
                 collider =  new ColliderCircle();
                 break;
             case eColliderType.Rect:
-                collider = new  ColliderRect();
+                collider = new ColliderRect();
                 break;
             default:
                 Logger.LogError("Collider Type " + type + " is not exist!");
