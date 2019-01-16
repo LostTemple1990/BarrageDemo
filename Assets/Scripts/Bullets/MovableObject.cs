@@ -60,6 +60,27 @@ public class MovableObject : IPoolClass
     /// </summary>
     private float _curRotation;
 
+    /// <summary>
+    /// 是否拥有额外速度
+    /// </summary>
+    private bool _hasExtraSpeed;
+    /// <summary>
+    /// x方向的额外速度
+    /// </summary>
+    private float _extraVelocityX;
+    /// <summary>
+    /// y方向的额外速度
+    /// </summary>
+    private float _extraVelocityY;
+    /// <summary>
+    /// x方向的额外加速度
+    /// </summary>
+    private float _extraAcceX;
+    /// <summary>
+    /// y方向的额外加速度
+    /// </summary>
+    private float _extraAcceY;
+
     public void Update()
     {
         _dx = 0;
@@ -78,15 +99,23 @@ public class MovableObject : IPoolClass
             {
                 MoveCurve();
             }
+            // 计算额外速度分量
+            if ( _hasExtraSpeed )
+            {
+                _dx += _extraVelocityX + _extraAcceX;
+                _dy += _extraVelocityY + _extraAcceY;
+            }
             _curPos.x += _dx;
             _curPos.y += _dy;
         }
+
         // 计算面向
         _curRotation = MathUtil.GetAngleBetweenXAxis(new Vector2(_dx, _dy), false);
-        if ( !_isMovingTo && !_isMovingStraight && !_isMovingCurve )
+        if ( !_isMovingTo && !_isMovingStraight && !_isMovingCurve && !_hasExtraSpeed )
         {
             _isActive = false;
         }
+        ResetExtraSpeedParas();
     }
 
     #region 直线运动
@@ -204,6 +233,32 @@ public class MovableObject : IPoolClass
             }
         }
     }
+
+    /// <summary>
+    /// 设置额外的直线运动的参数
+    /// <para>一般是被引力场影响</para>
+    /// </summary>
+    /// <param name="v"></param>
+    /// <param name="angle"></param>
+    /// <param name="acce"></param>
+    /// <param name="accAngle"></param>
+    public void AddExtraSpeedParas(float v, float angle, float acce, float accAngle)
+    {
+        _extraVelocityX += v * Mathf.Cos(angle * Mathf.Deg2Rad);
+        _extraVelocityY += v * Mathf.Sin(angle * Mathf.Deg2Rad);
+        _extraAcceX += acce * Mathf.Cos(accAngle * Mathf.Deg2Rad);
+        _extraAcceY += acce * Mathf.Cos(accAngle * Mathf.Deg2Rad);
+        _hasExtraSpeed = true;
+    }
+
+    public void ResetExtraSpeedParas()
+    {
+        _extraVelocityX = 0;
+        _extraVelocityY = 0;
+        _extraAcceX = 0;
+        _extraAcceY = 0;
+        _hasExtraSpeed = false;
+    }
     #endregion
 
     #region 极坐标相关运动
@@ -251,6 +306,7 @@ public class MovableObject : IPoolClass
         _maxVelocity = -1;
         _isActive = false;
         _curRotation = 0;
+        ResetExtraSpeedParas();
     }
 
     public void Reset(float x,float y)

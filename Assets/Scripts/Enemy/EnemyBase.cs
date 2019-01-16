@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase :IAttachable,IAttachment
+public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject
 {
     /// <summary>
     /// 当前生命值
@@ -194,6 +194,18 @@ public class EnemyBase :IAttachable,IAttachment
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 添加额外的速度参数
+    /// </summary>
+    /// <param name="v"></param>
+    /// <param name="vAngle"></param>
+    /// <param name="acce"></param>
+    /// <param name="accAngle"></param>
+    public virtual void AddExtraSpeedParas(float v,float vAngle,float acce,float accAngle)
+    {
+        _movableObj.AddExtraSpeedParas(v, vAngle, acce, accAngle);
     }
 
     public virtual void MoveToPos(float posX,float posY,int duration,InterpolationMode mode)

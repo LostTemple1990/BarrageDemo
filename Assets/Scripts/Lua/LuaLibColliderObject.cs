@@ -18,6 +18,52 @@ public partial class LuaLib
     }
 
     /// <summary>
+    /// 根据类型创建一个引力场
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int CreateGravitationFieldByType(ILuaState luaState)
+    {
+        eColliderType type = (eColliderType)luaState.ToInteger(-1);
+        luaState.Pop(1);
+        ObjectColliderBase collider = ColliderManager.GetInstance().CreateGravitationFieldByType(type);
+        luaState.PushLightUserData(collider);
+        return 1;
+    }
+
+    /// <summary>
+    /// 初始化引力场基本属性
+    /// <para>field 引力场</para>
+    /// <para>fieldType 引力场类型</para>
+    /// <para>velocity 速度</para>
+    /// <para>velocityOffset 速度偏移</para>
+    /// <para>vAngle 速度方向</para>
+    /// <para>vAngleOffset 速度方向偏移量</para>
+    /// <para>acce 加速度</para>
+    /// <para>acceOffset 加速度偏移量</para>
+    /// <para>accAngle 加速度方向</para>
+    /// <para>accAngleOffset 加速度方向偏移</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int InitGravitationField(ILuaState luaState)
+    {
+        IGravitationField field = luaState.ToUserData(-10) as IGravitationField;
+        int fieldType = luaState.ToInteger(-9);
+        float velocity = (float)luaState.ToNumber(-8);
+        float velocityOffset = (float)luaState.ToNumber(-7);
+        float vAngle = (float)luaState.ToNumber(-6);
+        float vAngleOffset = (float)luaState.ToNumber(-5);
+        float acce = (float)luaState.ToNumber(-4);
+        float acceOffset = (float)luaState.ToNumber(-3);
+        float accAngle = (float)luaState.ToNumber(-2);
+        float accAngleOffset = (float)luaState.ToNumber(-1);
+        luaState.Pop(10);
+        field.Init(fieldType, velocity, velocityOffset, vAngle, vAngleOffset, acce, acceOffset, accAngle, accAngleOffset);
+        return 0;
+    }
+
+    /// <summary>
     /// 设置物体碰撞器的位置
     /// <para>posX</para>
     /// <para>posY</para>
@@ -30,7 +76,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
-        collider.SetToPositon(posX, posY);
+        collider.SetToPosition(posX, posY);
         return 0;
     }
 

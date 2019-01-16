@@ -39,6 +39,26 @@ public class ColliderManager
         return collider;
     }
 
+    public ObjectColliderBase CreateGravitationFieldByType(eColliderType type)
+    {
+        ObjectColliderBase collider = null;
+        switch (type)
+        {
+            case eColliderType.Circle:
+                collider = new GravitationFieldCircle();
+                break;
+            case eColliderType.Rect:
+                collider = new GravitationFieldRect();
+                break;
+            default:
+                Logger.LogError("GravitationField Type " + type + " is not exist!");
+                break;
+        }
+        _colliderList.Add(collider);
+        _colliderCount++;
+        return collider;
+    }
+
     public void Init()
     {
 

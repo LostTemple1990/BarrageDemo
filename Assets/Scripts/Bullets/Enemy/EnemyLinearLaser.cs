@@ -489,6 +489,30 @@ public class EnemyLinearLaser : EnemyBulletBase
         _isMoving = true;
     }
 
+    /// <summary>
+    /// 设置额外的直线运动的参数
+    /// <para>一般是被引力场影响</para>
+    /// </summary>
+    /// <param name="v"></param>
+    /// <param name="angle"></param>
+    /// <param name="acce"></param>
+    /// <param name="accAngle"></param>
+    public override void AddExtraSpeedParas(float v, float angle, float acce, float accAngle)
+    {
+        if (!_isInitAngle) return;
+        // 先计算投影长度
+        Vector2 velocityVec = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * v;
+        // 在激光角度方向上的速度
+        v = velocityVec.x * Mathf.Cos(Mathf.Deg2Rad * _curVAngle) + velocityVec.y * Mathf.Sin(Mathf.Deg2Rad * _curVAngle);
+        if (v < 0) v = 0;
+        // 先计算投影长度
+        Vector2 acceVec = new Vector2(Mathf.Cos(accAngle * Mathf.Deg2Rad), Mathf.Sin(accAngle * Mathf.Deg2Rad)) * acce;
+        // 在激光角度方向上的加速度
+        acce = acceVec.x * Mathf.Cos(Mathf.Deg2Rad * _curVAngle) + acceVec.y * Mathf.Sin(Mathf.Deg2Rad * _curVAngle);
+        if (acce < 0) acce = 0;
+        _movableObj.AddExtraSpeedParas(v, _curVAngle, acce, _curVAngle);
+    }
+
 
     public override void Update()
     {
@@ -742,12 +766,13 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
         else
         {
-            Vector2 segment = _collisionSegmentList[index];
+            int realIndex = index >= 0 ? index : _collisionSegmentCount + index;
+            Vector2 segment = _collisionSegmentList[realIndex];
             paras = new CollisionDetectParas()
             {
                 type = CollisionDetectType.Circle,
                 centerPos = (_pathList[(int)segment.x] + _pathList[(int)segment.y]) / 2,
-                nextIndex = index + 1 >= _collisionSegmentCount ? -1 : index + 1,
+                nextIndex = realIndex + 1 >= _collisionSegmentCount ? -1 : realIndex + 1,
                 radius = DefaultCollisionHalfHeight,
             };
         }

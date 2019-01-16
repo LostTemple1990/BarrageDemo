@@ -133,6 +133,8 @@ public partial class LuaLib
             new NameFuncPair("ObjectColliderClearSelf",ObjectColliderClearSelf),
             new NameFuncPair("SetObjectColliderEliminateType",SetObjectColliderEliminateType),
             new NameFuncPair("SetObjectColliderHitEnemyDamage",SetObjectColliderHitEnemyDamage),
+            new NameFuncPair("CreateGravitationFieldByType",CreateGravitationFieldByType),
+            new NameFuncPair("InitGravitationField",InitGravitationField),
             // 清理子弹
             new NameFuncPair("ClearEnemyBulletsInRange",ClearEnemyBulletsInRange),
             new NameFuncPair("ClearAllEnemyBullets",ClearAllEnemyBullets),

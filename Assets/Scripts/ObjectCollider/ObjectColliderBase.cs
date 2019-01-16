@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ObjectColliderBase : IAttachment
+public class ObjectColliderBase : IAttachment, IObjectCollider
 {
     protected float _curPosX;
     protected float _curPosY;
@@ -56,11 +56,33 @@ public class ObjectColliderBase : IAttachment
         _isScaling = false;
     }
 
-    public void SetToPositon(float posX,float posY)
+    public void SetToPosition(float posX,float posY)
     {
         _curPosX = posX;
         _curPosY = posY;
         _curPos = new Vector2(posX, posY);
+    }
+
+    public void SetToPosition(Vector2 pos)
+    {
+        _curPosX = pos.x;
+        _curPosY = pos.y;
+        _curPos = pos;
+    }
+
+    public Vector2 GetPosition()
+    {
+        return _curPos;
+    }
+
+    public virtual float GetRotation()
+    {
+        return 0;
+    }
+
+    public virtual void SetRotation(float value)
+    {
+
     }
 
     public virtual void SetSize(float arg0,float arg1)

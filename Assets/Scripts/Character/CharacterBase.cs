@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterBase
+public class CharacterBase : IAffectedMovableObject
 {
     protected double _hitRadius = 0d;
     protected GameObject _character;
@@ -72,7 +72,11 @@ public class CharacterBase
     /// <summary>
     /// 当前位置
     /// </summary>
-    protected Vector3 _curPos;
+    protected Vector2 _curPos;
+    /// <summary>
+    /// Z轴
+    /// </summary>
+    protected int _orderInLayer;
 
     protected delegate void StateEnterFunc();
     protected delegate void StateUpdateFunc();
@@ -268,7 +272,7 @@ public class CharacterBase
             UpdateInvincibleStatus();
         }
         UpdatePosition();
-        ResetExtraStraightParas();
+        ResetExtraSpeedParas();
     }
 
     protected virtual void OnStateNormalExit()
@@ -351,6 +355,7 @@ public class CharacterBase
         _appearDuration = 60;
         _dyingDuration = 8;
         _waitRebornDuration = 60;
+        _orderInLayer = 0;
     }
 
     public virtual void Init()
@@ -443,7 +448,7 @@ public class CharacterBase
     {
         if (!_isMovable) return;
         float speed = GetMoveSpeed();
-        Vector3 pos = _curPos;
+        Vector2 pos = _curPos;
         bool isIdle = true;
         if ((_inputDir & Consts.DIR_LEFT) != 0)
         {
@@ -483,7 +488,8 @@ public class CharacterBase
             pos.y = Global.PlayerRTBorderPos.y;
         }
         // 计算额外运动参数
-        //_extraVelocityX += _extra
+        pos.x += _extraVelocityX + _extraAcceX;
+        pos.y += _extraVelocityY + _extraAcceY;
         _curPos = pos;
         if (isIdle)
         {
@@ -613,8 +619,8 @@ public class CharacterBase
 
     protected void UpdatePosition()
     {
-        _trans.localPosition = _curPos;
-        _collisionPointTf.localPosition = _curPos;
+        _trans.localPosition = new Vector3(_curPos.x,_curPos.y,-_orderInLayer);
+        _collisionPointTf.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
     }
 
     public void GetPosition(out float posX,out float posY)
@@ -623,7 +629,7 @@ public class CharacterBase
         posY = _curPos.y;
     }
 
-    public Vector3 GetPosition()
+    public Vector2 GetPosition()
     {
         return _curPos;
     }
@@ -633,9 +639,19 @@ public class CharacterBase
         _curPos = new Vector2(posX, posY);
     }
 
-    public void SetToPositon(Vector2 pos)
+    public void SetToPosition(Vector2 pos)
     {
         _curPos = pos;
+    }
+
+    public void SetRotation(float value)
+    {
+
+    }
+
+    public float GetRotation()
+    {
+        return 0;
     }
 
     protected void UpdateCollisionData()
@@ -726,7 +742,7 @@ public class CharacterBase
     /// <param name="angle"></param>
     /// <param name="acce"></param>
     /// <param name="accAngle"></param>
-    public virtual void SetExtraStraightParas(float v,float angle,float acce,float accAngle)
+    public virtual void AddExtraSpeedParas(float v,float angle,float acce,float accAngle)
     {
         _extraVelocityX += v * Mathf.Cos(angle * Mathf.Deg2Rad);
         _extraVelocityY += v * Mathf.Sin(angle * Mathf.Deg2Rad);
@@ -737,7 +753,7 @@ public class CharacterBase
     /// <summary>
     /// 重置额外直线运动的参数
     /// </summary>
-    protected void ResetExtraStraightParas()
+    protected void ResetExtraSpeedParas()
     {
         _extraVelocityX = 0;
         _extraVelocityY = 0;

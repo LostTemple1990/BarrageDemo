@@ -132,6 +132,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
             CheckRotateImg();
             UpdatePos();
         }
+        ResetExtraSpeedParas();
     }
 
     public virtual void SetSelfRotation(float angle)

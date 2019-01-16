@@ -6,5 +6,5 @@ using System.Collections;
 /// </summary>
 public interface IAffectedMovableObject : IPosition
 {
-    void SetExtraStraightParas(float v, float angle, float acce, float accAngle);
+    void AddExtraSpeedParas(float v, float vAngle, float acce, float accAngle);
 }

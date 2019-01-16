@@ -216,7 +216,7 @@ public class SpellCard
     {
         // 清除子弹用的collider
         ColliderCircle collider = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Circle) as ColliderCircle;
-        collider.SetToPositon(0, 120);
+        collider.SetToPosition(0, 120);
         collider.SetSize(0, 0);
         collider.SetEliminateType(eEliminateDef.CodeEliminate);
         collider.SetColliderGroup(eColliderGroup.Enemy | eColliderGroup.EnemyBullet);

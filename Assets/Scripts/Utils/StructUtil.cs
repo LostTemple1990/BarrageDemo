@@ -268,6 +268,34 @@ public enum eCharacterState : int
     WaitReborn = 4,
 }
 
+public struct GravitationParas
+{
+    /// <summary>
+    /// 赋予的速度
+    /// </summary>
+    public float velocity;
+    /// <summary>
+    /// 速度方向
+    /// </summary>
+    public float vAngle;
+    /// <summary>
+    /// 加速度
+    /// </summary>
+    public float acce;
+    /// <summary>
+    /// 加速度方向
+    /// </summary>
+    public float accAngle;
+    /// <summary>
+    /// 在引力场中的时间
+    /// </summary>
+    public int timeInGravitationField;
+    /// <summary>
+    /// 上次更新的时间
+    /// </summary>
+    public int lastUpdateTime;
+}
+
 #region struct ItemWithFramentsCounter
 /// <summary>
 /// 带碎片的道具计数器

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
+public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovableObject
 {
     /// <summary>
     /// bulletId
@@ -334,6 +334,11 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment
         _isFollowingMasterContinuously = false;
         if (!_isEliminatedWithMaster) return;
         Eliminate(eEliminateDef.CodeEliminate);
+    }
+
+    public virtual void AddExtraSpeedParas(float v, float vAngle, float acce, float accAngle)
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void Clear()

@@ -304,6 +304,11 @@ public class EnemyCurveLaser : EnemyBulletBase
         _movableObj.DoCurvedMove(radius, angle, deltaR, omega);
     }
 
+    public override void AddExtraSpeedParas(float v, float vAngle, float acce, float accAngle)
+    {
+        _movableObj.AddExtraSpeedParas(v, vAngle, acce, accAngle);
+    }
+
     protected virtual void UpdatePath()
     {
         _movableObj.Update();

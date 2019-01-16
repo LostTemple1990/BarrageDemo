@@ -160,7 +160,7 @@ public class BombMarisaA : BombBase
             _colliderRect.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy);
             _colliderRect.SetEliminateType(eEliminateDef.PlayerSpellCard);
             _colliderRect.SetHitEnemyDamage(3);
-            _colliderRect.SetToPositon(Global.PlayerPos.x + _posOffset.x, Global.PlayerPos.y + _posOffset.y);
+            _colliderRect.SetToPosition(Global.PlayerPos.x + _posOffset.x, Global.PlayerPos.y + _posOffset.y);
             _duration = 240;
         }
         _time++;
@@ -187,7 +187,7 @@ public class BombMarisaA : BombBase
         }
         UpdateSparkWaves();
         // 更新物体碰撞器的位置
-        _colliderRect.SetToPositon(Global.PlayerPos.x + _posOffset.x, Global.PlayerPos.y + _posOffset.y);
+        _colliderRect.SetToPosition(Global.PlayerPos.x + _posOffset.x, Global.PlayerPos.y + _posOffset.y);
         if ( _time >= _duration )
         {
             // 黑底Sprite消失
