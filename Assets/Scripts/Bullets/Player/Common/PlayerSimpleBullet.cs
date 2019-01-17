@@ -92,7 +92,7 @@ public class PlayerBulletSimple : PlayerBulletBase
     /// </summary>
     /// <param name="v"></param>
     /// <param name="angle"></param>
-    public void DoMoveStraight(float v,float angle)
+    public void DoStraightMove(float v,float angle)
     {
         _movableObject.DoStraightMove(v, angle);
     }

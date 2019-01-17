@@ -40,12 +40,11 @@ public class BCParasChange : BulletComponent
     /// <param name="repeatCount">重复次数</param>
     /// <param name="repeatInterval">重复的时间间隔</param>
     public void AddParaChangeEvent(BulletParaType para, ParaChangeMode changeMode,
-        float changeValue,float valueOffset,int delay,float duration, InterpolationMode intMode,int repeatCount,int repeatInterval)
+       ParaChangeValue value,int delay,float duration, InterpolationMode intMode,int repeatCount,int repeatInterval)
     {
         BulletParasChangeData changeData = CreateChangeData(para, intMode);
         changeData.changeMode = changeMode;
-        changeData.changeValue = changeValue;
-        changeData.valueOffset = valueOffset;
+        changeData.changeValue = value;
         changeData.delay = delay;
         changeData.changeTime = 0;
         changeData.changeDuration = duration;
@@ -113,19 +112,53 @@ public class BCParasChange : BulletComponent
         else
         {
             changeData.begin = beginValue;
+            float value = GetValueByChangeValue(changeData.changeValue);
             switch (changeData.changeMode)
             {
                 case ParaChangeMode.ChangeTo:
-                    changeData.end = changeData.changeValue;
+                    changeData.end = value;
                     break;
                 case ParaChangeMode.IncBy:
-                    changeData.end = changeData.begin + changeData.changeValue;
+                    changeData.end = changeData.begin + value;
                     break;
                 case ParaChangeMode.DecBy:
-                    changeData.end = changeData.begin - changeData.changeValue;
+                    changeData.end = changeData.begin - value;
                     break;
             }
         }
+    }
+
+    /// <summary>
+    /// 根据ChangeValue的值获取对应的值并返回
+    /// </summary>
+    /// <param name="changeValue"></param>
+    /// <returns></returns>
+    private float GetValueByChangeValue(ParaChangeValue changeValue)
+    {
+        float value = 0;
+        if ( changeValue.argType == 0 )
+        {
+            value = changeValue.arg0;
+        }
+        else if ( changeValue.argType == 1 )
+        {
+            Vector2 playerPos = new Vector2(Global.PlayerPos.x, Global.PlayerPos.y);
+            Vector2 bulletPos = _bullet.GetPosition();
+            float angle = MathUtil.GetAngleBetweenXAxis(playerPos - bulletPos, false);
+            value = angle;
+        }
+        else if ( changeValue.argType == 2 )
+        {
+            Vector2 targetPos = new Vector2(changeValue.arg0, changeValue.arg1);
+            Vector2 bulletPos = _bullet.GetPosition();
+            float angle = MathUtil.GetAngleBetweenXAxis(targetPos - bulletPos, false);
+            value = angle;
+        }
+        if ( changeValue.offset != 0 )
+        {
+            value += MTRandom.GetNextFloat(-changeValue.offset, changeValue.offset);
+        }
+        return value;
     }
      
     public override void Clear()
@@ -150,13 +183,9 @@ public class BulletParasChangeData : IPoolClass
     public ParaChangeMode changeMode;
     public InterpolationMode mode;
     /// <summary>
-    /// 改变的量
+    /// 改变的值的结构
     /// </summary>
-    public float changeValue;
-    /// <summary>
-    /// 改变的量的偏移
-    /// </summary>
-    public float valueOffset;
+    public ParaChangeValue changeValue;
     public float begin;
     public float end;
     public float changeTime;
@@ -201,50 +230,58 @@ public enum BulletParaType :byte
     /// </summary>
     Velocity = 1,
     /// <summary>
+    /// /// <summary>
+    /// 速度x轴方向分量
+    /// </summary>
+    Vx = 2,
+    /// <summary>
+    /// 速度y轴方向分量
+    /// </summary>
+    Vy = 3,
     /// 当前速度方向
     /// </summary>
-    VAngel = 2,
+    VAngel = 4,
     /// <summary>
     /// 当前加速度
     /// </summary>
-    Acce = 3,
+    Acce = 5,
     /// <summary>
     /// 当前加速度方向
     /// </summary>
-    AccAngle = 4,
-    /// <summary>
-    /// 极坐标半径
-    /// </summary>
-    CurveRadius = 5,
-    /// <summary>
-    /// 圆周运动角度
-    /// </summary>
-    CurveAngle = 6,
-    /// <summary>
-    /// 圆周运动半径增量
-    /// </summary>
-    CurveDeltaR = 7,
-    /// <summary>
-    /// 圆周运动角速度增量
-    /// </summary>
-    CurveOmega = 8,
-    CurveCenterX = 9,
-    CurveCenterY = 10,
+    AccAngle = 6,
     /// <summary>
     /// 最大运动速度
     /// </summary>
-    MaxVelocity = 11,
-    Alpha = 15,
-    ScaleX = 20,
-    ScaleY = 21,
+    MaxVelocity = 7,
+    /// <summary>
+    /// 极坐标半径
+    /// </summary>
+    CurveRadius = 11,
+    /// <summary>
+    /// 圆周运动角度
+    /// </summary>
+    CurveAngle = 12,
+    /// <summary>
+    /// 圆周运动半径增量
+    /// </summary>
+    CurveDeltaR = 13,
+    /// <summary>
+    /// 圆周运动角速度增量
+    /// </summary>
+    CurveOmega = 14,
+    CurveCenterX = 15,
+    CurveCenterY = 16,
+    Alpha = 21,
+    ScaleX = 25,
+    ScaleY = 26,
     /// <summary>
     /// 激光的长度
     /// </summary>
-    LaserLength = 25,
+    LaserLength = 31,
     /// <summary>
     /// 激光的宽度
     /// </summary>
-    LaserWidth = 26,
+    LaserWidth = 32,
 }
 
 /// <summary>
@@ -266,4 +303,21 @@ public enum ParaChangeMode : byte
     ChangeTo = 1,
     IncBy = 2,
     DecBy = 3,
+}
+
+public struct ParaChangeValue
+{
+    /// <summary>
+    /// 参数类型
+    /// <para>0  直接取arg0的值</para>
+    /// <para>1 自机</para>
+    /// <para>2 指定坐标</para>
+    /// </summary>
+    public int argType;
+    public float arg0;
+    public float arg1;
+    /// <summary>
+    /// 参数随机偏移
+    /// </summary>
+    public float offset;
 }

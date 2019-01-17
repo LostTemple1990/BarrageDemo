@@ -80,6 +80,11 @@ public class MovableObject : IPoolClass
     /// y方向的额外加速度
     /// </summary>
     private float _extraAcceY;
+    /// <summary>
+    /// 标识是否需要重新计算速度方向
+    /// <para>当有加速度的时候一般都需要重新计算</para>
+    /// </summary>
+    private bool _reCalVAngle;
 
     public void Update()
     {
@@ -110,7 +115,7 @@ public class MovableObject : IPoolClass
         }
 
         // 计算面向
-        _curRotation = MathUtil.GetAngleBetweenXAxis(new Vector2(_dx, _dy), false);
+        _curRotation = MathUtil.GetAngleBetweenXAxis(_dx, _dy, false);
         if ( !_isMovingTo && !_isMovingStraight && !_isMovingCurve && !_hasExtraSpeed )
         {
             _isActive = false;
@@ -207,6 +212,7 @@ public class MovableObject : IPoolClass
         // 根据加速度计算新的速度
         if (_curAcce != 0)
         {
+            _reCalVAngle = true;
             _vx += _dvx;
             _vy += _dvy;
         }
@@ -306,6 +312,7 @@ public class MovableObject : IPoolClass
         _maxVelocity = -1;
         _isActive = false;
         _curRotation = 0;
+        _reCalVAngle = false;
         ResetExtraSpeedParas();
     }
 
@@ -343,9 +350,39 @@ public class MovableObject : IPoolClass
             {
                 _curVelocity = value > _maxVelocity ? _maxVelocity : value;
             }
+            if ( _reCalVAngle )
+            {
+                _curVAngle = MathUtil.GetAngleBetweenXAxis(_vx, _vy, false);
+                _reCalVAngle = false;
+            }
             _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
             _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
-            _isMovingStraight = true;
+        }
+    }
+
+    /// <summary>
+    /// x轴方向的速度
+    /// </summary>
+    public float Vx
+    {
+        get { return _vx; }
+        set
+        {
+            _vx = value;
+            Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
+        }
+    }
+
+    /// <summary>
+    /// y轴方向的速度
+    /// </summary>
+    public float Vy
+    {
+        get { return _vy; }
+        set
+        {
+            _vy = value;
+            Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
         }
     }
 
@@ -358,8 +395,8 @@ public class MovableObject : IPoolClass
         set
         {
             _curVAngle = value;
-            _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
-            _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
+            _reCalVAngle = false;
+            Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
         }
     }
 

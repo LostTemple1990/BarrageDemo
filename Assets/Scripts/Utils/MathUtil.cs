@@ -4,47 +4,26 @@ using UnityEngine;
 
 public class MathUtil
 {
+    public const float kEpsilonNormalSqrt = 1e-15f;
+
     public static float GetAngleBetweenXAxis(Vector2 vec,bool isRadius)
     {
-        float length = vec.magnitude;
-        if ( length == 0 )
-        {
-            return 0;
-        }
-        float rAngle = Mathf.Acos(vec.x / length);
-        if ( vec.y < 0 )
-        {
-            rAngle = 2 * Mathf.PI - rAngle;
-        }
-        if ( isRadius )
-        {
-            return rAngle;
-        }
-        else
-        {
-            return rAngle * Mathf.Rad2Deg;
-        }
+        float denominator = vec.magnitude;
+        if (denominator < kEpsilonNormalSqrt) return 0f;
+        float dot = vec.x / denominator;
+        float radius = Mathf.Acos(dot);
+        if (!isRadius) return radius * Mathf.Rad2Deg;
+        return radius;
     }
+
     public static float GetAngleBetweenXAxis(float x,float y,bool isRadius)
     {
-        float length = Mathf.Sqrt(x*x+y*y);
-        if (length == 0 || y == 0)
-        {
-            return 0;
-        }
-        float rAngle = Mathf.Acos(x / length);
-        if (y < 0)
-        {
-            rAngle = 2 * Mathf.PI - rAngle;
-        }
-        if (isRadius)
-        {
-            return rAngle;
-        }
-        else
-        {
-            return rAngle * Mathf.Rad2Deg;
-        }
+        float denominator = Mathf.Sqrt(x*x+y*y);
+        if (denominator < kEpsilonNormalSqrt) return 0f;
+        float dot = x / denominator;
+        float radius = Mathf.Acos(dot);
+        if (!isRadius) return radius * Mathf.Rad2Deg;
+        return radius;
     }
 
     /// <summary>

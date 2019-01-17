@@ -242,14 +242,15 @@ public class EnemyCurveLaser : EnemyBulletBase
                 nextIndex = -1,
             };
         }
-        Vector2 segmentVec = _collisionSegmentsList[index];
+        int realIndex = index >= 0 ? index : _collisionSegmentsCount + index;
+        Vector2 segmentVec = _collisionSegmentsList[realIndex];
         Vector2 centerPos = (_trailsList[(int)segmentVec.x] + _trailsList[(int)segmentVec.y]) / 2 + new Vector2(_relationX, _relationY);
         return new CollisionDetectParas
         {
             type = CollisionDetectType.Circle,
             centerPos = centerPos,
             radius = _collisionRadius,
-            nextIndex = index + 1 >= _collisionSegmentsCount ? -1 : index + 1,
+            nextIndex = realIndex + 1 >= _collisionSegmentsCount ? -1 : realIndex + 1,
         };
     }
 

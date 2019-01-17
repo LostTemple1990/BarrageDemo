@@ -14,7 +14,7 @@ CustomizedBulletTable.NazrinSC1Bullet0.Init = function(bullet,waitTime,maxRadius
 	lib.AddBulletTask(bullet,function()
 		local posX,posY = lib.GetBulletPos(bullet)
 		lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
-		lib.AddBulletParaChangeEvent(bullet,5,eParaChangeMode.ChangeTo,maxRadius,0,30,Constants.ModeLinear)
+		lib.AddBulletParaChangeEvent(bullet,5,eParaChangeMode.ChangeTo,0,maxRadius,0,0,0,30,Constants.ModeLinear,1,0)
 		--lib.AddBulletParaChangeEvent(bullet,8,Constants.ParaChangeMode_ChangeTo,1.5,50-waitTime,Constants.ModeLinear,10)
 		if coroutine.yield(80-waitTime) == false then return end
 		lib.SetBulletStyleById(bullet,"107060")
@@ -1434,10 +1434,10 @@ CustomizedBulletTable.MarisaSC0Bullet5.Init = function(bullet,angle)
 	lib.SetBulletColor(bullet,50,50,100)
 	lib.SetBulletDetectCollision(bullet,false)
 	lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
-	lib.AddBulletParaChangeEvent(bullet,eBulletParaType.Alpha,eParaChangeMode.ChangeTo,0,0,20,Constants.ModeLinear)
+	lib.AddBulletParaChangeEvent(bullet,eBulletParaType.Alpha,eParaChangeMode.ChangeTo,0,0,0,0,0,20,Constants.ModeLinear,1,0)
 	local v = lib.GetRandomFloat(1,1.5)
 	lib.SetBulletStraightParas(bullet,v+0.1,angle,false,0,0)
-	lib.AddBulletParaChangeEvent(bullet,eBulletParaType.Velocity,eParaChangeMode.DecBy,v/50*20,0,20,Constants.ModeLinear)
+	lib.AddBulletParaChangeEvent(bullet,eBulletParaType.Velocity,eParaChangeMode.DecBy,0,v/50*20,0,0,0,20,Constants.ModeLinear,1,0)
 	lib.BulletDoScale(bullet,0,0,20)
 	lib.SetBulletAppearEffectAvailable(bullet,false)
 	lib.AddBulletTask(bullet,function()
@@ -1467,8 +1467,8 @@ CustomizedBulletTable.MarisaSC0LaserBullet0.Init = function(bullet,bulletAngle)
 			--angle = angle + dAngle
 		--end
 		lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
-		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,1.9,0,25,Constants.ModeSin)
-		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0.2,25,25,Constants.ModeCos)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0,1.9,0,0,0,25,Constants.ModeSin,1,0)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0,0.2,0,0,25,25,Constants.ModeCos,1,0)
 		if coroutine.yield(50) == false then return end
 		lib.EliminateBullet(bullet)
 	end)
@@ -1493,8 +1493,8 @@ CustomizedBulletTable.MarisaSC0LaserBullet1.Init = function(bullet,bulletAngle)
 			--angle = angle + dAngle
 		--end
 		lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
-		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,1.2,0,25,Constants.ModeSin)
-		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0.2,25,25,Constants.ModeCos)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0,1.2,0,0,0,25,Constants.ModeSin,1,0)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0,0.2,0,0,25,25,Constants.ModeCos,1,0)
 		if coroutine.yield(50) == false then return end
 		lib.EliminateBullet(bullet)
 	end)
@@ -1519,8 +1519,8 @@ CustomizedBulletTable.MarisaSC0LaserBullet2.Init = function(bullet,bulletAngle)
 			--angle = angle + dAngle
 		--end
 		lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
-		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,1.9,0,25,Constants.ModeSin)
-		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0.2,25,25,Constants.ModeCos)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0,1.9,0,0,0,25,Constants.ModeSin,1,0)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0,0.2,0,0,25,25,Constants.ModeCos,1,0)
 		if coroutine.yield(50) == false then return end
 		lib.EliminateBullet(bullet)
 	end)
@@ -1545,8 +1545,8 @@ CustomizedBulletTable.MarisaSC0LaserBullet3.Init = function(bullet,bulletAngle)
 			--angle = angle + dAngle
 		--end
 		lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
-		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,1.2,0,25,Constants.ModeSin)
-		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0.2,25,25,Constants.ModeCos)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0,1.2,0,0,0,25,Constants.ModeSin,1,0)
+		lib.AddBulletParaChangeEvent(bullet,eBulletParaType.ScaleX,eParaChangeMode.ChangeTo,0,0.2,0,0,25,25,Constants.ModeCos,1,0)
 		if coroutine.yield(50) == false then return end
 		lib.EliminateBullet(bullet)
 	end)
@@ -1746,7 +1746,7 @@ CustomizedBulletTable.PatchouliNonSC0Bullet1 = {}
 CustomizedBulletTable.PatchouliNonSC0Bullet1.Init = function(bullet,angle)
 	lib.SetBulletDetectCollision(bullet,false)
 	lib.AddBulletComponent(bullet,eBulletComponentType.ParasChange)
-	lib.AddBulletParaChangeEvent(bullet,eBulletParaType.Alpha,eParaChangeMode.ChangeTo,0,0,20,Constants.ModeLinear)
+	lib.AddBulletParaChangeEvent(bullet,eBulletParaType.Alpha,eParaChangeMode.ChangeTo,0,0,0,0,0,20,Constants.ModeLinear,1,0)
 	lib.SetBulletStraightParas(bullet,0,angle,false,0,0)
 	lib.BulletDoScale(bullet,0,0,20)
 	lib.SetBulletAppearEffectAvailable(bullet,false)

@@ -33,22 +33,46 @@ public partial class LuaLib
     /// <summary>
     /// 使用组件进行移动参数变更，
     /// <para>具体参数参考AddParaChangeEvent方法</para>
+    /// <para>bullet</para>
     /// <para>para MovePara</para>
+    /// <para>changeMode 改变方式 ChangeTo,IncBy,DecBy,ChangeTo</para>
+    /// <para>valueType 参数类型</para>
+    /// <para>arg0 参数0</para>
+    /// <para>arg1 参数1</para>
+    /// <para>valueOffset 随机偏移量</para>
+    /// <para>delay 起始延迟</para>
+    /// <para>duration 变化持续时间</para>
+    /// <para>intMode 插值方式</para>
+    /// <para>repeatCount 重复次数</para>
+    /// <para>repeatInterval 每次重复的间隔</para>
+    /// <para>总计12个参数</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
     public static int AddBulletParaChangeEvent(ILuaState luaState)
     {
-        EnemyBulletBase bullet = luaState.ToUserData(-7) as EnemyBulletBase;
-        BulletParaType para = (BulletParaType)luaState.ToInteger(-6);
-        ParaChangeMode changeMode  = (ParaChangeMode)luaState.ToInteger(-5);
-        float changeValue = (float)luaState.ToNumber(-4);
-        int delay = luaState.ToInteger(-3);
-        int duration = luaState.ToInteger(-2);
-        InterpolationMode intMode = (InterpolationMode)luaState.ToInteger(-1);
-        luaState.Pop(7);
+        EnemyBulletBase bullet = luaState.ToUserData(-12) as EnemyBulletBase;
+        BulletParaType para = (BulletParaType)luaState.ToInteger(-11);
+        ParaChangeMode changeMode  = (ParaChangeMode)luaState.ToInteger(-10);
+        int valueType = luaState.ToInteger(-9);
+        float arg0 = (float)luaState.ToNumber(-8);
+        float arg1 = (float)luaState.ToNumber(-7);
+        float valueOffset = (float)luaState.ToNumber(-6);
+        int delay = luaState.ToInteger(-5);
+        int duration = luaState.ToInteger(-4);
+        InterpolationMode intMode = (InterpolationMode)luaState.ToInteger(-3);
+        int repeatCount = luaState.ToInteger(-2);
+        int repeatInterval = luaState.ToInteger(-1);
+        luaState.Pop(12);
         BCParasChange bc = bullet.GetComponent<BCParasChange>();
-        bc.AddParaChangeEvent(para, changeMode, changeValue, 0, delay, duration, intMode, 1, 0);
+        ParaChangeValue changeValue = new ParaChangeValue
+        {
+            argType = valueType,
+            arg0 = arg0,
+            arg1 = arg1,
+            offset = valueOffset,
+        };
+        bc.AddParaChangeEvent(para, changeMode, changeValue, delay, duration, intMode, 1, 0);
         return 0;
     }
 

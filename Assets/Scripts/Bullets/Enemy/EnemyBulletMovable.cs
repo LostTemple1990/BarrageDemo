@@ -25,6 +25,10 @@ public class EnemyBulletMovable : EnemyBulletBase
     /// 是否设置过初始速度
     /// </summary>
     protected bool _isInitVelocity;
+    /// <summary>
+    /// 是否需要重新计算速度方向
+    /// </summary>
+    protected bool _reCalVAngle;
 
     #region 极坐标运动相关参数
     protected Vector2 _centerPos;
@@ -38,7 +42,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     /// <summary>
     /// 当前角速度
     /// </summary>
-    protected float _curOmiga;
+    protected float _curOmega;
     #endregion
 
     /// <summary>
@@ -185,7 +189,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     {
         _vx += _dvx;
         _vy += _dvy;
-        if ( _maxVelocity != -1 )
+        if ( _maxVelocity >= 0 )
         {
             float value = _vx * _vx + _vy * _vy;
             if ( value > _sqrMaxV )
@@ -225,7 +229,7 @@ public class EnemyBulletMovable : EnemyBulletBase
         _curRadius = radius;
         _curCurveAngle = angle;
         _deltaRadius = deltaR;
-        _curOmiga = omiga;
+        _curOmega = omiga;
         _lastCurvePos = _centerPos;
         _isMovingCurve = true;
     }
@@ -233,7 +237,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     protected virtual void MoveCurve()
     {
         _curRadius += _deltaRadius;
-        _curCurveAngle += _curOmiga;
+        _curCurveAngle += _curOmega;
         float dstX = _curRadius * Mathf.Cos(_curCurveAngle * Mathf.Deg2Rad) + _centerPos.x;
         float dstY = _curRadius * Mathf.Sin(_curCurveAngle * Mathf.Deg2Rad) + _centerPos.y;
         // 更新位置增量
@@ -295,6 +299,12 @@ public class EnemyBulletMovable : EnemyBulletBase
             case BulletParaType.Velocity:
                 value = _curVelocity;
                 return true;
+            case BulletParaType.Vx:
+                value = _vx;
+                return true;
+            case BulletParaType.Vy:
+                value = _vy;
+                return true;
             case BulletParaType.VAngel:
                 value = _curVAngle;
                 return true;
@@ -303,6 +313,9 @@ public class EnemyBulletMovable : EnemyBulletBase
                 return true;
             case BulletParaType.AccAngle:
                 value = _curAccAngle;
+                return true;
+            case BulletParaType.MaxVelocity:
+                value = _maxVelocity;
                 return true;
             case BulletParaType.CurveAngle:
                 value = _curCurveAngle;
@@ -314,7 +327,7 @@ public class EnemyBulletMovable : EnemyBulletBase
                 value = _deltaRadius;
                 return true;
             case BulletParaType.CurveOmega:
-                value = _curOmiga;
+                value = _curOmega;
                 return true;
             case BulletParaType.CurveCenterX:
                 value = _centerPos.x;
@@ -331,28 +344,37 @@ public class EnemyBulletMovable : EnemyBulletBase
         switch (paraType)
         {
             case BulletParaType.Velocity:
-                _curVelocity = value;
+                Velocity = value;
+                return true;
+            case BulletParaType.Vx:
+                Vx = value;
+                return true;
+            case BulletParaType.Vy:
+                Vy = value;
                 return true;
             case BulletParaType.VAngel:
-                _curVAngle = value;
+                VAngle = value;
                 return true;
             case BulletParaType.Acce:
-                _curAcce = value;
+                Acce = value;
                 return true;
             case BulletParaType.AccAngle:
-                _curAccAngle = value;
+                AccAngle = value;
+                return true;
+            case BulletParaType.MaxVelocity:
+                MaxVelocity = value;
                 return true;
             case BulletParaType.CurveAngle:
-                _curCurveAngle = value;
+                CurveAngle = value;
                 return true;
             case BulletParaType.CurveRadius:
-                _curRadius = value;
+                CurveRadius = value;
                 return true;
             case BulletParaType.CurveDeltaR:
-                _deltaRadius = value;
+                CurveDeltaRadius = value;
                 return true;
             case BulletParaType.CurveOmega:
-                _curOmiga = value;
+                CurveOmega = value;
                 return true;
             case BulletParaType.CurveCenterX:
                 _centerPos.x = value;
@@ -362,6 +384,164 @@ public class EnemyBulletMovable : EnemyBulletBase
                 return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// 速度
+    /// </summary>
+    public float Velocity
+    {
+        get { return _vx; }
+        protected set
+        {
+            if (_maxVelocity < 0)
+            {
+                _curVelocity = value;
+            }
+            else
+            {
+                _curVelocity = value > _maxVelocity ? _maxVelocity : value;
+            }
+            if (_reCalVAngle)
+            {
+                _curVAngle = MathUtil.GetAngleBetweenXAxis(_vx, _vy, false);
+                _reCalVAngle = false;
+            }
+            _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
+            _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
+        }
+    }
+
+    /// <summary>
+    /// x轴方向的速度
+    /// </summary>
+    public float Vx
+    {
+        get { return _vx; }
+        protected set
+        {
+            _vx = value;
+            Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
+        }
+    }
+
+    /// <summary>
+    /// y轴方向的速度
+    /// </summary>
+    public float Vy
+    {
+        get { return _vy; }
+        protected set
+        {
+            _vy = value;
+            Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
+        }
+    }
+
+    /// <summary>
+    /// 速度方向
+    /// </summary>
+    public float VAngle
+    {
+        get { return _curVAngle; }
+        protected set
+        {
+            _curVAngle = value;
+            _reCalVAngle = false;
+            Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
+        }
+    }
+
+    /// <summary>
+    /// 加速度
+    /// </summary>
+    public float Acce
+    {
+        get { return _curAcce; }
+        protected set
+        {
+            _curAcce = value;
+            _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
+            _dvy = _curAcce * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
+            _isMovingStraight = true;
+        }
+    }
+
+    /// <summary>
+    /// 加速度方向
+    /// </summary>
+    public float AccAngle
+    {
+        get { return _curAccAngle; }
+        protected set
+        {
+            _curAccAngle = value;
+            _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
+            _dvy = _curAcce * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
+        }
+    }
+
+    /// <summary>
+    /// 最大速度限制
+    /// </summary>
+    public float MaxVelocity
+    {
+        get
+        {
+            if (_maxVelocity < 0) return int.MaxValue;
+            return _maxVelocity;
+        }
+        protected set
+        {
+            _maxVelocity = value;
+            // 若value小于0，说明取消了速度限制，则直接返回
+            if (value < 0) return;
+            _sqrMaxV = value * value;
+            // 判断现有速度是否超过了最大的速度限制
+            float sqrV = _vx * _vx + _vy * _vy;
+            if (sqrV > _sqrMaxV)
+            {
+                float factor = Mathf.Sqrt(_sqrMaxV / sqrV);
+                _vx *= factor;
+                _vy *= factor;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 极坐标运动的半径
+    /// </summary>
+    public float CurveRadius
+    {
+        get { return _curRadius; }
+        protected set { _curRadius = value; }
+    }
+
+    /// <summary>
+    /// 极坐标运动的半径增量
+    /// </summary>
+    public float CurveDeltaRadius
+    {
+        get { return _deltaRadius; }
+        protected set { _deltaRadius = value; }
+    }
+
+    /// <summary>
+    /// 极坐标运动的当前角度
+    /// </summary>
+    public float CurveAngle
+    {
+        get { return _curCurveAngle; }
+        protected set { _curCurveAngle = value; }
+    }
+
+    /// <summary>
+    /// 极坐标运动的角速度
+    /// </summary>
+    public float CurveOmega
+    {
+        get { return _curOmega; }
+        set { _curOmega = value; }
     }
     #endregion
 }
