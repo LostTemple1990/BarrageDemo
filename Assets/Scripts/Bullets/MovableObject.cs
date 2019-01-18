@@ -113,7 +113,6 @@ public class MovableObject : IPoolClass
             _curPos.x += _dx;
             _curPos.y += _dy;
         }
-
         // 计算面向
         _curRotation = MathUtil.GetAngleBetweenXAxis(_dx, _dy, false);
         if ( !_isMovingTo && !_isMovingStraight && !_isMovingCurve && !_hasExtraSpeed )

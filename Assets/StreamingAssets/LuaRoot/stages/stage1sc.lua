@@ -2031,6 +2031,112 @@ function SC.PatchouliSC1(boss)
 	end
 end
 
+CustomizedBulletTable.ReisenSC0_Bullet = {}
+CustomizedBulletTable.ReisenSC0_Bullet.Init = function(bullet,vAngle)
+	local v = lib.GetRandomFloat(5,8)
+	lib.SetBulletStraightParas(bullet,v,vAngle,false,0,0)
+	lib.AddBulletComponent(bullet,eBulletComponentType.ColliderTrigger)
+	lib.AddBulletColliderTriggerEvent(bullet,eEliminateType.CustomizedType0,function(collider,collIndex)
+		lib.SetBulletStraightParas(bullet,v,vAngle,false,0,0)
+	end)
+	lib.AddBulletColliderTriggerEvent(bullet,eEliminateType.CustomizedType1,function(collider,collIndex)
+		lib.SetBulletStraightParas(bullet,v/3,vAngle,false,0,0)
+	end)
+end
+
+function SC.ReisenSC0(boss)
+	lib.SetSpellCardProperties("水符 [Alchemy Furnace]",60,Condition.EliminateAll,true,nil)
+	lib.EnemyMoveToPos(boss,0,128,120,Constants.ModeEaseOutQuad)
+	lib.SetBossInvincible(boss,5)
+	lib.SetEnemyMaxHp(boss,1000)
+	lib.ShowBossBloodBar(boss,true)
+	--bossCG
+	do
+		local tweenList = {}
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=0,duration=30,beginValue={x=200,y=200},endValue={x=0,y=0},mode=Constants.ModeEaseInQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Pos2D,delay=60,duration=60,beginValue={x=0,y=0},endValue={x=-200,y=-200},mode=Constants.ModeEaseOutQuad}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=0,duration=0,beginValue=1,endValue=1,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Alpha,delay=90,duration=30,beginValue=1,endValue=0,mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		do
+			local tween = {type=Constants.eTweenType.Scale,delay=0,duration=0,beginValue={x=0.75,y=0.75,z=1},endValue={x=0.75,y=0.75,z=1},mode=Constants.ModeLinear}
+			table.insert(tweenList,tween)
+		end
+		lib.PlayCharacterCG("CG/face04ct",tweenList)
+	end
+	if coroutine.yield(120) == false then return end
+	do
+		lib.AddEnemyTask(boss,function()
+			local spriteEffect = lib.CreateSpriteEffectWithProps("STGEffectAtlas","TransparentCircle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
+			lib.SetEffectToPos(spriteEffect,0,-100)
+			lib.SetSpriteEffectScale(spriteEffect,4,4)
+			lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
+			--ObjectCollider
+			local outterCollider = lib.CreateObjectColliderByType(eColliderType.Circle)
+			lib.SetObjectColliderSize(outterCollider,80,80)
+			lib.SetObjectColliderToPos(outterCollider,0,-100)
+			lib.SetObjectColliderEliminateType(outterCollider,eEliminateType.CustomizedType0)
+			local innerCollider = lib.CreateObjectColliderByType(eColliderType.Circle)
+			lib.SetObjectColliderSize(innerCollider,64,64)
+			lib.SetObjectColliderToPos(innerCollider,0,-100)
+			lib.SetObjectColliderEliminateType(innerCollider,eEliminateType.CustomizedType1)
+			--
+			if coroutine.yield(120)==false then return end
+			do
+				local i,di = 0,1
+				for _=1,120 do
+					local posX = 100*i/120
+					lib.SetEffectToPos(spriteEffect,posX,-100)
+					lib.SetObjectColliderToPos(outterCollider,posX,-100)
+					lib.SetObjectColliderToPos(innerCollider,posX,-100)
+					if coroutine.yield(1)==false then return end
+					i = i + di
+				end
+			end
+			do
+				for _=1,Infinite do
+					do
+						local i,di = 0,1
+						for _=1,240 do
+							local posX = 100-200*i/240
+							lib.SetEffectToPos(spriteEffect,posX,-100)
+							lib.SetObjectColliderToPos(outterCollider,posX,-100)
+							lib.SetObjectColliderToPos(innerCollider,posX,-100)
+							if coroutine.yield(1)==false then return end
+							i = i + di
+						end
+					end
+					do
+						local i,di = 0,1
+						for _=1,240 do
+							local posX = -100+200*i/240
+							lib.SetEffectToPos(spriteEffect,posX,-100)
+							lib.SetObjectColliderToPos(outterCollider,posX,-100)
+							lib.SetObjectColliderToPos(innerCollider,posX,-100)
+							if coroutine.yield(1)==false then return end
+							i = i + di
+						end
+					end
+				end
+			end
+			do
+				
+			end
+		end)
+	end
+end
+
 return
 {
 	CustomizedBulletTable = CustomizedBulletTable,

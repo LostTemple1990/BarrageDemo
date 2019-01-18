@@ -159,13 +159,17 @@ public enum eEliminateDef : int
     /// </summary>
     HitObjectCollider = 16,
     /// <summary>
+    /// 引力场
+    /// </summary>
+    GravitationField = 32,
+    /// <summary>
     /// 直接调用代码触发的消除
     /// </summary>
-    CodeEliminate = 32,
+    CodeEliminate = 2 << 8,
     /// <summary>
     /// 直接调用代码，不触发消除触发的函数
     /// </summary>
-    CodeRawEliminate = 64,
+    CodeRawEliminate = 2 << 9,
     CustomizedType0 = 2 << 10,
     CustomizedType1 = 2 << 11,
     CustomizedType2 = 2 << 12,

@@ -19,7 +19,7 @@ public class STGMain
 #if CheckSTGFrameTime
         long[] timeArr = new long[10];
         long frameBeginTime = System.DateTime.Now.Ticks;
-        ColliderManager.GetInstance().Update();
+        STGStageManager.GetInstance().Update();
         timeArr[0] = System.DateTime.Now.Ticks;
         _opController.Update();
         _char.Update();
@@ -30,11 +30,11 @@ public class STGMain
         timeArr[3] = System.DateTime.Now.Ticks;
         ItemManager.GetInstance().Update();
         timeArr[4] = System.DateTime.Now.Ticks;
-        AnimationManager.GetInstance().Update();
+        ColliderManager.GetInstance().Update();
         timeArr[5] = System.DateTime.Now.Ticks;
-        ExtraTaskManager.GetInstance().Update();
+        AnimationManager.GetInstance().Update();
         timeArr[6] = System.DateTime.Now.Ticks;
-        STGStageManager.GetInstance().Update();
+        ExtraTaskManager.GetInstance().Update();
         timeArr[7] = System.DateTime.Now.Ticks;
         BackgroundManager.GetInstance().Update();
         timeArr[8] = System.DateTime.Now.Ticks;
@@ -59,14 +59,14 @@ public class STGMain
         if ( frameEndTime - frameBeginTime >= 50000 )
         {
             string logStr = "Frame " + STGStageManager.GetInstance().GetFrameSinceStageStart() + " cost time " + (frameEndTime - frameBeginTime) / 10000f + "ms\n";
-            logStr += "ColliderManager Update Cost Time = " + (timeArr[0]-frameBeginTime) / 10000f + "ms\n";
+            logStr += "STGStageManager Update Cost Time = " + (timeArr[0]-frameBeginTime) / 10000f + "ms\n";
             logStr += "Character Update Cost Time = " + (timeArr[1]-timeArr[0]) / 10000f + "ms\n";
             logStr += "EnemyManager Update Cost Time = " + (timeArr[2] - timeArr[1]) / 10000f + "ms\n";
             logStr += "BulletsManager Update Cost Time = " + (timeArr[3] - timeArr[2]) / 10000f + "ms\n";
             logStr += "ItemManager Update Cost Time = " + (timeArr[4] - timeArr[3]) / 10000f + "ms\n";
-            logStr += "AnimationManager Update Cost Time = " + (timeArr[5] - timeArr[4]) / 10000f + "ms\n";
-            logStr += "ExtraTaskManager Update Cost Time = " + (timeArr[6] - timeArr[5]) / 10000f + "ms\n";
-            logStr += "STGStageManager Update Cost Time = " + (timeArr[7] - timeArr[6]) / 10000f + "ms\n";
+            logStr += "ColliderManager Update Cost Time = " + (timeArr[5] - timeArr[4]) / 10000f + "ms\n";
+            logStr += "AnimationManager Update Cost Time = " + (timeArr[6] - timeArr[5]) / 10000f + "ms\n";
+            logStr += "ExtraTaskManager Update Cost Time = " + (timeArr[7] - timeArr[6]) / 10000f + "ms\n";
             logStr += "BackgroundManager Update Cost Time = " + (timeArr[8] - timeArr[7]) / 10000f + "ms\n";
             logStr += "EffectsManager Update Cost Time = " + (timeArr[9] - timeArr[8]) / 10000f + "ms\n";
             Logger.LogWarn(logStr);
@@ -74,15 +74,15 @@ public class STGMain
             Logger.Log("------------------------------------------------");
         }
 #else
-        ColliderManager.GetInstance().Update();
+        STGStageManager.GetInstance().Update();
         _opController.Update();
         _char.Update();
         EnemyManager.GetInstance().Update();
         BulletsManager.GetInstance().Update();
         ItemManager.GetInstance().Update();
+        ColliderManager.GetInstance().Update();
         AnimationManager.GetInstance().Update();
         ExtraTaskManager.GetInstance().Update();
-        STGStageManager.GetInstance().Update();
         BackgroundManager.GetInstance().Update();
         EffectsManager.GetInstance().Update();
         frameNode++;
@@ -141,14 +141,13 @@ public class STGMain
 
     public void Init()
     {
+        InterpreterManager.GetInstance().Init();
+        STGStageManager.GetInstance().Init();
         AnimationManager.GetInstance().Init();
-        ColliderManager.GetInstance().Init();
         BulletsManager.GetInstance().Init();
         EnemyManager.GetInstance().Init();
         ItemManager.GetInstance().Init();
-
-        InterpreterManager.GetInstance().Init();
-        STGStageManager.GetInstance().Init();
+        ColliderManager.GetInstance().Init();
 
         ExtraTaskManager.GetInstance().Init();
 
