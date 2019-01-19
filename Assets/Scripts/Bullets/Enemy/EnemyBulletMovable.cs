@@ -130,7 +130,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     }
 
     #region 直线运动
-    public virtual void DoMoveStraight(float v,float angle)
+    public virtual void DoStraightMove(float v,float angle)
     {
         _curVelocity = v;
         _curVAngle = angle;
@@ -142,7 +142,7 @@ public class EnemyBulletMovable : EnemyBulletBase
         _isMovingStraight = true;
     }
 
-    public virtual void DoMoveStraightWithLimitation(float v,float angle,int duration)
+    public virtual void DoStraightMoveWithLimitation(float v,float angle,int duration)
     {
         _curVelocity = v;
         _curVAngle = angle;

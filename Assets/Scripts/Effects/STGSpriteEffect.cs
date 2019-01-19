@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class STGSpriteEffect : STGEffectBase
+public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment
 {
     private GameObject _effectGo;
     private Transform _effectTf;
@@ -24,6 +24,10 @@ public class STGSpriteEffect : STGEffectBase
     private float _fromHeightScale;
     private float _toHeightScale;
 
+    /// <summary>
+    /// 当前角度
+    /// </summary>
+    private float _curRotation;
     private bool _isRotating;
     /// <summary>
     /// 每帧旋转的角度
@@ -68,33 +72,15 @@ public class STGSpriteEffect : STGEffectBase
     /// 在层级的顺序
     /// </summary>
     private int _orderInLayer;
+    /// <summary>
+    /// 当前位置
+    /// </summary>
+    private Vector2 _curPos;
 
-    private float _curPosX;
-    private float _curPosY;
     /// <summary>
-    /// 是否在移动
+    /// 移动对象
     /// </summary>
-    private bool _isMoving;
-    /// <summary>
-    /// 移动速度
-    /// </summary>
-    private float _velocity;
-    /// <summary>
-    /// 速度的角度
-    /// </summary>
-    private float _moveAngle;
-    /// <summary>
-    /// 移动加速度
-    /// </summary>
-    private float _moveAcce;
-    /// <summary>
-    /// 位移增量
-    /// </summary>
-    private float _dx, _dy;
-    /// <summary>
-    /// 速度增量
-    /// </summary>
-    private float _dvx, _dvy;
+    private MovableObject _movableObject;
 
     /// <summary>
     /// 是否正在做alhpa渐变
@@ -106,6 +92,23 @@ public class STGSpriteEffect : STGEffectBase
     private int _tweenAlphaDuration;
 
     private int _existDuration;
+
+    /// <summary>
+    /// 依附到的对象
+    /// </summary>
+    protected IAttachable _master;
+    /// <summary>
+    /// 标识是否随着master被销毁一同消失
+    /// </summary>
+    protected bool _isEliminatedWithMaster;
+    /// <summary>
+    /// 与master的相对位置
+    /// </summary>
+    protected Vector2 _relativePosToMaster;
+    /// <summary>
+    /// 是否连续跟随master
+    /// </summary>
+    protected bool _isFollowingMasterContinuously;
 
     public STGSpriteEffect()
     {
@@ -125,6 +128,8 @@ public class STGSpriteEffect : STGEffectBase
         {
             GameObject.Destroy(_effectGo);
         }
+        ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObject);
+        _movableObject = null;
         _effectGo = null;
         _effectTf = null;
         _spRenderer = null;
@@ -140,16 +145,21 @@ public class STGSpriteEffect : STGEffectBase
         _isScalingWidth = false;
         _isScalingHeight = false;
         _isRotating = false;
-        _isMoving = false;
+        _curRotation = 0;
         _isDoingTweenAlhpa = false;
         _existDuration = -1;
     }
 
-    public override void SetToPos(float posX, float posY)
+    public override void SetToPosition(float posX, float posY)
     {
-        _curPosX = posX;
-        _curPosY = posY;
-        _effectTf.localPosition = new Vector3(posX, posY, -_orderInLayer);
+        _curPos = new Vector2(posX, posY);
+        _movableObject.SetPos(posX, posY);
+    }
+
+    public void SetToPosition(Vector2 pos)
+    {
+        _curPos = pos;
+        _movableObject.SetPos(pos.x, pos.y);
     }
 
     public void SetScale(float scaleX,float scaleY)
@@ -181,10 +191,7 @@ public class STGSpriteEffect : STGEffectBase
         {
             UpdateTweenAlpha();
         }
-        if ( _isMoving )
-        {
-            Move();
-        }
+        UpdatePosition();
         if ( _existDuration > 0 )
         {
             _existDuration--;
@@ -333,37 +340,21 @@ public class STGSpriteEffect : STGEffectBase
         SetExistDuration(duration);
     }
 
-    public void DoMove(float v,float angle,float acce)
+    private void UpdatePosition()
     {
-        _velocity = v;
-        _moveAngle = angle;
-        _moveAcce = acce;
-        // 计算参数
-        float sin = Mathf.Sin(Mathf.Deg2Rad * angle);
-        float cos = Mathf.Cos(Mathf.Deg2Rad * angle);
-        _dx = v * cos;
-        _dy = v * sin;
-        _dvx = acce * cos;
-        _dvy = acce * sin;
-        // 设置移动状态
-        _isMoving = true;
-    }
-
-    public void StopMove()
-    {
-        _isMoving = false;
-    }
-
-    private void Move()
-    {
-        // X方向的位移增量
-        _dx += _dvx;
-        _curPosX += _dx;
-        // Y方向的位移增量
-        _dy += _dvy;
-        _curPosY += _dy;
-        // 设置位置
-        _effectTf.localPosition = new Vector3(_curPosX, _curPosY, -_orderInLayer);
+        if (_isFollowingMasterContinuously && _master != null)
+        {
+            _curPos = _relativePosToMaster + _master.GetPosition();
+        }
+        else
+        {
+            if (_movableObject.IsActive())
+            {
+                _movableObject.Update();
+                _curPos = _movableObject.GetPos();
+            }
+        }
+        _effectTf.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
     }
 
     public void SetSprite(string spName)
@@ -434,7 +425,6 @@ public class STGSpriteEffect : STGEffectBase
     public void SetOrderInLayer(int orderInLayer)
     {
         _orderInLayer = orderInLayer;
-        _effectTf.localPosition = new Vector3(_curPosX, _curPosY, -orderInLayer);
     }
 
     /// <summary>
@@ -462,7 +452,13 @@ public class STGSpriteEffect : STGEffectBase
 
     public void SetRotation(float angle)
     {
+        _curRotation = angle;
         _effectTf.localRotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    public float GetRotation()
+    {
+        return _curRotation;
     }
 
     public void DoRotation(float rotateAngle,int duration)
@@ -487,4 +483,90 @@ public class STGSpriteEffect : STGEffectBase
     {
         return true;
     }
+
+    #region ISTGMovalbe
+
+    public Vector2 GetPosition()
+    {
+        return _curPos;
+    }
+
+    public void DoStraightMove(float v, float angle)
+    {
+        _movableObject.DoStraightMove(v, angle);
+    }
+
+    public void DoStraightMoveWithLimitation(float v, float angle, int duration)
+    {
+        _movableObject.DoStraightMoveWithLimitation(v, angle, duration);
+    }
+
+    public void DoAcceleration(float acce, float accAngle)
+    {
+        _movableObject.DoAcceleration(acce, accAngle);
+    }
+
+    public void DoAccelerationWithLimitation(float acce, float accAngle, float maxVelocity)
+    {
+        _movableObject.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
+    }
+
+    public void DoMoveTo(float endX, float endY, int duration, InterpolationMode mode)
+    {
+        _movableObject.DoMoveTo(endX, endY, duration, mode);
+    }
+
+    public void DoCurvedMove(float radius, float angle, float deltaR, float omega)
+    {
+        _movableObject.DoCurvedMove(radius, angle, deltaR, omega);
+    }
+
+    public float Velocity
+    {
+        get { return _movableObject.Velocity; }
+    }
+
+    public float VAngle
+    {
+        get { return _movableObject.VAngle; }
+    }
+
+    public float Acce
+    {
+        get { return _movableObject.Acce; }
+    }
+
+    public float AccAngle
+    {
+        get { return _movableObject.AccAngle; }
+    }
+
+    #endregion
+
+    #region IAttachment
+    public void AttachTo(IAttachable master, bool eliminatedWithMaster)
+    {
+        if (_master != null) return;
+        _master = master;
+        _master.AddAttachment(this);
+        _isEliminatedWithMaster = eliminatedWithMaster;
+    }
+
+    public void SetRelativePos(float offsetX, float offsetY, float rotation, bool followMasterRotation, bool isFollowingMasterContinuously)
+    {
+        _relativePosToMaster = new Vector2(offsetX, offsetY);
+        _isFollowingMasterContinuously = isFollowingMasterContinuously;
+        if (_master != null)
+        {
+            _curPos = _master.GetPosition() + _relativePosToMaster;
+        }
+    }
+
+    public void OnMasterEliminated(eEliminateDef eliminateType)
+    {
+        _master = null;
+        _isFinish = true;
+    }
+    #endregion
+
 }

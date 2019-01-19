@@ -219,7 +219,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject
 
     public virtual void MoveTowards(float velocity,float angle,int duration)
     {
-        _movableObj.DoMoveStraightWithLimitation(velocity, angle, duration);
+        _movableObj.DoStraightMoveWithLimitation(velocity, angle, duration);
         _isMoving = true;
         _moveTime = 0;
         _moveDuration = duration;

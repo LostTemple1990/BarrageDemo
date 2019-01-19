@@ -122,7 +122,7 @@ public class STGBurstEffect : STGEffectBase
         }
     }
 
-    public override void SetToPos(float posX, float posY)
+    public override void SetToPosition(float posX, float posY)
     {
         _effectContainerTf.localPosition = new Vector3(posX, posY, 0);
     }

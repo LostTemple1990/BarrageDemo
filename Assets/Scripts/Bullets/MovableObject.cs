@@ -135,7 +135,7 @@ public class MovableObject : IPoolClass
         _isActive = true;
     }
 
-    public virtual void DoMoveStraightWithLimitation(float v, float angle, int duration)
+    public virtual void DoStraightMoveWithLimitation(float v, float angle, int duration)
     {
         _curVelocity = v;
         _curVAngle = angle;
@@ -349,13 +349,10 @@ public class MovableObject : IPoolClass
             {
                 _curVelocity = value > _maxVelocity ? _maxVelocity : value;
             }
-            if ( _reCalVAngle )
-            {
-                _curVAngle = MathUtil.GetAngleBetweenXAxis(_vx, _vy, false);
-                _reCalVAngle = false;
-            }
-            _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
-            _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
+            // 重新计算一遍vAngle的值
+            float vAngle = VAngle;
+            _vx = _curVelocity * Mathf.Cos(vAngle * Mathf.Deg2Rad);
+            _vy = _curVelocity * Mathf.Sin(vAngle * Mathf.Deg2Rad);
         }
     }
 
@@ -390,7 +387,15 @@ public class MovableObject : IPoolClass
     /// </summary>
     public float VAngle
     {
-        get { return _curVAngle; }
+        get
+        {
+            if ( _reCalVAngle )
+            {
+                _curVAngle = MathUtil.GetAngleBetweenXAxis(_vx, _vy, false);
+                _reCalVAngle = false;
+            }
+            return _curVAngle;
+        }
         set
         {
             _curVAngle = value;

@@ -81,7 +81,7 @@ public class BCRebound : BulletComponent
             //DoMove(_curVelocity * Consts.TargetFrameRate, _curAngle, _curAcceleration * Consts.TargetFrameRate, _curAccAngle);
             float velocity;
             _bullet.GetBulletPara(BulletParaType.Velocity, out velocity);
-            _bullet.DoMoveStraight(velocity, vAngle);
+            _bullet.DoStraightMove(velocity, vAngle);
             _reboundCount--;
         }
     }

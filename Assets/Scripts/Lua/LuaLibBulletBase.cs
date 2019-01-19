@@ -254,4 +254,147 @@ public partial class LuaLib
         bc.AddTask(task);
         return 0;
     }
+
+    /// <summary>
+    /// 做直线运动
+    /// <para>bullet 敌机子弹</para>
+    /// <para>float v 速度</para>
+    /// <para>float angle 速度方向</para>
+    /// <para>bool isAimToPlayer 是否朝向玩家</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int EnemyBulletDoStraightMove(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-4) as EnemyBulletBase;
+        float v = (float)luaState.ToNumber(-3);
+        float angle = (float)luaState.ToNumber(-2);
+        bool isAimToPlayer = luaState.ToBoolean(-1);
+        luaState.Pop(4);
+        if (isAimToPlayer)
+        {
+            Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
+            angle += MathUtil.GetAngleBetweenXAxis(playerPos - bullet.GetPosition(), false);
+        }
+        bullet.DoStraightMove(v, angle);
+        return 0;
+    }
+
+    /// <summary>
+    /// 做加速运动
+    /// <para>bullet 敌机子弹</para>
+    /// <para>float acce 加速度</para>
+    /// <para>float angle 速度方向 or bool useVAngle使用速度方向</para>
+    /// <para>bool isAimToPlayer 是否朝向玩家</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int EnemyBulletDoAcceleration(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-4) as EnemyBulletBase;
+        float acce = (float)luaState.ToNumber(-3);
+        float angle;
+        if (luaState.Type(-2) == LuaType.LUA_TBOOLEAN )
+        {
+            bullet.GetBulletPara(BulletParaType.VAngel, out angle);
+        }
+        else
+        {
+            angle = (float)luaState.ToNumber(-2);
+        }
+        bool isAimToPlayer = luaState.ToBoolean(-1);
+        luaState.Pop(4);
+        if (isAimToPlayer)
+        {
+            Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
+            angle += MathUtil.GetAngleBetweenXAxis(playerPos - bullet.GetPosition(), false);
+        }
+        bullet.DoAcceleration(acce, angle);
+        return 0;
+    }
+
+    /// <summary>
+    /// 做加速运动(限制最大速度)
+    /// <para>bullet 敌机子弹</para>
+    /// <para>float acce 加速度</para>
+    /// <para>float angle 速度方向 or bool useVAngle使用速度方向</para>
+    /// <para>bool isAimToPlayer 是否朝向玩家</para>
+    /// <para>float maxVelocity 最大速度限制</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int EnemyBulletDoAccelerationWithLimitation(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-5) as EnemyBulletBase;
+        float acce = (float)luaState.ToNumber(-4);
+        float angle;
+        if (luaState.Type(-3) == LuaType.LUA_TBOOLEAN)
+        {
+            bullet.GetBulletPara(BulletParaType.VAngel, out angle);
+        }
+        else
+        {
+            angle = (float)luaState.ToNumber(-3);
+        }
+        bool isAimToPlayer = luaState.ToBoolean(-2);
+        float maxVelocity = (float)luaState.ToNumber(-1);
+        luaState.Pop(5);
+        if (isAimToPlayer)
+        {
+            Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
+            angle += MathUtil.GetAngleBetweenXAxis(playerPos - bullet.GetPosition(), false);
+        }
+        bullet.DoAccelerationWithLimitation(acce, angle, maxVelocity);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置敌机子弹的直线运动参数
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int EnemyBulletSetStraightParas(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-7) as EnemyBulletBase;
+        float v = (float)luaState.ToNumber(-6);
+        float angle = (float)luaState.ToNumber(-5);
+        bool isAimToPlayer = luaState.ToBoolean(-4);
+        float acce = (float)luaState.ToNumber(-3);
+        float accAngle;
+        if (luaState.Type(-2) == LuaType.LUA_TBOOLEAN)
+        {
+            bullet.GetBulletPara(BulletParaType.VAngel, out accAngle);
+        }
+        else
+        {
+            accAngle = (float)luaState.ToNumber(-2);
+        }
+        float maxVelocity = (float)luaState.ToNumber(-1);
+        luaState.Pop(7);
+        bullet.DoStraightMove(v, angle);
+        bullet.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
+        return 0;
+    }
+
+    /// <summary>
+    /// 物体做极坐标运动
+    /// <para>bullet 敌机子弹</para>
+    /// <para>float radius 起始半径</para>
+    /// <para>float angle 起始角度</para>
+    /// <para>float deltaR 半径增量</para>
+    /// <para>float omega 角速度</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int EnemyBulletSetCurvedParas(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-5) as EnemyBulletBase;
+        float radius = (float)luaState.ToNumber(-4);
+        float angle = (float)luaState.ToNumber(-3);
+        float deltaR = (float)luaState.ToNumber(-2);
+        float omega = (float)luaState.ToNumber(-1);
+        luaState.Pop(5);
+        bullet.SetCurvedParas(radius, angle, deltaR, omega);
+        return 0;
+    }
 }

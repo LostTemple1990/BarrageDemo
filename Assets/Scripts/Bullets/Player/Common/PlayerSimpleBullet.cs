@@ -208,7 +208,7 @@ public class PlayerBulletSimple : PlayerBulletBase
             {
                 float dx = float.Parse(paras[i + 1]);
                 float dy = float.Parse(paras[i + 2]);
-                effect.SetToPos(_curPos.x + dx, _curPos.y + dy);
+                effect.SetToPosition(_curPos.x + dx, _curPos.y + dy);
                 i += 3;
             }
             // 设置位置，参数为绝对位置
@@ -216,7 +216,7 @@ public class PlayerBulletSimple : PlayerBulletBase
             {
                 float posX = float.Parse(paras[i + 1]);
                 float posY = float.Parse(paras[i + 2]);
-                effect.SetToPos(posX, posY);
+                effect.SetToPosition(posX, posY);
                 i += 3;
             }
             // 设置速度，v,dAngle,acce
@@ -227,7 +227,8 @@ public class PlayerBulletSimple : PlayerBulletBase
                 float velocity = float.Parse(paras[i + 1]);
                 float angle = _movableObject.VAngle + float.Parse(paras[i + 2]);
                 float acce = float.Parse(paras[i + 3]);
-                effect.DoMove(velocity, angle, acce);
+                effect.DoStraightMove(velocity, angle);
+                effect.DoAcceleration(acce, angle);
                 i += 4;
             }
             // 设置速度，v,angle,acce
@@ -237,7 +238,8 @@ public class PlayerBulletSimple : PlayerBulletBase
                 float velocity = float.Parse(paras[i + 1]);
                 float angle = float.Parse(paras[i + 2]);
                 float acce = float.Parse(paras[i + 3]);
-                effect.DoMove(velocity, angle, acce);
+                effect.DoStraightMove(velocity, angle);
+                effect.DoAcceleration(acce, angle);
                 i += 4;
             }
             // 图像旋转角度

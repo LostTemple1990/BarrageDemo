@@ -157,6 +157,13 @@ public partial class LuaLib
             new NameFuncPair("GetPlayerIsMovable",GetPlayerIsMovable),
             new NameFuncPair("SetPlayerIsMovable",SetPlayerIsMovable),
             new NameFuncPair("SetStageIsEnableToShoot",SetStageIsEnableToShoot),
+            // ISTGMovable
+            new NameFuncPair("STGMovableDoStraightMove",STGMovableDoStraightMove),
+            new NameFuncPair("STGMovableDoStraightMoveWithLimitation",STGMovableDoStraightMoveWithLimitation),
+            new NameFuncPair("STGMovableDoAcceleration",STGMovableDoAcceleration),
+            new NameFuncPair("STGMovableDoAccelerationWithLimitation",STGMovableDoAccelerationWithLimitation),
+            new NameFuncPair("STGMovableDoMoveTo",STGMovableDoMoveTo),
+            new NameFuncPair("STGMovableDoCurvedMove",STGMovableDoCurvedMove),
             // 通用类相关
             new NameFuncPair("GetRandomInt", GetRandomInt),
             new NameFuncPair("GetRandomFloat", GetRandomFloat),

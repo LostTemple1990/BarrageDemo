@@ -19,7 +19,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
-        effect.SetToPos(posX, posY);
+        effect.SetToPosition(posX, posY);
         return 0;
     }
 
@@ -75,7 +75,7 @@ public partial class LuaLib
         STGSpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
         effect.SetSprite(effectSpName);
         effect.SetScale(scaleX, scaleY);
-        effect.SetToPos(posX, posY);
+        effect.SetToPosition(posX, posY);
         luaState.PushLightUserData(effect);
         return 1;
     }
@@ -248,7 +248,7 @@ public partial class LuaLib
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(2);
         STGChargeEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ChargeEffect) as STGChargeEffect;
-        effect.SetToPos(posX, posY);
+        effect.SetToPosition(posX, posY);
         luaState.PushLightUserData(effect);
         return 1;
     }

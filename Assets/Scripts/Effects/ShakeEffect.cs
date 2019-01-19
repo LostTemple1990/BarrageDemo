@@ -203,7 +203,7 @@ public class ShakeEffect : STGEffectBase
         return offset;
     }
 
-    public override void SetToPos(float posX, float posY)
+    public override void SetToPosition(float posX, float posY)
     {
         throw new System.NotImplementedException();
     }

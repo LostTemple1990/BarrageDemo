@@ -16,10 +16,11 @@ public class STGEffectBase
     {
 
     }
-    public virtual void SetToPos(float posX, float posY)
+    public virtual void SetToPosition(float posX, float posY)
     {
 
     }
+
     public virtual void Clear()
     {
 

@@ -37,6 +37,8 @@ Enemy的GetHit函数要加入伤害来源，用于判断是否吃B --finish
 将ColliderManager的update方法移动回下方
 检查进行符卡时重开是否已经结束掉当前符卡的task(WaitForSpellCardFinish
 实现终符的多段血条分段显示
+考虑修改DoAcce接口，传入一个true/false以消除是否当前速度方向的歧义
+给EnemyLaser加入MovableObject
 
 COLOR_DEEP_RED=1
 COLOR_RED=2

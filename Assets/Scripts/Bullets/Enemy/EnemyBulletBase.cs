@@ -336,6 +336,31 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
         Eliminate(eEliminateDef.CodeEliminate);
     }
 
+    public virtual void DoStraightMove(float v,float angle)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void DoAcceleration(float acce,float accAngle)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void DoAccelerationWithLimitation(float acce,float accAngle,float maxVelocity)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void SetStraightParas(float v,float angle,float acce,float accAngle, float maxVelocity)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void SetCurvedParas(float radius,float angle,float deltaR,float omega)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public virtual void AddExtraSpeedParas(float v, float vAngle, float acce, float accAngle)
     {
         throw new System.NotImplementedException();

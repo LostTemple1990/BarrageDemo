@@ -14,7 +14,6 @@ public class EnemyLaser : EnemyBulletBase
     protected int _rotateDuration;
     protected float _rotateToAngle;
     protected bool _isRotating;
-    protected bool _moveFlag;
 
     protected Vector3 _endPos;
     protected int _moveCounter;
@@ -104,6 +103,10 @@ public class EnemyLaser : EnemyBulletBase
     /// 对应激光的配置
     /// </summary>
     protected EnemyLinearLaserCfg _cfg;
+    /// <summary>
+    /// 运动物体
+    /// </summary>
+    private MovableObject _movableObject;
 
     public EnemyLaser()
     {
@@ -114,7 +117,6 @@ public class EnemyLaser : EnemyBulletBase
     public override void Init()
     {
         base.Init();
-        _moveFlag = false;
         _curPos = Vector2.zero;
         _existTime = 0;
         _existDuration = -1;
@@ -127,6 +129,7 @@ public class EnemyLaser : EnemyBulletBase
         _collisionFactor = 0.8f;
         _isRotating = false;
         _resistEliminateFlag |= (int)(eEliminateDef.HitPlayer | eEliminateDef.PlayerSpellCard);
+        _movableObject = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
     }
 
     public override void SetStyleById(string id)
@@ -147,7 +150,6 @@ public class EnemyLaser : EnemyBulletBase
         _objTrans = _laserObj.transform;
         _laserTrans = _objTrans.Find("LaserSprite");
         _laser = _laserTrans.GetComponent<SpriteRenderer>();
-        _moveFlag = true;
         _isDirty = true;
     }
 
@@ -155,13 +157,13 @@ public class EnemyLaser : EnemyBulletBase
     {
         _curPos.x = vec.x;
         _curPos.y = vec.y;
-        _moveFlag = true;
+        _movableObject.SetPos(vec.x, vec.y);
     }
 
     public override void SetToPosition(float posX, float posY)
     {
         _curPos = new Vector2(posX, posY);
-        _moveFlag = true;
+        _movableObject.SetPos(posX, posY);
     }
 
     /// <summary>
@@ -233,14 +235,30 @@ public class EnemyLaser : EnemyBulletBase
         }
     }
 
-    public void DoMove(Vector3 endPos,int duration)
+    public override void DoStraightMove(float v, float angle)
     {
-        _endPos = endPos;
-        _moveCounter = 0;
-        _moveDuration = duration;
-        _vx = (endPos.x - _curPos.x) / duration;
-        _vy = (endPos.y - _curPos.y) / duration;
-        _isMoving = true;
+        _movableObject.DoStraightMove(v, angle);
+    }
+
+    public override void DoAcceleration(float acce, float accAngle)
+    {
+        _movableObject.DoAcceleration(acce, accAngle);
+    }
+
+    public override void DoAccelerationWithLimitation(float acce, float accAngle, float maxVelocity)
+    {
+        _movableObject.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
+    }
+
+    public override void SetStraightParas(float v, float angle, float acce, float accAngle,float maxVelocity)
+    {
+        _movableObject.DoStraightMove(v, angle);
+        _movableObject.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
+    }
+
+    public override void SetCurvedParas(float radius, float angle, float deltaR, float omega)
+    {
+        _movableObject.DoCurvedMove(radius, angle, deltaR, omega);
     }
 
     public void DoRotate(float toAngle,int duration)
@@ -277,39 +295,19 @@ public class EnemyLaser : EnemyBulletBase
         if (_isChangingWidth) ChangingWidth();
         if (_isChangingLength) ChangingLength();
         if (_isChangingAlpha) ChangingAlpha();
-        if ( _isFollowingMasterContinuously )
-        {
-            if ( _attachableMaster != null )
-            {
-                Vector2 relativePos = _relativePosToMaster;
-                if ( _isFollowMasterRotation )
-                {
-                    relativePos = MathUtil.GetVec2AfterRotate(relativePos.x, relativePos.y, 0, 0, _attachableMaster.GetRotation());
-                    SetRotation(_attachableMaster.GetRotation() + _relativeRotationToMaster);
-                }
-                _curPos = relativePos + _attachableMaster.GetPosition();
-                _moveFlag = true;
-            }
-        }
-        else if ( _isMoving )
-        {
-            Move();
-        }
-        if ( _isRotating )
-        {
-            Rotate();
-        }
-        UpdateGrazeCoolDown();
+        if (_isRotating) Rotate();
         UpdatePosition();
-        CheckCollisionWithCharacter();
+        UpdateGrazeCoolDown();
         UpdateExistTime();
-        if (_isDirty)
+        CheckCollisionWithCharacter();
+        if ( _clearFlag != 1 )
         {
-            Resize();
-        }
-        if ( _isColorChanged )
-        {
-            _laser.color = new Color(1, 1, 1, _curAlpha);
+            UpdateTransform();
+            if (_isDirty) Resize();
+            if (_isColorChanged)
+            {
+                _laser.color = new Color(1, 1, 1, _curAlpha);
+            }
         }
     }
 
@@ -387,19 +385,26 @@ public class EnemyLaser : EnemyBulletBase
         }
     }
 
-    protected override void Move()
+    private void UpdatePosition()
     {
-        //_dx = _curPos.x;
-        //_dy = _curPos.y;
-        _curPos.x += _vx;
-        _curPos.y += _vy;
-        _moveCounter++;
-        if ( _moveCounter >= _moveDuration )
+        if (_isFollowingMasterContinuously)
         {
-            _curPos = _endPos;
-            _isMoving = false;
+            if (_attachableMaster != null)
+            {
+                Vector2 relativePos = _relativePosToMaster;
+                if (_isFollowMasterRotation)
+                {
+                    relativePos = MathUtil.GetVec2AfterRotate(relativePos.x, relativePos.y, 0, 0, _attachableMaster.GetRotation());
+                    SetRotation(_attachableMaster.GetRotation() + _relativeRotationToMaster);
+                }
+                _curPos = relativePos + _attachableMaster.GetPosition();
+            }
         }
-        _moveFlag = true;
+        else if ( _movableObject.IsActive() )
+        {
+            _movableObject.Update();
+            _curPos = _movableObject.GetPos();
+        }
     }
 
     protected virtual void Rotate()
@@ -418,18 +423,14 @@ public class EnemyLaser : EnemyBulletBase
         SetRotation(curRotation);
     }
 
-    protected virtual void UpdatePosition()
+    protected virtual void UpdateTransform()
     {
         if ( _isRotationDirty )
         {
             _isRotationDirty = false;
             _objTrans.localRotation = Quaternion.Euler(0, 0, _curRotation - _cfg.texDefaultRotation);
         }
-        if ( _moveFlag )
-        {
-            _moveFlag = false;
-            _objTrans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
-        }
+        _objTrans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
     }
 
     protected virtual void Resize()
@@ -632,6 +633,8 @@ public class EnemyLaser : EnemyBulletBase
         _objTrans = null;
         _laser = null;
         _laserTrans = null;
+        ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObject);
+        _movableObject = null;
         base.Clear();
     }
 }

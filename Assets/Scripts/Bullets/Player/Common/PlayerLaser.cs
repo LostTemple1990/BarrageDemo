@@ -209,7 +209,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
             effect.SetSpriteColor(_bulletCfg.eliminateColor.r, _bulletCfg.eliminateColor.g, _bulletCfg.eliminateColor.b, 1);
             float offsetX = Random.Range(-5, 5);
             float offsetY = Random.Range(-5, 5);
-            effect.SetToPos(effectPos.x+offsetX, effectPos.y+offsetY);
+            effect.SetToPosition(effectPos.x+offsetX, effectPos.y+offsetY);
             effect.DoFade(5);
             _trans.localScale = new Vector3(1, 0.5f, 1);
         }

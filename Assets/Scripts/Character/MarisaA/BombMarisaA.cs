@@ -102,7 +102,7 @@ public class BombMarisaA : BombBase
         _effect.SetSpriteColor(0, 0, 0, 1);
         _effect.DoScaleWidth(16, 30, InterpolationMode.EaseInQuad);
         _effect.DoScaleHeight(16, 30, InterpolationMode.EaseInQuad);
-        _effect.SetToPos(playerPos.x, playerPos.y);
+        _effect.SetToPosition(playerPos.x, playerPos.y);
         // 基础属性
         _curState = 1;
         _time = 0;

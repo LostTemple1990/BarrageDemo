@@ -115,7 +115,7 @@ public partial class LuaLib
         {
             vAngle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - bullet.PosX, Global.PlayerPos.y - bullet.PosY, false);
         }
-        bullet.DoMoveStraight(velocity, vAngle);
+        bullet.DoStraightMove(velocity, vAngle);
         bullet.DoAcceleration(acce, accAngle);
         return 0;
     }

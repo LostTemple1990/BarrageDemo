@@ -202,7 +202,7 @@ public class NormalEnemy : EnemyBase
                 {
                     STGEnemyEliminatedEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.EnemyEliminated) as STGEnemyEliminatedEffect;
                     effect.SetEliminateEffectStyle(_cfg.eliminatedEffectStyle);
-                    effect.SetToPos(_curPos.x, _curPos.y);
+                    effect.SetToPosition(_curPos.x, _curPos.y);
                 }
             }
             if ( eliminateType != eEliminateDef.ForcedDelete && eliminateType != eEliminateDef.CodeRawEliminate )

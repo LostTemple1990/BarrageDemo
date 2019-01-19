@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ObjectColliderBase : IAttachment, IObjectCollider
+public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable
 {
     protected float _curPosX;
     protected float _curPosY;
@@ -46,6 +46,10 @@ public class ObjectColliderBase : IAttachment, IObjectCollider
     /// 是否连续跟随master
     /// </summary>
     protected bool _isFollowingMasterContinuously;
+    /// <summary>
+    /// 移动对象
+    /// </summary>
+    protected MovableObject _movableObject;
 
     public ObjectColliderBase()
     {
@@ -54,6 +58,7 @@ public class ObjectColliderBase : IAttachment, IObjectCollider
         _hitEnemyDamage = 0;
         _eliminateType = eEliminateDef.HitObjectCollider;
         _isScaling = false;
+        _movableObject = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
     }
 
     public void SetToPosition(float posX,float posY)
@@ -61,6 +66,7 @@ public class ObjectColliderBase : IAttachment, IObjectCollider
         _curPosX = posX;
         _curPosY = posY;
         _curPos = new Vector2(posX, posY);
+        _movableObject.SetPos(posX, posY);
     }
 
     public void SetToPosition(Vector2 pos)
@@ -68,6 +74,7 @@ public class ObjectColliderBase : IAttachment, IObjectCollider
         _curPosX = pos.x;
         _curPosY = pos.y;
         _curPos = pos;
+        _movableObject.SetPos(pos.x, pos.y);
     }
 
     public Vector2 GetPosition()
@@ -132,6 +139,16 @@ public class ObjectColliderBase : IAttachment, IObjectCollider
             _curPos = _relativePosToMaster + _master.GetPosition();
             _curPosX = _curPos.x;
             _curPosY = _curPos.y;
+        }
+        else
+        {
+            if ( _movableObject.IsActive() )
+            {
+                _movableObject.Update();
+                _curPos = _movableObject.GetPos();
+                _curPosX = _curPos.x;
+                _curPosY = _curPos.y;
+            }
         }
         if ((_colliderGroups & (int)eColliderGroup.Player) != 0)
         {
@@ -263,8 +280,63 @@ public class ObjectColliderBase : IAttachment, IObjectCollider
         _clearFlag = 1;
     }
 
+    #region ISTGMovable
+    public void DoStraightMove(float v, float angle)
+    {
+        _movableObject.DoStraightMove(v, angle);
+    }
+
+    public void DoStraightMoveWithLimitation(float v, float angle, int duration)
+    {
+        _movableObject.DoStraightMoveWithLimitation(v, angle, duration);
+    }
+
+    public void DoAcceleration(float acce, float accAngle)
+    {
+        _movableObject.DoAcceleration(acce, accAngle);
+    }
+
+    public void DoAccelerationWithLimitation(float acce, float accAngle, float maxVelocity)
+    {
+        _movableObject.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
+    }
+
+    public void DoMoveTo(float endX, float endY, int duration, InterpolationMode mode)
+    {
+        _movableObject.DoMoveTo(endX, endY, duration, mode);
+    }
+
+    public void DoCurvedMove(float radius, float angle, float deltaR, float omega)
+    {
+        _movableObject.DoCurvedMove(radius, angle, deltaR, omega);
+    }
+
+    public float Velocity
+    {
+        get { return _movableObject.Velocity; }
+    }
+
+    public float VAngle
+    {
+        get { return _movableObject.VAngle; }
+    }
+
+    public float Acce
+    {
+        get { return _movableObject.Acce; }
+    }
+
+    public float AccAngle
+    {
+        get { return _movableObject.AccAngle; }
+    }
+
+    #endregion
+
     public void Clear()
     {
         _master = null;
+        ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObject);
+        _movableObject = null;
     }
 }
