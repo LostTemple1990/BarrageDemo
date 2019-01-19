@@ -35,6 +35,8 @@ Enemy的GetHit函数要加入伤害来源，用于判断是否吃B --finish
 随便添加一个积分方式，加入信仰点、蓝点
 考虑删除EnemyBulletMovable，给SimpleBullet加入MovableObject
 将ColliderManager的update方法移动回下方
+检查进行符卡时重开是否已经结束掉当前符卡的task(WaitForSpellCardFinish
+实现终符的多段血条分段显示
 
 COLOR_DEEP_RED=1
 COLOR_RED=2

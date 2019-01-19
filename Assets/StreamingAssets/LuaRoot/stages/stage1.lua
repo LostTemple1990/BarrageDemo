@@ -210,7 +210,7 @@ end
 BossTable.MidBoss.Task = function(boss)
 	lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
 	coroutine.yield(100)
-	lib.SetBossCurPhaseData(boss,1,1,1,1,4)
+	lib.SetBossCurPhaseData(boss,1,1,1,1,true)
 	local sc = lib.CreateSpellCard("Easy-SpellCard",500,60,5)
 	lib.SetSpellCardTask(sc,function()
 		--圈形子弹的task
@@ -576,7 +576,7 @@ BossTable.MidBoss.Task = function(boss)
 	--lib.PlayBossAni(boss,Constants.ActionTypeCast,Constants.DirNull,90)
 	--coroutine.yield(100)
 	--lib.EnemyMoveToPos(boss,170,170,90,Constants.ModeEaseInQuad)
-	lib.SetBossCurPhaseData(boss,1,1,1,3)
+	lib.SetBossCurPhaseData(boss,1,1,1,true)
 	sc = lib.CreateSpellCard("Non-SpellCard",5,50,2)
 	lib.SetSpellCardTask(sc,function()
 		lib.AddEnemyTask(boss,function()
@@ -778,7 +778,7 @@ function Stage.StageTask()
 		local boss = lib.CreateBoss("MidBoss")
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
 		if coroutine.yield(100) == false then return end
-		lib.SetBossCurPhaseData(boss,1,1,1,1,4)
+		lib.SetBossCurPhaseData(boss,1,1,1,1,true)
 		lib.StartSpellCard(SpellCard.PatchouliSC1,boss)
 		--lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
@@ -788,7 +788,7 @@ function Stage.StageTask()
 		if lib.WaitForSpellCardFinish() == false then return end
 		lib.StartSpellCard(SpellCard.NazrinSC2_3,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
-		lib.SetBossCurPhaseData(boss,1,1,1,1,4)
+		lib.SetBossCurPhaseData(boss,1,1,1,1,true)
 		lib.StartSpellCard(SpellCard.NazrinSC1_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
 		lib.StartSpellCard(SpellCard.NazrinSC1_1,boss)

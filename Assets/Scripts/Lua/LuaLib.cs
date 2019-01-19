@@ -602,23 +602,42 @@ public partial class LuaLib
         {
             int finishFuncRef = InterpreterManager.GetInstance().RefLuaFunction(luaState);
             sc.SetFinishFuncRef(finishFuncRef);
+            luaState.Pop(4);
         }
-        luaState.Pop(4);
+        else
+        {
+            luaState.Pop(5);
+        }
         sc.SetProperties(scName, duration, (eSpellCardCondition)condition,isSpellCard);
         return 0;
     }
 
+    /// <summary>
+    /// 设置boss的当前血条的阶段
+    /// <para>boss</para>
+    /// <para>....  分段权重</para>
+    /// <para>isMultiPhase 是否为多个阶段</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
     public static int SetBossCurPhaseData(ILuaState luaState)
     {
-        int count = luaState.ToInteger(-1);
-        int index = -1 - count;
+        bool isMultiPhase = luaState.ToBoolean(-1);
+        int count = 0;
+        int index = -2;
         List<float> weights = new List<float>();
-        Boss boss = luaState.ToUserData(index-1) as Boss;
-        for (;index<-1;index++)
+        // 取到boss参数的位置，以确定传入的血条阶段的个数
+        while ( luaState.Type(index) != LuaType.LUA_TLIGHTUSERDATA )
+        {
+            index--;
+            count++;
+        }
+        Boss boss = luaState.ToUserData(index) as Boss;
+        for (index=index+1;index<-1;index++)
         {
             weights.Add((float)luaState.ToNumber(index));
         }
-        boss.SetCurPhaseData(weights);
+        boss.SetCurPhaseData(weights, isMultiPhase);
         luaState.Pop(count + 2);
         return 0;
     }

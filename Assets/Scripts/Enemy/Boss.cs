@@ -62,16 +62,19 @@ public class Boss : EnemyBase
         _bossAni.Play(aniId, AniActionType.Idle, Consts.DIR_NULL);
     }
 
-    public void SetCurPhaseData(List<float> weights)
+    /// <summary>
+    /// 设置BOSS阶段数据
+    /// </summary>
+    /// <param name="weights">权重</param>
+    /// <param name="isMultiPhase">是否为多个阶段</param>
+    public void SetCurPhaseData(List<float> weights,bool isMultiPhase)
     {
-        _weights = weights;
-        _curSubPhase = _weights.Count - 1;
         int i,count;
         GameObject segmentGo;
         _totalWeight = 0;
-        for (i=0,count=_weights.Count;i<count;i++)
+        for (i=0,count= weights.Count;i<count;i++)
         {
-            _totalWeight += _weights[i];
+            _totalWeight += weights[i];
             segmentGo = ResourceManager.GetInstance().GetPrefab("Prefab/Boss","Segment");
             segmentGo.transform.parent = _bloodBarLayerTf;
             segmentGo.transform.localScale = new Vector3(35, 35, 1);
@@ -91,10 +94,19 @@ public class Boss : EnemyBase
             angle += Mathf.PI / 2;
             // 计算位置
             _segmentGoList[i].transform.localPosition = new Vector3(Mathf.Cos(angle) * r, Mathf.Sin(angle) * r, -1);
-            tmpWeight += _weights[i];
+            tmpWeight += weights[i];
             //Logger.Log("Segment Position : " + _segmentGoList[i].transform.localPosition);
         }
-        _curSubPhase = count;
+        if ( isMultiPhase )
+        {
+            _weights = weights;
+            _curSubPhase = count;
+        }
+        else
+        {
+            _weights = new List<float> { _totalWeight };
+            _curSubPhase = 1;
+        }
         //Logger.Log("beginRate = " + _beginRate + "curTotalRate = " + _curTotalRate);
     }
 
