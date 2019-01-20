@@ -127,7 +127,7 @@ public class PlayerBulletSimple : PlayerBulletBase
         else if ( _isRotatedByVAngle )
         {
             Vector3 dv = _curPos - _lastPos;
-            float rotateAngle = MathUtil.GetAngleBetweenXAxis(dv.x, dv.y, false);
+            float rotateAngle = MathUtil.GetAngleBetweenXAxis(dv.x, dv.y);
             _trans.localRotation = Quaternion.Euler(new Vector3(0, 0, rotateAngle));
         }
     }

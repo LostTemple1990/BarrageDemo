@@ -101,23 +101,13 @@ public class ColliderCircle : ObjectColliderBase
                 {
                     if (dx * dx + dy * dy <= sumOfRadius * sumOfRadius)
                     {
-                        CollidedByPlayerBullet(bullet, curColliderIndex);
+                        bullet.CollidedByObject(curColliderIndex);
                         isCollided = true;
                     }
                 }
             }
         } while (nextColliderIndex != -1);
         return isCollided;
-    }
-
-    /// <summary>
-    /// 与玩家子弹发生碰撞
-    /// </summary>
-    /// <param name="bullet"></param>
-    /// <param name="curColliderIndex"></param>
-    protected virtual void CollidedByPlayerBullet(PlayerBulletBase bullet, int curColliderIndex)
-    {
-        bullet.CollidedByObject(curColliderIndex);
     }
 
     protected override void CheckCollisionWithEnemy()

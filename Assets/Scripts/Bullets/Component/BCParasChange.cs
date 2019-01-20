@@ -144,14 +144,14 @@ public class BCParasChange : BulletComponent
         {
             Vector2 playerPos = new Vector2(Global.PlayerPos.x, Global.PlayerPos.y);
             Vector2 bulletPos = _bullet.GetPosition();
-            float angle = MathUtil.GetAngleBetweenXAxis(playerPos - bulletPos, false);
+            float angle = MathUtil.GetAngleBetweenXAxis(playerPos - bulletPos);
             value = angle;
         }
         else if ( changeValue.argType == 2 )
         {
             Vector2 targetPos = new Vector2(changeValue.arg0, changeValue.arg1);
             Vector2 bulletPos = _bullet.GetPosition();
-            float angle = MathUtil.GetAngleBetweenXAxis(targetPos - bulletPos, false);
+            float angle = MathUtil.GetAngleBetweenXAxis(targetPos - bulletPos);
             value = angle;
         }
         if ( changeValue.offset != 0 )

@@ -15,7 +15,7 @@ public partial class LuaLib
         IPosition positionCls = luaState.ToUserData(-1) as IPosition;
         luaState.Pop(1);
         Vector2 pos = positionCls.GetPosition();
-        float angle = MathUtil.GetAngleBetweenXAxis(Global.PlayerPos - pos, false);
+        float angle = MathUtil.GetAngleBetweenXAxis(Global.PlayerPos - pos);
         luaState.PushNumber(angle);
         return 1;
     }
@@ -79,7 +79,7 @@ public partial class LuaLib
         if ( isAimToPlayer )
         {
             Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
-            angle += MathUtil.GetAngleBetweenXAxis(playerPos - movableObject.GetPosition(),false);
+            angle += MathUtil.GetAngleBetweenXAxis(playerPos - movableObject.GetPosition());
         }
         movableObject.DoStraightMove(v, angle);
         return 0;
@@ -106,7 +106,7 @@ public partial class LuaLib
         if (isAimToPlayer)
         {
             Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
-            angle += MathUtil.GetAngleBetweenXAxis(playerPos - movableObject.GetPosition(), false);
+            angle += MathUtil.GetAngleBetweenXAxis(playerPos - movableObject.GetPosition());
         }
         movableObject.DoStraightMoveWithLimitation(v, angle, duration);
         return 0;
@@ -131,7 +131,7 @@ public partial class LuaLib
         if (isAimToPlayer)
         {
             Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
-            angle += MathUtil.GetAngleBetweenXAxis(playerPos - movableObject.GetPosition(), false);
+            angle += MathUtil.GetAngleBetweenXAxis(playerPos - movableObject.GetPosition());
         }
         movableObject.DoAcceleration(acce, angle);
         return 0;
@@ -158,7 +158,7 @@ public partial class LuaLib
         if (isAimToPlayer)
         {
             Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
-            angle += MathUtil.GetAngleBetweenXAxis(playerPos - movableObject.GetPosition(), false);
+            angle += MathUtil.GetAngleBetweenXAxis(playerPos - movableObject.GetPosition());
         }
         movableObject.DoAccelerationWithLimitation(acce, angle, maxVelocity);
         return 0;

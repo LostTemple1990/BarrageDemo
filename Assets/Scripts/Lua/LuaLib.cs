@@ -735,7 +735,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(2);
-        float angle = MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - posX, Global.PlayerPos.y - posY, false);
+        float angle = MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - posX, Global.PlayerPos.y - posY);
         luaState.PushNumber(angle);
         return 1;
     }

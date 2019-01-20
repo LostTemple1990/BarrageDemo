@@ -136,9 +136,7 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable
         if (_isScaling) Scale();
         if ( _isFollowingMasterContinuously && _master != null )
         {
-            _curPos = _relativePosToMaster + _master.GetPosition();
-            _curPosX = _curPos.x;
-            _curPosY = _curPos.y;
+            SetToPosition(_relativePosToMaster + _master.GetPosition());
         }
         else
         {
@@ -270,7 +268,7 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable
         _isFollowingMasterContinuously = isFollowingMasterContinuously;
         if ( _master != null )
         {
-            _curPos = _master.GetPosition() + _relativePosToMaster;
+            SetToPosition(_master.GetPosition() + _relativePosToMaster);
         }
     }
 

@@ -269,7 +269,7 @@ public class GravitationFieldCircle : ObjectColliderBase
         {
             Vector2 affectObjectPos = affectedObj.GetPosition();
             Vector2 fieldPos = _curPos;
-            float angle = MathUtil.GetAngleBetweenXAxis(fieldPos - affectObjectPos, false);
+            float angle = MathUtil.GetAngleBetweenXAxis(fieldPos - affectObjectPos);
             vAngle = angle;
             accAngle = angle;
         }
@@ -278,7 +278,7 @@ public class GravitationFieldCircle : ObjectColliderBase
         {
             Vector2 affectObjectPos = affectedObj.GetPosition();
             Vector2 fieldPos = _curPos;
-            float angle = MathUtil.GetAngleBetweenXAxis(affectObjectPos - fieldPos, false);
+            float angle = MathUtil.GetAngleBetweenXAxis(affectObjectPos - fieldPos);
             vAngle = angle;
             accAngle = angle;
         }

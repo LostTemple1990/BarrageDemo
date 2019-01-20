@@ -39,6 +39,7 @@ Enemy的GetHit函数要加入伤害来源，用于判断是否吃B --finish
 实现终符的多段血条分段显示
 考虑修改DoAcce接口，传入一个true/false以消除是否当前速度方向的歧义
 给EnemyLaser加入MovableObject
+添加bullet的render方法，在每帧最后执行
 
 COLOR_DEEP_RED=1
 COLOR_RED=2

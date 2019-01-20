@@ -63,7 +63,7 @@ public partial class LuaLib
         bool isAimToPlayer = luaState.ToBoolean(-3);
         if ( isAimToPlayer )
         {
-            angle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos - laser.GetPosition(), false);
+            angle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos - laser.GetPosition());
         }
         float acce = (float)luaState.ToNumber(-2);
         float maxVelocity = (float)luaState.ToNumber(-1);
@@ -167,7 +167,7 @@ public partial class LuaLib
         luaState.Pop(6);
         if (isAimToPlayer)
         {
-            vAngle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - laser.PosX, Global.PlayerPos.y - laser.PosY, false);
+            vAngle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - laser.PosX, Global.PlayerPos.y - laser.PosY);
         }
         laser.DoMove(v, vAngle, acce, accAngle);
         return 0;

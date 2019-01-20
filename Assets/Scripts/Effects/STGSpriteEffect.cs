@@ -148,6 +148,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment
         _curRotation = 0;
         _isDoingTweenAlhpa = false;
         _existDuration = -1;
+        _movableObject = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
     }
 
     public override void SetToPosition(float posX, float posY)
@@ -447,7 +448,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment
     /// <param name="aValue"></param>
     public void SetSpriteColor(float rValue,float gValue,float bValue,float aValue)
     {
-        _spRenderer.material.color = new Color(rValue, gValue, bValue, aValue);
+        _spRenderer.color = new Color(rValue, gValue, bValue, aValue);
     }
 
     public void SetRotation(float angle)

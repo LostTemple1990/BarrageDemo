@@ -351,7 +351,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         }
         else
         {
-            SetRotation(MathUtil.GetAngleBetweenXAxis(dv.x, dv.y, false));
+            SetRotation(MathUtil.GetAngleBetweenXAxis(dv.x, dv.y));
         }
     }
 

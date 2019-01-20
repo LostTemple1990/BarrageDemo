@@ -114,7 +114,7 @@ public class MovableObject : IPoolClass
             _curPos.y += _dy;
         }
         // 计算面向
-        _curRotation = MathUtil.GetAngleBetweenXAxis(_dx, _dy, false);
+        _curRotation = MathUtil.GetAngleBetweenXAxis(_dx, _dy);
         if ( !_isMovingTo && !_isMovingStraight && !_isMovingCurve && !_hasExtraSpeed )
         {
             _isActive = false;
@@ -391,7 +391,7 @@ public class MovableObject : IPoolClass
         {
             if ( _reCalVAngle )
             {
-                _curVAngle = MathUtil.GetAngleBetweenXAxis(_vx, _vy, false);
+                _curVAngle = MathUtil.GetAngleBetweenXAxis(_vx, _vy);
                 _reCalVAngle = false;
             }
             return _curVAngle;

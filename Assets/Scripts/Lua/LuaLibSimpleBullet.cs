@@ -113,7 +113,7 @@ public partial class LuaLib
         // 设置子弹线性运动
         if (isAimToPlayer)
         {
-            vAngle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - bullet.PosX, Global.PlayerPos.y - bullet.PosY, false);
+            vAngle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - bullet.PosX, Global.PlayerPos.y - bullet.PosY);
         }
         bullet.DoStraightMove(velocity, vAngle);
         bullet.DoAcceleration(acce, accAngle);

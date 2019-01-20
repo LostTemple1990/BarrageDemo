@@ -404,7 +404,7 @@ public class EnemyBulletMovable : EnemyBulletBase
             }
             if (_reCalVAngle)
             {
-                _curVAngle = MathUtil.GetAngleBetweenXAxis(_vx, _vy, false);
+                _curVAngle = MathUtil.GetAngleBetweenXAxis(_vx, _vy);
                 _reCalVAngle = false;
             }
             _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);

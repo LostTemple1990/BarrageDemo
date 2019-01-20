@@ -21,6 +21,8 @@ public class BCColliderTrigger : BulletComponent
     public override void Init(EnemyBulletBase bullet)
     {
         _bullet = bullet;
+        _triggerDatas = new List<TriggerData>();
+        _triggerDataCount = 0;
     }
 
     public void Register(int triggerType,int triggerFuncRef)

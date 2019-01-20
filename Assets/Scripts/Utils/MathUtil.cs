@@ -6,24 +6,24 @@ public class MathUtil
 {
     public const float kEpsilonNormalSqrt = 1e-15f;
 
-    public static float GetAngleBetweenXAxis(Vector2 vec,bool isRadius)
+    public static float GetAngleBetweenXAxis(Vector2 vec)
     {
         float denominator = vec.magnitude;
         if (denominator < kEpsilonNormalSqrt) return 0f;
         float dot = vec.x / denominator;
         float radius = Mathf.Acos(dot);
-        if (!isRadius) return radius * Mathf.Rad2Deg;
-        return radius;
+        if (vec.y < 0) radius = -radius;
+        return radius * Mathf.Rad2Deg;
     }
 
-    public static float GetAngleBetweenXAxis(float x,float y,bool isRadius)
+    public static float GetAngleBetweenXAxis(float x,float y)
     {
         float denominator = Mathf.Sqrt(x*x+y*y);
         if (denominator < kEpsilonNormalSqrt) return 0f;
         float dot = x / denominator;
         float radius = Mathf.Acos(dot);
-        if (!isRadius) return radius * Mathf.Rad2Deg;
-        return radius;
+        if (y < 0) radius = -radius;
+        return radius * Mathf.Rad2Deg;
     }
 
     /// <summary>

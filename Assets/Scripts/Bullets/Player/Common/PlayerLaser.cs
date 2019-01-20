@@ -60,6 +60,10 @@ public class PlayerLaser : PlayerBulletBase,ICommand
     /// 当前是否击中某些物体
     /// </summary>
     private bool _hitObject;
+    /// <summary>
+    /// 当前是否激活
+    /// </summary>
+    private bool _isActive;
 
     public PlayerLaser()
     {
@@ -76,6 +80,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
         _isCachedCollisionSegments = false;
         _curLaserLen = 0;
         _frameCountSinceCreate = 0;
+        _isActive = false;
         CommandManager.GetInstance().Register(CommandConsts.STGFrameStart, this);
     }
 
@@ -312,10 +317,29 @@ public class PlayerLaser : PlayerBulletBase,ICommand
         }
     }
 
+    public void SetActive(bool value)
+    {
+        if ( _isActive != value )
+        {
+            _isActive = value;
+            if ( _isActive )
+            {
+                SetDetectCollision(true);
+            }
+            else
+            {
+                SetToPosition(new Vector2(2000, 2000));
+                SetDetectCollision(false);
+                _curLaserLen = 0;
+            }
+        }
+    }
+
     public void Execute(int cmd, object[] data)
     {
         if ( cmd == CommandConsts.STGFrameStart )
         {
+            if (!_isActive) return;
             _isCachedCollisionSegments = false;
             // 计算该帧开始之后laser的起始长度
             _curLaserLen = _curLaserLen + LaserSpeedPerFrame > _laserTotalLen ? _laserTotalLen : _curLaserLen + LaserSpeedPerFrame;

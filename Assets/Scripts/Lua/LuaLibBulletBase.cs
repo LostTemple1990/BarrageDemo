@@ -274,7 +274,7 @@ public partial class LuaLib
         if (isAimToPlayer)
         {
             Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
-            angle += MathUtil.GetAngleBetweenXAxis(playerPos - bullet.GetPosition(), false);
+            angle += MathUtil.GetAngleBetweenXAxis(playerPos - bullet.GetPosition());
         }
         bullet.DoStraightMove(v, angle);
         return 0;
@@ -307,7 +307,7 @@ public partial class LuaLib
         if (isAimToPlayer)
         {
             Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
-            angle += MathUtil.GetAngleBetweenXAxis(playerPos - bullet.GetPosition(), false);
+            angle += MathUtil.GetAngleBetweenXAxis(playerPos - bullet.GetPosition());
         }
         bullet.DoAcceleration(acce, angle);
         return 0;
@@ -342,7 +342,7 @@ public partial class LuaLib
         if (isAimToPlayer)
         {
             Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
-            angle += MathUtil.GetAngleBetweenXAxis(playerPos - bullet.GetPosition(), false);
+            angle += MathUtil.GetAngleBetweenXAxis(playerPos - bullet.GetPosition());
         }
         bullet.DoAccelerationWithLimitation(acce, angle, maxVelocity);
         return 0;

@@ -77,7 +77,7 @@ public class SubWeaponMarisaA : SubWeaponBase
                 _scaleDelta = -ScaleDelta;
                 _highLightStarTf.localScale = Vector3.one;
                 // 设置碰撞
-                _laser.SetDetectCollision(true);
+                _laser.SetActive(true);
             }
             // 更新激光的位置
             Vector3 playerPos = _character.GetPosition();
@@ -94,8 +94,7 @@ public class SubWeaponMarisaA : SubWeaponBase
             if ( _isShooting )
             {
                 ActiveShootingEffect(false);
-                _laser.SetToPosition(new Vector2(2000, 2000));
-                _laser.SetDetectCollision(false);
+                _laser.SetActive(false);
             }
             _isShooting = false;
         }

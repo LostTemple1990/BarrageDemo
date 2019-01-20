@@ -185,7 +185,7 @@ CustomizedEnemyTable.TestKillEnemy.OnKill = function(enemy)
 	do
 		local posX,posY = lib.GetEnemyPos(enemy)
 		local master = lib.CreateSimpleBulletById("122151",posX,posY)
-		lib.SetBulletStraightParas(master,3,255,false,0,0)
+		lib.SetBulletStraightParas(master,3,0,true,0,0)
 		lib.SetBulletSelfRotation(master,1)
 		local relativeRotation = 0
 		for _=1,4 do
@@ -695,9 +695,8 @@ function Stage.StageTask()
 	lib.PlaySound("bgm",true)
 	--local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
 	--lib.SetEffectToPos(spriteEffect,0,0)
-	--lib.SetSpriteEffectScale(spriteEffect,5,5)
+	--lib.SetSpriteEffectScale(spriteEffect,2.5,2.5)
 	--lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
-	--lib.SetSpriteEffectColor(spriteEffect,0,0,0,0.9)
 	--local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
 	--lib.SetObjectColliderSize(collider,80,80)
 	--lib.SetObjectColliderToPos(collider,0,0)
@@ -742,7 +741,7 @@ function Stage.StageTask()
 					local posX,posY = lib.GetEnemyPos(enemy)
 					laser = lib.CreateLinearLaser("304060",45,posX,posY)
 					lib.SetLinearLaserHeadEnable(laser,true)
-					lib.LinearLaserDoStraightMove(laser,3,angle+i*20,0.02,60)
+					lib.LinearLaserDoStraightMove(laser,3,angle+i*20,false,0.02,60)
 					if ( coroutine.yield(3) == false ) then return end
 				end
 			end

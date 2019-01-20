@@ -72,7 +72,7 @@ public partial class LuaLib
             arg1 = arg1,
             offset = valueOffset,
         };
-        bc.AddParaChangeEvent(para, changeMode, changeValue, delay, duration, intMode, 1, 0);
+        bc.AddParaChangeEvent(para, changeMode, changeValue, delay, duration, intMode, repeatCount, repeatInterval);
         return 0;
     }
 
