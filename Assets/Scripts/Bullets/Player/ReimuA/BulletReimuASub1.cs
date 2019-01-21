@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class BulletReimuASub1 : PlayerBulletSimple
 {
-    protected static Vector3 RotateEuler = new Vector3(0f, 0f, 20f);
     protected static float DefaultVelocity = 10f;
     /// <summary>
     /// 默认初始速度
     /// </summary>
     private const float DefaultSpeedX = 0f;
     private const float DefaultSpeedY = 10f;
-
-    private const string EliminateEffectId = "502000";
-
     /// <summary>
     /// 跟踪目标
     /// </summary>
@@ -22,18 +18,6 @@ public class BulletReimuASub1 : PlayerBulletSimple
     /// 标识该子弹是否已经锁定过目标
     /// </summary>
     private int _targetFlag = 0;
-    /// <summary>
-    /// 消弹特效对象
-    /// </summary>
-    protected GameObject _eliminateEffectObject;
-    /// <summary>
-    /// 消弹特效Tf
-    /// </summary>
-    protected Transform _eliminateEffectTf;
-    /// <summary>
-    /// 消弹特效spriteRenderer
-    /// </summary>
-    protected SpriteRenderer _eliminateEffectSr;
 
     public BulletReimuASub1()
     {
@@ -47,30 +31,19 @@ public class BulletReimuASub1 : PlayerBulletSimple
         _targetFlag = 0;
     }
 
-    public override void Update()
+    protected override void UpdatePosition()
     {
-        if ( !_isEliminating )
+        if (_targetFlag == 0)
         {
-            _lastPos = _curPos;
-            if (_targetFlag == 0)
-            {
-                GetRandomTarget();
-            }
-            if (_target != null && !_target.CanHit())
-            {
-                _target = null;
-            }
-            if (_isMoving)
-            {
-                Move();
-            }
-            CheckRotated();
-            CheckHitEnemy();
-            UpdatePos();
+            GetRandomTarget();
         }
-        else
+        if (_target != null && !_target.CanHit())
         {
-            UpdateEliminating();
+            _target = null;
+        }
+        if (_isMoving)
+        {
+            Move();
         }
     }
 
@@ -123,53 +96,6 @@ public class BulletReimuASub1 : PlayerBulletSimple
         }
         _curPos.x += _vx;
         _curPos.y += _vy;
-        if (IsOutOfBorder())
-        {
-            _clearFlag = 1;
-        }
-    }
-
-    protected void UpdateAni()
-    {
-        _bullet.transform.Rotate(RotateEuler);
-    }
-
-    protected override void BeginEliminating()
-    {
-        _eliminateEffectObject = BulletsManager.GetInstance().CreateBulletGameObject(BulletType.Player_Simple, EliminateEffectId);
-        _eliminateEffectTf = _eliminateEffectObject.transform;
-        _eliminateEffectSr = _eliminateEffectTf.Find("BulletSprite").GetComponent<SpriteRenderer>();
-        // 设置初始旋转角度
-        float angle = _trans.localRotation.eulerAngles.z;
-        _eliminateEffectTf.localPosition = _curPos;
-        _eliminateEffectTf.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        // 消弹时间
-        _eliminatingTime = 0;
-        _eliminatingDuration = 20;
-        _isEliminating = true;
-        _detectCollision = false;
-        // 原子弹移动到看不见的地方
-        _curPos = new Vector2(2000, 2000);
-        _trans.localPosition = new Vector2(2000, 2000);
-    }
-
-    protected override void UpdateEliminating()
-    {
-        if ( _eliminatingTime < _eliminatingDuration )
-        {
-            float factor = (float)_eliminatingTime / _eliminatingDuration;
-            // 透明度渐变
-            _eliminateEffectSr.color = new Color(1, 1, 1, 1 - factor);
-            // 缩放
-            float scale = Mathf.Lerp(0.5f, 1.5f, factor);
-            _eliminateEffectTf.localScale = new Vector3(factor, factor, 1);
-            _eliminatingTime++;
-        }
-        else
-        {
-            _isEliminating = false;
-            _clearFlag = 1;
-        }
     }
 
     protected override int GetDamage()
@@ -180,15 +106,6 @@ public class BulletReimuASub1 : PlayerBulletSimple
     public override void Clear()
     {
         _target = null;
-        if ( _eliminateEffectObject != null )
-        {
-            _eliminateEffectSr.color = new Color(1, 1, 1, 1);
-            ObjectsPool.GetInstance().RestorePrefabToPool(EliminateEffectId, _eliminateEffectObject);
-            _eliminateEffectObject = null;
-            _eliminateEffectTf.localScale = Vector3.one;
-            _eliminateEffectTf = null;
-            _eliminateEffectSr = null;
-        }
         base.Clear();
     }
 }

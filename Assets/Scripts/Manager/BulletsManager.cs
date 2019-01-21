@@ -102,6 +102,29 @@ public class BulletsManager : ICommand
         CheckDestroyBullets<EnemyBulletBase>(_enemyBullets);
     }
 
+    public void Render()
+    {
+        int i;
+        PlayerBulletBase playerBullet;
+        for (i=0;i<_playerBulletsCount;i++)
+        {
+            playerBullet = _playerBullets[i];
+            if ( playerBullet != null )
+            {
+                playerBullet.Render();
+            }
+        }
+        EnemyBulletBase enemyBullet;
+        for (i=0;i<_enemyBulletsCount;i++)
+        {
+            enemyBullet = _enemyBullets[i];
+            if ( enemyBullet != null )
+            {
+                enemyBullet.Render();
+            }
+        }
+    }
+
     private void UpdatePlayerBullets()
     {
         PlayerBulletBase tmpBullet;

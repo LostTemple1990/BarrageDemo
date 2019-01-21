@@ -51,26 +51,33 @@ public class PlayerBulletSimple : PlayerBulletBase
     public override void Update()
     {
         base.Update();
-        if ( !_isEliminating )
+        UpdatePosition();
+        if (IsOutOfBorder())
         {
-            _lastPos = _curPos;
-            _movableObject.Update();
-            _curPos = _movableObject.GetPos();
-            CheckRotated();
-            CheckHitEnemy();
-            if (IsOutOfBorder())
-            {
-                _clearFlag = 1;
-            }
-            else
-            {
-                UpdatePos();
-            }
+            _clearFlag = 1;
         }
         else
         {
-            UpdateEliminating();
+            CheckHitEnemy();
         }
+    }
+
+    public override void Render()
+    {
+        UpdateTransform();
+        OnFrameStarted();
+    }
+
+    protected override void UpdateTransform()
+    {
+        CheckRotated();
+        base.UpdateTransform();
+    }
+
+    protected virtual void UpdatePosition()
+    {
+        _movableObject.Update();
+        _curPos = _movableObject.GetPos();
     }
 
     public override void SetToPosition(Vector2 pos)
@@ -148,7 +155,9 @@ public class PlayerBulletSimple : PlayerBulletBase
                     Mathf.Abs(_curPos.y - paras.centerPos.y) <= _collisionRadius + paras.halfHeight )
                 {
                     enemy.TakeDamage(GetDamage());
+                    _hitPos = _curPos;
                     BeginEliminating();
+                    break;
                 }
             }
         }
@@ -172,6 +181,7 @@ public class PlayerBulletSimple : PlayerBulletBase
 
     public override void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObjectCollider)
     {
+        _hitPos = _curPos;
         BeginEliminating();
     }
 
@@ -181,162 +191,8 @@ public class PlayerBulletSimple : PlayerBulletBase
     protected virtual void BeginEliminating()
     {
         _detectCollision = false;
-        if ( _bulletCfg.eliminatedEffectType == 1 )
-        {
-            string[] paras = _bulletCfg.eliminatedEffectParas;
-            string atlasName = paras[0];
-            string spriteName = paras[1];
-            eBlendMode blendMode = (eBlendMode)int.Parse(paras[2]);
-            int tmpInt = int.Parse(paras[3]);
-            LayerId layerId = tmpInt == -1 ? LayerId.STGNormalEffect : (LayerId)tmpInt;
-            STGSpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
-            effect.SetSprite(atlasName, spriteName, blendMode, layerId, true);
-            SetSpriteEffectParas(effect, paras);
-            _clearFlag = 1;
-        }
-    }
-
-    #region 根据配置设置SpriteEffect的属性
-    protected virtual void SetSpriteEffectParas(STGSpriteEffect effect,string[] paras)
-    {
-        // 根据配置设置SpriteEffect的属性
-        int parasLen = paras.Length;
-        for (int i = 4; i < parasLen;)
-        {
-            // 设置位置，参数为增量
-            if (paras[i] == "1")
-            {
-                float dx = float.Parse(paras[i + 1]);
-                float dy = float.Parse(paras[i + 2]);
-                effect.SetToPosition(_curPos.x + dx, _curPos.y + dy);
-                i += 3;
-            }
-            // 设置位置，参数为绝对位置
-            else if (paras[i] == "2")
-            {
-                float posX = float.Parse(paras[i + 1]);
-                float posY = float.Parse(paras[i + 2]);
-                effect.SetToPosition(posX, posY);
-                i += 3;
-            }
-            // 设置速度，v,dAngle,acce
-            // 即速度，与当前速度方向的差值，加速度
-            // dAngle为0则表示当前速度方向
-            else if (paras[i] == "3")
-            {
-                float velocity = float.Parse(paras[i + 1]);
-                float angle = _movableObject.VAngle + float.Parse(paras[i + 2]);
-                float acce = float.Parse(paras[i + 3]);
-                effect.DoStraightMove(velocity, angle);
-                effect.DoAcceleration(acce, angle);
-                i += 4;
-            }
-            // 设置速度，v,angle,acce
-            // 即速度，速度方向，加速度
-            else if (paras[i] == "4")
-            {
-                float velocity = float.Parse(paras[i + 1]);
-                float angle = float.Parse(paras[i + 2]);
-                float acce = float.Parse(paras[i + 3]);
-                effect.DoStraightMove(velocity, angle);
-                effect.DoAcceleration(acce, angle);
-                i += 4;
-            }
-            // 图像旋转角度
-            // dRotationAngle,与当前子弹速度方向的差值
-            else if (paras[i] == "5")
-            {
-                float angle = _movableObject.VAngle + float.Parse(paras[i + 1]);
-                effect.SetRotation(angle);
-                i += 2;
-            }
-            // 图像旋转角度
-            // angle,指定角度
-            else if (paras[i] == "6")
-            {
-                float angle = float.Parse(paras[i + 1]);
-                effect.SetRotation(angle);
-                i += 2;
-            }
-            // orderInLayer
-            else if (paras[i] == "9")
-            {
-                int orderInLayer = int.Parse(paras[i + 1]);
-                effect.SetOrderInLayer(orderInLayer);
-                i += 2;
-            }
-            // 设置alpha
-            else if (paras[i] == "10")
-            {
-                float alpha = float.Parse(paras[i + 1]);
-                effect.SetSpritAlpha(alpha);
-                i += 2;
-            }
-            // 透明度渐变
-            // toAlpha,duration
-            else if (paras[i] == "11")
-            {
-                float toAlpha = float.Parse(paras[i + 1]);
-                int duration = int.Parse(paras[i + 2]);
-                effect.DoTweenAlpha(toAlpha, duration);
-                i += 3;
-            }
-            // 设置缩放
-            // scaleX,scaleY
-            else if (paras[i] == "15")
-            {
-                float scaleX = float.Parse(paras[i + 1]);
-                float scaleY = float.Parse(paras[i + 2]);
-                effect.SetScale(scaleX, scaleY);
-                i += 3;
-            }
-            // 设置scaleX缩放动画
-            // toScaleX duration
-            else if (paras[i] == "16")
-            {
-                float toScaleX = float.Parse(paras[i + 1]);
-                int duration = int.Parse(paras[i + 2]);
-                effect.DoScaleWidth(toScaleX, duration, InterpolationMode.Linear);
-                i += 3;
-            }
-            // 设置scaleY缩放动画
-            // toScaleY duration
-            else if (paras[i] == "17")
-            {
-                float toScaleY = float.Parse(paras[i + 1]);
-                int duration = int.Parse(paras[i + 2]);
-                effect.DoScaleHeight(toScaleY, duration, InterpolationMode.Linear);
-                i += 3;
-            }
-            // 持续时间
-            else if (paras[i] == "30")
-            {
-                int duration = int.Parse(paras[i + 1]);
-                effect.SetExistDuration(duration);
-                i += 2;
-            }
-        }
-    }
-    #endregion
-
-    /// <summary>
-    /// 消弹动画
-    /// </summary>
-    protected virtual void UpdateEliminating()
-    {
-        if ( _eliminatingTime < _eliminatingDuration )
-        {
-            float alhpa = 1 - (float)_eliminatingTime / _eliminatingDuration;
-            _bulletColor.a = alhpa;
-            _renderer.color = _bulletColor;
-            _eliminatingTime++;
-
-        }
-        else
-        {
-            _isEliminating = false;
-            _clearFlag = 1;
-        }
+        CreateHitEffect(_bulletCfg.hitEffectParas);
+        _clearFlag = 1;
     }
 
     public override bool DetectCollision()

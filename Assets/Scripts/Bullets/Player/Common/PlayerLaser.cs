@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerLaser : PlayerBulletBase,ICommand
+public class PlayerLaser : PlayerBulletBase
 {
     /// <summary>
     /// 碰撞线段组的半径
@@ -53,10 +53,6 @@ public class PlayerLaser : PlayerBulletBase,ICommand
     /// </summary>
     private int _collisionSegmentsCount;
     /// <summary>
-    /// 射线从创建开始经过的帧数
-    /// </summary>
-    private int _frameCountSinceCreate;
-    /// <summary>
     /// 当前是否击中某些物体
     /// </summary>
     private bool _hitObject;
@@ -79,9 +75,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
         _isCached = false;
         _isCachedCollisionSegments = false;
         _curLaserLen = 0;
-        _frameCountSinceCreate = 0;
         _isActive = false;
-        CommandManager.GetInstance().Register(CommandConsts.STGFrameStart, this);
     }
 
     public override void ChangeStyleById(string id)
@@ -135,13 +129,27 @@ public class PlayerLaser : PlayerBulletBase,ICommand
     {
         if (!_isCached) Cache();
         base.Update();
-        _frameCountSinceCreate++;
         if ( _detectCollision )
         {
             CalLaserLen();
         }
+    }
+
+    public override void Render()
+    {
+        if (_hitObject) CreateHitEffect(_bulletCfg.hitEffectParas);
         RenderLaser();
-        UpdatePos();
+        UpdateTransform();
+        OnFrameStarted();
+    }
+
+    protected override void OnFrameStarted()
+    {
+        if (!_isActive) return;
+        _isCachedCollisionSegments = false;
+        // 计算该帧开始之后laser的起始长度
+        _curLaserLen = _curLaserLen + LaserSpeedPerFrame > _laserTotalLen ? _laserTotalLen : _curLaserLen + LaserSpeedPerFrame;
+        _hitObject = false;
     }
 
     private void Cache()
@@ -207,20 +215,8 @@ public class PlayerLaser : PlayerBulletBase,ICommand
             {
                 hitEnemy.TakeDamage(GetDamage());
             }
-            // 击中特效
-            Vector2 effectPos = _curPos + _dirVec * minDis;
-            STGSpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
-            effect.SetSprite(_bulletCfg.eliminateEffectAtlas, _bulletCfg.elminaateEffectSprite, eBlendMode.Normal, LayerId.STGNormalEffect, true);
-            effect.SetSpriteColor(_bulletCfg.eliminateColor.r, _bulletCfg.eliminateColor.g, _bulletCfg.eliminateColor.b, 1);
-            float offsetX = Random.Range(-5, 5);
-            float offsetY = Random.Range(-5, 5);
-            effect.SetToPosition(effectPos.x+offsetX, effectPos.y+offsetY);
-            effect.DoFade(5);
-            _trans.localScale = new Vector3(1, 0.5f, 1);
-        }
-        else
-        {
-            _trans.localScale = new Vector3(1, 1, 1);
+            // 记录击中特效的位置
+            _hitPos = _curPos + _dirVec * minDis;
         }
     }
 
@@ -231,7 +227,15 @@ public class PlayerLaser : PlayerBulletBase,ICommand
             _laserSr.material.SetFloat("_CurLaserLen", _curLaserLen);
             _preLaserLen = _curLaserLen;
         }
-        _laserSr.material.SetFloat("_FrameSinceCreate", _frameCountSinceCreate);
+        _laserSr.material.SetFloat("_TimeSinceCreated", _timeSinceCreated);
+        if ( _hitObject )
+        {
+            _trans.localScale = new Vector3(1, 0.5f, 1);
+        }
+        else
+        {
+            _trans.localScale = new Vector3(1, 1, 1);
+        }
     }
 
     protected override int GetDamage()
@@ -313,6 +317,7 @@ public class PlayerLaser : PlayerBulletBase,ICommand
             _curLaserLen = (_collisionSegments[n] - _curPos).magnitude;
             // 截取掉之后的碰撞组
             _collisionSegmentsCount = n;
+            _hitPos = _curPos + _dirVec * _curLaserLen;
             _hitObject = true;
         }
     }
@@ -335,21 +340,8 @@ public class PlayerLaser : PlayerBulletBase,ICommand
         }
     }
 
-    public void Execute(int cmd, object[] data)
-    {
-        if ( cmd == CommandConsts.STGFrameStart )
-        {
-            if (!_isActive) return;
-            _isCachedCollisionSegments = false;
-            // 计算该帧开始之后laser的起始长度
-            _curLaserLen = _curLaserLen + LaserSpeedPerFrame > _laserTotalLen ? _laserTotalLen : _curLaserLen + LaserSpeedPerFrame;
-            _hitObject = false;
-        }
-    }
-
     public override void Clear()
     {
-        CommandManager.GetInstance().Remove(CommandConsts.STGFrameStart, this);
         UIManager.GetInstance().HideGo(_bullet);
         ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         _laserSr.sprite = null;

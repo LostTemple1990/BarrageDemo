@@ -79,9 +79,24 @@ public class BulletBase :IPosition,ICollisionObject
         Global.SysBusyValue += _sysBusyWeight;
     }
 
+    /// <summary>
+    /// 每帧开始的时候执行的方法
+    /// 用于重置某些变量
+    /// todo 暂时放在Render之后，之后考虑统一接口
+    /// </summary>
+    protected virtual void OnFrameStarted()
+    {
+        _lastPos = _curPos;
+    }
+
     public virtual void Update()
     {
         _timeSinceCreated++;
+    }
+
+    public virtual void Render()
+    {
+
     }
 
     public virtual void SetToPosition(Vector2 pos)

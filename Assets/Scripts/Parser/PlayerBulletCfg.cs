@@ -25,7 +25,7 @@ public class PlayerBulletCfg : IParser
     /// <summary>
     /// 消除特效的参数
     /// </summary>
-    public string[] eliminatedEffectParas;
+    public PlayerBulletHitEffectParas hitEffectParas;
 
     public IParser CreateNewInstance()
     {
@@ -50,6 +50,7 @@ public class PlayerBulletCfg : IParser
             eliminateColor = new Color(float.Parse(colorStrs[0]), float.Parse(colorStrs[1]), float.Parse(colorStrs[2]));
         }
         eliminatedEffectType = int.Parse(xmlElement.GetAttribute("eliminatedEffectType"));
-        eliminatedEffectParas = xmlElement.GetAttribute("eliminatedEffectParas").Split(',');
+        hitEffectParas = new PlayerBulletHitEffectParas();
+        hitEffectParas.Init(xmlElement.GetAttribute("eliminatedEffectParas"));
     }
 }

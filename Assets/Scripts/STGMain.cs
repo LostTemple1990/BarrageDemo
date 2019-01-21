@@ -74,6 +74,7 @@ public class STGMain
             Logger.Log("------------------------------------------------");
         }
 #else
+        // 逻辑部分
         STGStageManager.GetInstance().Update();
         _opController.Update();
         _char.Update();
@@ -81,6 +82,8 @@ public class STGMain
         BulletsManager.GetInstance().Update();
         ItemManager.GetInstance().Update();
         ColliderManager.GetInstance().Update();
+        // 渲染部分
+        BulletsManager.GetInstance().Render();
         AnimationManager.GetInstance().Update();
         ExtraTaskManager.GetInstance().Update();
         BackgroundManager.GetInstance().Update();

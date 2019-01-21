@@ -119,20 +119,30 @@ public class EnemyBulletSimple : EnemyBulletMovable
         base.Update();
         if (_appearEffect != null) UpdateAppearEffect();
         if (_isScalingSize) UpdateScaling();
-        CheckCollisionWithCharacter();
         if ( IsOutOfBorder() )
         {
             Eliminate(eEliminateDef.ForcedDelete);
         }
         else
         {
-            if (_isScaleChanged) UpdateScale();
-            if (_isColorChanged) UpdateColor();
-            if (_aniFrameCount != 0) UpdateAni();
-            CheckRotateImg();
-            UpdatePos();
+            CheckCollisionWithCharacter();
         }
+    }
+
+    public override void Render()
+    {
+        if (_isScaleChanged) UpdateScale();
+        if (_isColorChanged) UpdateColor();
+        if (_aniFrameCount != 0) UpdateAni();
+        CheckRotateImg();
+        UpdatePos();
+        OnFrameStarted();
+    }
+
+    protected override void OnFrameStarted()
+    {
         ResetExtraSpeedParas();
+        base.OnFrameStarted();
     }
 
     public virtual void SetSelfRotation(float angle)

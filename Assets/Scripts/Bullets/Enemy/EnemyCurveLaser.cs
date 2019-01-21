@@ -195,8 +195,6 @@ public class EnemyCurveLaser : EnemyBulletBase
     public override void Update()
     {
         base.Update();
-        _triModified = false;
-        _uvModified = false;
         CheckDivideIntoMultiple();
         UpdateGrazeCoolDown();
         UpdatePath();
@@ -205,8 +203,19 @@ public class EnemyCurveLaser : EnemyBulletBase
             _clearFlag = 1;
             return;
         }
-        PopulateMesh();
         CheckCollisionWithCharacter();
+    }
+
+    public override void Render()
+    {
+        PopulateMesh();
+    }
+
+    protected override void OnFrameStarted()
+    {
+        _triModified = false;
+        _uvModified = false;
+        base.OnFrameStarted();
     }
 
     #region 设置碰撞检测相关参数

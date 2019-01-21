@@ -524,7 +524,6 @@ public class EnemyLinearLaser : EnemyBulletBase
         {
             UpdateGrazeCoolDown();
             CheckCollisionWithCharacter();
-            Render();
             //UpdateExistTime();
             if (IsOutOfBorder())
             {
@@ -533,7 +532,10 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
         else
         {
-            Eliminate(eEliminateDef.ForcedDelete);
+            if ( _timeSinceCreated >= _laserLen && _laserSegmentCount <= 0 )
+            {
+                Eliminate(eEliminateDef.ForcedDelete);
+            }
         }
     }
 
@@ -675,7 +677,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
     }
 
-    private void Render()
+    public override void Render()
     {
         if (_isSourceEnable)
         {
@@ -691,8 +693,14 @@ public class EnemyLinearLaser : EnemyBulletBase
             }
             segment.Render(_isDirty);
         }
+        OnFrameStarted();
+    }
+
+    protected override void OnFrameStarted()
+    {
         _isColorChanged = false;
         _isDirty = false;
+        base.OnFrameStarted();
     }
 
     /// <summary>

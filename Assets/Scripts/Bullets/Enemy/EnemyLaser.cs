@@ -300,14 +300,15 @@ public class EnemyLaser : EnemyBulletBase
         UpdateGrazeCoolDown();
         UpdateExistTime();
         CheckCollisionWithCharacter();
-        if ( _clearFlag != 1 )
+    }
+
+    public override void Render()
+    {
+        UpdateTransform();
+        if (_isDirty) Resize();
+        if (_isColorChanged)
         {
-            UpdateTransform();
-            if (_isDirty) Resize();
-            if (_isColorChanged)
-            {
-                _laser.color = new Color(1, 1, 1, _curAlpha);
-            }
+            _laser.color = new Color(1, 1, 1, _curAlpha);
         }
     }
 
