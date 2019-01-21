@@ -51,6 +51,6 @@ public class PlayerBulletCfg : IParser
         }
         eliminatedEffectType = int.Parse(xmlElement.GetAttribute("eliminatedEffectType"));
         hitEffectParas = new PlayerBulletHitEffectParas();
-        hitEffectParas.Init(xmlElement.GetAttribute("eliminatedEffectParas"));
+        hitEffectParas.Init(xmlElement.GetAttribute("hitEffectParas"));
     }
 }

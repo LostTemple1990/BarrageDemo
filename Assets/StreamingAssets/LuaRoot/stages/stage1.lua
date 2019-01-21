@@ -693,14 +693,14 @@ end
 
 function Stage.StageTask()
 	lib.PlaySound("bgm",true)
-	--local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
-	--lib.SetEffectToPos(spriteEffect,0,0)
-	--lib.SetSpriteEffectScale(spriteEffect,2.5,2.5)
-	--lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
-	--local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
-	--lib.SetObjectColliderSize(collider,80,80)
-	--lib.SetObjectColliderToPos(collider,0,0)
-	--lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
+	local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
+	lib.SetEffectToPos(spriteEffect,0,0)
+	lib.SetSpriteEffectScale(spriteEffect,2.5,2.5)
+	lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
+	local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
+	lib.SetObjectColliderSize(collider,80,80)
+	lib.SetObjectColliderToPos(collider,0,0)
+	lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
 	--
 	if coroutine.yield(200) == false then return end
 	do

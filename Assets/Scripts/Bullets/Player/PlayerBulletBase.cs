@@ -241,17 +241,18 @@ public class PlayerBulletHitEffectParas
 
     public void Init(string parasStr)
     {
+        effectParasList = new List<float[]>();
+        if (parasStr == "") return;
         string[] tmpStrs0 = parasStr.Split(';');
         // 基础参数
         string[] tmpStrs1 = tmpStrs0[0].Split(',');
         atlasName = tmpStrs1[0];
         spriteName = tmpStrs1[1];
-        eBlendMode blendMode = (eBlendMode)int.Parse(tmpStrs1[2]);
+        blendMode = (eBlendMode)int.Parse(tmpStrs1[2]);
         int tmpInt = int.Parse(tmpStrs1[3]);
-        LayerId layerId = tmpInt == -1 ? LayerId.STGNormalEffect : (LayerId)tmpInt;
+        layerId = tmpInt == -1 ? LayerId.STGNormalEffect : (LayerId)tmpInt;
         // 参数列表
         int paraListLen = tmpStrs0.Length - 1;
-        effectParasList = new List<float[]>();
         for (int i = 0; i < paraListLen; i++)
         {
             string[] paraStr = tmpStrs0[i + 1].Split(',');
