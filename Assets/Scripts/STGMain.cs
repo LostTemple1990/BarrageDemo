@@ -32,14 +32,16 @@ public class STGMain
         timeArr[4] = System.DateTime.Now.Ticks;
         ColliderManager.GetInstance().Update();
         timeArr[5] = System.DateTime.Now.Ticks;
-        AnimationManager.GetInstance().Update();
+        BulletsManager.GetInstance().Render();
         timeArr[6] = System.DateTime.Now.Ticks;
-        ExtraTaskManager.GetInstance().Update();
+        AnimationManager.GetInstance().Update();
         timeArr[7] = System.DateTime.Now.Ticks;
-        BackgroundManager.GetInstance().Update();
+        ExtraTaskManager.GetInstance().Update();
         timeArr[8] = System.DateTime.Now.Ticks;
-        EffectsManager.GetInstance().Update();
+        BackgroundManager.GetInstance().Update();
         timeArr[9] = System.DateTime.Now.Ticks;
+        EffectsManager.GetInstance().Update();
+        timeArr[10] = System.DateTime.Now.Ticks;
         frameNode++;
         // 背景部分暂时写这，之后转移到lua
         if (frameNode % 30 == 0)
@@ -65,10 +67,11 @@ public class STGMain
             logStr += "BulletsManager Update Cost Time = " + (timeArr[3] - timeArr[2]) / 10000f + "ms\n";
             logStr += "ItemManager Update Cost Time = " + (timeArr[4] - timeArr[3]) / 10000f + "ms\n";
             logStr += "ColliderManager Update Cost Time = " + (timeArr[5] - timeArr[4]) / 10000f + "ms\n";
-            logStr += "AnimationManager Update Cost Time = " + (timeArr[6] - timeArr[5]) / 10000f + "ms\n";
-            logStr += "ExtraTaskManager Update Cost Time = " + (timeArr[7] - timeArr[6]) / 10000f + "ms\n";
-            logStr += "BackgroundManager Update Cost Time = " + (timeArr[8] - timeArr[7]) / 10000f + "ms\n";
-            logStr += "EffectsManager Update Cost Time = " + (timeArr[9] - timeArr[8]) / 10000f + "ms\n";
+            logStr += "BulletsManager Render Cost Time = " + (timeArr[6] - timeArr[5]) / 10000f + "ms\n";
+            logStr += "AnimationManager Update Cost Time = " + (timeArr[7] - timeArr[6]) / 10000f + "ms\n";
+            logStr += "ExtraTaskManager Update Cost Time = " + (timeArr[8] - timeArr[7]) / 10000f + "ms\n";
+            logStr += "BackgroundManager Update Cost Time = " + (timeArr[9] - timeArr[8]) / 10000f + "ms\n";
+            logStr += "EffectsManager Update Cost Time = " + (timeArr[10] - timeArr[9]) / 10000f + "ms\n";
             Logger.LogWarn(logStr);
             CommandManager.GetInstance().RunCommand(CommandConsts.LogFrameStatistics);
             Logger.Log("------------------------------------------------");
