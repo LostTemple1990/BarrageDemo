@@ -18,14 +18,25 @@ SpriteAtlas:
       readable: 0
       crunchedCompression: 0
       sRGB: 1
-    platformSettings: []
+    platformSettings:
+    - serializedVersion: 2
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
     packingParameters:
       serializedVersion: 2
-      padding: 2
+      padding: 4
       blockOffset: 1
       allowAlphaSplitting: 0
-      enableRotation: 0
-      enableTightPacking: 0
+      enableRotation: 1
+      enableTightPacking: 1
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 3828ff2a96324bb4b8fdc2cfaed76f0b, type: 3}

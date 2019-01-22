@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class GravitationFieldCircle : ObjectColliderBase
+public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
 {
     /// <summary>
     /// 引力场半径

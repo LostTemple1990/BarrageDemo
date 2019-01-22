@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class GravitationFieldRect : ObjectColliderBase
+public class GravitationFieldRect : ObjectColliderBase , IGravitationField
 {
     /// <summary>
     /// 矩形的宽

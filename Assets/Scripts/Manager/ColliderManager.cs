@@ -58,8 +58,8 @@ public class ColliderManager
                 Logger.LogError("GravitationField Type " + type + " is not exist!");
                 break;
         }
-        _colliderList.Add(collider);
-        _colliderCount++;
+        _fieldList.Add(collider);
+        _fieldCount++;
         return collider;
     }
 

@@ -704,7 +704,8 @@ function Stage.StageTask()
 	local field = lib.CreateGravitationFieldByType(eColliderType.Circle)
 	lib.SetObjectColliderSize(field,80,80)
 	lib.SetObjectColliderToPos(field,0,0)
-	lib.InitGravitationField(field,1,0.5,0,0,0,0,0,0,0)
+	lib.InitGravitationField(field,1,0.5,0.05,0,0,0,0,0,0)
+	lib.SetObjectColliderColliderGroup(field,eColliderGroup.EnemyBullet)
 	--
 	if coroutine.yield(200) == false then return end
 	do
