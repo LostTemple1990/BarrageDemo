@@ -64,6 +64,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment
     /// </summary>
     private int _fadeDuration;
     private Color _spriteColor;
+    private float _spriteAlpha;
     /// <summary>
     /// 渐隐起始时候的alpha
     /// </summary>
@@ -148,6 +149,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment
         _curRotation = 0;
         _isDoingTweenAlhpa = false;
         _existDuration = -1;
+        _spriteAlpha = 1;
         _movableObject = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
     }
 
@@ -302,7 +304,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment
     public void DoTweenAlpha(float endAlpha,int duration)
     {
         _spriteColor = _spRenderer.color;
-        _startAlhpa = _spriteColor.a;
+        _startAlhpa = _spriteAlpha;
         _endAlpha = endAlpha;
         _tweenAlphaTime = 0;
         _tweenAlphaDuration = duration;
@@ -317,7 +319,8 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment
         _tweenAlphaTime++;
         if (_tweenAlphaTime < _tweenAlphaDuration)
         {
-            _spriteColor.a = Mathf.Lerp(_startAlhpa, _endAlpha, (float)_tweenAlphaTime / _tweenAlphaDuration);
+            _spriteAlpha = Mathf.Lerp(_startAlhpa, _endAlpha, (float)_tweenAlphaTime / _tweenAlphaDuration);
+            _spriteColor.a = _spriteAlpha;
             _spRenderer.color = _spriteColor;
         }
         else
@@ -434,6 +437,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment
     /// <param name="alpha"></param>
     public void SetSpritAlpha(float alpha)
     {
+        _spriteAlpha = alpha;
         Color color = _spRenderer.color;
         color.a = alpha;
         _spRenderer.color = color;
@@ -448,7 +452,14 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment
     /// <param name="aValue"></param>
     public void SetSpriteColor(float rValue,float gValue,float bValue,float aValue)
     {
-        _spRenderer.color = new Color(rValue, gValue, bValue, aValue);
+        _spriteColor = new Color(rValue, gValue, bValue, aValue);
+        _spriteAlpha = aValue;
+        _spRenderer.color = _spriteColor;
+    }
+
+    public void SetSpriteColor(float rValue, float gValue, float bValue)
+    {
+        _spRenderer.color = new Color(rValue, gValue, bValue, _spriteAlpha);
     }
 
     public void SetRotation(float angle)

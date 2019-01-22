@@ -81,6 +81,22 @@ public partial class LuaLib
     }
 
     /// <summary>
+    /// 设置碰撞器的tag
+    /// <para>collider</para>
+    /// <para>stirng tag 标签</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetObjectColliderTag(ILuaState luaState)
+    {
+        IObjectCollider collider = luaState.ToUserData(-2) as IObjectCollider;
+        string tag = luaState.ToString(-1);
+        luaState.Pop(2);
+        collider.SetTag(tag);
+        return 0;
+    }
+
+    /// <summary>
     /// 设置物体碰撞器的尺寸
     /// <para>arg0 矩形碰撞器的宽、圆碰撞器的半径</para>
     /// <para>arg1 矩形碰撞器的高，圆碰撞器不使用</para>
@@ -186,8 +202,31 @@ public partial class LuaLib
         return 0;
     }
 
-    public static int RemoveAllObjectCollider(ILuaState luaState)
+    /// <summary>
+    /// 根据tag移除引力场
+    /// <para>string tag</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int RemoveGravitationFieldByTag(ILuaState luaState)
     {
+        string tag = luaState.ToString(-1);
+        luaState.Pop(1);
+        ColliderManager.GetInstance().RemoveGravitationFieldByTag(tag);
+        return 0;
+    }
+
+    /// <summary>
+    /// 根据tag移除碰撞器
+    /// <para>string tag</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int RemoveObjectColliderByTag(ILuaState luaState)
+    {
+        string tag = luaState.ToString(-1);
+        luaState.Pop(1);
+        ColliderManager.GetInstance().RemoveColliderByTag(tag);
         return 0;
     }
 }

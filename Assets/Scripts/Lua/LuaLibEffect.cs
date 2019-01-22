@@ -123,15 +123,38 @@ public partial class LuaLib
         return 0;
     }
 
+    /// <summary>
+    /// 设置spriteEffect的颜色
+    /// <para>effect</para>
+    /// <para>rValue</para>
+    /// <para>gValue</para>
+    /// <para>bValue</para>
+    /// <para>optional aValue</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
     public static int SetSpriteEffectColor(ILuaState luaState)
     {
-        STGSpriteEffect effect = luaState.ToUserData(-5) as STGSpriteEffect;
-        float rValue = (float)luaState.ToNumber(-4);
-        float gValue = (float)luaState.ToNumber(-3);
-        float bValue = (float)luaState.ToNumber(-2);
-        float aValue = (float)luaState.ToNumber(-1);
-        luaState.Pop(5);
-        effect.SetSpriteColor(rValue, gValue, bValue, aValue);
+        // 检测带不带alpha
+        if ( luaState.Type(-4) != LuaType.LUA_TLIGHTUSERDATA )
+        {
+            STGSpriteEffect effect = luaState.ToUserData(-5) as STGSpriteEffect;
+            float rValue = (float)luaState.ToNumber(-4);
+            float gValue = (float)luaState.ToNumber(-3);
+            float bValue = (float)luaState.ToNumber(-2);
+            float aValue = (float)luaState.ToNumber(-1);
+            luaState.Pop(5);
+            effect.SetSpriteColor(rValue, gValue, bValue, aValue);
+        }
+        else
+        {
+            STGSpriteEffect effect = luaState.ToUserData(-4) as STGSpriteEffect;
+            float rValue = (float)luaState.ToNumber(-3);
+            float gValue = (float)luaState.ToNumber(-2);
+            float bValue = (float)luaState.ToNumber(-1);
+            luaState.Pop(4);
+            effect.SetSpriteColor(rValue, gValue, bValue);
+        }
         return 0;
     }
 

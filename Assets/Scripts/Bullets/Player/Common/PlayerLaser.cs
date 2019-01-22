@@ -329,6 +329,7 @@ public class PlayerLaser : PlayerBulletBase
             _isActive = value;
             if ( _isActive )
             {
+                _preLaserLen = -1;
                 SetDetectCollision(true);
             }
             else

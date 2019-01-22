@@ -2130,9 +2130,9 @@ function SC.ReisenSC0(boss)
 					end
 				end
 			end
-			do
-				
-			end
+		end)
+		lib.AddEnemyTask(boss,function()
+			
 		end)
 	end
 end

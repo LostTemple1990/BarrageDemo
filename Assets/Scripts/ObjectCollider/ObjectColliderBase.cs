@@ -50,6 +50,10 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable
     /// 移动对象
     /// </summary>
     protected MovableObject _movableObject;
+    /// <summary>
+    /// 标签
+    /// </summary>
+    protected string _tag;
 
     public ObjectColliderBase()
     {
@@ -59,6 +63,17 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable
         _eliminateType = eEliminateDef.HitObjectCollider;
         _isScaling = false;
         _movableObject = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
+        _tag = "";
+    }
+
+    public void SetTag(string tag)
+    {
+        _tag = tag;
+    }
+
+    public string GetTag()
+    {
+        return _tag;
     }
 
     public void SetToPosition(float posX,float posY)

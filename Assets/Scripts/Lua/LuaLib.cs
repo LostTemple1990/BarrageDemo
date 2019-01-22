@@ -125,6 +125,7 @@ public partial class LuaLib
             new NameFuncPair("AddBulletColliderTriggerEvent",AddBulletColliderTriggerEvent),
             // ObjectCollider
             new NameFuncPair("CreateObjectColliderByType",CreateObjectColliderByType),
+            new NameFuncPair("SetObjectColliderTag",SetObjectColliderTag),
             new NameFuncPair("SetObjectColliderToPos",SetObjectColliderToPos),
             new NameFuncPair("SetObjectColliderSize",SetObjectColliderSize),
             new NameFuncPair("SetObjectColliderColliderGroup",SetObjectColliderColliderGroup),
@@ -133,8 +134,11 @@ public partial class LuaLib
             new NameFuncPair("ObjectColliderClearSelf",ObjectColliderClearSelf),
             new NameFuncPair("SetObjectColliderEliminateType",SetObjectColliderEliminateType),
             new NameFuncPair("SetObjectColliderHitEnemyDamage",SetObjectColliderHitEnemyDamage),
+            new NameFuncPair("RemoveObjectColliderByTag",RemoveObjectColliderByTag),
+
             new NameFuncPair("CreateGravitationFieldByType",CreateGravitationFieldByType),
             new NameFuncPair("InitGravitationField",InitGravitationField),
+            new NameFuncPair("RemoveGravitationFieldByTag",RemoveGravitationFieldByTag),
             // 清理子弹
             new NameFuncPair("ClearEnemyBulletsInRange",ClearEnemyBulletsInRange),
             new NameFuncPair("ClearAllEnemyBullets",ClearAllEnemyBullets),

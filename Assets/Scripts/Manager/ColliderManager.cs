@@ -12,11 +12,15 @@ public class ColliderManager
 
     private List<ObjectColliderBase> _colliderList;
     private int _colliderCount;
+    private List<ObjectColliderBase> _fieldList;
+    private int _fieldCount;
 
     public ColliderManager()
     {
         _colliderList = new List<ObjectColliderBase>();
         _colliderCount = 0;
+        _fieldList = new List<ObjectColliderBase>();
+        _fieldCount = 0;
     }
 
     public ObjectColliderBase CreateColliderByType(eColliderType type)
@@ -64,7 +68,36 @@ public class ColliderManager
 
     }
 
-    public void Update()
+    public void UpdateFields()
+    {
+        ObjectColliderBase collider;
+        // 列表中至少有一个collider
+        bool hasNotNullCollider = false;
+        for (int i = 0; i < _fieldCount; i++)
+        {
+            collider = _fieldList[i];
+            if (collider != null)
+            {
+                if ( collider.ClearFlag != 1 )
+                {
+                    hasNotNullCollider = true;
+                    collider.Update();
+                }
+                if (collider.ClearFlag == 1)
+                {
+                    collider.Clear();
+                    _fieldList[i] = null;
+                }
+            }
+        }
+        if (!hasNotNullCollider)
+        {
+            _fieldList.Clear();
+            _fieldCount = 0;
+        }
+    }
+
+    public void UpdateColliders()
     {
         ObjectColliderBase collider;
         // 列表中至少有一个collider
@@ -74,8 +107,11 @@ public class ColliderManager
             collider = _colliderList[i];
             if ( collider != null )
             {
-                hasNotNullCollider = true;
-                collider.Update();
+                if ( collider.ClearFlag != 1 )
+                {
+                    hasNotNullCollider = true;
+                    collider.Update();
+                }
                 if ( collider.ClearFlag == 1)
                 {
                     collider.Clear();
@@ -138,9 +174,39 @@ public class ColliderManager
         return _colliderList;
     }
 
+    public void RemoveGravitationFieldByTag(string tag)
+    {
+        ObjectColliderBase collider;
+        for (int i=0;i<_fieldCount;i++)
+        {
+            collider = _fieldList[i];
+            if ( collider != null && collider.GetTag() == tag )
+            {
+                collider.ClearSelf();
+                return;
+            }
+        }
+    }
+
+    public void RemoveColliderByTag(string tag)
+    {
+        ObjectColliderBase collider;
+        for (int i = 0; i < _colliderCount; i++)
+        {
+            collider = _colliderList[i];
+            if (collider != null && collider.GetTag() == tag)
+            {
+                collider.ClearSelf();
+                return;
+            }
+        }
+    }
+
     public void Clear()
     {
         _colliderList.Clear();
         _colliderCount = 0;
+        _fieldList.Clear();
+        _fieldCount = 0;
     }
 }

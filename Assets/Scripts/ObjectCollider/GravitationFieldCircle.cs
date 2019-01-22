@@ -40,6 +40,7 @@ public class GravitationFieldCircle : ObjectColliderBase
     }
 
     #region Collider基础方法
+
     public override void SetSize(float arg0, float arg1)
     {
         _radius = arg0;

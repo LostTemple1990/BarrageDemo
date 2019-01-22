@@ -701,6 +701,10 @@ function Stage.StageTask()
 	lib.SetObjectColliderSize(collider,80,80)
 	lib.SetObjectColliderToPos(collider,0,0)
 	lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
+	local field = lib.CreateGravitationFieldByType(eColliderType.Circle)
+	lib.SetObjectColliderSize(field,80,80)
+	lib.SetObjectColliderToPos(field,0,0)
+	lib.InitGravitationField(field,1,0.5,0,0,0,0,0,0,0)
 	--
 	if coroutine.yield(200) == false then return end
 	do
@@ -713,7 +717,7 @@ function Stage.StageTask()
 			lib.EnemyMoveTowards(enemy,0.5,180,700);
 		end)
 		lib.AddEnemyTask(enemy,function()
-			if ( coroutine.yield(10000)==false ) then return end
+			if coroutine.yield(100)==false then return end
 			for _=1,10 do
 				for _=1,6 do
 					lib.PlaySound("se_tan00",false)
@@ -732,7 +736,7 @@ function Stage.StageTask()
 		end)
 		--测试直线激光
 		lib.AddEnemyTask(enemy,function()
-			--if coroutine.yield(10000) == false then return end
+			if coroutine.yield(10000) == false then return end
 			local laser,angle,i
 			angle = lib.GetAimToPlayerAngle(lib.GetEnemyPos(enemy))
 			for _=1,Infinite do

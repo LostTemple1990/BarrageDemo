@@ -177,6 +177,25 @@ public class PlayerBulletBase : BulletBase
                     effect.DoTweenAlpha(toAlpha, duration);
                     break;
                 }
+            // 设置颜色
+            case 12:
+                {
+                    float r = paras[1];
+                    float g = paras[2];
+                    float b = paras[3];
+                    effect.SetSpriteColor(r, g, b);
+                    break;
+                }
+            // 设置带alpha的颜色
+            case 13:
+                {
+                    float r = paras[1];
+                    float g = paras[2];
+                    float b = paras[3];
+                    float aValue = paras[4];
+                    effect.SetSpriteColor(r, g, b, aValue);
+                    break;
+                }
             // 设置缩放
             // scaleX,scaleY
             case 15:

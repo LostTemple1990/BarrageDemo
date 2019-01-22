@@ -143,8 +143,7 @@ public class SubWeaponMarisaA : SubWeaponBase
         {
             if ( _laser != null )
             {
-                _laser.SetToPosition(new Vector2(2000, 2000));
-                _laser.SetDetectCollision(false);
+                _laser.SetActive(false);
                 _isShooting = false;
             }
         }
