@@ -10,10 +10,6 @@ public class STGMain
 
     public void Update()
     {
-        if (CheckPause())
-        {
-            return;
-        }
         CommandManager.GetInstance().RunCommand(CommandConsts.STGFrameStart);
 
 #if CheckSTGFrameTime
@@ -168,19 +164,6 @@ public class STGMain
         // 测试抖动效果
         //ShakeEffect shakeEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ShakeEffect) as ShakeEffect;
         //shakeEffect.DoShake(200, 9999, 6, 1, 5, 3, 15);
-    }
-
-    /// <summary>
-    /// 检测游戏是否暂停
-    /// </summary>
-    /// <returns></returns>
-    private bool CheckPause()
-    {
-        if (!Global.IsPause && Input.GetKeyDown(KeyCode.Escape))
-        {
-            UIManager.GetInstance().ShowView(WindowName.STGPauseView);
-        }
-        return Global.IsPause;
     }
 
     public void Clear(eSTGClearType type)

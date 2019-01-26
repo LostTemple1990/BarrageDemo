@@ -42,6 +42,9 @@ Enemy的GetHit函数要加入伤害来源，用于判断是否吃B --finish
 添加bullet的render方法，在每帧最后执行
 优化灵梦跟踪弹的寻找目标方式
 检查一下ObjectCollider的ColliderGroup是否正确生效
+考虑把人物立绘相关部分也整合到SpriteEffect中
+添加SpellCard Bonus
+
 
 COLOR_DEEP_RED=1
 COLOR_RED=2

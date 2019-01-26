@@ -65,7 +65,7 @@ public class BCColliderTrigger : BulletComponent
             {
                 collider = colliderList[j];
                 // 非空，且满足触发条件
-                if ( collider != null && ((int)collider.GetEliminateType() | data.triggerType) != 0)
+                if ( collider != null && ((int)collider.GetEliminateType() & data.triggerType) != 0)
                 {
                     int nextColliderIndex = 0;
                     int curColliderIndex;

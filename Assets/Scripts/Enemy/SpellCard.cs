@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SpellCard
+public class SpellCard : ICommand
 {
     /// <summary>
     /// 符卡名称
@@ -43,6 +43,18 @@ public class SpellCard
     /// 是否符卡，false表示非符，不显示符卡信息
     /// </summary>
     private bool _isSpellCard;
+    /// <summary>
+    /// 符卡期间自机miss次数
+    /// </summary>
+    private int _missCount;
+    /// <summary>
+    /// 符卡期间自机放B的次数
+    /// </summary>
+    private int _castSCCount;
+    /// <summary>
+    /// 符卡期间自机进入决死状态的次数
+    /// </summary>
+    private int _dyingCount;
 
     public SpellCard()
     {
@@ -76,6 +88,13 @@ public class SpellCard
             CommandManager.GetInstance().RunCommand(CommandConsts.ShowSpellCardInfo, scDatas);
         }
         _isSCStarted = true;
+        // 初始化记录符卡状态的一些变量
+        _missCount = 0;
+        _castSCCount = 0;
+        _dyingCount = 0;
+        CommandManager.GetInstance().Register(CommandConsts.PlayerDying, this);
+        CommandManager.GetInstance().Register(CommandConsts.PlayerMiss, this);
+        CommandManager.GetInstance().Register(CommandConsts.PlayerCastSC, this);
         Logger.Log("Start SpellCard " + _scName);
     }
 
@@ -194,6 +213,10 @@ public class SpellCard
 
     public void OnFinish()
     {
+        // 移除符卡事件监听
+        CommandManager.GetInstance().Remove(CommandConsts.PlayerDying, this);
+        CommandManager.GetInstance().Remove(CommandConsts.PlayerMiss, this);
+        CommandManager.GetInstance().Remove(CommandConsts.PlayerCastSC, this);
         if ( _finishFuncRef != 0 )
         {
             InterpreterManager.GetInstance().CallLuaFunction(_finishFuncRef, 0);
@@ -245,8 +268,27 @@ public class SpellCard
         return _bossList[index];
     }
 
+    public void Execute(int cmd, object[] data)
+    {
+        switch ( cmd )
+        {
+            case CommandConsts.PlayerDying:
+                _dyingCount++;
+                break;
+            case CommandConsts.PlayerMiss:
+                _missCount++;
+                break;
+            case CommandConsts.PlayerCastSC:
+                _castSCCount++;
+                break;
+        }
+    }
+
     public void Clear()
     {
+        CommandManager.GetInstance().Remove(CommandConsts.PlayerDying, this);
+        CommandManager.GetInstance().Remove(CommandConsts.PlayerMiss, this);
+        CommandManager.GetInstance().Remove(CommandConsts.PlayerCastSC, this);
         _bossList = null;
         if ( _scTask != null && !_scTask.isFinish )
         {

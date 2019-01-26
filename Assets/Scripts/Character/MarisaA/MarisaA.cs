@@ -90,11 +90,11 @@ public class MarisaA : CharacterBase
         _subPosOffset[Consts.MoveModeHighSpeed][2] = new Vector2[] { new Vector2(-32f, 0f), new Vector2(0f, 32f), new Vector2(32f, 0f) };
         _subPosOffset[Consts.MoveModeHighSpeed][3] = new Vector2[] { new Vector2(-32f, 0f), new Vector2(-12f, 32f), new Vector2(12f, 32f), new Vector2(32f, 0f) };
         // 低速
-        _subPosOffset[Consts.ModeModeLowSpeed] = new Vector2[4][];
-        _subPosOffset[Consts.ModeModeLowSpeed][0] = new Vector2[] { new Vector2(0f, 28f) };
-        _subPosOffset[Consts.ModeModeLowSpeed][1] = new Vector2[] { new Vector2(-12f, 28f), new Vector2(12f, 28f) };
-        _subPosOffset[Consts.ModeModeLowSpeed][2] = new Vector2[] { new Vector2(-28f, 4f), new Vector2(0f, 28f), new Vector2(28f, 4f) };
-        _subPosOffset[Consts.ModeModeLowSpeed][3] = new Vector2[] { new Vector2(-28f, 4f), new Vector2(-12f, 28f), new Vector2(12f, 28f), new Vector2(28f, 4f) };
+        _subPosOffset[Consts.MoveModeLowSpeed] = new Vector2[4][];
+        _subPosOffset[Consts.MoveModeLowSpeed][0] = new Vector2[] { new Vector2(0f, 28f) };
+        _subPosOffset[Consts.MoveModeLowSpeed][1] = new Vector2[] { new Vector2(-12f, 28f), new Vector2(12f, 28f) };
+        _subPosOffset[Consts.MoveModeLowSpeed][2] = new Vector2[] { new Vector2(-28f, 4f), new Vector2(0f, 28f), new Vector2(28f, 4f) };
+        _subPosOffset[Consts.MoveModeLowSpeed][3] = new Vector2[] { new Vector2(-28f, 4f), new Vector2(-12f, 28f), new Vector2(12f, 28f), new Vector2(28f, 4f) };
         _isSubMoving = false;
         _subMoveDuration = SubMoveDuration;
     }

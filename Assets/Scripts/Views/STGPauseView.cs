@@ -74,7 +74,6 @@ public class STGPauseView : ViewBase
 
     public override void OnShow(object[] data)
     {
-        Global.IsPause = true;
         _isShowAniFinish = false;
         _state = StatePause;
         // 隐藏yesno面板
@@ -238,7 +237,7 @@ public class STGPauseView : ViewBase
         else if (_state == StatePause)
         {
             Hide();
-            Global.IsPause = false;
+            CommandManager.GetInstance().RunCommand(CommandConsts.ContinueGame);
         }
     }
 

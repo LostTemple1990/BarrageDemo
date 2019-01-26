@@ -302,6 +302,7 @@ public class CharacterBase : IAffectedMovableObject
         _character.SetActive(false);
         // 无敌
         SetInvincible(true, 20);
+        CommandManager.GetInstance().RunCommand(CommandConsts.PlayerDying);
     }
 
     protected virtual void StateDyingUpdate()
@@ -333,6 +334,7 @@ public class CharacterBase : IAffectedMovableObject
     {
         _waitRebornTime = 0;
         _stateUpdateFunc = StateWaitRebornUpdate;
+        CommandManager.GetInstance().RunCommand(CommandConsts.PlayerMiss);
     }
 
     protected virtual void StateWaitRebornUpdate()
@@ -406,7 +408,7 @@ public class CharacterBase : IAffectedMovableObject
                 _collisionPointTf.gameObject.SetActive(true);
             }
         }
-        if ( _curMoveMode == Consts.ModeModeLowSpeed )
+        if ( _curMoveMode == Consts.MoveModeLowSpeed )
         {
             RotateCollisionPoint();
         }
@@ -519,6 +521,7 @@ public class CharacterBase : IAffectedMovableObject
             _curBombCD = _bombCoolDown;
             SetInvincible(true, _bombInvincibleDuration);
             _isCastingBomb = true;
+            CommandManager.GetInstance().RunCommand(CommandConsts.PlayerCastSC);
         }
     }
 

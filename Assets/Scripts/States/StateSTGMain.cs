@@ -34,6 +34,10 @@ public class StateSTGMain : IState,ICommand
     /// 当前状态
     /// </summary>
     private int _curState;
+    /// <summary>
+    /// 是否在录像模式
+    /// </summary>
+    private bool _isInReplayMode;
 
     public StateSTGMain()
     {
@@ -61,6 +65,9 @@ public class StateSTGMain : IState,ICommand
             case CommandConsts.RetryGame:
                 OnRetryGame();
                 break;
+            case CommandConsts.ContinueGame:
+                OnContinueGame();
+                break;
         }
     }
 
@@ -87,8 +94,11 @@ public class StateSTGMain : IState,ICommand
         // 添加监听
         CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
+        CommandManager.GetInstance().Register(CommandConsts.ContinueGame, this);
         // 设置需要载入的stageId
         _nextStageId = (int)datas[0];
+        _isInReplayMode = (bool)datas[1];
+        Global.IsInReplayMode = _isInReplayMode;
         // 实例化STGMain
         if (_stgMain == null )
         {
@@ -98,7 +108,9 @@ public class StateSTGMain : IState,ICommand
 
     public void OnStateExit()
     {
-
+        CommandManager.GetInstance().Remove(CommandConsts.RetryGame, this);
+        CommandManager.GetInstance().Remove(CommandConsts.RetryStage, this);
+        CommandManager.GetInstance().Remove(CommandConsts.ContinueGame, this);
     }
 
     public void OnUpdate()
@@ -121,10 +133,7 @@ public class StateSTGMain : IState,ICommand
         }
         else if ( _curState == StateUpdateSTG )
         {
-            if (!Global.IsPause)
-            {
-                _stgMain.Update();
-            }
+            OnSTGMainUpdate();
         }
     }
 
@@ -167,6 +176,14 @@ public class StateSTGMain : IState,ICommand
     }
 
     /// <summary>
+    /// 继续游戏
+    /// </summary>
+    private void OnContinueGame()
+    {
+        Global.IsPause = false;
+    }
+
+    /// <summary>
     /// 初始化STGMain
     /// </summary>
     private void OnStateInitSTGMainUpdate()
@@ -205,7 +222,9 @@ public class StateSTGMain : IState,ICommand
         _curState = StateInitSTG;
     }
 
-
+    /// <summary>
+    /// 重新开始游戏的初始化
+    /// </summary>
     private void OnStateInitSTGUpdate()
     {
         _stgMain.InitSTG();
@@ -213,5 +232,22 @@ public class StateSTGMain : IState,ICommand
         PlayerService.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
         PlayerService.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
         _curState = StateLoadStageLua;
+    }
+
+    /// <summary>
+    /// 更新STG主线程
+    /// </summary>
+    private void OnSTGMainUpdate()
+    {
+        // 检测是否在游戏进行中按下Esc进行暂停
+        if (!Global.IsPause && Input.GetKeyDown(KeyCode.Escape))
+        {
+            UIManager.GetInstance().ShowView(WindowName.STGPauseView);
+            Global.IsPause = true;
+        }
+        if ( !Global.IsPause )
+        {
+            _stgMain.Update();
+        }
     }
 }

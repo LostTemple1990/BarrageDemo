@@ -20,6 +20,19 @@
     public const int SpellCardFinish = 2012;
 
     /// <summary>
+    /// 玩家进入决死状态
+    /// </summary>
+    public const int PlayerDying = 2100;
+    /// <summary>
+    /// 玩家miss
+    /// </summary>
+    public const int PlayerMiss = 2101;
+    /// <summary>
+    /// 玩家放B
+    /// </summary>
+    public const int PlayerCastSC = 2102;
+
+    /// <summary>
     /// 进入关卡
     /// </summary>
     public const int EnterStage = 3000;
@@ -42,4 +55,8 @@
 
     public const int RetryStage = 3010;
     public const int RetryGame = 3011;
+    /// <summary>
+    /// 继续游戏
+    /// </summary>
+    public const int ContinueGame = 3012;
 }

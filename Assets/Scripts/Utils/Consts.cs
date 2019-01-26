@@ -17,7 +17,7 @@ public class Consts
     /// <summary>
     /// 低速移动
     /// </summary>
-    public const int ModeModeLowSpeed = 1;
+    public const int MoveModeLowSpeed = 1;
 
     public const float HighSpeed = 4.5f;
     public const float SlowSpeed = 2f;
