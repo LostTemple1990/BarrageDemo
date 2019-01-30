@@ -16,6 +16,12 @@
     public const int ShowSpellCardInfo = 2011;
     /// <summary>
     /// 符卡结束
+    /// <para>消息附带的参数</para>
+    /// <para>bool isSpellCard 是否为符卡(非符or符卡)</para>
+    /// <para>bool isFinishSpellCard 是否成功击破符卡</para>
+    /// <para>bool getBonus 是否获得符卡bonus<para>
+    /// <para>int timePassed 击破符卡所用的游戏时间</para>
+    /// <para>int realTimePassed 击破符卡实际经过的时间</para>
     /// </summary>
     public const int SpellCardFinish = 2012;
 

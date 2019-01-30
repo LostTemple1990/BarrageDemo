@@ -55,6 +55,14 @@ public class SpellCard : ICommand
     /// 符卡期间自机进入决死状态的次数
     /// </summary>
     private int _dyingCount;
+    /// <summary>
+    /// 是否击破符卡
+    /// </summary>
+    private bool _isFinishSpellCard;
+    /// <summary>
+    /// 符卡起始时间戳
+    /// </summary>
+    private long _scStartTimeTick;
 
     public SpellCard()
     {
@@ -92,6 +100,8 @@ public class SpellCard : ICommand
         _missCount = 0;
         _castSCCount = 0;
         _dyingCount = 0;
+        _isFinishSpellCard = false;
+        _scStartTimeTick = System.DateTime.Now.Ticks;
         CommandManager.GetInstance().Register(CommandConsts.PlayerDying, this);
         CommandManager.GetInstance().Register(CommandConsts.PlayerMiss, this);
         CommandManager.GetInstance().Register(CommandConsts.PlayerCastSC, this);
@@ -133,6 +143,7 @@ public class SpellCard : ICommand
             if (_condition == eSpellCardCondition.TimeOver)
             {
                 Logger.Log("TimeSpellCard TimeOver");
+                _isFinishSpellCard = true;
                 return true;
             }
             Logger.Log("SpellCard Over Time!");
@@ -150,6 +161,7 @@ public class SpellCard : ICommand
                 }
             }
             Logger.Log("SpellCard EliminateAll");
+            _isFinishSpellCard = true;
             return true;
         }
         else if ( _condition == eSpellCardCondition.EliminateOne )
@@ -161,6 +173,7 @@ public class SpellCard : ICommand
                 if (boss.GetCurHp() <= 0 )
                 {
                     Logger.Log("SpellCard EliminateOne");
+                    _isFinishSpellCard = true;
                     return true;
                 }
             }
@@ -174,6 +187,7 @@ public class SpellCard : ICommand
                 return false;
             }
             Logger.Log("SpellCard EliminateSpecificOne");
+            _isFinishSpellCard = true;
             return true;
         }
         return false;
@@ -217,19 +231,30 @@ public class SpellCard : ICommand
         CommandManager.GetInstance().Remove(CommandConsts.PlayerDying, this);
         CommandManager.GetInstance().Remove(CommandConsts.PlayerMiss, this);
         CommandManager.GetInstance().Remove(CommandConsts.PlayerCastSC, this);
-        if ( _finishFuncRef != 0 )
+
+        // 通过符卡经过的时间
+        int framePassed = _frameTotal - _frameLeft;
+        int timePassed = framePassed * 1000 / Consts.TargetFrameRate;
+        // 是否获得符卡奖励
+        bool getBonus = (_dyingCount == 0 && _castSCCount == 0) ? true : false;
+        // 计算通过符卡实际经过的时间
+        long scFinishTimeTick = System.DateTime.Now.Ticks;
+        int realTimePassed = (int)((scFinishTimeTick - _scStartTimeTick) / 10000);
+        object[] datas = { _isSpellCard, _isFinishSpellCard, getBonus, timePassed, realTimePassed };
+        CommandManager.GetInstance().RunCommand(CommandConsts.SpellCardFinish, datas);
+
+        if (_finishFuncRef != 0)
         {
-            InterpreterManager.GetInstance().CallLuaFunction(_finishFuncRef, 0);
+            InterpreterManager.GetInstance().AddPara(_isFinishSpellCard, LuaParaType.Bool);
+            InterpreterManager.GetInstance().CallLuaFunction(_finishFuncRef, 1);
         }
         // 清除BossTask
-        for (int i=0;i<_bossCount;i++)
+        for (int i = 0; i < _bossCount; i++)
         {
             _bossList[i].OnSpellCardFinish();
         }
-        ColliderManager.GetInstance().ClearAllObjectCollider(new List<eEliminateDef>{ eEliminateDef.PlayerSpellCard });
+        ColliderManager.GetInstance().ClearAllObjectCollider(new List<eEliminateDef> { eEliminateDef.PlayerSpellCard });
         CreateEliminateEnemyCollider();
-        //BulletsManager.GetInstance().ClearAllEnemyBullets();
-        //EnemyManager.GetInstance().RawEliminateAllEnemyByCode(false);
     }
 
     /// <summary>

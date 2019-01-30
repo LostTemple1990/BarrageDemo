@@ -36,11 +36,6 @@ public class Consts
     /// </summary>
     public const float GameHeight = 448f;
 
-    public const int LayerId_Enemy = 1;
-    public const int LayerId_PlayerBarrage = 2;
-    public const int LayerId_Barrage = 5;
-    public const int LayerId_Player = 10;
-
     public const int BulletId_ReimuA_Main = 110;
     public const int BulletId_ReimuA_Sub1 = 111;
     public const int BulletId_ReimuA_Sub2 = 112;
