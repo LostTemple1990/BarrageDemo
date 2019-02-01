@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject
+public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExecuter
 {
     /// <summary>
     /// 当前生命值

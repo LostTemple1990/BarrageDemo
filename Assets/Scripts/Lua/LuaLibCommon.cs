@@ -208,6 +208,24 @@ public partial class LuaLib
         return 0;
     }
 
+    /// <summary>
+    /// 给ITaskExecuter添加task
+    /// <para>executer task执行者</para>
+    /// <para>lua Func task函数</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int AddTask(ILuaState luaState)
+    {
+        ITaskExecuter executer = luaState.ToUserData(-2) as ITaskExecuter;
+        int funcRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+        luaState.Pop(1);
+        Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
+        task.funcRef = funcRef;
+        executer.AddTask(task);
+        return 0;
+    }
+
     public static int PlayCharacterCG(ILuaState luaState)
     {
         string path = luaState.ToString(-2);

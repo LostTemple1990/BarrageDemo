@@ -190,4 +190,5 @@ public enum EffectType : byte
     ChargeEffect = 5,
     BulletEliminate = 6,
     EnemyEliminated = 7,
+    TextEffect = 8,
 }

@@ -73,4 +73,18 @@ public partial class LuaLib
     }
 
 
+    public static int GetKey(ILuaState luaState)
+    {
+        return 1;
+    }
+
+    public static int GetKeyDown(ILuaState luaState)
+    {
+        return 1;
+    }
+
+    public static int GetKeyUp(ILuaState luaState)
+    {
+        return 1;
+    }
 }

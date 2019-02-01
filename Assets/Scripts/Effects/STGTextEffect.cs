@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExecuter
+public class STGTextEffect : STGEffectBase, ISTGMovable, IAttachment, ITaskExecuter
 {
     private GameObject _effectGo;
     private Transform _effectTf;
-    private SpriteRenderer _spRenderer;
+    private Text _text;
 
     private float _curWidthScale;
     private float _curHeightScale;
@@ -115,20 +116,20 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     protected int _taskCount;
 
 
-    public STGSpriteEffect()
+    public STGTextEffect()
     {
-        _effectType = EffectType.SpriteEffect;
+        _effectType = EffectType.TextEffect;
         _taskList = new List<Task>();
     }
 
     public override void Clear()
     {
         ClearTasks();
-        if ( _isUsingCache )
+        if (_isUsingCache)
         {
             _effectTf.localScale = Vector3.one;
             _effectTf.localRotation = Quaternion.Euler(0, 0, 0);
-            _spRenderer.color = new Color(1, 1, 1, 1);
+            _text.color = new Color(1, 1, 1, 1);
             ObjectsPool.GetInstance().RestorePrefabToPool(_effectGoName, _effectGo);
         }
         else
@@ -139,7 +140,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         _movableObject = null;
         _effectGo = null;
         _effectTf = null;
-        _spRenderer = null;
+        _text = null;
     }
 
     public override void Init()
@@ -172,7 +173,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         _movableObject.SetPos(pos.x, pos.y);
     }
 
-    public void SetScale(float scaleX,float scaleY)
+    public void SetScale(float scaleX, float scaleY)
     {
         _curWidthScale = scaleX;
         _curHeightScale = scaleY;
@@ -181,38 +182,38 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
 
     public override void Update()
     {
-        if ( _isScalingWidth )
+        if (_isScalingWidth)
         {
             ScaleWidth();
         }
-        if ( _isScalingHeight )
+        if (_isScalingHeight)
         {
             ScaleHeight();
         }
-        if ( _isScalingWidth || _isScalingHeight )
+        if (_isScalingWidth || _isScalingHeight)
         {
             _effectTf.localScale = new Vector3(_curWidthScale, _curHeightScale, 1);
         }
-        if ( _isRotating )
+        if (_isRotating)
         {
             Rotate();
         }
-        if ( _isDoingTweenAlhpa )
+        if (_isDoingTweenAlhpa)
         {
             UpdateTweenAlpha();
         }
         UpdatePosition();
-        if ( _existDuration > 0 )
+        if (_existDuration > 0)
         {
             _existDuration--;
-            if ( _existDuration == 0 )
+            if (_existDuration == 0)
             {
                 _isFinish = true;
             }
         }
     }
 
-    public void DoScaleWidth(float toScale,int duration,InterpolationMode scaleMode)
+    public void DoScaleWidth(float toScale, int duration, InterpolationMode scaleMode)
     {
         _fromWidthScale = _curWidthScale;
         _toWidthScale = toScale;
@@ -235,7 +236,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     private void ScaleWidth()
     {
         _scaleWidthTime++;
-        switch ( _scaleWidthMode )
+        switch (_scaleWidthMode)
         {
             case InterpolationMode.EaseInQuad:
                 _curWidthScale = MathUtil.GetEaseInQuadInterpolation(_fromWidthScale, _toWidthScale, _scaleWidthTime, _scaleWidthDuration);
@@ -253,7 +254,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
                 _curWidthScale = MathUtil.GetSinInterpolation(_fromWidthScale, _toWidthScale, _scaleWidthTime, _scaleWidthDuration);
                 break;
         }
-        if ( _scaleWidthTime >= _scaleWidthDuration )
+        if (_scaleWidthTime >= _scaleWidthDuration)
         {
             _isScalingWidth = false;
         }
@@ -292,9 +293,9 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     /// <param name="startAlhpa">起始透明度</param>
     /// <param name="endAlpha">结束透明度</param>
     /// <param name="duration">持续时间</param>
-    public void DoTweenAlpha(float startAlhpa,float endAlpha,int duration)
+    public void DoTweenAlpha(float startAlhpa, float endAlpha, int duration)
     {
-        _spriteColor = _spRenderer.color;
+        _spriteColor = _text.color;
         _startAlhpa = startAlhpa;
         _endAlpha = endAlpha;
         _tweenAlphaTime = 0;
@@ -308,9 +309,9 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     /// </summary>
     /// <param name="endAlpha">结束透明度</param>
     /// <param name="duration">持续时间</param>
-    public void DoTweenAlpha(float endAlpha,int duration)
+    public void DoTweenAlpha(float endAlpha, int duration)
     {
-        _spriteColor = _spRenderer.color;
+        _spriteColor = _text.color;
         _startAlhpa = _spriteAlpha;
         _endAlpha = endAlpha;
         _tweenAlphaTime = 0;
@@ -328,7 +329,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         {
             _spriteAlpha = Mathf.Lerp(_startAlhpa, _endAlpha, (float)_tweenAlphaTime / _tweenAlphaDuration);
             _spriteColor.a = _spriteAlpha;
-            _spRenderer.color = _spriteColor;
+            _text.color = _spriteColor;
         }
         else
         {
@@ -368,40 +369,40 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         _effectTf.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
     }
 
-    public void SetSprite(string spName)
+    public void SetText(string text)
     {
         _effectGo = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "SpriteEffect");
         _effectTf = _effectGo.transform;
-        _spRenderer = _effectTf.Find("Sprite").GetComponent<SpriteRenderer>();
-        _spRenderer.sprite = ResourceManager.GetInstance().GetSprite(Consts.EffectAtlasName, spName);
+        _text = _effectTf.Find("Text").GetComponent<Text>();
+        _text.text = text;
         _isUsingCache = false;
         UIManager.GetInstance().AddGoToLayer(_effectGo, LayerId.STGNormalEffect);
     }
 
-    public void SetSprite(string atlasName,string spName,eBlendMode blendMode=eBlendMode.Normal,LayerId layerId=LayerId.STGNormalEffect,bool isUsingCache=false)
+    public void SetSprite(string atlasName, string spName, eBlendMode blendMode = eBlendMode.Normal, LayerId layerId = LayerId.STGNormalEffect, bool isUsingCache = false)
     {
         _isUsingCache = isUsingCache;
         // 不使用缓存，直接创建
-        if ( !isUsingCache)
+        if (!isUsingCache)
         {
             _effectGo = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "SpriteEffect");
             _effectTf = _effectGo.transform;
-            _spRenderer = _effectTf.Find("Sprite").GetComponent<SpriteRenderer>();
-            if ( blendMode != eBlendMode.Normal )
+            _text = _effectTf.Find("Text").GetComponent<Text>();
+            if (blendMode != eBlendMode.Normal)
             {
-                _spRenderer.material = ResourceManager.GetInstance().GetSpriteMatByBlendMode(blendMode);
+                _text.material = ResourceManager.GetInstance().GetSpriteMatByBlendMode(blendMode);
             }
-            _spRenderer.sprite = ResourceManager.GetInstance().GetSprite(atlasName, spName);
+            //_text.sprite = ResourceManager.GetInstance().GetSprite(atlasName, spName);
             UIManager.GetInstance().AddGoToLayer(_effectGo, layerId);
         }
         else
         {
             _effectGoName = "SpriteEffect_" + atlasName + "_" + spName + "_" + blendMode;
             _effectGo = ObjectsPool.GetInstance().GetPrefabAtPool(_effectGoName);
-            if ( _effectGo == null )
+            if (_effectGo == null)
             {
                 GameObject protoType = ObjectsPool.GetInstance().GetProtoType(_effectGoName);
-                if ( protoType == null )
+                if (protoType == null)
                 {
                     protoType = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", "SpriteEffect");
                     protoType.name = _effectGoName;
@@ -420,7 +421,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
                 UIManager.GetInstance().AddGoToLayer(_effectGo, layerId);
             }
             _effectTf = _effectGo.transform;
-            _spRenderer = _effectTf.Find("Sprite").GetComponent<SpriteRenderer>();
+            _text = _effectTf.Find("Text").GetComponent<Text>();
         }
     }
 
@@ -445,9 +446,9 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     public void SetSpritAlpha(float alpha)
     {
         _spriteAlpha = alpha;
-        Color color = _spRenderer.color;
+        Color color = _text.color;
         color.a = alpha;
-        _spRenderer.color = color;
+        _text.color = color;
     }
 
     /// <summary>
@@ -457,16 +458,16 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     /// <param name="gValue"></param>
     /// <param name="bValue"></param>
     /// <param name="aValue"></param>
-    public void SetSpriteColor(float rValue,float gValue,float bValue,float aValue)
+    public void SetSpriteColor(float rValue, float gValue, float bValue, float aValue)
     {
         _spriteColor = new Color(rValue, gValue, bValue, aValue);
         _spriteAlpha = aValue;
-        _spRenderer.color = _spriteColor;
+        _text.color = _spriteColor;
     }
 
     public void SetSpriteColor(float rValue, float gValue, float bValue)
     {
-        _spRenderer.color = new Color(rValue, gValue, bValue, _spriteAlpha);
+        _text.color = new Color(rValue, gValue, bValue, _spriteAlpha);
     }
 
     public void SetRotation(float angle)
@@ -480,7 +481,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         return _curRotation;
     }
 
-    public void DoRotation(float rotateAngle,int duration)
+    public void DoRotation(float rotateAngle, int duration)
     {
         _rotateAngle = rotateAngle;
         _rotateTime = 0;
@@ -492,7 +493,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     {
         _rotateTime++;
         _effectTf.Rotate(0, 0, _rotateAngle);
-        if ( _rotateTime >= _rotateAngle )
+        if (_rotateTime >= _rotateAngle)
         {
             _isRotating = false;
         }
@@ -500,7 +501,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
 
     public override bool NeedToBeRestoredToPool()
     {
-        return true;
+        return false;
     }
 
     #region ISTGMovalbe

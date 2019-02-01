@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovableObject
+public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovableObject,ITaskExecuter
 {
     /// <summary>
     /// bulletId
@@ -364,6 +364,16 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
     public virtual void AddExtraSpeedParas(float v, float vAngle, float acce, float accAngle)
     {
         throw new System.NotImplementedException();
+    }
+
+    public void AddTask(Task task)
+    {
+        BCCustomizedTask component = GetComponent<BCCustomizedTask>();
+        if ( component == null )
+        {
+            component = AddComponent<BCCustomizedTask>();
+        }
+        component.AddTask(task);
     }
 
     public override void Clear()

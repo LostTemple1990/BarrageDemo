@@ -34,8 +34,6 @@ public partial class LuaLib
         luaState.Pop(1);
         Task task = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
         task.funcRef = funcRef;
-        task.isFinish = false;
-        task.luaState = null;
         enemy.AddTask(task);
         return 0;
     }

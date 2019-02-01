@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
-public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable
+public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITaskExecuter
 {
     protected float _curPosX;
     protected float _curPosY;
@@ -55,6 +55,10 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable
     /// </summary>
     protected string _tag;
 
+
+    protected List<Task> _taskList;
+    protected int _taskCount;
+
     public ObjectColliderBase()
     {
         _clearFlag = 0;
@@ -64,6 +68,8 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable
         _isScaling = false;
         _movableObject = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
         _tag = "";
+        _taskList = new List<Task>();
+        _taskCount = 0;
     }
 
     public void SetTag(string tag)
@@ -147,7 +153,7 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable
 
     public void Update()
     {
-        if (_clearFlag == 1) return;
+        UpdateTasks();
         if (_isScaling) Scale();
         if ( _isFollowingMasterContinuously && _master != null )
         {
@@ -346,8 +352,54 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable
 
     #endregion
 
+    #region task
+    public void AddTask(Task task)
+    {
+        _taskList.Add(task);
+        _taskCount++;
+    }
+
+    private void UpdateTasks()
+    {
+        Task task;
+        for (int i = 0; i < _taskCount; i++)
+        {
+            task = _taskList[i];
+            if (task != null)
+            {
+                task.Update();
+                if (task.isFinish)
+                {
+                    ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(task);
+                    _taskList[i] = null;
+                }
+            }
+        }
+    }
+
+    private void ClearTasks()
+    {
+        Task task;
+        for (int i = 0; i < _taskCount; i++)
+        {
+            task = _taskList[i];
+            if (task != null)
+            {
+                if (task.luaState != null)
+                {
+                    InterpreterManager.GetInstance().StopTaskThread(task.luaState, task.funcRef);
+                }
+                ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(task);
+            }
+        }
+        _taskList.Clear();
+        _taskCount = 0;
+    }
+    #endregion
+
     public void Clear()
     {
+        ClearTasks();
         _master = null;
         ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObject);
         _movableObject = null;
