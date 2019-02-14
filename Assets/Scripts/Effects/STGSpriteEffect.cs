@@ -7,6 +7,23 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     private Transform _effectTf;
     private SpriteRenderer _spRenderer;
 
+    /// <summary>
+    /// sprite对象原始宽度
+    /// </summary>
+    private float _originalWidth;
+    /// <summary>
+    /// sprite对象原始高度
+    /// </summary>
+    private float _originalHeight;
+    /// <summary>
+    /// sprite对象实际宽度
+    /// </summary>
+    private float _realWidth;
+    /// <summary>
+    /// sprite对象实际高度
+    /// </summary>
+    private float _realHeight;
+
     private float _curWidthScale;
     private float _curHeightScale;
 
@@ -158,6 +175,8 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         _spriteAlpha = 1;
         _movableObject = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
         _taskCount = 0;
+        _originalWidth = _originalHeight = 0;
+        _realWidth = _realHeight = 0;
     }
 
     public override void SetToPosition(float posX, float posY)
@@ -176,6 +195,15 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     {
         _curWidthScale = scaleX;
         _curHeightScale = scaleY;
+        _effectTf.localScale = new Vector3(_curWidthScale, _curHeightScale, 1);
+    }
+
+    public void SetSize(float width,float height)
+    {
+        _realWidth = width;
+        _realHeight = height;
+        _curWidthScale = _realWidth / _originalWidth;
+        _curHeightScale = _realHeight / _originalHeight;
         _effectTf.localScale = new Vector3(_curWidthScale, _curHeightScale, 1);
     }
 
@@ -422,6 +450,14 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
             _effectTf = _effectGo.transform;
             _spRenderer = _effectTf.Find("Sprite").GetComponent<SpriteRenderer>();
         }
+        // 获取sprite对象的原始尺寸
+        Sprite sp = _spRenderer.sprite;
+        Vector3 size = sp.bounds.extents * 2 * sp.pixelsPerUnit;
+        _originalWidth = size.x;
+        _originalHeight = size.y;
+        // 计算实际尺寸
+        _realWidth = _originalWidth;
+        _realHeight = _originalHeight;
     }
 
     /// <summary>

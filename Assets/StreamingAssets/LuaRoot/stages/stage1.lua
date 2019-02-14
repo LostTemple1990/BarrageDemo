@@ -777,7 +777,7 @@ function Stage.StageTask()
 			end
 		end)
 	end
-	if coroutine.yield(300) == false then return end
+	if coroutine.yield(30000) == false then return end
 	do
 		local boss = lib.CreateBoss("MidBoss")
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)

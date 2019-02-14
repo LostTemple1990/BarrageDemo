@@ -107,6 +107,23 @@ public partial class LuaLib
     }
 
     /// <summary>
+    /// 设置SpriteEffect的尺寸
+    /// <para>width</para>
+    /// <para>height</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetSpriteEffectSize(ILuaState luaState)
+    {
+        STGSpriteEffect effect = luaState.ToUserData(-3) as STGSpriteEffect;
+        float width = (float)luaState.ToNumber(-2);
+        float height = (float)luaState.ToNumber(-1);
+        luaState.Pop(3);
+        effect.SetSize(width, height);
+        return 0;
+    }
+
+    /// <summary>
     /// 设置SpriteEffect的缩放
     /// <para>scaleX</para>
     /// <para>scaleY</para>

@@ -112,6 +112,7 @@ public partial class LuaLib
             new NameFuncPair("SetEffectFinish",SetEffectFinish),
             new NameFuncPair("CreateSpriteEffect",CreateSpriteEffect),
             new NameFuncPair("CreateSpriteEffectWithProps",CreateSpriteEffectWithProps),
+            new NameFuncPair("SetSpriteEffectSize",SetSpriteEffectSize),
             new NameFuncPair("SetSpriteEffectScale",SetSpriteEffectScale),
             new NameFuncPair("SetSpriteEffectColor",SetSpriteEffectColor),
             new NameFuncPair("SpriteEffectScaleWidth",SpriteEffectScaleWidth),
