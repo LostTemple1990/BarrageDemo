@@ -237,7 +237,7 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
         paras.lastUpdateTime = curTime;
         _affectedObjectDic[affectedObject] = paras;
         // 设置额外运动参数
-        affectedObject.AddExtraSpeedParas(paras.velocity, paras.vAngle, paras.acce, paras.accAngle);
+        affectedObject.AddExtraSpeedParas(paras.velocity, paras.vAngle, paras.acce*paras.timeInGravitationField, paras.accAngle);
     }
     #endregion
 
@@ -262,8 +262,8 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
         float acceOffset = _acceOffset == 0 ? 0 : MTRandom.GetNextFloat(-_acceOffset, _acceOffset);
         float accAngleOffset = _accAngleOffset == 0 ? 0 : MTRandom.GetNextFloat(-_accAngleOffset, _accAngleOffset);
         // 计算实际的额外运动参数
-        float v = _velocity + _velocityOffset;
-        float acce = _acce + _acceOffset;
+        float v = _velocity + velocityOffset;
+        float acce = _acce + acceOffset;
         float vAngle = _vAngle, accAngle = _accAngle;
         // 中心吸力
         if (_fieldType == 1)
@@ -284,8 +284,8 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
             accAngle = angle;
         }
         // 计算速度方向以及加速度方向
-        vAngle += _vAngleOffset;
-        accAngle += _accAngleOffset;
+        vAngle += vAngleOffset;
+        accAngle += accAngleOffset;
 
         GravitationParas paras = new GravitationParas
         {

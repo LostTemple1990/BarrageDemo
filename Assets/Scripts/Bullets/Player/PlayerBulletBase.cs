@@ -211,7 +211,7 @@ public class PlayerBulletBase : BulletBase
                 {
                     float toScaleX = paras[1];
                     int duration = (int)paras[2];
-                    effect.DoScaleWidth(toScaleX, duration, InterpolationMode.Linear);
+                    effect.ChangeWidthTo(toScaleX, duration, InterpolationMode.Linear);
                     break;
                 }
             // 设置scaleY缩放动画
@@ -220,7 +220,7 @@ public class PlayerBulletBase : BulletBase
                 {
                     float toScaleY = paras[1];
                     int duration = (int)paras[2];
-                    effect.DoScaleHeight(toScaleY, duration, InterpolationMode.Linear);
+                    effect.ChangeHeightTo(toScaleY, duration, InterpolationMode.Linear);
                     break;
                 }
             // 持续时间

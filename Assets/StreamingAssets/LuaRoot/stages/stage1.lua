@@ -695,16 +695,16 @@ function Stage.StageTask()
 	lib.PlaySound("bgm",true)
 	local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
 	lib.SetEffectToPos(spriteEffect,0,0)
-	lib.SetSpriteEffectScale(spriteEffect,2.5,2.5)
+	lib.SetSpriteEffectSize(spriteEffect,500,500)
 	lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
-	local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
-	lib.SetObjectColliderSize(collider,80,80)
-	lib.SetObjectColliderToPos(collider,0,0)
-	lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
+	--local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
+	--lib.SetObjectColliderSize(collider,80,80)
+	--lib.SetObjectColliderToPos(collider,0,0)
+	--lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
 	local field = lib.CreateGravitationFieldByType(eColliderType.Circle)
-	lib.SetObjectColliderSize(field,80,80)
+	lib.SetObjectColliderSize(field,250,250)
 	lib.SetObjectColliderToPos(field,0,0)
-	lib.InitGravitationField(field,1,0.5,0.05,0,0,0,0,0,0)
+	lib.InitGravitationField(field,1,0.5,0,0,0,0.05,0,0,0)
 	lib.SetObjectColliderColliderGroup(field,eColliderGroup.EnemyBullet)
 	--
 	if coroutine.yield(200) == false then return end
@@ -718,7 +718,7 @@ function Stage.StageTask()
 			lib.EnemyMoveTowards(enemy,0.5,180,700);
 		end)
 		lib.AddEnemyTask(enemy,function()
-			if coroutine.yield(100)==false then return end
+			if coroutine.yield(10000)==false then return end
 			for _=1,10 do
 				for _=1,6 do
 					lib.PlaySound("se_tan00",false)
@@ -774,6 +774,24 @@ function Stage.StageTask()
 				lib.SetCurveLaserCurveParas(laser,0,i*20,3,3)
 				lib.SetCurveLaserWidth(laser,5,3)
 				if coroutine.yield(5) == false then return end
+			end
+		end)
+		--测试引力场
+		lib.AddEnemyTask(enemy,function()
+			if coroutine.yield(100) == false then return end
+			do
+				local r,dr=50,25
+				for _=1,10 do
+					do
+						local angle,dAngle = 0,20
+						for _=1,18 do
+							last = lib.CreateSimpleBulletById(113020,r*math.cos(math.rad(angle)),r*math.sin(math.rad(angle)))
+							angle = angle + dAngle
+						end
+					end
+					if coroutine.yield(10) == false then return end
+					r = r + dr
+				end
 			end
 		end)
 	end

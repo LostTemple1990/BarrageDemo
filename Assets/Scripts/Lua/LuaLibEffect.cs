@@ -175,25 +175,25 @@ public partial class LuaLib
         return 0;
     }
 
-    public static int SpriteEffectScaleWidth(ILuaState luaState)
+    public static int SpriteEffectChangeWidthTo(ILuaState luaState)
     {
         STGSpriteEffect effect = luaState.ToUserData(-4) as STGSpriteEffect;
-        float toScale = (float)luaState.ToNumber(-3);
+        float toWidth = (float)luaState.ToNumber(-3);
         int duration = luaState.ToInteger(-2);
         InterpolationMode scaleMode = (InterpolationMode)luaState.ToInteger(-1);
         luaState.Pop(4);
-        effect.DoScaleWidth(toScale, duration, scaleMode);
+        effect.ChangeWidthTo(toWidth, duration, scaleMode);
         return 0;
     }
 
-    public static int SpriteEffectScaleHeight(ILuaState luaState)
+    public static int SpriteEffectChangeHeightTo(ILuaState luaState)
     {
         STGSpriteEffect effect = luaState.ToUserData(-4) as STGSpriteEffect;
-        float toScale = (float)luaState.ToNumber(-3);
+        float toHeight = (float)luaState.ToNumber(-3);
         int duration = luaState.ToInteger(-2);
         InterpolationMode scaleMode = (InterpolationMode)luaState.ToInteger(-1);
         luaState.Pop(4);
-        effect.DoScaleHeight(toScale, duration, scaleMode);
+        effect.ChangeHeightTo(toHeight, duration, scaleMode);
         return 0;
     }
 

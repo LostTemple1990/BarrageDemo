@@ -18,11 +18,11 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     /// <summary>
     /// sprite对象实际宽度
     /// </summary>
-    private float _realWidth;
+    private float _curWidth;
     /// <summary>
     /// sprite对象实际高度
     /// </summary>
-    private float _realHeight;
+    private float _curHeight;
 
     private float _curWidthScale;
     private float _curHeightScale;
@@ -176,7 +176,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         _movableObject = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
         _taskCount = 0;
         _originalWidth = _originalHeight = 0;
-        _realWidth = _realHeight = 0;
+        _curWidth = _curHeight = 0;
     }
 
     public override void SetToPosition(float posX, float posY)
@@ -200,10 +200,10 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
 
     public void SetSize(float width,float height)
     {
-        _realWidth = width;
-        _realHeight = height;
-        _curWidthScale = _realWidth / _originalWidth;
-        _curHeightScale = _realHeight / _originalHeight;
+        _curWidth = width;
+        _curHeight = height;
+        _curWidthScale = _curWidth / _originalWidth;
+        _curHeightScale = _curHeight / _originalHeight;
         _effectTf.localScale = new Vector3(_curWidthScale, _curHeightScale, 1);
     }
 
@@ -219,6 +219,8 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         }
         if ( _isScalingWidth || _isScalingHeight )
         {
+            _curWidth = _curWidthScale * _originalWidth;
+            _curHeight = _curWidthScale * _originalHeight;
             _effectTf.localScale = new Vector3(_curWidthScale, _curHeightScale, 1);
         }
         if ( _isRotating )
@@ -240,20 +242,20 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         }
     }
 
-    public void DoScaleWidth(float toScale,int duration,InterpolationMode scaleMode)
+    public void ChangeWidthTo(float toWidth,int duration,InterpolationMode scaleMode)
     {
         _fromWidthScale = _curWidthScale;
-        _toWidthScale = toScale;
+        _toWidthScale = toWidth / _originalWidth;
         _scaleWidthTime = 0;
         _scaleWidthDuration = duration;
         _scaleWidthMode = scaleMode;
         _isScalingWidth = true;
     }
 
-    public void DoScaleHeight(float toScale, int duration, InterpolationMode scaleMode)
+    public void ChangeHeightTo(float toHeight, int duration, InterpolationMode scaleMode)
     {
         _fromHeightScale = _curWidthScale;
-        _toHeightScale = toScale;
+        _toHeightScale = toHeight / _originalHeight;
         _scaleHeightTime = 0;
         _scaleHeightDuration = duration;
         _scaleHeightMode = scaleMode;
@@ -456,8 +458,8 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         _originalWidth = size.x;
         _originalHeight = size.y;
         // 计算实际尺寸
-        _realWidth = _originalWidth;
-        _realHeight = _originalHeight;
+        _curWidth = _originalWidth;
+        _curHeight = _originalHeight;
     }
 
     /// <summary>
