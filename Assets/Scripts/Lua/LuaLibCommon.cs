@@ -5,6 +5,51 @@ using UniLua;
 public partial class LuaLib
 {
     /// <summary>
+    /// 获取单位的坐标
+    /// <para>IPositon positionCls</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int IPosition_GetPosition(ILuaState luaState)
+    {
+        IPosition positionCls = luaState.ToUserData(-1) as IPosition;
+        Vector2 pos = positionCls.GetPosition();
+        luaState.PushNumber(pos.x);
+        luaState.PushNumber(pos.y);
+        return 2;
+    }
+
+    /// <summary>
+    /// 设置单位的坐标
+    /// <para>IPositon positionCls</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int IPosition_SetPosition(ILuaState luaState)
+    {
+        IPosition positionCls = luaState.ToUserData(-3) as IPosition;
+        float posX = (float)luaState.ToNumber(-2);
+        float posY = (float)luaState.ToNumber(-1);
+        positionCls.SetPosition(posX, posY);
+        return 0;
+    }
+
+    /// <summary>
+    /// 获取两个对象之间的角度
+    /// <para>from</para>
+    /// <para>to</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int IPosition_Angle(ILuaState luaState)
+    {
+        IPosition from = luaState.ToUserData(-2) as IPosition;
+        IPosition to = luaState.ToUserData(-1) as IPosition;
+        luaState.PushNumber(MathUtil.GetAngleBetweenXAxis(to.GetPosition() - from.GetPosition()));
+        return 1;
+    }
+
+    /// <summary>
     /// 获取IPosition对象相对于自机的角度
     /// <para>IPosition</para>
     /// </summary>

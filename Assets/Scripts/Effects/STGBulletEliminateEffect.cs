@@ -60,7 +60,7 @@ public class STGBulletEliminateEffect : STGEffectBase
         UIManager.GetInstance().AddGoToLayer(_effectGo, LayerId.STGNormalEffect);
     }
 
-    public override void SetToPosition(float posX, float posY)
+    public override void SetPosition(float posX, float posY)
     {
         _effectTf.localPosition = new Vector2(posX, posY);
     }

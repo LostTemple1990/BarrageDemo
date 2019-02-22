@@ -23,7 +23,7 @@ public partial class LuaLib
         EnemyLinearLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_LinearLaser) as EnemyLinearLaser;
         laser.SetStyleById(id);
         laser.SetLength(laserLen);
-        laser.SetToPosition(posX, posY);
+        laser.SetPosition(posX, posY);
         luaState.PushLightUserData(laser);
         return 1;
     }
@@ -141,7 +141,7 @@ public partial class LuaLib
         EnemyCurveLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_CurveLaser) as EnemyCurveLaser;
         laser.SetStyleById(id);
         laser.SetLength(laserLen);
-        laser.SetToPosition(posX, posY);
+        laser.SetPosition(posX, posY);
         luaState.PushLightUserData(laser);
         return 1;
     }

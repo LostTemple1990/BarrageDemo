@@ -16,7 +16,7 @@ public class STGEffectBase
     {
 
     }
-    public virtual void SetToPosition(float posX, float posY)
+    public virtual void SetPosition(float posX, float posY)
     {
 
     }

@@ -262,7 +262,7 @@ public class EnemyBulletMovable : EnemyBulletBase
         _extraVelocityX += v * Mathf.Cos(angle * Mathf.Deg2Rad);
         _extraVelocityY += v * Mathf.Sin(angle * Mathf.Deg2Rad);
         _extraAcceX += acce * Mathf.Cos(accAngle * Mathf.Deg2Rad);
-        _extraAcceY += acce * Mathf.Cos(accAngle * Mathf.Deg2Rad);
+        _extraAcceY += acce * Mathf.Sin(accAngle * Mathf.Deg2Rad);
     }
 
     /// <summary>

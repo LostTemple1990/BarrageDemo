@@ -149,7 +149,7 @@ public class STGChargeEffect : STGEffectBase
         return new Vector3(posX + _curPos.x, posY + _curPos.y, 0);
     }
 
-    public override void SetToPosition(float posX, float posY)
+    public override void SetPosition(float posX, float posY)
     {
         _curPos = new Vector2(posX, posY);
         _effectContainerTf.localPosition = new Vector3(posX, posY, 0);

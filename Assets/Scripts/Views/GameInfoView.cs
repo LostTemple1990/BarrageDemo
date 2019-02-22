@@ -116,6 +116,7 @@ public class GameInfoView : ViewBase,ICommand
         _isShowSpellCardTime = false;
         _scTimeObject.SetActive(false);
         _bgmObject.SetActive(false);
+        _spellCardResultPanel.SetActive(false);
     }
 
     public void Execute(int cmd, object[] datas)

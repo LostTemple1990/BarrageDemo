@@ -624,14 +624,14 @@ public class EnemyLinearLaser : EnemyBulletBase
         _laserSegmentPool.Push(segment);
     }
 
-    public override void SetToPosition(float posX, float posY)
+    public override void SetPosition(float posX, float posY)
     {
         //Logger.Log("Set LinearLaser To Position " + posX + "  , " + posY);
         _movableObj.Reset(posX, posY);
         _pathList.Add(new Vector2(posX, posY));
     }
 
-    public override void SetToPosition(Vector2 pos)
+    public override void SetPosition(Vector2 pos)
     {
         //Logger.Log("Set LinearLaser To Position " + pos.x + "  , " + pos.y);
         _movableObj.Reset(pos.x,pos.y);

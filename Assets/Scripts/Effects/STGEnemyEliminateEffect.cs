@@ -58,7 +58,7 @@ public class STGEnemyEliminatedEffect : STGEffectBase
         _isCached = false;
     }
 
-    public override void SetToPosition(float posX, float posY)
+    public override void SetPosition(float posX, float posY)
     {
         _curPos = new Vector2(posX, posY);
     }

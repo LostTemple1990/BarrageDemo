@@ -158,14 +158,14 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
         _isDirty = false;
     }
 
-    public virtual void SetToPosition(float posX,float posY)
+    public virtual void SetPosition(float posX,float posY)
     {
         _curPos = new Vector2(posX, posY);
         _movableObj.SetPos(posX, posY);
         //_enemyTf.localPosition = _curPos;
     }
 
-    public virtual void SetToPosition(Vector2 pos)
+    public virtual void SetPosition(Vector2 pos)
     {
         _curPos = pos;
         _movableObj.SetPos(_curPos.x, _curPos.y);

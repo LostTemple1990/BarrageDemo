@@ -78,7 +78,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
-        bullet.SetToPosition(posX, posY);
+        bullet.SetPosition(posX, posY);
         return 0;
     }
     #endregion

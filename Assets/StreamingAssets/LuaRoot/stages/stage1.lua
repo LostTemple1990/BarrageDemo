@@ -722,7 +722,7 @@ function Stage.StageTask()
 			for _=1,10 do
 				for _=1,6 do
 					lib.PlaySound("se_tan00",false)
-					local posX,posY = lib.GetEnemyPos(enemy)
+					local posX,posY = GetPos(enemy)
 					local bullet
 					do local angle=-35 for _=1,3 do
 						bullet = lib.CreateSimpleBulletById("104060",posX,posY)
@@ -730,18 +730,18 @@ function Stage.StageTask()
 						lib.SetBulletStraightParas(bullet,2,angle,true,0.25,Constants.VelocityAngle)
 						angle = angle+35
 					end end
-					if ( coroutine.yield(5)==false ) then return end
+					if coroutine.yield(5)==false then return end
 				end
-				if ( coroutine.yield(100)==false ) then return end
+				if coroutine.yield(100)==false then return end
 			end
 		end)
 		--测试直线激光
 		lib.AddEnemyTask(enemy,function()
 			if coroutine.yield(10000) == false then return end
 			local laser,angle,i
-			angle = lib.GetAimToPlayerAngle(lib.GetEnemyPos(enemy))
+			angle = Angle(enemy,player)
 			for _=1,Infinite do
-				angle = lib.GetAimToPlayerAngle(lib.GetEnemyPos(enemy))
+				angle = Angle(enemy,player)
 				for i=0,18 do
 					local posX,posY = lib.GetEnemyPos(enemy)
 					laser = lib.CreateLinearLaser("304060",45,posX,posY)
@@ -785,7 +785,7 @@ function Stage.StageTask()
 					do
 						local angle,dAngle = 0,20
 						for _=1,18 do
-							last = lib.CreateSimpleBulletById(113020,r*math.cos(math.rad(angle)),r*math.sin(math.rad(angle)))
+							last = lib.CreateSimpleBulletById(113020,r*cos(angle),r*sin(angle))
 							angle = angle + dAngle
 						end
 					end

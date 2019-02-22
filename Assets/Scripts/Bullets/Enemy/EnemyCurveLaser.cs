@@ -156,9 +156,9 @@ public class EnemyCurveLaser : EnemyBulletBase
         _endV = _vUnit * index;
     }
 
-    public override void SetToPosition(float posX, float posY)
+    public override void SetPosition(float posX, float posY)
     {
-        base.SetToPosition(posX, posY);
+        base.SetPosition(posX, posY);
         _trans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
         _movableObj.SetPos(0, 0);
         _relationX = posX;
@@ -166,9 +166,9 @@ public class EnemyCurveLaser : EnemyBulletBase
         _trailsList.Add(Vector2.zero);
     }
 
-    public override void SetToPosition(Vector2 pos)
+    public override void SetPosition(Vector2 pos)
     {
-        base.SetToPosition(pos);
+        base.SetPosition(pos);
         _trans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
         _movableObj.SetPos(0, 0);
         _relationX = pos.x;

@@ -100,7 +100,7 @@ public class PlayerBulletBase : BulletBase
                     float offsetY = paras[4];
                     if (offsetX != 0) dx += Random.Range(-offsetX, offsetX);
                     if (offsetY != 0) dy += Random.Range(-offsetY, offsetY);
-                    effect.SetToPosition(_hitPos.x + dx, _hitPos.y + dy);
+                    effect.SetPosition(_hitPos.x + dx, _hitPos.y + dy);
                     break;
                 }
             // 设置位置，参数为绝对位置
@@ -112,7 +112,7 @@ public class PlayerBulletBase : BulletBase
                     float offsetY = paras[4];
                     if (offsetX != 0) posX += Random.Range(-offsetX, offsetX);
                     if (offsetY != 0) posY += Random.Range(-offsetY, offsetY);
-                    effect.SetToPosition(posX, posY);
+                    effect.SetPosition(posX, posY);
                     break;
                 }
             // 设置速度，v,dAngle,acce

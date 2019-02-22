@@ -637,14 +637,20 @@ public class CharacterBase : IAffectedMovableObject
         return _curPos;
     }
 
-    public void SetToPosition(float posX,float posY)
+    public void SetPosition(float posX,float posY)
     {
-        _curPos = new Vector2(posX, posY);
+        if (_curState != eCharacterState.Appear)
+        {
+            _curPos = new Vector2(posX, posY);
+        }
     }
 
-    public void SetToPosition(Vector2 pos)
+    public void SetPosition(Vector2 pos)
     {
-        _curPos = pos;
+        if ( _curState != eCharacterState.Appear )
+        {
+            _curPos = pos;
+        }
     }
 
     public void SetRotation(float value)

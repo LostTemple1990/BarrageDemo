@@ -21,7 +21,7 @@ public partial class LuaLib
         EnemyCfg cfg = EnemyManager.GetInstance().GetEnemyCfgById(enemyId);
         NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.NormalEnemy) as NormalEnemy;
         enemy.Init(cfg);
-        enemy.SetToPosition(new Vector3(posX, posY, 0));
+        enemy.SetPosition(new Vector3(posX, posY, 0));
         luaState.PushLightUserData(enemy);
         Logger.Log("Create Normal Enemy Complete");
         return 1;
@@ -61,7 +61,7 @@ public partial class LuaLib
         EnemyCfg cfg = EnemyManager.GetInstance().GetEnemyCfgById(enemyId);
         NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.NormalEnemy) as NormalEnemy;
         enemy.Init(cfg);
-        enemy.SetToPosition(new Vector3(posX, posY, 0));
+        enemy.SetPosition(new Vector3(posX, posY, 0));
         int onEliminateFuncRef = InterpreterManager.GetInstance().GetEnemyOnEliminateFuncRef(customizedName);
         if (onEliminateFuncRef != 0)
         {
@@ -176,7 +176,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
-        enemy.SetToPosition(new Vector3(posX, posY));
+        enemy.SetPosition(new Vector3(posX, posY));
         return 0;
     }
 

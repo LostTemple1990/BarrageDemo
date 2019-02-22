@@ -334,7 +334,7 @@ public class PlayerLaser : PlayerBulletBase
             }
             else
             {
-                SetToPosition(new Vector2(2000, 2000));
+                SetPosition(new Vector2(2000, 2000));
                 SetDetectCollision(false);
                 _curLaserLen = 0;
             }

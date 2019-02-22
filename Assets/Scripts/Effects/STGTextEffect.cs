@@ -161,13 +161,13 @@ public class STGTextEffect : STGEffectBase, ISTGMovable, IAttachment, ITaskExecu
         _taskCount = 0;
     }
 
-    public override void SetToPosition(float posX, float posY)
+    public override void SetPosition(float posX, float posY)
     {
         _curPos = new Vector2(posX, posY);
         _movableObject.SetPos(posX, posY);
     }
 
-    public void SetToPosition(Vector2 pos)
+    public void SetPosition(Vector2 pos)
     {
         _curPos = pos;
         _movableObject.SetPos(pos.x, pos.y);

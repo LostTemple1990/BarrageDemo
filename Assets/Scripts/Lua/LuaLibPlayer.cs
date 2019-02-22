@@ -28,7 +28,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(2);
-        PlayerService.GetInstance().GetCharacter().SetToPosition(posX, posY);
+        PlayerService.GetInstance().GetCharacter().SetPosition(posX, posY);
         return 0;
     }
 

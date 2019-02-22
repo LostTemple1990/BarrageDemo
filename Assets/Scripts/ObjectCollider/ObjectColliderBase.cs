@@ -82,7 +82,7 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
         return _tag;
     }
 
-    public void SetToPosition(float posX,float posY)
+    public void SetPosition(float posX,float posY)
     {
         _curPosX = posX;
         _curPosY = posY;
@@ -90,7 +90,7 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
         _movableObject.SetPos(posX, posY);
     }
 
-    public void SetToPosition(Vector2 pos)
+    public void SetPosition(Vector2 pos)
     {
         _curPosX = pos.x;
         _curPosY = pos.y;
@@ -157,7 +157,7 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
         if (_isScaling) Scale();
         if ( _isFollowingMasterContinuously && _master != null )
         {
-            SetToPosition(_relativePosToMaster + _master.GetPosition());
+            SetPosition(_relativePosToMaster + _master.GetPosition());
         }
         else
         {
@@ -289,7 +289,7 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
         _isFollowingMasterContinuously = isFollowingMasterContinuously;
         if ( _master != null )
         {
-            SetToPosition(_master.GetPosition() + _relativePosToMaster);
+            SetPosition(_master.GetPosition() + _relativePosToMaster);
         }
     }
 

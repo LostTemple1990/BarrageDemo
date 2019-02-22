@@ -20,7 +20,7 @@ public partial class LuaLib
         luaState.Pop(3);
         EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Simple) as EnemyBulletSimple;
         bullet.SetStyleById(sysId);
-        bullet.SetToPosition(posX, posY);
+        bullet.SetPosition(posX, posY);
         luaState.PushLightUserData(bullet);
         return 1;
     }
@@ -196,7 +196,7 @@ public partial class LuaLib
         luaState.Pop(1);
         EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Simple) as EnemyBulletSimple;
         bullet.SetStyleById(sysId);
-        bullet.SetToPosition(posX, posY);
+        bullet.SetPosition(posX, posY);
         // 设置自定义的数据
         BCCustomizedTask bc = bullet.AddComponent<BCCustomizedTask>();
         // 使用pcall

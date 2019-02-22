@@ -186,7 +186,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _bullet = BulletsManager.GetInstance().CreateBulletGameObject(_type, _cfg.id);
         _trans = _bullet.transform;
         _spRenderer = _trans.Find("BulletSprite").GetComponent<SpriteRenderer>();
-        SetToPosition(_curPos.x, _curPos.y);
+        SetPosition(_curPos.x, _curPos.y);
         SetRotatedByVelocity(cfg.isRotatedByVAngle);
         SetSelfRotation(cfg.selfRotationAngle);
         GrazeDetectParas grazeParas = new GrazeDetectParas
@@ -230,7 +230,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
         _appearEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
         _appearEffect.SetSprite(Consts.STGBulletsAtlasName, _cfg.appearEffectName, _cfg.blendMode, LayerId.EnemyBarrage, true);
         _appearEffect.SetOrderInLayer(10);
-        _appearEffect.SetToPosition(_curPos.x, _curPos.y);
+        _appearEffect.SetPosition(_curPos.x, _curPos.y);
         _appearEffect.SetScale(_cfg.appearEffectSizeFrom, _cfg.appearEffectSizeFrom);
         //_appearEffect.DoScaleWidth(_cfg.appearEffectSizeTo, AppearEffectExistDuration, InterpolationMode.Linear);
         //_appearEffect.DoScaleHeight(_cfg.appearEffectSizeTo, AppearEffectExistDuration, InterpolationMode.Linear);
@@ -239,7 +239,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
 
     private void UpdateAppearEffect()
     {
-        _appearEffect.SetToPosition(_curPos.x, _curPos.y);
+        _appearEffect.SetPosition(_curPos.x, _curPos.y);
         float factor = (float)_timeSinceCreated / AppearEffectExistDuration;
         float scaleX = Mathf.Lerp(_cfg.appearEffectSizeFrom, _cfg.appearEffectSizeTo, factor) * _scaleX;
         float scaleY = Mathf.Lerp(_cfg.appearEffectSizeFrom, _cfg.appearEffectSizeTo, factor) * _scaleY;
@@ -544,7 +544,7 @@ public class EnemyBulletSimple : EnemyBulletMovable
                 Color eliminateColor = _cfg.eliminateColor;
                 STGBulletEliminateEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.BulletEliminate) as STGBulletEliminateEffect;
                 effect.SetColor(eliminateColor);
-                effect.SetToPosition(_curPos.x, _curPos.y);
+                effect.SetPosition(_curPos.x, _curPos.y);
             }
             return true;
         }

@@ -191,6 +191,33 @@ public partial class LuaLib
         return 1;
     }
 
+    public static int InitGlobal(ILuaState luaState)
+    {
+        var define = new NameFuncPair[]
+        {
+            // IPosition
+            new NameFuncPair("GetPos",IPosition_GetPosition),
+            new NameFuncPair("SetPos",IPosition_SetPosition),
+            new NameFuncPair("Angle",IPosition_Angle),
+            // Math
+            new NameFuncPair("sin",Math_Sin),
+            new NameFuncPair("cos",Math_Cos),
+            new NameFuncPair("tan",Math_Tan),
+            new NameFuncPair("asin",Math_ASin),
+            new NameFuncPair("acos",Math_ACos),
+            new NameFuncPair("atan",Math_ATan),
+            new NameFuncPair("int",Math_Int),
+            new NameFuncPair("abs",Math_Abs),
+            new NameFuncPair("sign",Math_Sign),
+            new NameFuncPair("RandomInt",GetRandomInt),
+            new NameFuncPair("RandomFloat",GetRandomFloat),
+            new NameFuncPair("RandomSign",GetRandomSign),
+        };
+        luaState.PushGlobalTable();
+        luaState.L_SetFuncs(define, 0);
+        return 1;
+    }
+
     /// <summary>
     /// 创建一颗简单的子弹
     /// <para>id 配置里面的id</para>
@@ -220,7 +247,7 @@ public partial class LuaLib
         luaState.Pop(7);
         EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Laser) as EnemyLaser;
         laser.SetStyleById(id);
-        laser.SetToPosition(posX, posY);
+        laser.SetPosition(posX, posY);
         laser.SetRotation(angle);
         laser.SetLaserSize(width, height);
         laser.SetLaserExistDuration(existDuration);
@@ -345,7 +372,7 @@ public partial class LuaLib
         float width = (float)luaState.ToNumber(-2);
         int existDuration = luaState.ToInteger(-1);
         luaState.Pop(7);
-        laser.SetToPosition(posX, posY);
+        laser.SetPosition(posX, posY);
         laser.SetRotation(angle);
         laser.SetLaserSize(length, width);
         laser.SetLaserExistDuration(existDuration);
@@ -359,7 +386,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
-        laser.SetToPosition(posX, posY);
+        laser.SetPosition(posX, posY);
         return 0;
     }
 
@@ -481,7 +508,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
-        boss.SetToPosition(new Vector3(posX, posY,0));
+        boss.SetPosition(new Vector3(posX, posY,0));
         return 0;
     }
 
@@ -691,7 +718,6 @@ public partial class LuaLib
     {
         int begin = luaState.ToInteger(-2);
         int end = luaState.ToInteger(-1);
-        luaState.Pop(2);
         luaState.PushInteger(MTRandom.GetNextInt(begin,end));
         return 1;
     }
@@ -700,8 +726,19 @@ public partial class LuaLib
     {
         float begin = (float)luaState.ToNumber(-2);
         float end = (float)luaState.ToNumber(-1);
-        luaState.Pop(2);
         luaState.PushNumber(MTRandom.GetNextFloat(begin, end));
+        return 1;
+    }
+
+    /// <summary>
+    /// 随机返回-1或者1
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int GetRandomSign(ILuaState luaState)
+    {
+        int ret = MTRandom.GetNextInt(0, 1);
+        luaState.PushNumber(ret == 0 ? -1 : 1);
         return 1;
     }
     #endregion

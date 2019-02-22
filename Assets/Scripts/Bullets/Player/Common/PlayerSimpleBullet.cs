@@ -80,14 +80,14 @@ public class PlayerBulletSimple : PlayerBulletBase
         _curPos = _movableObject.GetPos();
     }
 
-    public override void SetToPosition(Vector2 pos)
+    public override void SetPosition(Vector2 pos)
     {
         _curPos.x = pos.x;
         _curPos.y = pos.y;
         _movableObject.SetPos(_curPos.x, _curPos.y);
     }
 
-    public override void SetToPosition(float posX, float posY)
+    public override void SetPosition(float posX, float posY)
     {
         _curPos.x = posX;
         _curPos.y = posY;

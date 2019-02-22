@@ -66,6 +66,7 @@ public class InterpreterManager
         _luaState = LuaAPI.NewState();
         _luaState.L_OpenLibs();
         _luaState.L_RequireF("LuaLib", LuaLib.Init, false);
+        LuaLib.InitGlobal(_luaState);
         _luaState.Pop(_luaState.GetTop());
         // 添加错误log函数
         _luaState.PushCSharpFunction(Traceback);
@@ -99,6 +100,12 @@ public class InterpreterManager
 
     public Task LoadStage(int stageId)
     {
+        // 记录全局变量player
+        _luaState.PushGlobalTable();
+        _luaState.PushLightUserData(PlayerService.GetInstance().GetCharacter());
+        _luaState.SetField(-2, "player");
+        _luaState.Pop(1);
+
         if ( _curStageId != stageId )
         {
             LoadSpellCardConfig(stageId);
@@ -723,6 +730,11 @@ public class InterpreterManager
 
     private void ClearLuaGlobal()
     {
+        _luaState.PushGlobalTable();
+        _luaState.PushNil();
+        _luaState.SetField(-2, "player");
+        _luaState.Pop(1);
+
         _luaGlobalNumberMap.Clear();
         _luaGlobalObjectMap.Clear();
         _luaGlobalVec2Map.Clear();

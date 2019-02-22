@@ -272,6 +272,22 @@ public enum eCharacterState : int
     WaitReborn = 4,
 }
 
+public enum GravitationType : byte
+{
+    /// <summary>
+    /// 普通
+    /// </summary>
+    Normal = 0,
+    /// <summary>
+    /// 向心力
+    /// </summary>
+    Centripetal = 1,
+    /// <summary>
+    /// 离心力
+    /// </summary>
+    Centrifugal = 2,
+}
+
 public struct GravitationParas
 {
     /// <summary>

@@ -61,7 +61,7 @@ public class BombReimuA : BombBase
             collider = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Circle) as ColliderCircle;
             collider.SetSize(0,0);
             collider.SetColliderGroup(eColliderGroup.EnemyBullet|eColliderGroup.Enemy);
-            collider.SetToPosition(bombPos.x, bombPos.y);
+            collider.SetPosition(bombPos.x, bombPos.y);
             collider.SetEliminateType(eEliminateDef.PlayerSpellCard);
             collider.SetHitEnemyDamage(1);
             _colliderList.Add(collider);
@@ -124,7 +124,7 @@ public class BombReimuA : BombBase
             ColliderCircle collider = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Circle) as ColliderCircle;
             collider.SetSize(500, 500);
             collider.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy);
-            collider.SetToPosition(Global.PlayerPos.x, Global.PlayerPos.y);
+            collider.SetPosition(Global.PlayerPos.x, Global.PlayerPos.y);
             collider.SetEliminateType(eEliminateDef.PlayerSpellCard);
             collider.SetHitEnemyDamage(400);
             collider.SetExistDuration(1);

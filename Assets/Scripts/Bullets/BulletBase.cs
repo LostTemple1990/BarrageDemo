@@ -99,12 +99,12 @@ public class BulletBase :IPosition,ICollisionObject
 
     }
 
-    public virtual void SetToPosition(Vector2 pos)
+    public virtual void SetPosition(Vector2 pos)
     {
         _curPos = pos;
     }
 
-    public virtual void SetToPosition(float posX,float posY)
+    public virtual void SetPosition(float posX,float posY)
     {
         _curPos.x = posX;
         _curPos.y = posY;

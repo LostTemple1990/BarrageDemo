@@ -12,7 +12,7 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
     /// <summary>
     /// 引力场类型
     /// </summary>
-    private int _fieldType;
+    private GravitationType _fieldType;
     /// <summary>
     /// 赋予的速度
     /// </summary>
@@ -221,6 +221,17 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
         {
             if (curTime - paras.lastUpdateTime == 1)
             {
+                // 每帧重新计算向心力、离心力的角度
+                if ( _fieldType == GravitationType.Centripetal )
+                {
+                    paras.vAngle = MathUtil.GetAngleBetweenXAxis(_curPos - affectedObject.GetPosition());
+                    paras.accAngle = paras.vAngle;
+                }
+                else if ( _fieldType == GravitationType.Centrifugal )
+                {
+                    paras.vAngle = MathUtil.GetAngleBetweenXAxis(affectedObject.GetPosition() - _curPos);
+                    paras.accAngle = paras.vAngle;
+                }
                 paras.timeInGravitationField++;
             }
             else
@@ -243,7 +254,7 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
 
     public void Init(int fieldType, float velocity, float velocityOffest, float vAngle, float angleOffest, float acce, float acceOffset, float accAngle, float accAngleOffset)
     {
-        _fieldType = fieldType;
+        _fieldType = (GravitationType)fieldType;
         _velocity = velocity;
         _velocityOffset = velocityOffest;
         _vAngle = vAngle;
@@ -258,15 +269,13 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
     {
         // 偏移计算
         float velocityOffset = _velocityOffset == 0 ? 0 : MTRandom.GetNextFloat(-_velocityOffset, _velocityOffset);
-        float vAngleOffset = _vAngleOffset == 0 ? 0 : MTRandom.GetNextFloat(-_vAngleOffset, _vAngleOffset);
         float acceOffset = _acceOffset == 0 ? 0 : MTRandom.GetNextFloat(-_acceOffset, _acceOffset);
-        float accAngleOffset = _accAngleOffset == 0 ? 0 : MTRandom.GetNextFloat(-_accAngleOffset, _accAngleOffset);
         // 计算实际的额外运动参数
         float v = _velocity + velocityOffset;
         float acce = _acce + acceOffset;
         float vAngle = _vAngle, accAngle = _accAngle;
         // 中心吸力
-        if (_fieldType == 1)
+        if (_fieldType == GravitationType.Centripetal)
         {
             Vector2 affectObjectPos = affectedObj.GetPosition();
             Vector2 fieldPos = _curPos;
@@ -275,7 +284,7 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
             accAngle = angle;
         }
         // 中心斥力
-        else if (_fieldType == 2)
+        else if (_fieldType == GravitationType.Centrifugal)
         {
             Vector2 affectObjectPos = affectedObj.GetPosition();
             Vector2 fieldPos = _curPos;
@@ -283,9 +292,15 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
             vAngle = angle;
             accAngle = angle;
         }
-        // 计算速度方向以及加速度方向
-        vAngle += vAngleOffset;
-        accAngle += accAngleOffset;
+        // 只有普通立场才计算偏移
+        if (_fieldType == GravitationType.Normal)
+        {
+            float vAngleOffset = _vAngleOffset == 0 ? 0 : MTRandom.GetNextFloat(-_vAngleOffset, _vAngleOffset);
+            float accAngleOffset = _accAngleOffset == 0 ? 0 : MTRandom.GetNextFloat(-_accAngleOffset, _accAngleOffset);
+            // 计算速度方向以及加速度方向
+            vAngle += vAngleOffset;
+            accAngle += accAngleOffset;
+        }
 
         GravitationParas paras = new GravitationParas
         {

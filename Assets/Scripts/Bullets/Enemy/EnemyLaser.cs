@@ -153,14 +153,14 @@ public class EnemyLaser : EnemyBulletBase
         _isDirty = true;
     }
 
-    public override void SetToPosition(Vector2 vec)
+    public override void SetPosition(Vector2 vec)
     {
         _curPos.x = vec.x;
         _curPos.y = vec.y;
         _movableObject.SetPos(vec.x, vec.y);
     }
 
-    public override void SetToPosition(float posX, float posY)
+    public override void SetPosition(float posX, float posY)
     {
         _curPos = new Vector2(posX, posY);
         _movableObject.SetPos(posX, posY);
