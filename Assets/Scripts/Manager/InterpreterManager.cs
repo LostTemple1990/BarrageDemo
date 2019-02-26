@@ -67,6 +67,7 @@ public class InterpreterManager
         _luaState.L_OpenLibs();
         _luaState.L_RequireF("LuaLib", LuaLib.Init, false);
         LuaLib.InitGlobal(_luaState);
+        LuaLib.RegisterLightUserDataLuaInterface();
         _luaState.Pop(_luaState.GetTop());
         // 添加错误log函数
         _luaState.PushCSharpFunction(Traceback);

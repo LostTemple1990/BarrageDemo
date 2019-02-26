@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBulletSimple : EnemyBulletMovable
+public class EnemySimpleBullet : EnemyBulletMovable
 {
     /// <summary>
     /// 子弹出现特效的存在时间

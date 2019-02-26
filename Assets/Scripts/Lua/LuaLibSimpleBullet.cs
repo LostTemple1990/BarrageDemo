@@ -18,7 +18,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
-        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Simple) as EnemyBulletSimple;
+        EnemySimpleBullet bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Simple) as EnemySimpleBullet;
         bullet.SetStyleById(sysId);
         bullet.SetPosition(posX, posY);
         luaState.PushLightUserData(bullet);
@@ -32,7 +32,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetBulletAppearEffectAvailable(ILuaState luaState)
     {
-        EnemyBulletSimple bullet = luaState.ToUserData(-2) as EnemyBulletSimple;
+        EnemySimpleBullet bullet = luaState.ToUserData(-2) as EnemySimpleBullet;
         bool isAvailable = luaState.ToBoolean(-1);
         luaState.Pop(2);
         bullet.SetAppearEffectAvailable(isAvailable);
@@ -49,7 +49,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetBulletSelfRotation(ILuaState luaState)
     {
-        EnemyBulletSimple bullet = luaState.ToUserData(-2) as EnemyBulletSimple;
+        EnemySimpleBullet bullet = luaState.ToUserData(-2) as EnemySimpleBullet;
         float omega = (float)luaState.ToNumber(-1);
         luaState.Pop(2);
         bullet.SetSelfRotation(omega);
@@ -64,7 +64,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetBulletScale(ILuaState luaState)
     {
-        EnemyBulletSimple bullet = luaState.ToUserData(-2) as EnemyBulletSimple;
+        EnemySimpleBullet bullet = luaState.ToUserData(-2) as EnemySimpleBullet;
         float scale = (float)luaState.ToNumber(-1);
         luaState.Pop(2);
         bullet.SetScale(scale);
@@ -82,7 +82,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int BulletDoScale(ILuaState luaState)
     {
-        EnemyBulletSimple bullet = luaState.ToUserData(-4) as EnemyBulletSimple;
+        EnemySimpleBullet bullet = luaState.ToUserData(-4) as EnemySimpleBullet;
         float toScale = (float)luaState.ToNumber(-3);
         int delay = luaState.ToInteger(-2);
         int duration = luaState.ToInteger(-1);
@@ -103,7 +103,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetBulletStraightParas(ILuaState luaState)
     {
-        EnemyBulletSimple bullet = luaState.ToUserData(-6) as EnemyBulletSimple;
+        EnemySimpleBullet bullet = luaState.ToUserData(-6) as EnemySimpleBullet;
         float velocity = (float)luaState.ToNumber(-5);
         float vAngle = (float)luaState.ToNumber(-4);
         bool isAimToPlayer = luaState.ToBoolean(-3);
@@ -129,7 +129,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int DoBulletAcceleration(ILuaState luaState)
     {
-        EnemyBulletSimple bullet = luaState.ToUserData(-3) as EnemyBulletSimple;
+        EnemySimpleBullet bullet = luaState.ToUserData(-3) as EnemySimpleBullet;
         float acce = (float)luaState.ToNumber(-2);
         float accAngle = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
@@ -147,7 +147,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int DoBulletAccelerationWithLimitation(ILuaState luaState)
     {
-        EnemyBulletSimple bullet = luaState.ToUserData(-4) as EnemyBulletSimple;
+        EnemySimpleBullet bullet = luaState.ToUserData(-4) as EnemySimpleBullet;
         float acce = (float)luaState.ToNumber(-3);
         float accAngle = (float)luaState.ToNumber(-2);
         float maxVelocity = (float)luaState.ToNumber(-1);
@@ -167,7 +167,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetBulletCurvePara(ILuaState luaState)
     {
-        EnemyBulletSimple bullet = luaState.ToUserData(-5) as EnemyBulletSimple;
+        EnemySimpleBullet bullet = luaState.ToUserData(-5) as EnemySimpleBullet;
         float radius = (float)luaState.ToNumber(-4);
         float curveAngle = (float)luaState.ToNumber(-3);
         float deltaR = (float)luaState.ToNumber(-2);
@@ -194,7 +194,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-3 - numArgs);
         float posY = (float)luaState.ToNumber(-2 - numArgs);
         luaState.Pop(1);
-        EnemyBulletSimple bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Simple) as EnemyBulletSimple;
+        EnemySimpleBullet bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Simple) as EnemySimpleBullet;
         bullet.SetStyleById(sysId);
         bullet.SetPosition(posX, posY);
         // 设置自定义的数据

@@ -218,6 +218,35 @@ public partial class LuaLib
         return 1;
     }
 
+    public static void RegisterLightUserDataLuaInterface()
+    {
+        UniLua.Utl.RegisterGetLightUserDataPropValueFunctionDelegate(GetLightUserDataField);
+        UniLua.Utl.RegisterSetLightUserDataPropValueFunctionDelegate(SetLightUserDataField);
+    }
+
+    public static bool GetLightUserDataField(object userData, TValue key, out TValue res)
+    {
+        switch (userData.GetType().Name)
+        {
+            case "EnemySimpleBullet":
+                return EnemySimpleBulletLuaInterface.Get(userData, key, out res);
+        }
+        res = new TValue();
+        res.SetSValue(string.Format("GetField from userData fail!Invalid userData of type {0}", userData.GetType().Name));
+        return false;
+    }
+
+    public static bool SetLightUserDataField(object userData, TValue key, ref TValue value)
+    {
+        switch (userData.GetType().Name)
+        {
+            case "EnemySimpleBullet":
+                return EnemySimpleBulletLuaInterface.Set(userData, key, ref value);
+        }
+        value.SetSValue(string.Format("SetField of userData fail!Invalid userData of type {0}", userData.GetType().Name));
+        return false;
+    }
+
     /// <summary>
     /// 创建一颗简单的子弹
     /// <para>id 配置里面的id</para>

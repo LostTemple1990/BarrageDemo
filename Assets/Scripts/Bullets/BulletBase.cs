@@ -212,6 +212,16 @@ public class BulletBase :IPosition,ICollisionObject
         get { return _curPos.y; }
     }
 
+    public float Dx
+    {
+        get { return _dx; }
+    }
+
+    public float Dy
+    {
+        get { return _dy; }
+    }
+
     public virtual Vector2 CurPos
     {
         get { return _curPos; }

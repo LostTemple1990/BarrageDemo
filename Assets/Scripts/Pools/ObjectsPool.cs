@@ -127,7 +127,7 @@ public class ObjectsPool
                     bullet = new EnemyCurveLaser();
                     break;
                 case BulletType.Enemy_Simple:
-                    bullet = new EnemyBulletSimple();
+                    bullet = new EnemySimpleBullet();
                     break;
                 case BulletType.Enemy_LinearLaser:
                     bullet = new EnemyLinearLaser();

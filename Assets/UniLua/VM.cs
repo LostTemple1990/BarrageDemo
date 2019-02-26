@@ -778,9 +778,23 @@ l_tforloop:
 						return;
 					}
 
-					// else will try the tag method
 				}
-				else {
+                else if (t.V.Tt == (int)LuaType.LUA_TLIGHTUSERDATA)
+                {
+                    TValue res;
+                    if (Utl.GetLightUserDataPropValue(t.V, key.V, out res))
+                    {
+                        val.V.SetObj(ref res);
+                    }
+                    else
+                    {
+                        G_RunError(res.SValue());
+                    }
+                    return;
+
+                    // else will try the tag method
+                }
+                else {
 					tmObj = T_GetTMByObj(ref t.V, TMS.TM_INDEX);
 					if(tmObj.V.TtIsNil())
 						G_SimpleTypeError(ref t.V, "index" );
@@ -815,9 +829,18 @@ l_tforloop:
 						return;
 					}
 
-					// else will try the tag method
 				}
-				else {
+                else if (t.V.Tt == (int)LuaType.LUA_TLIGHTUSERDATA)
+                {
+                    if (!Utl.SetLightUserDataPropValue(t.V, key.V, ref val.V))
+                    {
+                        G_RunError(val.V.SValue());
+                    }
+                    return;
+
+                    // else will try the tag method
+                }
+                else {
 					tmObj = T_GetTMByObj(ref t.V, TMS.TM_NEWINDEX);
 					if(tmObj.V.TtIsNil())
 						G_SimpleTypeError(ref t.V, "index" );

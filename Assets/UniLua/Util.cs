@@ -233,7 +233,54 @@ ret:
 			while( e >= 0 && Char.IsWhiteSpace( str[e-1] ) ) --e;
 			return str.Substring( s, e-s );
 		}
-	}
+
+        #region 解析lightUserData的辅助函数
+        public delegate bool GetLightUserDataPropValueFunctionDelegate(object obj, TValue key, out TValue resValue);
+        public delegate bool SetLightUserDataPropValueFunctionDelegate(object obj, TValue key, ref TValue value);
+
+        private static GetLightUserDataPropValueFunctionDelegate _getLightUserDataPropValue;
+        private static SetLightUserDataPropValueFunctionDelegate _setLightUserDataPropValue;
+
+        /// <summary>
+        /// 注册获取ud的属性的方法
+        /// </summary>
+        /// <param name="func"></param>
+        public static void RegisterGetLightUserDataPropValueFunctionDelegate(GetLightUserDataPropValueFunctionDelegate func)
+        {
+            _getLightUserDataPropValue = func;
+        }
+
+        public static bool GetLightUserDataPropValue(TValue userData, TValue key, out TValue resValue)
+        {
+            if (_getLightUserDataPropValue != null)
+            {
+                return _getLightUserDataPropValue(userData.OValue, key, out resValue);
+            }
+            resValue = new TValue();
+            resValue.SetSValue("GetField from userData fail!Function GetField is not exist");
+            return false;
+        }
+
+        /// <summary>
+        /// 注册设置ud的属性的方法
+        /// </summary>
+        /// <param name="func"></param>
+        public static void RegisterSetLightUserDataPropValueFunctionDelegate(SetLightUserDataPropValueFunctionDelegate func)
+        {
+            _setLightUserDataPropValue = func;
+        }
+
+        public static bool SetLightUserDataPropValue(TValue userData, TValue key, ref TValue value)
+        {
+            if (_setLightUserDataPropValue != null)
+            {
+                return _setLightUserDataPropValue(userData.OValue, key, ref value);
+            }
+            value.SetSValue("SetField of userData fail!Function SetField is not exist");
+            return false;
+        }
+        #endregion
+    }
 
 }
 

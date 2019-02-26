@@ -29,6 +29,11 @@ public class EnemyBulletMovable : EnemyBulletBase
     /// 是否需要重新计算速度方向
     /// </summary>
     protected bool _reCalVAngle;
+    /// <summary>
+    /// 是否需要重新计算速度分量
+    /// <para>默认为true</para>
+    /// </summary>
+    protected bool _reCalV;
 
     #region 极坐标运动相关参数
     protected Vector2 _centerPos;
@@ -88,6 +93,8 @@ public class EnemyBulletMovable : EnemyBulletBase
         _maxVelocity = -1;
         _isInitVelocity = false;
         ResetExtraSpeedParas();
+        _reCalV = true;
+        _reCalVAngle = false;
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
     }
 
@@ -189,6 +196,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     {
         _vx += _dvx;
         _vy += _dvy;
+        _reCalVAngle = _vx == 0 && _vy == 0 ? false : true;
         if ( _maxVelocity >= 0 )
         {
             float value = _vx * _vx + _vy * _vy;
@@ -391,8 +399,8 @@ public class EnemyBulletMovable : EnemyBulletBase
     /// </summary>
     public float Velocity
     {
-        get { return _vx; }
-        protected set
+        get { return Mathf.Sqrt(_vx * _vx + _vy * _vy); }
+        set
         {
             if (_maxVelocity < 0)
             {
@@ -407,8 +415,15 @@ public class EnemyBulletMovable : EnemyBulletBase
                 _curVAngle = MathUtil.GetAngleBetweenXAxis(_vx, _vy);
                 _reCalVAngle = false;
             }
-            _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
-            _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
+            if ( _reCalV )
+            {
+                _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
+                _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
+            }
+            else
+            {
+                _reCalV = true;
+            }
         }
     }
 
@@ -418,9 +433,11 @@ public class EnemyBulletMovable : EnemyBulletBase
     public float Vx
     {
         get { return _vx; }
-        protected set
+        set
         {
             _vx = value;
+            _reCalV = false;
+            _reCalVAngle = true;
             Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
         }
     }
@@ -431,9 +448,11 @@ public class EnemyBulletMovable : EnemyBulletBase
     public float Vy
     {
         get { return _vy; }
-        protected set
+        set
         {
             _vy = value;
+            _reCalV = false;
+            _reCalVAngle = true;
             Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
         }
     }
@@ -443,10 +462,19 @@ public class EnemyBulletMovable : EnemyBulletBase
     /// </summary>
     public float VAngle
     {
-        get { return _curVAngle; }
-        protected set
+        get
+        {
+            if ( _reCalVAngle )
+            {
+                _curVAngle = MathUtil.GetAngleBetweenXAxis(_vx, _vy);
+                _reCalVAngle = false;
+            }
+            return _curVAngle;
+        }
+        set
         {
             _curVAngle = value;
+            _reCalV = true;
             _reCalVAngle = false;
             Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
         }
@@ -458,7 +486,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     public float Acce
     {
         get { return _curAcce; }
-        protected set
+        set
         {
             _curAcce = value;
             _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
@@ -473,7 +501,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     public float AccAngle
     {
         get { return _curAccAngle; }
-        protected set
+        set
         {
             _curAccAngle = value;
             _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
@@ -491,7 +519,7 @@ public class EnemyBulletMovable : EnemyBulletBase
             if (_maxVelocity < 0) return int.MaxValue;
             return _maxVelocity;
         }
-        protected set
+        set
         {
             _maxVelocity = value;
             // 若value小于0，说明取消了速度限制，则直接返回
@@ -514,7 +542,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     public float CurveRadius
     {
         get { return _curRadius; }
-        protected set { _curRadius = value; }
+        set { _curRadius = value; }
     }
 
     /// <summary>
@@ -523,7 +551,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     public float CurveDeltaRadius
     {
         get { return _deltaRadius; }
-        protected set { _deltaRadius = value; }
+        set { _deltaRadius = value; }
     }
 
     /// <summary>
@@ -532,7 +560,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     public float CurveAngle
     {
         get { return _curCurveAngle; }
-        protected set { _curCurveAngle = value; }
+        set { _curCurveAngle = value; }
     }
 
     /// <summary>
