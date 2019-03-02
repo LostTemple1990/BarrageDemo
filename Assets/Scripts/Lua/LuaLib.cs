@@ -248,6 +248,24 @@ public partial class LuaLib
     }
 
     /// <summary>
+    /// 获取参数的个数
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    private static int GetNumParams(ILuaState luaState)
+    {
+        int top = luaState.GetTop();
+        int paraCount = 0;
+        int index = -1;
+        while (paraCount < top && !luaState.IsFunction(index))
+        {
+            index--;
+            paraCount++;
+        }
+        return paraCount;
+    }
+
+    /// <summary>
     /// 创建一颗简单的子弹
     /// <para>id 配置里面的id</para>
     /// <para>float posX</para>

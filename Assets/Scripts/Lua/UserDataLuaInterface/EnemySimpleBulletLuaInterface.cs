@@ -3,6 +3,13 @@ using UnityEngine;
 
 public class EnemySimpleBulletLuaInterface
 {
+    private LuaCsClosureValue _funcSetV;
+
+    private void Init()
+    {
+        _funcSetV = new LuaCsClosureValue(LuaLib.STGMovableDoStraightMove);
+    }
+
     public static bool Get(object o,TValue key,out TValue res)
     {
         EnemySimpleBullet bullet = (EnemySimpleBullet)o;
@@ -72,6 +79,30 @@ public class EnemySimpleBulletLuaInterface
                 case "accAngle":
                     {
                         res.SetNValue(bullet.AccAngle);
+                        return true;
+                    }
+                #endregion
+                #region 子弹类专属变量
+                case "timer":
+                    {
+                        res.SetNValue(bullet.TimeSinceCreated);
+                        return true;
+                    }
+                #endregion
+                #region 运动类专属方法
+                case "SetV":
+                    {
+                        res.SetClLcsValue(LuaLib.STGMovableDoStraightMove);
+                        return true;
+                    }
+                case "SetAcce":
+                    {
+                        res.SetNValue(bullet.TimeSinceCreated);
+                        return true;
+                    }
+                case "SetPolarParas":
+                    {
+                        res.SetNValue(bullet.TimeSinceCreated);
                         return true;
                     }
                     #endregion
