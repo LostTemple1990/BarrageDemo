@@ -218,10 +218,14 @@ public partial class LuaLib
         return 1;
     }
 
+    private static EnemySimpleBulletLuaInterface _enemySimpleBulletLuaInterface;
+
     public static void RegisterLightUserDataLuaInterface()
     {
         UniLua.Utl.RegisterGetLightUserDataPropValueFunctionDelegate(GetLightUserDataField);
         UniLua.Utl.RegisterSetLightUserDataPropValueFunctionDelegate(SetLightUserDataField);
+
+        EnemySimpleBulletLuaInterface.Init();
     }
 
     public static bool GetLightUserDataField(object userData, TValue key, out TValue res)

@@ -553,7 +553,12 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         _movableObject.DoStraightMove(v, angle);
     }
 
-    public void DoStraightMoveWithLimitation(float v, float angle, int duration)
+    public void MoveTo(float endX,float endY,int duration,InterpolationMode intMode)
+    {
+        _movableObject.DoMoveTo(endX, endY, duration, intMode);
+    }
+
+    public void MoveTowards(float v, float angle, int duration)
     {
         _movableObject.DoStraightMoveWithLimitation(v, angle, duration);
     }
@@ -573,27 +578,27 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         _movableObject.DoMoveTo(endX, endY, duration, mode);
     }
 
-    public void DoCurvedMove(float radius, float angle, float deltaR, float omega)
+    public void SetPolarParas(float radius, float angle, float deltaR, float omega)
     {
         _movableObject.DoCurvedMove(radius, angle, deltaR, omega);
     }
 
-    public float Velocity
+    public float velocity
     {
         get { return _movableObject.Velocity; }
     }
 
-    public float VAngle
+    public float vAngle
     {
         get { return _movableObject.VAngle; }
     }
 
-    public float Acce
+    public float acce
     {
         get { return _movableObject.Acce; }
     }
 
-    public float AccAngle
+    public float accAngle
     {
         get { return _movableObject.AccAngle; }
     }

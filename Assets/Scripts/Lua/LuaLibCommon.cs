@@ -153,7 +153,7 @@ public partial class LuaLib
             Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
             angle += MathUtil.GetAngleBetweenXAxis(playerPos - movableObject.GetPosition());
         }
-        movableObject.DoStraightMoveWithLimitation(v, angle, duration);
+        movableObject.MoveTowards(v, angle, duration);
         return 0;
     }
 
@@ -170,7 +170,7 @@ public partial class LuaLib
     {
         ISTGMovable movableObject = luaState.ToUserData(-4) as ISTGMovable;
         float acce = (float)luaState.ToNumber(-3);
-        float angle = luaState.Type(-2) == LuaType.LUA_TBOOLEAN ? movableObject.VAngle : (float)luaState.ToNumber(-2);
+        float angle = luaState.Type(-2) == LuaType.LUA_TBOOLEAN ? movableObject.vAngle : (float)luaState.ToNumber(-2);
         bool isAimToPlayer = luaState.ToBoolean(-1);
         luaState.Pop(4);
         if (isAimToPlayer)
@@ -196,7 +196,7 @@ public partial class LuaLib
     {
         ISTGMovable movableObject = luaState.ToUserData(-5) as ISTGMovable;
         float acce = (float)luaState.ToNumber(-4);
-        float angle = luaState.Type(-3) == LuaType.LUA_TBOOLEAN ? movableObject.VAngle : (float)luaState.ToNumber(-3);
+        float angle = luaState.Type(-3) == LuaType.LUA_TBOOLEAN ? movableObject.vAngle : (float)luaState.ToNumber(-3);
         bool isAimToPlayer = luaState.ToBoolean(-2);
         float maxVelocity = (float)luaState.ToNumber(-1);
         luaState.Pop(5);
@@ -227,7 +227,7 @@ public partial class LuaLib
         int duration = luaState.ToInteger(-2);
         InterpolationMode mode = (InterpolationMode)luaState.ToInteger(-1);
         luaState.Pop(5);
-        movableObject.DoMoveTo(toX, toY, duration, mode);
+        movableObject.MoveTo(toX, toY, duration, mode);
         return 0;
     }
 
@@ -249,7 +249,7 @@ public partial class LuaLib
         float deltaR = (float)luaState.ToNumber(-2);
         float omega = (float)luaState.ToNumber(-1);
         luaState.Pop(5);
-        movableObject.DoCurvedMove(radius, angle, deltaR, omega);
+        movableObject.SetPolarParas(radius, angle, deltaR, omega);
         return 0;
     }
 

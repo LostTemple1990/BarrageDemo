@@ -304,7 +304,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         _movableObj.DoAcceleration(acce, accAngle);
     }
 
-    public void DoAccelerationWithLimitation(float acce,float accAngle,float maxVelocity)
+    public override void DoAccelerationWithLimitation(float acce,float accAngle,float maxVelocity)
     {
         _movableObj.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
     }

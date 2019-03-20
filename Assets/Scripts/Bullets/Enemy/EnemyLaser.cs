@@ -256,7 +256,7 @@ public class EnemyLaser : EnemyBulletBase
         _movableObject.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
     }
 
-    public override void SetCurvedParas(float radius, float angle, float deltaR, float omega)
+    public override void SetPolarParas(float radius, float angle, float deltaR, float omega)
     {
         _movableObject.DoCurvedMove(radius, angle, deltaR, omega);
     }

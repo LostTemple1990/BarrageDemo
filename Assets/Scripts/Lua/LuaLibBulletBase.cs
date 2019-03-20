@@ -394,7 +394,7 @@ public partial class LuaLib
         float deltaR = (float)luaState.ToNumber(-2);
         float omega = (float)luaState.ToNumber(-1);
         luaState.Pop(5);
-        bullet.SetCurvedParas(radius, angle, deltaR, omega);
+        bullet.SetPolarParas(radius, angle, deltaR, omega);
         return 0;
     }
 }

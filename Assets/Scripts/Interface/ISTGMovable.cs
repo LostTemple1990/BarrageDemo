@@ -3,16 +3,18 @@
 public interface ISTGMovable : IPosition
 {
     void DoStraightMove(float v, float angle);
-    void DoStraightMoveWithLimitation(float v, float angle, int duration);
     void DoAcceleration(float acce, float accAngle);
     void DoAccelerationWithLimitation(float acce, float accAngle, float maxVelocity);
-    void DoMoveTo(float endX, float endY, int duration, InterpolationMode mode);
-    void DoCurvedMove(float radius, float angle, float deltaR, float omega);
+
+    void SetPolarParas(float radius, float angle, float deltaR, float omega);
+
+    void MoveTo(float endX, float endY, int duration, InterpolationMode mode);
+    void MoveTowards(float v, float angle, int duration);
 
     void Update();
 
-    float Velocity { get; }
-    float VAngle { get; }
-    float Acce { get; }
-    float AccAngle { get; }
+    float velocity { get; }
+    float vAngle { get; }
+    float acce { get; }
+    float accAngle { get; }
 }

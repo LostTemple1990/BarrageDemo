@@ -3,11 +3,25 @@ using UnityEngine;
 
 public class EnemySimpleBulletLuaInterface
 {
-    private LuaCsClosureValue _funcSetV;
+    private static bool _isInit = false;
 
-    private void Init()
+    private static LuaCsClosureValue _funcSetV;
+    private static LuaCsClosureValue _funcSetAcce;
+    private static LuaCsClosureValue _funcSetPolarParas;
+
+    private static LuaCsClosureValue _funcMoveTo;
+    private static LuaCsClosureValue _funcMoveTowards;
+
+
+    public static void Init()
     {
-        _funcSetV = new LuaCsClosureValue(LuaLib.STGMovableDoStraightMove);
+        if ( !_isInit )
+        {
+            _funcSetV = new LuaCsClosureValue(LuaLib.STGMovableDoStraightMove);
+            _funcSetAcce = new LuaCsClosureValue(LuaLib.STGMovableDoAcceleration);
+            _funcSetPolarParas = new LuaCsClosureValue(LuaLib.STGMovableDoCurvedMove);
+            _isInit = true;
+        }
     }
 
     public static bool Get(object o,TValue key,out TValue res)
@@ -16,7 +30,7 @@ public class EnemySimpleBulletLuaInterface
         res = new TValue();
         if ( key.TtIsString() )
         {
-            switch ( (string)key.OValue )
+            switch ( key.SValue() )
             {
                 #region 基础变量
                 case "x":
@@ -89,10 +103,10 @@ public class EnemySimpleBulletLuaInterface
                         return true;
                     }
                 #endregion
-                #region 运动类专属方法
+                #region 运动类专属方法 ISTGMovable
                 case "SetV":
                     {
-                        res.SetClLcsValue(LuaLib.STGMovableDoStraightMove);
+                        res.SetClCsValue(_funcSetV);
                         return true;
                     }
                 case "SetAcce":
@@ -105,7 +119,7 @@ public class EnemySimpleBulletLuaInterface
                         res.SetNValue(bullet.TimeSinceCreated);
                         return true;
                     }
-                    #endregion
+                #endregion
             }
         }
         res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(EnemySimpleBullet).Name));
@@ -117,7 +131,7 @@ public class EnemySimpleBulletLuaInterface
         EnemySimpleBullet bullet = (EnemySimpleBullet)o;
         if (key.TtIsString())
         {
-            switch ((string)key.OValue)
+            switch (key.SValue())
             {
                 #region 基础变量
                 case "x":

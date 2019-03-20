@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovableObject,ITaskExecuter
+public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovableObject,ITaskExecuter,ISTGMovable
 {
     /// <summary>
     /// bulletId
@@ -356,7 +356,17 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
         throw new System.NotImplementedException();
     }
 
-    public virtual void SetCurvedParas(float radius,float angle,float deltaR,float omega)
+    public virtual void SetPolarParas(float radius,float angle,float deltaR,float omega)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void MoveTo(float endX, float endY, int duration, InterpolationMode intMode)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void MoveTowards(float v,float angle,int duration)
     {
         throw new System.NotImplementedException();
     }
@@ -364,6 +374,38 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
     public virtual void AddExtraSpeedParas(float v, float vAngle, float acce, float accAngle)
     {
         throw new System.NotImplementedException();
+    }
+
+    public float velocity
+    {
+        get
+        {
+            return 0;
+        }
+    }
+
+    public float vAngle
+    {
+        get
+        {
+            return 0;
+        }
+    }
+
+    public float acce
+    {
+        get
+        {
+            return 0;
+        }
+    }
+
+    public float accAngle
+    {
+        get
+        {
+            return 0;
+        }
     }
 
     public void AddTask(Task task)

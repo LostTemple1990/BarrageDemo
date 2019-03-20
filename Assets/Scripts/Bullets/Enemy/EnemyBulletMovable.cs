@@ -8,7 +8,6 @@ public class EnemyBulletMovable : EnemyBulletBase
     protected GameObject _bullet;
     protected Transform _trans;
 
-    protected float _curAccAngle;
     protected float _dvx, _dvy;
     protected Vector3 _moveStraightEndPos;
     protected int _curStraightTime;
@@ -137,7 +136,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     }
 
     #region 直线运动
-    public virtual void DoStraightMove(float v,float angle)
+    public override void DoStraightMove(float v,float angle)
     {
         _curVelocity = v;
         _curVAngle = angle;
@@ -159,7 +158,7 @@ public class EnemyBulletMovable : EnemyBulletBase
         _isMovingStraight = true;
     }
 
-    public virtual void DoAcceleration(float acce,float accAngle)
+    public override void DoAcceleration(float acce,float accAngle)
     {
         _curAcce = acce;
         _curAccAngle = accAngle==Consts.VelocityAngle ? _curVAngle : accAngle;
@@ -175,7 +174,7 @@ public class EnemyBulletMovable : EnemyBulletBase
         _isMovingStraight = true;
     }
 
-    public virtual void DoAccelerationWithLimitation(float acce, float accAngle,float maxVelocity)
+    public override void DoAccelerationWithLimitation(float acce, float accAngle,float maxVelocity)
     {
         _curAcce = acce;
         _curAccAngle = accAngle == Consts.VelocityAngle ? _curVAngle : accAngle;
