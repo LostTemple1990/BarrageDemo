@@ -85,6 +85,11 @@ public class MovableObject : IPoolClass
     /// <para>当有加速度的时候一般都需要重新计算</para>
     /// </summary>
     private bool _reCalVAngle;
+    /// <summary>
+    /// 是否需要重新计算速度分量
+    /// <para>默认为true</para>
+    /// </summary>
+    protected bool _reCalV;
 
     public void Update()
     {
@@ -92,7 +97,7 @@ public class MovableObject : IPoolClass
         _dy = 0;
         if ( _isMovingTo )
         {
-            MoveTo();
+            MovingTo();
         }
         else
         {
@@ -125,17 +130,24 @@ public class MovableObject : IPoolClass
     #region 直线运动
     public virtual void DoStraightMove(float v, float angle)
     {
-        _curVelocity = v;
+        if ( _maxVelocity > 0 )
+        {
+            _curVelocity = v > _maxVelocity ? _maxVelocity : v;
+        }
+        else
+        {
+            _curVelocity = v;
+        }
         _curVAngle = angle;
         _curStraightTime = 0;
-        _moveStraightDuration = Consts.MaxDuration;
+        _moveStraightDuration = -1;
         _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
         _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
         _isMovingStraight = true;
         _isActive = true;
     }
 
-    public virtual void DoStraightMoveWithLimitation(float v, float angle, int duration)
+    public virtual void MoveTowards(float v, float angle, int duration)
     {
         _curVelocity = v;
         _curVAngle = angle;
@@ -172,7 +184,7 @@ public class MovableObject : IPoolClass
         _isActive = true;
     }
 
-    public virtual void DoMoveTo(float endX,float endY,int duration,InterpolationMode mode)
+    public virtual void MoveTo(float endX,float endY,int duration,InterpolationMode mode)
     {
         _beginX = _curPos.x;
         _beginY = _curPos.y;
@@ -185,7 +197,7 @@ public class MovableObject : IPoolClass
         _isActive = true;
     }
 
-    protected void MoveTo()
+    protected void MovingTo()
     {
         _moveToTime++;
         // 临时记录
@@ -214,15 +226,15 @@ public class MovableObject : IPoolClass
             _reCalVAngle = true;
             _vx += _dvx;
             _vy += _dvy;
-        }
-        if (_maxVelocity > 0)
-        {
-            float value = _vx * _vx + _vy * _vy;
-            if (value > _sqrMaxV)
+            if (_maxVelocity > 0)
             {
-                value = Mathf.Sqrt(_sqrMaxV / value);
-                _vx *= value;
-                _vy *= value;
+                float value = _vx * _vx + _vy * _vy;
+                if (value > _sqrMaxV)
+                {
+                    value = Mathf.Sqrt(_sqrMaxV / value);
+                    _vx *= value;
+                    _vy *= value;
+                }
             }
         }
         _dx += _vx;
@@ -338,21 +350,36 @@ public class MovableObject : IPoolClass
     /// </summary>
     public float Velocity
     {
-        get { return _curVelocity; }
+        get { return Mathf.Sqrt(_vx * _vx + _vy * _vy); }
         set
         {
-            if ( _maxVelocity < 0 )
+            if (_maxVelocity < 0)
             {
                 _curVelocity = value;
             }
             else
             {
-                _curVelocity = value > _maxVelocity ? _maxVelocity : value;
+                if (value > _maxVelocity)
+                {
+                    _curVelocity = _maxVelocity;
+                    _reCalV = true;
+                }
+                else
+                {
+                    _curVelocity = value;
+                }
             }
-            // 重新计算一遍vAngle的值
-            float vAngle = VAngle;
-            _vx = _curVelocity * Mathf.Cos(vAngle * Mathf.Deg2Rad);
-            _vy = _curVelocity * Mathf.Sin(vAngle * Mathf.Deg2Rad);
+            if (_reCalVAngle)
+            {
+                _curVAngle = MathUtil.GetAngleBetweenXAxis(_vx, _vy);
+                _reCalVAngle = false;
+            }
+            if (_reCalV)
+            {
+                _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
+                _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
+            }
+            _reCalV = true;
         }
     }
 
@@ -365,6 +392,8 @@ public class MovableObject : IPoolClass
         set
         {
             _vx = value;
+            _reCalV = false;
+            _reCalVAngle = true;
             Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
         }
     }
@@ -378,6 +407,8 @@ public class MovableObject : IPoolClass
         set
         {
             _vy = value;
+            _reCalV = false;
+            _reCalVAngle = true;
             Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
         }
     }
@@ -389,7 +420,7 @@ public class MovableObject : IPoolClass
     {
         get
         {
-            if ( _reCalVAngle )
+            if (_reCalVAngle)
             {
                 _curVAngle = MathUtil.GetAngleBetweenXAxis(_vx, _vy);
                 _reCalVAngle = false;
@@ -399,6 +430,7 @@ public class MovableObject : IPoolClass
         set
         {
             _curVAngle = value;
+            _reCalV = true;
             _reCalVAngle = false;
             Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
         }

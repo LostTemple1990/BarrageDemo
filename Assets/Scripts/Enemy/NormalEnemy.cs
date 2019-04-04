@@ -83,9 +83,9 @@ public class NormalEnemy : EnemyBase
         }
     }
 
-    public override void MoveToPos(float posX, float posY, int duration, InterpolationMode mode)
+    public override void MoveTo(float posX, float posY, int duration, InterpolationMode mode)
     {
-        base.MoveToPos(posX, posY, duration, mode);
+        base.MoveTo(posX, posY, duration, mode);
         if ( posX > _curPos.x )
         {
             _enemyObj.DoAction(AniActionType.Move, Consts.DIR_RIGHT);

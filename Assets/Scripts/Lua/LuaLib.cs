@@ -212,6 +212,7 @@ public partial class LuaLib
             new NameFuncPair("RandomInt",GetRandomInt),
             new NameFuncPair("RandomFloat",GetRandomFloat),
             new NameFuncPair("RandomSign",GetRandomSign),
+            new NameFuncPair("Wait",GetRandomSign),
         };
         luaState.PushGlobalTable();
         luaState.L_SetFuncs(define, 0);
@@ -857,6 +858,11 @@ public partial class LuaLib
         len = Mathf.Sqrt((beginX - endX) * (beginX - endX) + (beginY - endY) * (beginY - endY));
         luaState.PushNumber(len);
         return 1;
+    }
+
+    public static int Wait(ILuaState luaState)
+    {
+        return luaState.Yield(luaState.GetTop());
     }
 
     #region lua全局变量相关

@@ -118,9 +118,9 @@ public class Boss : EnemyBase
         //Logger.Log("CurRate : " + _curRate);
     }
 
-    public override void MoveToPos(float posX, float posY, int duration, InterpolationMode mode)
+    public override void MoveTo(float posX, float posY, int duration, InterpolationMode mode)
     {
-        base.MoveToPos(posX, posY, duration, mode);
+        base.MoveTo(posX, posY, duration, mode);
         if (posX > _curPos.x)
         {
             PlayAni(AniActionType.Move, Consts.DIR_RIGHT, duration);

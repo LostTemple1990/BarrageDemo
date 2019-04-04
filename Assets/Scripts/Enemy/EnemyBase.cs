@@ -208,10 +208,10 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
         _movableObj.AddExtraSpeedParas(v, vAngle, acce, accAngle);
     }
 
-    public virtual void MoveToPos(float posX,float posY,int duration,InterpolationMode mode)
+    public virtual void MoveTo(float posX,float posY,int duration,InterpolationMode mode)
     {
         _movableObj.Reset(_curPos.x, _curPos.y);
-        _movableObj.DoMoveTo(posX, posY, duration, mode);
+        _movableObj.MoveTo(posX, posY, duration, mode);
         _isMoving = true;
         _moveTime = 0;
         _moveDuration = duration;
@@ -219,7 +219,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
 
     public virtual void MoveTowards(float velocity,float angle,int duration)
     {
-        _movableObj.DoStraightMoveWithLimitation(velocity, angle, duration);
+        _movableObj.MoveTowards(velocity, angle, duration);
         _isMoving = true;
         _moveTime = 0;
         _moveDuration = duration;
@@ -525,7 +525,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
             }
             toY = MTRandom.GetNextFloat(minY, maxY);
         }
-        MoveToPos(toX, toY, duration, _wanderMode);
+        MoveTo(toX, toY, duration, _wanderMode);
     }
 
     public virtual void Clear()

@@ -99,7 +99,7 @@ public partial class LuaLib
         int duration = luaState.ToInteger(-2);
         int moveMode = luaState.ToInteger(-1);
         luaState.Pop(5);
-        enemy.MoveToPos(endX, endY, duration, (InterpolationMode)moveMode);
+        enemy.MoveTo(endX, endY, duration, (InterpolationMode)moveMode);
         return 0;
     }
 

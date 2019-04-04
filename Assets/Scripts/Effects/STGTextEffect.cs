@@ -518,12 +518,12 @@ public class STGTextEffect : STGEffectBase, ISTGMovable, IAttachment, ITaskExecu
 
     public void MoveTo(float endX, float endY, int duration, InterpolationMode intMode)
     {
-        _movableObject.DoMoveTo(endX, endY, duration, intMode);
+        _movableObject.MoveTo(endX, endY, duration, intMode);
     }
 
     public void MoveTowards(float v, float angle, int duration)
     {
-        _movableObject.DoStraightMoveWithLimitation(v, angle, duration);
+        _movableObject.MoveTowards(v, angle, duration);
     }
 
     public void DoAcceleration(float acce, float accAngle)
@@ -538,7 +538,7 @@ public class STGTextEffect : STGEffectBase, ISTGMovable, IAttachment, ITaskExecu
 
     public void DoMoveTo(float endX, float endY, int duration, InterpolationMode mode)
     {
-        _movableObject.DoMoveTo(endX, endY, duration, mode);
+        _movableObject.MoveTo(endX, endY, duration, mode);
     }
 
     public void SetPolarParas(float radius, float angle, float deltaR, float omega)

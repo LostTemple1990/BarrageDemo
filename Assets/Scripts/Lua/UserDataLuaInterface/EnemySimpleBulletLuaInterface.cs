@@ -12,6 +12,9 @@ public class EnemySimpleBulletLuaInterface
     private static LuaCsClosureValue _funcMoveTo;
     private static LuaCsClosureValue _funcMoveTowards;
 
+    private static LuaCsClosureValue _funcAttachTo;
+    private static LuaCsClosureValue _funcSetRelativePos;
+
 
     public static void Init()
     {
@@ -20,6 +23,10 @@ public class EnemySimpleBulletLuaInterface
             _funcSetV = new LuaCsClosureValue(LuaLib.STGMovableDoStraightMove);
             _funcSetAcce = new LuaCsClosureValue(LuaLib.STGMovableDoAcceleration);
             _funcSetPolarParas = new LuaCsClosureValue(LuaLib.STGMovableDoCurvedMove);
+
+            _funcAttachTo = new LuaCsClosureValue(LuaLib.AttachToMaster);
+            _funcSetRelativePos = new LuaCsClosureValue(LuaLib.SetAttachmentRelativePos);
+
             _isInit = true;
         }
     }
@@ -111,12 +118,24 @@ public class EnemySimpleBulletLuaInterface
                     }
                 case "SetAcce":
                     {
-                        res.SetNValue(bullet.TimeSinceCreated);
+                        res.SetClCsValue(_funcSetAcce);
                         return true;
                     }
                 case "SetPolarParas":
                     {
-                        res.SetNValue(bullet.TimeSinceCreated);
+                        res.SetClCsValue(_funcSetPolarParas);
+                        return true;
+                    }
+                #endregion
+                #region IAttachable
+                case "AttachTo":
+                    {
+                        res.SetClCsValue(_funcAttachTo);
+                        return true;
+                    }
+                case "SetRelativePos":
+                    {
+                        res.SetClCsValue(_funcSetRelativePos);
                         return true;
                     }
                 #endregion

@@ -9,9 +9,21 @@ public class EnemyBulletMovable : EnemyBulletBase
     protected Transform _trans;
 
     protected float _dvx, _dvy;
-    protected Vector3 _moveStraightEndPos;
-    protected int _curStraightTime;
+    /// <summary>
+    /// 移动的起始位置
+    /// <para>用于MoveTo()方法</para>
+    /// </summary>
+    protected Vector2 _moveFromPos;
+    /// <summary>
+    /// 移动的结束位置
+    /// <para>用于MoveTo()方法</para>
+    /// </summary>
+    protected Vector2 _moveToPos;
+    protected int _moveStraightTime;
     protected int _moveStraightDuration;
+    protected bool _isMovingTo;
+    protected bool _isMovingTowards;
+    protected MathUtil.InterpolationVec2Func _moveToIntFunc;
     /// <summary>
     /// 加速运动的最大速度限制
     /// </summary>
@@ -91,6 +103,8 @@ public class EnemyBulletMovable : EnemyBulletBase
         _vx = _vy = _dvx = _dvy = _curVelocity = 0;
         _maxVelocity = -1;
         _isInitVelocity = false;
+        _isMovingTo = false;
+        _isMovingTowards = false;
         ResetExtraSpeedParas();
         _reCalV = true;
         _reCalVAngle = false;
@@ -104,21 +118,32 @@ public class EnemyBulletMovable : EnemyBulletBase
         _dy = 0;
         if ( !_isFollowingMasterContinuously )
         {
-            if (_isMovingStraight)
+            if ( _isMovingTo )
             {
-                MoveStraight();
+
             }
-            if (_isMovingCurve)
+            else if ( _isMovingTowards )
             {
-                MoveCurve();
+
             }
-            if ( _hasExtraSpeed )
+            else
             {
-                _dx += _extraVelocityX + _extraAcceX;
-                _dy += _extraVelocityY + _extraAcceY;
+                if (_isMovingStraight)
+                {
+                    MoveStraight();
+                }
+                if (_isMovingCurve)
+                {
+                    MoveCurve();
+                }
+                if (_hasExtraSpeed)
+                {
+                    _dx += _extraVelocityX + _extraAcceX;
+                    _dy += _extraVelocityY + _extraAcceY;
+                }
+                _curPos.x += _dx;
+                _curPos.y += _dy;
             }
-            _curPos.x += _dx;
-            _curPos.y += _dy;
         }
         else
         {
@@ -140,8 +165,8 @@ public class EnemyBulletMovable : EnemyBulletBase
     {
         _curVelocity = v;
         _curVAngle = angle;
-        _curStraightTime = 0;
-        _moveStraightDuration = Consts.MaxDuration;
+        _moveStraightTime = 0;
+        _moveStraightDuration = -1;
         _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
         _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
         _isInitVelocity = true;
@@ -152,7 +177,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     {
         _curVelocity = v;
         _curVAngle = angle;
-        _curStraightTime = 0;
+        _moveStraightTime = 0;
         _moveStraightDuration = duration;
         _isInitVelocity = true;
         _isMovingStraight = true;
@@ -191,6 +216,28 @@ public class EnemyBulletMovable : EnemyBulletBase
         _isMovingStraight = true;
     }
 
+    public override void MoveTo(float endX, float endY, int duration, InterpolationMode intMode)
+    {
+        _moveFromPos = _curPos;
+        _moveToPos = new Vector2(endX, endY);
+        _moveStraightTime = 0;
+        _moveStraightDuration = duration;
+        _moveToIntFunc = MathUtil.GetInterpolationVec2Func(intMode);
+        _isMovingTowards = false;
+        _isMovingTo = true;
+    }
+
+    protected void MovingTo()
+    {
+        _moveStraightTime++;
+        _curPos = _moveToIntFunc(_moveFromPos, _moveToPos, _moveStraightTime, _moveStraightDuration);
+    }
+
+    public override void MoveTowards(float v, float angle, int duration)
+    {
+        base.MoveTowards(v, angle, duration);
+    }
+
     protected virtual void MoveStraight()
     {
         _vx += _dvx;
@@ -210,10 +257,10 @@ public class EnemyBulletMovable : EnemyBulletBase
         _dy += _vy;
         if ( _moveStraightDuration > 0 )
         {
-            _curStraightTime++;
-            if ( _curStraightTime >= _moveStraightDuration )
+            _moveStraightTime++;
+            if ( _moveStraightTime >= _moveStraightDuration )
             {
-                _curStraightTime = 0;
+                _moveStraightTime = 0;
                 _moveStraightDuration = 0;
                 _isMovingStraight = false;
             }
@@ -230,13 +277,13 @@ public class EnemyBulletMovable : EnemyBulletBase
     /// <param name="angle"></param>
     /// <param name="deltaR"></param>
     /// <param name="omiga"></param>
-    public virtual void DoMoveCurve(float radius, float angle, float deltaR, float omiga)
+    public virtual void DoMoveCurve(float radius, float angle, float deltaR, float omega)
     {
         _centerPos = new Vector2(_curPos.x, _curPos.y);
         _curRadius = radius;
         _curCurveAngle = angle;
         _deltaRadius = deltaR;
-        _curOmega = omiga;
+        _curOmega = omega;
         _lastCurvePos = _centerPos;
         _isMovingCurve = true;
     }
@@ -294,6 +341,7 @@ public class EnemyBulletMovable : EnemyBulletBase
         ObjectsPool.GetInstance().RestorePrefabToPool(_prefabName, _bullet);
         _bullet = null;
         _trans = null;
+        _moveToIntFunc = null;
         base.Clear();
     }
 
@@ -407,7 +455,15 @@ public class EnemyBulletMovable : EnemyBulletBase
             }
             else
             {
-                _curVelocity = value > _maxVelocity ? _maxVelocity : value;
+                if ( value > _maxVelocity )
+                {
+                    _curVelocity = _maxVelocity;
+                    _reCalV = true;
+                }
+                else
+                {
+                    _curVelocity = value;
+                }
             }
             if (_reCalVAngle)
             {
@@ -419,10 +475,7 @@ public class EnemyBulletMovable : EnemyBulletBase
                 _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
                 _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
             }
-            else
-            {
-                _reCalV = true;
-            }
+            _reCalV = true;
         }
     }
 
@@ -515,8 +568,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     {
         get
         {
-            if (_maxVelocity < 0) return int.MaxValue;
-            return _maxVelocity;
+            return _maxVelocity < 0 ? int.MaxValue : _maxVelocity;
         }
         set
         {

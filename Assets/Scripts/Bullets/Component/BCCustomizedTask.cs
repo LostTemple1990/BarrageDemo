@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 public class BCCustomizedTask : BulletComponent
 {
-    private EnemyBulletMovable _bullet;
+    private EnemyBulletBase _bullet;
     private List<Task> _taskList;
     private int _taskCount;
 
     public override void Init(EnemyBulletBase bullet)
     {
-        _bullet = bullet as EnemyBulletMovable;
+        _bullet = bullet;
         if ( _taskList == null )
         {
             _taskList = new List<Task>();
@@ -60,5 +60,6 @@ public class BCCustomizedTask : BulletComponent
         }
         _taskList.Clear();
         _taskCount = 0;
+        _bullet = null;
     }
 }
