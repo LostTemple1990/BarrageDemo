@@ -140,7 +140,7 @@ public partial class LuaLib
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int STGMovableDoStraightMoveWithLimitation(ILuaState luaState)
+    public static int STGMovableMoveTowards(ILuaState luaState)
     {
         ISTGMovable movableObject = luaState.ToUserData(-5) as ISTGMovable;
         float v = (float)luaState.ToNumber(-4);
@@ -219,7 +219,7 @@ public partial class LuaLib
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int STGMovableDoMoveTo(ILuaState luaState)
+    public static int STGMovableMoveTo(ILuaState luaState)
     {
         ISTGMovable movableObject = luaState.ToUserData(-5) as ISTGMovable;
         float toX = (float)luaState.ToNumber(-4);

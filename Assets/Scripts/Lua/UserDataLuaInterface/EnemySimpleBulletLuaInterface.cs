@@ -23,6 +23,8 @@ public class EnemySimpleBulletLuaInterface
             _funcSetV = new LuaCsClosureValue(LuaLib.STGMovableDoStraightMove);
             _funcSetAcce = new LuaCsClosureValue(LuaLib.STGMovableDoAcceleration);
             _funcSetPolarParas = new LuaCsClosureValue(LuaLib.STGMovableDoCurvedMove);
+            _funcMoveTo = new LuaCsClosureValue(LuaLib.STGMovableMoveTo);
+            _funcMoveTowards = new LuaCsClosureValue(LuaLib.STGMovableMoveTowards);
 
             _funcAttachTo = new LuaCsClosureValue(LuaLib.AttachToMaster);
             _funcSetRelativePos = new LuaCsClosureValue(LuaLib.SetAttachmentRelativePos);
@@ -124,6 +126,16 @@ public class EnemySimpleBulletLuaInterface
                 case "SetPolarParas":
                     {
                         res.SetClCsValue(_funcSetPolarParas);
+                        return true;
+                    }
+                case "MoveTo":
+                    {
+                        res.SetClCsValue(_funcMoveTo);
+                        return true;
+                    }
+                case "MoveTowards":
+                    {
+                        res.SetClCsValue(_funcMoveTowards);
                         return true;
                     }
                 #endregion

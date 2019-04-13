@@ -120,11 +120,11 @@ public class EnemyBulletMovable : EnemyBulletBase
         {
             if ( _isMovingTo )
             {
-
+                MovingTo();
             }
             else if ( _isMovingTowards )
             {
-
+                MoveStraight();
             }
             else
             {
@@ -141,9 +141,9 @@ public class EnemyBulletMovable : EnemyBulletBase
                     _dx += _extraVelocityX + _extraAcceX;
                     _dy += _extraVelocityY + _extraAcceY;
                 }
-                _curPos.x += _dx;
-                _curPos.y += _dy;
             }
+            _curPos.x += _dx;
+            _curPos.y += _dy;
         }
         else
         {
@@ -169,16 +169,6 @@ public class EnemyBulletMovable : EnemyBulletBase
         _moveStraightDuration = -1;
         _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
         _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
-        _isInitVelocity = true;
-        _isMovingStraight = true;
-    }
-
-    public virtual void DoStraightMoveWithLimitation(float v,float angle,int duration)
-    {
-        _curVelocity = v;
-        _curVAngle = angle;
-        _moveStraightTime = 0;
-        _moveStraightDuration = duration;
         _isInitVelocity = true;
         _isMovingStraight = true;
     }
@@ -230,12 +220,20 @@ public class EnemyBulletMovable : EnemyBulletBase
     protected void MovingTo()
     {
         _moveStraightTime++;
+        Vector2 targetPos = _moveToIntFunc(_moveFromPos, _moveToPos, _moveStraightTime, _moveStraightDuration);
+        _dx += targetPos.x - _curPos.x;
+        _dy += targetPos.y - _curPos.y;
         _curPos = _moveToIntFunc(_moveFromPos, _moveToPos, _moveStraightTime, _moveStraightDuration);
     }
 
     public override void MoveTowards(float v, float angle, int duration)
     {
-        base.MoveTowards(v, angle, duration);
+        _curVelocity = v;
+        _curVAngle = angle;
+        _moveStraightTime = 0;
+        _moveStraightDuration = duration;
+        _isInitVelocity = true;
+        _isMovingStraight = true;
     }
 
     protected virtual void MoveStraight()
