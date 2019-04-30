@@ -1,307 +1,264 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager
+namespace YKEngine
 {
-
-    private static UIManager _instance;
-
-    public static UIManager GetInstance()
+    public class UIManager
     {
-        if (_instance == null)
+
+        private static UIManager _instance;
+
+        public static UIManager GetInstance()
         {
-            _instance = new UIManager();
-        }
-        return _instance;
-    }
-
-    private UIManager()
-    {
-
-    }
-
-    private Dictionary<LayerId, Transform> _layersMap;
-
-    private Vector3 _hideVector = new Vector3(2000, 2000, 0);
-
-    private Dictionary<string, ViewBase> _viewsMap;
-
-    private RectTransform _uiRootTf;
-    private GameObject _stgRoot;
-    /// <summary>
-    /// STG本体的最上层layer
-    /// </summary>
-    private Transform _stgLayerTf;
-    /// <summary>
-    /// STG本体相机
-    /// </summary>
-    private Camera _stgCamera;
-    /// <summary>
-    /// 需要执行update方法的view
-    /// </summary>
-    private List<ViewBase> _viewUpdateList;
-    /// <summary>
-    /// 需要执行update方法的view的数目
-    /// </summary>
-    private int _viewUpdateCount;
-
-    public void Init()
-    {
-        _stgRoot = GameObject.Find("GameMainCanvas");
-        _stgLayerTf = _stgRoot.transform.Find("GameLayer");
-        _stgCamera = _stgRoot.transform.Find("GameCamera").GetComponent<Camera>();
-        // STG里面各个层级
-        _layersMap = new Dictionary<LayerId, Transform>();
-        _layersMap.Add(LayerId.STGBottomView, _stgLayerTf.Find("STGBottomViewLayer"));
-        _layersMap.Add(LayerId.STGBottomEffect, _stgLayerTf.Find("STGBottomEffectLayer"));
-        _layersMap.Add(LayerId.PlayerBarage, _stgLayerTf.Find("PlayerBarrageLayer"));
-        _layersMap.Add(LayerId.Player, _stgLayerTf.Find("PlayerLayer"));
-        _layersMap.Add(LayerId.Enemy, _stgLayerTf.Find("EnemyLayer"));
-        _layersMap.Add(LayerId.Item, _stgLayerTf.Find("ItemLayer"));
-        _layersMap.Add(LayerId.STGNormalEffect, _stgLayerTf.Find("STGNormalEffectLayer"));
-        _layersMap.Add(LayerId.EnemyBarrage, _stgLayerTf.Find("EnemyBarrageLayer"));
-        _layersMap.Add(LayerId.PlayerCollisionPoint, _stgLayerTf.Find("PlayerCollisionPointLayer"));
-        _layersMap.Add(LayerId.STGTopEffect, _stgLayerTf.Find("STGTopEffectLayer"));
-        _layersMap.Add(LayerId.GameInfo, _stgLayerTf.Find("GameInfoLayer"));
-        if (_viewsMap == null)
-        {
-            _viewsMap = new Dictionary<string, ViewBase>();
-        }
-        _uiRootTf = GameObject.Find("UIRoot").GetComponent<RectTransform>();
-        _layersMap.Add(LayerId.GameUI_Bottom, _uiRootTf.Find("BottomLayer"));
-        _layersMap.Add(LayerId.GameUI_Normal, _uiRootTf.Find("NormalLayer"));
-        _layersMap.Add(LayerId.GameUI_Top, _uiRootTf.Find("TopLayer"));
-        if (_viewUpdateList == null)
-        {
-            _viewUpdateList = new List<ViewBase>();
-        }
-        _viewUpdateCount = 0;
-        DoScreenAdaption();
-    }
-
-    public void RemoveBulletFromLayer(GameObject bullet)
-    {
-        bullet.SetActive(false);
-    }
-
-    public void AddGoToLayer(GameObject go, LayerId layerId)
-    {
-        if (go != null)
-        {
-            Transform layerTf;
-            if (_layersMap.TryGetValue(layerId, out layerTf))
+            if (_instance == null)
             {
-                go.transform.SetParent(layerTf, false);
-                //go.transform.localScale = Vector3.one;
+                _instance = new UIManager();
             }
-            else
-            {
-                Logger.Log("Get layer fail,layerId = " + layerId);
-            }
+            return _instance;
         }
-    }
 
-    public void AddGoToLayer(GameObject go, LayerId layerId, Vector3 pos)
-    {
-        if (go != null)
+        private UIManager()
         {
-            Transform layerTf;
-            if (_layersMap.TryGetValue(layerId, out layerTf))
+
+        }
+
+        private Dictionary<LayerId, Transform> _layersMap;
+
+        private Vector3 _hideVector = new Vector3(2000, 2000, 0);
+
+        private Dictionary<int, ViewBase> _viewsMap;
+
+        private RectTransform _uiRootTf;
+        private GameObject _uiRoot;
+        /// <summary>
+        /// STG本体的最上层layer
+        /// </summary>
+        private Transform _stgLayerTf;
+        /// <summary>
+        /// UICamera
+        /// </summary>
+        private Camera _uiCamera;
+        /// <summary>
+        /// 需要执行update方法的view
+        /// </summary>
+        private List<ViewBase> _viewUpdateList;
+        /// <summary>
+        /// 需要执行update方法的view的数目
+        /// </summary>
+        private int _viewUpdateCount;
+
+        private Dictionary<int, ViewCfg> _viewCfgs;
+
+        public void Init()
+        {
+            _uiRoot = GameObject.Find("UIRoot");
+            _uiRootTf = _uiRoot.GetComponent<RectTransform>();
+            _stgLayerTf = _uiRoot.transform.Find("GameLayer");
+            _uiCamera = _uiRoot.transform.Find("UICamera").GetComponent<Camera>();
+            // UIRoot层级
+            _layersMap = new Dictionary<LayerId, Transform>();
+            int layerCount = (int)LayerId.LayerCount;
+            for (int i = layerCount - 1; i >= 1; i--)
             {
-                go.transform.SetParent(layerTf, false);
-                go.transform.localScale = Vector3.one;
-                go.transform.localPosition = pos;
+                LayerId tmpLayerId = (LayerId)i;
+                GameObject layerGo = new GameObject("Layer" + i);
+                RectTransform layerTf = layerGo.AddComponent<RectTransform>();
+                layerTf.SetParent(_uiRootTf, false);
+                layerTf.localPosition = new Vector3(0, 0, i * 250);
+                layerTf.anchorMin = Vector2.zero;
+                layerTf.anchorMax = Vector2.one;
+                layerTf.sizeDelta = Vector2.zero;
+                // 添加到layerMap中
+                _layersMap.Add(tmpLayerId, layerTf);
             }
-            else
+            if (_viewsMap == null)
             {
-                Logger.Log("Get layer fail,layerId = " + layerId);
+                _viewsMap = new Dictionary<int, ViewBase>();
+            }
+            if (_viewUpdateList == null)
+            {
+                _viewUpdateList = new List<ViewBase>();
+            }
+            _viewUpdateCount = 0;
+            DoScreenAdaption();
+        }
+
+        public void InitViewCfgs(Dictionary<int, ViewCfg> viewCfgs)
+        {
+            _viewCfgs = viewCfgs;
+        }
+
+        /// <summary>
+        /// 隐藏当前的go(移动到当前屏幕看不见的地方)
+        /// </summary>
+        /// <param name="go"></param>
+        public void HideGo(GameObject go)
+        {
+            if (go != null)
+            {
+                go.transform.localPosition = _hideVector;
             }
         }
-    }
-    private Vector3 removeVector = new Vector3(2000, 2000, 0);
-    public void RemoveGoFromLayer(GameObject go)
-    {
-        if (go != null)
+
+        public void DoScreenAdaption()
         {
-            //go.SetActive(false);
-            go.transform.localPosition = removeVector;
+
         }
-    }
 
-    /// <summary>
-    /// 隐藏当前的go(移动到当前屏幕看不见的地方)
-    /// </summary>
-    /// <param name="go"></param>
-    public void HideGo(GameObject go)
-    {
-        if (go != null)
+        public void OpenView(int viewId, object data = null)
         {
-            go.transform.localPosition = _hideVector;
+            OpenView(viewId, data, Vector2.zero);
         }
-    }
 
-    public void DoScreenAdaption()
-    {
-        // 游戏本体边界
-        Global.GameLBBorderPos = new Vector2(-Consts.GameWidth / 2, -Consts.GameHeight / 2);
-        Global.GameRTBorderPos = new Vector2(Consts.GameWidth / 2, Consts.GameHeight / 2);
-        //Global.GameLBBorderPos.x = -Screen.width / 2;
-        //Global.GameLBBorderPos.y = -Screen.height / 2;
-        //Global.GameRTBorderPos.x = Screen.width / 2 + 480;
-        //Global.GameRTBorderPos.y = Screen.height / 2 + 480;   
-        // 弹幕边界
-        Global.BulletLBBorderPos = new Vector2(Global.GameLBBorderPos.x - 100, Global.GameLBBorderPos.y - 100);
-        Global.BulletRTBorderPos = new Vector2(Global.GameRTBorderPos.x + 100, Global.GameRTBorderPos.y + 100);
-        //Global.BulletLBBorderPos.x = Global.GameLBBorderPos.x - 100;
-        //Global.BulletLBBorderPos.y = Global.GameLBBorderPos.y - 100;
-        //Global.BulletRTBorderPos.x = Global.GameRTBorderPos.x + 100;
-        //Global.BulletRTBorderPos.y = Global.GameRTBorderPos.y + 100;
-        Logger.Log("Screem : width = " + Screen.width + "  height = " + Screen.height);
-        //Logger.Log(Global.BulletLBBorderPos + "  " + Global.BulletRTBorderPos);
-        // 玩家坐标边界
-        Global.PlayerLBBorderPos = new Vector2(Global.GameLBBorderPos.x + Consts.PlayerHalfWidth, Global.GameLBBorderPos.y + Consts.PlayerHalfHeight);
-        Global.PlayerRTBorderPos = new Vector2(Global.GameRTBorderPos.x - Consts.PlayerHalfWidth, Global.GameRTBorderPos.y - Consts.PlayerHalfHeight);
-
-
-        float scaleHeight = Screen.height / Consts.RefResolutionY;
-        GameObject gameLayer = GameObject.Find("GameLayer");
-        Transform tf = gameLayer.transform;
-        // STG游戏部分的实际宽度 = 总宽度- (左边框宽度 + 右边框宽度)
-        float stgWidth = Screen.width - (32 + 224) * scaleHeight;
-        float scaleWidth = stgWidth / Consts.GameWidth;
-        tf.localScale = new Vector3(scaleWidth, scaleHeight, 1);
-        float rectX = 32 * scaleHeight / Screen.width;
-        float rectY = 1f / 30;
-        float rectWidth = stgWidth / Screen.width;
-        float rectHeight = 1 - 2 * rectY;
-        _stgCamera.rect = new Rect(rectX, rectY, rectWidth, rectHeight);
-        // 背景部分
-        Transform bgTf = GameObject.Find("GameMainCanvas/BgLayer").transform;
-        bgTf.localScale = new Vector3(scaleWidth, scaleHeight, 1);
-        Global.STGAcutalScaleWidth = scaleWidth;
-        Global.STGAcutalScaleHeight = scaleHeight;
-        Global.STGActualSize = new Vector2(Consts.GameWidth * scaleWidth, Consts.GameHeight * scaleHeight);
-    }
-
-    public void ShowView(string name, object[] data = null)
-    {
-        ViewBase view;
-        if (!_viewsMap.TryGetValue(name, out view))
+        public void OpenView(int viewId, object data, Vector2 pos)
         {
-            GameObject viewGO = ResourceManager.GetInstance().GetPrefab("Prefab/Views", name);
-            if (viewGO != null)
+            ViewCfg cfg = null;
+            if (!_viewCfgs.TryGetValue(viewId, out cfg))
             {
-                System.Type classType = System.Type.GetType(name);
-                view = System.Activator.CreateInstance(classType) as ViewBase;
-                view.Init(viewGO);
-                _viewsMap.Add(name, view);
-                Transform parentTf;
-                if (!_layersMap.TryGetValue(view.GetLayerId(), out parentTf))
+                return;
+            }
+            ViewBase view;
+            if (!_viewsMap.TryGetValue(viewId, out view))
+            {
+                GameObject viewGo = ResourceManager.GetInstance().GetPrefab("Prefabs/Views", cfg.resPath);
+                if (viewGo != null)
                 {
-                    parentTf = _uiRootTf.Find("NormalLayer");
+                    System.Type classType = System.Type.GetType(cfg.className);
+                    view = System.Activator.CreateInstance(classType) as ViewBase;
+                    view.Init(viewGo);
+                    _viewsMap.Add(viewId, view);
+                    Transform parentTf;
+                    if (!_layersMap.TryGetValue(cfg.layer, out parentTf))
+                    {
+                        parentTf = _layersMap[LayerId.Normal];
+                    }
+                    RectTransform viewTf = viewGo.GetComponent<RectTransform>();
+                    viewTf.SetParent(parentTf, false);
+                    viewTf.localPosition = pos;
+                    view.OnShowImpl(data);
                 }
-                viewGO.transform.SetParent(parentTf, false);
-            }
-        }
-        if (view != null)
-        {
-            view.Show(data);
-        }
-    }
-
-    public void HideView(string name)
-    {
-        ViewBase view;
-        if (_viewsMap.TryGetValue(name, out view))
-        {
-            view.Hide();
-        }
-    }
-
-    public void Update()
-    {
-        bool needClear = false;
-        ViewBase view;
-        for (int i = 0; i < _viewUpdateCount; i++)
-        {
-            view = _viewUpdateList[i];
-            if (view != null)
-            {
-                view.Update();
             }
             else
             {
-                needClear = true;
+                view.Refresh(data);
             }
         }
-        if (needClear)
+
+        public void CloseView(int viewId)
         {
-            _viewUpdateCount = CommonUtils.RemoveNullElementsInList<ViewBase>(_viewUpdateList);
+            ViewBase view;
+            if (_viewsMap.TryGetValue(viewId, out view))
+            {
+                view.OnCloseImpl();
+                _viewsMap.Remove(viewId);
+            }
+        }
+
+        /// <summary>
+        /// 当前UI是否打开
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
+        public bool IsOpen(int viewId)
+        {
+            return _viewsMap.ContainsKey(viewId);
+        }
+
+        /// <summary>
+        /// 获取指定UI的控制类
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
+        public ViewBase GetView(int viewId)
+        {
+            ViewBase view;
+            if (_viewsMap.TryGetValue(viewId, out view))
+            {
+                return view;
+            }
+            return null;
+        }
+
+        public void Update()
+        {
+            bool needClear = false;
+            ViewBase view;
+            for (int i = 0; i < _viewUpdateCount; i++)
+            {
+                view = _viewUpdateList[i];
+                if (view != null)
+                {
+                    view.Update();
+                }
+                else
+                {
+                    needClear = true;
+                }
+            }
+            if (needClear)
+            {
+                _viewUpdateCount = CommonUtils.RemoveNullElementsInList<ViewBase>(_viewUpdateList);
+            }
+        }
+
+        /// <summary>
+        /// 注册update函数
+        /// </summary>
+        /// <param name="view"></param>
+        public void RegisterViewUpdate(ViewBase view)
+        {
+            if (_viewUpdateList.IndexOf(view) == -1)
+            {
+                _viewUpdateList.Add(view);
+                _viewUpdateCount++;
+            }
+        }
+
+        /// <summary>
+        /// 撤销注册update函数
+        /// </summary>
+        /// <param name="view"></param>
+        public void UnregisterViewUpdate(ViewBase view)
+        {
+            int index = _viewUpdateList.IndexOf(view);
+            if (index != -1)
+            {
+                _viewUpdateList[index] = null;
+            }
+        }
+
+        /// <summary>
+        /// 获取游戏本体摄像机
+        /// </summary>
+        /// <returns></returns>
+        public Camera GetUICamera()
+        {
+            return _uiCamera;
+        }
+
+        public Vector2 GetUIPosition(RectTransform rectTf)
+        {
+            return Vector2.zero;
+        }
+
+        /// <summary>
+        /// 获取STG本体的layer
+        /// </summary>
+        /// <returns></returns>
+        public Transform GetSTGLayerTf()
+        {
+            return _stgLayerTf;
         }
     }
 
-    /// <summary>
-    /// 注册update函数
-    /// </summary>
-    /// <param name="view"></param>
-    public void RegisterViewUpdate(ViewBase view)
+    public enum LayerId : int
     {
-        if (_viewUpdateList.IndexOf(view) == -1)
-        {
-            _viewUpdateList.Add(view);
-            _viewUpdateCount++;
-        }
+        Bottom = 1,
+        Normal = 2,
+        Top = 3,
+        LayerCount,
     }
-
-    /// <summary>
-    /// 撤销注册update函数
-    /// </summary>
-    /// <param name="view"></param>
-    public void UnregisterViewUpdate(ViewBase view)
-    {
-        int index = _viewUpdateList.IndexOf(view);
-        if (index != -1)
-        {
-            _viewUpdateList[index] = null;
-        }
-    }
-
-    /// <summary>
-    /// 获取游戏本体摄像机
-    /// </summary>
-    /// <returns></returns>
-    public Camera GetSTGCamera()
-    {
-        return _stgCamera;
-    }
-
-    /// <summary>
-    /// 获取STG本体的layer
-    /// </summary>
-    /// <returns></returns>
-    public Transform GetSTGLayerTf()
-    {
-        return _stgLayerTf;
-    }
-}
-
-public enum LayerId : int
-{
-    STGBottomView = 110,
-    STGBottomEffect = 130,
-    STGNormalEffect = 150,
-    Item = 250,
-    Enemy = 300,
-    EnemyBarrage = 500,
-    Player = 400,
-    PlayerBarage = 200,
-    PlayerCollisionPoint = 600,
-    STGTopEffect = 650,
-    GameInfo = 700,
-    UI = 100,
-    GameUI_Bottom = 900,
-    GameUI_Normal = 1000,
-    GameUI_Top = 1100,
 }
