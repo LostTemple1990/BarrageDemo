@@ -61,13 +61,13 @@ namespace YKEngine
             // UIRoot层级
             _layersMap = new Dictionary<LayerId, Transform>();
             int layerCount = (int)LayerId.LayerCount;
-            for (int i = layerCount - 1; i >= 1; i--)
+            for (int i = 1; i < layerCount ; i++)
             {
                 LayerId tmpLayerId = (LayerId)i;
-                GameObject layerGo = new GameObject("Layer" + i);
+                GameObject layerGo = new GameObject("Layer_" + tmpLayerId.ToString());
                 RectTransform layerTf = layerGo.AddComponent<RectTransform>();
                 layerTf.SetParent(_uiRootTf, false);
-                layerTf.localPosition = new Vector3(0, 0, i * 250);
+                layerTf.localPosition = new Vector3(0, 0, (layerCount-i) * 250);
                 layerTf.anchorMin = Vector2.zero;
                 layerTf.anchorMax = Vector2.one;
                 layerTf.sizeDelta = Vector2.zero;

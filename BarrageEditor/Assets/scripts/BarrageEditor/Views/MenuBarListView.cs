@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using YKEngine;
+using System.Runtime.InteropServices;
 
 namespace BarrageEditor
 {
@@ -156,9 +157,16 @@ namespace BarrageEditor
             _itemTFList.Clear();
         }
 
-        private void OpenClickHander()
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public class OpenFileDlg : FileDlg
         {
 
+        }
+
+        private void OpenClickHander()
+        {
+            [DllImport("Comdlg32.dll", SetLastError = true, ThrowOnUnmappableChar = true, CharSet = CharSet.Auto)]
+            public static extern bool GetOpenFileName([In, Out] OpenFileDlg ofd);
         }
     }
 }
