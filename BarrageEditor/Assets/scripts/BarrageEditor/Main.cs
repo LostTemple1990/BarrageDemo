@@ -11,6 +11,7 @@ namespace BarrageEditor
         // Use this for initialization
         void Start()
         {
+            EventManager.GetInstance().Init();
             UIManager.GetInstance().Init();
             ResourceManager.GetInstance().Init();
 
@@ -22,7 +23,8 @@ namespace BarrageEditor
         // Update is called once per frame
         void Update()
         {
-
+            EventManager.GetInstance().Update();
+            UIManager.GetInstance().Update();
         }
     }
 }

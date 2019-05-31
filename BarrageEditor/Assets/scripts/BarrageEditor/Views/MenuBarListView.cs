@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace BarrageEditor
 {
-    public class MenuBarListView : ViewBase
+    public class MenuBarListView : ViewBase,IEventReciver
     {
         struct MenuItemData
         {
@@ -47,9 +47,8 @@ namespace BarrageEditor
         /// </summary>
         private List<Transform> _itemTFList;
 
-        public override void Init(GameObject viewObj)
+        protected override void Init()
         {
-            base.Init(viewObj);
             _containerTf = _viewTf;
             #region 初始化每个tab对应的itemIds
             _listDatasDic = new Dictionary<int, List<int>>();
@@ -108,6 +107,7 @@ namespace BarrageEditor
             _itemDataDic.Add(ItemId_Exit, itemData);
             #endregion
             _itemTFList = new List<Transform>();
+            EventManager.GetInstance().Register(EngineEventID.WindowFocusChanged, this);
         }
 
         public override void OnShow(object data)
@@ -145,6 +145,13 @@ namespace BarrageEditor
             _itemTFList.Add(item.transform);
         }
 
+        public override void OnClose()
+        {
+            RemoveAllItems();
+            EventManager.GetInstance().Remove(EngineEventID.WindowFocusChanged, this);
+            base.OnClose();
+        }
+
         private void RemoveAllItems()
         {
             GameObject itemGo;
@@ -157,16 +164,21 @@ namespace BarrageEditor
             _itemTFList.Clear();
         }
 
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public class OpenFileDlg : FileDlg
-        {
-
-        }
-
         private void OpenClickHander()
         {
-            [DllImport("Comdlg32.dll", SetLastError = true, ThrowOnUnmappableChar = true, CharSet = CharSet.Auto)]
-            public static extern bool GetOpenFileName([In, Out] OpenFileDlg ofd);
+            Close();
+            FileManager.OpenFile("选择关卡数据", "关卡数据\0*.txt", false);
+        }
+
+        public void Execute(int eventId, object data)
+        {
+            if ( eventId == EngineEventID.WindowFocusChanged )
+            {
+                if ( (int)data != _viewId )
+                {
+                    Close();
+                }
+            }
         }
     }
 }

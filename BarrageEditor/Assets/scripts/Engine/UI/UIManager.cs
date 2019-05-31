@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace YKEngine
 {
@@ -34,6 +35,18 @@ namespace YKEngine
         private RectTransform _uiRootTf;
         private GameObject _uiRoot;
         /// <summary>
+        /// rootTf的宽度
+        /// </summary>
+        private float _uiRootWidth;
+        /// <summary>
+        /// rootTf的高度
+        /// </summary>
+        private float _uiRootHeight;
+        /// <summary>
+        /// 添加ui的默认位置
+        /// </summary>
+        private Vector2 _uiDefaultPos;
+        /// <summary>
         /// STG本体的最上层layer
         /// </summary>
         private Transform _stgLayerTf;
@@ -52,10 +65,21 @@ namespace YKEngine
 
         private Dictionary<int, ViewCfg> _viewCfgs;
 
+        private EventSystem _eventSystem;
+        private GraphicRaycaster _rayCaster;
+        /// <summary>
+        /// 当前焦点的界面
+        /// </summary>
+        private UView _curFocusView;
+
         public void Init()
         {
             _uiRoot = GameObject.Find("UIRoot");
             _uiRootTf = _uiRoot.GetComponent<RectTransform>();
+            Rect rootRect = _uiRootTf.rect;
+            _uiRootWidth = rootRect.width;
+            _uiRootHeight = rootRect.height;
+            _uiDefaultPos = new Vector2(_uiRootWidth / 2, _uiRootHeight / 2);
             _stgLayerTf = _uiRoot.transform.Find("GameLayer");
             _uiCamera = _uiRoot.transform.Find("UICamera").GetComponent<Camera>();
             // UIRoot层级
@@ -83,7 +107,37 @@ namespace YKEngine
                 _viewUpdateList = new List<ViewBase>();
             }
             _viewUpdateCount = 0;
+            InitFocus();
+
             DoScreenAdaption();
+        }
+
+        private void InitFocus()
+        {
+            _eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
+            _rayCaster = _uiRoot.GetComponent<GraphicRaycaster>();
+            _curFocusView = null;
+        }
+
+        private void UIRootClickHandler()
+        {
+            PointerEventData eventData = new PointerEventData(_eventSystem);
+            eventData.position = Input.mousePosition;
+            List<RaycastResult> resultList = new List<RaycastResult>();
+            _rayCaster.Raycast(eventData, resultList);
+            // 检测到第一个界面
+            foreach (RaycastResult result in resultList)
+            {
+                GameObject curGo = result.gameObject;
+                Transform curTf = curGo.transform;
+                while ( curTf.GetComponent<UView>() == null )
+                {
+                    curTf = curTf.parent;
+                }
+                UView focusView = curTf.GetComponent<UView>();
+                ChangeFocusView(focusView);
+                break;
+            }
         }
 
         public void InitViewCfgs(Dictionary<int, ViewCfg> viewCfgs)
@@ -110,7 +164,7 @@ namespace YKEngine
 
         public void OpenView(int viewId, object data = null)
         {
-            OpenView(viewId, data, Vector2.zero);
+            OpenView(viewId, data, _uiDefaultPos);
         }
 
         public void OpenView(int viewId, object data, Vector2 pos)
@@ -126,9 +180,19 @@ namespace YKEngine
                 GameObject viewGo = ResourceManager.GetInstance().GetPrefab("Prefabs/Views", cfg.resPath);
                 if (viewGo != null)
                 {
+                    // 创建viewBase
                     System.Type classType = System.Type.GetType(cfg.className);
                     view = System.Activator.CreateInstance(classType) as ViewBase;
-                    view.Init(viewGo);
+                    // uviw初始化，切换窗口焦点
+                    // 切换焦点
+                    UView uview = viewGo.GetComponent<UView>();
+                    uview.Init(view);
+                    if (uview.focusWhenOpen)
+                    {
+                        ChangeFocusView(uview);
+                    }
+                    // view初始化
+                    view.Init(viewId,viewGo);
                     _viewsMap.Add(viewId, view);
                     Transform parentTf;
                     if (!_layersMap.TryGetValue(cfg.layer, out parentTf))
@@ -137,13 +201,21 @@ namespace YKEngine
                     }
                     RectTransform viewTf = viewGo.GetComponent<RectTransform>();
                     viewTf.SetParent(parentTf, false);
-                    viewTf.localPosition = pos;
+                    SetUIPosition(viewTf, pos);
                     view.OnShowImpl(data);
                 }
             }
             else
             {
+                GameObject viewGo = view.GetViewObject();
+                // 切换焦点
+                UView uview = viewGo.GetComponent<UView>();
+                if (uview.focusWhenOpen)
+                {
+                    ChangeFocusView(uview);
+                }
                 view.Refresh(data);
+                viewGo.transform.SetSiblingIndex(-1);
             }
         }
 
@@ -183,6 +255,26 @@ namespace YKEngine
         }
 
         public void Update()
+        {
+            CheckFocus();
+            UpdateViews();
+        }
+
+        /// <summary>
+        /// UI焦点检测
+        /// </summary>
+        private void CheckFocus()
+        {
+            if ( Input.GetMouseButton(0) )
+            {
+                UIRootClickHandler();
+            }
+        }
+
+        /// <summary>
+        ///调用ViewBase的Update函数
+        /// </summary>
+        private void UpdateViews()
         {
             bool needClear = false;
             ViewBase view;
@@ -241,16 +333,26 @@ namespace YKEngine
 
         public Vector2 GetUIPosition(RectTransform rectTf)
         {
-            return Vector2.zero;
+            Vector2 localPos = _uiRootTf.InverseTransformPoint(rectTf.position);
+            return new Vector2(localPos.x + _uiRootWidth / 2, localPos.y + _uiRootHeight / 2);
         }
 
-        /// <summary>
-        /// 获取STG本体的layer
-        /// </summary>
-        /// <returns></returns>
-        public Transform GetSTGLayerTf()
+        public void SetUIPosition(RectTransform rectTf,Vector2 pos)
         {
-            return _stgLayerTf;
+            float z = rectTf.position.z;
+            Vector2 localPos = new Vector2(pos.x - _uiRootWidth / 2, pos.y - _uiRootHeight / 2);
+            Vector3 newPos = _uiRootTf.TransformPoint(localPos);
+            newPos.z = z;
+            rectTf.position = newPos;
+        }
+
+        private void ChangeFocusView(UView uview)
+        {
+            if ( _curFocusView != uview )
+            {
+                _curFocusView = uview;
+                EventManager.GetInstance().PostEvent(EngineEventID.WindowFocusChanged, uview.GetView().ViewId);
+            }
         }
     }
 

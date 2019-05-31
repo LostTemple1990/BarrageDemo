@@ -9,11 +9,18 @@ namespace YKEngine
         protected Transform _viewTf;
         protected int _viewId;
 
-        public virtual void Init(GameObject viewObj)
+        public void Init(int viewId,GameObject viewObj)
         {
+            _viewId = viewId;
             _view = viewObj;
             _viewTf = _view.transform;
+            Init();
             //UIManager.GetInstance().AddGoToLayer(viewObj, GetLayerId());
+        }
+
+        protected virtual void Init()
+        {
+
         }
 
         //public virtual void SetViewGO(GameObject viewObj)
@@ -65,6 +72,23 @@ namespace YKEngine
         public virtual void OnClose()
         {
 
+        }
+
+        /// <summary>
+        /// 获取view对应的go
+        /// </summary>
+        /// <returns></returns>
+        internal GameObject GetViewObject()
+        {
+            return _view;
+        }
+
+        /// <summary>
+        /// 获取viewId
+        /// </summary>
+        public int ViewId
+        {
+            get { return _viewId; }
         }
 
         /// <summary>

@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 114858210656411020}
   - component: {fileID: 114333884967871076}
   - component: {fileID: 222307257164700120}
+  - component: {fileID: 114522797906667862}
   m_Layer: 0
   m_Name: MainMenuList
   m_TagString: Untagged
@@ -60,6 +61,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &114522797906667862
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1135965436269212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 150eb6a3e94537c45a2f117b5ca60152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  focusWhenOpen: 1
 --- !u!114 &114858210656411020
 MonoBehaviour:
   m_ObjectHideFlags: 1

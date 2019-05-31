@@ -183,7 +183,7 @@ namespace YKEngine
         public GameObject GetPrefab(string packName, string resName)
         {
             GameObject proto;
-            if (!_protoDic.TryGetValue("resName", out proto))
+            if (!_protoDic.TryGetValue(resName, out proto))
             {
                 proto = Resources.Load<GameObject>(packName + "/" + resName);
                 if ( proto == null )
