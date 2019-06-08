@@ -6,14 +6,14 @@ namespace YKEngine
     public class ViewBase
     {
         protected GameObject _view;
-        protected Transform _viewTf;
+        protected RectTransform _viewTf;
         protected int _viewId;
 
         public void Init(int viewId,GameObject viewObj)
         {
             _viewId = viewId;
             _view = viewObj;
-            _viewTf = _view.transform;
+            _viewTf = _view.GetComponent<RectTransform>();
             Init();
             //UIManager.GetInstance().AddGoToLayer(viewObj, GetLayerId());
         }

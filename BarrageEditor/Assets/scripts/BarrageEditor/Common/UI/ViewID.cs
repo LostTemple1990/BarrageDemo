@@ -5,8 +5,29 @@ namespace BarrageEditor
 {
     public class ViewID
     {
-        public const int MainView = 1;
-        public const int MenuBarListView = 2;
+        public const int MainView = 1001;
+        public const int MenuBarListView = 1002;
+        /// <summary>
+        /// 提示文本界面
+        /// </summary>
+        public const int TooltipView = 1003;
+        /// <summary>
+        /// 节点属性文本编辑界面
+        /// </summary>
+        public const int AttrEditTextView = 2001;
+        // <summary>
+        /// 子弹id选择界面
+        /// </summary>
+        public const int AttrEditBulletIdView = 2002;
+        /// <summary>
+        /// 弹型选择界面
+        /// </summary>
+        public const int AttrSelectBulletStyleView = 2003;
+        /// <summary>
+        /// 颜色选择界面
+        /// </summary>
+        public const int AttrSelectBulletColorView = 2004;
+
 
         private static Dictionary<int, ViewCfg> _viewCfgMap;
 
@@ -31,6 +52,55 @@ namespace BarrageEditor
                 layer = LayerId.Normal
             };
             _viewCfgMap.Add(MenuBarListView, cfg);
+            #region 提示文本界面
+            cfg = new ViewCfg()
+            {
+                viewId = TooltipView,
+                resPath = "MainView/TooltipView",
+                className = "BarrageEditor.TooltipView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(TooltipView, cfg);
+            #endregion
+            // 节点属性文本编辑界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrEditTextView,
+                resPath = "EditViews/EditTextView",
+                className = "BarrageEditor.AttrEditTextView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(AttrEditTextView, cfg);
+            #region 子弹id选择界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrEditBulletIdView,
+                resPath = "EditViews/EditBulletIdView",
+                className = "BarrageEditor.AttrEditBulletIdView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(AttrEditBulletIdView, cfg);
+            #endregion
+            #region 弹型选择界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrSelectBulletStyleView,
+                resPath = "EditViews/SelectBulletStyleView",
+                className = "BarrageEditor.AttrSelectBulletStyleView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(AttrSelectBulletStyleView, cfg);
+            #endregion
+            #region 颜色选择界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrSelectBulletColorView,
+                resPath = "EditViews/SelectBulletColorView",
+                className = "BarrageEditor.AttrSelectBulletColorView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(AttrSelectBulletColorView, cfg);
+            #endregion
             UIManager.GetInstance().InitViewCfgs(_viewCfgMap);
         }
     }

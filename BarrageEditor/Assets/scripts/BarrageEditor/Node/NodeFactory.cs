@@ -18,5 +18,20 @@ namespace BarrageEditor
             }
             return newNode;
         }
+
+        public static BaseNodeAttr CreateNodeAttr(NodeAttrType type)
+        {
+            BaseNodeAttr nodeAttr = null;
+            switch ( type )
+            {
+                case NodeAttrType.Any:
+                    nodeAttr = new NodeAttrAny();
+                    break;
+                case NodeAttrType.Bool:
+                    nodeAttr = new NodeAttrBool();
+                    break;
+            }
+            return nodeAttr;
+        }
     }
 }

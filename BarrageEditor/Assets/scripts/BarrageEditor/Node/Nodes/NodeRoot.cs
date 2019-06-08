@@ -17,6 +17,11 @@ namespace BarrageEditor
             rect.anchoredPosition = new Vector2(31, 0);
         }
 
+        public override string GetNodeName()
+        {
+            return "project";
+        }
+
         public override string ToDesc()
         {
             return "project";

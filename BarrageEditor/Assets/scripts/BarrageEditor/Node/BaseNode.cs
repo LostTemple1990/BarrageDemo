@@ -53,17 +53,27 @@ namespace BarrageEditor
             _descText = _nodeItemTf.Find("SelectImg/DescText").GetComponent<Text>();
             _clickGo = _nodeItemTf.Find("SelectImg/ClickImg").gameObject;
             // 事件监听
-            UIEventListener.Get(_clickGo).AddClick(OnSelected);
+            UIEventListener.Get(_clickGo).AddClick(
+                ()=> {
+                    OnSelected(true);
+                });
             UIEventListener.Get(_expandImg.gameObject).AddClick(OnExpandClickHander);
             _clickCount = 0;
             // 基本参数初始化
             childs = new List<BaseNode>();
+            attrs = new List<BaseNodeAttr>();
             parentNode = parent;
             _nodeDepth = parent == null ? 0 : parent.GetDepth() + 1;
             if ( parent != null )
             {
                 parent.OnChildAdded(this);
             }
+            CreateDefailtAttrs();
+        }
+
+        public virtual void CreateDefailtAttrs()
+        {
+
         }
 
         public void RefreshPosition(ref int showIndex,BaseNode beginNode,BaseNode fromChild = null)
@@ -176,29 +186,38 @@ namespace BarrageEditor
             }
         }
 
-        public void OnSelected()
+        public void OnSelected(bool value)
         {
-            _isSelected = true;
+            _isSelected = value;
             _selectedImg.color = _isSelected ? new Color(0, 0, 1, 1) : new Color(0, 0, 1, 0);
-            if ( _clickCount == 0 )
+            if ( value )
             {
-                _lastClickTime = Time.realtimeSinceStartup;
-                _clickCount = 1;
-            }
-            else
-            {
-                // 双击检测
-                float nowTime = Time.realtimeSinceStartup;
-                if ( nowTime - _lastClickTime <= 0.5f )
-                {
-                    _clickCount = 0;
-                    Expand(!isExpand);
-                }
-                else
+                if (_clickCount == 0)
                 {
                     _lastClickTime = Time.realtimeSinceStartup;
                     _clickCount = 1;
                 }
+                else
+                {
+                    // 双击检测
+                    float nowTime = Time.realtimeSinceStartup;
+                    if (nowTime - _lastClickTime <= 0.5f)
+                    {
+                        _clickCount = 0;
+                        Expand(!isExpand);
+                    }
+                    else
+                    {
+                        _lastClickTime = Time.realtimeSinceStartup;
+                        _clickCount = 1;
+                    }
+                }
+                EventManager.GetInstance().PostEvent(EditorEvents.NodeSelected, this, true);
+            }
+            else
+            {
+                _clickCount = 0;
+                _lastClickTime = 0;
             }
         }
 
@@ -211,10 +230,22 @@ namespace BarrageEditor
         {
             _descText.text = ToDesc();
         }
+
+        public List<BaseNodeAttr> GetAttrs()
+        {
+            return attrs;
+        }
     }
 
     public enum NodeType : int
     {
         Root = 0,
+    }
+
+    public enum NodeInsertMode : byte
+    {
+        InsertAfter = 0,
+        InsertBefore = 1,
+        InsertAsChild = 2,
     }
 }

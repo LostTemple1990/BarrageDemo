@@ -117,9 +117,21 @@ namespace YKEngine
             _onPointerClick = onClick;
         }
 
+        public void AddPointerEnter(Action onPointerEnter)
+        {
+            _onPointerEnter = onPointerEnter;
+        }
+
+        public void AddPointerExit(Action onPointerExit)
+        {
+            _onPointerExit = onPointerExit;
+        }
+
         public void RemoveAllEvents()
         {
             _onPointerClick = null;
+            _onPointerEnter = null;
+            _onPointerExit = null;
         }
 
 

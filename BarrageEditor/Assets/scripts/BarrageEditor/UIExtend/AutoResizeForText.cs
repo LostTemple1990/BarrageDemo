@@ -25,12 +25,9 @@ public class AutoResizeForText : MonoBehaviour
     {
         _rectTf = GetComponent<RectTransform>();
         _originalSize = _rectTf.sizeDelta;
-        Debug.Log(_originalSize);
         // 注册事件
         text.RegisterDirtyLayoutCallback(DirtyLayoutCallback);
 	}
-
-    private int a = 0;
 	
 	// Update is called once per frame
 	void Update ()

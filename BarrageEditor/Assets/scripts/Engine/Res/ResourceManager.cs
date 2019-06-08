@@ -48,8 +48,8 @@ namespace YKEngine
             ParseResource("etama9", 16);
             // sprite的材质
             _spriteMatList = new List<Material>();
-            _spriteMatList.Add(Resources.Load<Material>("materials/SpriteDefaultMat"));
-            _spriteMatList.Add(Resources.Load<Material>("materials/SpriteSoftAdditiveMat"));
+            _spriteMatList.Add(Resources.Load<Material>("Materials/SpriteDefaultMat"));
+            _spriteMatList.Add(Resources.Load<Material>("Materials/SpriteSoftAdditiveMat"));
             _protoDic = new Dictionary<string, GameObject>();
         }
 

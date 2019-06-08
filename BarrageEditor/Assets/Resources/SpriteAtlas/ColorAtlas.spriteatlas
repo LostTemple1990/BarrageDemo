@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: ColorAtlas
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 8a182d3ff4f6ac14687f3cc322e26cb9, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 1327f9d011e2f0e4c8e9bbf78b41a303, type: 3}
+  - {fileID: 21300000, guid: 686212439e9657744a523b113cea70c0, type: 3}
+  - {fileID: 21300000, guid: d8a1ae646b331fa4b87ca0569779e9fb, type: 3}
+  - {fileID: 21300000, guid: 82dc08d4d03826446873202d39370dc4, type: 3}
+  - {fileID: 21300000, guid: eb0fbd953a0be80489c79d1b49cbfe80, type: 3}
+  - {fileID: 21300000, guid: d9aaef969678c5648bb4e07b36c59754, type: 3}
+  - {fileID: 21300000, guid: 3bb875b647887e940a778186552dd916, type: 3}
+  - {fileID: 21300000, guid: dcc5137701e2cd04b852ffb96d31d484, type: 3}
+  - {fileID: 21300000, guid: 4afd8fe7e2655a34f8a372ca81a6015a, type: 3}
+  - {fileID: 21300000, guid: 6d24ab394fa10c040b1981d5b1aa6879, type: 3}
+  - {fileID: 21300000, guid: 894a3bca470a5464996309144ab64c39, type: 3}
+  - {fileID: 21300000, guid: ee0c24cb38d51624c8fac2ac7cec93e1, type: 3}
+  - {fileID: 21300000, guid: beec9ecb3cef1ff44acb6d680a8199c5, type: 3}
+  - {fileID: 21300000, guid: b1c6395c24f20a24ea36418aafb5fc7c, type: 3}
+  - {fileID: 21300000, guid: 2191d3ec1925c804c95fb753032a03c3, type: 3}
+  - {fileID: 21300000, guid: b475f21feeaeac24faa5be22d27fd660, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - COLOR_CYAN
+  - COLOR_DEEP_PURPLE
+  - COLOR_DEEP_GRAY
+  - COLOR_DEEP_BLUE
+  - COLOR_YELLOW
+  - COLOR_BLUE
+  - COLOR_ROYAL_BLUE
+  - COLOR_DEEP_GREEN
+  - COLOR_GREEN
+  - COLOR_ORANGE
+  - COLOR_PURPLE
+  - COLOR_GRAY
+  - COLOR_GOLDEN_YELLOW
+  - COLOR_RED
+  - COLOR_CHARTREUSE
+  - COLOR_DEEP_RED
+  m_Tag: ColorAtlas
+  m_IsVariant: 0
