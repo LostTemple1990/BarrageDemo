@@ -8,9 +8,23 @@ namespace BarrageEditor
     public class BaseNode
     {
         /// <summary>
+        /// 可展开箭头，有子节点的时候的颜色
+        /// </summary>
+        private static Color ExpandImg_NodeHasChild_Color = new Color(1, 1, 1, 1);
+        /// <summary>
+        /// 可展开箭头，没有子节点的时候的颜色
+        /// </summary>
+        private static Color ExpandImg_NodeHasNoChild_Color = new Color(1, 1, 1, 0.5f);
+
+        private const float RootNodeOffset = 12f;
+        private const float DepthInterval = 24;
+        public const float NodeHeight = 30;
+
+
+        /// <summary>
         /// 节点类型
         /// </summary>
-        public NodeType nodeType;
+        protected NodeType _nodeType;
         /// <summary>
         /// 参数
         /// </summary>
@@ -41,12 +55,13 @@ namespace BarrageEditor
         protected float _clickCount;
 
 
-        public virtual void Init(BaseNode parent,RectTransform parentTf)
+        public virtual void Init(RectTransform parentTf)
         {
             _nodeItemGo = ResourceManager.GetInstance().GetPrefab("Prefabs/Views", "MainView/NodeItem");
             _nodeItemTf = _nodeItemGo.GetComponent<RectTransform>();
             _nodeItemTf.SetParent(parentTf, false);
             _expandImg = _nodeItemTf.Find("ExpandImg").GetComponent<Image>();
+            _expandImg.color = ExpandImg_NodeHasNoChild_Color;
             _functionImg = _nodeItemTf.Find("FunctionImg").GetComponent<Image>();
             _selectedImg = _nodeItemTf.Find("SelectImg").GetComponent<Image>();
             _selectedImg.color = new Color(0, 0, 1, 0);
@@ -62,18 +77,61 @@ namespace BarrageEditor
             // 基本参数初始化
             childs = new List<BaseNode>();
             attrs = new List<BaseNodeAttr>();
-            parentNode = parent;
-            _nodeDepth = parent == null ? 0 : parent.GetDepth() + 1;
-            if ( parent != null )
-            {
-                parent.OnChildAdded(this);
-            }
-            CreateDefailtAttrs();
+            CreateDefaultAttrs();
         }
 
-        public virtual void CreateDefailtAttrs()
+        public virtual void CreateDefaultAttrs()
         {
 
+        }
+
+        /// <summary>
+        /// 插入子节点
+        /// </summary>
+        /// <param name="child"></param>
+        /// <param name="index">子节点位置索引，-1为插入到最后</param>
+        public virtual void InsertChildNode(BaseNode child, int index)
+        {
+            if ( index < 0 ) { index = childs.Count; }
+            if (index > childs.Count)
+            {
+                Logger.LogError("invalid index for insertChildNode");
+            }
+            childs.Add(null);
+            for (int i = childs.Count - 1; i > index; i--)
+            {
+                childs[i] = childs[i - 1];
+            }
+            childs[index] = child;
+            child.SetParent(this);
+            // 显示可展开的图标
+            _expandImg.color = ExpandImg_NodeHasChild_Color;
+        }
+
+        public int GetChildIndex(BaseNode child)
+        {
+            return childs.IndexOf(child);
+        }
+
+        public void SetParent(BaseNode parent)
+        {
+            parentNode = parent;
+            _nodeDepth = parent == null ? 0 : parent.GetDepth() + 1;
+        }
+
+        public void SetAttrsDefaultValues()
+        {
+            NodeConfig cfg = DatabaseManager.NodeDatabase.GetNodeCfgByNodeType(_nodeType);
+            if (cfg.defaultAttrValues == null) return;
+            SetAttrsValues(cfg.defaultAttrValues);
+        }
+
+        public void SetAttrsValues(List<object> values)
+        {
+            for (int i=0;i<attrs.Count;i++)
+            {
+                attrs[i].SetValue(values[i]);
+            }
         }
 
         public void RefreshPosition(ref int showIndex,BaseNode beginNode,BaseNode fromChild = null)
@@ -83,8 +141,8 @@ namespace BarrageEditor
                 showIndex++;
                 _nodeShowIndex = showIndex;
             }
-            float posX = _nodeDepth == 0 ? 12 : (_nodeDepth - 1) * 24 + 12;
-            float posY = _nodeShowIndex * -30;
+            float posX = _nodeDepth == 0 ? RootNodeOffset : (_nodeDepth - 1) * DepthInterval + RootNodeOffset;
+            float posY = _nodeShowIndex * -NodeHeight;
             _nodeItemTf.anchoredPosition = new Vector2(posX, posY);
             if ( isExpand )
             {
@@ -137,6 +195,7 @@ namespace BarrageEditor
             }
             int newNodeIndex = _nodeShowIndex;
             RefreshPosition(ref newNodeIndex, this);
+            EventManager.GetInstance().PostEvent(EditorEvents.NodeExpanded, newNodeIndex);
         }
 
         public void SetChildNodesVisible(bool value)
@@ -154,6 +213,11 @@ namespace BarrageEditor
         public int GetDepth()
         {
             return _nodeDepth;
+        }
+
+        public int GetShowIndex()
+        {
+            return _nodeShowIndex;
         }
 
         public float GetItemOffset()
@@ -174,16 +238,6 @@ namespace BarrageEditor
         public override string ToString()
         {
             return base.ToString();
-        }
-
-        public void OnChildAdded(BaseNode child)
-        {
-            childs.Add(child);
-            if (parentNode == null) return;
-            if ( !_expandImg.gameObject.activeSelf )
-            {
-                _expandImg.gameObject.SetActive(true);
-            }
         }
 
         public void OnSelected(bool value)
@@ -231,15 +285,15 @@ namespace BarrageEditor
             _descText.text = ToDesc();
         }
 
+        public NodeType GetNodeType()
+        {
+            return _nodeType;
+        }
+
         public List<BaseNodeAttr> GetAttrs()
         {
             return attrs;
         }
-    }
-
-    public enum NodeType : int
-    {
-        Root = 0,
     }
 
     public enum NodeInsertMode : byte
@@ -247,5 +301,13 @@ namespace BarrageEditor
         InsertAfter = 0,
         InsertBefore = 1,
         InsertAsChild = 2,
+    }
+
+    public class NodeData
+    {
+        public NodeType type;
+        public NodeData parent;
+        public List<NodeData> childs;
+        public List<object> attrValues;
     }
 }

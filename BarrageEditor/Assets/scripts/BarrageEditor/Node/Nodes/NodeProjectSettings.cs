@@ -6,29 +6,27 @@ namespace BarrageEditor
 {
     public class NodeProjectSettings : BaseNode
     {
-        public override void Init(BaseNode parent, RectTransform parentTf)
+        public override void Init(RectTransform parentTf)
         {
-            base.Init(parent, parentTf);
+            _nodeType = NodeType.ProjectSetting;
+            base.Init(parentTf);
             _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "setting");
         }
 
-        public override void CreateDefailtAttrs()
+        public override void CreateDefaultAttrs()
         {
             BaseNodeAttr nodeAttr;
             // 输出名称
-            nodeAttr = NodeFactory.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Output name", null);
-            nodeAttr.SetValue("unnamed");
             attrs.Add(nodeAttr);
             // 作者
-            nodeAttr = NodeFactory.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Author", null);
-            nodeAttr.SetValue("YK");
             attrs.Add(nodeAttr);
             // 是否允许练习模式
-            nodeAttr = NodeFactory.CreateNodeAttr(NodeAttrType.Bool);
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Allow practice", null);
-            nodeAttr.SetValue("true");
             attrs.Add(nodeAttr);
         }
 

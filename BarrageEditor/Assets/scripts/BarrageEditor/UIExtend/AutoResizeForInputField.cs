@@ -25,7 +25,6 @@ public class AutoResizeForInputField : MonoBehaviour
     private Vector2 _originalSize;
 
     private Text _text;
-    private bool _outPutText = false;
     // Use this for initialization
     void Awake()
     {

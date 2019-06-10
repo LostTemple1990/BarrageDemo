@@ -5,9 +5,10 @@ namespace BarrageEditor
 {
     public class NodeRoot : BaseNode
     {
-        public override void Init(BaseNode parent, RectTransform parentTf)
+        public override void Init( RectTransform parentTf)
         {
-            base.Init(parent, parentTf);
+            _nodeType = NodeType.Root;
+            base.Init(parentTf);
             _expandImg.gameObject.SetActive(false);
             // 移动功能标识图像
             RectTransform rect = _functionImg.GetComponent<RectTransform>();

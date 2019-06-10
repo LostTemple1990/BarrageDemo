@@ -11,6 +11,7 @@ namespace BarrageEditor
     public class BaseNodeAttr
     {
         protected BaseNode _node;
+        protected NodeAttrType _type;
         protected string _attrName;
         public string attrDesc;
         private object _value;
@@ -61,10 +62,12 @@ namespace BarrageEditor
         public virtual void SetValue(object value)
         {
             _value = value;
+            _isValueEdit = false;
             if ( _itemGo != null )
             {
                 _valueText.text = GetValueString();
             }
+            _node.UpdateDesc();
         }
 
         /// <summary>
@@ -149,5 +152,12 @@ namespace BarrageEditor
         Bool = 1,
         Int = 2,
         String = 3, 
+    }
+
+    public class NodeAttrData
+    {
+        public NodeAttrType type;
+        public string attrName;
+        public object attrValue;
     }
 }

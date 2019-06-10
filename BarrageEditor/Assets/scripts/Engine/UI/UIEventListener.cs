@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -125,6 +126,23 @@ namespace YKEngine
         public void AddPointerExit(Action onPointerExit)
         {
             _onPointerExit = onPointerExit;
+        }
+
+        public void PassEvent<T>(PointerEventData data, ExecuteEvents.EventFunction<T> function)
+        where T : IEventSystemHandler
+        {
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(data, results);
+            GameObject current = data.pointerCurrentRaycast.gameObject;
+            for (int i = 0; i < results.Count; i++)
+            {
+                if (current != results[i].gameObject)
+                {
+                    ExecuteEvents.Execute(results[i].gameObject, data, function);
+                    break;
+                    //RaycastAll后ugui会自己排序，如果你只想响应透下去的最近的一个响应，这里ExecuteEvents.Execute后直接break就行。
+                }
+            }
         }
 
         public void RemoveAllEvents()

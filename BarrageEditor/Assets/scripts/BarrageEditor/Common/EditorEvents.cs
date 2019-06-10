@@ -16,5 +16,10 @@ namespace BarrageEditor
         /// <para>param1 : BaseNode</para>
         /// </summary>
         public const int NodeSelected = 2001;
+        /// <summary>
+        /// 展开/收起一个节点
+        /// </summary>
+        public const int NodeExpanded = 2002;
+        public const int FocusOnNode = 2003;
     }
 }
