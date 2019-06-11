@@ -139,6 +139,14 @@ namespace BarrageEditor
             return _attrName;
         }
 
+        /// <summary>
+        /// 打开该属性的编辑界面
+        /// </summary>
+        public virtual void OpenEditView()
+        {
+
+        }
+
         public virtual string ToDesc()
         {
             return "undefined node attr desc";

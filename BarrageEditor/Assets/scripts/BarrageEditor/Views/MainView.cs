@@ -289,42 +289,40 @@ namespace BarrageEditor
 
         private void TryInsertNode(NodeType nodeType)
         {
+            BaseNode parentNode = null;
+            BaseNode newNode = null;
+            int insertIndex = -1;
             if ( _curInsertMode == NodeInsertMode.InsertAfter )
             {
-                BaseNode parentNode = _curSelectedNode.parentNode;
-                if (parentNode != null)
-                {
-                    BaseNode node = NodeManager.CreateNode(nodeType);
-                    node.SetAttrsDefaultValues();
-                    int index = parentNode.GetChildIndex(_curSelectedNode);
-                    parentNode.InsertChildNode(node, index + 1);
-                    parentNode.Expand(true);
-                    node.OnSelected(true);
-                    FocusOnNode(node);
-                }
+                parentNode = _curSelectedNode.parentNode;
+                insertIndex = parentNode.GetChildIndex(_curSelectedNode) + 1;
             }
             else if (_curInsertMode == NodeInsertMode.InsertBefore)
             {
-                BaseNode parentNode = _curSelectedNode.parentNode;
-                if (parentNode != null)
-                {
-                    BaseNode node = NodeManager.CreateNode(nodeType);
-                    node.SetAttrsDefaultValues();
-                    int index = parentNode.GetChildIndex(_curSelectedNode);
-                    parentNode.InsertChildNode(node, index);
-                    parentNode.Expand(true);
-                    node.OnSelected(true);
-                    FocusOnNode(node);
-                }
+                parentNode = _curSelectedNode.parentNode;
+                insertIndex = parentNode.GetChildIndex(_curSelectedNode);
             }
             else if (_curInsertMode == NodeInsertMode.InsertAsChild)
             {
-                BaseNode node = NodeManager.CreateNode(nodeType);
-                node.SetAttrsDefaultValues();
-                _curSelectedNode.InsertChildNode(node, -1);
-                _curSelectedNode.Expand(true);
-                node.OnSelected(true);
-                FocusOnNode(node);
+                parentNode = _curSelectedNode;
+                insertIndex = -1;
+            }
+            if (parentNode != null)
+            {
+                // 先判断是否可以插入子节点
+                // 插入子节点
+                newNode = NodeManager.CreateNode(nodeType);
+                newNode.SetAttrsDefaultValues();
+                _curSelectedNode.InsertChildNode(newNode, insertIndex);
+                // 展开父节点
+                parentNode.Expand(true);
+                newNode.OnSelected(true);
+                FocusOnNode(newNode);
+                NodeConfig nodeCfg = DatabaseManager.NodeDatabase.GetNodeCfgByNodeType(nodeType);
+                if ( nodeCfg.editFirst )
+                {
+                    newNode.attrs[0].OpenEditView();
+                }
             }
         }
 

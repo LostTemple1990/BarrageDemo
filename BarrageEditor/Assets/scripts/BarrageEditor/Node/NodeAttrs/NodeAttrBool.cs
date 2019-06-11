@@ -31,6 +31,11 @@ namespace BarrageEditor
 
         private void OnEditBtnClickHandler()
         {
+            OpenEditView();
+        }
+
+        public override void OpenEditView()
+        {
             UIManager.GetInstance().OpenView(ViewID.AttrEditTextView, this);
         }
 
