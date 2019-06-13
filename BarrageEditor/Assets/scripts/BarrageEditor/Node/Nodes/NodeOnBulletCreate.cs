@@ -8,7 +8,7 @@ namespace BarrageEditor
     {
         public override void Init(RectTransform parentTf)
         {
-            _nodeType = NodeType.DefineBullet;
+            _nodeType = NodeType.OnBulletCreate;
             base.Init(parentTf);
             _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "bulletdefine");
         }

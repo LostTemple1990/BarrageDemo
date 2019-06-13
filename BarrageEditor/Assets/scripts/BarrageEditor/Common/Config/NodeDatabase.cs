@@ -17,8 +17,20 @@ namespace BarrageEditor
         /// 提示信息
         /// </summary>
         public string shortcutTip;
+        /// <summary>
+        /// 创建的时候是否编辑
+        /// </summary>
+        public bool editOnCreated;
+        /// <summary>
+        /// 是否可以被直接删除
+        /// </summary>
+        public bool isDeletable;
 
-        public bool editFirst;
+        public NodeConfig()
+        {
+            editOnCreated = false;
+            isDeletable = true;
+        }
     }
 
     public enum NodeType : int
@@ -29,6 +41,8 @@ namespace BarrageEditor
         CodeBlock = 3,
         Code = 4,
         DefineBullet = 10,
+        OnBulletCreate = 11,
+        CreateBullet = 12,
     }
 
     public class NodeDatabase
@@ -83,10 +97,33 @@ namespace BarrageEditor
                 type = NodeType.DefineBullet,
                 shortcutPath = "bulletdefine",
                 shortcutTip = "define bullet",
-                editFirst = true,
+                editOnCreated = true,
             };
             cfg.defaultAttrValues = new List<object> { "" };
             _nodeCfgDic.Add(NodeType.DefineBullet, cfg);
+            #endregion
+            #region onBulletCreate
+            cfg = new NodeConfig
+            {
+                type = NodeType.OnBulletCreate,
+                shortcutPath = "bulletdefine",
+                shortcutTip = "define bullet",
+                editOnCreated = false,
+                isDeletable  = false,
+            };
+            cfg.defaultAttrValues = new List<object> { "107010", "v,angle" };
+            _nodeCfgDic.Add(NodeType.OnBulletCreate, cfg);
+            #endregion
+            #region createBullet
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateBullet,
+                shortcutPath = "bulletcreate",
+                shortcutTip = "create bullet",
+                editOnCreated = true,
+            };
+            cfg.defaultAttrValues = new List<object> { "", "0", "0", "" };
+            _nodeCfgDic.Add(NodeType.CreateBullet, cfg);
             #endregion
             #endregion
         }

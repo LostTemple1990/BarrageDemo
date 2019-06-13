@@ -28,6 +28,8 @@ namespace BarrageEditor
         /// </summary>
         public const int AttrSelectBulletColorView = 2004;
 
+        public const int AttrSelectCustomizedTypeView = 2005;
+
 
         private static Dictionary<int, ViewCfg> _viewCfgMap;
 
@@ -100,6 +102,16 @@ namespace BarrageEditor
                 layer = LayerId.Normal
             };
             _viewCfgMap.Add(AttrSelectBulletColorView, cfg);
+            #endregion
+            #region 自定义类型选择界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrSelectCustomizedTypeView,
+                resPath = "EditViews/SelectCustomizedTypeView",
+                className = "BarrageEditor.AttrEditSelectCustomizedTypeView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(AttrSelectCustomizedTypeView, cfg);
             #endregion
             UIManager.GetInstance().InitViewCfgs(_viewCfgMap);
         }

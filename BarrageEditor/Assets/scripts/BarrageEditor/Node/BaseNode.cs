@@ -116,7 +116,17 @@ namespace BarrageEditor
         public void SetParent(BaseNode parent)
         {
             parentNode = parent;
-            _nodeDepth = parent == null ? 0 : parent.GetDepth() + 1;
+            OnParentDepthChanged();
+            //_nodeDepth = parent == null ? 0 : parent.GetDepth() + 1;
+        }
+
+        protected void OnParentDepthChanged()
+        {
+            _nodeDepth = parentNode == null ? 0 : parentNode.GetDepth() + 1;
+            for (int i=0;i<childs.Count;i++)
+            {
+                childs[i].OnParentDepthChanged();
+            }
         }
 
         public void SetAttrsDefaultValues()
@@ -130,8 +140,14 @@ namespace BarrageEditor
         {
             for (int i=0;i<attrs.Count;i++)
             {
-                attrs[i].SetValue(values[i]);
+                attrs[i].SetValue(values[i],false);
             }
+            OnAttributeValueChanged();
+        }
+
+        public virtual void OnAttributeValueChanged(BaseNodeAttr attr=null)
+        {
+            UpdateDesc();
         }
 
         public void RefreshPosition(ref int showIndex,BaseNode beginNode,BaseNode fromChild = null)

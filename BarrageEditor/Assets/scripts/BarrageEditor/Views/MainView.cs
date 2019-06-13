@@ -211,7 +211,7 @@ namespace BarrageEditor
             typeList = new List<NodeType> { NodeType.Folder, NodeType.CodeBlock };
             _nodeTabShortcutDic.Add(NodeShortcutTab.General, typeList);
             //Bullet
-            typeList = new List<NodeType> { NodeType.DefineBullet };
+            typeList = new List<NodeType> { NodeType.DefineBullet, NodeType.CreateBullet };
             _nodeTabShortcutDic.Add(NodeShortcutTab.Bullet, typeList);
 
             RectTransform barTf = _viewTf.Find("NodeShortcutBar").GetComponent<RectTransform>();
@@ -313,13 +313,13 @@ namespace BarrageEditor
                 // 插入子节点
                 newNode = NodeManager.CreateNode(nodeType);
                 newNode.SetAttrsDefaultValues();
-                _curSelectedNode.InsertChildNode(newNode, insertIndex);
+                parentNode.InsertChildNode(newNode, insertIndex);
                 // 展开父节点
                 parentNode.Expand(true);
                 newNode.OnSelected(true);
                 FocusOnNode(newNode);
                 NodeConfig nodeCfg = DatabaseManager.NodeDatabase.GetNodeCfgByNodeType(nodeType);
-                if ( nodeCfg.editFirst )
+                if ( nodeCfg.editOnCreated )
                 {
                     newNode.attrs[0].OpenEditView();
                 }

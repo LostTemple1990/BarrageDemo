@@ -14,7 +14,8 @@ namespace BarrageEditor
         protected NodeAttrType _type;
         protected string _attrName;
         public string attrDesc;
-        private object _value;
+        protected object _value;
+        protected object _preValue;
         public delegate bool CheckValueAvailable(object value,out string msg);
 
         private CheckValueAvailable _checkValueFunc;
@@ -57,17 +58,23 @@ namespace BarrageEditor
 
         /// <summary>
         /// 设置节点属性的值
+        /// <para>value</para>
+        /// <para>updateNode 是否更新Node的显示</para>
         /// </summary>
         /// <param name="value"></param>
-        public virtual void SetValue(object value)
+        public virtual void SetValue(object value, bool notifyNode = true)
         {
+            _preValue = _value;
             _value = value;
             _isValueEdit = false;
             if ( _itemGo != null )
             {
                 _valueText.text = GetValueString();
             }
-            _node.UpdateDesc();
+            if (notifyNode)
+            {
+                _node.OnAttributeValueChanged();
+            }
         }
 
         /// <summary>
@@ -77,6 +84,22 @@ namespace BarrageEditor
         public object GetValue()
         {
             return _value;
+        }
+
+        public object GetPreValue()
+        {
+            return _preValue;
+        }
+
+        /// <summary>
+        /// 属性所属于的节点
+        /// </summary>
+        public BaseNode Node
+        {
+            get
+            {
+                return _node;
+            }
         }
 
         /// <summary>
@@ -160,6 +183,8 @@ namespace BarrageEditor
         Bool = 1,
         Int = 2,
         String = 3, 
+        BulletId = 4,
+        CustomizedType = 5,
     }
 
     public class NodeAttrData

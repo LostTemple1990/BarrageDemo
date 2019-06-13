@@ -34,6 +34,12 @@ namespace BarrageEditor
                 case NodeType.DefineBullet:
                     newNode = new NodeDefineBullet();
                     break;
+                case NodeType.OnBulletCreate:
+                    newNode = new NodeOnBulletCreate();
+                    break;
+                case NodeType.CreateBullet:
+                    newNode = new NodeCreateBullet();
+                    break;
             }
             if (newNode != null)
             {
@@ -53,6 +59,12 @@ namespace BarrageEditor
                     break;
                 case NodeAttrType.Bool:
                     nodeAttr = new NodeAttrBool();
+                    break;
+                case NodeAttrType.BulletId:
+                    nodeAttr = new NodeAttrBulletId();
+                    break;
+                case NodeAttrType.CustomizedType:
+                    nodeAttr = new NodeAttrCustomizedBulletType();
                     break;
             }
             if (nodeAttr != null) return nodeAttr;
