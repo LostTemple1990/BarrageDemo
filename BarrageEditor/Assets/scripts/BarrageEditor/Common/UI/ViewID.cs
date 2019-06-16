@@ -27,8 +27,14 @@ namespace BarrageEditor
         /// 颜色选择界面
         /// </summary>
         public const int AttrSelectBulletColorView = 2004;
-
+        /// <summary>
+        /// 选择自定义类型的界面
+        /// </summary>
         public const int AttrSelectCustomizedTypeView = 2005;
+        /// <summary>
+        /// 自定义类型的参数编辑界面
+        /// </summary>
+        public const int AttrEditParasView = 2006;
 
 
         private static Dictionary<int, ViewCfg> _viewCfgMap;
@@ -112,6 +118,16 @@ namespace BarrageEditor
                 layer = LayerId.Normal
             };
             _viewCfgMap.Add(AttrSelectCustomizedTypeView, cfg);
+            #endregion
+            #region 参数编辑界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrEditParasView,
+                resPath = "EditViews/EditParaView",
+                className = "BarrageEditor.AttrEditParasView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(AttrEditParasView, cfg);
             #endregion
             UIManager.GetInstance().InitViewCfgs(_viewCfgMap);
         }

@@ -73,7 +73,7 @@ namespace BarrageEditor
             }
             if (notifyNode)
             {
-                _node.OnAttributeValueChanged();
+                _node.OnAttributeValueChanged(this);
             }
         }
 
@@ -140,6 +140,8 @@ namespace BarrageEditor
 
         public virtual void UnbindItem()
         {
+            if (_itemGo == null)
+                return;
             _valueText.onEndEdit.RemoveAllListeners();
             _dropDown.options.Clear();
             UIEventListener.Get(_editBtnGo).RemoveAllEvents();
@@ -185,6 +187,7 @@ namespace BarrageEditor
         String = 3, 
         BulletId = 4,
         CustomizedType = 5,
+        ParaList = 6,
     }
 
     public class NodeAttrData

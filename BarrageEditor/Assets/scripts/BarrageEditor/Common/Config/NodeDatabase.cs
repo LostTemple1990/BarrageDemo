@@ -111,7 +111,7 @@ namespace BarrageEditor
                 editOnCreated = false,
                 isDeletable  = false,
             };
-            cfg.defaultAttrValues = new List<object> { "107010", "v,angle" };
+            cfg.defaultAttrValues = new List<object> { "v,angle" };
             _nodeCfgDic.Add(NodeType.OnBulletCreate, cfg);
             #endregion
             #region createBullet
@@ -122,7 +122,7 @@ namespace BarrageEditor
                 shortcutTip = "create bullet",
                 editOnCreated = true,
             };
-            cfg.defaultAttrValues = new List<object> { "", "0", "0", "" };
+            cfg.defaultAttrValues = new List<object> { "", "107010", "0", "0", "" };
             _nodeCfgDic.Add(NodeType.CreateBullet, cfg);
             #endregion
             #endregion

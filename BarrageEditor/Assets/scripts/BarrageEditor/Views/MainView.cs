@@ -354,6 +354,8 @@ namespace BarrageEditor
             _projectContentTf = _projectScrollViewTf.Find("Viewport/Content").GetComponent<RectTransform>();
             _projectContentScrollbar = _projectScrollViewTf.Find("Scrollbar Vertical").GetComponent<Scrollbar>();
             _curSelectedNode = null;
+            EventManager.GetInstance().Register(EditorEvents.BeforeProjectChanged, this);
+            EventManager.GetInstance().Register(EditorEvents.AfterProjectChanged, this);
             EventManager.GetInstance().Register(EditorEvents.NodeSelected, this);
             EventManager.GetInstance().Register(EditorEvents.NodeExpanded, this);
             //EventManager.GetInstance().Register(EditorEvents.FocusOnNode, this);
@@ -380,17 +382,8 @@ namespace BarrageEditor
 
         private void TestProjectNodeItems()
         {
-            BaseNode root = new NodeRoot();
-            root.Init( _projectContentTf);
-            root.SetParent(null);
-            root.SetAttrsDefaultValues();
-            root.UpdateDesc();
-            NodeProjectSettings ps = new NodeProjectSettings();
-            ps.Init(_projectContentTf);
-            ps.SetAttrsDefaultValues();
-            ps.UpdateDesc();
-            root.InsertChildNode(ps, -1);
-            root.Expand(true);
+            BarrageProject.CreateDefaultNodes();
+            BarrageProject.RootNode.Expand(true);
         }
 
         /// <summary>
@@ -428,12 +421,24 @@ namespace BarrageEditor
         {
             switch ( eventId )
             {
+                case EditorEvents.BeforeProjectChanged:
+                    BeforeProjectChanged();
+                    break;
                 case EditorEvents.NodeSelected:
                     OnNodeSelected(data as BaseNode);
                     break;
                 case EditorEvents.NodeExpanded:
                     OnNodeExpanded((int)data);
                     break;
+            }
+        }
+
+        private void BeforeProjectChanged()
+        {
+            if ( _curSelectedNode != null )
+            {
+                ResetNodeAttrInfo();
+                _curSelectedNode = null;
             }
         }
 

@@ -10,16 +10,12 @@ namespace BarrageEditor
         {
             _nodeType = NodeType.OnBulletCreate;
             base.Init(parentTf);
-            _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "bulletdefine");
+            _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "bulletinit");
         }
 
         public override void CreateDefaultAttrs()
         {
             BaseNodeAttr nodeAttr;
-            // 子弹id
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
-            nodeAttr.Init(this, "BulletId", null);
-            attrs.Add(nodeAttr);
             // 参数列表
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Parameter list", null);
@@ -33,7 +29,7 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("on create:({0})", attrs[1].GetValueString());
+            return string.Format("on create:({0})", attrs[0].GetValueString());
         }
     }
 }

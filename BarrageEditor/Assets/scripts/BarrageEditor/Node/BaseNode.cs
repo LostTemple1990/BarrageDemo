@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using YKEngine;
@@ -54,6 +55,8 @@ namespace BarrageEditor
         protected float _lastClickTime;
         protected float _clickCount;
 
+        protected int _extraDepth = 1;
+
 
         public virtual void Init(RectTransform parentTf)
         {
@@ -81,6 +84,11 @@ namespace BarrageEditor
         }
 
         public virtual void CreateDefaultAttrs()
+        {
+
+        }
+
+        public virtual void CreateDefualtChilds()
         {
 
         }
@@ -113,23 +121,42 @@ namespace BarrageEditor
             return childs.IndexOf(child);
         }
 
+        /// <summary>
+        /// 获取指定类型的直接点(只返回第一个
+        /// <para></para>
+        /// </summary>
+        /// <param name="nodeType"></param>
+        /// <returns></returns>
+        public BaseNode GetChildByType(NodeType nodeType)
+        {
+            BaseNode child = null;
+            for (int i=0;i<childs.Count;i++)
+            {
+                if (childs[i].GetNodeType() == nodeType)
+                {
+                    child = childs[i];
+                    break;
+                }
+            }
+            return child;
+        }
+
         public void SetParent(BaseNode parent)
         {
             parentNode = parent;
-            OnParentDepthChanged();
-            //_nodeDepth = parent == null ? 0 : parent.GetDepth() + 1;
+            UpdateNodeDepth();
         }
 
-        protected void OnParentDepthChanged()
+        protected void UpdateNodeDepth()
         {
             _nodeDepth = parentNode == null ? 0 : parentNode.GetDepth() + 1;
             for (int i=0;i<childs.Count;i++)
             {
-                childs[i].OnParentDepthChanged();
+                childs[i].UpdateNodeDepth();
             }
         }
 
-        public void SetAttrsDefaultValues()
+        public virtual void SetAttrsDefaultValues()
         {
             NodeConfig cfg = DatabaseManager.NodeDatabase.GetNodeCfgByNodeType(_nodeType);
             if (cfg.defaultAttrValues == null) return;
@@ -310,6 +337,56 @@ namespace BarrageEditor
         {
             return attrs;
         }
+
+        public virtual void ToLua(int codeDepth, ref string luaStr)
+        {
+            string luaHead = ToLuaHead();
+            NodeManager.ApplyDepthForLua(codeDepth, ref luaHead);
+            luaStr += luaHead;
+            for (int i=0;i<childs.Count;i++)
+            {
+                childs[i].ToLua(codeDepth + _extraDepth, ref luaStr);
+            }
+            string luaFoot = ToLuaFoot();
+            NodeManager.ApplyDepthForLua(codeDepth, ref luaFoot);
+            luaStr += luaFoot;
+        }
+
+        public virtual string ToLuaHead()
+        {
+            return "";
+        }
+
+        public virtual string ToLuaFoot()
+        {
+            return "";
+        }
+
+        public void Destroy()
+        {
+            int i;
+            for (i = 0; i < childs.Count; i++)
+            {
+                childs[i].Destroy();
+            }
+            childs.Clear();
+            for (i = 0; i < attrs.Count; i++)
+            {
+                attrs[i].UnbindItem();
+            }
+            attrs.Clear();
+            UIEventListener.Get(_clickGo).RemoveAllEvents();
+            UIEventListener.Get(_expandImg.gameObject).RemoveAllEvents();
+            parentNode = null;
+            GameObject.Destroy(_nodeItemGo);    
+            _nodeItemGo = null;
+            _nodeItemTf = null;
+            _expandImg = null;
+            _functionImg = null;
+            _selectedImg = null;
+            _clickGo = null;
+            _descText = null;
+        }
     }
 
     public enum NodeInsertMode : byte
@@ -319,11 +396,11 @@ namespace BarrageEditor
         InsertAsChild = 2,
     }
 
+    [Serializable]
     public class NodeData
     {
-        public NodeType type;
-        public NodeData parent;
+        public int type;
         public List<NodeData> childs;
-        public List<object> attrValues;
+        public List<string> attrValues;
     }
 }

@@ -41,6 +41,8 @@ namespace BarrageEditor
 
         public override void UnbindItem()
         {
+            if (_itemGo == null)
+                return;
             _dropDown.onValueChanged.RemoveAllListeners();
             base.UnbindItem();
         }

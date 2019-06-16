@@ -39,5 +39,11 @@ namespace BarrageEditor
         {
             return "project settings";
         }
+
+        public override string ToLuaHead()
+        {
+            return string.Format("-- Mod name: {0}\n--author=\"{1}\"\n--allow_practice={2}\n",
+                attrs[0].GetValueString(), attrs[1].GetValueString(), attrs[2].GetValueString());
+        }
     }
 }

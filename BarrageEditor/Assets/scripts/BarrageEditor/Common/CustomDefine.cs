@@ -45,7 +45,9 @@ namespace BarrageEditor
         public static CustomDefineData GetDataByTypeAndName(CustomDefineType type,string typeName)
         {
             Dictionary<string, CustomDefineData> dic = customDefineDic[type];
-            return dic[typeName];
+            CustomDefineData data = null;
+            dic.TryGetValue(typeName, out data);
+            return data;
         }
 
         public static void AddData(CustomDefineType type, string typeName, string paraList)
@@ -59,6 +61,12 @@ namespace BarrageEditor
             };
             Dictionary<string, CustomDefineData> dic = customDefineDic[type];
             dic.Add(typeName, data);
+        }
+
+        public static void RemoveData(CustomDefineType type, string typeName)
+        {
+            Dictionary<string, CustomDefineData> dic = customDefineDic[type];
+            dic.Remove(typeName);
         }
 
         public static bool IsExist(CustomDefineType type, string typeName)
@@ -76,7 +84,10 @@ namespace BarrageEditor
             {
                 data.typeName = toName;
                 dic.Remove(fromName);
-                dic.Add(toName, data);
+                if ( toName != "" )
+                {
+                    dic.Add(toName, data);
+                }
             }
         }
 

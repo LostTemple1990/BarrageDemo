@@ -84,6 +84,7 @@ namespace BarrageEditor
 
         private void OnStyleDropdownValueChangedHandler(int value)
         {
+            Logger.Log("Change style to value " + value);
             BulletStyleCfg cfg = DatabaseManager.BulletDatabase.GetBulletStyleCfgByStyleId(value);
             _styleIndex = value;
             _styleText.text = cfg.name;
@@ -124,8 +125,8 @@ namespace BarrageEditor
 
         private void OnColorDropdownValueChangedHandler(int value)
         {
-            ColorCfg colorCfg = DatabaseManager.BulletDatabase.GetColorCfgByColorId(_colorId);
             _colorId = _colorList[value];
+            ColorCfg colorCfg = DatabaseManager.BulletDatabase.GetColorCfgByColorId(_colorId);
             _colorText.text = colorCfg.colorName;
             UpdateBulletId();
             UpdateBulletIdTextAndPreview();
@@ -137,7 +138,7 @@ namespace BarrageEditor
             datas.Add(_curBulletId);
             Action<int> callback = new Action<int>(SelectStyleCallback);
             datas.Add(callback);
-            UIManager.GetInstance().OpenView(ViewID.AttrSelectBulletStyleView, datas);
+            UIManager.GetInstance().OpenView(ViewID.AttrSelectBulletColorView, datas);
         }
 
         private void SelectColorCallback(int colorId)
@@ -159,7 +160,7 @@ namespace BarrageEditor
             optionList.Add(new Dropdown.OptionData(eBlendMode.Normal.ToString()));
             optionList.Add(new Dropdown.OptionData(eBlendMode.SoftAdditive.ToString()));
             _blendModeDropdown.options = optionList;
-            _blendModeDropdown.onValueChanged.AddListener(OnStyleDropdownValueChangedHandler);
+            _blendModeDropdown.onValueChanged.AddListener(OnBlendModeDropdownValueChangedHandler);  
         }
 
         private void OnBlendModeDropdownValueChangedHandler(int value)
@@ -177,7 +178,7 @@ namespace BarrageEditor
         private void UpdateBulletIdTextAndPreview()
         {
             _bulletIdText.text = "BulletId : " + _curBulletId;
-            _bulletPreviewImg.sprite = ResourceManager.GetInstance().GetSprite("STGBulletAtlas", "Bullet" + _curBulletId);
+            _bulletPreviewImg.sprite = ResourceManager.GetInstance().GetSprite("STGBulletsAtlas", "Bullet" + _curBulletId);
             _bulletPreviewImg.material = ResourceManager.GetInstance().GetSpriteMatByBlendMode((eBlendMode)_blendIndex);
             _bulletPreviewImg.SetNativeSize();
         }
@@ -251,6 +252,7 @@ namespace BarrageEditor
         private void OnOKBtnHandler()
         {
             _nodeAttr.SetValue(_curBulletId);
+            Close();
         }
 
         private void OnCloseBtnClickHandler()

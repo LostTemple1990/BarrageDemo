@@ -21,6 +21,10 @@ namespace BarrageEditor
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Type name", null);
             attrs.Add(nodeAttr);
+        }
+
+        public override void CreateDefualtChilds()
+        {
             // 添加OnCreate子节点
             BaseNode onCreateNode = NodeManager.CreateNode(NodeType.OnBulletCreate);
             onCreateNode.SetAttrsDefaultValues();
@@ -38,9 +42,28 @@ namespace BarrageEditor
             {
                 if ( attr.GetPreValue() == null )
                 {
-                    if ( attr.GetValueString() != "" )
+                    string newTypeName = attr.GetValueString();
+                    if (newTypeName != "")
                     {
-                        
+                        BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
+                        CustomDefine.AddData(CustomDefineType.SimpleBullet, newTypeName, onCreteNode.attrs[0].GetValueString());
+                    }
+                }
+                else
+                {
+                    string fromName = attr.GetPreValue().ToString();
+                    if ( fromName != "" )
+                    {
+                        CustomDefine.ModifyDefineName(CustomDefineType.SimpleBullet, fromName, attr.GetValueString());
+                    }
+                    else
+                    {
+                        string newTypeName = attr.GetValueString();
+                        if (newTypeName != "")
+                        {
+                            BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
+                            CustomDefine.AddData(CustomDefineType.SimpleBullet, newTypeName, onCreteNode.attrs[0].GetValueString());
+                        }
                     }
                 }
             }

@@ -9,6 +9,7 @@ namespace BarrageEditor
         public override void Init(RectTransform parentTf)
         {
             _nodeType = NodeType.CodeBlock;
+            _extraDepth = 1;
             base.Init(parentTf);
             _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "codeblock");
         }
@@ -30,6 +31,16 @@ namespace BarrageEditor
         public override string ToDesc()
         {
             return attrs[0].GetValueString();
+        }
+
+        public override string ToLuaHead()
+        {
+            return string.Format("do\n");
+        }
+
+        public override string ToLuaFoot()
+        {
+            return string.Format("end\n");
         }
     }
 }

@@ -182,9 +182,9 @@ namespace BarrageEditor
                 styleId = 12,
                 name = "钱币",
                 packName = "STGBulletsAtlas",
-                resName = "Bullet112010",
+                resName = "Bullet112120",
                 showScale = 1,
-                availableColors = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+                availableColors = new List<int> { 0, 12, 14 },
             };
             _styleCfgList.Add(cfg);
             #endregion

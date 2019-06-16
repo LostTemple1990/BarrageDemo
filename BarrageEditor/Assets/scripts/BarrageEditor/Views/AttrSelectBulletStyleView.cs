@@ -48,16 +48,17 @@ namespace BarrageEditor
                 itemTf.SetParent(_itemContainerTf, false);
                 // 初始化StyleItem结构
                 StyleItem styleItem = new StyleItem();
-                styleItem.btn = itemTf.Find("Btn").gameObject;
+                styleItem.btn = itemTf.Find("BtnBg").gameObject;
                 styleItem.selectImgGo = itemTf.Find("SelectImg").gameObject;
                 styleItem.selectImgGo.SetActive(false);
                 // 设置子弹图像
                 Image bulletImg = itemTf.Find("BulletImg").GetComponent<Image>();
                 bulletImg.sprite = ResourceManager.GetInstance().GetSprite(cfg.packName, cfg.resName);
+                int itemIndex = i;
                 // 添加事件监听
                 UIEventListener.Get(styleItem.btn).AddClick(()=>
                 {
-                    OnStyleItemClickHandler(i);
+                    OnStyleItemClickHandler(itemIndex);
                 });
                 _itemList.Add(styleItem);
             }

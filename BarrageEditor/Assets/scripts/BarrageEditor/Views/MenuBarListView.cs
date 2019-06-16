@@ -67,7 +67,7 @@ namespace BarrageEditor
             {
                 id = ItemId_File,
                 name = "new...",
-                clickHandler = OpenClickHander,
+                clickHandler = NewClickHandler,
             };
             _itemDataDic.Add(ItemId_New, itemData);
             itemData = new MenuItemData
@@ -81,21 +81,21 @@ namespace BarrageEditor
             {
                 id = ItemId_File,
                 name = "save...",
-                clickHandler = OpenClickHander,
+                clickHandler = SaveClickHander,
             };
             _itemDataDic.Add(ItemId_Save, itemData);
             itemData = new MenuItemData
             {
                 id = ItemId_File,
                 name = "saveAs...",
-                clickHandler = OpenClickHander,
+                clickHandler = SaveAsClickHander,
             };
             _itemDataDic.Add(ItemId_SaveAs, itemData);
             itemData = new MenuItemData
             {
                 id = ItemId_File,
                 name = "close...",
-                clickHandler = OpenClickHander,
+                clickHandler = CloseClickHander,
             };
             _itemDataDic.Add(ItemId_Close, itemData);
             itemData = new MenuItemData
@@ -164,10 +164,91 @@ namespace BarrageEditor
             _itemTFList.Clear();
         }
 
+        private void NewClickHandler()
+        {
+            Close();
+            string savePath = FileUtils.SaveFile("选择新建工程的位置", "关卡数据(*.nd)\0*.nd\0");
+            if (savePath != null)
+            {
+                EventManager.GetInstance().PostEvent(EditorEvents.BeforeProjectChanged);
+                BaseNode root = BarrageProject.RootNode;
+                if (root != null)
+                    root.Destroy();
+                // 设置工程的位置
+                BarrageProject.SetProjectPath(savePath);
+                // todo 载入固定位置的一个模板
+                string templatePath = Application.streamingAssetsPath + "/template.nd";
+                NodeData nd = FileUtils.DeserializeFileToObject(templatePath) as NodeData;
+                if (nd == null)
+                {
+                    Logger.LogError("Deserialize nd file fail!");
+                }
+                root = NodeManager.CreateNodesByNodeDatas(nd);
+                root.SetParent(null);
+                BarrageProject.RootNode = root;
+                root.Expand(true);
+                EventManager.GetInstance().PostEvent(EditorEvents.AfterProjectChanged);
+            }
+        }
+
         private void OpenClickHander()
         {
             Close();
-            FileManager.OpenFile("选择关卡数据", "关卡数据\0*.txt", false);
+            string openPath = FileUtils.OpenFile("选择关卡数据", "关卡数据(*.nd)\0*.nd\0", false);
+            if ( openPath != null )
+            {
+                EventManager.GetInstance().PostEvent(EditorEvents.BeforeProjectChanged);
+                BaseNode root = BarrageProject.RootNode;
+                if (root != null)
+                    root.Destroy();
+                NodeData nd = FileUtils.DeserializeFileToObject(openPath) as NodeData;
+                if ( nd == null )
+                {
+                    Logger.LogError("Deserialize nd file fail!");
+                }
+                root = NodeManager.CreateNodesByNodeDatas(nd);
+                root.SetParent(null);
+                BarrageProject.RootNode = root;
+                root.Expand(true);
+                EventManager.GetInstance().PostEvent(EditorEvents.AfterProjectChanged);
+            }
+        }
+
+        private void SaveClickHander()
+        {
+            Close();
+            string savePath = BarrageProject.GetProjectPath();
+            if ( savePath != null )
+            {
+                BaseNode root = BarrageProject.RootNode;
+                NodeData nd = NodeManager.SaveAsNodeData(root, true);
+                FileUtils.SerializableObjectToFile(savePath, nd);
+            }
+        }
+
+        private void SaveAsClickHander()
+        {
+            Close();
+            string savePath = FileUtils.SaveFile("选择保存数据", "关卡数据(*.nd)\0*.nd\0");
+            if (savePath != null)
+            {
+                BaseNode root = BarrageProject.RootNode;
+                NodeData nd = NodeManager.SaveAsNodeData(root, true);
+                FileUtils.SerializableObjectToFile(savePath, nd);
+            }
+        }
+
+        private void CloseClickHander()
+        {
+            Close();
+            string filePath = Application.streamingAssetsPath + "/stage.lua";
+            if (filePath != null)
+            {
+                BaseNode root = BarrageProject.RootNode;
+                string luaData = "";
+                root.ToLua(0, ref luaData);
+                FileUtils.WriteToFile(luaData, filePath);
+            }
         }
 
         public void Execute(int eventId, object data)

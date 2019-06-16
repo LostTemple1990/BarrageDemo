@@ -61,7 +61,7 @@ namespace BarrageEditor
                 // 初始化StyleItem结构
                 ColorItem colorItem = new ColorItem();
                 colorItem.item = item;
-                colorItem.btn = itemTf.Find("Btn").gameObject;
+                colorItem.btn = itemTf.Find("BtnBg").gameObject;
                 colorItem.selectImgGo = itemTf.Find("SelectImg").gameObject;
                 colorItem.selectImgGo.SetActive(false);
                 // 设置子弹图像
@@ -94,7 +94,11 @@ namespace BarrageEditor
 
         private void UpdateSelectColor()
         {
-            _itemList[_colorId].selectImgGo.SetActive(true);
+            // 获取对应的id
+            BulletStyleCfg styleCfg = DatabaseManager.BulletDatabase.GetBulletStyleCfgByStyleId(_styleId);
+            List<int> availableColors = styleCfg.availableColors;
+            int itemIndex = availableColors.IndexOf(_colorId);
+            _itemList[itemIndex].selectImgGo.SetActive(true);
         }
 
         private void OnColorItemClickHandler(int colorId)

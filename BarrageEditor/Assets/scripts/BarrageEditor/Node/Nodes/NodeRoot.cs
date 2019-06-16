@@ -7,6 +7,7 @@ namespace BarrageEditor
     {
         public override void Init( RectTransform parentTf)
         {
+            _extraDepth = 0;
             _nodeType = NodeType.Root;
             base.Init(parentTf);
             _expandImg.gameObject.SetActive(false);

@@ -61,6 +61,10 @@ namespace BarrageEditor
                 Text typeNameText = tf.Find("CustomizedTypeText").GetComponent<Text>();
                 typeNameText.text = _typeNameList[i];
                 item.GetComponent<Image>().color = UnSelectedColor;
+                int itemIndex = i;
+                UIEventListener.Get(item).AddClick(() =>{
+                    OnItemClickHandler(itemIndex);
+                });
                 _itemList.Add(item);
             }
             _curSelectedItemIndex = -1;
