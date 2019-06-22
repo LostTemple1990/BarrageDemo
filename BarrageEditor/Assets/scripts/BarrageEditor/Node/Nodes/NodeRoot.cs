@@ -28,5 +28,27 @@ namespace BarrageEditor
         {
             return "project";
         }
+
+        public override string ToLuaHead()
+        {
+            return string.Format("{0}{1}{2}{3}{4}{5}",
+                "local lib = require \"LuaLib\"\n",
+                "local consts = Constants\n",
+                "local Stage = {}\n",
+                "local CustomizedTable = {}\n",
+                "local CustomizedEnemyTable = {}\n",
+                "local BossTable = {}\n\n");
+        }
+
+        public override string ToLuaFoot()
+        {
+            return string.Format("{0}{1}{2}{3}{4}{5}",
+                "return\n{\n",
+                "   CustomizedBulletTable = CustomizedTable,\n",
+                "   CustomizedEnemyTable = CustomizedEnemyTable,\n",
+                "   BossTable = BossTable,\n",
+                "   Stage = Stage,\n",
+                "}");
+        }
     }
 }

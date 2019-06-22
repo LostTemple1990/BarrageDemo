@@ -91,6 +91,20 @@ namespace BarrageEditor
             }
         }
 
+        public static void ModifyDefineParaList(CustomDefineType type,string name,string paraList)
+        {
+            Dictionary<string, CustomDefineData> dic = customDefineDic[type];
+            CustomDefineData data;
+            if (dic.TryGetValue(name, out data))
+            {
+                data.paraListStr = paraList;
+            }
+            else
+            {
+                Logger.Log("CustomType of " + type + " with name " + name + " not found!");
+            }
+        }
+
         /// <summary>
         /// 根据节点的类型来获得对应的自定义类型
         /// </summary>
@@ -100,6 +114,16 @@ namespace BarrageEditor
         {
             if (nodeType == NodeType.CreateBullet) return CustomDefineType.SimpleBullet;
             return CustomDefineType.Null;
+        }
+
+        public static void Clear()
+        {
+            customDefineDic[CustomDefineType.SimpleBullet].Clear();
+            customDefineDic[CustomDefineType.Laser].Clear();
+            customDefineDic[CustomDefineType.LinearLaser].Clear();
+            customDefineDic[CustomDefineType.CurveLaser].Clear();
+            customDefineDic[CustomDefineType.Enemy].Clear();
+            customDefineDic[CustomDefineType.Boss].Clear();
         }
     }
 

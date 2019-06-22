@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using YKEngine;
 
 namespace BarrageEditor
 {
@@ -45,5 +46,43 @@ namespace BarrageEditor
         }
 
         public static BaseNode RootNode { get; set; }
+
+        public static void LoadProject(string projectPath)
+        {
+            NodeData nd = FileUtils.DeserializeFileToObject(projectPath) as NodeData;
+            if (nd == null)
+            {
+                Logger.LogError("Deserialize nd file fail!");
+            }
+            SetProjectPath(projectPath);
+            BaseNode root = NodeManager.CreateNodesByNodeDatas(nd);
+            root.SetParent(null);
+            RootNode = root;
+            root.Expand(true);
+        }
+
+        public static void UnloadProject()
+        {
+            CustomDefine.Clear();
+            if (RootNode != null)
+                RootNode.Destroy();
+            RootNode = null;
+            SetProjectPath(null);
+        }
+
+        public static void Log(string msg)
+        {
+            EventManager.GetInstance().PostEvent(EditorEvents.Log, msg);
+        }
+
+        public static void LogWarning(string msg)
+        {
+            EventManager.GetInstance().PostEvent(EditorEvents.LogWarning, msg);
+        }
+
+        public static void LogError(string msg)
+        {
+            EventManager.GetInstance().PostEvent(EditorEvents.LogError, msg);
+        }
     }
 }

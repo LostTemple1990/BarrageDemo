@@ -7,7 +7,7 @@ namespace BarrageEditor
 {
     public class DropdownEx : Dropdown
     {
-        public int value
+        new public int value
         {
             get
             {

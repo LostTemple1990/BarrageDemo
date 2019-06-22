@@ -39,6 +39,15 @@ namespace YKEngine
             }
         }
 
+        public enum eEventPassType : byte
+        {
+            NotPass = 0,
+            PassBefore = 1,
+            PassAfter = 2,
+        }
+
+        public eEventPassType eventPassType;
+
         private Action _onPointerClick;
         private Action _onPointerDown;
         private Action _onPointerEnter;
@@ -50,9 +59,17 @@ namespace YKEngine
 
         public void OnPointerClick(PointerEventData data)
         {
+            if ( eventPassType == eEventPassType.PassBefore )
+            {
+                PassEvent(data, ExecuteEvents.pointerClickHandler);
+            }
             if (_onPointerClick != null)
             {
                 _onPointerClick();
+            }
+            if ( eventPassType == eEventPassType.PassAfter)
+            {
+                PassEvent(data, ExecuteEvents.pointerClickHandler);
             }
         }
 
@@ -128,8 +145,7 @@ namespace YKEngine
             _onPointerExit = onPointerExit;
         }
 
-        public void PassEvent<T>(PointerEventData data, ExecuteEvents.EventFunction<T> function)
-        where T : IEventSystemHandler
+        public void PassEvent<T>(PointerEventData data, ExecuteEvents.EventFunction<T> function) where T : IEventSystemHandler
         {
             List<RaycastResult> results = new List<RaycastResult>();
             EventSystem.current.RaycastAll(data, results);
@@ -151,7 +167,5 @@ namespace YKEngine
             _onPointerEnter = null;
             _onPointerExit = null;
         }
-
-
     }
 }

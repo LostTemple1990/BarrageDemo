@@ -24,11 +24,11 @@ SpriteAtlas:
       padding: 4
       blockOffset: 1
       allowAlphaSplitting: 0
-      enableRotation: 1
+      enableRotation: 0
       enableTightPacking: 1
     variantMultiplier: 1
     packables:
-    - {fileID: 102900000, guid: ed444a00d92629c4ba30681057512863, type: 3}
+    - {fileID: 102900000, guid: 3385da216247f734d955bc0d078598c7, type: 3}
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -67,6 +67,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 27d1b753a6a359a4d83430e81330b4df, type: 3}
   - {fileID: 21300000, guid: a7fd1863fa152cc4e86c04f09274aa09, type: 3}
   - {fileID: 21300000, guid: 86572e73407ff314b95d7aee43e75458, type: 3}
+  - {fileID: 21300000, guid: 28e7d193d4940af438ba8da97a9ca16f, type: 3}
   - {fileID: 21300000, guid: bc2908a357df5b047bc65c47ef8f0641, type: 3}
   - {fileID: 21300000, guid: fa0987d31e7d95246908feb564b3057d, type: 3}
   - {fileID: 21300000, guid: f2c8fa24ca577c34191790f8aa75f2df, type: 3}
@@ -91,6 +92,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 52f65456000843d47ac1429ad4a59288, type: 3}
   - {fileID: 21300000, guid: 3dd532869e904f04e869962e32bc13c0, type: 3}
   - {fileID: 21300000, guid: f0aba39633b15fc48abbf419b1f3022a, type: 3}
+  - {fileID: 21300000, guid: 73a6ceb6bb4ee734fbb036f91495def9, type: 3}
   - {fileID: 21300000, guid: a719cdd644de0494e8b92f3972ec7565, type: 3}
   - {fileID: 21300000, guid: 615a82e6e9e7cb945bd32ce95b7c4673, type: 3}
   - {fileID: 21300000, guid: ca2ef6e6d5ead044ba665285b61e8898, type: 3}
@@ -203,6 +205,7 @@ SpriteAtlas:
   - laserbentinit
   - playbgm
   - taskmoveto
+  - ChildNodeExpand
   - bossspellcard
   - variable
   - pactrometer
@@ -227,6 +230,7 @@ SpriteAtlas:
   - setaccel
   - oncolli
   - smear
+  - ChildNodeNotExpand
   - sentence
   - stagefinish
   - laserturnon

@@ -34,6 +34,33 @@ namespace BarrageEditor
                 case NodeType.CodeBlock:
                     newNode = new NodeCodeBlock();
                     break;
+                case NodeType.If:
+                    newNode = new NodeIf();
+                    break;
+                case NodeType.IfThen:
+                    newNode = new NodeIfThen();
+                    break;
+                case NodeType.IfElse:
+                    newNode = new NodeIfElse();
+                    break;
+                case NodeType.DefVar:
+                    newNode = new NodeDefVar();
+                    break;
+                case NodeType.Repeat:
+                    newNode = new NodeRepeat();
+                    break;
+                case NodeType.Code:
+                    newNode = new NodeCode();
+                    break;
+                case NodeType.Comment:
+                    newNode = new NodeComment();
+                    break;
+                case NodeType.StageGroup:
+                    newNode = new NodeStageGroup();
+                    break;
+                case NodeType.Stage:
+                    newNode = new NodeStage();
+                    break;
                 case NodeType.DefineBullet:
                     newNode = new NodeDefineBullet();
                     break;
@@ -138,6 +165,105 @@ namespace BarrageEditor
             }
             node.SetAttrsValues(list);
             return node;
+        }
+
+        /// <summary>
+        /// 根据索引找到对应的节点
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static BaseNode FindNodeByIndex(int index)
+        {
+            BaseNode root = BarrageProject.RootNode;
+            return SearchNodeByIndex(root, ref index);
+        }
+
+        private static BaseNode SearchNodeByIndex(BaseNode node, ref int index)
+        {
+            if (index == 0)
+                return node;
+            int childCount = node.GetChildCount();
+            BaseNode findNode = null;
+            for (int i = 0; i < node.GetChildCount(); i++)
+            {
+                index--;
+                findNode = SearchNodeByIndex(node.GetChildByIndex(i), ref index);
+                if (findNode != null)
+                    break;
+            }
+            return findNode;
+        }
+
+        /// <summary>
+        /// 获得节点在树的中序遍历中的索引
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public static int GetNodeIndex(BaseNode node)
+        {
+            int index = 0;
+            BaseNode root = BarrageProject.RootNode;
+            if (SearchNodeIndex(node, root, ref index))
+                return index;
+            return -1;
+        }
+
+        private static bool SearchNodeIndex(BaseNode searchNode, BaseNode curSearchNode, ref int index)
+        {
+            if (searchNode == curSearchNode)
+                return true;
+            int childCount = curSearchNode.GetChildCount();
+            for (int i=0;i<childCount;i++)
+            {
+                index++;
+                bool isFind = SearchNodeIndex(searchNode, curSearchNode.GetChildByIndex(i), ref index);
+                if (isFind)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 获取在中序遍历中当前节点的下一个节点
+        /// <para>若当前节点是树的最后一个节点，则返回自身</para>
+        /// </summary>
+        /// <param name="curNode"></param>
+        /// <returns></returns>
+        public static BaseNode GetNextNode(BaseNode curNode)
+        {
+            BaseNode child = curNode.GetChildByIndex(0);
+            if (child != null)
+                return child;
+            child = curNode;
+            BaseNode parent = child.parentNode;
+            while (parent != null)
+            {
+                int index = parent.GetChildIndex(child);
+                if (parent.GetChildByIndex(index + 1) != null)
+                {
+                    return parent.GetChildByIndex(index + 1);
+                }
+                child = parent;
+                parent = child.parentNode;
+            }
+            return curNode;
+        }
+
+        /// <summary>
+        /// 获取在中序遍历中当前节点的上一个节点
+        /// <para>若当前节点是树的根节点，则返回自身</para>
+        /// </summary>
+        /// <param name="curNode"></param>
+        /// <returns></returns>
+        public static BaseNode GetPreNode(BaseNode curNode)
+        {
+            BaseNode parent = curNode.parentNode;
+            if (parent == null)
+                return curNode;
+            int index = parent.GetChildIndex(curNode);
+            if (parent.GetChildByIndex(index - 1) != null)
+                return parent.GetChildByIndex(index - 1);
+            return parent;
         }
 
         public static void ApplyDepthForLua(int depth,ref string luaStr)

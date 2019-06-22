@@ -48,5 +48,23 @@ namespace BarrageEditor
             return string.Format("create bullet with id {0} of type\"{1}\" at ({2},{3}) with parameter {4}",
                 attrs[1].GetValueString(), attrs[0].GetValueString(), attrs[2].GetValueString(), attrs[3].GetValueString(), attrs[4].GetValueString());
         }
+
+        public override string ToLuaHead()
+        {
+            string typeName = attrs[0].GetValueString();
+            CustomDefineData data = CustomDefine.GetDataByTypeAndName(CustomDefineType.SimpleBullet, typeName);
+            int paraCount = 0;
+            if ( data != null )
+            {
+                paraCount = data.paraListStr.Split(',').Length;
+            }
+            return string.Format("last = lib.CreateCustomizedBullet(\"{0}\",({1})..\"\",{2},{3},{4},{5})\n",
+                typeName,
+                attrs[1].GetValueString(),
+                attrs[2].GetValueString(),
+                attrs[3].GetValueString(), 
+                attrs[4].GetValueString(),
+                paraCount);
+        }
     }
 }

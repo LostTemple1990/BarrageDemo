@@ -354,6 +354,15 @@ namespace YKEngine
                 EventManager.GetInstance().PostEvent(EngineEventID.WindowFocusChanged, uview.GetView().ViewId);
             }
         }
+
+        public int GetFocusViewId()
+        {
+            if (_curFocusView != null)
+            {
+                return _curFocusView.GetView().ViewId;
+            }
+            return -1;
+        }
     }
 
     public enum LayerId : int

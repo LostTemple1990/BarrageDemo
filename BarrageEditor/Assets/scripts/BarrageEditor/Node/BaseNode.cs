@@ -11,11 +11,22 @@ namespace BarrageEditor
         /// <summary>
         /// 可展开箭头，有子节点的时候的颜色
         /// </summary>
-        private static Color ExpandImg_NodeHasChild_Color = new Color(1, 1, 1, 1);
+        private static readonly Color ExpandImg_NodeHasChild_Color = new Color(1, 1, 1, 1);
         /// <summary>
         /// 可展开箭头，没有子节点的时候的颜色
         /// </summary>
-        private static Color ExpandImg_NodeHasNoChild_Color = new Color(1, 1, 1, 0.5f);
+        private static readonly Color ExpandImg_NodeHasNoChild_Color = new Color(1, 1, 1, 0.5f);
+
+        private const string ExpandImg_NodeIsNotExpanded_Img = "ChildNodeNotExpand";
+        private const string ExpandImg_NodeIsExpanded_Img = "ChildNodeExpand";
+
+        protected enum ExpandImgState : byte
+        {
+            Undefined = 0,
+            NoChild = 1,
+            IsNotExpanded = 2,
+            IsExpanded = 3,
+        };
 
         private const float RootNodeOffset = 12f;
         private const float DepthInterval = 24;
@@ -33,7 +44,7 @@ namespace BarrageEditor
         /// <summary>
         /// 当前是否展开子节点
         /// </summary>
-        public bool isExpand;
+        protected bool _isExpand;
         /// <summary>
         /// 子节点
         /// </summary>
@@ -48,18 +59,33 @@ namespace BarrageEditor
         protected GameObject _clickGo;
         protected Text _descText;
 
+        /// <summary>
+        /// 展开箭头的状态
+        /// </summary>
+        protected ExpandImgState _expandImgState;
+
         protected int _nodeShowIndex;
         protected int _nodeDepth;
 
         protected bool _isSelected;
         protected float _lastClickTime;
         protected float _clickCount;
-
+        /// <summary>
+        /// 进入该节点后lua代码的tab额外深度
+        /// <para>默认为1</para>
+        /// </summary>
         protected int _extraDepth = 1;
+
+        protected bool _isValid;
+        /// <summary>
+        /// 修改之前的参数值
+        /// </summary>
+        protected List<object> _preValues;
 
 
         public virtual void Init(RectTransform parentTf)
         {
+            _isValid = true;
             _nodeItemGo = ResourceManager.GetInstance().GetPrefab("Prefabs/Views", "MainView/NodeItem");
             _nodeItemTf = _nodeItemGo.GetComponent<RectTransform>();
             _nodeItemTf.SetParent(parentTf, false);
@@ -81,6 +107,12 @@ namespace BarrageEditor
             childs = new List<BaseNode>();
             attrs = new List<BaseNodeAttr>();
             CreateDefaultAttrs();
+            _preValues = new List<object>();
+            for (int i=0;i<attrs.Count;i++)
+            {
+                _preValues.Add("");
+            }
+            IsExpand = true;
         }
 
         public virtual void CreateDefaultAttrs()
@@ -94,16 +126,48 @@ namespace BarrageEditor
         }
 
         /// <summary>
+        /// 检测是否可以插入类型为nodeType的子节点
+        /// </summary>
+        /// <param name="nodeType"></param>
+        /// <returns></returns>
+        public bool CheckCanInsertChildNode(NodeType nodeType)
+        {
+            NodeType parentType = _nodeType;
+            NodeType childType = nodeType;
+            NodeConfig parentCfg = DatabaseManager.NodeDatabase.GetNodeCfgByNodeType(parentType);
+            NodeConfig childCfg = DatabaseManager.NodeDatabase.GetNodeCfgByNodeType(childType);
+            if (parentCfg.allowChilds != null)
+            {
+                if (parentCfg.allowChilds.IndexOf(childType) == -1)
+                    return false;
+            }
+            if (childCfg.allowParents != null)
+            {
+                if (childCfg.allowParents.IndexOf(parentType) == -1)
+                    return false;
+            }
+            if (childCfg.forbidParents != null)
+            {
+                if (childCfg.forbidParents.IndexOf(parentType) != -1)
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 插入子节点
+        /// <para>直接插入，不做检查</para>
         /// </summary>
         /// <param name="child"></param>
         /// <param name="index">子节点位置索引，-1为插入到最后</param>
-        public virtual void InsertChildNode(BaseNode child, int index)
+        public virtual bool InsertChildNode(BaseNode child, int index)
         {
             if ( index < 0 ) { index = childs.Count; }
             if (index > childs.Count)
             {
-                Logger.LogError("invalid index for insertChildNode");
+                Logger.LogError(string.Format("invalid index {0} for insertChildNode", index));
+                child.Destroy();
+                return false;
             }
             childs.Add(null);
             for (int i = childs.Count - 1; i > index; i--)
@@ -112,13 +176,42 @@ namespace BarrageEditor
             }
             childs[index] = child;
             child.SetParent(this);
-            // 显示可展开的图标
-            _expandImg.color = ExpandImg_NodeHasChild_Color;
+            UpdateExpandImg();
+            return true;
+        }
+
+        public bool RemoveChildNode(BaseNode child)
+        {
+            NodeConfig childCfg = DatabaseManager.NodeDatabase.GetNodeCfgByNodeType(child.GetNodeType());
+            if (!childCfg.isDeletable)
+                return false;
+            if (childs.Remove(child))
+            {
+                child.Destroy();
+                UpdateExpandImg();
+                Expand(_isExpand);
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsDeletable
+        {
+            get
+            {
+                NodeConfig cfg = DatabaseManager.NodeDatabase.GetNodeCfgByNodeType(_nodeType);
+                return cfg.isDeletable;
+            }
         }
 
         public int GetChildIndex(BaseNode child)
         {
             return childs.IndexOf(child);
+        }
+
+        public int GetChildCount()
+        {
+            return childs.Count;
         }
 
         /// <summary>
@@ -139,6 +232,18 @@ namespace BarrageEditor
                 }
             }
             return child;
+        }
+
+        /// <summary>
+        /// 根据下标返回对应的子节点
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public BaseNode GetChildByIndex(int index)
+        {
+            if (index < 0 || index >= childs.Count)
+                return null;
+            return childs[index];
         }
 
         public void SetParent(BaseNode parent)
@@ -174,6 +279,29 @@ namespace BarrageEditor
 
         public virtual void OnAttributeValueChanged(BaseNodeAttr attr=null)
         {
+            // 所有变量一起改变
+            if (attr == null)
+            {
+                CachePreValue();
+            }
+            else
+            {
+                List<object> preValues = new List<object>();
+                List<object> curValues = new List<object>();
+                for (int i=0;i<attrs.Count;i++)
+                {
+                    preValues.Add(_preValues[i]);
+                    curValues.Add(GetAttrByIndex(i).GetValueString());
+                }
+                OpNodeAttrValuesModificationHM hm = new OpNodeAttrValuesModificationHM
+                {
+                    nodeIndex = NodeManager.GetNodeIndex(this),
+                    preValues = preValues,
+                    curValues = curValues,
+                };
+                Undo.AddToUndoTask(hm);
+                CachePreValue();
+            }
             UpdateDesc();
         }
 
@@ -187,7 +315,7 @@ namespace BarrageEditor
             float posX = _nodeDepth == 0 ? RootNodeOffset : (_nodeDepth - 1) * DepthInterval + RootNodeOffset;
             float posY = _nodeShowIndex * -NodeHeight;
             _nodeItemTf.anchoredPosition = new Vector2(posX, posY);
-            if ( isExpand )
+            if ( _isExpand )
             {
                 int childCount = childs.Count;
                 int i = 0;
@@ -224,17 +352,11 @@ namespace BarrageEditor
         /// <param name="value"></param>
         public void Expand(bool value)
         {
-            if ( childs.Count == 0 )
+            int childCount = childs.Count;
+            IsExpand = childCount == 0 ? false : value;
+            for (int i = 0; i < childCount; i++)
             {
-                return;
-            }
-            if ( isExpand != value )
-            {
-                isExpand = value;
-            }
-            for (int i = 0, len = childs.Count; i < len; i++)
-            {
-                childs[i].SetChildNodesVisible(value);
+                childs[i].SetChildNodesVisible(IsExpand);
             }
             int newNodeIndex = _nodeShowIndex;
             RefreshPosition(ref newNodeIndex, this);
@@ -244,12 +366,61 @@ namespace BarrageEditor
         public void SetChildNodesVisible(bool value)
         {
             _nodeItemGo.SetActive(value);
-            if ( isExpand )
+            bool childVisible = !value || !_isExpand ? false : value;
+            for (int i = 0, len = childs.Count; i < len; i++)
             {
-                for (int i = 0, len = childs.Count; i < len; i++)
+                childs[i].SetChildNodesVisible(childVisible);
+            }
+        }
+
+        /// <summary>
+        /// 显示可展开的图标
+        /// </summary>
+        private void UpdateExpandImg()
+        {
+            ExpandImgState newState;
+            if ( childs.Count == 0 )
+            {
+                newState = ExpandImgState.NoChild;
+            }
+            else
+            {
+                newState = _isExpand ? ExpandImgState.IsExpanded : ExpandImgState.IsNotExpanded;
+            }
+            if (newState != _expandImgState)
+            {
+                _expandImgState = newState;
+                if (newState == ExpandImgState.NoChild)
                 {
-                    childs[i].SetChildNodesVisible(value);
+                    _expandImg.color = ExpandImg_NodeHasNoChild_Color;
+                    _expandImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", ExpandImg_NodeIsNotExpanded_Img);
                 }
+                else if (newState == ExpandImgState.IsNotExpanded)
+                {
+                    _expandImg.color = ExpandImg_NodeHasChild_Color;
+                    _expandImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", ExpandImg_NodeIsNotExpanded_Img);
+                }
+                else
+                {
+                    _expandImg.color = ExpandImg_NodeHasChild_Color;
+                    _expandImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", ExpandImg_NodeIsExpanded_Img);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 该节点是否展开
+        /// </summary>
+        public bool IsExpand
+        {
+            protected set
+            {
+                _isExpand = value;
+                UpdateExpandImg();
+            }
+            get
+            {
+                return _isExpand;
             }
         }
 
@@ -285,6 +456,8 @@ namespace BarrageEditor
 
         public void OnSelected(bool value)
         {
+            if (!_isValid)
+                return;
             _isSelected = value;
             _selectedImg.color = _isSelected ? new Color(0, 0, 1, 1) : new Color(0, 0, 1, 0);
             if ( value )
@@ -301,7 +474,7 @@ namespace BarrageEditor
                     if (nowTime - _lastClickTime <= 0.5f)
                     {
                         _clickCount = 0;
-                        Expand(!isExpand);
+                        Expand(!_isExpand);
                     }
                     else
                     {
@@ -320,7 +493,7 @@ namespace BarrageEditor
 
         public void OnExpandClickHander()
         {
-            Expand(!isExpand);
+            Expand(!_isExpand);
         }
 
         public void UpdateDesc()
@@ -338,18 +511,34 @@ namespace BarrageEditor
             return attrs;
         }
 
+        public BaseNodeAttr GetAttrByIndex(int index)
+        {
+            if ( index < 0 || index >= attrs.Count )
+            {
+                Logger.Log("Invalid attr index " + index + " for node " + _nodeType);
+                return null;
+            }
+            return attrs[index];
+        }
+
         public virtual void ToLua(int codeDepth, ref string luaStr)
         {
             string luaHead = ToLuaHead();
-            NodeManager.ApplyDepthForLua(codeDepth, ref luaHead);
-            luaStr += luaHead;
+            if ( luaHead != "" )
+            {
+                NodeManager.ApplyDepthForLua(codeDepth, ref luaHead);
+                luaStr += luaHead;
+            }
             for (int i=0;i<childs.Count;i++)
             {
                 childs[i].ToLua(codeDepth + _extraDepth, ref luaStr);
             }
             string luaFoot = ToLuaFoot();
-            NodeManager.ApplyDepthForLua(codeDepth, ref luaFoot);
-            luaStr += luaFoot;
+            if ( luaFoot != "" )
+            {
+                NodeManager.ApplyDepthForLua(codeDepth, ref luaFoot);
+                luaStr += luaFoot;
+            }
         }
 
         public virtual string ToLuaHead()
@@ -360,6 +549,14 @@ namespace BarrageEditor
         public virtual string ToLuaFoot()
         {
             return "";
+        }
+
+        protected void CachePreValue()
+        {
+            for (int i=0;i<attrs.Count;i++)
+            {
+                _preValues[i] = attrs[i].GetValueString();
+            }
         }
 
         public void Destroy()
@@ -386,6 +583,7 @@ namespace BarrageEditor
             _selectedImg = null;
             _clickGo = null;
             _descText = null;
+            _isValid = false;
         }
     }
 

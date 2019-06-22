@@ -9,9 +9,9 @@ namespace BarrageEditor
         public override void Init(RectTransform parentTf)
         {
             _nodeType = NodeType.DefineBullet;
+            _extraDepth = 0;
             base.Init(parentTf);
             _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "bulletinit");
-            isExpand = true;
         }
 
         public override void CreateDefaultAttrs()
@@ -52,7 +52,7 @@ namespace BarrageEditor
                 else
                 {
                     string fromName = attr.GetPreValue().ToString();
-                    if ( fromName != "" )
+                    if (fromName != "")
                     {
                         CustomDefine.ModifyDefineName(CustomDefineType.SimpleBullet, fromName, attr.GetValueString());
                     }
@@ -67,12 +67,27 @@ namespace BarrageEditor
                     }
                 }
             }
+            else // 载入节点数据or设置节点默认值时
+            {
+                string typeName = GetAttrByIndex(0).GetValueString();
+                if (typeName != "")
+                {
+                    BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
+                    string paraList = onCreteNode.GetAttrByIndex(0).GetValueString();
+                    CustomDefine.AddData(CustomDefineType.SimpleBullet, typeName, paraList);
+                }
+            }
             base.OnAttributeValueChanged(attr);
         }
 
         public override string ToDesc()
         {
             return string.Format("define bullet type \"{0}\"", attrs[0].GetValueString());
+        }
+
+        public override string ToLuaHead()
+        {
+            return string.Format("CustomizedTable.{0} = {{}}\n",attrs[0].GetValueString());
         }
     }
 }

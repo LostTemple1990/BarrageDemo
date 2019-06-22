@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 224889125530375914}
   - component: {fileID: 222910368638910730}
   - component: {fileID: 114806531573070064}
+  - component: {fileID: 114832406876683224}
   m_Layer: 0
   m_Name: ClickImg
   m_TagString: Untagged
@@ -185,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -240,6 +241,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114832406876683224
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1696965752332534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483b210f0813f4244900b53c2b263751, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventPassType: 0
 --- !u!114 &114928191058822954
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -11,6 +11,9 @@ namespace BarrageEditor
         /// 显示提示文本
         /// </summary>
         public const int ShowTooltip = 1001;
+        public const int Log = 1011;
+        public const int LogWarning = 1012;
+        public const int LogError = 1013;
         /// <summary>
         /// 工程文件改变
         /// </summary>

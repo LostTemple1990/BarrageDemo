@@ -88,7 +88,9 @@ namespace YKEngine
         {
             FileStream fs = new FileStream(path, FileMode.Open);
             BinaryFormatter bf = new BinaryFormatter();
-            return bf.Deserialize(fs);
+            object obj = bf.Deserialize(fs);
+            fs.Close();
+            return obj;
         }
 
         public static void WriteToFile(string data,string path)
@@ -100,6 +102,18 @@ namespace YKEngine
             file.Close();
             //释放对象
             file.Dispose();
+        }
+
+        public static string GetFileNameByPath(string path)
+        {
+            int index = path.LastIndexOf('\\');
+            string fileName = path.Substring(index + 1);
+            return fileName;
+        }
+
+        public static void CopyStringToClipboard(string str)
+        {
+            GUIUtility.systemCopyBuffer = str;
         }
     }
 

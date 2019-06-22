@@ -171,23 +171,13 @@ namespace BarrageEditor
             if (savePath != null)
             {
                 EventManager.GetInstance().PostEvent(EditorEvents.BeforeProjectChanged);
-                BaseNode root = BarrageProject.RootNode;
-                if (root != null)
-                    root.Destroy();
-                // 设置工程的位置
-                BarrageProject.SetProjectPath(savePath);
+                BarrageProject.UnloadProject();
                 // todo 载入固定位置的一个模板
                 string templatePath = Application.streamingAssetsPath + "/template.nd";
-                NodeData nd = FileUtils.DeserializeFileToObject(templatePath) as NodeData;
-                if (nd == null)
-                {
-                    Logger.LogError("Deserialize nd file fail!");
-                }
-                root = NodeManager.CreateNodesByNodeDatas(nd);
-                root.SetParent(null);
-                BarrageProject.RootNode = root;
-                root.Expand(true);
+                BarrageProject.LoadProject(templatePath);
                 EventManager.GetInstance().PostEvent(EditorEvents.AfterProjectChanged);
+                // 当前文件
+                BarrageProject.Log("current project file: " + FileUtils.GetFileNameByPath(savePath));
             }
         }
 
@@ -198,19 +188,10 @@ namespace BarrageEditor
             if ( openPath != null )
             {
                 EventManager.GetInstance().PostEvent(EditorEvents.BeforeProjectChanged);
-                BaseNode root = BarrageProject.RootNode;
-                if (root != null)
-                    root.Destroy();
-                NodeData nd = FileUtils.DeserializeFileToObject(openPath) as NodeData;
-                if ( nd == null )
-                {
-                    Logger.LogError("Deserialize nd file fail!");
-                }
-                root = NodeManager.CreateNodesByNodeDatas(nd);
-                root.SetParent(null);
-                BarrageProject.RootNode = root;
-                root.Expand(true);
+                BarrageProject.UnloadProject();
+                BarrageProject.LoadProject(openPath);
                 EventManager.GetInstance().PostEvent(EditorEvents.AfterProjectChanged);
+                BarrageProject.Log("current project file: " + FileUtils.GetFileNameByPath(openPath));
             }
         }
 
