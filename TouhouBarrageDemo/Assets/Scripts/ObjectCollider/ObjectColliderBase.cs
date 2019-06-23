@@ -355,6 +355,16 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
         get { return _movableObject.AccAngle; }
     }
 
+    public float dx
+    {
+        get { return _movableObject.dx; }
+    }
+
+    public float dy
+    {
+        get { return _movableObject.dy; }
+    }
+
     #endregion
 
     #region task

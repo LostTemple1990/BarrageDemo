@@ -12,6 +12,13 @@ Constants.ModeEaseInOutQuad = 4
 Constants.ModeSin = 9
 Constants.ModeCos = 10
 
+MoveModeLinear = 1
+MoveModeEaseInQuad = 2
+MoveModeEaseOutQuad = 3
+MoveModeEaseInOutQuad = 4
+MoveModeSin = 9
+MoveModeCos = 10
+
 Constants.DirNull = 0
 Constants.DirLeft = 1
 Constants.DirRight = 2

@@ -167,7 +167,7 @@ public partial class LuaLib
         luaState.Pop(6);
         if (isAimToPlayer)
         {
-            vAngle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - laser.PosX, Global.PlayerPos.y - laser.PosY);
+            vAngle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - laser.posX, Global.PlayerPos.y - laser.posY);
         }
         laser.DoMove(v, vAngle, acce, accAngle);
         return 0;

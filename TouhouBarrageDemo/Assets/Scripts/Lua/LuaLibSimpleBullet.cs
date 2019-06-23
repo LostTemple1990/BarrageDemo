@@ -14,7 +14,15 @@ public partial class LuaLib
     /// <returns></returns>
     public static int CreateSimpleBulletById(ILuaState luaState)
     {
-        string sysId = luaState.ToString(-3);
+        string sysId;
+        if (luaState.Type(-3) == LuaType.LUA_TNUMBER)
+        {
+            sysId = luaState.ToNumber(-3).ToString();
+        }
+        else
+        {
+            sysId = luaState.ToString(-3);
+        }
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
@@ -113,7 +121,7 @@ public partial class LuaLib
         // 设置子弹线性运动
         if (isAimToPlayer)
         {
-            vAngle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - bullet.PosX, Global.PlayerPos.y - bullet.PosY);
+            vAngle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - bullet.posX, Global.PlayerPos.y - bullet.posY);
         }
         bullet.DoStraightMove(velocity, vAngle);
         bullet.DoAcceleration(acce, accAngle);
@@ -190,7 +198,15 @@ public partial class LuaLib
     {
         int numArgs = luaState.ToInteger(-1);
         string customizedName = luaState.ToString(-5 - numArgs);
-        string sysId = luaState.ToString(-4 - numArgs);
+        string sysId;
+        if (luaState.Type(-4 - numArgs) == LuaType.LUA_TNUMBER)
+        {
+            sysId = luaState.ToNumber(-4 - numArgs).ToString();
+        }
+        else
+        {
+            sysId = luaState.ToString(-4 - numArgs);
+        }
         float posX = (float)luaState.ToNumber(-3 - numArgs);
         float posY = (float)luaState.ToNumber(-2 - numArgs);
         luaState.Pop(1);

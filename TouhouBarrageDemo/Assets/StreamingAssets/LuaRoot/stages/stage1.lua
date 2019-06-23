@@ -281,8 +281,8 @@ BossTable.MidBoss.Task = function(boss)
 				local timeLeftRate = lib.GetBossSpellCardTimeLeftRate()
 				local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 				local posX,posY = lib.GetEnemyPos(boss)
-				local enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,-170,205,duration,3)
-				enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,170,205,duration,3)
+				local enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,-170,205,duration,3)
+				enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,170,205,duration,3)
 				if coroutine.yield(180)==false then return end
 			end
 		end)
@@ -369,12 +369,12 @@ BossTable.MidBoss.Task = function(boss)
 				local timeLeftRate = lib.GetBossSpellCardTimeLeftRate()
 				local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 				local posX,posY = lib.GetEnemyPos(boss)
-				local enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,-170,205,duration,3)
-				enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,170,205,duration,3)
+				local enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,-170,205,duration,3)
+				enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,170,205,duration,3)
 				if coroutine.yield(180)==false then return end
 				posX,posY = lib.GetEnemyPos(boss)
-				enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,-170,-205,duration,3)
-				enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,170,-205,duration,3)
+				enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,-170,-205,duration,3)
+				enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,170,-205,duration,3)
 				if coroutine.yield(180)==false then return end
 			end
 		end)
@@ -454,10 +454,10 @@ BossTable.MidBoss.Task = function(boss)
 				local timeLeftRate = lib.GetBossSpellCardTimeLeftRate()
 				local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 				local posX,posY = lib.GetEnemyPos(boss)
-				local enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,-170,205,duration,3)
-				enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,170,205,duration,3)
-				enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,-170,-205,duration,3)
-				enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,170,-205,duration,3)
+				local enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,-170,205,duration,3)
+				enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,170,205,duration,3)
+				enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,-170,-205,duration,3)
+				enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,170,-205,duration,3)
 				if coroutine.yield(180)==false then return end
 			end
 		end)
@@ -552,10 +552,10 @@ BossTable.MidBoss.Task = function(boss)
 				local timeLeftRate = lib.GetBossSpellCardTimeLeftRate()
 				local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 				local posX,posY = lib.GetEnemyPos(boss)
-				local enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,-170,205,duration,3)
-				enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,170,205,duration,3)
-				enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,-170,-205,duration,3)
-				enemy = lib.CreateCustomizedEnemy("SC1Enemy","0998",posX,posY,170,-205,duration,3)
+				local enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,-170,205,duration,3)
+				enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,170,205,duration,3)
+				enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,-170,-205,duration,3)
+				enemy = lib.CreateCustomizedEnemy("SC1Enemy","100020",posX,posY,170,-205,duration,3)
 				if coroutine.yield(180)==false then return end
 			end
 		end)
@@ -709,8 +709,8 @@ function Stage.StageTask()
 	--
 	if coroutine.yield(200) == false then return end
 	do
-		--local enemy = lib.CreateNormalEnemyById("0000",0,185);
-		local enemy = lib.CreateCustomizedEnemy("TestKillEnemy","0000",0,185,0)
+		--local enemy = lib.CreateNormalEnemyById("100000",0,185);
+		local enemy = lib.CreateCustomizedEnemy("TestKillEnemy","100000",0,185,0)
 		lib.AddEnemyTask(enemy,function()
 			if coroutine.yield(150)==false then return end
 			lib.EnemyMoveTowards(enemy,1,315,200);
@@ -823,7 +823,7 @@ function Stage.StageTask()
 	if coroutine.yield(10000) == false then return end
 	--自定义子弹
 	do
-		local enemy = lib.CreateNormalEnemyById("0001",0,280)
+		local enemy = lib.CreateNormalEnemyById("100001",0,280)
 		lib.AddEnemyTask(enemy,function()
 			local continue,tmpEnemy
 			tmpEnemy = enemy
@@ -854,7 +854,7 @@ function Stage.StageTask()
 		local i
 		for i=2,2 do
 			local enemy
-			enemy = lib.CreateNormalEnemyById("0010",-240+i*120,280);
+			enemy = lib.CreateNormalEnemyById("100010",-240+i*120,280);
 			lib.AddEnemyTask(enemy,function()
 				local continue,tmpEnemy
 				tmpEnemy = enemy
@@ -896,7 +896,7 @@ function Stage.StageTask()
 	coroutine.yield(600);
 	--5层交叉弹
 	do
-		local enemy = lib.CreateNormalEnemyById("0001",0,280)
+		local enemy = lib.CreateNormalEnemyById("100001",0,280)
 		lib.AddEnemyTask(enemy,function()
 			local continue,tmpEnemy
 			tmpEnemy = enemy
@@ -928,7 +928,7 @@ function Stage.StageTask()
 		--每隔60帧生成1个敌机
 		for i=1,8 do
 			local enemy,continue
-			enemy = lib.CreateNormalEnemyById("0000",-240+i*40,280);
+			enemy = lib.CreateNormalEnemyById("100000",-240+i*40,280);
 			lib.AddEnemyTask(enemy,function()
 				local continue,tmpEnemy
 				tmpEnemy = enemy;

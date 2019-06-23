@@ -61,14 +61,41 @@ namespace BarrageEditor
                 case NodeType.Stage:
                     newNode = new NodeStage();
                     break;
+                case NodeType.AddTask:
+                    newNode = new NodeAddTask();
+                    break;
+                case NodeType.TaskWait:
+                    newNode = new NodeTaskWait();
+                    break;
+                case NodeType.DefineEnemy:
+                    newNode = new NodeDefineEnemy();
+                    break;
+                case NodeType.OnEnemyCreate:
+                    newNode = new NodeOnEnemyCreate();
+                    break;
+                case NodeType.CreateCustomizedEnemy:
+                    newNode = new NodeCreateEnemy();
+                    break;
                 case NodeType.DefineBullet:
                     newNode = new NodeDefineBullet();
                     break;
                 case NodeType.OnBulletCreate:
                     newNode = new NodeOnBulletCreate();
                     break;
-                case NodeType.CreateBullet:
+                case NodeType.CreateCustomizedBullet:
                     newNode = new NodeCreateBullet();
+                    break;
+                case NodeType.UnitSetV:
+                    newNode = new NodeSetV();
+                    break;
+                case NodeType.UnitSetAcce:
+                    newNode = new NodeSetAcce();
+                    break;
+                case NodeType.UnitMoveTo:
+                    newNode = new NodeMoveTo();
+                    break;
+                case NodeType.UnitMoveTowards:
+                    newNode = new NodeMoveTowards();
                     break;
             }
             if (newNode != null)
@@ -102,6 +129,9 @@ namespace BarrageEditor
                     break;
                 case NodeAttrType.ParaList:
                     nodeAttr = new NodeAttrPara();
+                    break;
+                case NodeAttrType.MoveMode:
+                    nodeAttr = new NodeAttrMoveMode();
                     break;
             }
             if (nodeAttr != null) return nodeAttr;

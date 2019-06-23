@@ -8,23 +8,18 @@ local BossTable = {}
 -- Mod name: unnamed
 --author="YK"
 --allow_practice=true
-CustomizedTable.test = {}
-CustomizedTable.test.Init = function(self,v,angle)
-do
-    local a,b,c = 1,2,3
-    do local i,_d_i=(0),(1) for _=1,Infinite do
-        if i > 5 then
-            if i > 5 then
-            else
-                g = 1 --test else
-                local k = 1
-            end
-            local k = 1
-        else
-            g = 1 --test else
-        end
-    i=i+_d_i  end end
+CustomizedEnemyTable.TestOnKillEnemy = {}
+CustomizedEnemyTable.TestOnKillEnemy.Init = function(self)
+    self:SetMaxHp(10)
 end
+CustomizedTable.YKBullet = {}
+CustomizedTable.YKBullet.Init = function(self,v,angle)
+    self:SetV(3,0,false)
+    self:SetAcce(0.05,0,false)
+end
+Stage["Stage1"] = function()
+    last = lib.CreateCustomizedEnemy("TestOnKillEnemy",100000,0,0,0)
+    last = lib.CreateCustomizedBullet("YKBullet",107010,0,0,3,0,2)
 end
 return
 {

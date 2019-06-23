@@ -603,6 +603,16 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         get { return _movableObject.AccAngle; }
     }
 
+    public float dx
+    {
+        get { return _movableObject.dx; }
+    }
+
+    public float dy
+    {
+        get { return _movableObject.dy; }
+    }
+
     #endregion
 
     #region IAttachment

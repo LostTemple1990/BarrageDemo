@@ -47,11 +47,8 @@ namespace BarrageEditor
 
         private void InitTypeItems()
         {
-            CustomDefineType type = CustomDefineType.SimpleBullet;
-            if ( _nodeAttr.Node.GetNodeType() == NodeType.CreateBullet )
-            {
-                type = CustomDefineType.SimpleBullet;
-            }
+            NodeType nodeType = _nodeAttr.Node.GetNodeType();
+            CustomDefineType type = CustomDefine.GetTypeByNodeType(nodeType);
             _typeNameList = CustomDefine.GetCustomDefineListByType(type);
             for (int i=0;i< _typeNameList.Count;i++)
             {

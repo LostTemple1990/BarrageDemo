@@ -15,6 +15,8 @@ public class EnemySimpleBulletLuaInterface
     private static LuaCsClosureValue _funcAttachTo;
     private static LuaCsClosureValue _funcSetRelativePos;
 
+    private static LuaCsClosureValue _funcAddTask;
+
 
     public static void Init()
     {
@@ -28,6 +30,8 @@ public class EnemySimpleBulletLuaInterface
 
             _funcAttachTo = new LuaCsClosureValue(LuaLib.AttachToMaster);
             _funcSetRelativePos = new LuaCsClosureValue(LuaLib.SetAttachmentRelativePos);
+
+            _funcAddTask = new LuaCsClosureValue(LuaLib.AddTask);
 
             _isInit = true;
         }
@@ -59,12 +63,12 @@ public class EnemySimpleBulletLuaInterface
                     }
                 case "dx":
                     {
-                        res.SetNValue(bullet.Dx);
+                        res.SetNValue(bullet.dx);
                         return true;
                     }
                 case "dy":
                     {
-                        res.SetNValue(bullet.Dy);
+                        res.SetNValue(bullet.dy);
                         return true;
                     }
                 #endregion
@@ -108,7 +112,7 @@ public class EnemySimpleBulletLuaInterface
                 #region 子弹类专属变量
                 case "timer":
                     {
-                        res.SetNValue(bullet.TimeSinceCreated);
+                        res.SetNValue(bullet.timeSinceCreated);
                         return true;
                     }
                 #endregion
@@ -148,6 +152,13 @@ public class EnemySimpleBulletLuaInterface
                 case "SetRelativePos":
                     {
                         res.SetClCsValue(_funcSetRelativePos);
+                        return true;
+                    }
+                #endregion
+                #region ITaskExecuter
+                case "AddTask":
+                    {
+                        res.SetClCsValue(_funcAddTask);
                         return true;
                     }
                 #endregion

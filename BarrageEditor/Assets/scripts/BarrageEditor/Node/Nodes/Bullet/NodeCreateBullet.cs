@@ -8,7 +8,7 @@ namespace BarrageEditor
     {
         public override void Init(RectTransform parentTf)
         {
-            _nodeType = NodeType.CreateBullet;
+            _nodeType = NodeType.CreateCustomizedBullet;
             base.Init(parentTf);
             _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "bulletcreate");
         }
@@ -56,14 +56,17 @@ namespace BarrageEditor
             int paraCount = 0;
             if ( data != null )
             {
-                paraCount = data.paraListStr.Split(',').Length;
+                if (data.paraListStr.IndexOf(',') != -1)
+                {
+                    paraCount = data.paraListStr.Split(',').Length;
+                }
             }
-            return string.Format("last = lib.CreateCustomizedBullet(\"{0}\",({1})..\"\",{2},{3},{4},{5})\n",
+            return string.Format("last = lib.CreateCustomizedBullet(\"{0}\",{1},{2},{3},{4}{5})\n",
                 typeName,
                 attrs[1].GetValueString(),
                 attrs[2].GetValueString(),
                 attrs[3].GetValueString(), 
-                attrs[4].GetValueString(),
+                attrs[4].GetValueString() == "" ? "" : attrs[4].GetValueString() + ",",
                 paraCount);
         }
     }

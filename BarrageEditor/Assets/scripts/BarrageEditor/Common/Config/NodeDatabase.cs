@@ -29,6 +29,7 @@ namespace BarrageEditor
         public List<NodeType> allowParents;
         public List<NodeType> allowChilds;
         public List<NodeType> forbidParents;
+        public List<NodeType> needAncestors;
 
         public NodeConfig()
         {
@@ -54,9 +55,20 @@ namespace BarrageEditor
         Comment = 1009,
         StageGroup = 1101,
         Stage = 1102,
+        AddTask = 1201,
+        TaskWait = 1202,
+        DefineEnemy = 1301,
+        OnEnemyCreate = 1302,
+        CreateCustomizedEnemy = 1303,
+        CreateSimpleEnemy = 1034,
         DefineBullet = 1501,
         OnBulletCreate = 1502,
-        CreateBullet = 1053,
+        CreateCustomizedBullet = 1503,
+        CreateSimpleBullet = 1504,
+        UnitSetV = 1601,
+        UnitSetAcce = 1602,
+        UnitMoveTo = 1603,
+        UnitMoveTowards = 1604,
     }
 
     public class NodeDatabase
@@ -89,42 +101,11 @@ namespace BarrageEditor
             #endregion
             InitGeneralNodeCfgs();
             InitStageNodeCfgs();
-            #region bullet
-            #region define bullet
-            cfg = new NodeConfig
-            {
-                type = NodeType.DefineBullet,
-                shortcutPath = "bulletdefine",
-                shortcutTip = "define bullet",
-                editOnCreated = true,
-            };
-            cfg.defaultAttrValues = new List<object> { "" };
-            _nodeCfgDic.Add(NodeType.DefineBullet, cfg);
-            #endregion
-            #region onBulletCreate
-            cfg = new NodeConfig
-            {
-                type = NodeType.OnBulletCreate,
-                shortcutPath = "bulletdefine",
-                shortcutTip = "define bullet",
-                editOnCreated = false,
-                isDeletable  = false,
-            };
-            cfg.defaultAttrValues = new List<object> { "v,angle" };
-            _nodeCfgDic.Add(NodeType.OnBulletCreate, cfg);
-            #endregion
-            #region createBullet
-            cfg = new NodeConfig
-            {
-                type = NodeType.CreateBullet,
-                shortcutPath = "bulletcreate",
-                shortcutTip = "create bullet",
-                editOnCreated = true,
-            };
-            cfg.defaultAttrValues = new List<object> { "", "107010", "0", "0", "" };
-            _nodeCfgDic.Add(NodeType.CreateBullet, cfg);
-            #endregion
-            #endregion
+            InitTaskNodeCfgs();
+            InitEnemyNodeCfgs();
+            InitBossNodeCfgs();
+            InitBulletNodeCfgs();
+            InitUnitNodeCfgs();
         }
 
         private void InitGeneralNodeCfgs()
@@ -140,6 +121,7 @@ namespace BarrageEditor
                 shortcutPath = "folder",
                 shortcutTip = "folder",
                 allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                editOnCreated = true,
             };
             cfg.defaultAttrValues = new List<object> { "" };
             _nodeCfgDic.Add(NodeType.Folder, cfg);
@@ -271,6 +253,164 @@ namespace BarrageEditor
                 editOnCreated = true,
             };
             _nodeCfgDic.Add(NodeType.Stage, cfg);
+        }
+
+        private void InitTaskNodeCfgs()
+        {
+            NodeConfig cfg;
+            // AddTask
+            cfg = new NodeConfig
+            {
+                type = NodeType.AddTask,
+                shortcutPath = "task",
+                shortcutTip = "unit add task",
+                defaultAttrValues = new List<object> { "self" },
+                needAncestors = new List<NodeType> { NodeType.Stage, NodeType.OnEnemyCreate, NodeType.OnBulletCreate },
+            };
+            _nodeCfgDic.Add(NodeType.AddTask, cfg);
+            // TaskWait
+            cfg = new NodeConfig
+            {
+                type = NodeType.TaskWait,
+                shortcutPath = "taskwait",
+                shortcutTip = "wait",
+                defaultAttrValues = new List<object> { "60" },
+                needAncestors = new List<NodeType> { NodeType.Stage, NodeType.AddTask },
+            };
+            _nodeCfgDic.Add(NodeType.TaskWait, cfg);
+        }
+
+        private void InitEnemyNodeCfgs()
+        {
+            NodeConfig cfg;
+            cfg = new NodeConfig
+            {
+                type = NodeType.DefineEnemy,
+                shortcutPath = "enemydefine",
+                shortcutTip = "define enemy",
+                defaultAttrValues = new List<object> { "" },
+                allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.DefineEnemy, cfg);
+            cfg = new NodeConfig
+            {
+                type = NodeType.OnEnemyCreate,
+                shortcutPath = "enemyinit",
+                defaultAttrValues = new List<object> { "10", "" },
+                editOnCreated = false,
+                isDeletable = false,
+            };
+            _nodeCfgDic.Add(NodeType.OnEnemyCreate, cfg);
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateCustomizedEnemy,
+                shortcutPath = "enemycreate",
+                shortcutTip = "create enemy",
+                defaultAttrValues = new List<object> { "", "100000", "0", "0", "" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.CreateCustomizedEnemy, cfg);
+        }
+
+        private void InitBossNodeCfgs()
+        {
+
+        }
+
+        private void InitBulletNodeCfgs()
+        {
+            NodeConfig cfg;
+            #region define bullet
+            cfg = new NodeConfig
+            {
+                type = NodeType.DefineBullet,
+                shortcutPath = "bulletdefine",
+                shortcutTip = "define bullet",
+                defaultAttrValues = new List<object> { "" },
+                allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.DefineBullet, cfg);
+            #endregion
+            #region onBulletCreate
+            cfg = new NodeConfig
+            {
+                type = NodeType.OnBulletCreate,
+                shortcutPath = "bulletdefine",
+                shortcutTip = "define bullet",
+                defaultAttrValues = new List<object> { "v,angle" },
+                editOnCreated = false,
+                isDeletable = false,
+            };
+            _nodeCfgDic.Add(NodeType.OnBulletCreate, cfg);
+            #endregion
+            #region createBullet
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateCustomizedBullet,
+                shortcutPath = "bulletcreate",
+                shortcutTip = "create bullet",
+                defaultAttrValues = new List<object> { "", "107010", "0", "0", "" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.CreateCustomizedBullet, cfg);
+            #endregion
+        }
+
+        private void InitUnitNodeCfgs()
+        {
+            NodeConfig cfg;
+            // SetV
+            cfg = new NodeConfig
+            {
+                type = NodeType.UnitSetV,
+                shortcutPath = "setv",
+                shortcutTip = "set velocity",
+                defaultAttrValues = new List<object> { "self", "3", "0", "false" },
+                allowChilds = new List<NodeType>(),
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+            };
+            _nodeCfgDic.Add(NodeType.UnitSetV, cfg);
+            // SetAcce
+            cfg = new NodeConfig
+            {
+                type = NodeType.UnitSetAcce,
+                shortcutPath = "setaccel",
+                shortcutTip = "set acceleration",
+                defaultAttrValues = new List<object> { "self", "0.05", "0", "false" },
+                allowChilds = new List<NodeType>(),
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+            };
+            _nodeCfgDic.Add(NodeType.UnitSetAcce, cfg);
+            // MoveTo
+            cfg = new NodeConfig
+            {
+                type = NodeType.UnitMoveTo,
+                shortcutPath = "moveto",
+                shortcutTip = "move to",
+                defaultAttrValues = new List<object> { "self", "0", "0", "60", "MoveModeLinear" },
+                allowChilds = new List<NodeType>(),
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+            };
+            _nodeCfgDic.Add(NodeType.UnitMoveTo, cfg);
+            // MoveTowards
+            cfg = new NodeConfig
+            {
+                type = NodeType.UnitMoveTowards,
+                shortcutPath = "moveto",
+                shortcutTip = "move towards",
+                defaultAttrValues = new List<object> { "self", "3", "0", "false", "60" },
+                allowChilds = new List<NodeType>(),
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+            };
+            _nodeCfgDic.Add(NodeType.UnitMoveTowards, cfg);
         }
 
         /// <summary>

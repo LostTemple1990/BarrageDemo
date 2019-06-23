@@ -17,4 +17,6 @@ public interface ISTGMovable : IPosition
     float vAngle { get; }
     float acce { get; }
     float accAngle { get; }
+    float dx { get; }
+    float dy { get; }
 }

@@ -212,7 +212,7 @@ public partial class LuaLib
             new NameFuncPair("RandomInt",GetRandomInt),
             new NameFuncPair("RandomFloat",GetRandomFloat),
             new NameFuncPair("RandomSign",GetRandomSign),
-            new NameFuncPair("Wait",GetRandomSign),
+            new NameFuncPair("Wait",Wait),
         };
         luaState.PushGlobalTable();
         luaState.L_SetFuncs(define, 0);

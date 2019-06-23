@@ -139,6 +139,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: f9ef9c0b6e98fdd459ddd3d43df3bb34, type: 3}
   - {fileID: 21300000, guid: 0885701bf3377984590dd4e646fce986, type: 3}
   - {fileID: 21300000, guid: cb6ca42b8f38f404088accfcb5095525, type: 3}
+  - {fileID: 21300000, guid: 39dfab2bb1b3c844da91da6d4c5c5649, type: 3}
   - {fileID: 21300000, guid: f5c82d4b04d0fa84991fdbd53bdf3269, type: 3}
   - {fileID: 21300000, guid: 299e585b5df18064ea1cbfd34c19ee31, type: 3}
   - {fileID: 21300000, guid: f8408c6bc76f1d749b8c9b43212a76ca, type: 3}
@@ -160,7 +161,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 6b59f32d60821774baf7990121157372, type: 3}
   - {fileID: 21300000, guid: 316d445d82639cb43aff3da5bf2abaf5, type: 3}
   - {fileID: 21300000, guid: 4bfa227d448e9224b8c32e0fcad97af1, type: 3}
-  - {fileID: 21300000, guid: fb5c048db8efcec4688cb4b1878e117b, type: 3}
   - {fileID: 21300000, guid: b77bc69d810056846bc62aa15ceded48, type: 3}
   - {fileID: 21300000, guid: 68fce69d472ecbf4a85f04ecadf63438, type: 3}
   - {fileID: 21300000, guid: 62665aadb7bfffd42b0a24f9dc9206e8, type: 3}
@@ -293,6 +293,7 @@ SpriteAtlas:
   - objectdefine
   - bginit
   - rebounderdefine
+  - moveto
   - archirotate
   - setting
   - loadani
@@ -314,7 +315,6 @@ SpriteAtlas:
   - plus
   - unitkill
   - sentence
-  - _node_moveto
   - bossscfinish
   - stage
   - rebounderinit

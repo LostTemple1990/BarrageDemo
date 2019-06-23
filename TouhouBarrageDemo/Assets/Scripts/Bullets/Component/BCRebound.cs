@@ -45,7 +45,7 @@ public class BCRebound : BulletComponent
     private void Rebound()
     {
         int reboundFlag = 0;
-        Vector2 curPos = new Vector2(_bullet.PosX, _bullet.PosY);
+        Vector2 curPos = new Vector2(_bullet.posX, _bullet.posY);
         float vAngle;
         _bullet.GetBulletPara(BulletParaType.VAngel, out vAngle);
         if ((_reboundPara & Consts.ReboundLeft) > 0 && curPos.x < _left)

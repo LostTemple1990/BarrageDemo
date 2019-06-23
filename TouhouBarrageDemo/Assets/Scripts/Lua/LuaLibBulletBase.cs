@@ -59,8 +59,8 @@ public partial class LuaLib
     {
         EnemyBulletBase bullet = luaState.ToUserData(-1) as EnemyBulletBase;
         luaState.Pop(1);
-        luaState.PushNumber(bullet.PosX);
-        luaState.PushNumber(bullet.PosY);
+        luaState.PushNumber(bullet.posX);
+        luaState.PushNumber(bullet.posY);
         return 2;
     }
 

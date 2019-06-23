@@ -51,7 +51,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 8b72c8d1ef8dc5d4887d9810c23063af, type: 3}
   - {fileID: 21300000, guid: 81984dd1519e76c43a733695ec62e146, type: 3}
   - {fileID: 21300000, guid: 68d47302af782fc43a6554cda2c4d55c, type: 3}
-  - {fileID: 21300000, guid: 690fa302de8590e4981c976dd217e30b, type: 3}
   - {fileID: 21300000, guid: 656f2022785317441b7be2a52452e6cb, type: 3}
   - {fileID: 21300000, guid: 7a8ed9321d2334c4a935f9a595f62d4f, type: 3}
   - {fileID: 21300000, guid: 7b413482ec9fe7e47bace1d3087e60ee, type: 3}
@@ -189,7 +188,6 @@ SpriteAtlas:
   - explode
   - bulletclear
   - setrelpos
-  - _node_moveto
   - folder
   - code
   - unitkill

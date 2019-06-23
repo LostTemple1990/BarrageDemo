@@ -159,6 +159,22 @@ namespace BarrageEditor
                 if (childCfg.forbidParents.IndexOf(parentType) != -1)
                     return false;
             }
+            if (childCfg.needAncestors != null)
+            {
+                BaseNode parent = this;
+                bool hasAncestor = false;
+                while (parent!=null)
+                {
+                    if (childCfg.needAncestors.IndexOf(parent.GetNodeType()) != -1)
+                    {
+                        hasAncestor = true;
+                        break;
+                    }
+                    parent = parent.parentNode;
+                }
+                if (!hasAncestor)
+                    return false;
+            }
             return true;
         }
 

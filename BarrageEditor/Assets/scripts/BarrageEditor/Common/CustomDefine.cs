@@ -112,7 +112,8 @@ namespace BarrageEditor
         /// <returns></returns>
         public static CustomDefineType GetTypeByNodeType(NodeType nodeType)
         {
-            if (nodeType == NodeType.CreateBullet) return CustomDefineType.SimpleBullet;
+            if (nodeType == NodeType.CreateCustomizedBullet) return CustomDefineType.SimpleBullet;
+            if (nodeType == NodeType.CreateCustomizedEnemy) return CustomDefineType.Enemy;
             return CustomDefineType.Null;
         }
 

@@ -52,7 +52,7 @@ namespace BarrageEditor
         private void InitParas()
         {
             CustomDefineType type = CustomDefineType.SimpleBullet;
-            if (_nodeAttr.Node.GetNodeType() == NodeType.CreateBullet)
+            if (_nodeAttr.Node.GetNodeType() == NodeType.CreateCustomizedBullet)
             {
                 type = CustomDefineType.SimpleBullet;
             }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExecuter
+public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExecuter,ISTGMovable
 {
     /// <summary>
     /// 当前生命值
@@ -638,6 +638,58 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
         get { return _clearFlag; }
     }
 
+    public float velocity
+    {
+        get { return _movableObj.Velocity; }
+        set { _movableObj.Velocity = value; }
+    }
+
+    public float vx
+    {
+        get { return _movableObj.Vx; }
+        set { _movableObj.Vx = value; }
+    }
+
+    public float vy
+    {
+        get { return _movableObj.Vy; }
+        set { _movableObj.Vy = value; }
+    }
+
+    public float maxVelocity
+    {
+        get { return _movableObj.MaxVelocity; }
+        set { _movableObj.MaxVelocity = value; }
+    }
+
+    public float vAngle
+    {
+        get { return _movableObj.VAngle; }
+        set { _movableObj.VAngle = value; }
+    }
+
+    public float acce
+    {
+        get { return _movableObj.Acce; }
+        set { _movableObj.Acce = value; }
+    }
+
+    public float accAngle
+    {
+        get { return _movableObj.AccAngle; }
+        set { _movableObj.AccAngle = value; }
+    }
+
+    public float dx
+    {
+        get { return _movableObj.dx; }
+    }
+
+    public float dy
+    {
+        get { return _movableObj.dy; }
+    }
+
     public Vector2 GetPosition()
     {
         return _curPos;
@@ -711,6 +763,26 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
         {
             Eliminate(eliminateType);
         }
+    }
+
+    public void DoStraightMove(float v, float angle)
+    {
+        _movableObj.DoStraightMove(v, angle);
+    }
+
+    public void DoAcceleration(float acce, float accAngle)
+    {
+        _movableObj.DoAcceleration(acce, accAngle);
+    }
+
+    public void DoAccelerationWithLimitation(float acce, float accAngle, float maxVelocity)
+    {
+        _movableObj.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
+    }
+
+    public void SetPolarParas(float radius, float angle, float deltaR, float omega)
+    {
+        _movableObj.DoCurvedMove(radius, angle, deltaR, omega);
     }
 }
 

@@ -197,8 +197,8 @@ function SC.NazrinTest(boss)
 			local timeLeftRate = lib.GetSpellCardTimeLeftRate()
 			local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 			local posX,posY = lib.GetEnemyPos(boss)
-			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,-170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0998",posX,posY,170,205,duration,3)
+			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,-170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,170,205,duration,3)
 			if coroutine.yield(180)==false then return end
 		end
 	end)
@@ -324,8 +324,8 @@ function SC.NazrinSC1_0(boss)
 			local timeLeftRate = lib.GetSpellCardTimeLeftRate()
 			local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 			local posX,posY = lib.GetEnemyPos(boss)
-			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,205,duration,3)
+			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,-170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,170,205,duration,3)
 			if coroutine.yield(180)==false then return end
 		end
 	end)
@@ -451,12 +451,12 @@ function SC.NazrinSC1_1(boss)
 			local timeLeftRate = lib.GetSpellCardTimeLeftRate()
 			local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 			local posX,posY = lib.GetEnemyPos(boss)
-			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,205,duration,3)
+			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,-170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,170,205,duration,3)
 			if coroutine.yield(180)==false then return end
 			posX,posY = lib.GetEnemyPos(boss)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,-205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,-205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,-170,-205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,170,-205,duration,3)
 			if coroutine.yield(180)==false then return end
 		end
 	end)
@@ -582,10 +582,10 @@ function SC.NazrinSC1_2(boss)
 			local timeLeftRate = lib.GetSpellCardTimeLeftRate()
 			local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 			local posX,posY = lib.GetEnemyPos(boss)
-			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,-205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,-205,duration,3)
+			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,-170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,-170,-205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,170,-205,duration,3)
 			if coroutine.yield(180)==false then return end
 		end
 	end)
@@ -711,10 +711,10 @@ function SC.NazrinSC1_3(boss)
 			local timeLeftRate = lib.GetSpellCardTimeLeftRate()
 			local duration = 120 - math.ceil(60*math.min(hpRate,timeLeftRate))
 			local posX,posY = lib.GetEnemyPos(boss)
-			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,-170,-205,duration,3)
-			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","0020",posX,posY,170,-205,duration,3)
+			local enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,-170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,170,205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,-170,-205,duration,3)
+			enemy = lib.CreateCustomizedEnemy("NazrinSC1Enemy","100020",posX,posY,170,-205,duration,3)
 			if coroutine.yield(180)==false then return end
 		end
 	end)
@@ -1244,7 +1244,7 @@ function SC.OrionidsSC(boss)
 				local angle,dAngle = 0,-11
 				for _=1,25 do
 					local laser = lib.CreateCustomizedLaser("OrionidsLaser",320*math.cos(math.rad(angle)),274+25*math.sin(math.rad(angle)),angle,false,"201060",5)
-					local enemy = lib.CreateCustomizedEnemy("OrionidsEnemy","0022",0,300,320*math.cos(math.rad(angle)),274+25*math.sin(math.rad(angle)),angle,false,4)
+					local enemy = lib.CreateCustomizedEnemy("OrionidsEnemy","100022",0,300,320*math.cos(math.rad(angle)),274+25*math.sin(math.rad(angle)),angle,false,4)
 					if coroutine.yield(4) == false then return end
 					angle = angle + dAngle
 				end
@@ -1256,7 +1256,7 @@ function SC.OrionidsSC(boss)
 				for _=1,9 do
 					local angleOffset = lib.GetRandomFloat(-5,5)
 					local laser = lib.CreateCustomizedLaser("OrionidsLaser",320*math.cos(math.rad(angle)),254+15*math.sin(math.rad(angle)),angleOffset,true,"201060",5)
-					local enemy = lib.CreateCustomizedEnemy("OrionidsEnemy","0022",0,300,320*math.cos(math.rad(angle)),254+15*math.sin(math.rad(angle)),angleOffset,true,4)
+					local enemy = lib.CreateCustomizedEnemy("OrionidsEnemy","100022",0,300,320*math.cos(math.rad(angle)),254+15*math.sin(math.rad(angle)),angleOffset,true,4)
 					if coroutine.yield(5) == false then return end
 					angle = angle + dAngle
 				end
@@ -1885,7 +1885,7 @@ function SC.PatchouliNonSC1(boss)
 			do
 				local angle,dAngle = lib.GetAngleToPlayer(boss),72
 				for _=1,5 do
-					local enemy = lib.CreateCustomizedEnemy("PatchouliEnemy0","0002",0,300,angle,-0.45,2)
+					local enemy = lib.CreateCustomizedEnemy("PatchouliEnemy0","100002",0,300,angle,-0.45,2)
 					lib.AttatchToMaster(enemy,boss,true)
 					angle = angle + dAngle
 				end
@@ -1896,7 +1896,7 @@ function SC.PatchouliNonSC1(boss)
 			do
 				local angle,dAngle = lib.GetAngleToPlayer(boss)-60,72
 				for _=1,5 do
-					local enemy = lib.CreateCustomizedEnemy("PatchouliEnemy0","0002",0,300,angle,0.45,2)
+					local enemy = lib.CreateCustomizedEnemy("PatchouliEnemy0","100002",0,300,angle,0.45,2)
 					lib.AttatchToMaster(enemy,boss,true)
 					angle = angle + dAngle
 				end

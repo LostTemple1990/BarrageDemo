@@ -540,6 +540,16 @@ public class MovableObject : IPoolClass
         return new Vector2(_dx, _dy);
     }
 
+    public float dx
+    {
+        get { return _dx; }
+    }
+
+    public float dy
+    {
+        get { return _dy; }
+    }
+
     /// <summary>
     /// 当前是否激活
     /// </summary>

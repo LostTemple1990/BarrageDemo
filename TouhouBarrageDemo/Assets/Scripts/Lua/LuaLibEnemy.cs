@@ -14,7 +14,15 @@ public partial class LuaLib
     /// <returns></returns>
     public static int CreateNormalEnemyById(ILuaState luaState)
     {
-        string enemyId = luaState.ToString(-3);
+        string enemyId;
+        if (luaState.Type(-3) == LuaType.LUA_TNUMBER)
+        {
+            enemyId = luaState.ToNumber(-3).ToString();
+        }
+        else
+        {
+            enemyId = luaState.ToString(-3);
+        }
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
@@ -54,7 +62,15 @@ public partial class LuaLib
         int numArgs = luaState.ToInteger(-1);
         luaState.Pop(1);
         string customizedName = luaState.ToString(-4 - numArgs);
-        string enemyId = luaState.ToString(-3 - numArgs);
+        string enemyId;
+        if (luaState.Type(-3 - numArgs) == LuaType.LUA_TNUMBER)
+        {
+            enemyId = luaState.ToNumber(-3 - numArgs).ToString();
+        }
+        else
+        {
+            enemyId = luaState.ToString(-3 - numArgs);
+        }
         float posX = (float)luaState.ToNumber(-2 - numArgs);
         float posY = (float)luaState.ToNumber(-1 - numArgs);
         // 创建敌机

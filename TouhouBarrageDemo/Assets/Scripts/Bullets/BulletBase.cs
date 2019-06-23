@@ -197,27 +197,27 @@ public class BulletBase :IPosition,ICollisionObject
     /// <summary>
     /// 获取创建之后经过的时间
     /// </summary>
-    public int TimeSinceCreated
+    public int timeSinceCreated
     {
         get { return _timeSinceCreated; }
     }
 
-    public float PosX
+    public float posX
     {
         get { return _curPos.x; }
     }
 
-    public float PosY
+    public float posY
     {
         get { return _curPos.y; }
     }
 
-    public float Dx
+    public float dx
     {
         get { return _dx; }
     }
 
-    public float Dy
+    public float dy
     {
         get { return _dy; }
     }

@@ -81,14 +81,6 @@ namespace BarrageEditor
         }
 
         #region nodeShortcuts
-        private GameObject _nodeShortcutTabGeneral;
-        private GameObject _nodeShortcutTabStage;
-        private GameObject _nodeShortcutTabTask;
-        private GameObject _nodeShortcutTabEnemy;
-        private GameObject _nodeShortcutTabBoss;
-        private GameObject _nodeShortcutTabBullet;
-        private GameObject _nodeShortcutTabTools;
-        private GameObject _nodeShortcutTabLaser;
 
         /// <summary>
         /// 节点快捷图标的容器
@@ -99,77 +91,105 @@ namespace BarrageEditor
         /// </summary>
         private List<GameObject> _nodeShortcutList; 
 
-        enum NodeShortcutTab
+        enum eNodeShortcutTab
         {
             General = 0,
-            Stage = 1,
-            Task = 2,
-            Enemy = 3,
-            Boss = 4,
-            Bullet = 5,
-            Count = 6,
+            Stage,
+            Task,
+            Enemy,
+            //Boss,
+            Bullet,
+            Unit,
+            Count,
         };
 
-        private Dictionary<NodeShortcutTab, List<NodeType>> _nodeTabShortcutDic;
+        class NodeTab
+        {
+            public eNodeShortcutTab type;
+            public string tabName;
+            public GameObject tabGo;
+            public List<NodeType> typeList;
+        }
+        /// <summary>
+        /// 节点快捷按钮标签属性
+        /// </summary>
+        private List<NodeTab> _nodeTabs;
 
         private void InitNodeShortcutBar()
         {
-            // 每个tab拥有的节点信息
-            _nodeTabShortcutDic = new Dictionary<NodeShortcutTab, List<NodeType>>();
-            List<NodeType> typeList;
+            _nodeTabs = new List<NodeTab>();
             // general
-            typeList = new List<NodeType> { NodeType.Folder, NodeType.CodeBlock, NodeType.If, NodeType.DefVar, NodeType.Repeat, NodeType.Code, NodeType.Comment };
-            _nodeTabShortcutDic.Add(NodeShortcutTab.General, typeList);
-            // Stage
-            typeList = new List<NodeType> { NodeType.StageGroup, NodeType.Stage };
-            _nodeTabShortcutDic.Add(NodeShortcutTab.Stage, typeList);
-            //Bullet
-            typeList = new List<NodeType> { NodeType.DefineBullet, NodeType.CreateBullet };
-            _nodeTabShortcutDic.Add(NodeShortcutTab.Bullet, typeList);
-
-
+            NodeTab tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.General,
+                tabName = "General",
+                typeList = new List<NodeType> { NodeType.Folder, NodeType.CodeBlock, NodeType.If, NodeType.DefVar, NodeType.Repeat, NodeType.Code, NodeType.Comment },
+            };
+            _nodeTabs.Add(tab);
+            // stage
+            tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.Stage,
+                tabName = "Stage",
+                typeList = new List<NodeType> { NodeType.StageGroup, NodeType.Stage },
+            };
+            _nodeTabs.Add(tab);
+            // task
+            tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.Task,
+                tabName = "Task",
+                typeList = new List<NodeType> { NodeType.AddTask, NodeType.TaskWait },
+            };
+            _nodeTabs.Add(tab);
+            // Enemy
+            tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.Enemy,
+                tabName = "Enemy",
+                typeList = new List<NodeType> { NodeType.DefineEnemy, NodeType.CreateCustomizedEnemy },
+            };
+            _nodeTabs.Add(tab);
+            // Bullet
+            tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.Bullet,
+                tabName = "Bullet",
+                typeList = new List<NodeType> { NodeType.DefineBullet, NodeType.CreateCustomizedBullet },
+            };
+            _nodeTabs.Add(tab);
+            // Unit
+            tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.Unit,
+                tabName = "Unit",
+                typeList = new List<NodeType> { NodeType.UnitSetV, NodeType.UnitSetAcce, NodeType.UnitMoveTo, NodeType.UnitMoveTowards },
+            };
+            _nodeTabs.Add(tab);
+            // 初始化节点快捷按钮的标签
             RectTransform barTf = _viewTf.Find("NodeShortcutBar").GetComponent<RectTransform>();
-
             _nodeShortcutsContainerTf = barTf.Find("NodeShortcuts").GetComponent<RectTransform>();
             _nodeShortcutList = new List<GameObject>();
-
-            _nodeShortcutTabGeneral = barTf.Find("Gernal").gameObject;
-            UIEventListener.Get(_nodeShortcutTabGeneral).AddClick(OnTabGeneralClickHandler);
-
-            _nodeShortcutTabStage = barTf.Find("Stage").gameObject;
-            UIEventListener.Get(_nodeShortcutTabStage).AddClick(OnTabStageClickHandler);
-
-            _nodeShortcutTabBullet = barTf.Find("Bullet").gameObject;
-            UIEventListener.Get(_nodeShortcutTabBullet).AddClick(OnTabBulletClickHandler);
-
+            int i = 0;
+            for (i=0;i<_nodeTabs.Count;i++)
+            {
+                tab = _nodeTabs[i];
+                tab.tabGo = barTf.Find(tab.tabName).gameObject;
+                eNodeShortcutTab tabType = tab.type;
+                UIEventListener.Get(tab.tabGo).AddClick(()=> {
+                    AddShortcutsByTab(tabType);
+                });
+            }
             // 默认选中general
-            _nodeShortcutTabGeneral.GetComponent<Toggle>().isOn = true;
-            OnTabGeneralClickHandler();
+            tab = _nodeTabs[0];
+            tab.tabGo.GetComponent<Toggle>().isOn = true;
+            AddShortcutsByTab(eNodeShortcutTab.General);
         }
 
-        private void OnTabGeneralClickHandler()
-        {
-            AddShortcutsByTab(NodeShortcutTab.General);
-        }
-
-        private void OnTabStageClickHandler()
-        {
-            AddShortcutsByTab(NodeShortcutTab.Stage);
-        }
-
-        private void OnTabBulletClickHandler()
-        {
-            AddShortcutsByTab(NodeShortcutTab.Bullet);
-        }
-
-        private void AddShortcutsByTab(NodeShortcutTab tab)
+        private void AddShortcutsByTab(eNodeShortcutTab tabType)
         {
             RemoveAllNodeShortcuts();
-            List<NodeType> typeList;
-            if (!_nodeTabShortcutDic.TryGetValue(tab, out typeList))
-            {
-                return;
-            }
+            List<NodeType> typeList = _nodeTabs[(int)tabType].typeList;
             for (int i = 0; i < typeList.Count; i++)
             {
                 NodeConfig nodeCfg = DatabaseManager.NodeDatabase.GetNodeCfgByNodeType(typeList[i]);

@@ -4,20 +4,20 @@ using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeDefineBullet : BaseNode
+    public class NodeDefineEnemy : BaseNode
     {
         public override void Init(RectTransform parentTf)
         {
-            _nodeType = NodeType.DefineBullet;
+            _nodeType = NodeType.DefineEnemy;
             _extraDepth = 0;
             base.Init(parentTf);
-            _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "bulletinit");
+            _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "enemydefine");
         }
 
         public override void CreateDefaultAttrs()
         {
             BaseNodeAttr nodeAttr;
-            // 定义的子弹类型
+            // 定义的敌机类型
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Type name", null);
             attrs.Add(nodeAttr);
@@ -26,27 +26,27 @@ namespace BarrageEditor
         public override void CreateDefualtChilds()
         {
             // 添加OnCreate子节点
-            BaseNode onCreateNode = NodeManager.CreateNode(NodeType.OnBulletCreate);
+            BaseNode onCreateNode = NodeManager.CreateNode(NodeType.OnEnemyCreate);
             onCreateNode.SetAttrsDefaultValues();
             InsertChildNode(onCreateNode, -1);
         }
 
         public override string GetNodeName()
         {
-            return "define bullet";
+            return "define enemy";
         }
 
-        public override void OnAttributeValueChanged(BaseNodeAttr attr=null)
+        public override void OnAttributeValueChanged(BaseNodeAttr attr = null)
         {
-            if ( attr != null )
+            if (attr != null)
             {
-                if ( attr.GetPreValue() == null )
+                if (attr.GetPreValue() == null)
                 {
                     string newTypeName = attr.GetValueString();
                     if (newTypeName != "")
                     {
-                        BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
-                        CustomDefine.AddData(CustomDefineType.SimpleBullet, newTypeName, onCreteNode.attrs[0].GetValueString());
+                        BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
+                        CustomDefine.AddData(CustomDefineType.Enemy, newTypeName, onCreteNode.attrs[0].GetValueString());
                     }
                 }
                 else
@@ -54,15 +54,15 @@ namespace BarrageEditor
                     string fromName = attr.GetPreValue().ToString();
                     if (fromName != "")
                     {
-                        CustomDefine.ModifyDefineName(CustomDefineType.SimpleBullet, fromName, attr.GetValueString());
+                        CustomDefine.ModifyDefineName(CustomDefineType.Enemy, fromName, attr.GetValueString());
                     }
                     else
                     {
                         string newTypeName = attr.GetValueString();
                         if (newTypeName != "")
                         {
-                            BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
-                            CustomDefine.AddData(CustomDefineType.SimpleBullet, newTypeName, onCreteNode.attrs[0].GetValueString());
+                            BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
+                            CustomDefine.AddData(CustomDefineType.Enemy, newTypeName, onCreteNode.attrs[0].GetValueString());
                         }
                     }
                 }
@@ -72,9 +72,9 @@ namespace BarrageEditor
                 string typeName = GetAttrByIndex(0).GetValueString();
                 if (typeName != "")
                 {
-                    BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
+                    BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
                     string paraList = onCreteNode.GetAttrByIndex(0).GetValueString();
-                    CustomDefine.AddData(CustomDefineType.SimpleBullet, typeName, paraList);
+                    CustomDefine.AddData(CustomDefineType.Enemy, typeName, paraList);
                 }
             }
             base.OnAttributeValueChanged(attr);
@@ -82,12 +82,12 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("define bullet type \"{0}\"", attrs[0].GetValueString());
+            return string.Format("define enemy type \"{0}\"", attrs[0].GetValueString());
         }
 
         public override string ToLuaHead()
         {
-            return string.Format("CustomizedTable.{0} = {{}}\n",attrs[0].GetValueString());
+            return string.Format("CustomizedEnemyTable.{0} = {{}}\n", attrs[0].GetValueString());
         }
     }
 }
