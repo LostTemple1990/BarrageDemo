@@ -72,6 +72,8 @@ namespace YKEngine
         /// </summary>
         private UView _curFocusView;
 
+        private List<int> _focusViewStack;
+
         public void Init()
         {
             _uiRoot = GameObject.Find("UIRoot");
@@ -117,6 +119,7 @@ namespace YKEngine
             _eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
             _rayCaster = _uiRoot.GetComponent<GraphicRaycaster>();
             _curFocusView = null;
+            _focusViewStack = new List<int>();
         }
 
         private void UIRootClickHandler()
@@ -135,8 +138,11 @@ namespace YKEngine
                     curTf = curTf.parent;
                 }
                 UView focusView = curTf.GetComponent<UView>();
-                ChangeFocusView(focusView);
-                break;
+                if (focusView.focusWhenOpen)
+                {
+                    FocusOnView(focusView.GetView().ViewId);
+                    break;
+                }
             }
         }
 
@@ -187,10 +193,6 @@ namespace YKEngine
                     // 切换焦点
                     UView uview = viewGo.GetComponent<UView>();
                     uview.Init(view);
-                    if (uview.focusWhenOpen)
-                    {
-                        ChangeFocusView(uview);
-                    }
                     // view初始化
                     view.Init(viewId,viewGo);
                     _viewsMap.Add(viewId, view);
@@ -202,6 +204,12 @@ namespace YKEngine
                     RectTransform viewTf = viewGo.GetComponent<RectTransform>();
                     viewTf.SetParent(parentTf, false);
                     SetUIPosition(viewTf, pos);
+                    // 设置焦点界面
+                    if (uview.focusWhenOpen)
+                    {
+                        FocusOnView(viewId);
+                    }
+                    // OnShow接口
                     view.OnShowImpl(data);
                 }
             }
@@ -212,7 +220,7 @@ namespace YKEngine
                 UView uview = viewGo.GetComponent<UView>();
                 if (uview.focusWhenOpen)
                 {
-                    ChangeFocusView(uview);
+                    FocusOnView(viewId);
                 }
                 view.Refresh(data);
                 viewGo.transform.SetSiblingIndex(-1);
@@ -226,6 +234,7 @@ namespace YKEngine
             {
                 view.OnCloseImpl();
                 _viewsMap.Remove(viewId);
+                RemoveFocusStack(viewId);
             }
         }
 
@@ -346,20 +355,65 @@ namespace YKEngine
             rectTf.position = newPos;
         }
 
-        private void ChangeFocusView(UView uview)
+        private void FocusOnView(int viewId)
         {
-            if ( _curFocusView != uview )
+            int index = _focusViewStack.IndexOf(viewId);
+            if ( index != -1)
             {
-                _curFocusView = uview;
-                EventManager.GetInstance().PostEvent(EngineEventID.WindowFocusChanged, uview.GetView().ViewId);
+                // 若viewId对应的界面正是当前的焦点界面
+                // 则直接返回
+                if (viewId == GetFocusViewId())
+                {
+                    return;
+                }
+                _focusViewStack.RemoveAt(index);
+            }
+            _focusViewStack.Add(viewId);
+            ViewBase view = GetView(viewId);
+            if (view != null)
+            {
+                _curFocusView = view.GetViewObject().GetComponent<UView>();
+            }
+            else
+            {
+                throw new Exception(string.Format("Add focus stack error!view of id {0} is not exitst.", viewId));
+            }
+            EventManager.GetInstance().PostEvent(EngineEventID.WindowFocusChanged, viewId);
+        }
+
+        private void RemoveFocusStack(int viewId)
+        {
+            int index = _focusViewStack.IndexOf(viewId);
+            if (index == -1)
+                return;
+            // 不是最上层的焦点界面
+            if (index != _focusViewStack.Count - 1)
+            {
+                _focusViewStack.RemoveAt(index);
+            }
+            else
+            {
+                _focusViewStack.RemoveAt(index);
+                // 切换焦点界面
+                if (_focusViewStack.Count > 0)
+                {
+                    int nextFocusId = _focusViewStack[_focusViewStack.Count - 1];
+                    _curFocusView = GetView(nextFocusId).GetViewObject().GetComponent<UView>();
+                    EventManager.GetInstance().PostEvent(EngineEventID.WindowFocusChanged, nextFocusId);
+                }
+                else
+                {
+                    _curFocusView = null;
+                    Logger.Log("NoFocus View");
+                }
             }
         }
 
         public int GetFocusViewId()
         {
-            if (_curFocusView != null)
+            if (_focusViewStack.Count>0)
             {
-                return _curFocusView.GetView().ViewId;
+                return _focusViewStack[_focusViewStack.Count - 1];
             }
             return -1;
         }

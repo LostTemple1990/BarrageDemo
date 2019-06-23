@@ -15,7 +15,7 @@ namespace BarrageEditor
         /// <summary>
         /// 工程树形面板的go
         /// </summary>
-        private GameObject _projectPanelGo;
+        private RectTransform _projectPanelTf;
         private RectTransform _projectScrollViewTf;
         private RectTransform _projectContentTf;
         /// <summary>
@@ -66,6 +66,8 @@ namespace BarrageEditor
             _fileToggle = _fileToggleTf.gameObject;
             _editToggle = menuBarTf.Find("Edit").gameObject;
             _helpToggle = menuBarTf.Find("Help").gameObject;
+
+            InitFocus();
 
             InitProjectShortcutBar();
             InitNodeShortcutBar();
@@ -352,7 +354,7 @@ namespace BarrageEditor
 
         private void InitProjectPanel()
         {
-            _projectPanelGo = _viewTf.Find("ProjectPanel").gameObject;
+            _projectPanelTf = _viewTf.Find("ProjectPanel").GetComponent<RectTransform>();
             _projectScrollViewTf = _viewTf.Find("ProjectPanel/Scroll View").GetComponent<RectTransform>();
             _projectContentTf = _projectScrollViewTf.Find("Viewport/Content").GetComponent<RectTransform>();
             _projectContentScrollbar = _projectScrollViewTf.Find("Scrollbar Vertical").GetComponent<Scrollbar>();
@@ -555,6 +557,7 @@ namespace BarrageEditor
 
         public override void Update()
         {
+            CheckFocus();
             CheckHotKeys();
         }
     }

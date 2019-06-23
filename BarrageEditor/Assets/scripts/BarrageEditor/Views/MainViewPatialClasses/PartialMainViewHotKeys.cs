@@ -8,22 +8,51 @@ namespace BarrageEditor
 {
     public partial class MainView : ViewBase, IEventReciver
     {
-        private void InitHotKeys()
-        {
+        private bool _isFocusOnMainView;
+        private bool _isFocusOnProjectPanel;
+        private Camera _uiCamera;
 
+        private void InitFocus()
+        {
+            _isFocusOnMainView = false;
+            _isFocusOnProjectPanel = false;
+            _uiCamera = UIManager.GetInstance().GetUICamera();
+        }
+
+        private void CheckFocus()
+        {
+            // 当前焦点是否为主界面
+            _isFocusOnMainView = UIManager.GetInstance().GetFocusViewId() == ViewID.MainView;
+            if (!_isFocusOnMainView)
+            {
+                FocusOnProjectPanel(false);
+                return;
+            }
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (RectTransformUtility.RectangleContainsScreenPoint(_projectPanelTf, Input.mousePosition, _uiCamera))
+                {
+                    FocusOnProjectPanel(true);
+                }
+                else
+                {
+                    FocusOnProjectPanel(false);
+                }
+            }
+        }
+
+        private void FocusOnProjectPanel(bool value)
+        {
+            _isFocusOnProjectPanel = value;
+            if (_curSelectedNode != null)
+            {
+                _curSelectedNode.FocusOn(value);
+            }
         }
 
         private void CheckHotKeys()
         {
-            // 当前焦点是否为主界面
-            bool isFocusOnMainView = UIManager.GetInstance().GetFocusViewId() == ViewID.MainView;
-            if (!isFocusOnMainView)
-                return;
-            // 检测基本的操作
-            // 检测project面板的按键操作
-            // todo 看是否需要做一次只检测一个操作
-            GameObject curSelectedGo = EventSystem.current.currentSelectedGameObject;
-            if (curSelectedGo != _projectPanelGo && curSelectedGo != null)
+            if (!_isFocusOnProjectPanel)
                 return;
             CheckHotKeyUp();
             CheckHotKeyDown();

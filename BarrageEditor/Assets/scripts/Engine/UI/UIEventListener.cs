@@ -60,72 +60,116 @@ namespace YKEngine
         public void OnPointerClick(PointerEventData data)
         {
             if ( eventPassType == eEventPassType.PassBefore )
-            {
                 PassEvent(data, ExecuteEvents.pointerClickHandler);
-            }
             if (_onPointerClick != null)
             {
                 _onPointerClick();
             }
             if ( eventPassType == eEventPassType.PassAfter)
-            {
                 PassEvent(data, ExecuteEvents.pointerClickHandler);
-            }
         }
 
         public void OnPointerDown(PointerEventData data)
         {
+            if (eventPassType == eEventPassType.PassBefore)
+                PassEvent(data, ExecuteEvents.pointerDownHandler);
             if (_onPointerDown != null)
             {
                 _onPointerDown();
             }
+            if (eventPassType == eEventPassType.PassAfter)
+                PassEvent(data, ExecuteEvents.pointerDownHandler);
         }
 
         public void OnPointerEnter(PointerEventData data)
         {
+            if (eventPassType == eEventPassType.PassBefore)
+                PassEvent(data, ExecuteEvents.pointerEnterHandler);
             if (_onPointerEnter != null)
             {
                 _onPointerEnter();
             }
+            if (eventPassType == eEventPassType.PassAfter)
+                PassEvent(data, ExecuteEvents.pointerEnterHandler);
         }
 
         public void OnPointerExit(PointerEventData data)
         {
+            if (eventPassType == eEventPassType.PassBefore)
+            {
+                PassEvent(data, ExecuteEvents.pointerExitHandler);
+            }
             if (_onPointerExit != null)
             {
                 _onPointerExit();
+            }
+            if (eventPassType == eEventPassType.PassAfter)
+            {
+                PassEvent(data, ExecuteEvents.pointerExitHandler);
             }
         }
 
         public void OnPointerUp(PointerEventData data)
         {
+            if (eventPassType == eEventPassType.PassBefore)
+            {
+                PassEvent(data, ExecuteEvents.pointerUpHandler);
+            }
             if (_onPointerUp != null)
             {
                 _onPointerUp();
+            }
+            if (eventPassType == eEventPassType.PassAfter)
+            {
+                PassEvent(data, ExecuteEvents.pointerUpHandler);
             }
         }
 
         public void OnBeginDrag(PointerEventData data)
         {
+            if (eventPassType == eEventPassType.PassBefore)
+            {
+                PassEvent(data, ExecuteEvents.beginDragHandler);
+            }
             if (_onDragBegin != null)
             {
                 _onDragBegin();
+            }
+            if (eventPassType == eEventPassType.PassAfter)
+            {
+                PassEvent(data, ExecuteEvents.beginDragHandler);
             }
         }
 
         public void OnEndDrag(PointerEventData data)
         {
+            if (eventPassType == eEventPassType.PassBefore)
+            {
+                PassEvent(data, ExecuteEvents.endDragHandler);
+            }
             if (_onDragEnd != null)
             {
                 _onDragEnd();
+            }
+            if (eventPassType == eEventPassType.PassAfter)
+            {
+                PassEvent(data, ExecuteEvents.endDragHandler);
             }
         }
 
         public void OnDrag(PointerEventData data)
         {
+            if (eventPassType == eEventPassType.PassBefore)
+            {
+                PassEvent(data, ExecuteEvents.dragHandler);
+            }
             if (_onDrag != null)
             {
                 _onDrag(data.delta);
+            }
+            if (eventPassType == eEventPassType.PassAfter)
+            {
+                PassEvent(data, ExecuteEvents.dragHandler);
             }
         }
 
@@ -145,18 +189,28 @@ namespace YKEngine
             _onPointerExit = onPointerExit;
         }
 
+        public void AddPointDown(Action onPointerDown)
+        {
+            _onPointerDown = onPointerDown;
+        }
+
         public void PassEvent<T>(PointerEventData data, ExecuteEvents.EventFunction<T> function) where T : IEventSystemHandler
         {
             List<RaycastResult> results = new List<RaycastResult>();
             EventSystem.current.RaycastAll(data, results);
             GameObject current = data.pointerCurrentRaycast.gameObject;
+            bool breakloop = false;
             for (int i = 0; i < results.Count; i++)
             {
-                if (current != results[i].gameObject)
+                if ( current == results[i].gameObject)
+                {
+                    breakloop = true;
+                    continue;
+                }
+                if (breakloop && current != results[i].gameObject)
                 {
                     ExecuteEvents.Execute(results[i].gameObject, data, function);
                     break;
-                    //RaycastAll后ugui会自己排序，如果你只想响应透下去的最近的一个响应，这里ExecuteEvents.Execute后直接break就行。
                 }
             }
         }

@@ -257,12 +257,20 @@ namespace BarrageEditor
         /// <returns></returns>
         public static BaseNode GetPreNode(BaseNode curNode)
         {
+            BaseNode preNode = curNode;
             BaseNode parent = curNode.parentNode;
             if (parent == null)
-                return curNode;
+                return preNode;
             int index = parent.GetChildIndex(curNode);
             if (parent.GetChildByIndex(index - 1) != null)
-                return parent.GetChildByIndex(index - 1);
+            {
+                preNode = parent.GetChildByIndex(index - 1);
+                while (preNode.GetChildCount() > 0)
+                {
+                    preNode = preNode.GetChildByIndex(preNode.GetChildCount() - 1);
+                }
+                return preNode;
+            }
             return parent;
         }
 

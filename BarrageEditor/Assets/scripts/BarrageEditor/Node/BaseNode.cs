@@ -20,6 +20,10 @@ namespace BarrageEditor
         private const string ExpandImg_NodeIsNotExpanded_Img = "ChildNodeNotExpand";
         private const string ExpandImg_NodeIsExpanded_Img = "ChildNodeExpand";
 
+        private static readonly Color FocusOnColor = new Color(0, 0, 1, 1);
+        private static readonly Color NotFocusOnColor = new Color(0.5f, 0.5f, 0.5f, 0.8f);
+        private static readonly Color NotSelectedColor = new Color(0, 0, 1, 0);
+
         protected enum ExpandImgState : byte
         {
             Undefined = 0,
@@ -74,7 +78,7 @@ namespace BarrageEditor
         /// 进入该节点后lua代码的tab额外深度
         /// <para>默认为1</para>
         /// </summary>
-        protected int _extraDepth = 1;
+        protected int _extraDepth;
 
         protected bool _isValid;
         /// <summary>
@@ -82,10 +86,17 @@ namespace BarrageEditor
         /// </summary>
         protected List<object> _preValues;
 
+        public BaseNode()
+        {
+            _extraDepth = 1;
+            _isValid = true;
+            // 基本参数初始化
+            childs = new List<BaseNode>();
+            attrs = new List<BaseNodeAttr>();
+        }
 
         public virtual void Init(RectTransform parentTf)
         {
-            _isValid = true;
             _nodeItemGo = ResourceManager.GetInstance().GetPrefab("Prefabs/Views", "MainView/NodeItem");
             _nodeItemTf = _nodeItemGo.GetComponent<RectTransform>();
             _nodeItemTf.SetParent(parentTf, false);
@@ -93,7 +104,7 @@ namespace BarrageEditor
             _expandImg.color = ExpandImg_NodeHasNoChild_Color;
             _functionImg = _nodeItemTf.Find("FunctionImg").GetComponent<Image>();
             _selectedImg = _nodeItemTf.Find("SelectImg").GetComponent<Image>();
-            _selectedImg.color = new Color(0, 0, 1, 0);
+            _selectedImg.color = NotSelectedColor;
             _descText = _nodeItemTf.Find("SelectImg/DescText").GetComponent<Text>();
             _clickGo = _nodeItemTf.Find("SelectImg/ClickImg").gameObject;
             // 事件监听
@@ -103,9 +114,6 @@ namespace BarrageEditor
                 });
             UIEventListener.Get(_expandImg.gameObject).AddClick(OnExpandClickHander);
             _clickCount = 0;
-            // 基本参数初始化
-            childs = new List<BaseNode>();
-            attrs = new List<BaseNodeAttr>();
             CreateDefaultAttrs();
             _preValues = new List<object>();
             for (int i=0;i<attrs.Count;i++)
@@ -459,7 +467,7 @@ namespace BarrageEditor
             if (!_isValid)
                 return;
             _isSelected = value;
-            _selectedImg.color = _isSelected ? new Color(0, 0, 1, 1) : new Color(0, 0, 1, 0);
+            _selectedImg.color = _isSelected ? FocusOnColor : NotSelectedColor;
             if ( value )
             {
                 if (_clickCount == 0)
@@ -489,6 +497,15 @@ namespace BarrageEditor
                 _clickCount = 0;
                 _lastClickTime = 0;
             }
+        }
+
+        public void FocusOn(bool value)
+        {
+            if (!_isValid)
+                return;
+            if (!_isSelected)
+                return;
+            _selectedImg.color = value ? FocusOnColor : NotFocusOnColor;
         }
 
         public void OnExpandClickHander()
