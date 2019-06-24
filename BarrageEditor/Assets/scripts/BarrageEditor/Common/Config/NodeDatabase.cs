@@ -60,7 +60,11 @@ namespace BarrageEditor
         DefineEnemy = 1301,
         OnEnemyCreate = 1302,
         CreateCustomizedEnemy = 1303,
-        CreateSimpleEnemy = 1034,
+        CreateSimpleEnemy = 1304,
+        DefineBoss = 1401,
+        OnBossCreate = 1042,
+        CreateBoss = 1403,
+        DefineSpellCard = 1451,
         DefineBullet = 1501,
         OnBulletCreate = 1502,
         CreateCustomizedBullet = 1503,
@@ -294,6 +298,7 @@ namespace BarrageEditor
                 editOnCreated = true,
             };
             _nodeCfgDic.Add(NodeType.DefineEnemy, cfg);
+
             cfg = new NodeConfig
             {
                 type = NodeType.OnEnemyCreate,
@@ -303,6 +308,7 @@ namespace BarrageEditor
                 isDeletable = false,
             };
             _nodeCfgDic.Add(NodeType.OnEnemyCreate, cfg);
+
             cfg = new NodeConfig
             {
                 type = NodeType.CreateCustomizedEnemy,
@@ -314,11 +320,55 @@ namespace BarrageEditor
                 editOnCreated = true,
             };
             _nodeCfgDic.Add(NodeType.CreateCustomizedEnemy, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateSimpleEnemy,
+                shortcutPath = "enemysimple",
+                shortcutTip = "create simple enemy",
+                defaultAttrValues = new List<object> { "100000", "10", "0", "0" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.CreateSimpleEnemy, cfg);
         }
 
         private void InitBossNodeCfgs()
         {
+            NodeConfig cfg;
+            cfg = new NodeConfig
+            {
+                type = NodeType.DefineBoss,
+                shortcutPath = "bossdefine",
+                shortcutTip = "define boss",
+                defaultAttrValues = new List<object> { "" },
+                allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.DefineBoss, cfg);
 
+            cfg = new NodeConfig
+            {
+                type = NodeType.OnBossCreate,
+                shortcutPath = "bossinit",
+                defaultAttrValues = new List<object> { "2001", "0", "0", "32,32" },
+                editOnCreated = false,
+                isDeletable = false,
+            };
+            _nodeCfgDic.Add(NodeType.OnBossCreate, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateBoss,
+                shortcutPath = "bosscreate",
+                shortcutTip = "create boss",
+                defaultAttrValues = new List<object> { "" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.CreateBoss, cfg);
         }
 
         private void InitBulletNodeCfgs()
@@ -362,6 +412,16 @@ namespace BarrageEditor
             };
             _nodeCfgDic.Add(NodeType.CreateCustomizedBullet, cfg);
             #endregion
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateSimpleBullet,
+                shortcutPath = "bulletcreatestraight",
+                shortcutTip = "create simple bullet",
+                defaultAttrValues = new List<object> { "107010", "0", "0", "3", "0", "false", "0", "VelocityAngle", "", "" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.CreateSimpleBullet, cfg);
         }
 
         private void InitUnitNodeCfgs()

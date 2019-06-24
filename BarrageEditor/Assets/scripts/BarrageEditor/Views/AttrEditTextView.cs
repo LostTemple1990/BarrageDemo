@@ -40,6 +40,7 @@ namespace BarrageEditor
             SetTitle("EditText");
             SetAttrName(_nodeAttr.GetAttrName());
             SetDefaultText(_nodeAttr.GetValueString());
+            _inputField.ActivateInputField();
         }
 
         private void SetTitle(string title)

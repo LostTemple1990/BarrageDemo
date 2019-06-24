@@ -61,7 +61,7 @@ namespace BarrageEditor
                     paraCount = data.paraListStr.Split(',').Length;
                 }
             }
-            return string.Format("last = lib.CreateCustomizedBullet(\"{0}\",{1},{2},{3},{4}{5})\n",
+            return string.Format("last = CreateCustomizedBullet(\"{0}\",{1},{2},{3},{4}{5})\n",
                 typeName,
                 attrs[1].GetValueString(),
                 attrs[2].GetValueString(),

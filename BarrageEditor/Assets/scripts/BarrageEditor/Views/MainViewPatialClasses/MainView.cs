@@ -97,7 +97,7 @@ namespace BarrageEditor
             Stage,
             Task,
             Enemy,
-            //Boss,
+            Boss,
             Bullet,
             Unit,
             Count,
@@ -147,7 +147,15 @@ namespace BarrageEditor
             {
                 type = eNodeShortcutTab.Enemy,
                 tabName = "Enemy",
-                typeList = new List<NodeType> { NodeType.DefineEnemy, NodeType.CreateCustomizedEnemy },
+                typeList = new List<NodeType> { NodeType.DefineEnemy, NodeType.CreateCustomizedEnemy, NodeType.CreateSimpleEnemy },
+            };
+            _nodeTabs.Add(tab);
+            // Boss
+            tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.Boss,
+                tabName = "Boss",
+                typeList = new List<NodeType> { NodeType.DefineBoss, NodeType.CreateBoss },
             };
             _nodeTabs.Add(tab);
             // Bullet
@@ -155,7 +163,7 @@ namespace BarrageEditor
             {
                 type = eNodeShortcutTab.Bullet,
                 tabName = "Bullet",
-                typeList = new List<NodeType> { NodeType.DefineBullet, NodeType.CreateCustomizedBullet },
+                typeList = new List<NodeType> { NodeType.DefineBullet, NodeType.CreateCustomizedBullet, NodeType.CreateSimpleBullet },
             };
             _nodeTabs.Add(tab);
             // Unit
@@ -488,6 +496,7 @@ namespace BarrageEditor
                 _curSelectedNode.OnSelected(false);
             }
             _curSelectedNode = node;
+            FocusOnProjectPanel(true);
             UpdateNodeNameItem();
             UpdateNodeAttrItems();
             // 检测是否需要打开第一个参数的编辑界面

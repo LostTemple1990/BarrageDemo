@@ -114,6 +114,8 @@ namespace BarrageEditor
         {
             if (nodeType == NodeType.CreateCustomizedBullet) return CustomDefineType.SimpleBullet;
             if (nodeType == NodeType.CreateCustomizedEnemy) return CustomDefineType.Enemy;
+            if (nodeType == NodeType.CreateBoss) return CustomDefineType.Boss;
+            Logger.LogError(string.Format("CustomizeType to NodeType {0} is not exist!", nodeType));
             return CustomDefineType.Null;
         }
 

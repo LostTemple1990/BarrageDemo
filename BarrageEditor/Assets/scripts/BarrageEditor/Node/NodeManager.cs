@@ -76,6 +76,18 @@ namespace BarrageEditor
                 case NodeType.CreateCustomizedEnemy:
                     newNode = new NodeCreateEnemy();
                     break;
+                case NodeType.CreateSimpleEnemy:
+                    newNode = new NodeCreateSimpleEnemy();
+                    break;
+                case NodeType.DefineBoss:
+                    newNode = new NodeDefineBoss();
+                    break;
+                case NodeType.OnBossCreate:
+                    newNode = new NodeOnBossCreate();
+                    break;
+                case NodeType.CreateBoss:
+                    newNode = new NodeCreateBoss();
+                    break;
                 case NodeType.DefineBullet:
                     newNode = new NodeDefineBullet();
                     break;
@@ -84,6 +96,9 @@ namespace BarrageEditor
                     break;
                 case NodeType.CreateCustomizedBullet:
                     newNode = new NodeCreateBullet();
+                    break;
+                case NodeType.CreateSimpleBullet:
+                    newNode = new NodeCreateSimpleBullet();
                     break;
                 case NodeType.UnitSetV:
                     newNode = new NodeSetV();

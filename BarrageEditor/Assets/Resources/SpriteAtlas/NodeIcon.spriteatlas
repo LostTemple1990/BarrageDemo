@@ -138,6 +138,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: dcaf175b2d7e17843aa2249c7fcf642c, type: 3}
   - {fileID: 21300000, guid: 121dbd5be02d86f4ba3c40c8127fb10a, type: 3}
   - {fileID: 21300000, guid: 94e8b06beccd3ca4c9c20d3f27292f02, type: 3}
+  - {fileID: 21300000, guid: 01dfbd6bc6db3db4c9fb4dbeef798ad8, type: 3}
   - {fileID: 21300000, guid: 158a147ba37852d44bb50310412bfa7a, type: 3}
   - {fileID: 21300000, guid: b567349baa3c8964b9f799195b46bb9e, type: 3}
   - {fileID: 21300000, guid: 96c9449bb8ad03349aed560060362082, type: 3}
@@ -275,6 +276,7 @@ SpriteAtlas:
   - laserbentcreate
   - else
   - _node_g
+  - bossinit
   - taskwait
   - taskbreak
   - bulletchangestyle

@@ -7,6 +7,7 @@ public partial class LuaLib
     /// <summary>
     /// 创建普通敌机
     /// <para>string enemyId 敌机id</para>
+    /// <para>int maxHp 初始血量</para>
     /// <para>float posX 起始X坐标</para>
     /// <para>float posY 起始Y坐标</para>
     /// </summary>
@@ -15,23 +16,24 @@ public partial class LuaLib
     public static int CreateNormalEnemyById(ILuaState luaState)
     {
         string enemyId;
-        if (luaState.Type(-3) == LuaType.LUA_TNUMBER)
+        if (luaState.Type(-4) == LuaType.LUA_TNUMBER)
         {
-            enemyId = luaState.ToNumber(-3).ToString();
+            enemyId = luaState.ToNumber(-4).ToString();
         }
         else
         {
-            enemyId = luaState.ToString(-3);
+            enemyId = luaState.ToString(-4);
         }
+        int maxHp = luaState.ToInteger(-3);
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
         EnemyCfg cfg = EnemyManager.GetInstance().GetEnemyCfgById(enemyId);
         NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.NormalEnemy) as NormalEnemy;
         enemy.Init(cfg);
+        enemy.SetMaxHp(maxHp);
         enemy.SetPosition(new Vector3(posX, posY, 0));
         luaState.PushLightUserData(enemy);
-        Logger.Log("Create Normal Enemy Complete");
         return 1;
     }
 

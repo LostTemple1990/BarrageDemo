@@ -213,6 +213,14 @@ public partial class LuaLib
             new NameFuncPair("RandomFloat",GetRandomFloat),
             new NameFuncPair("RandomSign",GetRandomSign),
             new NameFuncPair("Wait",Wait),
+            // Bullet
+            new NameFuncPair("CreateSimpleBulletById", CreateSimpleBulletById),
+            new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet),
+            // Enemy
+            new NameFuncPair("CreateNormalEnemyById",CreateNormalEnemyById),
+            new NameFuncPair("CreateCustomizedEnemy",CreateCustomizedEnemy),
+            // Boss
+            new NameFuncPair("CreateBoss",CreateBoss),
         };
         luaState.PushGlobalTable();
         luaState.L_SetFuncs(define, 0);
@@ -227,6 +235,7 @@ public partial class LuaLib
         UniLua.Utl.RegisterSetLightUserDataPropValueFunctionDelegate(SetLightUserDataField);
 
         EnemySimpleBulletLuaInterface.Init();
+        NormalEnemyLuaInterface.Init();
     }
 
     public static bool GetLightUserDataField(object userData, TValue key, out TValue res)
@@ -235,6 +244,8 @@ public partial class LuaLib
         {
             case "EnemySimpleBullet":
                 return EnemySimpleBulletLuaInterface.Get(userData, key, out res);
+            case "NormalEnemy":
+                return NormalEnemyLuaInterface.Get(userData, key, out res);
         }
         res = new TValue();
         res.SetSValue(string.Format("GetField from userData fail!Invalid userData of type {0}", userData.GetType().Name));
@@ -247,6 +258,8 @@ public partial class LuaLib
         {
             case "EnemySimpleBullet":
                 return EnemySimpleBulletLuaInterface.Set(userData, key, ref value);
+            case "NormalEnemy":
+                return NormalEnemyLuaInterface.Set(userData, key, ref value);
         }
         value.SetSValue(string.Format("SetField of userData fail!Invalid userData of type {0}", userData.GetType().Name));
         return false;
@@ -537,6 +550,12 @@ public partial class LuaLib
     #endregion
 
     #region BOSS相关
+    /// <summary>
+    /// 创建boss
+    /// <para>string typeName boss的自定义类型名称</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
     public static int CreateBoss(ILuaState luaState)
     {
         string bossName = luaState.ToString(-1);
@@ -573,7 +592,15 @@ public partial class LuaLib
     public static int SetBossAni(ILuaState luaState)
     {
         Boss boss = luaState.ToUserData(-2) as Boss;
-        string aniId = luaState.ToString(-1);
+        string aniId;
+        if ( luaState.Type(-1) == LuaType.LUA_TNUMBER)
+        {
+            aniId = luaState.ToNumber(-1).ToString();
+        }
+        else
+        {
+            aniId = luaState.ToString(-1);
+        }
         luaState.Pop(2);
         boss.SetAni(aniId);
         return 0;

@@ -1,6 +1,7 @@
 SpellCard = {}
 Constants = {}
 
+VelocityAngle = -999
 Constants.VelocityAngle = -999
 Constants.OriginalAngle = 999
 Constants.OriginalRotation = -9999.5

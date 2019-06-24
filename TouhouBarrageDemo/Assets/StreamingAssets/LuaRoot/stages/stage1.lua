@@ -709,7 +709,7 @@ function Stage.StageTask()
 	--
 	if coroutine.yield(200) == false then return end
 	do
-		--local enemy = lib.CreateNormalEnemyById("100000",0,185);
+		--local enemy = lib.CreateNormalEnemyById("100000",500,0,185);
 		local enemy = lib.CreateCustomizedEnemy("TestKillEnemy","100000",0,185,0)
 		lib.AddEnemyTask(enemy,function()
 			if coroutine.yield(150)==false then return end
@@ -823,7 +823,7 @@ function Stage.StageTask()
 	if coroutine.yield(10000) == false then return end
 	--自定义子弹
 	do
-		local enemy = lib.CreateNormalEnemyById("100001",0,280)
+		local enemy = lib.CreateNormalEnemyById("100001",500,0,280)
 		lib.AddEnemyTask(enemy,function()
 			local continue,tmpEnemy
 			tmpEnemy = enemy
@@ -854,7 +854,7 @@ function Stage.StageTask()
 		local i
 		for i=2,2 do
 			local enemy
-			enemy = lib.CreateNormalEnemyById("100010",-240+i*120,280);
+			enemy = lib.CreateNormalEnemyById("100010",500,-240+i*120,280);
 			lib.AddEnemyTask(enemy,function()
 				local continue,tmpEnemy
 				tmpEnemy = enemy
@@ -896,7 +896,7 @@ function Stage.StageTask()
 	coroutine.yield(600);
 	--5层交叉弹
 	do
-		local enemy = lib.CreateNormalEnemyById("100001",0,280)
+		local enemy = lib.CreateNormalEnemyById("100001",500,0,280)
 		lib.AddEnemyTask(enemy,function()
 			local continue,tmpEnemy
 			tmpEnemy = enemy
@@ -928,7 +928,7 @@ function Stage.StageTask()
 		--每隔60帧生成1个敌机
 		for i=1,8 do
 			local enemy,continue
-			enemy = lib.CreateNormalEnemyById("100000",-240+i*40,280);
+			enemy = lib.CreateNormalEnemyById("100000",500,-240+i*40,280);
 			lib.AddEnemyTask(enemy,function()
 				local continue,tmpEnemy
 				tmpEnemy = enemy;

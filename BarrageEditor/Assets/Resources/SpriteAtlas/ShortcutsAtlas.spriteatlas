@@ -183,6 +183,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 8593804f8fc193f49bde4755f0adfd8d, type: 3}
   - {fileID: 21300000, guid: 09eb5d5f0d31e1a4db96d84501560ce6, type: 3}
   - {fileID: 21300000, guid: 75545c6fd26a6df43b8c84d9240a111e, type: 3}
+  - {fileID: 21300000, guid: ae39398fb67bd324396b1c909be8c3da, type: 3}
   - {fileID: 21300000, guid: d1caacbf6a3d0a7419aca98dcb67ae15, type: 3}
   - {fileID: 21300000, guid: 990c54cf5b545dd4dbfc3745dd542442, type: 3}
   m_PackedSpriteNamesToIndex:
@@ -337,6 +338,7 @@ SpriteAtlas:
   - lasergrow
   - iteration
   - unitforeach
+  - bossinit
   - bosscast
   - open
   m_Tag: ShortcutsAtlas

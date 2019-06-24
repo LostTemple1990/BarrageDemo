@@ -1,7 +1,7 @@
 ﻿using UniLua;
 using UnityEngine;
 
-public class EnemyLuaInterface
+public class NormalEnemyLuaInterface
 {
     private static bool _isInit = false;
 
@@ -18,6 +18,7 @@ public class EnemyLuaInterface
     private static LuaCsClosureValue _funcAddTask;
 
     private static LuaCsClosureValue _funcSetMaxHp;
+    private static LuaCsClosureValue _funcSetCollisionSize;
 
 
     public static void Init()
@@ -36,6 +37,7 @@ public class EnemyLuaInterface
             _funcAddTask = new LuaCsClosureValue(LuaLib.AddTask);
 
             _funcSetMaxHp = new LuaCsClosureValue(LuaLib.SetEnemyMaxHp);
+            _funcSetCollisionSize = new LuaCsClosureValue(LuaLib.SetEnemyCollisionParas);
 
             _isInit = true;
         }
@@ -43,7 +45,7 @@ public class EnemyLuaInterface
 
     public static bool Get(object o, TValue key, out TValue res)
     {
-        EnemyBase enemy = (EnemyBase)o;
+        NormalEnemy enemy = (NormalEnemy)o;
         res = new TValue();
         if (key.TtIsString())
         {
@@ -163,6 +165,9 @@ public class EnemyLuaInterface
                 case "SetMaxHp":
                     res.SetClCsValue(_funcSetMaxHp);
                     return true;
+                case "SetCollisionSize":
+                    res.SetClCsValue(_funcSetCollisionSize);
+                    return true;
                     #endregion
 
             }
@@ -173,7 +178,7 @@ public class EnemyLuaInterface
 
     public static bool Set(object o, TValue key, ref TValue value)
     {
-        EnemyBase enemy = (EnemyBase)o;
+        NormalEnemy enemy = (NormalEnemy)o;
         if (key.TtIsString())
         {
             switch (key.SValue())

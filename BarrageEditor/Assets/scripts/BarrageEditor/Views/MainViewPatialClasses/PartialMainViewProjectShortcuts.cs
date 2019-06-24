@@ -120,6 +120,7 @@ namespace BarrageEditor
             _projectShortcutPackGo = tf.Find("Pack").gameObject;
             UIEventListener.Get(_projectShortcutPackGo).AddPointerEnter(OnProjectShortcutPackPointerEnter);
             UIEventListener.Get(_projectShortcutPackGo).AddPointerExit(OnProjectShortcutPointerExit);
+            UIEventListener.Get(_projectShortcutPackGo).AddClick(OnPackClickHandler);
 
             // 在之后插入
             _projectShortcutInsertAfterGo = tf.Find("InsertModeToggleGroup/InsertAfter").gameObject;
@@ -360,6 +361,15 @@ namespace BarrageEditor
                 };
                 Undo.AddToUndoTask(hm);
             }
+        }
+
+        private void OnPackClickHandler()
+        {
+            string filePath = Application.streamingAssetsPath + "/stage.lua";
+            BaseNode root = BarrageProject.RootNode;
+            string luaData = "";
+            root.ToLua(0, ref luaData);
+            FileUtils.WriteToFile(luaData, filePath);
         }
 
         #endregion

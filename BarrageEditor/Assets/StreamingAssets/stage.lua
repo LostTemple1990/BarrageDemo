@@ -16,10 +16,21 @@ CustomizedTable.YKBullet = {}
 CustomizedTable.YKBullet.Init = function(self,v,angle)
     self:SetV(3,0,false)
     self:SetAcce(0.05,0,false)
+    self:AddTask(function()
+        if Wait(60)==false then return end
+        self:MoveTo(0,0,60,MoveModeLinear)
+        if Wait(60)==false then return end
+    end
+end
+BossTable["Marisa"] = {}
+BossTable.Marisa.Init = function(self)
+    self:SetAni(2001)
+    self:SetPos(0,0)
+    self:SetCollisionSize(32,32)
 end
 Stage["Stage1"] = function()
-    last = lib.CreateCustomizedEnemy("TestOnKillEnemy",100000,0,0,0)
-    last = lib.CreateCustomizedBullet("YKBullet",107010,0,0,3,0,2)
+    last = CreateCustomizedEnemy("TestOnKillEnemy",100000,0,0,0)
+    last = CreateCustomizedBullet("YKBullet",107010,0,0,3,0,2)
 end
 return
 {
