@@ -87,6 +87,11 @@ Constants.eSpellCardCondition.EliminateOne = 2
 Constants.eSpellCardCondition.EliminateSpecificOne = 3
 Constants.eSpellCardCondition.TimeOver = 5
 
+ConditionEliminateAll = 1
+ConditionEliminateOne = 2
+ConditionEliminateSpecificOne = 3
+ConditionTimeOver = 5
+
 Constants.eTweenType = {}
 Constants.eTweenType.Alpha = 1
 Constants.eTweenType.Color = 2

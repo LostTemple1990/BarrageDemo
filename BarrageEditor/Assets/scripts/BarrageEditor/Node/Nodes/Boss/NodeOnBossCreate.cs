@@ -47,7 +47,7 @@ namespace BarrageEditor
         public override string ToLuaHead()
         {
             string name = parentNode.GetAttrByIndex(0).GetValueString();
-            string ret = string.Format("BossTable.{0}.Init = function(self)\n",name);
+            string ret = string.Format("BossTable[\"{0}\"].Init = function(self)\n",name);
             ret += string.Format("    self:SetAni({0})\n", GetAttrByIndex(0).GetValueString());
             ret += string.Format("    self:SetPos({0},{1})\n", GetAttrByIndex(1).GetValueString(), GetAttrByIndex(2).GetValueString());
             ret += string.Format("    self:SetCollisionSize({0})\n", GetAttrByIndex(3).GetValueString());

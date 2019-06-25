@@ -48,7 +48,7 @@ namespace BarrageEditor
         public override string ToLuaHead()
         {
             string name = parentNode.GetAttrs()[0].GetValueString();
-            return string.Format("CustomizedTable.{0}.Init = function(self{1})\n",
+            return string.Format("CustomizedTable[\"{0}\"].Init = function(self{1})\n",
                 name,
                 attrs[0].GetValueString() == "" ? "" : "," + attrs[0].GetValueString()
                 );

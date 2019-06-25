@@ -87,7 +87,7 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            return string.Format("CustomizedTable.{0} = {{}}\n",attrs[0].GetValueString());
+            return string.Format("CustomizedTable[\"{0}\"] = {{}}\n",attrs[0].GetValueString());
         }
     }
 }

@@ -33,6 +33,7 @@ SpriteAtlas:
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 883ae010de795b34f9cdf390358c3357, type: 3}
+  - {fileID: 21300000, guid: efc09640a1a5fcb4fab6577d70d82b76, type: 3}
   - {fileID: 21300000, guid: 6a1c59403275ca949bc159216e8124b7, type: 3}
   - {fileID: 21300000, guid: d67df860f4c1c58409d88edcaaf814c5, type: 3}
   - {fileID: 21300000, guid: ebd72bb0c32941c4d85d527f40b779cd, type: 3}
@@ -42,7 +43,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: cb68cc2179566d542820c118dd654977, type: 3}
   - {fileID: 21300000, guid: 45c855318d6581146bbddd75c2f08878, type: 3}
   - {fileID: 21300000, guid: 341c8831dbb11b045b9fe18713cdc97c, type: 3}
-  - {fileID: 21300000, guid: 16e64341ff859b84f8621750620810c9, type: 3}
   - {fileID: 21300000, guid: 4f18e7516dc760345ae465596a81628b, type: 3}
   - {fileID: 21300000, guid: 801edb9107aa3e348a7be081348dd336, type: 3}
   - {fileID: 21300000, guid: 28d56e917e2c2e44993eb5b634f3bf55, type: 3}
@@ -64,10 +64,11 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 64c9f153233e5054189d83a05e175bda, type: 3}
   - {fileID: 21300000, guid: 18b975539971f724aaeea2d767bb1186, type: 3}
   - {fileID: 21300000, guid: 27d1b753a6a359a4d83430e81330b4df, type: 3}
+  - {fileID: 21300000, guid: fd76726317c88ee449ba16d3d9fd28d2, type: 3}
+  - {fileID: 21300000, guid: 39369563206eecc4887ffd58007db9bb, type: 3}
   - {fileID: 21300000, guid: a7fd1863fa152cc4e86c04f09274aa09, type: 3}
   - {fileID: 21300000, guid: 86572e73407ff314b95d7aee43e75458, type: 3}
   - {fileID: 21300000, guid: 28e7d193d4940af438ba8da97a9ca16f, type: 3}
-  - {fileID: 21300000, guid: bc2908a357df5b047bc65c47ef8f0641, type: 3}
   - {fileID: 21300000, guid: fa0987d31e7d95246908feb564b3057d, type: 3}
   - {fileID: 21300000, guid: f2c8fa24ca577c34191790f8aa75f2df, type: 3}
   - {fileID: 21300000, guid: 81da43440f65e984fae4310812da542c, type: 3}
@@ -111,9 +112,11 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 986829b837adcf44a8a806aee408d92b, type: 3}
   - {fileID: 21300000, guid: ccf02dc877314614d8ceabfe3be5bfd5, type: 3}
   - {fileID: 21300000, guid: eace1fc821f8acb40b504e849aefe2a3, type: 3}
-  - {fileID: 21300000, guid: e43ce1f82034bbc4e97fb9dcd89e47b5, type: 3}
   - {fileID: 21300000, guid: 850342f8a6090844ead4c0ecd02a1057, type: 3}
+  - {fileID: 21300000, guid: 8ccc54f82a2801647b9286bee58c0382, type: 3}
+  - {fileID: 21300000, guid: 13426ff882f3b86448c070a0f35924e4, type: 3}
   - {fileID: 21300000, guid: 6443df191adb6ae4a83aab75d77e393c, type: 3}
+  - {fileID: 21300000, guid: 40e7dd397980cae42b8418a2e0d36d27, type: 3}
   - {fileID: 21300000, guid: f35db259e3b32e84da4d2e993dcd3d69, type: 3}
   - {fileID: 21300000, guid: f544845997c97fb498ad3cb8e06d1e68, type: 3}
   - {fileID: 21300000, guid: 3af5c95975c50df4f873f779d7443b86, type: 3}
@@ -171,6 +174,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: b7716cefa3c36af48b49d9efba255805, type: 3}
   m_PackedSpriteNamesToIndex:
   - dropitem
+  - scdefine
   - shoot
   - loadbgm
   - if
@@ -180,7 +184,6 @@ SpriteAtlas:
   - ondel
   - objectcreate
   - _node_dir
-  - bossscstart
   - enemyinit
   - laserinit
   - simplerebounder
@@ -202,10 +205,11 @@ SpriteAtlas:
   - break
   - onkill
   - laserbentinit
+  - onscstart
+  - startsc
   - playbgm
   - taskmoveto
   - ChildNodeExpand
-  - bossspellcard
   - variable
   - pactrometer
   - unitforeach
@@ -249,9 +253,11 @@ SpriteAtlas:
   - dialog
   - _node_toc
   - stage
-  - bossscfinish
   - lasercreate
+  - onscfinish
+  - unknow
   - setcolor
+  - moveto
   - iteration
   - archiexpand
   - _node_atp

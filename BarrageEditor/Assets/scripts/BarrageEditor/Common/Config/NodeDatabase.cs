@@ -64,7 +64,9 @@ namespace BarrageEditor
         DefineBoss = 1401,
         OnBossCreate = 1042,
         CreateBoss = 1403,
+        SetBossInvincible = 1410,
         DefineSpellCard = 1451,
+        StartSpellCard = 1452,
         DefineBullet = 1501,
         OnBulletCreate = 1502,
         CreateCustomizedBullet = 1503,
@@ -369,6 +371,40 @@ namespace BarrageEditor
                 editOnCreated = true,
             };
             _nodeCfgDic.Add(NodeType.CreateBoss, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.SetBossInvincible,
+                shortcutPath = "unknow",
+                shortcutTip = "set invincible",
+                defaultAttrValues = new List<object> { "boss", "5" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.SetBossInvincible, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.DefineSpellCard,
+                shortcutPath = "scdefine",
+                shortcutTip = "define spell card",
+                defaultAttrValues = new List<object> { "", "unknown spell card", "1", "60", "ConditionEliminateAll", "true" },
+                allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.DefineSpellCard, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.StartSpellCard,
+                shortcutPath = "startsc",
+                shortcutTip = "start spell card",
+                defaultAttrValues = new List<object> { "", "boss", "true" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.StartSpellCard, cfg);
         }
 
         private void InitBulletNodeCfgs()

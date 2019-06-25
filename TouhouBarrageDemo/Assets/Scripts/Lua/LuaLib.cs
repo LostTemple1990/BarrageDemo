@@ -221,6 +221,10 @@ public partial class LuaLib
             new NameFuncPair("CreateCustomizedEnemy",CreateCustomizedEnemy),
             // Boss
             new NameFuncPair("CreateBoss",CreateBoss),
+            // SpellCard
+            new NameFuncPair("SetSpellCardProperties",SetSpellCardProperties),
+            new NameFuncPair("StartSpellCard",StartSpellCard),
+            new NameFuncPair("WaitForSpellCardFinish",WaitForSpellCardFinish),
         };
         luaState.PushGlobalTable();
         luaState.L_SetFuncs(define, 0);
@@ -236,6 +240,7 @@ public partial class LuaLib
 
         EnemySimpleBulletLuaInterface.Init();
         NormalEnemyLuaInterface.Init();
+        BossLuaInterface.Init();
     }
 
     public static bool GetLightUserDataField(object userData, TValue key, out TValue res)
@@ -246,6 +251,8 @@ public partial class LuaLib
                 return EnemySimpleBulletLuaInterface.Get(userData, key, out res);
             case "NormalEnemy":
                 return NormalEnemyLuaInterface.Get(userData, key, out res);
+            case "Boss":
+                return BossLuaInterface.Get(userData, key, out res);
         }
         res = new TValue();
         res.SetSValue(string.Format("GetField from userData fail!Invalid userData of type {0}", userData.GetType().Name));
@@ -259,6 +266,8 @@ public partial class LuaLib
             case "EnemySimpleBullet":
                 return EnemySimpleBulletLuaInterface.Set(userData, key, ref value);
             case "NormalEnemy":
+                return NormalEnemyLuaInterface.Set(userData, key, ref value);
+            case "Boss":
                 return NormalEnemyLuaInterface.Set(userData, key, ref value);
         }
         value.SetSValue(string.Format("SetField of userData fail!Invalid userData of type {0}", userData.GetType().Name));

@@ -88,6 +88,15 @@ namespace BarrageEditor
                 case NodeType.CreateBoss:
                     newNode = new NodeCreateBoss();
                     break;
+                case NodeType.SetBossInvincible:
+                    newNode = new NodeSetBossInvincible();
+                    break;
+                case NodeType.DefineSpellCard:
+                    newNode = new NodeDefineSpellCard();
+                    break;
+                case NodeType.StartSpellCard:
+                    newNode = new NodeStartSpellCard();
+                    break;
                 case NodeType.DefineBullet:
                     newNode = new NodeDefineBullet();
                     break;
@@ -147,6 +156,9 @@ namespace BarrageEditor
                     break;
                 case NodeAttrType.MoveMode:
                     nodeAttr = new NodeAttrMoveMode();
+                    break;
+                case NodeAttrType.SCCondition:
+                    nodeAttr = new NodeAttrSCCondition();
                     break;
             }
             if (nodeAttr != null) return nodeAttr;

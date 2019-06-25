@@ -20,6 +20,7 @@ namespace BarrageEditor
                     _customDefineDic.Add(CustomDefineType.CurveLaser, new Dictionary<string, CustomDefineData>());
                     _customDefineDic.Add(CustomDefineType.Enemy, new Dictionary<string, CustomDefineData>());
                     _customDefineDic.Add(CustomDefineType.Boss, new Dictionary<string, CustomDefineData>());
+                    _customDefineDic.Add(CustomDefineType.SpellCard, new Dictionary<string, CustomDefineData>());
                 }
                 return _customDefineDic;
             }
@@ -115,6 +116,7 @@ namespace BarrageEditor
             if (nodeType == NodeType.CreateCustomizedBullet) return CustomDefineType.SimpleBullet;
             if (nodeType == NodeType.CreateCustomizedEnemy) return CustomDefineType.Enemy;
             if (nodeType == NodeType.CreateBoss) return CustomDefineType.Boss;
+            if (nodeType == NodeType.StartSpellCard) return CustomDefineType.SpellCard;
             Logger.LogError(string.Format("CustomizeType to NodeType {0} is not exist!", nodeType));
             return CustomDefineType.Null;
         }
@@ -127,6 +129,7 @@ namespace BarrageEditor
             customDefineDic[CustomDefineType.CurveLaser].Clear();
             customDefineDic[CustomDefineType.Enemy].Clear();
             customDefineDic[CustomDefineType.Boss].Clear();
+            customDefineDic[CustomDefineType.SpellCard].Clear();
         }
     }
 
@@ -146,5 +149,6 @@ namespace BarrageEditor
         CurveLaser = 4,
         Enemy = 5,
         Boss = 6,
+        SpellCard = 7,
     }
 }

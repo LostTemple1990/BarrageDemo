@@ -52,7 +52,7 @@ namespace BarrageEditor
         public override string ToLuaHead()
         {
             string name = parentNode.GetAttrByIndex(0).GetValueString();
-            return string.Format("CustomizedEnemyTable.{0}.Init = function(self{1})\n    self:SetMaxHp({2})\n",
+            return string.Format("CustomizedEnemyTable[\"{0}\"].Init = function(self{1})\n    self:SetMaxHp({2})\n",
                 name, 
                 attrs[1].GetValueString() == "" ? "" : ","+ attrs[1].GetValueString(),  //不带参数的话self后不带任何参数了，因此不加分隔符','
                 attrs[0].GetValueString());

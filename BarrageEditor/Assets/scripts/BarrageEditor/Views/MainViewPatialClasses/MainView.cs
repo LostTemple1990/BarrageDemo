@@ -108,7 +108,7 @@ namespace BarrageEditor
             public eNodeShortcutTab type;
             public string tabName;
             public GameObject tabGo;
-            public List<NodeType> typeList;
+            public List<NodeType>[] typeList;
         }
         /// <summary>
         /// 节点快捷按钮标签属性
@@ -123,7 +123,10 @@ namespace BarrageEditor
             {
                 type = eNodeShortcutTab.General,
                 tabName = "General",
-                typeList = new List<NodeType> { NodeType.Folder, NodeType.CodeBlock, NodeType.If, NodeType.DefVar, NodeType.Repeat, NodeType.Code, NodeType.Comment },
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.Folder, NodeType.CodeBlock, NodeType.If, NodeType.DefVar, NodeType.Repeat, NodeType.Code, NodeType.Comment },
+                },
             };
             _nodeTabs.Add(tab);
             // stage
@@ -131,7 +134,10 @@ namespace BarrageEditor
             {
                 type = eNodeShortcutTab.Stage,
                 tabName = "Stage",
-                typeList = new List<NodeType> { NodeType.StageGroup, NodeType.Stage },
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.StageGroup, NodeType.Stage },
+                },
             };
             _nodeTabs.Add(tab);
             // task
@@ -139,7 +145,10 @@ namespace BarrageEditor
             {
                 type = eNodeShortcutTab.Task,
                 tabName = "Task",
-                typeList = new List<NodeType> { NodeType.AddTask, NodeType.TaskWait },
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.AddTask, NodeType.TaskWait },
+                },
             };
             _nodeTabs.Add(tab);
             // Enemy
@@ -147,7 +156,10 @@ namespace BarrageEditor
             {
                 type = eNodeShortcutTab.Enemy,
                 tabName = "Enemy",
-                typeList = new List<NodeType> { NodeType.DefineEnemy, NodeType.CreateCustomizedEnemy, NodeType.CreateSimpleEnemy },
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.DefineEnemy, NodeType.CreateCustomizedEnemy, NodeType.CreateSimpleEnemy },
+                },
             };
             _nodeTabs.Add(tab);
             // Boss
@@ -155,7 +167,12 @@ namespace BarrageEditor
             {
                 type = eNodeShortcutTab.Boss,
                 tabName = "Boss",
-                typeList = new List<NodeType> { NodeType.DefineBoss, NodeType.CreateBoss },
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.DefineBoss, NodeType.CreateBoss },
+                    new List<NodeType> { NodeType.SetBossInvincible },
+                    new List<NodeType> { NodeType.DefineSpellCard, NodeType.StartSpellCard },
+                },
             };
             _nodeTabs.Add(tab);
             // Bullet
@@ -163,7 +180,10 @@ namespace BarrageEditor
             {
                 type = eNodeShortcutTab.Bullet,
                 tabName = "Bullet",
-                typeList = new List<NodeType> { NodeType.DefineBullet, NodeType.CreateCustomizedBullet, NodeType.CreateSimpleBullet },
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.DefineBullet, NodeType.CreateCustomizedBullet, NodeType.CreateSimpleBullet },
+                },
             };
             _nodeTabs.Add(tab);
             // Unit
@@ -171,7 +191,10 @@ namespace BarrageEditor
             {
                 type = eNodeShortcutTab.Unit,
                 tabName = "Unit",
-                typeList = new List<NodeType> { NodeType.UnitSetV, NodeType.UnitSetAcce, NodeType.UnitMoveTo, NodeType.UnitMoveTowards },
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.UnitSetV, NodeType.UnitSetAcce, NodeType.UnitMoveTo, NodeType.UnitMoveTowards },
+                },
             };
             _nodeTabs.Add(tab);
             // 初始化节点快捷按钮的标签
@@ -197,35 +220,45 @@ namespace BarrageEditor
         private void AddShortcutsByTab(eNodeShortcutTab tabType)
         {
             RemoveAllNodeShortcuts();
-            List<NodeType> typeList = _nodeTabs[(int)tabType].typeList;
-            for (int i = 0; i < typeList.Count; i++)
+            List<NodeType>[] nodesArr = _nodeTabs[(int)tabType].typeList;
+            for (int i = 0; i < nodesArr.Length; i++)
             {
-                NodeConfig nodeCfg = DatabaseManager.NodeDatabase.GetNodeCfgByNodeType(typeList[i]);
-                if (nodeCfg == null)
+                if (i != 0)
                 {
-                    Logger.LogError("Node Config is not exist!! NodeType = " + typeList[i]);
+                    GameObject segmentGo = ResourceManager.GetInstance().GetPrefab("Prefabs/Views", "MainView/ShortcutSegment");
+                    RectTransform shortcutTf = segmentGo.GetComponent<RectTransform>();
+                    shortcutTf.SetParent(_nodeShortcutsContainerTf, false);
                 }
-                GameObject shortcutGo = ResourceManager.GetInstance().GetPrefab("Prefabs/Views", "MainView/NodeShortcut");
-                RectTransform shortcutTf = shortcutGo.GetComponent<RectTransform>();
-                shortcutTf.SetParent(_nodeShortcutsContainerTf, false);
-                GameObject btnGo = shortcutTf.Find("BgBtn").gameObject;
-                // 添加监听事件
-                UIEventListener.Get(btnGo).AddPointerEnter(() =>
+                List<NodeType> typeList = nodesArr[i];
+                for (int j = 0; j < typeList.Count; j++)
                 {
-                    UIManager.GetInstance().OpenView(ViewID.TooltipView, nodeCfg.shortcutTip);
-                });
-                UIEventListener.Get(btnGo).AddPointerExit(() =>
-                {
-                    UIManager.GetInstance().CloseView(ViewID.TooltipView);
-                });
-                UIEventListener.Get(btnGo).AddClick(() =>
-                {
-                    TryInsertNode(nodeCfg.type);
-                });
-                Image img = shortcutTf.Find("Image").GetComponent<Image>();
-                img.sprite = ResourceManager.GetInstance().GetSprite("ShortcutsAtlas", nodeCfg.shortcutPath);
-                // 添加到列表中
-                _nodeShortcutList.Add(shortcutGo);
+                    NodeConfig nodeCfg = DatabaseManager.NodeDatabase.GetNodeCfgByNodeType(typeList[j]);
+                    if (nodeCfg == null)
+                    {
+                        Logger.LogError("Node Config is not exist!! NodeType = " + typeList[j]);
+                    }
+                    GameObject shortcutGo = ResourceManager.GetInstance().GetPrefab("Prefabs/Views", "MainView/NodeShortcut");
+                    RectTransform shortcutTf = shortcutGo.GetComponent<RectTransform>();
+                    shortcutTf.SetParent(_nodeShortcutsContainerTf, false);
+                    GameObject btnGo = shortcutTf.Find("BgBtn").gameObject;
+                    // 添加监听事件
+                    UIEventListener.Get(btnGo).AddPointerEnter(() =>
+                    {
+                        UIManager.GetInstance().OpenView(ViewID.TooltipView, nodeCfg.shortcutTip);
+                    });
+                    UIEventListener.Get(btnGo).AddPointerExit(() =>
+                    {
+                        UIManager.GetInstance().CloseView(ViewID.TooltipView);
+                    });
+                    UIEventListener.Get(btnGo).AddClick(() =>
+                    {
+                        TryInsertNode(nodeCfg.type);
+                    });
+                    Image img = shortcutTf.Find("Image").GetComponent<Image>();
+                    img.sprite = ResourceManager.GetInstance().GetSprite("ShortcutsAtlas", nodeCfg.shortcutPath);
+                    // 添加到列表中
+                    _nodeShortcutList.Add(shortcutGo);
+                }
             }
         }
 
@@ -310,12 +343,16 @@ namespace BarrageEditor
 
         private void RemoveAllNodeShortcuts()
         {
+            int i, count;
             GameObject item;
-            for (int i=0;i<_nodeShortcutList.Count;i++)
+            for (i = 0, count = _nodeShortcutList.Count; i < count; i++)
             {
                 item = _nodeShortcutList[i];
                 UIEventListener.Get(item.transform.Find("BgBtn").gameObject).RemoveAllEvents();
-                GameObject.Destroy(item);
+            }
+            for (count = _nodeShortcutsContainerTf.childCount, i = count - 1; i >= 0; i--)
+            {
+                GameObject.Destroy(_nodeShortcutsContainerTf.GetChild(i).gameObject);
             }
             _nodeShortcutList.Clear();
         }
