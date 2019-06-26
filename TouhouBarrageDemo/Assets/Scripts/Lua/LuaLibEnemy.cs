@@ -356,25 +356,18 @@ public partial class LuaLib
     {
         float halfWidth = (float)luaState.ToNumber(-2);
         float halfHeight = (float)luaState.ToNumber(-1);
-        luaState.Pop(2);
         // 遍历dropItemDatas
         List<int> itemDatas = new List<int>();
-        int itemType, itemCount;
-        luaState.PushNil();
-        while (luaState.Next(-2))
+        int pos = -3;
+        while (luaState.Type(pos)== LuaType.LUA_TNUMBER)
         {
-            luaState.GetField(-1, "itemType");
-            luaState.GetField(-2, "itemCount");
-            itemType = luaState.ToInteger(-2);
-            itemCount = luaState.ToInteger(-1);
-            itemDatas.Add(itemType);
-            itemDatas.Add(itemCount);
-            // 只保留key
-            luaState.Pop(3);
+            pos--;
         }
-        NormalEnemy enemy = luaState.ToUserData(-2) as NormalEnemy;
-        // 弹出剩余的enemy以及table
-        luaState.Pop(2);
+        NormalEnemy enemy = luaState.ToUserData(pos) as NormalEnemy;
+        for (pos = pos + 1; pos <= -3; pos++)
+        {
+            itemDatas.Add(luaState.ToInteger(pos));
+        }
         enemy.SetDropItemDatas(itemDatas, halfWidth, halfHeight);
         return 0;
     }

@@ -1937,7 +1937,7 @@ CustomizedBulletTable.PatchouliSC0_FireBall.Init = function(bullet,vAngle)
 	lib.DoBulletAccelerationWithLimitation(bullet,0.03,accAngle,4)
 	lib.AddBulletComponent(bullet,eBulletComponentType.ColliderTrigger)
 	local count = 1
-	lib.AddBulletColliderTriggerEvent(bullet,eEliminateType.CustomizedType0,function(collider,collIndex)
+	lib.AddBulletColliderTriggerEvent(bullet,eEliminateType.CustomizedType1,function(collider,collIndex)
 		if count == 0 then return end
 		local posX,posY = lib.GetBulletPos(bullet)
 		for _=1,7 do
@@ -1956,7 +1956,7 @@ CustomizedBulletTable.PatchouliSC0_FireRain.Init = function(bullet,vAngle)
 	lib.SetBulletStraightParas(bullet,2,-90,false,0,0)
 	lib.AddBulletComponent(bullet,eBulletComponentType.ColliderTrigger)
 	local count = 1
-	lib.AddBulletColliderTriggerEvent(bullet,eEliminateType.CustomizedType0,function(collider,collIndex)
+	lib.AddBulletColliderTriggerEvent(bullet,eEliminateType.CustomizedType1,function(collider,collIndex)
 		if count == 0 then return end
 		lib.SetBulletStyleById(bullet,126130)
 		count = 0
@@ -2141,4 +2141,6 @@ return
 {
 	CustomizedBulletTable = CustomizedBulletTable,
 	CustomizedEnemyTable = CustomizedEnemyTable,
+	BossTable = {},
+	Stage = {},
 }

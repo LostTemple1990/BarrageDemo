@@ -75,14 +75,17 @@ namespace BarrageEditor
             _projectShortcutCreateGo = tf.Find("Create").gameObject;
             UIEventListener.Get(_projectShortcutCreateGo).AddPointerEnter(OnProjectShortcutCreatePointerEnter);
             UIEventListener.Get(_projectShortcutCreateGo).AddPointerExit(OnProjectShortcutPointerExit);
+            UIEventListener.Get(_projectShortcutCreateGo).AddClick(OnCreateClickHandler);
             //打开项目
             _projectShortcutCreateGo = tf.Find("Open").gameObject;
             UIEventListener.Get(_projectShortcutCreateGo).AddPointerEnter(OnProjectShortcutOpenPointerEnter);
             UIEventListener.Get(_projectShortcutCreateGo).AddPointerExit(OnProjectShortcutPointerExit);
+            UIEventListener.Get(_projectShortcutCreateGo).AddClick(OnOpenClickHandler);
             // 保存项目
             _projectShortcutCreateGo = tf.Find("Save").gameObject;
             UIEventListener.Get(_projectShortcutCreateGo).AddPointerEnter(OnProjectShortcutSavePointerEnter);
             UIEventListener.Get(_projectShortcutCreateGo).AddPointerExit(OnProjectShortcutPointerExit);
+            UIEventListener.Get(_projectShortcutCreateGo).AddClick(OnSaveClickHandler);
 
             // 撤销
             _projectShortcutUndoGo = tf.Find("Undo").gameObject;
@@ -210,6 +213,46 @@ namespace BarrageEditor
             UIManager.GetInstance().OpenView(ViewID.TooltipView, "Insert as child");
         }
         #endregion
+
+        private void OnCreateClickHandler()
+        {
+            string savePath = FileUtils.SaveFile("选择新建工程的位置", "关卡数据(*.nd)\0*.nd\0");
+            if (savePath != null)
+            {
+                EventManager.GetInstance().PostEvent(EditorEvents.BeforeProjectChanged);
+                BarrageProject.UnloadProject();
+                // todo 载入固定位置的一个模板
+                string templatePath = Application.streamingAssetsPath + "/template.nd";
+                BarrageProject.LoadProject(templatePath);
+                EventManager.GetInstance().PostEvent(EditorEvents.AfterProjectChanged);
+                // 当前文件
+                BarrageProject.Log("current project file: " + FileUtils.GetFileNameByPath(savePath));
+            }
+        }
+
+        private void OnOpenClickHandler()
+        {
+            string openPath = FileUtils.OpenFile("选择关卡数据", "关卡数据(*.nd)\0*.nd\0", false);
+            if (openPath != null)
+            {
+                EventManager.GetInstance().PostEvent(EditorEvents.BeforeProjectChanged);
+                BarrageProject.UnloadProject();
+                BarrageProject.LoadProject(openPath);
+                EventManager.GetInstance().PostEvent(EditorEvents.AfterProjectChanged);
+                BarrageProject.Log("current project file: " + FileUtils.GetFileNameByPath(openPath));
+            }
+        }
+
+        private void OnSaveClickHandler()
+        {
+            string savePath = BarrageProject.GetProjectPath();
+            if (savePath != null)
+            {
+                BaseNode root = BarrageProject.RootNode;
+                NodeData nd = NodeManager.SaveAsNodeData(root, true);
+                FileUtils.SerializableObjectToFile(savePath, nd);
+            }
+        }
 
         private void OnUndoClickHandler()
         {

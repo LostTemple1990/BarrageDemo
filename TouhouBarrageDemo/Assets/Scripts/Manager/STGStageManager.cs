@@ -76,9 +76,9 @@ public class STGStageManager
     /// 加载关卡
     /// </summary>
     /// <param name="stageId"></param>
-    public void LoadStage(int stageId)
+    public void LoadStage(string stageName)
     {
-        _curStageTask = InterpreterManager.GetInstance().LoadStage(stageId);
+        _curStageTask = InterpreterManager.GetInstance().CreateStageTask(stageName);
         _state = StateUpdateStageTask;
         _frameSinceStageStart = 0;
         _isEnableToShoot = true;
@@ -127,7 +127,10 @@ public class STGStageManager
     /// </summary>
     private void OnStageTaskUpdate()
     {
-        InterpreterManager.GetInstance().CallTaskCoroutine(_curStageTask);
+        if (_curStageTask.isFinish != true)
+        {
+            InterpreterManager.GetInstance().CallTaskCoroutine(_curStageTask);
+        }
     }
 
     /// <summary>

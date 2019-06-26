@@ -97,7 +97,7 @@ namespace BarrageEditor
                         GetAttrByIndex(i).GetValueString(), "_d_" + GetAttrByIndex(i).GetValueString());
                 }
             }
-            ret = string.Format("{0} end end\n", ret);
+            ret = string.Format("{0}end end\n", ret);
             return ret;
         }
     }

@@ -26,8 +26,15 @@ public partial class LuaLib
     public static int SetBulletStyleById(ILuaState luaState)
     {
         EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
-        string id = luaState.ToString(-1);
-        luaState.Pop(2);
+        string id;
+        if (luaState.Type(-1) == LuaType.LUA_TNUMBER)
+        {
+            id = luaState.ToNumber(-1).ToString();
+        }
+        else
+        {
+            id = luaState.ToString(-1);
+        }
         bullet.SetStyleById(id);
         return 0;
     }

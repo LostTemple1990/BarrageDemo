@@ -158,7 +158,7 @@ namespace BarrageEditor
                 tabName = "Enemy",
                 typeList = new List<NodeType>[]
                 {
-                    new List<NodeType> { NodeType.DefineEnemy, NodeType.CreateCustomizedEnemy, NodeType.CreateSimpleEnemy },
+                    new List<NodeType> { NodeType.DefineEnemy, NodeType.CreateCustomizedEnemy, NodeType.CreateSimpleEnemy ,NodeType.SetDropItems },
                 },
             };
             _nodeTabs.Add(tab);

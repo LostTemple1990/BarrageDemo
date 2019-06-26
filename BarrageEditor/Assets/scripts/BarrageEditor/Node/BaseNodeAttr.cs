@@ -190,6 +190,7 @@ namespace BarrageEditor
         ParaList = 6,
         MoveMode = 7,
         SCCondition = 8,
+        ItemType = 9,
     }
 
     public class NodeAttrData

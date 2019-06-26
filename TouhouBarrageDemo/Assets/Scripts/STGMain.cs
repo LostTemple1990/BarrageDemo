@@ -200,9 +200,9 @@ public class STGMain
         frameNode = 0;
     }
 
-    public void EnterStage(int stageId)
+    public void EnterStage(string stageName)
     {
-        STGStageManager.GetInstance().LoadStage(stageId);
+        STGStageManager.GetInstance().LoadStage(stageName);
         CommandManager.GetInstance().RunCommand(CommandConsts.STGLoadStageLuaComplete);
     }
 }

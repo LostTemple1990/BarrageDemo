@@ -162,12 +162,10 @@ end
 CustomizedEnemyTable.TestKillEnemy = {}
 CustomizedEnemyTable.TestKillEnemy.Init = function(enemy)
 	do
-		lib.SetEnemyMaxHp(enemy,50)
+		enemy:SetMaxHp(50)
 	end
 	do
-		local itemDatas = {}
-		table.insert(itemDatas,{itemType = 1,itemCount = 5})
-		lib.SetEnemyDropItems(enemy,itemDatas,48,48)
+		enemy:SetDropItems(1,3,48,48)
 	end
 end
 CustomizedEnemyTable.TestKillEnemy.OnKill = function(enemy)
@@ -691,21 +689,21 @@ BossTable.MidBoss.Task = function(boss)
 	lib.EnterSpellCard(boss,sc)
 end
 
-function Stage.StageTask()
+Stage["StageTask"] = function()
 	lib.PlaySound("bgm",true)
-	local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
-	lib.SetEffectToPos(spriteEffect,0,0)
-	lib.SetSpriteEffectSize(spriteEffect,500,500)
-	lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
+	--local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
+	--lib.SetEffectToPos(spriteEffect,0,0)
+	--lib.SetSpriteEffectSize(spriteEffect,500,500)
+	--lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
 	--local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
 	--lib.SetObjectColliderSize(collider,80,80)
 	--lib.SetObjectColliderToPos(collider,0,0)
 	--lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
-	local field = lib.CreateGravitationFieldByType(eColliderType.Circle)
-	lib.SetObjectColliderSize(field,250,250)
-	lib.SetObjectColliderToPos(field,0,0)
-	lib.InitGravitationField(field,1,0.5,0,0,0,0.05,0,0,0)
-	lib.SetObjectColliderColliderGroup(field,eColliderGroup.EnemyBullet)
+	--local field = lib.CreateGravitationFieldByType(eColliderType.Circle)
+	--lib.SetObjectColliderSize(field,250,250)
+	--lib.SetObjectColliderToPos(field,0,0)
+	--lib.InitGravitationField(field,1,0.5,0,0,0,0.05,0,0,0)
+	--lib.SetObjectColliderColliderGroup(field,eColliderGroup.EnemyBullet)
 	--
 	if coroutine.yield(200) == false then return end
 	do
@@ -713,9 +711,9 @@ function Stage.StageTask()
 		local enemy = lib.CreateCustomizedEnemy("TestKillEnemy","100000",0,185,0)
 		lib.AddEnemyTask(enemy,function()
 			if coroutine.yield(150)==false then return end
-			lib.EnemyMoveTowards(enemy,1,315,200);
+			enemy:MoveTowards(1,315,false,200)
 			if coroutine.yield(550)==false then return end
-			lib.EnemyMoveTowards(enemy,0.5,180,700);
+			enemy:MoveTowards(0.5,180,false,700)
 		end)
 		lib.AddEnemyTask(enemy,function()
 			if coroutine.yield(10000)==false then return end
@@ -795,7 +793,7 @@ function Stage.StageTask()
 			end
 		end)
 	end
-	if coroutine.yield(30000) == false then return end
+	if coroutine.yield(300) == false then return end
 	do
 		local boss = lib.CreateBoss("MidBoss")
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)

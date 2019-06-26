@@ -61,6 +61,7 @@ namespace BarrageEditor
         OnEnemyCreate = 1302,
         CreateCustomizedEnemy = 1303,
         CreateSimpleEnemy = 1304,
+        SetDropItems = 1305,
         DefineBoss = 1401,
         OnBossCreate = 1042,
         CreateBoss = 1403,
@@ -333,6 +334,17 @@ namespace BarrageEditor
                 allowChilds = new List<NodeType>(),
             };
             _nodeCfgDic.Add(NodeType.CreateSimpleEnemy, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.SetDropItems,
+                shortcutPath = "dropitem",
+                shortcutTip = "set drop items",
+                defaultAttrValues = new List<object> { "self", "32", "32", "PPointNormal", "3", "", "", "" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.SetDropItems, cfg);
         }
 
         private void InitBossNodeCfgs()

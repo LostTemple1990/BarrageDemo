@@ -46,7 +46,7 @@ namespace BarrageEditor
         public override string ToDesc()
         {
             BaseNodeAttr aimToPlayerAttr = GetAttrByIndex(3);
-            return string.Format("{0} move towards with velocity of{1},angle of {2}{3} in {4} frames",
+            return string.Format("{0} move towards with velocity of {1},angle of {2}{3} in {4} frames",
                 GetAttrByIndex(0).GetValueString(),
                 GetAttrByIndex(1).GetValueString(),
                 GetAttrByIndex(2).GetValueString(),

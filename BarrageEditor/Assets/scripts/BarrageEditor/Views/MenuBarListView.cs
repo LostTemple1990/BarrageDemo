@@ -222,7 +222,7 @@ namespace BarrageEditor
         private void CloseClickHander()
         {
             Close();
-            string filePath = Application.streamingAssetsPath + "/stage.lua";
+            string filePath = Application.streamingAssetsPath + "../../../../TouhouBarrageDemo/Assets/StreamingAssets/LuaRoot/stages/TestEditorStage.lua";
             if (filePath != null)
             {
                 BaseNode root = BarrageProject.RootNode;

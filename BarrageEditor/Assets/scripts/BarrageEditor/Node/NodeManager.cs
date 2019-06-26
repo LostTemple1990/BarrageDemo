@@ -79,6 +79,9 @@ namespace BarrageEditor
                 case NodeType.CreateSimpleEnemy:
                     newNode = new NodeCreateSimpleEnemy();
                     break;
+                case NodeType.SetDropItems:
+                    newNode = new NodeEnemySetDropItems();
+                    break;
                 case NodeType.DefineBoss:
                     newNode = new NodeDefineBoss();
                     break;
@@ -159,6 +162,9 @@ namespace BarrageEditor
                     break;
                 case NodeAttrType.SCCondition:
                     nodeAttr = new NodeAttrSCCondition();
+                    break;
+                case NodeAttrType.ItemType:
+                    nodeAttr = new NodeAttrItem();
                     break;
             }
             if (nodeAttr != null) return nodeAttr;

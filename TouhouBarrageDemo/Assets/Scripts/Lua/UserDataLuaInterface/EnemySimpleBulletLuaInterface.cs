@@ -19,7 +19,7 @@ public class EnemySimpleBulletLuaInterface
 
     private static LuaCsClosureValue _funcSetStraightParas;
     private static LuaCsClosureValue _funcSetSelfRotaion;
-
+    private static LuaCsClosureValue _funcSetStyleById;
 
 
     public static void Init()
@@ -39,6 +39,7 @@ public class EnemySimpleBulletLuaInterface
 
             _funcSetStraightParas = new LuaCsClosureValue(LuaLib.SetBulletStraightParas);
             _funcSetSelfRotaion = new LuaCsClosureValue(LuaLib.SetBulletSelfRotation);
+            _funcSetStyleById = new LuaCsClosureValue(LuaLib.SetBulletStyleById);
 
             _isInit = true;
         }
@@ -122,12 +123,12 @@ public class EnemySimpleBulletLuaInterface
                         res.SetNValue(bullet.timeSinceCreated);
                         return true;
                     }
-                case "SetStraightParas":
+                case "SetSelfRotation":
                     {
-                        res.SetClCsValue(_funcSetStraightParas);
+                        res.SetClCsValue(_funcSetSelfRotaion);
                         return true;
                     }
-                case "SetSelfRotation":
+                case "SetStyleById":
                     {
                         res.SetClCsValue(_funcSetSelfRotaion);
                         return true;
@@ -142,6 +143,11 @@ public class EnemySimpleBulletLuaInterface
                 case "SetAcce":
                     {
                         res.SetClCsValue(_funcSetAcce);
+                        return true;
+                    }
+                case "SetStraightParas":
+                    {
+                        res.SetClCsValue(_funcSetStraightParas);
                         return true;
                     }
                 case "SetPolarParas":

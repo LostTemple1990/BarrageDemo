@@ -28,8 +28,8 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private const int StateUpdateSTG = 6;
 
-    private int _curStageId;
-    private int _nextStageId;
+    private string _curStageName;
+    private string _nextStageName;
     /// <summary>
     /// 当前状态
     /// </summary>
@@ -41,8 +41,8 @@ public class StateSTGMain : IState,ICommand
 
     public StateSTGMain()
     {
-        _curStageId = -1;
-        _nextStageId = -1;
+        _curStageName = "";
+        _nextStageName = "";
     }
 
     private GameStateMachine _fsm;
@@ -53,9 +53,6 @@ public class StateSTGMain : IState,ICommand
     {
         switch (cmd)
         {
-            case CommandConsts.EnterStage:
-                //OnEnterStageHandler((int)datas[0]);
-                break;
             case CommandConsts.STGInitComplete:
                 OnSTGInitComplete();
                 break;
@@ -73,7 +70,7 @@ public class StateSTGMain : IState,ICommand
 
     public int GetStateId()
     {
-        return _curStageId;
+        return _curState;
     }
 
     public void OnInit(IFSM fsm)
@@ -95,8 +92,8 @@ public class StateSTGMain : IState,ICommand
         CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
         CommandManager.GetInstance().Register(CommandConsts.ContinueGame, this);
-        // 设置需要载入的stageId
-        _nextStageId = (int)datas[0];
+        // 设置需要载入的stage
+        _nextStageName = datas[0] as string;
         _isInReplayMode = (bool)datas[1];
         Global.IsInReplayMode = _isInReplayMode;
         // 实例化STGMain
@@ -137,11 +134,6 @@ public class StateSTGMain : IState,ICommand
         }
     }
 
-    private void OnEnterStageHandler(int nextStageId)
-    {
-        _nextStageId = nextStageId;
-    }
-
     /// <summary>
     /// STG初始化完成回调
     /// <para>执行加载stage.lua</para>
@@ -167,7 +159,7 @@ public class StateSTGMain : IState,ICommand
     {
         Logger.Log("Retry Game");
         _curState = StateClear;
-        _nextStageId = 1;
+        _nextStageName = _curStageName;
         // 打开loadingView
         List<object> commandList = new List<object>();
         commandList.Add(CommandConsts.STGLoadStageLuaComplete);
@@ -190,6 +182,12 @@ public class StateSTGMain : IState,ICommand
     {
         _stgMain.Init();
         _stgMain.InitSTG();
+        // 加载各个stage.lua文件
+        List<string> stageLuaList = new List<string> { "stage1", "stage1sc", "TestEditorStage" };
+        for (int i = 0; i < stageLuaList.Count; i++)
+        {
+            InterpreterManager.GetInstance().LoadLuaFile(stageLuaList[i]);
+        }
         // 设置初始残机数和符卡数目
         PlayerService.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
         PlayerService.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
@@ -206,8 +204,8 @@ public class StateSTGMain : IState,ICommand
     private void OnStateLoadStageLuaUpdate()
     {
         _curState = StateWait;
-        _curStageId = _nextStageId;
-        _stgMain.EnterStage(_curStageId);
+        _curStageName = _nextStageName;
+        _stgMain.EnterStage(_curStageName);
         Global.IsPause = false;
         _curState = StateUpdateSTG;
     }

@@ -19,6 +19,7 @@ public class NormalEnemyLuaInterface
 
     private static LuaCsClosureValue _funcSetMaxHp;
     private static LuaCsClosureValue _funcSetCollisionSize;
+    private static LuaCsClosureValue _funcSetDropItems;
 
 
     public static void Init()
@@ -38,6 +39,7 @@ public class NormalEnemyLuaInterface
 
             _funcSetMaxHp = new LuaCsClosureValue(LuaLib.SetEnemyMaxHp);
             _funcSetCollisionSize = new LuaCsClosureValue(LuaLib.SetEnemyCollisionParas);
+            _funcSetDropItems = new LuaCsClosureValue(LuaLib.SetEnemyDropItems);
 
             _isInit = true;
         }
@@ -167,6 +169,9 @@ public class NormalEnemyLuaInterface
                     return true;
                 case "SetCollisionSize":
                     res.SetClCsValue(_funcSetCollisionSize);
+                    return true;
+                case "SetDropItems":
+                    res.SetClCsValue(_funcSetDropItems);
                     return true;
                     #endregion
 

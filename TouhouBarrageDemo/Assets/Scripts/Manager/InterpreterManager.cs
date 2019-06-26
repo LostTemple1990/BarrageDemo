@@ -26,6 +26,11 @@ public class InterpreterManager
     private Dictionary<string, int> _customizedEnemyInitMap;
     private Dictionary<string, int> _customizedEnemyOnEliminateMap;
     /// <summary>
+    /// 记录stage对应的task的map
+    /// </summary>
+    private Dictionary<string, int> _stageMap;
+    private List<string> _luaFileLoadedList;
+    /// <summary>
     /// 已经读取过的符卡配置
     /// </summary>
     private List<int> _spellCardLoadedList;
@@ -51,6 +56,9 @@ public class InterpreterManager
         _customizedInitFuncMap = new Dictionary<string, int>();
         _customizedEnemyInitMap = new Dictionary<string, int>();
         _customizedEnemyOnEliminateMap = new Dictionary<string, int>();
+        _stageMap = new Dictionary<string, int>();
+        _luaFileLoadedList = new List<string>();
+
         _luaGlobalNumberMap = new Dictionary<string, float>();
         _luaGlobalVec2Map = new Dictionary<string, Vector2>();
         _luaGlobalObjectMap = new Dictionary<string, object>();
@@ -81,6 +89,24 @@ public class InterpreterManager
         _curStageId = -1;
     }
 
+    public void LoadLuaFile(string fileName)
+    {
+        // 检测lua是否已经被加载
+        if (_luaFileLoadedList.IndexOf(fileName) != -1)
+        {
+            return;
+        }
+        var status = _luaState.L_DoFile("stages/" + fileName + ".lua");
+        if (status != ThreadStatus.LUA_OK)
+        {
+            throw new Exception(_luaState.ToString(-1));
+        }
+        RefCustomizedBullet();
+        RefCustomizedEnemy();
+        RefBossTable();
+        RefStageTable();
+    }
+
     /// <summary>
     /// 加载关卡对应的符卡配置
     /// </summary>
@@ -99,7 +125,7 @@ public class InterpreterManager
         _luaState.Pop(1);
     }
 
-    public Task LoadStage(int stageId)
+    public Task CreateStageTask(string stageName)
     {
         // 记录全局变量player
         _luaState.PushGlobalTable();
@@ -107,23 +133,36 @@ public class InterpreterManager
         _luaState.SetField(-2, "player");
         _luaState.Pop(1);
 
-        if ( _curStageId != stageId )
-        {
-            LoadSpellCardConfig(stageId);
-            var status = _luaState.L_DoFile("stages/stage" + stageId + ".lua");
-            if (status != ThreadStatus.LUA_OK)
-            {
-                throw new Exception(_luaState.ToString(-1));
-            }
-            // 存放自定义的子弹task
-            RefCustomizedBullet();
-            RefCustomizedEnemy();
-            RefBossTable();
-            _curStageId = stageId;
-        }
         Task stageTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
-        InitStageTask(stageTask);
+        int taskFuncRef;
+        if (!_stageMap.TryGetValue(stageName, out taskFuncRef))
+        {
+            Logger.LogError("Stage " + stageName + " is not exist!Please check stage lua file");
+            return null;
+        }
+        // 缓存一份
+        _luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, taskFuncRef);
+        taskFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+        stageTask.funcRef = taskFuncRef;
         return stageTask;
+
+        //if ( _curStageId != stageId )
+        //{
+        //    LoadSpellCardConfig(stageId);
+        //    var status = _luaState.L_DoFile("stages/stage" + stageId + ".lua");
+        //    if (status != ThreadStatus.LUA_OK)
+        //    {
+        //        throw new Exception(_luaState.ToString(-1));
+        //    }
+        //    // 存放自定义的子弹task
+        //    RefCustomizedBullet();
+        //    RefCustomizedEnemy();
+        //    RefBossTable();
+        //    _curStageId = stageId;
+        //}
+        //Task stageTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
+        //InitStageTask(stageTask);
+        //return stageTask;
     }
 
     private void RefCustomizedBullet()
@@ -242,6 +281,37 @@ public class InterpreterManager
 #endif
         }
         //弹出BossTable
+        _luaState.Pop(1);
+    }
+
+    private void RefStageTable()
+    {
+        _luaState.GetField(-1, "Stage");
+        string stageName;
+        int stageTaskFuncRef;
+        if (!_luaState.IsTable(-1))
+        {
+            Logger.Log("Return value Stage is not a table!");
+            _luaState.Pop(1);
+            return;
+        }
+        _luaState.PushNil();
+        while (_luaState.Next(-2))
+        {
+            stageName = _luaState.ToString(-2);
+            if (!_luaState.IsFunction(-1))
+            {
+                Logger.Log("Stage " + stageName + " in StageTable is invalid");
+            }
+            stageTaskFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+            // 添加到stageTask中
+            _stageMap.Add(stageName, stageTaskFuncRef);
+#if LogLuaFuncRef
+            _luaRefDic.Add(initRef, initRef);
+            Logger.Log("Stage " + stageName + " is ref.Task funcRef = " + stageTaskFuncRef);
+#endif
+        }
+        //弹出StageTable
         _luaState.Pop(1);
     }
 

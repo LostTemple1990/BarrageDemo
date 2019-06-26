@@ -139,3 +139,6 @@ eBulletParaType.ScaleX = 25
 eBulletParaType.ScaleY = 26
 eBulletParaType.LaserLength = 31
 eBulletParaType.LaserWidth = 32
+
+PPointNormal = 1
+PPointBig = 2
