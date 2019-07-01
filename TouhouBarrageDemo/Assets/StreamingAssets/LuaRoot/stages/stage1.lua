@@ -798,7 +798,7 @@ Stage["StageTask"] = function()
 		local boss = lib.CreateBoss("MidBoss")
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
 		if coroutine.yield(100) == false then return end
-		lib.SetBossCurPhaseData(boss,1,1,1,1,true)
+		boss:SetPhaseData(1,1,1,1,true)
 		lib.StartSpellCard(SpellCard.PatchouliSC1,boss)
 		--lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end

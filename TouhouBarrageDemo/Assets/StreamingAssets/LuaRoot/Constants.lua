@@ -13,12 +13,12 @@ Constants.ModeEaseInOutQuad = 4
 Constants.ModeSin = 9
 Constants.ModeCos = 10
 
-MoveModeLinear = 1
-MoveModeEaseInQuad = 2
-MoveModeEaseOutQuad = 3
-MoveModeEaseInOutQuad = 4
-MoveModeSin = 9
-MoveModeCos = 10
+IntModeLinear = 1
+IntModeEaseInQuad = 2
+IntModeEaseOutQuad = 3
+IntModeEaseInOutQuad = 4
+IntModeSin = 9
+IntModeCos = 10
 
 Constants.DirNull = 0
 Constants.DirLeft = 1
@@ -44,6 +44,10 @@ eParaChangeMode = {}
 eParaChangeMode.ChangeTo = 1
 eParaChangeMode.IncBy = 2
 eParaChangeMode.DecBy = 3
+
+ChangeModeChangeTo = 1
+ChangeModeIncBy = 2
+ChangeModeDecBy = 3
 
 Constants.DirModeMoveXTowardsPlayer = 1
 Constants.DirModeMoveYTowardsPlayer = 2
@@ -139,6 +143,25 @@ eBulletParaType.ScaleX = 25
 eBulletParaType.ScaleY = 26
 eBulletParaType.LaserLength = 31
 eBulletParaType.LaserWidth = 32
+
+Prop_Velocity = 1
+Prop_Vx = 2
+Prop_Vy = 3
+Prop_VAngel = 4
+Prop_Acce = 5
+Prop_AccAngle = 6
+Prop_MaxVelocity = 7
+Prop_CurveRadius = 11
+Prop_CurveAngle = 12
+Prop_CurveDeltaR = 13
+Prop_CurveOmega = 14
+Prop_CurveCenterX = 15
+Prop_CurveCenterY = 16
+Prop_Alpha = 21
+Prop_ScaleX = 25
+Prop_ScaleY = 26
+Prop_LaserLength = 31
+Prop_LaserWidth = 32
 
 PPointNormal = 1
 PPointBig = 2

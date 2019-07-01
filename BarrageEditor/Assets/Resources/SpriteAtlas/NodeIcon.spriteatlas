@@ -93,6 +93,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3dd532869e904f04e869962e32bc13c0, type: 3}
   - {fileID: 21300000, guid: f0aba39633b15fc48abbf419b1f3022a, type: 3}
   - {fileID: 21300000, guid: 73a6ceb6bb4ee734fbb036f91495def9, type: 3}
+  - {fileID: 21300000, guid: 08c091c6708f95142b1283ba24af77af, type: 3}
   - {fileID: 21300000, guid: a719cdd644de0494e8b92f3972ec7565, type: 3}
   - {fileID: 21300000, guid: 615a82e6e9e7cb945bd32ce95b7c4673, type: 3}
   - {fileID: 21300000, guid: ca2ef6e6d5ead044ba665285b61e8898, type: 3}
@@ -107,6 +108,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: bb2d5528ff68e27469678be5653ef93d, type: 3}
   - {fileID: 21300000, guid: a0cb1c28ae2400f41a2d3375290335ab, type: 3}
   - {fileID: 21300000, guid: 7344fd2868a9e7f4383df66eb986a186, type: 3}
+  - {fileID: 21300000, guid: 9c6988380be80f84aa39f16fccd90025, type: 3}
   - {fileID: 21300000, guid: b15049480f8d43744b44b4b873decfa2, type: 3}
   - {fileID: 21300000, guid: 87459f8892346564e857e84f9ec413d3, type: 3}
   - {fileID: 21300000, guid: 986829b837adcf44a8a806aee408d92b, type: 3}
@@ -149,6 +151,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: ee73d46c06fc1f848b834ac13383332f, type: 3}
   - {fileID: 21300000, guid: a24eb57c888689a41a430fa7031f1cb0, type: 3}
   - {fileID: 21300000, guid: 80faf79c3b5a0f44b8f529a37cbdbc39, type: 3}
+  - {fileID: 21300000, guid: 41fec9ac7b2cd024783089b743d66307, type: 3}
   - {fileID: 21300000, guid: 4a2c95ecd7f1f674e89e1da5cdb75d7a, type: 3}
   - {fileID: 21300000, guid: 2dc8cd6d3f47875418baa8681dc45e40, type: 3}
   - {fileID: 21300000, guid: dff0218da1cfbda4dafbc2262829f568, type: 3}
@@ -163,6 +166,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c22cdc5e051626847aaa591dab65ad26, type: 3}
   - {fileID: 21300000, guid: 33794a7e0eee2304f978aef6d7a2d16f, type: 3}
   - {fileID: 21300000, guid: 6cc3ca7e88642a0479074caee7f671b2, type: 3}
+  - {fileID: 21300000, guid: c99c97aecb2d59940b742d056916c570, type: 3}
   - {fileID: 21300000, guid: 92f130be5a040594294e399f56f9a5b0, type: 3}
   - {fileID: 21300000, guid: 068f18cef12c25a4eb49edb68abc56e3, type: 3}
   - {fileID: 21300000, guid: 483b900f2728ed64e8ba2fe26ad81795, type: 3}
@@ -234,6 +238,7 @@ SpriteAtlas:
   - oncolli
   - smear
   - ChildNodeNotExpand
+  - bossshowbloodbar
   - sentence
   - stagefinish
   - laserturnon
@@ -248,6 +253,7 @@ SpriteAtlas:
   - propertycontroller
   - stagegoto
   - enemycreate
+  - bossinvincible
   - setgravity
   - bossshowaura
   - dialog
@@ -290,9 +296,10 @@ SpriteAtlas:
   - loadimagegroup
   - objectsetimg
   - lasergrow
+  - ignorecollisiongroup
   - resumebgm
   - stagefinishgroup
-  - _node_pro
+  - bulletchangeprops
   - bosscast
   - callbackfunc
   - bulletdefine
@@ -304,6 +311,7 @@ SpriteAtlas:
   - objectdefine
   - setfv
   - bglayer
+  - bossphasedata
   - bgdefine
   - rebounderdefine
   - loadFX

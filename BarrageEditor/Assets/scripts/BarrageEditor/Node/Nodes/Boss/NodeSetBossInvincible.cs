@@ -10,7 +10,7 @@ namespace BarrageEditor
         {
             _nodeType = NodeType.SetBossInvincible;
             base.Init(parentTf);
-            _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "unkonw");
+            _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "bossinvincible");
         }
 
         public override void CreateDefaultAttrs()

@@ -14,12 +14,12 @@ namespace BarrageEditor
         {
             base.BindItem(item);
             List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
-            optionList.Add(new Dropdown.OptionData("MoveModeLinear"));
-            optionList.Add(new Dropdown.OptionData("MoveModeEaseInQuad"));
-            optionList.Add(new Dropdown.OptionData("MoveModeEaseOutQuad"));
-            optionList.Add(new Dropdown.OptionData("MoveModeEaseInOutQuad"));
-            optionList.Add(new Dropdown.OptionData("MoveModeSin"));
-            optionList.Add(new Dropdown.OptionData("MoveModeCos"));
+            optionList.Add(new Dropdown.OptionData("IntModeLinear"));
+            optionList.Add(new Dropdown.OptionData("IntModeEaseInQuad"));
+            optionList.Add(new Dropdown.OptionData("IntModeEaseOutQuad"));
+            optionList.Add(new Dropdown.OptionData("IntModeEaseInOutQuad"));
+            optionList.Add(new Dropdown.OptionData("IntModeSin"));
+            optionList.Add(new Dropdown.OptionData("IntModeCos"));
             _dropDown.options = optionList;
             _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
 

@@ -170,8 +170,8 @@ namespace BarrageEditor
                 typeList = new List<NodeType>[]
                 {
                     new List<NodeType> { NodeType.DefineBoss, NodeType.CreateBoss },
-                    new List<NodeType> { NodeType.SetBossInvincible },
-                    new List<NodeType> { NodeType.DefineSpellCard, NodeType.StartSpellCard },
+                    new List<NodeType> { NodeType.SetBossInvincible, NodeType.ShowBossBloodBar },
+                    new List<NodeType> { NodeType.DefineSpellCard, NodeType.StartSpellCard, NodeType.SetBossPhaseData },
                 },
             };
             _nodeTabs.Add(tab);
@@ -183,6 +183,7 @@ namespace BarrageEditor
                 typeList = new List<NodeType>[]
                 {
                     new List<NodeType> { NodeType.DefineBullet, NodeType.CreateCustomizedBullet, NodeType.CreateSimpleBullet },
+                    new List<NodeType> { NodeType.SetBulletStyle, NodeType.ChangeBulletProperty },
                 },
             };
             _nodeTabs.Add(tab);
@@ -194,6 +195,7 @@ namespace BarrageEditor
                 typeList = new List<NodeType>[]
                 {
                     new List<NodeType> { NodeType.UnitSetV, NodeType.UnitSetAcce, NodeType.UnitMoveTo, NodeType.UnitMoveTowards },
+                    new List<NodeType> { NodeType.UnitSetResistEliminatedTypes },
                 },
             };
             _nodeTabs.Add(tab);

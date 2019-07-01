@@ -87,11 +87,12 @@ public class STGStageManager
     /// <summary>
     /// 符卡开始
     /// </summary>
-    /// <param name="scFuncRef"></param>
+    /// <param name="initFuncRef"></param>
     /// <param name="bossList"></param>
-    public void StartSpellCard(int scFuncRef,List<Boss> bossList)
+    public void StartSpellCard(int initFuncRef, int finishFuncRef, List<Boss> bossList)
     {
-        _curSpellCard.SetTask(scFuncRef, bossList);
+        _curSpellCard.SetTask(initFuncRef, bossList);
+        _curSpellCard.SetFinishFuncRef(finishFuncRef);
         _isCastingSpellCard = true;
     }
 

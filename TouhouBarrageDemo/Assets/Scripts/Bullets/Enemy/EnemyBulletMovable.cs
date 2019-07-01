@@ -275,7 +275,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     /// <param name="angle"></param>
     /// <param name="deltaR"></param>
     /// <param name="omiga"></param>
-    public virtual void DoMoveCurve(float radius, float angle, float deltaR, float omega)
+    public override void SetPolarParas(float radius, float angle, float deltaR, float omega)
     {
         _centerPos = new Vector2(_curPos.x, _curPos.y);
         _curRadius = radius;

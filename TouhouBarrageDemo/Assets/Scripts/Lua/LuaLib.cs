@@ -682,16 +682,36 @@ public partial class LuaLib
         int bossCount = 0;
         List<Boss> bossList = new List<Boss>();
         Boss boss;
-        // 获取符卡对应的函数
-        while ( !luaState.IsFunction(-1) )
+        // 获取符卡对应的table
+        int index = -1;
+        while ( !luaState.IsTable(index) )
         {
             boss = luaState.ToUserData(-1) as Boss;
             bossList.Add(boss);
             bossCount++;
+            index--;
+        }
+        // 获取Init函数
+        luaState.GetField(index, "Init");
+        if (!luaState.IsFunction(-1))
+        {
+            Logger.Log("field \"Init\" of spell card is not a function!");
+            luaState.Pop(1);
+            return 0;
+        }
+        int initFuncRef = InterpreterManager.GetInstance().RefLuaFunction(luaState);
+        // 获取OnFinish函数
+        luaState.GetField(index, "OnFinish");
+        int finishFuncRef = 0;
+        if (!luaState.IsFunction(-1))
+        {
             luaState.Pop(1);
         }
-        int funcRef = InterpreterManager.GetInstance().RefLuaFunction(luaState);
-        STGStageManager.GetInstance().StartSpellCard(funcRef, bossList);
+        else
+        {
+            finishFuncRef = InterpreterManager.GetInstance().RefLuaFunction(luaState);
+        }
+        STGStageManager.GetInstance().StartSpellCard(initFuncRef, finishFuncRef, bossList);
         return 0;
     }
 
@@ -720,21 +740,10 @@ public partial class LuaLib
     public static int SetSpellCardProperties(ILuaState luaState)
     {
         SpellCard sc = STGStageManager.GetInstance().GetSpellCard();
-        string scName = luaState.ToString(-5);
-        float duration = (float)luaState.ToNumber(-4);
-        int condition = luaState.ToInteger(-3);
-        bool isSpellCard = luaState.ToBoolean(-2);
-        // 判断有没有符卡结束时候的函数
-        if ( luaState.IsFunction(-1))
-        {
-            int finishFuncRef = InterpreterManager.GetInstance().RefLuaFunction(luaState);
-            sc.SetFinishFuncRef(finishFuncRef);
-            luaState.Pop(4);
-        }
-        else
-        {
-            luaState.Pop(5);
-        }
+        string scName = luaState.ToString(-4);
+        float duration = (float)luaState.ToNumber(-3);
+        int condition = luaState.ToInteger(-2);
+        bool isSpellCard = luaState.ToBoolean(-1);
         sc.SetProperties(scName, duration, (eSpellCardCondition)condition,isSpellCard);
         return 0;
     }

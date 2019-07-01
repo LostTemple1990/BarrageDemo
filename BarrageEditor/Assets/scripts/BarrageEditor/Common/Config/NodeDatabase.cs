@@ -53,29 +53,45 @@ namespace BarrageEditor
         DefVar = 1007,
         Repeat = 1008,
         Comment = 1009,
+
         StageGroup = 1101,
         Stage = 1102,
+
         AddTask = 1201,
         TaskWait = 1202,
+
         DefineEnemy = 1301,
         OnEnemyCreate = 1302,
         CreateCustomizedEnemy = 1303,
         CreateSimpleEnemy = 1304,
         SetDropItems = 1305,
+
         DefineBoss = 1401,
         OnBossCreate = 1042,
         CreateBoss = 1403,
         SetBossInvincible = 1410,
+        ShowBossBloodBar = 1411,
         DefineSpellCard = 1451,
-        StartSpellCard = 1452,
+        SpellCardInit = 1452,
+        SpellCardFinish = 1453,
+        StartSpellCard = 1454,
+        SetBossPhaseData = 1455,
+
         DefineBullet = 1501,
         OnBulletCreate = 1502,
         CreateCustomizedBullet = 1503,
         CreateSimpleBullet = 1504,
+        SetBulletStyle = 1505,
+        SetBulletIgnoreCollisionGroup = 1506,
+        SetBulletResistEliminatedTypes = 1507,
+        ChangeBulletProperty = 1508,
+
         UnitSetV = 1601,
         UnitSetAcce = 1602,
         UnitMoveTo = 1603,
         UnitMoveTowards = 1604,
+        UnitSetIgnoreCollisionGroups = 1621,
+        UnitSetResistEliminatedTypes = 1622,
     }
 
     public class NodeDatabase
@@ -272,7 +288,8 @@ namespace BarrageEditor
                 shortcutPath = "task",
                 shortcutTip = "unit add task",
                 defaultAttrValues = new List<object> { "self" },
-                needAncestors = new List<NodeType> { NodeType.Stage, NodeType.OnEnemyCreate, NodeType.OnBulletCreate },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                //needAncestors = new List<NodeType> { NodeType.Stage, NodeType.OnEnemyCreate, NodeType.OnBulletCreate, NodeType.Spel },
             };
             _nodeCfgDic.Add(NodeType.AddTask, cfg);
             // TaskWait
@@ -397,6 +414,17 @@ namespace BarrageEditor
 
             cfg = new NodeConfig
             {
+                type = NodeType.ShowBossBloodBar,
+                shortcutPath = "bossshowbloodbar",
+                shortcutTip = "show blood bar",
+                defaultAttrValues = new List<object> { "boss", "true" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.ShowBossBloodBar, cfg);
+
+            cfg = new NodeConfig
+            {
                 type = NodeType.DefineSpellCard,
                 shortcutPath = "scdefine",
                 shortcutTip = "define spell card",
@@ -405,6 +433,22 @@ namespace BarrageEditor
                 editOnCreated = true,
             };
             _nodeCfgDic.Add(NodeType.DefineSpellCard, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.SpellCardInit,
+                defaultAttrValues = new List<object>(),
+                allowParents = new List<NodeType> { },
+            };
+            _nodeCfgDic.Add(NodeType.SpellCardInit, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.SpellCardFinish,
+                defaultAttrValues = new List<object>(),
+                allowParents = new List<NodeType> { },
+            };
+            _nodeCfgDic.Add(NodeType.SpellCardFinish, cfg);
 
             cfg = new NodeConfig
             {
@@ -417,6 +461,17 @@ namespace BarrageEditor
                 editOnCreated = true,
             };
             _nodeCfgDic.Add(NodeType.StartSpellCard, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.SetBossPhaseData,
+                shortcutPath = "bossphasedata",
+                shortcutTip = "set phase data",
+                defaultAttrValues = new List<object> { "boss", "3,1", "true" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.SetBossPhaseData, cfg);
         }
 
         private void InitBulletNodeCfgs()
@@ -470,6 +525,39 @@ namespace BarrageEditor
                 allowChilds = new List<NodeType>(),
             };
             _nodeCfgDic.Add(NodeType.CreateSimpleBullet, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.SetBulletStyle,
+                shortcutPath = "bulletchangestyle",
+                shortcutTip = "set bullet style",
+                defaultAttrValues = new List<object> { "self", "107010" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.SetBulletStyle, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.SetBulletIgnoreCollisionGroup,
+                shortcutPath = "ignorecollisiongroup",
+                shortcutTip = "set ignore collision groups",
+                defaultAttrValues = new List<object> { "self", "0" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.SetBulletIgnoreCollisionGroup, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.ChangeBulletProperty,
+                shortcutPath = "bulletchangeprops",
+                shortcutTip = "change property",
+                defaultAttrValues = new List<object> { "self", "Prop_Velocity", "ChangeModeChangeTo", "0", "0", "0", "0", "0", "30", "IntModeLinear", "1", "0" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.ChangeBulletProperty, cfg);
         }
 
         private void InitUnitNodeCfgs()
@@ -503,7 +591,7 @@ namespace BarrageEditor
                 type = NodeType.UnitMoveTo,
                 shortcutPath = "moveto",
                 shortcutTip = "move to",
-                defaultAttrValues = new List<object> { "self", "0", "0", "60", "MoveModeLinear" },
+                defaultAttrValues = new List<object> { "self", "0", "0", "60", "IntModeLinear" },
                 allowChilds = new List<NodeType>(),
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
             };
@@ -519,6 +607,28 @@ namespace BarrageEditor
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
             };
             _nodeCfgDic.Add(NodeType.UnitMoveTowards, cfg);
+            // IgnoreCollisionGroups
+            cfg = new NodeConfig
+            {
+                type = NodeType.UnitSetIgnoreCollisionGroups,
+                shortcutPath = "ignorecollisiongroup",
+                shortcutTip = "set ignore collision groups",
+                defaultAttrValues = new List<object> { "self", "0" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.UnitSetIgnoreCollisionGroups, cfg);
+            // ResistEliminatedTypes
+            cfg = new NodeConfig
+            {
+                type = NodeType.UnitSetResistEliminatedTypes,
+                shortcutPath = "ignorecollisiongroup",
+                shortcutTip = "set ignore collision groups",
+                defaultAttrValues = new List<object> { "self", "0" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.UnitSetResistEliminatedTypes, cfg);
         }
 
         /// <summary>

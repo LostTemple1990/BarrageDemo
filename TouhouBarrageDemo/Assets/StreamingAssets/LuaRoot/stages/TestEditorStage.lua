@@ -18,7 +18,7 @@ CustomizedTable["YKBullet"].Init = function(self,v,angle)
     self:SetAcce(0.05,0,false)
     self:AddTask(function()
         if Wait(60)==false then return end
-        self:MoveTo(0,0,60,MoveModeLinear)
+        self:MoveTo(0,0,60,IntModeLinear)
         if Wait(60)==false then return end
     end)
 end
@@ -27,6 +27,25 @@ BossTable["Marisa"].Init = function(self)
     self:SetAni(2001)
     self:SetPos(0,0)
     self:SetCollisionSize(32,32)
+end
+SpellCard["TestSC"] = {}
+SpellCard["TestSC"].Init = function(boss)
+    SetSpellCardProperties("unknown spell card",1,60,ConditionEliminateAll,nil)
+end
+SpellCard["TestSC"].OnFinish = function(boss)
+end
+CustomizedTable["NazrinSC1Bullet0"] = {}
+CustomizedTable["NazrinSC1Bullet0"].Init = function(self,waitTime,maxRadius)
+    self:SetResistEliminatedTypes(7)
+    self:AddTask(function()
+        local posX = self.x
+        local posY = self.y
+        self:ChangeProperty(Prop_CurveRadius,ChangeModeChangeTo,0,maxRadius,0,0,0,30,IntModeLinear,1,0)
+        if Wait(80-waitTime)==false then return end
+        self:SetStyleById(107060)
+        local angle = lib.GetAimToPlayerAngle(posX,posY)
+        self:SetV(2.5,angle,false)
+    end)
 end
 Stage["Stage1"] = function()
     do
@@ -51,6 +70,26 @@ Stage["Stage1"] = function()
                 if Wait(100)==false then return end
             end end
         end)
+        enemy:AddTask(function()
+            local k = 1
+            do for _=1,Infinite do
+                local posX,posY = enemy.x,enemy.y
+                do local i,_d_i=(0),(1) for _=1,16 do
+                    last = CreateCustomizedBullet("NazrinSC1Bullet0",113020,posX,posY,i,75,2)
+                    last:SetPolarParas(0,23.5*i*k,0,1*k)
+                    if Wait(1)==false then return end
+                i=i+_d_i end end
+                k = -k
+                if Wait(90)==false then return end
+            end end
+        end)
+    end
+    do
+        if Wait(100000)==false then return end
+        last = CreateBoss("Marisa")
+        local boss = last
+        StartSepllCard(SpellCard["TestSC"],boss)
+        if WaitForSpellCardFinish() == false then return end
     end
 end
 return

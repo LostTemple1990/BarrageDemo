@@ -20,6 +20,8 @@ public class EnemySimpleBulletLuaInterface
     private static LuaCsClosureValue _funcSetStraightParas;
     private static LuaCsClosureValue _funcSetSelfRotaion;
     private static LuaCsClosureValue _funcSetStyleById;
+    private static LuaCsClosureValue _funcSetResistEliminatedTypes;
+    private static LuaCsClosureValue _funcChangeProperty;
 
 
     public static void Init()
@@ -40,6 +42,8 @@ public class EnemySimpleBulletLuaInterface
             _funcSetStraightParas = new LuaCsClosureValue(LuaLib.SetBulletStraightParas);
             _funcSetSelfRotaion = new LuaCsClosureValue(LuaLib.SetBulletSelfRotation);
             _funcSetStyleById = new LuaCsClosureValue(LuaLib.SetBulletStyleById);
+            _funcSetResistEliminatedTypes = new LuaCsClosureValue(LuaLib.SetBulletResistEliminatedFlag);
+            _funcChangeProperty = new LuaCsClosureValue(LuaLib.AddBulletParaChangeEvent);
 
             _isInit = true;
         }
@@ -130,7 +134,17 @@ public class EnemySimpleBulletLuaInterface
                     }
                 case "SetStyleById":
                     {
-                        res.SetClCsValue(_funcSetSelfRotaion);
+                        res.SetClCsValue(_funcSetStyleById);
+                        return true;
+                    }
+                case "SetResistEliminatedTypes":
+                    {
+                        res.SetClCsValue(_funcSetResistEliminatedTypes);
+                        return true;
+                    }
+                case "ChangeProperty":
+                    {
+                        res.SetClCsValue(_funcChangeProperty);
                         return true;
                     }
                 #endregion

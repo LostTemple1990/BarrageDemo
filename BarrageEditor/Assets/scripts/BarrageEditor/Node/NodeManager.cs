@@ -94,11 +94,23 @@ namespace BarrageEditor
                 case NodeType.SetBossInvincible:
                     newNode = new NodeSetBossInvincible();
                     break;
+                case NodeType.ShowBossBloodBar:
+                    newNode = new NodeShowBossBloodBar();
+                    break;
                 case NodeType.DefineSpellCard:
                     newNode = new NodeDefineSpellCard();
                     break;
+                case NodeType.SpellCardInit:
+                    newNode = new NodeSpellCardInit();
+                    break;
+                case NodeType.SpellCardFinish:
+                    newNode = new NodeSpellCardFinish();
+                    break;
                 case NodeType.StartSpellCard:
                     newNode = new NodeStartSpellCard();
+                    break;
+                case NodeType.SetBossPhaseData:
+                    newNode = new NodeSetBossPhaseData();
                     break;
                 case NodeType.DefineBullet:
                     newNode = new NodeDefineBullet();
@@ -112,6 +124,12 @@ namespace BarrageEditor
                 case NodeType.CreateSimpleBullet:
                     newNode = new NodeCreateSimpleBullet();
                     break;
+                case NodeType.SetBulletStyle:
+                    newNode = new NodeSetBulletStyle();
+                    break;
+                case NodeType.ChangeBulletProperty:
+                    newNode = new NodeChangeBulletProperty();
+                    break;
                 case NodeType.UnitSetV:
                     newNode = new NodeSetV();
                     break;
@@ -123,6 +141,9 @@ namespace BarrageEditor
                     break;
                 case NodeType.UnitMoveTowards:
                     newNode = new NodeMoveTowards();
+                    break;
+                case NodeType.UnitSetResistEliminatedTypes:
+                    newNode = new NodeUnitSetResistEliminatedTypes();
                     break;
             }
             if (newNode != null)
@@ -166,6 +187,18 @@ namespace BarrageEditor
                 case NodeAttrType.ItemType:
                     nodeAttr = new NodeAttrItem();
                     break;
+                case NodeAttrType.IgnoreCollisionGroups:
+                    nodeAttr = new NodeAttrIgnoreCollisionGroup();
+                    break;
+                case NodeAttrType.ResistEliminatedTypes:
+                    nodeAttr = new NodeAttrResistEliminatedTypes();
+                    break;
+                case NodeAttrType.PropertyChangeMode:
+                    nodeAttr = new NodeAttrChangeMode();
+                    break;
+                case NodeAttrType.PropertyType:
+                    nodeAttr = new NodeAttrPropertyType();
+                    break;
             }
             if (nodeAttr != null) return nodeAttr;
             throw new Exception("Create nodeAttr fail!Type " + type + " is not exist!");
@@ -200,6 +233,7 @@ namespace BarrageEditor
             {
                 data.attrValues.Add(node.attrs[i].GetValueString());
             }
+            data.isExpand = node.IsExpand;
             if (childIncluded)
             {
                 data.childs = new List<NodeData>();
@@ -221,12 +255,7 @@ namespace BarrageEditor
                 BaseNode child = CreateNodesByNodeDatas(data.childs[i]);
                 node.InsertChildNode(child, -1);
             }
-            List<object> list = new List<object>();
-            for (i=0;i<data.attrValues.Count;i++)
-            {
-                list.Add(data.attrValues[i]);
-            }
-            node.SetAttrsValues(list);
+            node.InitWithNodeData(data);
             return node;
         }
 

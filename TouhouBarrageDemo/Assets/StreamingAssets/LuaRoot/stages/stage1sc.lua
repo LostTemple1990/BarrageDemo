@@ -74,15 +74,9 @@ CustomizedEnemyTable.NazrinSC1Enemy.Init = function(enemy,toPosX,toPosY,duration
 	end)
 end
 
-function SC.NazrinTest(boss)
-	lib.SetSpellCardProperties("Easy-SpellCard",60,Condition.EliminateAll,true,function()
-		local effect = lib.GetGlobalUserData("SC1Effect0")
-		lib.SetEffectFinish(effect)
-		lib.RemoveGlobalUserData("SC1Effect0")
-		effect = lib.GetGlobalUserData("SC1Effect1")
-		lib.SetEffectFinish(effect)
-		lib.RemoveGlobalUserData("SC1Effect1")
-	end)
+SC["NazrinTest"] = {}
+SC["NazrinTest"].Init = function(boss)
+	SetSpellCardProperties("Easy-SpellCard",60,Condition.EliminateAll,true)
 	--bossCG
 	do
 		local tweenList = {}
@@ -215,15 +209,18 @@ function SC.NazrinTest(boss)
 	end)
 end
 
-function SC.NazrinSC1_0(boss)
-	lib.SetSpellCardProperties("Easy-SpellCard",60,Condition.EliminateAll,true,function()
-		local effect = lib.GetGlobalUserData("SC1Effect0")
-		lib.SetEffectFinish(effect)
-		lib.RemoveGlobalUserData("SC1Effect0")
-		effect = lib.GetGlobalUserData("SC1Effect1")
-		lib.SetEffectFinish(effect)
-		lib.RemoveGlobalUserData("SC1Effect1")
-	end)
+SC["NazrinTest"].OnFinish = function(boss)
+	local effect = lib.GetGlobalUserData("SC1Effect0")
+	lib.SetEffectFinish(effect)
+	lib.RemoveGlobalUserData("SC1Effect0")
+	effect = lib.GetGlobalUserData("SC1Effect1")
+	lib.SetEffectFinish(effect)
+	lib.RemoveGlobalUserData("SC1Effect1")
+end
+
+SC["NazrinSC1_0"] = {}
+SC["NazrinSC1_0"].Init = function(boss)
+	lib.SetSpellCardProperties("Easy-SpellCard",60,Condition.EliminateAll,true)
 	--bossCG
 	do
 		local tweenList = {}
@@ -342,15 +339,18 @@ function SC.NazrinSC1_0(boss)
 	end)
 end
 
-function SC.NazrinSC1_1(boss)
-	lib.SetSpellCardProperties("Normal-SpellCard",60,Condition.EliminateAll,true,function()
-		local effect = lib.GetGlobalUserData("SC1Effect0")
-		lib.SetEffectFinish(effect)
-		lib.RemoveGlobalUserData("SC1Effect0")
-		effect = lib.GetGlobalUserData("SC1Effect1")
-		lib.SetEffectFinish(effect)
-		lib.RemoveGlobalUserData("SC1Effect1")
-	end)
+SC["NazrinSC1_0"].OnFinish = function(boss)
+	local effect = lib.GetGlobalUserData("SC1Effect0")
+	lib.SetEffectFinish(effect)
+	lib.RemoveGlobalUserData("SC1Effect0")
+	effect = lib.GetGlobalUserData("SC1Effect1")
+	lib.SetEffectFinish(effect)
+	lib.RemoveGlobalUserData("SC1Effect1")
+end
+
+SC["NazrinSC1_1"] = {}
+SC["NazrinSC1_1"].Init = function(boss)
+	SetSpellCardProperties("Normal-SpellCard",60,Condition.EliminateAll,true)
 	--bossCG
 	do
 		local tweenList = {}
@@ -473,15 +473,18 @@ function SC.NazrinSC1_1(boss)
 	end)
 end
 
-function SC.NazrinSC1_2(boss)
-	lib.SetSpellCardProperties("Hard-SpellCard",60,Condition.EliminateAll,true,function()
-		local effect = lib.GetGlobalUserData("SC1Effect0")
-		lib.SetEffectFinish(effect)
-		lib.RemoveGlobalUserData("SC1Effect0")
-		effect = lib.GetGlobalUserData("SC1Effect1")
-		lib.SetEffectFinish(effect)
-		lib.RemoveGlobalUserData("SC1Effect1")
-	end)
+SC["NazrinSC1_1"].OnFinish = function(boss)
+	local effect = lib.GetGlobalUserData("SC1Effect0")
+	lib.SetEffectFinish(effect)
+	lib.RemoveGlobalUserData("SC1Effect0")
+	effect = lib.GetGlobalUserData("SC1Effect1")
+	lib.SetEffectFinish(effect)
+	lib.RemoveGlobalUserData("SC1Effect1")
+end
+
+SC["NazrinSC1_2"] = {}
+SC["NazrinSC1_2"].Init = function(boss)
+	lib.SetSpellCardProperties("Hard-SpellCard",60,Condition.EliminateAll,true)
 	--bossCG
 	do
 		local tweenList = {}
@@ -602,15 +605,18 @@ function SC.NazrinSC1_2(boss)
 	end)
 end
 
-function SC.NazrinSC1_3(boss)
-	lib.SetSpellCardProperties("Lunatic-SpellCard",60,Condition.EliminateAll,true,function()
-		local effect = lib.GetGlobalUserData("SC1Effect0")
-		lib.SetEffectFinish(effect)
-		lib.RemoveGlobalUserData("SC1Effect0")
-		effect = lib.GetGlobalUserData("SC1Effect1")
-		lib.SetEffectFinish(effect)
-		lib.RemoveGlobalUserData("SC1Effect1")
-	end)
+SC["NazrinSC1_2"].OnFinish = function(boss)
+	local effect = lib.GetGlobalUserData("SC1Effect0")
+	lib.SetEffectFinish(effect)
+	lib.RemoveGlobalUserData("SC1Effect0")
+	effect = lib.GetGlobalUserData("SC1Effect1")
+	lib.SetEffectFinish(effect)
+	lib.RemoveGlobalUserData("SC1Effect1")
+end
+
+SC["NazrinSC1_3"] = {}
+SC["NazrinSC1_3"].Init = function(boss)
+	SetSpellCardProperties("Lunatic-SpellCard",60,Condition.EliminateAll,true)
 	--bossCG
 	do
 		local tweenList = {}
@@ -729,6 +735,15 @@ function SC.NazrinSC1_3(boss)
 			if coroutine.yield(420)==false then return end
 		end
 	end)
+end
+
+SC["NazrinSC1_3"].OnFinish = function(boss)
+	local effect = lib.GetGlobalUserData("SC1Effect0")
+	lib.SetEffectFinish(effect)
+	lib.RemoveGlobalUserData("SC1Effect0")
+	effect = lib.GetGlobalUserData("SC1Effect1")
+	lib.SetEffectFinish(effect)
+	lib.RemoveGlobalUserData("SC1Effect1")
 end
 
 CustomizedBulletTable.NazrinSC2Laser = {}
@@ -798,8 +813,9 @@ CustomizedBulletTable.NazrinSC2Spark.Init = function(laser,posX,posY,canRotate)
 	end
 end
 
-function SC.NazrinSC2_0(boss)
-	lib.SetSpellCardProperties("LaserSign-Easy",60,Condition.EliminateAll,true,nil)
+SC["NazrinSC2_0"] = {}
+SC["NazrinSC2_0"].Init = function(boss)
+	lib.SetSpellCardProperties("LaserSign-Easy",60,Condition.EliminateAll,true)
 	--bossCG
 	do
 		local tweenList = {}
@@ -854,8 +870,9 @@ function SC.NazrinSC2_0(boss)
 	end)
 end
 
-function SC.NazrinSC2_1(boss)
-	lib.SetSpellCardProperties("LaserSign-Normal",60,Condition.EliminateAll,true,nil)
+SC["NazrinSC2_1"] = {}
+SC["NazrinSC2_1"].Init = function(boss)
+	lib.SetSpellCardProperties("LaserSign-Normal",60,Condition.EliminateAll,true)
 	--bossCG
 	do
 		local tweenList = {}
@@ -910,8 +927,9 @@ function SC.NazrinSC2_1(boss)
 	end)
 end
 
-function SC.NazrinSC2_2(boss)
-	lib.SetSpellCardProperties("LaserSign-Hard",60,Condition.EliminateAll,true,nil)
+SC["NazrinSC2_2"] = {}
+SC["NazrinSC2_2"].Init = function(boss)
+	SetSpellCardProperties("LaserSign-Hard",60,Condition.EliminateAll,true)
 	--bossCG
 	do
 		local tweenList = {}
@@ -966,8 +984,9 @@ function SC.NazrinSC2_2(boss)
 	end)
 end
 
-function SC.NazrinSC2_3(boss)
-	lib.SetSpellCardProperties("LaserSign-Lunatic",60,Condition.EliminateAll,true,nil)
+SC["NazrinSC2_3"] = {}
+SC["NazrinSC2_3"].Init = function(boss)
+	SetSpellCardProperties("LaserSign-Lunatic",60,Condition.EliminateAll,true)
 	--bossCG
 	do
 		local tweenList = {}
@@ -1036,8 +1055,9 @@ CustomizedBulletTable.WriggleBullet.Init = function(bullet,velocity,angle,waitTi
 	end)
 end
 
-function SC.WriggleSC(boss)
-	lib.SetSpellCardProperties("WriggleSign",60,Condition.EliminateAll,true,nil)
+SC["WriggleSC"] = {}
+SC["WriggleSC"].Init = function(boss)
+	lib.SetSpellCardProperties("WriggleSign",60,Condition.EliminateAll,true)
 	lib.EnemyMoveToPos(boss,0,128,120,Constants.ModeEaseOutQuad)
 	lib.SetBossInvincible(boss,5)
 	lib.SetEnemyMaxHp(boss,1000)
@@ -1204,8 +1224,9 @@ CustomizedEnemyTable.OrionidsEnemy.OnKill = function(enemy)
 	end
 end
 
-function SC.OrionidsSC(boss)
-	lib.SetSpellCardProperties("Orionid Meteor Shower",60,Condition.EliminateAll,true,nil)
+SC["OrionidsSC"] = {}
+SC["OrionidsSC"].Init = function(boss)
+	SetSpellCardProperties("Orionid Meteor Shower",60,Condition.EliminateAll,true)
 	--lib.EnemyMoveToPos(boss,0,128,120,Constants.ModeEaseOutQuad)
 	lib.SetBossInvincible(boss,5)
 	lib.SetEnemyMaxHp(boss,1200)
@@ -1552,8 +1573,9 @@ CustomizedBulletTable.MarisaSC0LaserBullet3.Init = function(bullet,bulletAngle)
 	end)
 end
 
-function SC.MarisaSC0(boss)
-	lib.SetSpellCardProperties("Gamma HyperNova",40,Condition.EliminateAll,true,nil)
+SC["MarisaSC0"] = {}
+SC["MarisaSC0"].Init = function(boss)
+	lib.SetSpellCardProperties("Gamma HyperNova",40,Condition.EliminateAll,true)
 	--lib.EnemyMoveToPos(boss,0,128,120,Constants.ModeEaseOutQuad)
 	lib.SetBossInvincible(boss,15)
 	lib.SetEnemyMaxHp(boss,1200)
@@ -1758,10 +1780,11 @@ CustomizedBulletTable.PatchouliNonSC0Bullet1.Init = function(bullet,angle)
 	end)
 end
 
-function SC.PatchouliNonSC0(boss)
-	lib.SetSpellCardProperties("",60,Condition.EliminateAll,false,nil)
+SC["PatchouliNonSC0"] = {}
+SC["PatchouliNonSC0"].Init = function(boss)
+	SetSpellCardProperties("",60,Condition.EliminateAll,false)
 	lib.EnemyMoveToPos(boss,0,128,120,Constants.ModeLinear)
-	lib.SetBossInvincible(boss,5)
+	boss:SetInvincible(5)
 	lib.SetEnemyMaxHp(boss,1400)
 	lib.ShowBossBloodBar(boss,true)
 	if coroutine.yield(120) == false then return end
@@ -1868,10 +1891,11 @@ CustomizedBulletTable.PatchouliNonSC1Laser.Init = function(laser,laserId,master,
 	end)
 end
 
-function SC.PatchouliNonSC1(boss)
+SC["PatchouliNonSC1"] = {}
+SC["PatchouliNonSC1"].Init = function(boss)
 	lib.EnemyMoveToPos(boss,0,128,120,Constants.ModeLinear)
 	if coroutine.yield(120) == false then return end
-	lib.SetSpellCardProperties("",60,Condition.EliminateAll,false,nil)
+	SetSpellCardProperties("",60,Condition.EliminateAll,false)
 	lib.SetBossInvincible(boss,5)
 	lib.SetEnemyMaxHp(boss,500)
 	lib.ShowBossBloodBar(boss,true)
@@ -1963,8 +1987,9 @@ CustomizedBulletTable.PatchouliSC0_FireRain.Init = function(bullet,vAngle)
 	end)
 end
 
-function SC.PatchouliSC1(boss)
-	lib.SetSpellCardProperties("日金符 [Alchemy Furnace]",60,Condition.EliminateAll,true,nil)
+SC["PatchouliSC1"] = {}
+SC["PatchouliSC1"].Init = function(boss)
+	SetSpellCardProperties("日金符 [Alchemy Furnace]",60,Condition.EliminateAll,true)
 	lib.EnemyMoveToPos(boss,0,128,120,Constants.ModeEaseOutQuad)
 	lib.SetBossInvincible(boss,5)
 	lib.SetEnemyMaxHp(boss,1000)
@@ -2044,8 +2069,9 @@ CustomizedBulletTable.ReisenSC0_Bullet.Init = function(bullet,vAngle)
 	end)
 end
 
-function SC.ReisenSC0(boss)
-	lib.SetSpellCardProperties("水符 [Alchemy Furnace]",60,Condition.EliminateAll,true,nil)
+SC["ReisenSC0"] = {}
+SC["ReisenSC0"].Init = function(boss)
+	SetSpellCardProperties("水符 [Alchemy Furnace]",60,Condition.EliminateAll,true)
 	lib.EnemyMoveToPos(boss,0,128,120,Constants.ModeEaseOutQuad)
 	lib.SetBossInvincible(boss,5)
 	lib.SetEnemyMaxHp(boss,1000)

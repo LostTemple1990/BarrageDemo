@@ -390,6 +390,11 @@ namespace BarrageEditor
         public void SetChildNodesVisible(bool value)
         {
             _nodeItemGo.SetActive(value);
+            // 如果该节点可见，则更新一下扩展箭头
+            if (value)
+            {
+                UpdateExpandImg();
+            }
             bool childVisible = !value || !_isExpand ? false : value;
             for (int i = 0, len = childs.Count; i < len; i++)
             {
@@ -592,6 +597,19 @@ namespace BarrageEditor
             }
         }
 
+        public void InitWithNodeData(NodeData nd)
+        {
+            List<object> list = new List<object>();
+            List<string> values = nd.attrValues;
+            int valuesCount = values.Count;
+            for (int i = 0; i < valuesCount; i++)
+            {
+                list.Add(values[i]);
+            }
+            SetAttrsValues(list);
+            _isExpand = nd.isExpand;
+        }
+
         public void Destroy()
         {
             int i;
@@ -633,5 +651,6 @@ namespace BarrageEditor
         public int type;
         public List<NodeData> childs;
         public List<string> attrValues;
+        public bool isExpand;
     }
 }

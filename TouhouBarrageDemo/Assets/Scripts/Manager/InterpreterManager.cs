@@ -145,24 +145,6 @@ public class InterpreterManager
         taskFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
         stageTask.funcRef = taskFuncRef;
         return stageTask;
-
-        //if ( _curStageId != stageId )
-        //{
-        //    LoadSpellCardConfig(stageId);
-        //    var status = _luaState.L_DoFile("stages/stage" + stageId + ".lua");
-        //    if (status != ThreadStatus.LUA_OK)
-        //    {
-        //        throw new Exception(_luaState.ToString(-1));
-        //    }
-        //    // 存放自定义的子弹task
-        //    RefCustomizedBullet();
-        //    RefCustomizedEnemy();
-        //    RefBossTable();
-        //    _curStageId = stageId;
-        //}
-        //Task stageTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
-        //InitStageTask(stageTask);
-        //return stageTask;
     }
 
     private void RefCustomizedBullet()

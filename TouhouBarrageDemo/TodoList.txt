@@ -41,9 +41,13 @@ Enemy的GetHit函数要加入伤害来源，用于判断是否吃B --finish
 给EnemyLaser加入MovableObject
 添加bullet的render方法，在每帧最后执行
 优化灵梦跟踪弹的寻找目标方式
-检查一下ObjectCollider的ColliderGroup是否正确生效
+检查一下ObjectCollider的ColliderGroup是否正确生效 
 考虑把人物立绘相关部分也整合到SpriteEffect中
 添加SpellCard Bonus
+将SetBossInvincible方法提取出来给EnemyBase使用
+
+---editor
+删除自定义的节点的时候，需要同时删除掉CustomDefine中对应的数据，否则撤销操作会报错
 
 
 COLOR_DEEP_RED=1
@@ -62,5 +66,3 @@ COLOR_GOLDEN_YELLOW=13
 COLOR_ORANGE=14
 COLOR_DEEP_GRAY=15
 COLOR_GRAY=16
-
-https://wago.io/1ctv3b91K

@@ -46,9 +46,13 @@ namespace BarrageEditor
         public override void CreateDefualtChilds()
         {
             // 添加OnCreate子节点
-            //BaseNode onCreateNode = NodeManager.CreateNode(NodeType.OnBossCreate);
-            //onCreateNode.SetAttrsDefaultValues();
-            //InsertChildNode(onCreateNode, -1);
+            BaseNode onCreateNode = NodeManager.CreateNode(NodeType.SpellCardInit);
+            onCreateNode.SetAttrsDefaultValues();
+            InsertChildNode(onCreateNode, -1);
+            // 添加OnFinish子节点
+            BaseNode onFinishNode = NodeManager.CreateNode(NodeType.SpellCardFinish);
+            onFinishNode.SetAttrsDefaultValues();
+            InsertChildNode(onFinishNode, -1);
         }
 
         public override string GetNodeName()
@@ -107,38 +111,7 @@ namespace BarrageEditor
         public override string ToLuaHead()
         {
             string scTypeName = GetAttrByIndex(0).GetValueString();
-            int bossCount = int.Parse(GetAttrByIndex(2).GetValueString());
-            string paramStr = "";
-            if (bossCount == 1)
-            {
-                paramStr = "boss";
-            }
-            else
-            {
-                for (int i=0;i<bossCount;i++)
-                {
-                    if (i==0)
-                    {
-                        paramStr += "boss" + i;
-                    }
-                    else
-                    {
-                        paramStr += ",boss" + i;
-                    }
-                }
-            }
-            string ret = string.Format("SC[\"{0}\"] = function({1})\n", scTypeName, paramStr);
-            ret += string.Format("    SetSpellCardProperties(\"{0}\",{1},{2},{3},nil)\n",
-                GetAttrByIndex(1).GetValueString(),//符卡名称
-                GetAttrByIndex(2).GetValueString(),//持续时间
-                GetAttrByIndex(3).GetValueString(),//击破条件
-                GetAttrByIndex(4).GetValueString());//是否符卡
-            return ret;
-        }
-
-        public override string ToLuaFoot()
-        {
-            return "end\n";
+            return string.Format("SpellCard[\"{0}\"] = {{}}\n", scTypeName);
         }
     }
 }

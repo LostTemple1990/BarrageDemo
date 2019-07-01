@@ -181,7 +181,7 @@ public partial class LuaLib
         float deltaR = (float)luaState.ToNumber(-2);
         float omiga = (float)luaState.ToNumber(-1);
         luaState.Pop(5);
-        bullet.DoMoveCurve(radius, curveAngle, deltaR, omiga);
+        bullet.SetPolarParas(radius, curveAngle, deltaR, omiga);
         return 0;
     }
 

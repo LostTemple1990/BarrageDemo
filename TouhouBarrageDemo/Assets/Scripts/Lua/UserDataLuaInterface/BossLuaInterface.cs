@@ -21,6 +21,10 @@ public class BossLuaInterface
     private static LuaCsClosureValue _funcSetCollisionSize;
     private static LuaCsClosureValue _funcSetAni;
 
+    private static LuaCsClosureValue _funcSetInvincible;
+    private static LuaCsClosureValue _funcShowBloodBar;
+    private static LuaCsClosureValue _funcSetPhaseData;
+
 
     public static void Init()
     {
@@ -40,6 +44,10 @@ public class BossLuaInterface
             _funcSetMaxHp = new LuaCsClosureValue(LuaLib.SetEnemyMaxHp);
             _funcSetCollisionSize = new LuaCsClosureValue(LuaLib.SetEnemyCollisionParas);
             _funcSetAni = new LuaCsClosureValue(LuaLib.SetBossAni);
+
+            _funcSetInvincible = new LuaCsClosureValue(LuaLib.SetBossInvincible);
+            _funcShowBloodBar = new LuaCsClosureValue(LuaLib.ShowBossBloodBar);
+            _funcSetPhaseData = new LuaCsClosureValue(LuaLib.SetBossCurPhaseData);
 
             _isInit = true;
         }
@@ -173,11 +181,22 @@ public class BossLuaInterface
                 case "SetAni":
                     res.SetClCsValue(_funcSetAni);
                     return true;
+                #endregion
+                #region Boss专属变量
+                case "SetInvincible":
+                    res.SetClCsValue(_funcSetInvincible);
+                    return true;
+                case "ShowBloodBar":
+                    res.SetClCsValue(_funcShowBloodBar);
+                    return true;
+                case "SetPhaseData":
+                    res.SetClCsValue(_funcSetPhaseData);
+                    return true;
                     #endregion
 
             }
         }
-        res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(EnemySimpleBullet).Name));
+        res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(Boss).Name));
         return false;
     }
 
@@ -248,7 +267,7 @@ public class BossLuaInterface
                     #endregion
             }
         }
-        value.SetSValue(string.Format("SetField of userData fail!Invalid key {0} for type {1}", key, typeof(EnemySimpleBullet).Name));
+        value.SetSValue(string.Format("SetField of userData fail!Invalid key {0} for type {1}", key, typeof(Boss).Name));
         return false;
     }
 }

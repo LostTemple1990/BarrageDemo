@@ -64,7 +64,7 @@ public partial class LuaLib
         int repeatCount = luaState.ToInteger(-2);
         int repeatInterval = luaState.ToInteger(-1);
         luaState.Pop(12);
-        BCParasChange bc = bullet.GetComponent<BCParasChange>();
+        BCParasChange bc = bullet.AddComponent<BCParasChange>();
         ParaChangeValue changeValue = new ParaChangeValue
         {
             argType = valueType,

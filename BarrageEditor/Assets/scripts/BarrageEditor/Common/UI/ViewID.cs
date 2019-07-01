@@ -35,6 +35,14 @@ namespace BarrageEditor
         /// 自定义类型的参数编辑界面
         /// </summary>
         public const int AttrEditParasView = 2006;
+        /// <summary>
+        /// 编辑忽略碰撞组
+        /// </summary>
+        public const int AttrEditIgnoreCollisionGroup = 2007;
+        /// <summary>
+        /// 编辑抵抗的消除类型
+        /// </summary>
+        public const int AttrEditResistEliminatedTypes = 2008;
 
 
         private static Dictionary<int, ViewCfg> _viewCfgMap;
@@ -128,6 +136,26 @@ namespace BarrageEditor
                 layer = LayerId.Normal
             };
             _viewCfgMap.Add(AttrEditParasView, cfg);
+            #endregion
+            #region 编辑忽略碰撞组界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrEditIgnoreCollisionGroup,
+                resPath = "EditViews/EditIgnoreCollisionGroupView",
+                className = "BarrageEditor.AttrEditIgnoreCollisionGroupView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(AttrEditIgnoreCollisionGroup, cfg);
+            #endregion
+            #region 编辑抵抗消除类型界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrEditResistEliminatedTypes,
+                resPath = "EditViews/EditResistEliminatedTypesView",
+                className = "BarrageEditor.AttrEditResistEliminatedTypesView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(AttrEditResistEliminatedTypes, cfg);
             #endregion
             UIManager.GetInstance().InitViewCfgs(_viewCfgMap);
         }
