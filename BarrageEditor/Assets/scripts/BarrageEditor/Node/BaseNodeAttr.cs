@@ -195,6 +195,8 @@ namespace BarrageEditor
         ResistEliminatedTypes = 11,
         PropertyChangeMode = 12,
         PropertyType = 13,
+        BlendMode = 14,
+        Layer = 15,
     }
 
     public class NodeAttrData

@@ -184,6 +184,12 @@ public class MovableObject : IPoolClass
         _isActive = true;
     }
 
+    public virtual void SetStraightParas(float v,float vAngle,float acce,float accAngle)
+    {
+        DoStraightMove(v, vAngle);
+        DoAcceleration(acce, accAngle);
+    }
+
     public virtual void MoveTo(float endX,float endY,int duration,InterpolationMode mode)
     {
         _beginX = _curPos.x;
@@ -286,8 +292,8 @@ public class MovableObject : IPoolClass
     /// <param name="radius"></param>
     /// <param name="angle"></param>
     /// <param name="deltaR"></param>
-    /// <param name="omiga"></param>
-    public virtual void DoCurvedMove(float radius, float angle, float deltaR, float omega)
+    /// <param name="omega"></param>
+    public virtual void SetPolarParas(float radius, float angle, float deltaR, float omega)
     {
         _centerPos = new Vector2(_curPos.x, _curPos.y);
         _curRadius = radius;

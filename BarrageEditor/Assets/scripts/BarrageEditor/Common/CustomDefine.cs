@@ -21,6 +21,7 @@ namespace BarrageEditor
                     _customDefineDic.Add(CustomDefineType.Enemy, new Dictionary<string, CustomDefineData>());
                     _customDefineDic.Add(CustomDefineType.Boss, new Dictionary<string, CustomDefineData>());
                     _customDefineDic.Add(CustomDefineType.SpellCard, new Dictionary<string, CustomDefineData>());
+                    _customDefineDic.Add(CustomDefineType.STGObject, new Dictionary<string, CustomDefineData>());
                 }
                 return _customDefineDic;
             }
@@ -117,6 +118,7 @@ namespace BarrageEditor
             if (nodeType == NodeType.CreateCustomizedEnemy) return CustomDefineType.Enemy;
             if (nodeType == NodeType.CreateBoss) return CustomDefineType.Boss;
             if (nodeType == NodeType.StartSpellCard) return CustomDefineType.SpellCard;
+            if (nodeType == NodeType.CreateCusomizedSTGObject) return CustomDefineType.STGObject;
             Logger.LogError(string.Format("CustomizeType to NodeType {0} is not exist!", nodeType));
             return CustomDefineType.Null;
         }
@@ -130,6 +132,7 @@ namespace BarrageEditor
             customDefineDic[CustomDefineType.Enemy].Clear();
             customDefineDic[CustomDefineType.Boss].Clear();
             customDefineDic[CustomDefineType.SpellCard].Clear();
+            customDefineDic[CustomDefineType.STGObject].Clear();
         }
     }
 
@@ -150,5 +153,6 @@ namespace BarrageEditor
         Enemy = 5,
         Boss = 6,
         SpellCard = 7,
+        STGObject = 8,
     }
 }

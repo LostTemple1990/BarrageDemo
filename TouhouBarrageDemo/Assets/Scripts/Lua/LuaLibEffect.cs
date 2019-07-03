@@ -98,10 +98,49 @@ public partial class LuaLib
         LayerId layerId = (LayerId)luaState.ToInteger(-3);
         bool cached = luaState.ToBoolean(-2);
         int orderInLayer = luaState.ToInteger(-1);
-        luaState.Pop(6);
         STGSpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
         effect.SetSprite(atlasName, spriteName, blendMode, layerId, cached);
         effect.SetOrderInLayer(orderInLayer);
+        luaState.PushLightUserData(effect);
+        return 1;
+    }
+
+    public static int SetSTGObjectProps(ILuaState luaState)
+    {
+        STGSpriteEffect effect = luaState.ToUserData(-6) as STGSpriteEffect;
+        string atlasName = luaState.ToString(-5);
+        string spriteName = luaState.ToString(-4);
+        eBlendMode blendMode = (eBlendMode)luaState.ToInteger(-3);
+        LayerId layerId = (LayerId)luaState.ToInteger(-2);
+        bool cached = luaState.ToBoolean(-1);
+        effect.SetSprite(atlasName, spriteName, blendMode, layerId, cached);
+        return 0;
+    }
+
+    /// <summary>
+    /// 创建自定义的STGObject
+    /// <para>string customizedName 自定义名称</para>
+    /// <para>args...</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int CreateCustomizedSTGObject(ILuaState luaState)
+    {
+        int top = luaState.GetTop();
+        int numArgs = top - 1;
+        string customizedName = luaState.ToString(1);
+        int funcRef = InterpreterManager.GetInstance().GetCustomizedFuncRef(customizedName, eCustomizedType.STGObject, eCustomizedFuncRefType.Init);
+        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
+        STGSpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
+        luaState.PushLightUserData(effect);
+        // 复制参数
+        int copyIndex = -numArgs - 2;
+        for (int i=0;i<numArgs;i++)
+        {
+            luaState.Copy(copyIndex, -1);
+        }
+        luaState.Call(numArgs + 1, 0);
+        // 返回结果
         luaState.PushLightUserData(effect);
         return 1;
     }

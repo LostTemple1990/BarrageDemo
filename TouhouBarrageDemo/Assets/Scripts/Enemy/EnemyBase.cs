@@ -782,7 +782,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
 
     public void SetPolarParas(float radius, float angle, float deltaR, float omega)
     {
-        _movableObj.DoCurvedMove(radius, angle, deltaR, omega);
+        _movableObj.SetPolarParas(radius, angle, deltaR, omega);
     }
 }
 

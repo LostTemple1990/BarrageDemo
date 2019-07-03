@@ -1,6 +1,7 @@
 SpellCard = {}
 Constants = {}
 
+UseVelocityAngle = true
 VelocityAngle = -999
 Constants.VelocityAngle = -999
 Constants.OriginalAngle = 999
@@ -123,6 +124,9 @@ eColliderGroup.Item = 16
 eBlendMode = {}
 eBlendMode.Normal = 0
 eBlendMode.SoftAdditive = 1
+
+BlendMode_Normal = 0
+BlendMode_SoftAdditive = 1
 
 eBulletParaType = {}
 eBulletParaType.Velocity = 1

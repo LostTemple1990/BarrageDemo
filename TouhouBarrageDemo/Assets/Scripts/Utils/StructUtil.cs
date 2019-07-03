@@ -316,6 +316,22 @@ public struct GravitationParas
     public int lastUpdateTime;
 }
 
+public enum eCustomizedType : byte
+{
+    Bullet = 1,
+    Enemy = 2,
+    SpellCard = 3,
+    Stage = 4,
+    STGObject = 5,
+}
+
+public enum eCustomizedFuncRefType : byte
+{
+    Init = 1,
+    OnKill = 2,
+    Other = 5,
+}
+
 #region struct ItemWithFramentsCounter
 /// <summary>
 /// 带碎片的道具计数器

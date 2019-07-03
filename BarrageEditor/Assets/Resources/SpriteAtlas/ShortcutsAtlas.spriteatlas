@@ -40,6 +40,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 7a19dd809e4368e4b8f1427f26fff8e7, type: 3}
   - {fileID: 21300000, guid: dc779090e511c3d45b0f485f74f362e4, type: 3}
   - {fileID: 21300000, guid: 18f966c0ca8ae304b874a78bfc55a214, type: 3}
+  - {fileID: 21300000, guid: 1975bdf0986aa6e42a09bd7ecdd5155d, type: 3}
   - {fileID: 21300000, guid: 16739a21afb8df440a166994f056f38d, type: 3}
   - {fileID: 21300000, guid: 752b86418f3799e48a6465a08519fc5e, type: 3}
   - {fileID: 21300000, guid: 47a8db4125dfd1d4db7ea107be72a9b8, type: 3}
@@ -110,6 +111,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 8e81998820a4c6f429a1739b942a7c25, type: 3}
   - {fileID: 21300000, guid: 6a5bc1988dba0814db7573f1196bacf8, type: 3}
   - {fileID: 21300000, guid: 0330d3b8c6337a243994f49596fee908, type: 3}
+  - {fileID: 21300000, guid: 33cee3b8d8b5d344fb5ea1ff57b441c5, type: 3}
   - {fileID: 21300000, guid: 55deb0d85f383864da1810218b601816, type: 3}
   - {fileID: 21300000, guid: 204bbbf83dadc7f46a9fccfb18fd76bc, type: 3}
   - {fileID: 21300000, guid: 7e461a3933567064b861514d10149bd8, type: 3}
@@ -201,6 +203,7 @@ SpriteAtlas:
   - bulletchangestyle
   - down
   - left image
+  - setpolarparas
   - debugstage
   - bulletcreate
   - stagefinish
@@ -271,6 +274,7 @@ SpriteAtlas:
   - up
   - undo
   - laserbentcreate
+  - setstraightparas
   - playsound
   - Warning
   - laserturnhalfon

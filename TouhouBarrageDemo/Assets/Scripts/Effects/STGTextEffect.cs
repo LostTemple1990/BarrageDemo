@@ -543,7 +543,7 @@ public class STGTextEffect : STGEffectBase, ISTGMovable, IAttachment, ITaskExecu
 
     public void SetPolarParas(float radius, float angle, float deltaR, float omega)
     {
-        _movableObject.DoCurvedMove(radius, angle, deltaR, omega);
+        _movableObject.SetPolarParas(radius, angle, deltaR, omega);
     }
 
     public float velocity

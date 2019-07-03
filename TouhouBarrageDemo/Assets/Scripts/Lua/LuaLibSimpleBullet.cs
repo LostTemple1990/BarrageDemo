@@ -229,7 +229,7 @@ public partial class LuaLib
         //luaState.Replace(-4 - numArgs);
         //luaState.PCall(numArgs + 1, 0, -numArgs - 3);
         // 使用call
-        int funcRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
+        int funcRef = InterpreterManager.GetInstance().GetBulletInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         if (!luaState.IsFunction(-1))
         {

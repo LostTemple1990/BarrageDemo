@@ -225,6 +225,8 @@ public partial class LuaLib
             new NameFuncPair("SetSpellCardProperties",SetSpellCardProperties),
             new NameFuncPair("StartSpellCard",StartSpellCard),
             new NameFuncPair("WaitForSpellCardFinish",WaitForSpellCardFinish),
+            // STGObject
+            new NameFuncPair("CreateCustomizedSTGObject",CreateCustomizedSTGObject),
         };
         luaState.PushGlobalTable();
         luaState.L_SetFuncs(define, 0);
@@ -241,6 +243,7 @@ public partial class LuaLib
         EnemySimpleBulletLuaInterface.Init();
         NormalEnemyLuaInterface.Init();
         BossLuaInterface.Init();
+        STGObjectLuaInterface.Init();
     }
 
     public static bool GetLightUserDataField(object userData, TValue key, out TValue res)
@@ -253,6 +256,8 @@ public partial class LuaLib
                 return NormalEnemyLuaInterface.Get(userData, key, out res);
             case "Boss":
                 return BossLuaInterface.Get(userData, key, out res);
+            case "STGSpriteEffect":
+                return STGObjectLuaInterface.Get(userData, key, out res);
         }
         res = new TValue();
         res.SetSValue(string.Format("GetField from userData fail!Invalid userData of type {0}", userData.GetType().Name));
@@ -269,6 +274,8 @@ public partial class LuaLib
                 return NormalEnemyLuaInterface.Set(userData, key, ref value);
             case "Boss":
                 return NormalEnemyLuaInterface.Set(userData, key, ref value);
+            case "STGSpriteEffect":
+                return STGObjectLuaInterface.Set(userData, key, ref value);
         }
         value.SetSValue(string.Format("SetField of userData fail!Invalid userData of type {0}", userData.GetType().Name));
         return false;
@@ -346,7 +353,7 @@ public partial class LuaLib
         EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Laser) as EnemyLaser;
         // 设置自定义的数据
         BCCustomizedTask bc = laser.AddComponent<BCCustomizedTask>();
-        int funcRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
+        int funcRef = InterpreterManager.GetInstance().GetBulletInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         if (!luaState.IsFunction(-1))
         {

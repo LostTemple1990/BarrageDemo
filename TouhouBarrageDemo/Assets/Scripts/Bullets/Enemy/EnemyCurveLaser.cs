@@ -311,7 +311,7 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     public void SetCurveParas(float radius,float angle,float deltaR,float omega)
     {
-        _movableObj.DoCurvedMove(radius, angle, deltaR, omega);
+        _movableObj.SetPolarParas(radius, angle, deltaR, omega);
     }
 
     public override void AddExtraSpeedParas(float v, float vAngle, float acce, float accAngle)

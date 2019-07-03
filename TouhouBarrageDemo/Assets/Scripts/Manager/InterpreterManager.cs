@@ -25,6 +25,7 @@ public class InterpreterManager
     private Dictionary<string, int> _customizedInitFuncMap;
     private Dictionary<string, int> _customizedEnemyInitMap;
     private Dictionary<string, int> _customizedEnemyOnEliminateMap;
+    private Dictionary<string, int> _customizedSTGObjectFuncMap;
     /// <summary>
     /// 记录stage对应的task的map
     /// </summary>
@@ -56,6 +57,7 @@ public class InterpreterManager
         _customizedInitFuncMap = new Dictionary<string, int>();
         _customizedEnemyInitMap = new Dictionary<string, int>();
         _customizedEnemyOnEliminateMap = new Dictionary<string, int>();
+        _customizedSTGObjectFuncMap = new Dictionary<string, int>();
         _stageMap = new Dictionary<string, int>();
         _luaFileLoadedList = new List<string>();
 
@@ -86,7 +88,48 @@ public class InterpreterManager
         {
             throw new Exception(_luaState.ToString(-1));
         }
-        _curStageId = -1;
+        InitLayerFields();
+    }
+
+    private void InitLayerFields()
+    {
+        _luaState.PushGlobalTable();
+        #region layers
+        _luaState.PushInteger((int)LayerId.Enemy);
+        _luaState.SetField(-2, "LayerEnemy");
+
+        _luaState.PushInteger((int)LayerId.EnemyBarrage);
+        _luaState.SetField(-2, "LayerEnemyBullet");
+
+        _luaState.PushInteger((int)LayerId.Player);
+        _luaState.SetField(-2, "LayerPlayer");
+
+        _luaState.PushInteger((int)LayerId.PlayerBarage);
+        _luaState.SetField(-2, "LayerPlayerBullet");
+
+        _luaState.PushInteger((int)LayerId.Item);
+        _luaState.SetField(-2, "LayerItem");
+
+        _luaState.PushInteger((int)LayerId.STGBottomEffect);
+        _luaState.SetField(-2, "LayerEffectBottom");
+
+        _luaState.PushInteger((int)LayerId.STGNormalEffect);
+        _luaState.SetField(-2, "LayerEffectNormal");
+
+        _luaState.PushInteger((int)LayerId.STGTopEffect);
+        _luaState.SetField(-2, "LayerEffectTop");
+
+        _luaState.PushInteger((int)LayerId.GameUI_Bottom);
+        _luaState.SetField(-2, "LayerUIBottom");
+
+        _luaState.PushInteger((int)LayerId.GameUI_Normal);
+        _luaState.SetField(-2, "LayerUINormal");
+
+        _luaState.PushInteger((int)LayerId.GameUI_Top);
+        _luaState.SetField(-2, "LayerUITop");
+        #endregion
+        //弹出GlobalTable
+        _luaState.Pop(1);
     }
 
     public void LoadLuaFile(string fileName)
@@ -297,25 +340,38 @@ public class InterpreterManager
         _luaState.Pop(1);
     }
 
-    private void InitStageTask(Task stageTask)
+    private void RefCustomizedSpriteTable()
     {
-        _luaState.GetField(-1, "Stage");
-        if ( !_luaState.IsTable(-1) )
+        _luaState.GetField(-1, "CustomizedSpriteTable");
+        string customizedName;
+        int initFuncRef;
+        if (!_luaState.IsTable(-1))
         {
-            throw new Exception("Return value of Stage" + _curStageId + ".lua is not valid.Prop Stage is not table!");
-        }
-        _luaState.GetField(-1, "StageTask");
-        if (!_luaState.IsFunction(-1))
-        {
-            Logger.LogError("Func StageTask is not exist!");
+            Logger.Log("field CustomizedSTGObjectTable is not a table!");
+            _luaState.Pop(1);
             return;
         }
-        stageTask.funcRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+        _luaState.PushNil();
+        while (_luaState.Next(-2))
+        {
+            customizedName = _luaState.ToString(-2);
+            if (!_luaState.IsTable(-1))
+            {
+                Logger.Log("sub field " + customizedName + " is not a table!");
+            }
+            _luaState.GetField(-1, "Init");
+            if (!_luaState.IsFunction(-1))
+            {
+                Logger.Log("sub field Init is not a function!");
+            }
+            initFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+            _luaState.Pop(1);
+            _customizedSTGObjectFuncMap.Add(customizedName, initFuncRef);
 #if LogLuaFuncRef
-        Logger.Log("Ref StageTask,Ref = " + stageTask.funcRef);
-        _luaRefDic.Add(stageTask.funcRef, stageTask.funcRef);
+            Logger.Log("InitFunction in Customized Class " + customizedName + " is Ref , ref = " + initFuncRef);
+            _luaRefDic.Add(initFuncRef, initFuncRef);
 #endif
-        // 弹出Stage
+        }
         _luaState.Pop(1);
     }
 
@@ -440,7 +496,7 @@ public class InterpreterManager
         }
     }
 
-    public int GetInitFuncRef(string customizedName)
+    public int GetBulletInitFuncRef(string customizedName)
     {
         int funcRef;
         if (_customizedInitFuncMap.TryGetValue(customizedName, out funcRef))
@@ -482,6 +538,16 @@ public class InterpreterManager
         return 0;
     }
 
+    public int GetCustomizedFuncRef(string customizedName,eCustomizedType customizedType,eCustomizedFuncRefType funcType)
+    {
+        int funcRef = 0;
+        if (customizedType == eCustomizedType.STGObject)
+        {
+            _customizedSTGObjectFuncMap.TryGetValue(customizedName, out funcRef);
+        }
+        return funcRef;
+    }
+
     /// <summary>
     /// 添加调用lua方法需要的参数
     /// </summary>
@@ -495,6 +561,31 @@ public class InterpreterManager
             paraType = type
         };
         _funcParas.Add(luaPara);
+    }
+
+    public void SetGlobalField(string fieldName,object para,LuaParaType type)
+    {
+        _luaState.PushGlobalTable();
+        switch(type)
+        {
+            case LuaParaType.Bool:
+                _luaState.PushBoolean((bool)para);
+                break;
+            case LuaParaType.Int:
+                _luaState.PushInteger((int)para);
+                break;
+            case LuaParaType.LightUserData:
+                _luaState.PushLightUserData(para);
+                break;
+            case LuaParaType.Number:
+                _luaState.PushNumber((double)para);
+                break;
+            case LuaParaType.String:
+                _luaState.PushString((string)para);
+                break;
+        }
+        _luaState.SetField(-2, fieldName);
+        _luaState.Pop(1);
     }
 
     public int CallLuaFunction(int funcRef,int paraCount,int retCount=0)

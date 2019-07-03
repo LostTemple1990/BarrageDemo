@@ -689,7 +689,7 @@ BossTable.MidBoss.Task = function(boss)
 	lib.EnterSpellCard(boss,sc)
 end
 
-Stage["StageTask"] = function()
+Stage["Stage1"] = function()
 	lib.PlaySound("bgm",true)
 	--local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
 	--lib.SetEffectToPos(spriteEffect,0,0)
@@ -776,7 +776,7 @@ Stage["StageTask"] = function()
 		end)
 		--测试引力场
 		lib.AddEnemyTask(enemy,function()
-			if coroutine.yield(100) == false then return end
+			if coroutine.yield(10000) == false then return end
 			do
 				local r,dr=50,25
 				for _=1,10 do

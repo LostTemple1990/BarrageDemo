@@ -99,6 +99,7 @@ namespace BarrageEditor
             Enemy,
             Boss,
             Bullet,
+            Object,
             Unit,
             Count,
         };
@@ -187,6 +188,17 @@ namespace BarrageEditor
                 },
             };
             _nodeTabs.Add(tab);
+            // Object
+            tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.Object,
+                tabName = "Object",
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.DefineSTGObject, NodeType.CreateCusomizedSTGObject, NodeType.SetSpriteForSTGObject },
+                },
+            };
+            _nodeTabs.Add(tab);
             // Unit
             tab = new NodeTab()
             {
@@ -195,6 +207,7 @@ namespace BarrageEditor
                 typeList = new List<NodeType>[]
                 {
                     new List<NodeType> { NodeType.UnitSetV, NodeType.UnitSetAcce, NodeType.UnitMoveTo, NodeType.UnitMoveTowards },
+                    new List<NodeType> { NodeType.UnitSetStraightParas, NodeType.UnitSetPolarParas },
                     new List<NodeType> { NodeType.UnitSetResistEliminatedTypes },
                 },
             };

@@ -130,6 +130,18 @@ namespace BarrageEditor
                 case NodeType.ChangeBulletProperty:
                     newNode = new NodeChangeBulletProperty();
                     break;
+                case NodeType.DefineSTGObject:
+                    newNode = new NodeDefineSTGObject();
+                    break;
+                case NodeType.OnSTGObjectCreate:
+                    newNode = new NodeOnSTGObjectCreate();
+                    break;
+                case NodeType.CreateCusomizedSTGObject:
+                    newNode = new NodeCreateSTGObject();
+                    break;
+                case NodeType.SetSpriteForSTGObject:
+                    newNode = new NodeSTGObjectSetSprite();
+                    break;
                 case NodeType.UnitSetV:
                     newNode = new NodeSetV();
                     break;
@@ -141,6 +153,12 @@ namespace BarrageEditor
                     break;
                 case NodeType.UnitMoveTowards:
                     newNode = new NodeMoveTowards();
+                    break;
+                case NodeType.UnitSetStraightParas:
+                    newNode = new NodeUnitSetStraightParas();
+                    break;
+                case NodeType.UnitSetPolarParas:
+                    newNode = new NodeUnitSetPolarParas();
                     break;
                 case NodeType.UnitSetResistEliminatedTypes:
                     newNode = new NodeUnitSetResistEliminatedTypes();
@@ -198,6 +216,12 @@ namespace BarrageEditor
                     break;
                 case NodeAttrType.PropertyType:
                     nodeAttr = new NodeAttrPropertyType();
+                    break;
+                case NodeAttrType.BlendMode:
+                    nodeAttr = new NodeAttrBlendMode();
+                    break;
+                case NodeAttrType.Layer:
+                    nodeAttr = new NodeAttrLayer();
                     break;
             }
             if (nodeAttr != null) return nodeAttr;

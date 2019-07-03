@@ -264,6 +264,23 @@ public class EnemyBulletMovable : EnemyBulletBase
             }
         }
     }
+
+    public override void SetStraightParas(float v, float angle, float acce, float accAngle)
+    {
+        _curVelocity = v;
+        _curVAngle = angle;
+        _moveStraightTime = 0;
+        _moveStraightDuration = -1;
+        _vx = _curVelocity * Mathf.Cos(_curVAngle * Mathf.Deg2Rad);
+        _vy = _curVelocity * Mathf.Sin(_curVAngle * Mathf.Deg2Rad);
+        _isInitVelocity = true;
+        _isMovingStraight = true;
+        _curAcce = acce;
+        _curAccAngle = accAngle == Consts.VelocityAngle ? _curVAngle : accAngle;
+        // 计算速度增量
+        _dvx = _curAcce * Mathf.Cos(_curAccAngle * Mathf.Deg2Rad);
+        _dvy = _curAcce * Mathf.Sin(_curAccAngle * Mathf.Deg2Rad);
+    }
     #endregion
 
     #region 极坐标相关运动
@@ -274,7 +291,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     /// <param name="radius"></param>
     /// <param name="angle"></param>
     /// <param name="deltaR"></param>
-    /// <param name="omiga"></param>
+    /// <param name="omega"></param>
     public override void SetPolarParas(float radius, float angle, float deltaR, float omega)
     {
         _centerPos = new Vector2(_curPos.x, _curPos.y);

@@ -351,7 +351,7 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
         throw new System.NotImplementedException();
     }
 
-    public virtual void SetStraightParas(float v,float angle,float acce,float accAngle, float maxVelocity)
+    public virtual void SetStraightParas(float v,float angle,float acce,float accAngle)
     {
         throw new System.NotImplementedException();
     }

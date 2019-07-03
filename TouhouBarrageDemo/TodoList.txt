@@ -36,12 +36,12 @@ Enemy的GetHit函数要加入伤害来源，用于判断是否吃B --finish
 考虑删除EnemyBulletMovable，给SimpleBullet加入MovableObject
 将ColliderManager的update方法移动回下方
 检查进行符卡时重开是否已经结束掉当前符卡的task(WaitForSpellCardFinish
-实现终符的多段血条分段显示
+实现终符的多段血条分段显示 --finish
 考虑修改DoAcce接口，传入一个true/false以消除是否当前速度方向的歧义
 给EnemyLaser加入MovableObject
-添加bullet的render方法，在每帧最后执行
+添加bullet的render方法，在每帧最后执行 --finish
 优化灵梦跟踪弹的寻找目标方式
-检查一下ObjectCollider的ColliderGroup是否正确生效 
+检查一下ObjectCollider的ColliderGroup是否正确生效 --finish
 考虑把人物立绘相关部分也整合到SpriteEffect中
 添加SpellCard Bonus
 将SetBossInvincible方法提取出来给EnemyBase使用
@@ -66,3 +66,4 @@ COLOR_GOLDEN_YELLOW=13
 COLOR_ORANGE=14
 COLOR_DEEP_GRAY=15
 COLOR_GRAY=16
+

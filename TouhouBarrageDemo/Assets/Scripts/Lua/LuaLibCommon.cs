@@ -254,6 +254,42 @@ public partial class LuaLib
     }
 
     /// <summary>
+    /// 设置直线运动参数
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int STGMovableSetStraightParas(ILuaState luaState)
+    {
+        ISTGMovable movableObject = luaState.ToUserData(-6) as ISTGMovable;
+        float v = (float)luaState.ToNumber(-5);
+        float angle = (float)luaState.ToNumber(-4);
+        bool isAimToPlayer = luaState.ToBoolean(-3);
+        float acce = (float)luaState.ToNumber(-2);
+        float accAngle;
+        if (luaState.Type(-1) == LuaType.LUA_TBOOLEAN)
+        {
+            accAngle = angle;
+        }
+        else
+        {
+            accAngle = (float)luaState.ToNumber(-1);
+        }
+        if (isAimToPlayer)
+        {
+            Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
+            float relAngle = MathUtil.GetAngleBetweenXAxis(playerPos - movableObject.GetPosition());
+            angle += relAngle;
+            accAngle += relAngle;
+        }
+        movableObject.DoStraightMove(v, angle);
+        if (acce != 0)
+        {
+            movableObject.DoAcceleration(acce, accAngle);
+        }
+        return 0;
+    }
+
+    /// <summary>
     /// 给ITaskExecuter添加task
     /// <para>executer task执行者</para>
     /// <para>lua Func task函数</para>

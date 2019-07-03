@@ -395,7 +395,8 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
                 _curPos = _movableObject.GetPos();
             }
         }
-        _effectTf.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
+        if (_effectTf != null)
+            _effectTf.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
     }
 
     public void SetSprite(string spName)
@@ -580,27 +581,66 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
 
     public void SetPolarParas(float radius, float angle, float deltaR, float omega)
     {
-        _movableObject.DoCurvedMove(radius, angle, deltaR, omega);
+        _movableObject.SetPolarParas(radius, angle, deltaR, omega);
     }
 
     public float velocity
     {
         get { return _movableObject.Velocity; }
+        set
+        {
+            _movableObject.Velocity = value;
+        }
+    }
+    /// <summary>
+    /// x轴方向的速度
+    /// </summary>
+    public float vx
+    {
+        get { return _movableObject.Vx; }
+        set
+        {
+            _movableObject.Vx = value;
+        }
+    }
+
+    /// <summary>
+    /// y轴方向的速度
+    /// </summary>
+    public float vy
+    {
+        get { return _movableObject.Vy; }
+        set
+        {
+            _movableObject.Vy = value;
+        }
     }
 
     public float vAngle
     {
         get { return _movableObject.VAngle; }
+        set
+        {
+            _movableObject.VAngle = value;
+        }
     }
 
     public float acce
     {
         get { return _movableObject.Acce; }
+        set
+        {
+            _movableObject.Acce = value;
+        }
     }
 
     public float accAngle
     {
         get { return _movableObject.AccAngle; }
+        set
+        {
+            _movableObject.AccAngle = value;
+        }
     }
 
     public float dx
@@ -612,6 +652,17 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     {
         get { return _movableObject.dy; }
     }
+
+    public float maxVelocity
+    {
+        get { return _movableObject.MaxVelocity; }
+        set
+        {
+            _movableObject.MaxVelocity = value;
+        }
+    }
+
+    
 
     #endregion
 

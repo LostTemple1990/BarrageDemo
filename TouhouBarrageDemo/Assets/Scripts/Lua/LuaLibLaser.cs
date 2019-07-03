@@ -108,7 +108,7 @@ public partial class LuaLib
         int numArgs = luaState.ToInteger(-1);
         luaState.Pop(1);
         string customizedName = luaState.ToString(-1-numArgs);
-        int initFuncRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
+        int initFuncRef = InterpreterManager.GetInstance().GetBulletInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
         luaState.Replace(-2 - numArgs);
         // 将本体插入执行栈中
@@ -223,7 +223,7 @@ public partial class LuaLib
         int laserLen = luaState.ToInteger(-3 - numArgs);
         float posX = (float)luaState.ToNumber(-2 - numArgs);
         float posY = (float)luaState.ToNumber(-1 - numArgs);
-        int initFuncRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
+        int initFuncRef = InterpreterManager.GetInstance().GetBulletInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
         // 将本体插入执行栈中
         EnemyCurveLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_CurveLaser) as EnemyCurveLaser;

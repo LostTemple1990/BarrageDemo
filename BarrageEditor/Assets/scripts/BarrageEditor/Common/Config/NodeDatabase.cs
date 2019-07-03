@@ -90,8 +90,15 @@ namespace BarrageEditor
         UnitSetAcce = 1602,
         UnitMoveTo = 1603,
         UnitMoveTowards = 1604,
+        UnitSetStraightParas = 1605,
+        UnitSetPolarParas = 1606,
         UnitSetIgnoreCollisionGroups = 1621,
         UnitSetResistEliminatedTypes = 1622,
+
+        DefineSTGObject = 1701,
+        OnSTGObjectCreate = 1702,
+        CreateCusomizedSTGObject = 1703,
+        SetSpriteForSTGObject = 1704,
     }
 
     public class NodeDatabase
@@ -128,6 +135,7 @@ namespace BarrageEditor
             InitEnemyNodeCfgs();
             InitBossNodeCfgs();
             InitBulletNodeCfgs();
+            InitObjectNodeCfgs();
             InitUnitNodeCfgs();
         }
 
@@ -560,6 +568,56 @@ namespace BarrageEditor
             _nodeCfgDic.Add(NodeType.ChangeBulletProperty, cfg);
         }
 
+        private void InitObjectNodeCfgs()
+        {
+            NodeConfig cfg;
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.DefineSTGObject,
+                shortcutPath = "objectdefine",
+                shortcutTip = "define object",
+                defaultAttrValues = new List<object> { "" },
+                allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.DefineSTGObject, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.OnSTGObjectCreate,
+                shortcutPath = "objectinit",
+                shortcutTip = "init object",
+                defaultAttrValues = new List<object> { "" },
+                isDeletable = false,
+            };
+            _nodeCfgDic.Add(NodeType.OnSTGObjectCreate, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateCusomizedSTGObject,
+                shortcutPath = "objectcreate",
+                shortcutTip = "create object",
+                defaultAttrValues = new List<object> { "", "" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.CreateCusomizedSTGObject, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.SetSpriteForSTGObject,
+                shortcutPath = "objectsetimg",
+                shortcutTip = "set sprite",
+                defaultAttrValues = new List<object> { "self", "", "", "", "BlendMode_Normal", "LayerEffectNormal", "false" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.SetSpriteForSTGObject, cfg);
+        }
+
         private void InitUnitNodeCfgs()
         {
             NodeConfig cfg;
@@ -607,6 +665,28 @@ namespace BarrageEditor
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
             };
             _nodeCfgDic.Add(NodeType.UnitMoveTowards, cfg);
+            // SetStraightParas
+            cfg = new NodeConfig
+            {
+                type = NodeType.UnitSetStraightParas,
+                shortcutPath = "setstraightparas",
+                shortcutTip = "set straight paras",
+                defaultAttrValues = new List<object> { "self", "3", "0", "false", "UseVelocityAngle", "0" },
+                allowChilds = new List<NodeType>(),
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+            };
+            _nodeCfgDic.Add(NodeType.UnitSetStraightParas, cfg);
+            // SetPolarParas
+            cfg = new NodeConfig
+            {
+                type = NodeType.UnitSetPolarParas,
+                shortcutPath = "setpolarparas",
+                shortcutTip = "set polar paras",
+                defaultAttrValues = new List<object> { "self", "3", "0", "1", "60" },
+                allowChilds = new List<NodeType>(),
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+            };
+            _nodeCfgDic.Add(NodeType.UnitSetPolarParas, cfg);
             // IgnoreCollisionGroups
             cfg = new NodeConfig
             {

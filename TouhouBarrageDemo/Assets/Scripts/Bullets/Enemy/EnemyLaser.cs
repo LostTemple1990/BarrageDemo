@@ -250,15 +250,15 @@ public class EnemyLaser : EnemyBulletBase
         _movableObject.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
     }
 
-    public override void SetStraightParas(float v, float angle, float acce, float accAngle,float maxVelocity)
+    public override void SetStraightParas(float v, float angle, float acce, float accAngle)
     {
         _movableObject.DoStraightMove(v, angle);
-        _movableObject.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
+        _movableObject.DoAccelerationWithLimitation(acce, accAngle, -1);
     }
 
     public override void SetPolarParas(float radius, float angle, float deltaR, float omega)
     {
-        _movableObject.DoCurvedMove(radius, angle, deltaR, omega);
+        _movableObject.SetPolarParas(radius, angle, deltaR, omega);
     }
 
     public void DoRotate(float toAngle,int duration)

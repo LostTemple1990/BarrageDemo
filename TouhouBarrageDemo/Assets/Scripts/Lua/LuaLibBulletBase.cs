@@ -64,6 +64,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int GetBulletPos(ILuaState luaState)
     {
+        Logger.Log(luaState.GetTop());
         EnemyBulletBase bullet = luaState.ToUserData(-1) as EnemyBulletBase;
         luaState.Pop(1);
         luaState.PushNumber(bullet.posX);
@@ -357,29 +358,40 @@ public partial class LuaLib
 
     /// <summary>
     /// 设置敌机子弹的直线运动参数
+    /// <para>bullet</para>
+    /// <para>v</para>
+    /// <para>vAngle</para>
+    /// <para>bool isAimToPlayer</para>
+    /// <para>acce</para>
+    /// <para>accAngle</para>
+    /// <para>maxV</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
     public static int EnemyBulletSetStraightParas(ILuaState luaState)
     {
-        EnemyBulletBase bullet = luaState.ToUserData(-7) as EnemyBulletBase;
-        float v = (float)luaState.ToNumber(-6);
-        float angle = (float)luaState.ToNumber(-5);
-        bool isAimToPlayer = luaState.ToBoolean(-4);
-        float acce = (float)luaState.ToNumber(-3);
+        EnemyBulletBase bullet = luaState.ToUserData(-6) as EnemyBulletBase;
+        float v = (float)luaState.ToNumber(-5);
+        float angle = (float)luaState.ToNumber(-4);
+        bool isAimToPlayer = luaState.ToBoolean(-3);
+        float acce = (float)luaState.ToNumber(-2);
         float accAngle;
-        if (luaState.Type(-2) == LuaType.LUA_TBOOLEAN)
+        if (luaState.Type(-1) == LuaType.LUA_TBOOLEAN)
         {
-            bullet.GetBulletPara(BulletParaType.VAngel, out accAngle);
+            accAngle = angle;
         }
         else
         {
-            accAngle = (float)luaState.ToNumber(-2);
+            accAngle = (float)luaState.ToNumber(-1);
         }
-        float maxVelocity = (float)luaState.ToNumber(-1);
-        luaState.Pop(7);
-        bullet.DoStraightMove(v, angle);
-        bullet.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
+        if (isAimToPlayer)
+        {
+            Vector2 playerPos = PlayerService.GetInstance().GetCharacter().GetPosition();
+            float relAngle = MathUtil.GetAngleBetweenXAxis(playerPos - bullet.GetPosition());
+            angle += relAngle;
+            accAngle += relAngle;
+        }
+        bullet.SetStraightParas(v, angle, acce, accAngle);
         return 0;
     }
 
