@@ -576,6 +576,12 @@ public class STGTextEffect : STGEffectBase, ISTGMovable, IAttachment, ITaskExecu
         get { return _movableObject.dy; }
     }
 
+    public bool Eliminate(eEliminateDef eliminateType = 0)
+    {
+        FinishEffect();
+        return true;
+    }
+
     #endregion
 
     #region IAttachment

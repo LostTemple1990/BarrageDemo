@@ -266,7 +266,7 @@ public partial class LuaLib
         bool isAimToPlayer = luaState.ToBoolean(-3);
         float acce = (float)luaState.ToNumber(-2);
         float accAngle;
-        if (luaState.Type(-1) == LuaType.LUA_TBOOLEAN)
+        if (luaState.Type(-1) == LuaType.LUA_TBOOLEAN && luaState.ToBoolean(-1) == true)
         {
             accAngle = angle;
         }
@@ -313,6 +313,37 @@ public partial class LuaLib
         object[] datas = { path,luaState};
         CommandManager.GetInstance().RunCommand(CommandConsts.PlayCharacterCGAni, datas);
         luaState.Pop(2);
+        return 0;
+    }
+
+    /// <summary>
+    /// 杀死单位
+    /// <para>unit</para>
+    /// <para>bool triggerEvent 是否触发事件</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int KillUnit(ILuaState luaState)
+    {
+        ISTGMovable go = luaState.ToUserData(-2) as ISTGMovable;
+        bool triggerEvent = luaState.ToBoolean(-1);
+        if (triggerEvent)
+            go.Eliminate(eEliminateDef.CodeEliminate);
+        else
+            go.Eliminate(eEliminateDef.CodeRawEliminate);
+        return 0;
+    }
+
+    /// <summary>
+    /// 强制删除一个单位
+    /// <para>必定不触发事件</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int DelUnit(ILuaState luaState)
+    {
+        ISTGMovable go = luaState.ToUserData(-1) as ISTGMovable;
+        go.Eliminate(eEliminateDef.ForcedDelete);
         return 0;
     }
 

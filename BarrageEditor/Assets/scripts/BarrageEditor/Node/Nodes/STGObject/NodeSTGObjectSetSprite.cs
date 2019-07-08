@@ -49,12 +49,22 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("set sprite {0}/{1} for {1} in {2} with {3}", GetAttrByIndex(0).GetValueString(), GetAttrByIndex(1).GetValueString());
+            return string.Format("set sprite {0}/{1} for {2} in {3} with {4}", 
+                GetAttrByIndex(1).GetValueString(), GetAttrByIndex(2).GetValueString(),
+                GetAttrByIndex(0).GetValueString(),
+                GetAttrByIndex(4).GetValueString(), GetAttrByIndex(3).GetValueString());
         }
 
         public override string ToLuaHead()
         {
-            return string.Format("{0}:SetStyleById({1})\n", GetAttrByIndex(0).GetValueString(), GetAttrByIndex(1).GetValueString());
+            string ret = string.Format("{0}:SetSprite({1},{2},{3},{4},{5})\n",
+                GetAttrByIndex(0).GetValueString(),
+                GetAttrByIndex(1).GetValueString(),
+                GetAttrByIndex(2).GetValueString(),
+                GetAttrByIndex(3).GetValueString(),
+                GetAttrByIndex(4).GetValueString(),
+                GetAttrByIndex(5).GetValueString());
+            return ret;
         }
     }
 }

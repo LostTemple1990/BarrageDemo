@@ -227,6 +227,9 @@ public partial class LuaLib
             new NameFuncPair("WaitForSpellCardFinish",WaitForSpellCardFinish),
             // STGObject
             new NameFuncPair("CreateCustomizedSTGObject",CreateCustomizedSTGObject),
+            // Unit
+            new NameFuncPair("KillUnit",KillUnit),
+            new NameFuncPair("DelUnit",DelUnit),
         };
         luaState.PushGlobalTable();
         luaState.L_SetFuncs(define, 0);

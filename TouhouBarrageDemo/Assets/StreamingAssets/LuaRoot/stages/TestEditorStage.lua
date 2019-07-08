@@ -4,6 +4,7 @@ local Stage = {}
 local CustomizedTable = {}
 local CustomizedEnemyTable = {}
 local BossTable = {}
+local CustomizedSTGObjectTable = {}
 
 -- Mod name: unnamed
 --author="YK"
@@ -47,6 +48,18 @@ CustomizedTable["NazrinSC1Bullet0"].Init = function(self,waitTime,maxRadius)
         self:SetV(2.5,angle,false)
     end)
 end
+CustomizedSTGObjectTable["PatchouliCG"] = {}
+CustomizedSTGObjectTable["PatchouliCG"].Init = function(self)
+    self:SetSprite("Characters/Satori","Satori",BlendMode_Normal,LayerUIBottom,false)
+    self:SetPos(200,200)
+    self:AddTask(function()
+        self:MoveTo(0,0,30,IntModeEaseInQuad)
+        if Wait(60)==false then return end
+        self:MoveTo(-200,-200,60,IntModeEaseOutQuad)
+        if Wait(60)==false then return end
+        DelUnit(self)
+    end)
+end
 Stage["Stage1"] = function()
     do
         last = CreateCustomizedEnemy("TestOnKillEnemy",100000,0,185,0)
@@ -63,7 +76,7 @@ Stage["Stage1"] = function()
                 do for _=1,6 do
                     do local angle,_d_angle=(-35),(35) for _=1,3 do
                         last = CreateSimpleBulletById(104060,enemy.x,enemy.y)
-                        last:SetStraightParas(2,angle,true,0.25,VelocityAngle)
+                        last:SetStraightParas(2,angle,true,0.25,angle)
                     angle=angle+_d_angle end end
                     if Wait(5)==false then return end
                 end end
@@ -84,6 +97,7 @@ Stage["Stage1"] = function()
             end end
         end)
     end
+    last = CreateCustomizedSTGObject("PatchouliCG")
     do
         if Wait(100000)==false then return end
         last = CreateBoss("Marisa")
@@ -97,5 +111,6 @@ return
    CustomizedBulletTable = CustomizedTable,
    CustomizedEnemyTable = CustomizedEnemyTable,
    BossTable = BossTable,
+   CustomizedSTGObjectTable = CustomizedSTGObjectTable,
    Stage = Stage,
 }

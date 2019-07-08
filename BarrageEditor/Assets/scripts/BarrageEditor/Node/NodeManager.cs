@@ -163,6 +163,12 @@ namespace BarrageEditor
                 case NodeType.UnitSetResistEliminatedTypes:
                     newNode = new NodeUnitSetResistEliminatedTypes();
                     break;
+                case NodeType.KillUnit:
+                    newNode = new NodeKillUnit();
+                    break;
+                case NodeType.DelUnit:
+                    newNode = new NodeDelUnit();
+                    break;
             }
             if (newNode != null)
             {

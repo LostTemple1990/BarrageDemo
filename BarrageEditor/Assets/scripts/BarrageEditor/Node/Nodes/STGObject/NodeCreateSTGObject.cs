@@ -55,7 +55,7 @@ namespace BarrageEditor
             }
             return string.Format("last = CreateCustomizedSTGObject(\"{0}\"{1})\n",
                 typeName,
-                attrs[4].GetValueString() == "" ? "" : "," + GetAttrByIndex(1).GetValueString());
+                GetAttrByIndex(1).GetValueString() == "" ? "" : "," + GetAttrByIndex(1).GetValueString());
         }
     }
 }

@@ -209,6 +209,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
 
     public override void Update()
     {
+        UpdateTasks();
         if ( _isScalingWidth )
         {
             ScaleWidth();
@@ -455,12 +456,23 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         }
         // 获取sprite对象的原始尺寸
         Sprite sp = _spRenderer.sprite;
-        Vector3 size = sp.bounds.extents * 2 * sp.pixelsPerUnit;
-        _originalWidth = size.x;
-        _originalHeight = size.y;
-        // 计算实际尺寸
-        _curWidth = _originalWidth;
-        _curHeight = _originalHeight;
+        if ( sp != null )
+        {
+            Vector3 size = sp.bounds.extents * 2 * sp.pixelsPerUnit;
+            _originalWidth = size.x;
+            _originalHeight = size.y;
+            // 计算实际尺寸
+            _curWidth = _originalWidth;
+            _curHeight = _originalHeight;
+        }
+        else
+        {
+            _originalWidth = 0;
+            _originalHeight = 0;
+            // 计算实际尺寸
+            _curWidth = 0;
+            _curHeight = 0;
+        }
     }
 
     /// <summary>
@@ -481,7 +493,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     /// 设置透明度
     /// </summary>
     /// <param name="alpha"></param>
-    public void SetSpritAlpha(float alpha)
+    public void SetSpriteAlpha(float alpha)
     {
         _spriteAlpha = alpha;
         Color color = _spRenderer.color;
@@ -662,7 +674,11 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         }
     }
 
-    
+    public bool Eliminate(eEliminateDef eliminateType = 0)
+    {
+        FinishEffect();
+        return true;
+    }
 
     #endregion
 

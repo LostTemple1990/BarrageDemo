@@ -147,6 +147,7 @@ public class InterpreterManager
         RefCustomizedBullet();
         RefCustomizedEnemy();
         RefBossTable();
+        RefCustomizedSpriteTable();
         RefStageTable();
     }
 
@@ -342,7 +343,7 @@ public class InterpreterManager
 
     private void RefCustomizedSpriteTable()
     {
-        _luaState.GetField(-1, "CustomizedSpriteTable");
+        _luaState.GetField(-1, "CustomizedSTGObjectTable");
         string customizedName;
         int initFuncRef;
         if (!_luaState.IsTable(-1))

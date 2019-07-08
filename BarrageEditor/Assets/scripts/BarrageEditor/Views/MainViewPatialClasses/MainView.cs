@@ -209,6 +209,7 @@ namespace BarrageEditor
                     new List<NodeType> { NodeType.UnitSetV, NodeType.UnitSetAcce, NodeType.UnitMoveTo, NodeType.UnitMoveTowards },
                     new List<NodeType> { NodeType.UnitSetStraightParas, NodeType.UnitSetPolarParas },
                     new List<NodeType> { NodeType.UnitSetResistEliminatedTypes },
+                    new List<NodeType> { NodeType.KillUnit, NodeType.DelUnit },
                 },
             };
             _nodeTabs.Add(tab);

@@ -94,6 +94,8 @@ namespace BarrageEditor
         UnitSetPolarParas = 1606,
         UnitSetIgnoreCollisionGroups = 1621,
         UnitSetResistEliminatedTypes = 1622,
+        KillUnit = 1691,
+        DelUnit = 1692,
 
         DefineSTGObject = 1701,
         OnSTGObjectCreate = 1702,
@@ -528,7 +530,7 @@ namespace BarrageEditor
                 type = NodeType.CreateSimpleBullet,
                 shortcutPath = "bulletcreatestraight",
                 shortcutTip = "create simple bullet",
-                defaultAttrValues = new List<object> { "107010", "0", "0", "3", "0", "false", "0", "VelocityAngle", "", "" },
+                defaultAttrValues = new List<object> { "107010", "0", "0", "3", "0", "false", "0", "UseVelocityAngle", "", "" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
             };
@@ -589,7 +591,7 @@ namespace BarrageEditor
                 type = NodeType.OnSTGObjectCreate,
                 shortcutPath = "objectinit",
                 shortcutTip = "init object",
-                defaultAttrValues = new List<object> { "" },
+                defaultAttrValues = new List<object> { "", "STGEffectAtlas", "MapleLeaf1", "BlendMode_Normal", "LayerEffectNormal", "false" },
                 isDeletable = false,
             };
             _nodeCfgDic.Add(NodeType.OnSTGObjectCreate, cfg);
@@ -611,7 +613,7 @@ namespace BarrageEditor
                 type = NodeType.SetSpriteForSTGObject,
                 shortcutPath = "objectsetimg",
                 shortcutTip = "set sprite",
-                defaultAttrValues = new List<object> { "self", "", "", "", "BlendMode_Normal", "LayerEffectNormal", "false" },
+                defaultAttrValues = new List<object> { "self", "STGEffectAtlas", "MapleLeaf1", "BlendMode_Normal", "LayerEffectNormal", "false" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
             };
@@ -709,6 +711,28 @@ namespace BarrageEditor
                 allowChilds = new List<NodeType>(),
             };
             _nodeCfgDic.Add(NodeType.UnitSetResistEliminatedTypes, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.KillUnit,
+                shortcutPath = "unitkill",
+                shortcutTip = "kill unit",
+                defaultAttrValues = new List<object> { "self", "true" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.KillUnit, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.DelUnit,
+                shortcutPath = "unitdel",
+                shortcutTip = "delete unit",
+                defaultAttrValues = new List<object> { "self" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.DelUnit, cfg);
         }
 
         /// <summary>

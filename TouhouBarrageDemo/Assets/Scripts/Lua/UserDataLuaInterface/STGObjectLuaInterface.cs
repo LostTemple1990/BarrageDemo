@@ -11,6 +11,8 @@ public class STGObjectLuaInterface
 
     private static LuaCsClosureValue _funcMoveTo;
     private static LuaCsClosureValue _funcMoveTowards;
+    private static LuaCsClosureValue _funcSetPos;
+    private static LuaCsClosureValue _funcGetPos;
 
     private static LuaCsClosureValue _funcAttachTo;
     private static LuaCsClosureValue _funcSetRelativePos;
@@ -30,6 +32,8 @@ public class STGObjectLuaInterface
             _funcSetPolarParas = new LuaCsClosureValue(LuaLib.STGMovableDoCurvedMove);
             _funcMoveTo = new LuaCsClosureValue(LuaLib.STGMovableMoveTo);
             _funcMoveTowards = new LuaCsClosureValue(LuaLib.STGMovableMoveTowards);
+            _funcSetPos = new LuaCsClosureValue(LuaLib.IPosition_SetPosition);
+            _funcGetPos = new LuaCsClosureValue(LuaLib.IPosition_GetPosition);
 
             _funcAttachTo = new LuaCsClosureValue(LuaLib.AttachToMaster);
             _funcSetRelativePos = new LuaCsClosureValue(LuaLib.SetAttachmentRelativePos);
@@ -75,6 +79,16 @@ public class STGObjectLuaInterface
                 case "dy":
                     {
                         res.SetNValue(sprite.dy);
+                        return true;
+                    }
+                case "SetPos":
+                    {
+                        res.SetClCsValue(_funcSetPos);
+                        return true;
+                    }
+                case "GetPos":
+                    {
+                        res.SetClCsValue(_funcGetPos);
                         return true;
                     }
                 #endregion

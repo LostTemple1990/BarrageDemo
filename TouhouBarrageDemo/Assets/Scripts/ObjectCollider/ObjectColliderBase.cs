@@ -365,6 +365,12 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
         get { return _movableObject.dy; }
     }
 
+    public bool Eliminate(eEliminateDef eliminateType = 0)
+    {
+        ClearSelf();
+        return true;
+    }
+
     #endregion
 
     #region task

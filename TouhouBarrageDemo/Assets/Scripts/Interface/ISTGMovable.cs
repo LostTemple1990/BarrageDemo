@@ -19,4 +19,6 @@ public interface ISTGMovable : IPosition
     float accAngle { get; }
     float dx { get; }
     float dy { get; }
+
+    bool Eliminate(eEliminateDef eliminateType = 0);
 }

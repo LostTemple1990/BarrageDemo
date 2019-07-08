@@ -165,7 +165,7 @@ public class PlayerBulletBase : BulletBase
             case 10:
                 {
                     float alpha = paras[1];
-                    effect.SetSpritAlpha(alpha);
+                    effect.SetSpriteAlpha(alpha);
                     break;
                 }
             // 透明度渐变

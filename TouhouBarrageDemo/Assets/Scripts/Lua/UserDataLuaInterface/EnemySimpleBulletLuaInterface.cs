@@ -12,6 +12,9 @@ public class EnemySimpleBulletLuaInterface
     private static LuaCsClosureValue _funcMoveTo;
     private static LuaCsClosureValue _funcMoveTowards;
 
+    private static LuaCsClosureValue _funcSetPos;
+    private static LuaCsClosureValue _funcGetPos;
+
     private static LuaCsClosureValue _funcAttachTo;
     private static LuaCsClosureValue _funcSetRelativePos;
 
@@ -33,13 +36,15 @@ public class EnemySimpleBulletLuaInterface
             _funcSetPolarParas = new LuaCsClosureValue(LuaLib.STGMovableDoCurvedMove);
             _funcMoveTo = new LuaCsClosureValue(LuaLib.STGMovableMoveTo);
             _funcMoveTowards = new LuaCsClosureValue(LuaLib.STGMovableMoveTowards);
+            _funcSetPos = new LuaCsClosureValue(LuaLib.IPosition_SetPosition);
+            _funcGetPos = new LuaCsClosureValue(LuaLib.IPosition_GetPosition);
 
             _funcAttachTo = new LuaCsClosureValue(LuaLib.AttachToMaster);
             _funcSetRelativePos = new LuaCsClosureValue(LuaLib.SetAttachmentRelativePos);
 
             _funcAddTask = new LuaCsClosureValue(LuaLib.AddTask);
 
-            _funcSetStraightParas = new LuaCsClosureValue(LuaLib.EnemyBulletSetStraightParas);
+            _funcSetStraightParas = new LuaCsClosureValue(LuaLib.STGMovableSetStraightParas);
             _funcSetSelfRotaion = new LuaCsClosureValue(LuaLib.SetBulletSelfRotation);
             _funcSetStyleById = new LuaCsClosureValue(LuaLib.SetBulletStyleById);
             _funcSetResistEliminatedTypes = new LuaCsClosureValue(LuaLib.SetBulletResistEliminatedFlag);
@@ -177,6 +182,16 @@ public class EnemySimpleBulletLuaInterface
                 case "MoveTowards":
                     {
                         res.SetClCsValue(_funcMoveTowards);
+                        return true;
+                    }
+                case "SetPos":
+                    {
+                        res.SetClCsValue(_funcSetPos);
+                        return true;
+                    }
+                case "GetPos":
+                    {
+                        res.SetClCsValue(_funcGetPos);
                         return true;
                     }
                 #endregion
