@@ -128,7 +128,7 @@ public partial class LuaLib
     {
         int top = luaState.GetTop();
         int numArgs = top - 1;
-        string customizedName = luaState.ToString(1);
+        string customizedName = luaState.ToString(-top);
         int funcRef = InterpreterManager.GetInstance().GetCustomizedFuncRef(customizedName, eCustomizedType.STGObject, eCustomizedFuncRefType.Init);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         STGSpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
@@ -157,7 +157,6 @@ public partial class LuaLib
         STGSpriteEffect effect = luaState.ToUserData(-3) as STGSpriteEffect;
         float width = (float)luaState.ToNumber(-2);
         float height = (float)luaState.ToNumber(-1);
-        luaState.Pop(3);
         effect.SetSize(width, height);
         return 0;
     }
@@ -174,7 +173,6 @@ public partial class LuaLib
         STGSpriteEffect effect = luaState.ToUserData(-3) as STGSpriteEffect;
         float scaleX = (float)luaState.ToNumber(-2);
         float scaleY = (float)luaState.ToNumber(-1);
-        luaState.Pop(3);
         effect.SetScale(scaleX, scaleY);
         return 0;
     }
@@ -192,14 +190,13 @@ public partial class LuaLib
     public static int SetSpriteEffectColor(ILuaState luaState)
     {
         // 检测带不带alpha
-        if ( luaState.Type(-4) != LuaType.LUA_TLIGHTUSERDATA )
+        if (luaState.GetTop() == 5)
         {
             STGSpriteEffect effect = luaState.ToUserData(-5) as STGSpriteEffect;
             float rValue = (float)luaState.ToNumber(-4);
             float gValue = (float)luaState.ToNumber(-3);
             float bValue = (float)luaState.ToNumber(-2);
             float aValue = (float)luaState.ToNumber(-1);
-            luaState.Pop(5);
             effect.SetSpriteColor(rValue, gValue, bValue, aValue);
         }
         else
@@ -208,9 +205,23 @@ public partial class LuaLib
             float rValue = (float)luaState.ToNumber(-3);
             float gValue = (float)luaState.ToNumber(-2);
             float bValue = (float)luaState.ToNumber(-1);
-            luaState.Pop(4);
             effect.SetSpriteColor(rValue, gValue, bValue);
         }
+        return 0;
+    }
+    
+    /// <summary>
+    /// 设置混合模式
+    /// <para>effect</para>
+    /// <para>blendMode</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetSpriteEffectBlendMode(ILuaState luaState)
+    {
+        STGSpriteEffect effect = luaState.ToUserData(-2) as STGSpriteEffect;
+        eBlendMode blendMode = (eBlendMode)luaState.ToInteger(-1);
+        effect.SetBlendMode(blendMode);
         return 0;
     }
 
@@ -220,7 +231,6 @@ public partial class LuaLib
         float toWidth = (float)luaState.ToNumber(-3);
         int duration = luaState.ToInteger(-2);
         InterpolationMode scaleMode = (InterpolationMode)luaState.ToInteger(-1);
-        luaState.Pop(4);
         effect.ChangeWidthTo(toWidth, duration, scaleMode);
         return 0;
     }
@@ -231,8 +241,24 @@ public partial class LuaLib
         float toHeight = (float)luaState.ToNumber(-3);
         int duration = luaState.ToInteger(-2);
         InterpolationMode scaleMode = (InterpolationMode)luaState.ToInteger(-1);
-        luaState.Pop(4);
         effect.ChangeHeightTo(toHeight, duration, scaleMode);
+        return 0;
+    }
+
+    /// <summary>
+    /// 执行alpha缓动
+    /// <para>effect</para>
+    /// <para>[0,1] toAlpha</para>
+    /// <para>int duration</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SpriteEffectChangeAlphaTo(ILuaState luaState)
+    {
+        STGSpriteEffect effect = luaState.ToUserData(-3) as STGSpriteEffect;
+        float toAlpha = (float)luaState.ToNumber(-2);
+        int duration = luaState.ToInteger(-1);
+        effect.DoTweenAlpha(toAlpha, duration);
         return 0;
     }
 

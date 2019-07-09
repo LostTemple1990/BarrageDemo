@@ -99,6 +99,7 @@ namespace BarrageEditor
             Enemy,
             Boss,
             Bullet,
+            Tools,
             Object,
             Unit,
             Count,
@@ -188,6 +189,17 @@ namespace BarrageEditor
                 },
             };
             _nodeTabs.Add(tab);
+            // Tools
+            tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.Tools,
+                tabName = "Tools",
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.DefineCollider, NodeType.CreateCustomizedCollider, NodeType.CreateSimpleCollider },
+                },
+            };
+            _nodeTabs.Add(tab);
             // Object
             tab = new NodeTab()
             {
@@ -195,7 +207,7 @@ namespace BarrageEditor
                 tabName = "Object",
                 typeList = new List<NodeType>[]
                 {
-                    new List<NodeType> { NodeType.DefineSTGObject, NodeType.CreateCusomizedSTGObject, NodeType.SetSpriteForSTGObject },
+                    new List<NodeType> { NodeType.DefineSTGObject, NodeType.CreateCusomizedSTGObject, NodeType.SetSpriteForSTGObject, NodeType.STGObjectSetColor, NodeType.STGObjectChangeAlphaTo },
                 },
             };
             _nodeTabs.Add(tab);
@@ -209,6 +221,7 @@ namespace BarrageEditor
                     new List<NodeType> { NodeType.UnitSetV, NodeType.UnitSetAcce, NodeType.UnitMoveTo, NodeType.UnitMoveTowards },
                     new List<NodeType> { NodeType.UnitSetStraightParas, NodeType.UnitSetPolarParas },
                     new List<NodeType> { NodeType.UnitSetResistEliminatedTypes },
+                    new List<NodeType> { NodeType.UnitAttachTo, NodeType.UnitSetRelativePos },
                     new List<NodeType> { NodeType.KillUnit, NodeType.DelUnit },
                 },
             };

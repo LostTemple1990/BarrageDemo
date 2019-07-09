@@ -36,6 +36,16 @@ namespace BarrageEditor
             return "define bullet";
         }
 
+        /// <summary>
+        /// 是否正在监视数据的改变
+        /// </summary>
+        private bool _isWatchingData = false;
+
+        public bool IsWatchingData
+        {
+            get { return _isWatchingData; }
+        }
+
         public override void OnAttributeValueChanged(BaseNodeAttr attr=null)
         {
             if ( attr != null )
@@ -46,7 +56,7 @@ namespace BarrageEditor
                     if (newTypeName != "")
                     {
                         BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
-                        CustomDefine.AddData(CustomDefineType.SimpleBullet, newTypeName, onCreteNode.attrs[0].GetValueString());
+                        _isWatchingData = CustomDefine.AddData(CustomDefineType.SimpleBullet, newTypeName, onCreteNode.attrs[0].GetValueString());
                     }
                 }
                 else
@@ -54,7 +64,15 @@ namespace BarrageEditor
                     string fromName = attr.GetPreValue().ToString();
                     if (fromName != "")
                     {
-                        CustomDefine.ModifyDefineName(CustomDefineType.SimpleBullet, fromName, attr.GetValueString());
+                        if (_isWatchingData)
+                        {
+                            CustomDefine.ModifyDefineName(CustomDefineType.SimpleBullet, fromName, attr.GetValueString());
+                        }
+                        else
+                        {
+                            BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.SimpleBullet, attr.GetValueString(), onCreteNode.attrs[0].GetValueString());
+                        }
                     }
                     else
                     {
@@ -62,7 +80,7 @@ namespace BarrageEditor
                         if (newTypeName != "")
                         {
                             BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
-                            CustomDefine.AddData(CustomDefineType.SimpleBullet, newTypeName, onCreteNode.attrs[0].GetValueString());
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.SimpleBullet, newTypeName, onCreteNode.attrs[0].GetValueString());
                         }
                     }
                 }
@@ -74,7 +92,7 @@ namespace BarrageEditor
                 {
                     BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
                     string paraList = onCreteNode.GetAttrByIndex(0).GetValueString();
-                    CustomDefine.AddData(CustomDefineType.SimpleBullet, typeName, paraList);
+                    _isWatchingData = CustomDefine.AddData(CustomDefineType.SimpleBullet, typeName, paraList);
                 }
             }
             base.OnAttributeValueChanged(attr);

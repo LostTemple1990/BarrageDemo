@@ -85,6 +85,18 @@ Constants.eEliminateType.CustomizedType4 = 2^14
 Constants.eEliminateType.CustomizedType5 = 2^15
 eEliminateType = Constants.eEliminateType
 
+Group_Player = 1
+Group_PlayerBullet = 2
+Group_Enemy = 4
+Group_EnemyBullet = 8
+Group_Item = 16
+Group_CustomizedGroup0 = 2^10
+Group_CustomizedGroup1 = 2^11
+Group_CustomizedGroup2 = 2^12
+Group_CustomizedGroup3 = 2^13
+Group_CustomizedGroup4 = 2^14
+Group_CustomizedGroup5 = 2^15
+
 
 Constants.eSpellCardCondition = {}
 Constants.eSpellCardCondition.EliminateAll = 1
@@ -113,6 +125,8 @@ eEffectLayer.Top = 650
 eColliderType = {}
 eColliderType.Circle = 1
 eColliderType.Rect = 2
+TypeCircle = 1
+TypeRect = 2
 
 eColliderGroup = {}
 eColliderGroup.Player = 1

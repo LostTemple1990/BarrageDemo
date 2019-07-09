@@ -48,9 +48,12 @@ namespace BarrageEditor
             // 则更新DefineList
             if (attr != null && attr == GetAttrByIndex(0))
             {
-                // 参数列表发生变化，修改缓存
-                string name = parentNode.GetAttrByIndex(0).GetValueString();
-                CustomDefine.ModifyDefineParaList(CustomDefineType.STGObject, name, attr.GetValueString());
+                if ((parentNode as NodeDefineSTGObject).IsWatchingData)
+                {
+                    // 参数列表发生变化，修改缓存
+                    string name = parentNode.GetAttrByIndex(0).GetValueString();
+                    CustomDefine.ModifyDefineParaList(CustomDefineType.STGObject, name, attr.GetValueString());
+                }
             }
             base.OnAttributeValueChanged(attr);
         }
@@ -70,7 +73,7 @@ namespace BarrageEditor
             string name = parentNode.GetAttrByIndex(0).GetValueString();
             string ret = string.Format("CustomizedSTGObjectTable[\"{0}\"].Init = function(self{1})\n",
                 name,
-                attrs[0].GetValueString() == "" ? "" : "," + attrs[1].GetValueString()  //不带参数的话self后不带任何参数了，因此不加分隔符','
+                attrs[0].GetValueString() == "" ? "" : "," + attrs[0].GetValueString()  //不带参数的话self后不带任何参数了，因此不加分隔符','
                 );
             ret = string.Format("{0}    {1}:SetSprite(\"{2}\",\"{3}\",{4},{5},{6})\n",
                 ret,

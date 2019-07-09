@@ -67,6 +67,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 38b96493d4229624b9b5443feb1f51f0, type: 3}
   - {fileID: 21300000, guid: 5e00ab93c4490df428165dde836dfe02, type: 3}
   - {fileID: 21300000, guid: f877daa3767e6424a82902c76364e36a, type: 3}
+  - {fileID: 21300000, guid: c5c4cdc3e5773fe4f85c03e7deb51eee, type: 3}
   - {fileID: 21300000, guid: 2b392bd3b1f6d9247ba7a468f9a5200f, type: 3}
   - {fileID: 21300000, guid: 4c04fee38f033d6418d39b9992829d0f, type: 3}
   - {fileID: 21300000, guid: 6c7ac0148875f534c97b37298eda76b7, type: 3}
@@ -101,6 +102,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 799ea0578e76b9b4aacf2eee82f6cbe5, type: 3}
   - {fileID: 21300000, guid: c3f163572ed5c9449b3cfb3039f34629, type: 3}
   - {fileID: 21300000, guid: 0c2a7cb74c831d34d96ca54f7908d5a9, type: 3}
+  - {fileID: 21300000, guid: 879c17c783f9fd144af32ba80c4cffbe, type: 3}
   - {fileID: 21300000, guid: 706079c77f654b647b40e64afaab2a52, type: 3}
   - {fileID: 21300000, guid: 8c8eacc7a535fd4468c943bcae1ed1be, type: 3}
   - {fileID: 21300000, guid: 57d9b6d75c17f6147a1b8f86500e5db1, type: 3}
@@ -119,6 +121,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 692e42693eb0eca42af97e5977d55894, type: 3}
   - {fileID: 21300000, guid: 8435e779bc3affa47b615708d1fa1820, type: 3}
   - {fileID: 21300000, guid: cd514e79113484641bc7f3b8fe909a5a, type: 3}
+  - {fileID: 21300000, guid: 2a68e899884e8ab40bc3c74442853c55, type: 3}
   - {fileID: 21300000, guid: 1a334ea948f2be0498e5802364d1de41, type: 3}
   - {fileID: 21300000, guid: 16f80bb9b5d7abb45af4fa4da37cc645, type: 3}
   - {fileID: 21300000, guid: d95729e9a0d9d824c89ebe7ce2438fe7, type: 3}
@@ -151,6 +154,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: f5c82d4b04d0fa84991fdbd53bdf3269, type: 3}
   - {fileID: 21300000, guid: 299e585b5df18064ea1cbfd34c19ee31, type: 3}
   - {fileID: 21300000, guid: f8408c6bc76f1d749b8c9b43212a76ca, type: 3}
+  - {fileID: 21300000, guid: 727b897b8dd89bf44b46c3c45a23573d, type: 3}
   - {fileID: 21300000, guid: 69fc228b5e9a9d34b92441c729694734, type: 3}
   - {fileID: 21300000, guid: 4696579be47b73f42b35bc8402342186, type: 3}
   - {fileID: 21300000, guid: e103dfbb02abb7547b832f9df2af2f43, type: 3}
@@ -186,6 +190,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e3c3eeeedbd11054a8d0662965ae7e2d, type: 3}
   - {fileID: 21300000, guid: cc0a21fed043993419b675847c6bfe96, type: 3}
   - {fileID: 21300000, guid: 53d1471f5114bc24ab04d3ce4bfab142, type: 3}
+  - {fileID: 21300000, guid: b169d12fd8c15d844a101024ef46fc88, type: 3}
   - {fileID: 21300000, guid: 2ec8c52ffeda66343be89e56c7d9841b, type: 3}
   - {fileID: 21300000, guid: 8593804f8fc193f49bde4755f0adfd8d, type: 3}
   - {fileID: 21300000, guid: c28b654f9714d1c4c882758621260381, type: 3}
@@ -230,6 +235,7 @@ SpriteAtlas:
   - loadFX
   - bulletinit
   - connect
+  - colliderinit
   - merge
   - bulletcreatestraightex
   - bentlasershooter
@@ -264,6 +270,7 @@ SpriteAtlas:
   - taskmoveto
   - highlight
   - code
+  - collidercreate
   - Info
   - objectsetimg
   - bglayer
@@ -282,6 +289,7 @@ SpriteAtlas:
   - taskreturn
   - imagebackground
   - _node_g
+  - simplecollider
   - bossshowaura
   - loadbgm
   - _node_aa
@@ -314,6 +322,7 @@ SpriteAtlas:
   - archirotate
   - setting
   - loadani
+  - changealphato
   - stagegroup
   - laserinit
   - playbgm
@@ -349,6 +358,7 @@ SpriteAtlas:
   - loadimagegroup
   - taskrepeat
   - _node_stay
+  - colliderdefine
   - renderimage
   - lasergrow
   - ignorecollisiongroup

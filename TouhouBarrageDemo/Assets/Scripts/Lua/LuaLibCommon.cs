@@ -89,6 +89,7 @@ public partial class LuaLib
     /// <para>offsetY</para>
     /// <para>relativeRotation 相对旋转角度</para>
     /// <para>isFollowMasterRotation 是否跟随master一起旋转</para>
+    /// <para>isFollowingContinuously 是否持续跟随移动</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
@@ -100,7 +101,6 @@ public partial class LuaLib
         float relativeRotation = (float)luaState.ToNumber(-3);
         bool isFollowMasterRotation = luaState.ToBoolean(-2);
         bool isFollowingContinuously = luaState.ToBoolean(-1);
-        luaState.Pop(5);
         attachment.SetRelativePos(offsetX, offsetY, relativeRotation, isFollowMasterRotation, isFollowingContinuously);
         return 0;
     }

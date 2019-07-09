@@ -49,6 +49,22 @@ namespace BarrageEditor
         CustomizedType5 = 2 << 15,
     }
 
+    [Flags]
+    public enum eColliderGroup : int
+    {
+        Player = 1,
+        PlayerBullet = 2,
+        Enemy = 4,
+        EnemyBullet = 8,
+        Item = 16,
+        CustomizedType0 = 2 << 10,
+        CustomizedType1 = 2 << 11,
+        CustomizedType2 = 2 << 12,
+        CustomizedType3 = 2 << 13,
+        CustomizedType4 = 2 << 14,
+        CustomizedType5 = 2 << 15,
+    }
+
     public class BarrageEnum
     {
     }

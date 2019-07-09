@@ -128,6 +128,11 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
         _colliderGroups = (int)groups;
     }
 
+    public eColliderGroup GetColliderGroup()
+    {
+        return (eColliderGroup)_colliderGroups;
+    }
+
     /// <summary>
     /// 缩放至指定的尺寸
     /// </summary>
@@ -338,21 +343,61 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
     public float velocity
     {
         get { return _movableObject.Velocity; }
+        set
+        {
+            _movableObject.Velocity = value;
+        }
+    }
+
+    /// <summary>
+    /// x轴方向的速度
+    /// </summary>
+    public float vx
+    {
+        get { return _movableObject.Vx; }
+        set
+        {
+            _movableObject.Vx = value;
+        }
+    }
+
+    /// <summary>
+    /// y轴方向的速度
+    /// </summary>
+    public float vy
+    {
+        get { return _movableObject.Vy; }
+        set
+        {
+            _movableObject.Vy = value;
+        }
     }
 
     public float vAngle
     {
         get { return _movableObject.VAngle; }
+        set
+        {
+            _movableObject.VAngle = value;
+        }
     }
 
     public float acce
     {
         get { return _movableObject.Acce; }
+        set
+        {
+            _movableObject.Acce = value;
+        }
     }
 
     public float accAngle
     {
         get { return _movableObject.AccAngle; }
+        set
+        {
+            _movableObject.AccAngle = value;
+        }
     }
 
     public float dx
@@ -363,6 +408,15 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
     public float dy
     {
         get { return _movableObject.dy; }
+    }
+
+    public float maxVelocity
+    {
+        get { return _movableObject.MaxVelocity; }
+        set
+        {
+            _movableObject.MaxVelocity = value;
+        }
     }
 
     public bool Eliminate(eEliminateDef eliminateType = 0)

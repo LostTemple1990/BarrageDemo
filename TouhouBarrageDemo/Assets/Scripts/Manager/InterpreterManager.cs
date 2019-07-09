@@ -26,6 +26,7 @@ public class InterpreterManager
     private Dictionary<string, int> _customizedEnemyInitMap;
     private Dictionary<string, int> _customizedEnemyOnEliminateMap;
     private Dictionary<string, int> _customizedSTGObjectFuncMap;
+    private Dictionary<string, int> _customizedColliderFuncMap;
     /// <summary>
     /// 记录stage对应的task的map
     /// </summary>
@@ -58,6 +59,7 @@ public class InterpreterManager
         _customizedEnemyInitMap = new Dictionary<string, int>();
         _customizedEnemyOnEliminateMap = new Dictionary<string, int>();
         _customizedSTGObjectFuncMap = new Dictionary<string, int>();
+        _customizedColliderFuncMap = new Dictionary<string, int>();
         _stageMap = new Dictionary<string, int>();
         _luaFileLoadedList = new List<string>();
 
@@ -147,7 +149,8 @@ public class InterpreterManager
         RefCustomizedBullet();
         RefCustomizedEnemy();
         RefBossTable();
-        RefCustomizedSpriteTable();
+        RefCustomizedSprite();
+        RefCustomizedCollider();
         RefStageTable();
     }
 
@@ -341,7 +344,7 @@ public class InterpreterManager
         _luaState.Pop(1);
     }
 
-    private void RefCustomizedSpriteTable()
+    private void RefCustomizedSprite()
     {
         _luaState.GetField(-1, "CustomizedSTGObjectTable");
         string customizedName;
@@ -376,6 +379,41 @@ public class InterpreterManager
         _luaState.Pop(1);
     }
 
+    private void RefCustomizedCollider()
+    {
+        _luaState.GetField(-1, "CustomizedColliderTable");
+        string customizedName;
+        int initFuncRef;
+        if (!_luaState.IsTable(-1))
+        {
+            Logger.Log("field CustomizedColliderTable is not a table!");
+            _luaState.Pop(1);
+            return;
+        }
+        _luaState.PushNil();
+        while (_luaState.Next(-2))
+        {
+            customizedName = _luaState.ToString(-2);
+            if (!_luaState.IsTable(-1))
+            {
+                Logger.Log("sub field " + customizedName + " is not a table!");
+            }
+            _luaState.GetField(-1, "Init");
+            if (!_luaState.IsFunction(-1))
+            {
+                Logger.Log("sub field Init is not a function!");
+            }
+            initFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+            _luaState.Pop(1);
+            _customizedColliderFuncMap.Add(customizedName, initFuncRef);
+#if LogLuaFuncRef
+            Logger.Log("InitFunction in Customized Class " + customizedName + " is Ref , ref = " + initFuncRef);
+            _luaRefDic.Add(initFuncRef, initFuncRef);
+#endif
+        }
+        _luaState.Pop(1);
+    }
+
     /// <summary>
     /// 设置栈顶的luaFunc设置索引
     /// </summary>
@@ -387,11 +425,13 @@ public class InterpreterManager
         {
             throw new Exception("stack top is not function!");
         }
-        int funcRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
 #if LogLuaFuncRef
+        int funcRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
         _luaRefDic.Add(funcRef, funcRef);
-#endif
         return funcRef;
+#else
+        return luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+#endif
     }
 
     /// <summary>
@@ -545,6 +585,10 @@ public class InterpreterManager
         if (customizedType == eCustomizedType.STGObject)
         {
             _customizedSTGObjectFuncMap.TryGetValue(customizedName, out funcRef);
+        }
+        else if (customizedType == eCustomizedType.Collider)
+        {
+            _customizedColliderFuncMap.TryGetValue(customizedName, out funcRef);
         }
         return funcRef;
     }

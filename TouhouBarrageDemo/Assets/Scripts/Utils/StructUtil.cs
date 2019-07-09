@@ -237,6 +237,12 @@ public enum eColliderGroup : int
     Enemy = 4,
     EnemyBullet = 8,
     Item = 16,
+    CustomizedType0 = 2 << 10,
+    CustomizedType1 = 2 << 11,
+    CustomizedType2 = 2 << 12,
+    CustomizedType3 = 2 << 13,
+    CustomizedType4 = 2 << 14,
+    CustomizedType5 = 2 << 15,
 }
 
 public enum eColliderType : int
@@ -323,6 +329,7 @@ public enum eCustomizedType : byte
     SpellCard = 3,
     Stage = 4,
     STGObject = 5,
+    Collider = 6,
 }
 
 public enum eCustomizedFuncRefType : byte

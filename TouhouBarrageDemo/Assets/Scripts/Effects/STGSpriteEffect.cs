@@ -342,7 +342,7 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     public void DoTweenAlpha(float endAlpha,int duration)
     {
         _spriteColor = _spRenderer.color;
-        _startAlhpa = _spriteAlpha;
+        _startAlhpa = _spriteColor.a;
         _endAlpha = endAlpha;
         _tweenAlphaTime = 0;
         _tweenAlphaDuration = duration;
@@ -487,6 +487,12 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     public void SetOrderInLayer(int orderInLayer)
     {
         _orderInLayer = orderInLayer;
+    }
+
+    public void SetBlendMode(eBlendMode mode)
+    {
+        _isUsingCache = false;
+        _spRenderer.material = ResourceManager.GetInstance().GetSpriteMatByBlendMode(mode);
     }
 
     /// <summary>

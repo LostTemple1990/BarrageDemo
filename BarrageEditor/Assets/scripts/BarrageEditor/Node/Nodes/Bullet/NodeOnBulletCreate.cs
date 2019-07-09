@@ -28,9 +28,12 @@ namespace BarrageEditor
             // 则更新DefineList
             if ( attr != null )
             {
-                // 参数列表发生变化，修改缓存
-                string name = parentNode.GetAttrByIndex(0).GetValueString();
-                CustomDefine.ModifyDefineParaList(CustomDefineType.SimpleBullet, name, attr.GetValueString());
+                if ((parentNode as NodeDefineBullet).IsWatchingData)
+                {
+                    // 参数列表发生变化，修改缓存
+                    string name = parentNode.GetAttrByIndex(0).GetValueString();
+                    CustomDefine.ModifyDefineParaList(CustomDefineType.SimpleBullet, name, attr.GetValueString());
+                }
             }
             base.OnAttributeValueChanged(attr);
         }

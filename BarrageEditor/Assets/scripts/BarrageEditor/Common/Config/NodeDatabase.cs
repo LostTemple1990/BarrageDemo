@@ -94,6 +94,8 @@ namespace BarrageEditor
         UnitSetPolarParas = 1606,
         UnitSetIgnoreCollisionGroups = 1621,
         UnitSetResistEliminatedTypes = 1622,
+        UnitAttachTo = 1626,
+        UnitSetRelativePos = 1627,
         KillUnit = 1691,
         DelUnit = 1692,
 
@@ -101,6 +103,13 @@ namespace BarrageEditor
         OnSTGObjectCreate = 1702,
         CreateCusomizedSTGObject = 1703,
         SetSpriteForSTGObject = 1704,
+        STGObjectSetColor = 1705,
+        STGObjectChangeAlphaTo = 1706,
+
+        DefineCollider = 1801,
+        OnColliderCreate = 1802,
+        CreateCustomizedCollider = 1803,
+        CreateSimpleCollider = 1804,
     }
 
     public class NodeDatabase
@@ -137,6 +146,7 @@ namespace BarrageEditor
             InitEnemyNodeCfgs();
             InitBossNodeCfgs();
             InitBulletNodeCfgs();
+            InitColliderNodeCfgs();
             InitObjectNodeCfgs();
             InitUnitNodeCfgs();
         }
@@ -570,6 +580,55 @@ namespace BarrageEditor
             _nodeCfgDic.Add(NodeType.ChangeBulletProperty, cfg);
         }
 
+        private void InitColliderNodeCfgs()
+        {
+            NodeConfig cfg;
+            cfg = new NodeConfig
+            {
+                type = NodeType.DefineCollider,
+                shortcutPath = "colliderdefine",
+                shortcutTip = "define collider",
+                defaultAttrValues = new List<object> { "" },
+                allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.DefineCollider, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.OnColliderCreate,
+                shortcutPath = "colliderinit",
+                shortcutTip = "",
+                defaultAttrValues = new List<object> { "", "0", "0", "0" },
+                isDeletable = false,
+            };
+            _nodeCfgDic.Add(NodeType.OnColliderCreate, cfg);
+            
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateCustomizedCollider,
+                shortcutPath = "collidercreate",
+                shortcutTip = "create customized collider",
+                defaultAttrValues = new List<object> { "", "TypeCircle", "", "" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.CreateCustomizedCollider, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateSimpleCollider,
+                shortcutPath = "simplecollider",
+                shortcutTip = "create simple collider",
+                defaultAttrValues = new List<object> { "TypeCircle", "64", "64", "0", "0" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.CreateSimpleCollider, cfg);
+        }
+
         private void InitObjectNodeCfgs()
         {
             NodeConfig cfg;
@@ -618,6 +677,28 @@ namespace BarrageEditor
                 allowChilds = new List<NodeType>(),
             };
             _nodeCfgDic.Add(NodeType.SetSpriteForSTGObject, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.STGObjectSetColor,
+                shortcutPath = "setcolor",
+                shortcutTip = "change color and blendMode of object",
+                defaultAttrValues = new List<object> { "self", "1", "1", "1", "1", "" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.STGObjectSetColor, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.STGObjectChangeAlphaTo,
+                shortcutPath = "changealphato",
+                shortcutTip = "change alpha of object during frame(s)",
+                defaultAttrValues = new List<object> { "self", "0", "60" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.STGObjectChangeAlphaTo, cfg);
         }
 
         private void InitUnitNodeCfgs()
@@ -711,6 +792,28 @@ namespace BarrageEditor
                 allowChilds = new List<NodeType>(),
             };
             _nodeCfgDic.Add(NodeType.UnitSetResistEliminatedTypes, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.UnitAttachTo,
+                shortcutPath = "connect",
+                shortcutTip = "attach to master",
+                defaultAttrValues = new List<object> { "last", "self", "true" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.UnitAttachTo, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.UnitSetRelativePos,
+                shortcutPath = "setrelpos",
+                shortcutTip = "set relative position",
+                defaultAttrValues = new List<object> { "self", "10", "0", "0", "true", "true" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.UnitSetRelativePos, cfg);
 
             cfg = new NodeConfig
             {

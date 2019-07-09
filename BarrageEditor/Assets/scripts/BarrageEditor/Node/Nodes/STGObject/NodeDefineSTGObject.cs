@@ -36,6 +36,16 @@ namespace BarrageEditor
             return "define object";
         }
 
+        /// <summary>
+        /// 是否正在监视数据的改变
+        /// </summary>
+        private bool _isWatchingData = false;
+
+        public bool IsWatchingData
+        {
+            get { return _isWatchingData; }
+        }
+
         public override void OnAttributeValueChanged(BaseNodeAttr attr = null)
         {
             if (attr != null)
@@ -46,7 +56,7 @@ namespace BarrageEditor
                     if (newTypeName != "")
                     {
                         BaseNode onCreateNode = GetChildByType(NodeType.OnSTGObjectCreate);
-                        CustomDefine.AddData(CustomDefineType.Enemy, newTypeName, onCreateNode.attrs[0].GetValueString());
+                        _isWatchingData = CustomDefine.AddData(CustomDefineType.STGObject, newTypeName, onCreateNode.attrs[0].GetValueString());
                     }
                 }
                 else
@@ -54,7 +64,15 @@ namespace BarrageEditor
                     string fromName = attr.GetPreValue().ToString();
                     if (fromName != "")
                     {
-                        CustomDefine.ModifyDefineName(CustomDefineType.STGObject, fromName, attr.GetValueString());
+                        if (_isWatchingData)
+                        {
+                            CustomDefine.ModifyDefineName(CustomDefineType.STGObject, fromName, attr.GetValueString());
+                        }
+                        else
+                        {
+                            BaseNode onCreateNode = GetChildByType(NodeType.OnSTGObjectCreate);
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.STGObject, attr.GetValueString(), onCreateNode.attrs[0].GetValueString());
+                        }
                     }
                     else
                     {
@@ -62,7 +80,7 @@ namespace BarrageEditor
                         if (newTypeName != "")
                         {
                             BaseNode onCreateNode = GetChildByType(NodeType.OnSTGObjectCreate);
-                            CustomDefine.AddData(CustomDefineType.STGObject, newTypeName, onCreateNode.attrs[0].GetValueString());
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.STGObject, newTypeName, onCreateNode.attrs[0].GetValueString());
                         }
                     }
                 }
@@ -74,7 +92,7 @@ namespace BarrageEditor
                 {
                     BaseNode onCreteNode = GetChildByType(NodeType.OnSTGObjectCreate);
                     string paraList = onCreteNode.GetAttrByIndex(0).GetValueString();
-                    CustomDefine.AddData(CustomDefineType.STGObject, typeName, paraList);
+                    _isWatchingData = CustomDefine.AddData(CustomDefineType.STGObject, typeName, paraList);
                 }
             }
             base.OnAttributeValueChanged(attr);

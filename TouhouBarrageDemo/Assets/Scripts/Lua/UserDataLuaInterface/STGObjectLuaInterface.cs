@@ -21,6 +21,10 @@ public class STGObjectLuaInterface
 
     private static LuaCsClosureValue _funcSetStraightParas;
     private static LuaCsClosureValue _funcSetSprite;
+    private static LuaCsClosureValue _funcSetColor;
+    private static LuaCsClosureValue _funcSetSize;
+    private static LuaCsClosureValue _funcChangeAlphaTo;
+    private static LuaCsClosureValue _funcSetBlendMode;
 
 
     public static void Init()
@@ -42,6 +46,10 @@ public class STGObjectLuaInterface
 
             _funcSetStraightParas = new LuaCsClosureValue(LuaLib.STGMovableSetStraightParas);
             _funcSetSprite = new LuaCsClosureValue(LuaLib.SetSTGObjectProps);
+            _funcSetColor = new LuaCsClosureValue(LuaLib.SetSpriteEffectColor);
+            _funcSetSize = new LuaCsClosureValue(LuaLib.SetSpriteEffectSize);
+            _funcChangeAlphaTo = new LuaCsClosureValue(LuaLib.SpriteEffectChangeAlphaTo);
+            _funcSetBlendMode = new LuaCsClosureValue(LuaLib.SetSpriteEffectBlendMode);
 
             _isInit = true;
         }
@@ -133,6 +141,26 @@ public class STGObjectLuaInterface
                 case "SetSprite":
                     {
                         res.SetClCsValue(_funcSetSprite);
+                        return true;
+                    }
+                case "SetColor":
+                    {
+                        res.SetClCsValue(_funcSetColor);
+                        return true;
+                    }
+                case "SetSize":
+                    {
+                        res.SetClCsValue(_funcSetSize);
+                        return true;
+                    }
+                case "ChangeAlphaTo":
+                    {
+                        res.SetClCsValue(_funcChangeAlphaTo);
+                        return true;
+                    }
+                case "SetBlendMode":
+                    {
+                        res.SetClCsValue(_funcSetBlendMode);
                         return true;
                     }
                 #endregion

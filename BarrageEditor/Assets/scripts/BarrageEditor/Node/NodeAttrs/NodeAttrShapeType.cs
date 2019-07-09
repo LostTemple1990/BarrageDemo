@@ -8,14 +8,25 @@ using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeAttrIgnoreCollisionGroup : BaseNodeAttr
+    public class NodeAttrShapeType : BaseNodeAttr
     {
         public override void BindItem(GameObject item)
         {
             base.BindItem(item);
+            List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
+            optionList.Add(new Dropdown.OptionData("TypeCircle"));
+            optionList.Add(new Dropdown.OptionData("TypeRect"));
+            _dropDown.options = optionList;
+            _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
 
-            _valueText.DeactivateInputField();
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
+        }
+
+        private void OnDropdownValueChangedHandler(int value)
+        {
+            Dropdown.OptionData selectData = _dropDown.options[value];
+            OnAttributeValueEdit(selectData.text);
+            _valueText.text = selectData.text;
         }
 
         private void OnEditBtnClickHandler()
@@ -25,7 +36,7 @@ namespace BarrageEditor
 
         public override void OpenEditView()
         {
-            UIManager.GetInstance().OpenView(ViewID.AttrEditIgnoreCollisionGroup, this);
+            UIManager.GetInstance().OpenView(ViewID.AttrEditTextView, this);
         }
 
         public override void UnbindItem()

@@ -132,7 +132,7 @@ SC["NazrinTest"].Init = function(boss)
 		local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
 		lib.SetObjectColliderSize(collider,80,80)
 		lib.SetObjectColliderToPos(collider,2000,2000)
-		lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
+		lib.SetObjectColliderColliderGroup(collider,Group_PlayerBullet)
 		--
 		if coroutine.yield(80)==false then return end
 		for _=1,Infinite do
@@ -1936,7 +1936,7 @@ CustomizedBulletTable.PatchouliSC0_FireLine = {}
 CustomizedBulletTable.PatchouliSC0_FireLine.Init = function(bullet)
 	local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
 	lib.SetObjectColliderSize(collider,16,16)
-	lib.SetObjectColliderEliminateType(collider,eEliminateType.CustomizedType1)
+	lib.SetObjectColliderColliderGroup(collider,Group_CustomizedGroup1)
 	lib.AttatchToMaster(collider,bullet,true)
 	lib.SetAttachmentRelativePos(collider,0,0,0,false,true)
 	lib.AddBulletTask(bullet,function()
@@ -1961,7 +1961,7 @@ CustomizedBulletTable.PatchouliSC0_FireBall.Init = function(bullet,vAngle)
 	lib.DoBulletAccelerationWithLimitation(bullet,0.03,accAngle,4)
 	lib.AddBulletComponent(bullet,eBulletComponentType.ColliderTrigger)
 	local count = 1
-	lib.AddBulletColliderTriggerEvent(bullet,eEliminateType.CustomizedType1,function(collider,collIndex)
+	lib.AddBulletColliderTriggerEvent(bullet,Group_CustomizedGroup1,function(collider,collIndex)
 		if count == 0 then return end
 		local posX,posY = lib.GetBulletPos(bullet)
 		for _=1,7 do
@@ -1980,7 +1980,7 @@ CustomizedBulletTable.PatchouliSC0_FireRain.Init = function(bullet,vAngle)
 	lib.SetBulletStraightParas(bullet,2,-90,false,0,0)
 	lib.AddBulletComponent(bullet,eBulletComponentType.ColliderTrigger)
 	local count = 1
-	lib.AddBulletColliderTriggerEvent(bullet,eEliminateType.CustomizedType1,function(collider,collIndex)
+	lib.AddBulletColliderTriggerEvent(bullet,Group_CustomizedGroup1,function(collider,collIndex)
 		if count == 0 then return end
 		lib.SetBulletStyleById(bullet,126130)
 		count = 0
@@ -2112,11 +2112,11 @@ SC["ReisenSC0"].Init = function(boss)
 			local outterCollider = lib.CreateObjectColliderByType(eColliderType.Circle)
 			lib.SetObjectColliderSize(outterCollider,80,80)
 			lib.SetObjectColliderToPos(outterCollider,0,-100)
-			lib.SetObjectColliderEliminateType(outterCollider,eEliminateType.CustomizedType0)
+			lib.SetObjectColliderColliderGroup(outterCollider,Group_CustomizedGroup0)
 			local innerCollider = lib.CreateObjectColliderByType(eColliderType.Circle)
 			lib.SetObjectColliderSize(innerCollider,64,64)
 			lib.SetObjectColliderToPos(innerCollider,0,-100)
-			lib.SetObjectColliderEliminateType(innerCollider,eEliminateType.CustomizedType1)
+			lib.SetObjectColliderColliderGroup(innerCollider,Group_CustomizedGroup1)
 			--
 			if coroutine.yield(120)==false then return end
 			do

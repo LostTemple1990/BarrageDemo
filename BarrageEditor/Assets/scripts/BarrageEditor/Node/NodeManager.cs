@@ -82,6 +82,7 @@ namespace BarrageEditor
                 case NodeType.SetDropItems:
                     newNode = new NodeEnemySetDropItems();
                     break;
+
                 case NodeType.DefineBoss:
                     newNode = new NodeDefineBoss();
                     break;
@@ -112,6 +113,7 @@ namespace BarrageEditor
                 case NodeType.SetBossPhaseData:
                     newNode = new NodeSetBossPhaseData();
                     break;
+
                 case NodeType.DefineBullet:
                     newNode = new NodeDefineBullet();
                     break;
@@ -130,6 +132,20 @@ namespace BarrageEditor
                 case NodeType.ChangeBulletProperty:
                     newNode = new NodeChangeBulletProperty();
                     break;
+
+                case NodeType.DefineCollider:
+                    newNode = new NodeDefineCollider();
+                    break;
+                case NodeType.OnColliderCreate:
+                    newNode = new NodeOnColliderCreate();
+                    break;
+                case NodeType.CreateCustomizedCollider:
+                    newNode = new NodeCreateCustomizedCollider();
+                    break;
+                case NodeType.CreateSimpleCollider:
+                    newNode = new NodeCreateSimpleCollider();
+                    break;
+
                 case NodeType.DefineSTGObject:
                     newNode = new NodeDefineSTGObject();
                     break;
@@ -142,6 +158,13 @@ namespace BarrageEditor
                 case NodeType.SetSpriteForSTGObject:
                     newNode = new NodeSTGObjectSetSprite();
                     break;
+                case NodeType.STGObjectSetColor:
+                    newNode = new NodeSTGObjectSetColor();
+                    break;
+                case NodeType.STGObjectChangeAlphaTo:
+                    newNode = new NodeSTGObjectChangeAlphaTo();
+                    break;
+
                 case NodeType.UnitSetV:
                     newNode = new NodeSetV();
                     break;
@@ -162,6 +185,12 @@ namespace BarrageEditor
                     break;
                 case NodeType.UnitSetResistEliminatedTypes:
                     newNode = new NodeUnitSetResistEliminatedTypes();
+                    break;
+                case NodeType.UnitAttachTo:
+                    newNode = new NodeUnitAttachTo();
+                    break;
+                case NodeType.UnitSetRelativePos:
+                    newNode = new NodeUnitSetRelativePos();
                     break;
                 case NodeType.KillUnit:
                     newNode = new NodeKillUnit();
@@ -211,8 +240,8 @@ namespace BarrageEditor
                 case NodeAttrType.ItemType:
                     nodeAttr = new NodeAttrItem();
                     break;
-                case NodeAttrType.IgnoreCollisionGroups:
-                    nodeAttr = new NodeAttrIgnoreCollisionGroup();
+                case NodeAttrType.CollisionGroups:
+                    nodeAttr = new NodeAttrCollisionGroup();
                     break;
                 case NodeAttrType.ResistEliminatedTypes:
                     nodeAttr = new NodeAttrResistEliminatedTypes();
@@ -228,6 +257,9 @@ namespace BarrageEditor
                     break;
                 case NodeAttrType.Layer:
                     nodeAttr = new NodeAttrLayer();
+                    break;
+                case NodeAttrType.ShapeType:
+                    nodeAttr = new NodeAttrShapeType();
                     break;
             }
             if (nodeAttr != null) return nodeAttr;

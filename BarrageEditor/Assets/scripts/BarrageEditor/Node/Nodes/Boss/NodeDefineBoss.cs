@@ -36,6 +36,16 @@ namespace BarrageEditor
             return "define boss";
         }
 
+        /// <summary>
+        /// 是否正在监视数据的改变
+        /// </summary>
+        private bool _isWatchingData = false;
+
+        public bool IsWatchingData
+        {
+            get { return _isWatchingData; }
+        }
+
         public override void OnAttributeValueChanged(BaseNodeAttr attr = null)
         {
             if (attr != null)
@@ -45,7 +55,7 @@ namespace BarrageEditor
                     string newTypeName = attr.GetValueString();
                     if (newTypeName != "")
                     {
-                        CustomDefine.AddData(CustomDefineType.Boss, newTypeName, "");
+                        _isWatchingData = CustomDefine.AddData(CustomDefineType.Boss, newTypeName, "");
                     }
                 }
                 else
@@ -53,14 +63,21 @@ namespace BarrageEditor
                     string fromName = attr.GetPreValue().ToString();
                     if (fromName != "")
                     {
-                        CustomDefine.ModifyDefineName(CustomDefineType.Boss, fromName, attr.GetValueString());
+                        if (_isWatchingData)
+                        {
+                            CustomDefine.ModifyDefineName(CustomDefineType.Boss, fromName, attr.GetValueString());
+                        }
+                        else
+                        {
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.Boss, attr.GetValueString(), "");
+                        }
                     }
                     else
                     {
                         string newTypeName = attr.GetValueString();
                         if (newTypeName != "")
                         {
-                            CustomDefine.AddData(CustomDefineType.Boss, newTypeName, "");
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.Boss, newTypeName, "");
                         }
                     }
                 }
@@ -70,7 +87,7 @@ namespace BarrageEditor
                 string typeName = GetAttrByIndex(0).GetValueString();
                 if (typeName != "")
                 {
-                    CustomDefine.AddData(CustomDefineType.Boss, typeName, "");
+                    _isWatchingData = CustomDefine.AddData(CustomDefineType.Boss, typeName, "");
                 }
             }
             base.OnAttributeValueChanged(attr);

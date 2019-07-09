@@ -38,6 +38,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: d67df860f4c1c58409d88edcaaf814c5, type: 3}
   - {fileID: 21300000, guid: ebd72bb0c32941c4d85d527f40b779cd, type: 3}
   - {fileID: 21300000, guid: baace5e0eceaf374cae6d290395b4db9, type: 3}
+  - {fileID: 21300000, guid: 758bf1f0b21e4584e8b4b2aaee38b907, type: 3}
   - {fileID: 21300000, guid: d64649f0754ebef44ac971979558146f, type: 3}
   - {fileID: 21300000, guid: d00a7a0155de6b54fafa95eb0318f6ef, type: 3}
   - {fileID: 21300000, guid: cb68cc2179566d542820c118dd654977, type: 3}
@@ -48,8 +49,10 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 28d56e917e2c2e44993eb5b634f3bf55, type: 3}
   - {fileID: 21300000, guid: cf9319c14ce6b7040b589688c1f632e3, type: 3}
   - {fileID: 21300000, guid: 219341d1416fcb945bb0666591a52aa3, type: 3}
+  - {fileID: 21300000, guid: c4f913d15e0b8994599678f120a5864f, type: 3}
   - {fileID: 21300000, guid: 8b72c8d1ef8dc5d4887d9810c23063af, type: 3}
   - {fileID: 21300000, guid: 81984dd1519e76c43a733695ec62e146, type: 3}
+  - {fileID: 21300000, guid: 78299cf10766ce1439ac9acd1fe7cab3, type: 3}
   - {fileID: 21300000, guid: 68d47302af782fc43a6554cda2c4d55c, type: 3}
   - {fileID: 21300000, guid: 57bbe612ac6e02d4f8f63270a15ebe78, type: 3}
   - {fileID: 21300000, guid: 656f2022785317441b7be2a52452e6cb, type: 3}
@@ -111,6 +114,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 7344fd2868a9e7f4383df66eb986a186, type: 3}
   - {fileID: 21300000, guid: 9c6988380be80f84aa39f16fccd90025, type: 3}
   - {fileID: 21300000, guid: b15049480f8d43744b44b4b873decfa2, type: 3}
+  - {fileID: 21300000, guid: 95f8a978279634142b308c1c61cbf808, type: 3}
   - {fileID: 21300000, guid: 87459f8892346564e857e84f9ec413d3, type: 3}
   - {fileID: 21300000, guid: 986829b837adcf44a8a806aee408d92b, type: 3}
   - {fileID: 21300000, guid: ccf02dc877314614d8ceabfe3be5bfd5, type: 3}
@@ -163,6 +167,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 1a4d60dd74e847d469cf029dd7523d8f, type: 3}
   - {fileID: 21300000, guid: bdf325dd373af5441a2140d8d7f23e28, type: 3}
   - {fileID: 21300000, guid: 09d19e0e5d07bb5448c7be457ff6baa3, type: 3}
+  - {fileID: 21300000, guid: c0123a2eb00cf664e8b8d50020512edd, type: 3}
   - {fileID: 21300000, guid: 8a0bef2e201317941ab12bc093b8077d, type: 3}
   - {fileID: 21300000, guid: 0759813eb43b8824496889fb0fd32ebc, type: 3}
   - {fileID: 21300000, guid: c22cdc5e051626847aaa591dab65ad26, type: 3}
@@ -185,6 +190,7 @@ SpriteAtlas:
   - loadbgm
   - if
   - reboundercreate
+  - colliderdefine
   - pausebgm
   - bgframe
   - ondel
@@ -195,8 +201,10 @@ SpriteAtlas:
   - simplerebounder
   - laserturnhalfon
   - bulletcreatestraightex
+  - changealphato
   - explode
   - bulletclear
+  - simplecollider
   - setrelpos
   - setstraightparas
   - folder
@@ -258,6 +266,7 @@ SpriteAtlas:
   - enemycreate
   - bossinvincible
   - setgravity
+  - colliderinit
   - bossshowaura
   - dialog
   - _node_toc
@@ -310,6 +319,7 @@ SpriteAtlas:
   - loadani
   - rebounderinit
   - playsound
+  - collidercreate
   - stagetask
   - defaultaction
   - objectdefine

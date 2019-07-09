@@ -21,7 +21,7 @@ namespace BarrageEditor
             nodeAttr.Init(this, "Unit", null);
             attrs.Add(nodeAttr);
             // 忽略的碰撞组
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.IgnoreCollisionGroups);
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CollisionGroups);
             nodeAttr.Init(this, "Ignore Groups", null);
             attrs.Add(nodeAttr);
         }

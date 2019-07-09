@@ -11,8 +11,37 @@ public partial class LuaLib
     public static int CreateObjectColliderByType(ILuaState luaState)
     {
         eColliderType type = (eColliderType)luaState.ToInteger(-1);
-        luaState.Pop(1);
         ObjectColliderBase collider = ColliderManager.GetInstance().CreateColliderByType(type);
+        luaState.PushLightUserData(collider);
+        return 1;
+    }
+
+    /// <summary>
+    /// 创建自定义的collider
+    /// <para>customizedName 自定义的类型名称</para>
+    /// <para>eColliderType collider的形状类别</para>
+    /// <para>参数...</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int CreateCustomizedCollider(ILuaState luaState)
+    {
+        int top = luaState.GetTop();
+        int numArgs = top - 2;
+        string customizedName = luaState.ToString(-top);
+        eColliderType type = (eColliderType)luaState.ToInteger(-top + 1);
+        int funcRef = InterpreterManager.GetInstance().GetCustomizedFuncRef(customizedName, eCustomizedType.Collider, eCustomizedFuncRefType.Init);
+        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
+        ObjectColliderBase collider = ColliderManager.GetInstance().CreateColliderByType(type);
+        luaState.PushLightUserData(collider);
+        // 复制参数
+        int copyIndex = -numArgs - 2;
+        for (int i = 0; i < numArgs; i++)
+        {
+            luaState.Copy(copyIndex, -1);
+        }
+        luaState.Call(numArgs + 1, 0);
+        // 返回结果
         luaState.PushLightUserData(collider);
         return 1;
     }
@@ -25,7 +54,6 @@ public partial class LuaLib
     public static int CreateGravitationFieldByType(ILuaState luaState)
     {
         eColliderType type = (eColliderType)luaState.ToInteger(-1);
-        luaState.Pop(1);
         ObjectColliderBase collider = ColliderManager.GetInstance().CreateGravitationFieldByType(type);
         luaState.PushLightUserData(collider);
         return 1;
@@ -122,7 +150,6 @@ public partial class LuaLib
     {
         ObjectColliderBase collider = luaState.ToUserData(-2) as ObjectColliderBase;
         int colliderGroup = luaState.ToInteger(-1);
-        luaState.Pop(2);
         collider.SetColliderGroup((eColliderGroup)colliderGroup);
         return 0;
     }
@@ -211,7 +238,6 @@ public partial class LuaLib
     public static int RemoveGravitationFieldByTag(ILuaState luaState)
     {
         string tag = luaState.ToString(-1);
-        luaState.Pop(1);
         ColliderManager.GetInstance().RemoveGravitationFieldByTag(tag);
         return 0;
     }
@@ -225,7 +251,6 @@ public partial class LuaLib
     public static int RemoveObjectColliderByTag(ILuaState luaState)
     {
         string tag = luaState.ToString(-1);
-        luaState.Pop(1);
         ColliderManager.GetInstance().RemoveColliderByTag(tag);
         return 0;
     }

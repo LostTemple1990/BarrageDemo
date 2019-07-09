@@ -225,6 +225,9 @@ public partial class LuaLib
             new NameFuncPair("SetSpellCardProperties",SetSpellCardProperties),
             new NameFuncPair("StartSpellCard",StartSpellCard),
             new NameFuncPair("WaitForSpellCardFinish",WaitForSpellCardFinish),
+            // Collider
+            new NameFuncPair("CreateCustomizedCollider",CreateCustomizedCollider),
+            new NameFuncPair("CreateSimpleCollider",CreateObjectColliderByType),
             // STGObject
             new NameFuncPair("CreateCustomizedSTGObject",CreateCustomizedSTGObject),
             // Unit
@@ -247,6 +250,7 @@ public partial class LuaLib
         NormalEnemyLuaInterface.Init();
         BossLuaInterface.Init();
         STGObjectLuaInterface.Init();
+        ColliderCircleLuaInterface.Init();
     }
 
     public static bool GetLightUserDataField(object userData, TValue key, out TValue res)
@@ -261,6 +265,8 @@ public partial class LuaLib
                 return BossLuaInterface.Get(userData, key, out res);
             case "STGSpriteEffect":
                 return STGObjectLuaInterface.Get(userData, key, out res);
+            case "ColliderCircle":
+                return ColliderCircleLuaInterface.Get(userData, key, out res);
         }
         res = new TValue();
         res.SetSValue(string.Format("GetField from userData fail!Invalid userData of type {0}", userData.GetType().Name));
@@ -279,6 +285,8 @@ public partial class LuaLib
                 return NormalEnemyLuaInterface.Set(userData, key, ref value);
             case "STGSpriteEffect":
                 return STGObjectLuaInterface.Set(userData, key, ref value);
+            case "ColliderCircle":
+                return ColliderCircleLuaInterface.Set(userData, key, ref value);
         }
         value.SetSValue(string.Format("SetField of userData fail!Invalid userData of type {0}", userData.GetType().Name));
         return false;

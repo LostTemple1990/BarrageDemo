@@ -38,7 +38,7 @@ namespace BarrageEditor
         /// <summary>
         /// 编辑忽略碰撞组
         /// </summary>
-        public const int AttrEditIgnoreCollisionGroup = 2007;
+        public const int AttrEditCollisionGroup = 2007;
         /// <summary>
         /// 编辑抵抗的消除类型
         /// </summary>
@@ -140,12 +140,12 @@ namespace BarrageEditor
             #region 编辑忽略碰撞组界面
             cfg = new ViewCfg()
             {
-                viewId = AttrEditIgnoreCollisionGroup,
-                resPath = "EditViews/EditIgnoreCollisionGroupView",
-                className = "BarrageEditor.AttrEditIgnoreCollisionGroupView",
+                viewId = AttrEditCollisionGroup,
+                resPath = "EditViews/EditCollisionGroupView",
+                className = "BarrageEditor.AttrEditCollisionGroupView",
                 layer = LayerId.Normal
             };
-            _viewCfgMap.Add(AttrEditIgnoreCollisionGroup, cfg);
+            _viewCfgMap.Add(AttrEditCollisionGroup, cfg);
             #endregion
             #region 编辑抵抗消除类型界面
             cfg = new ViewCfg()

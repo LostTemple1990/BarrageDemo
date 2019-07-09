@@ -22,6 +22,8 @@ namespace BarrageEditor
                     _customDefineDic.Add(CustomDefineType.Boss, new Dictionary<string, CustomDefineData>());
                     _customDefineDic.Add(CustomDefineType.SpellCard, new Dictionary<string, CustomDefineData>());
                     _customDefineDic.Add(CustomDefineType.STGObject, new Dictionary<string, CustomDefineData>());
+                    _customDefineDic.Add(CustomDefineType.Collider, new Dictionary<string, CustomDefineData>());
+                    _customDefineDic.Add(CustomDefineType.GravitationField, new Dictionary<string, CustomDefineData>());
                 }
                 return _customDefineDic;
             }
@@ -52,9 +54,9 @@ namespace BarrageEditor
             return data;
         }
 
-        public static void AddData(CustomDefineType type, string typeName, string paraList)
+        public static bool AddData(CustomDefineType type, string typeName, string paraList)
         {
-            if (typeName == "") return;
+            if (typeName == "") return false;
             CustomDefineData data = new CustomDefineData
             {
                 type = type,
@@ -62,7 +64,12 @@ namespace BarrageEditor
                 paraListStr = paraList,
             };
             Dictionary<string, CustomDefineData> dic = customDefineDic[type];
+            if (dic.ContainsKey(typeName))
+            {
+                return false;
+            }
             dic.Add(typeName, data);
+            return true;
         }
 
         public static void RemoveData(CustomDefineType type, string typeName)
@@ -119,6 +126,7 @@ namespace BarrageEditor
             if (nodeType == NodeType.CreateBoss) return CustomDefineType.Boss;
             if (nodeType == NodeType.StartSpellCard) return CustomDefineType.SpellCard;
             if (nodeType == NodeType.CreateCusomizedSTGObject) return CustomDefineType.STGObject;
+            if (nodeType == NodeType.CreateCustomizedCollider) return CustomDefineType.Collider;
             Logger.LogError(string.Format("CustomizeType to NodeType {0} is not exist!", nodeType));
             return CustomDefineType.Null;
         }
@@ -154,5 +162,7 @@ namespace BarrageEditor
         Boss = 6,
         SpellCard = 7,
         STGObject = 8,
+        Collider = 9,
+        GravitationField = 10,
     }
 }

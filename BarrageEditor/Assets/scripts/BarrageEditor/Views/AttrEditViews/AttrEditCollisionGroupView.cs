@@ -6,7 +6,7 @@ using YKEngine;
 
 namespace BarrageEditor
 {
-    public class AttrEditIgnoreCollisionGroupView : ViewBase
+    public class AttrEditCollisionGroupView : ViewBase
     {
 
         private GameObject _closeBtn;
@@ -22,8 +22,8 @@ namespace BarrageEditor
 
         private int _curSelectedItemIndex;
         private List<string> _paraNameList;
-        private Dictionary<eEliminatedTypes, CollisionGroupItem> _itemDic;
-        private List<eEliminatedTypes> _defaultGroups;
+        private Dictionary<eColliderGroup, CollisionGroupItem> _itemDic;
+        private List<eColliderGroup> _defaultGroups;
 
         private BaseNodeAttr _nodeAttr;
 
@@ -40,15 +40,14 @@ namespace BarrageEditor
         private void InitGroupItems()
         {
             // 可编辑的碰撞枚举
-            List<eEliminatedTypes> _defaultGroups = new List<eEliminatedTypes> {
-                eEliminatedTypes.PlayerSpellCard, eEliminatedTypes.PlayerDead, eEliminatedTypes.HitPlayer, eEliminatedTypes.PlayerBullet,
-                eEliminatedTypes.HitObjectCollider, eEliminatedTypes.GravitationField,
-                eEliminatedTypes.CustomizedType0, eEliminatedTypes.CustomizedType1, eEliminatedTypes.CustomizedType2,
-                eEliminatedTypes.CustomizedType3, eEliminatedTypes.CustomizedType4, eEliminatedTypes.CustomizedType5 };
-            _itemDic = new Dictionary<eEliminatedTypes, CollisionGroupItem>();
+            _defaultGroups = new List<eColliderGroup> {
+                eColliderGroup.Player, eColliderGroup.PlayerBullet, eColliderGroup.Enemy, eColliderGroup.EnemyBullet,eColliderGroup.Item,
+                eColliderGroup.CustomizedType0, eColliderGroup.CustomizedType1, eColliderGroup.CustomizedType2,
+                eColliderGroup.CustomizedType3, eColliderGroup.CustomizedType4, eColliderGroup.CustomizedType5 };
+            _itemDic = new Dictionary<eColliderGroup, CollisionGroupItem>();
             for (int i = 0; i < _defaultGroups.Count; i++)
             {
-                GameObject item = ResourceManager.GetInstance().GetPrefab("Prefabs/Views/EditViews", "EditIgnoreCollisionItem");
+                GameObject item = ResourceManager.GetInstance().GetPrefab("Prefabs/Views/EditViews", "EditCollisionItem");
                 RectTransform tf = item.GetComponent<RectTransform>();
                 tf.SetParent(_itemContainerTf, false);
                 CollisionGroupItem itemCls = new CollisionGroupItem
@@ -76,14 +75,14 @@ namespace BarrageEditor
 
         private void UpdateGroupItems()
         {
-            int ignoreGroups = int.Parse(_nodeAttr.GetValueString());
+            int selectedGroups = int.Parse(_nodeAttr.GetValueString());
             CollisionGroupItem item;
             for (int i=0;i<_defaultGroups.Count;i++)
             {
                 int group = (int)_defaultGroups[i];
-                item = _itemDic[(eEliminatedTypes)group];
+                item = _itemDic[(eColliderGroup)group];
                 // 设置
-                if ((group & ignoreGroups) != 0)
+                if ((group & selectedGroups) != 0)
                 {
                     item.toggle.isOn = true;
                 }
@@ -96,18 +95,18 @@ namespace BarrageEditor
 
         private void OnOKBtnHandler()
         {
-            int ignoreGroups = 0;
+            int selectedGroups = 0;
             CollisionGroupItem item;
             for (int i = 0; i < _defaultGroups.Count; i++)
             {
                 int group = (int)_defaultGroups[i];
-                item = _itemDic[(eEliminatedTypes)group];
+                item = _itemDic[(eColliderGroup)group];
                 if (item.toggle.isOn)
                 {
-                    ignoreGroups |= group;
+                    selectedGroups |= group;
                 }
             }
-            _nodeAttr.SetValue(ignoreGroups.ToString());
+            _nodeAttr.SetValue(selectedGroups.ToString());
             Close();
         }
 

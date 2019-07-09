@@ -48,15 +48,17 @@ CustomizedTable["NazrinSC1Bullet0"].Init = function(self,waitTime,maxRadius)
         self:SetV(2.5,angle,false)
     end)
 end
-CustomizedSTGObjectTable["PatchouliCG"] = {}
-CustomizedSTGObjectTable["PatchouliCG"].Init = function(self)
-    self:SetSprite("Characters/Satori","Satori",BlendMode_Normal,LayerUIBottom,false)
+CustomizedSTGObjectTable["NazrinCG"] = {}
+CustomizedSTGObjectTable["NazrinCG"].Init = function(self)
+    self:SetSprite("Characters/Satori","Satori",BlendMode_Normal,LayerEffectBottom,false)
     self:SetPos(200,200)
     self:AddTask(function()
         self:MoveTo(0,0,30,IntModeEaseInQuad)
         if Wait(60)==false then return end
         self:MoveTo(-200,-200,60,IntModeEaseOutQuad)
-        if Wait(60)==false then return end
+        if Wait(30)==false then return end
+        self:ChangeAlphaTo(0,30)
+        if Wait(30)==false then return end
         DelUnit(self)
     end)
 end
@@ -97,7 +99,7 @@ Stage["Stage1"] = function()
             end end
         end)
     end
-    last = CreateCustomizedSTGObject("PatchouliCG")
+    last = CreateCustomizedSTGObject("NazrinCG")
     do
         if Wait(100000)==false then return end
         last = CreateBoss("Marisa")

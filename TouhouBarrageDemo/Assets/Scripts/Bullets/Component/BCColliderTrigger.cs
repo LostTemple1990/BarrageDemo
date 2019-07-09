@@ -4,7 +4,7 @@ public class BCColliderTrigger : BulletComponent
 {
     private struct TriggerData
     {
-        public int triggerType;
+        public int triggerGroup;
         public int triggerFuncRef;
     }
 
@@ -45,7 +45,7 @@ public class BCColliderTrigger : BulletComponent
         // 暂定：碰撞类型可以重复
         TriggerData newData = new TriggerData
         {
-            triggerType = triggerType,
+            triggerGroup = triggerType,
             triggerFuncRef = triggerFuncRef,
         };
         _triggerDatas.Add(newData);
@@ -57,7 +57,7 @@ public class BCColliderTrigger : BulletComponent
         for (int i=0;i<_triggerDataCount;i++)
         {
             TriggerData data = _triggerDatas[i];
-            if (data.triggerType == 0) continue;
+            if (data.triggerGroup == 0) continue;
             int listCount;
             List<ObjectColliderBase> colliderList = ColliderManager.GetInstance().GetColliderList(out listCount);
             ObjectColliderBase collider;
@@ -65,7 +65,7 @@ public class BCColliderTrigger : BulletComponent
             {
                 collider = colliderList[j];
                 // 非空，且满足触发条件
-                if ( collider != null && ((int)collider.GetEliminateType() & data.triggerType) != 0)
+                if ( collider != null && ((int)collider.GetColliderGroup() & data.triggerGroup) != 0)
                 {
                     int nextColliderIndex = 0;
                     int curColliderIndex;

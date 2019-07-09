@@ -191,12 +191,13 @@ namespace BarrageEditor
         MoveMode = 7,
         SCCondition = 8,
         ItemType = 9,
-        IgnoreCollisionGroups = 10,
+        CollisionGroups = 10,
         ResistEliminatedTypes = 11,
         PropertyChangeMode = 12,
         PropertyType = 13,
         BlendMode = 14,
         Layer = 15,
+        ShapeType = 16,
     }
 
     public class NodeAttrData
