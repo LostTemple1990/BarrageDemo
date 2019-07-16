@@ -57,7 +57,7 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            string retStr = string.Format("last = CreateObjectColliderByType({0})\n", GetAttrByIndex(0).GetValueString());
+            string retStr = string.Format("last = CreateSimpleCollider({0})\n", GetAttrByIndex(0).GetValueString());
             retStr = string.Format("{0}last:SetPos({1},{2})\n",retStr,attrs[1].GetValueString(), attrs[2].GetValueString());
             retStr = string.Format("{0}last:SetSize({1},{2})\n",retStr,attrs[3].GetValueString(), attrs[4].GetValueString());
             retStr = string.Format("{0}last:SetCollisionGroup({1})\n", retStr, GetAttrByIndex(5).GetValueString());

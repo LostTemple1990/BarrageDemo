@@ -204,7 +204,14 @@ public class StateSTGMain : IState,ICommand
     private void OnStateLoadStageLuaUpdate()
     {
         _curState = StateWait;
-        _curStageName = _nextStageName;
+        if (Global.DebugStageName != "")
+        {
+            _curStageName = Global.DebugStageName;
+        }
+        else
+        {
+            _curStageName = _nextStageName;
+        }
         _stgMain.EnterStage(_curStageName);
         Global.IsPause = false;
         _curState = StateUpdateSTG;

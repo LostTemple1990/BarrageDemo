@@ -29,5 +29,11 @@ namespace BarrageEditor
         /// </summary>
         public const int NodeExpanded = 3002;
         public const int FocusOnNode = 3003;
+        /// <summary>
+        /// define类型的节点被删除
+        /// <para>CustomizedType type</para>
+        /// <para>string typeName</para>
+        /// </summary>
+        public const int DefineNodeDestroy = 3004;
     }
 }

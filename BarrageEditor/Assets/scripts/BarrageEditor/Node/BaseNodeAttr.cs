@@ -41,6 +41,7 @@ namespace BarrageEditor
             _node = node;
             _attrName = name;
             _checkValueFunc = checkFunc;
+            _value = "";
         }
 
         public virtual bool IsValueAvailable(object value,out string msg)
@@ -198,6 +199,7 @@ namespace BarrageEditor
         BlendMode = 14,
         Layer = 15,
         ShapeType = 16,
+        DirectionMode = 17,
     }
 
     public class NodeAttrData

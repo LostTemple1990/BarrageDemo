@@ -70,6 +70,44 @@ namespace BarrageEditor
             SetProjectPath(null);
         }
 
+
+        public static BaseNode DebugStageNode { get; private set; }
+        public static BaseNode DebugFromNode { get; private set; }
+        /// <summary>
+        /// 关卡调试
+        /// </summary>
+        public static bool IsDebugStage { get; private set; }
+
+
+        public static BaseNode DebugSpellCardNode { get; private set; }
+        /// <summary>
+        /// 符卡调试
+        /// </summary>
+        public static bool IsDebugSpellCard { get; private set; }
+
+        public static void SetDebugStageNode(BaseNode stageNode,BaseNode debugFromNode)
+        {
+            IsDebugStage = true;
+            DebugStageNode = stageNode;
+            DebugFromNode = debugFromNode;
+        }
+
+        public static void ClearDebugStageNode()
+        {
+            IsDebugStage = false;
+        }
+
+        public static void SetDebugSpellCardNode(BaseNode scNode)
+        {
+            IsDebugSpellCard = true;
+            DebugSpellCardNode = scNode;
+        }
+
+        public static void ClearDebugSpellCardMode()
+        {
+            IsDebugSpellCard = false;
+        }
+
         public static void Log(string msg)
         {
             EventManager.GetInstance().PostEvent(EditorEvents.Log, msg);

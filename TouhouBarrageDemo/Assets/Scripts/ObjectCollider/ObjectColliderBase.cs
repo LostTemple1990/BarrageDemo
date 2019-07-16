@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITaskExecuter
+public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, ISTGMovable, ITaskExecuter
 {
     protected float _curPosX;
     protected float _curPosY;
@@ -33,6 +33,14 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
     /// </summary>
     protected int _hitEnemyDamage;
 
+    /// <summary>
+    /// 附件物体的列表
+    /// </summary>
+    protected List<IAttachment> _attachmentsList;
+    /// <summary>
+    /// 依附物体的个数
+    /// </summary>
+    protected int _attachmentsCount;
     protected IAttachable _master;
     /// <summary>
     /// 标识是否随着master被销毁一同消失
@@ -70,6 +78,8 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
         _tag = "";
         _taskList = new List<Task>();
         _taskCount = 0;
+        _attachmentsList = new List<IAttachment>();
+        _attachmentsCount = 0;
     }
 
     public void SetTag(string tag)
@@ -304,6 +314,30 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
         _clearFlag = 1;
     }
 
+    public void AddAttachment(IAttachment attachment)
+    {
+        for (int i = 0; i < _attachmentsCount; i++)
+        {
+            if (_attachmentsList[i] == attachment)
+            {
+                return;
+            }
+        }
+        _attachmentsList.Add(attachment);
+        _attachmentsCount++;
+    }
+
+    public void OnAttachmentEliminated(IAttachment attachment)
+    {
+        for (int i = 0; i < _attachmentsCount; i++)
+        {
+            if (_attachmentsList[i] == attachment)
+            {
+                _attachmentsList[i] = null;
+            }
+        }
+    }
+
     #region ISTGMovable
     public void DoStraightMove(float v, float angle)
     {
@@ -476,6 +510,11 @@ public class ObjectColliderBase : IAttachment, IObjectCollider,ISTGMovable ,ITas
     {
         ClearTasks();
         _master = null;
+        if (_attachmentsCount > 0)
+        {
+            _attachmentsList.Clear();
+            _attachmentsCount = 0;
+        }
         ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObject);
         _movableObject = null;
     }

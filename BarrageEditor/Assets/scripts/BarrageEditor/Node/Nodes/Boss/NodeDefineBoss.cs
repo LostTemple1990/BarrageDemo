@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using YKEngine;
+using System.Collections.Generic;
 
 namespace BarrageEditor
 {
-    public class NodeDefineBoss : BaseNode
+    public class NodeDefineBoss : BaseNode, IEventReciver
     {
         public override void Init(RectTransform parentTf)
         {
@@ -12,6 +13,7 @@ namespace BarrageEditor
             _extraDepth = 0;
             base.Init(parentTf);
             _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "bossdefine");
+            EventManager.GetInstance().Register(EditorEvents.DefineNodeDestroy, this);
         }
 
         public override void CreateDefaultAttrs()
@@ -93,6 +95,18 @@ namespace BarrageEditor
             base.OnAttributeValueChanged(attr);
         }
 
+        public override void Destroy()
+        {
+            EventManager.GetInstance().Remove(EditorEvents.DefineNodeDestroy, this);
+            if (_isWatchingData)
+            {
+                string typeName = GetAttrByIndex(0).GetValueString();
+                CustomDefine.RemoveData(CustomDefineType.Boss, typeName);
+                EventManager.GetInstance().PostEvent(EditorEvents.DefineNodeDestroy, new List<object> { CustomDefineType.Boss, typeName });
+            }
+            base.Destroy();
+        }
+
         public override string ToDesc()
         {
             return string.Format("define boss \"{0}\"", attrs[0].GetValueString());
@@ -101,6 +115,22 @@ namespace BarrageEditor
         public override string ToLuaHead()
         {
             return string.Format("BossTable[\"{0}\"] = {{}}\n", attrs[0].GetValueString());
+        }
+
+        public void Execute(int eventId, object data)
+        {
+            if (eventId == EditorEvents.DefineNodeDestroy)
+            {
+                if (!_isWatchingData)
+                {
+                    List<object> datas = data as List<object>;
+                    string typeName = GetAttrByIndex(0).GetValueString();
+                    if ((CustomDefineType)datas[0] == CustomDefineType.Boss && (string)datas[1] == typeName)
+                    {
+                        _isWatchingData = CustomDefine.AddData(CustomDefineType.Boss, typeName, "");
+                    }
+                }
+            }
         }
     }
 }

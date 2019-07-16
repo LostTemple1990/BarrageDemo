@@ -48,7 +48,7 @@ namespace BarrageEditor
             _itemDic = new Dictionary<eEliminatedTypes, EliminatedTypesItem>();
             for (int i = 0; i < _defaultTypes.Count; i++)
             {
-                GameObject item = ResourceManager.GetInstance().GetPrefab("Prefabs/Views/EditViews", "EditIgnoreCollisionItem");
+                GameObject item = ResourceManager.GetInstance().GetPrefab("Prefabs/Views/EditViews", "EditResistEliminatedItem");
                 RectTransform tf = item.GetComponent<RectTransform>();
                 tf.SetParent(_itemContainerTf, false);
                 EliminatedTypesItem itemCls = new EliminatedTypesItem
@@ -56,7 +56,7 @@ namespace BarrageEditor
                     go = item,
                     toggle = tf.Find("Toggle").GetComponent<Toggle>(),
                 };
-                Text collisionGroupText = tf.Find("CollisionGroupText").GetComponent<Text>();
+                Text collisionGroupText = tf.Find("EliminatedTypeText").GetComponent<Text>();
                 collisionGroupText.text = _defaultTypes[i].ToString();
                 _itemDic.Add(_defaultTypes[i], itemCls);
             }

@@ -53,6 +53,14 @@ namespace BarrageEditor
         /// 生成lua代码
         /// </summary>
         private GameObject _projectShortcutPackGo;
+        /// <summary>
+        /// 从该节点处开始测试StageTask
+        /// </summary>
+        private GameObject _projectShortcutDebugStageGo;
+        /// <summary>
+        /// 调试符卡
+        /// </summary>
+        private GameObject _projectShortcutDebugSCGo;
 
         /// <summary>
         /// 在所选项目之后插入
@@ -125,6 +133,18 @@ namespace BarrageEditor
             UIEventListener.Get(_projectShortcutPackGo).AddPointerExit(OnProjectShortcutPointerExit);
             UIEventListener.Get(_projectShortcutPackGo).AddClick(OnPackClickHandler);
 
+            // 测试StageTask
+            _projectShortcutDebugStageGo = tf.Find("DebugStageFromNode").gameObject;
+            UIEventListener.Get(_projectShortcutDebugStageGo).AddPointerEnter(OnProjectShortcutDebugStagePointerEnter);
+            UIEventListener.Get(_projectShortcutDebugStageGo).AddPointerExit(OnProjectShortcutPointerExit);
+            UIEventListener.Get(_projectShortcutDebugStageGo).AddClick(OnDebugStageHandler);
+
+            // 测试符卡
+            _projectShortcutDebugSCGo = tf.Find("DebugSC").gameObject;
+            UIEventListener.Get(_projectShortcutDebugSCGo).AddPointerEnter(OnProjectShortcutDebugSpellCardPointerEnter);
+            UIEventListener.Get(_projectShortcutDebugSCGo).AddPointerExit(OnProjectShortcutPointerExit);
+            UIEventListener.Get(_projectShortcutDebugSCGo).AddClick(OnDebugSpellCardHandler);
+
             // 在之后插入
             _projectShortcutInsertAfterGo = tf.Find("InsertModeToggleGroup/InsertAfter").gameObject;
             UIEventListener.Get(_projectShortcutInsertAfterGo).AddPointerEnter(OnProjectShortcutInsertAfterPointerEnter);
@@ -196,6 +216,16 @@ namespace BarrageEditor
         private void OnProjectShortcutPackPointerEnter()
         {
             UIManager.GetInstance().OpenView(ViewID.TooltipView, "Build current project");
+        }
+
+        private void OnProjectShortcutDebugStagePointerEnter()
+        {
+            UIManager.GetInstance().OpenView(ViewID.TooltipView, "Debug stage from current node");
+        }
+
+        private void OnProjectShortcutDebugSpellCardPointerEnter()
+        {
+            UIManager.GetInstance().OpenView(ViewID.TooltipView, "Debug spell card");
         }
 
         private void OnProjectShortcutInsertAfterPointerEnter()
@@ -408,11 +438,51 @@ namespace BarrageEditor
 
         private void OnPackClickHandler()
         {
-            string filePath = Application.streamingAssetsPath + "/stage.lua";
-            BaseNode root = BarrageProject.RootNode;
-            string luaData = "";
-            root.ToLua(0, ref luaData);
-            FileUtils.WriteToFile(luaData, filePath);
+            string filePath = Application.streamingAssetsPath + "../../../../TouhouBarrageDemo/Assets/StreamingAssets/LuaRoot/stages/TestEditorStage.lua";
+            if (filePath != null)
+            {
+                BaseNode root = BarrageProject.RootNode;
+                string luaData = "";
+                root.ToLua(0, ref luaData);
+                FileUtils.WriteToFile(luaData, filePath);
+            }
+        }
+
+        private void OnDebugStageHandler()
+        {
+            if (_curSelectedNode == null)
+            {
+                BarrageProject.LogError("Debug fail!Please select a node first");
+                return;
+            }
+            // 当前选择节点的父节点必须是stage
+            BaseNode parentNode = _curSelectedNode.parentNode;
+            if (parentNode == null || parentNode.GetNodeType() != NodeType.Stage)
+            {
+                BarrageProject.LogError("Debug fail!Please select a node which is direct child of stage");
+                return;
+            }
+            BarrageProject.SetDebugStageNode(parentNode, _curSelectedNode);
+            OnPackClickHandler();
+            BarrageProject.ClearDebugStageNode();
+        }
+
+        private void OnDebugSpellCardHandler()
+        {
+            if (_curSelectedNode == null)
+            {
+                BarrageProject.LogError("Debug fail!Please select a node first");
+                return;
+            }
+            // 当前选择的节点必须是defineSpellCard
+            if (_curSelectedNode.GetNodeType() != NodeType.DefineSpellCard)
+            {
+                BarrageProject.LogError("Debug fail!Please select a node with type define spell card");
+                return;
+            }
+            BarrageProject.SetDebugSpellCardNode(_curSelectedNode);
+            OnPackClickHandler();
+            BarrageProject.ClearDebugSpellCardMode();
         }
 
         #endregion

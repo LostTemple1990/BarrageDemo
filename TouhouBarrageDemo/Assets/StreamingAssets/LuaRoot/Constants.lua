@@ -55,6 +55,11 @@ Constants.DirModeMoveYTowardsPlayer = 2
 Constants.DirModeMoveTowardsPlayer = 3
 Constants.DirModeMoveRandom = 4
 
+MoveXTowardsPlayer = 1
+MoveYTowardsPlayer = 2
+MoveTowardsPlayer = 3
+MoveRandom = 4
+
 Constants.STGWidth = 384
 Constants.STGHeight = 448
 

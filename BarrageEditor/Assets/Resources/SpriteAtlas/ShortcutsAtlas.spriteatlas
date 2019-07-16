@@ -66,6 +66,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: f7b272730861c3745ada05fa837bc509, type: 3}
   - {fileID: 21300000, guid: 38b96493d4229624b9b5443feb1f51f0, type: 3}
   - {fileID: 21300000, guid: 5e00ab93c4490df428165dde836dfe02, type: 3}
+  - {fileID: 21300000, guid: f330b1a34dbf44e4595ae79ff23c0082, type: 3}
   - {fileID: 21300000, guid: f877daa3767e6424a82902c76364e36a, type: 3}
   - {fileID: 21300000, guid: c5c4cdc3e5773fe4f85c03e7deb51eee, type: 3}
   - {fileID: 21300000, guid: 2b392bd3b1f6d9247ba7a468f9a5200f, type: 3}
@@ -141,7 +142,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 765ce39a906525b4c856c97c9ada5944, type: 3}
   - {fileID: 21300000, guid: 714a75baf955be847a4e233230be150f, type: 3}
   - {fileID: 21300000, guid: 912e53ca615f9404db8774c6ab932949, type: 3}
-  - {fileID: 21300000, guid: 5f3b37ca2088dbe41afd2d9a44a36705, type: 3}
   - {fileID: 21300000, guid: 13432bca6c1ee0642b7f0248fa105eda, type: 3}
   - {fileID: 21300000, guid: a3724fca995e6344cadd0c0e896503ba, type: 3}
   - {fileID: 21300000, guid: b693a0da163d6a24087bbdbaf9851a85, type: 3}
@@ -175,6 +175,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 4bfa227d448e9224b8c32e0fcad97af1, type: 3}
   - {fileID: 21300000, guid: 68fce69d472ecbf4a85f04ecadf63438, type: 3}
   - {fileID: 21300000, guid: 62665aadb7bfffd42b0a24f9dc9206e8, type: 3}
+  - {fileID: 21300000, guid: bfe36cadadc0859489c390b18ab506a6, type: 3}
   - {fileID: 21300000, guid: 7298d8cd800c1b54c9abf61b406d6042, type: 3}
   - {fileID: 21300000, guid: 72086acdf6d934141a8a79eaa8402c40, type: 3}
   - {fileID: 21300000, guid: dc67da4ec53e435408eec15667ae2790, type: 3}
@@ -234,6 +235,7 @@ SpriteAtlas:
   - bulletchangeprops
   - loadFX
   - bulletinit
+  - bosswander
   - connect
   - colliderinit
   - merge
@@ -309,7 +311,6 @@ SpriteAtlas:
   - onscstart
   - taskwait
   - callbackfunc
-  - taskbosswander
   - setaccel
   - enemydefine
   - laserturnoff
@@ -343,6 +344,7 @@ SpriteAtlas:
   - sentence
   - stage
   - rebounderinit
+  - setwanderprops
   - kill
   - enemysimple
   - pausebgm

@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224003202504272522}
   m_Layer: 0
-  m_Name: EditIgnoreCollisionItem
+  m_Name: EditCollisionItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

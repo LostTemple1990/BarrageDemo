@@ -212,7 +212,9 @@ public partial class LuaLib
             new NameFuncPair("RandomInt",GetRandomInt),
             new NameFuncPair("RandomFloat",GetRandomFloat),
             new NameFuncPair("RandomSign",GetRandomSign),
+            // Common
             new NameFuncPair("Wait",Wait),
+            new NameFuncPair("SetDebugStageName",SetDebugStageName),
             // Bullet
             new NameFuncPair("CreateSimpleBulletById", CreateSimpleBulletById),
             new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet),
@@ -926,6 +928,13 @@ public partial class LuaLib
     public static int Wait(ILuaState luaState)
     {
         return luaState.Yield(luaState.GetTop());
+    }
+
+    public static int SetDebugStageName(ILuaState luaState)
+    {
+        string debugStageName = luaState.ToString(-1);
+        Global.DebugStageName = debugStageName;
+        return 0;
     }
 
     #region lua全局变量相关

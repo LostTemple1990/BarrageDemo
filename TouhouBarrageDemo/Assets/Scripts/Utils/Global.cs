@@ -62,4 +62,8 @@ public class Global
     public static int SysBusyValue = 0;
 
     public static bool IsInReplayMode = false;
+    /// <summary>
+    /// 测试的Stage名称
+    /// </summary>
+    public static string DebugStageName = "";
 }

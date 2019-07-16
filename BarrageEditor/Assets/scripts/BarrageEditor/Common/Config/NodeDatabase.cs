@@ -71,6 +71,8 @@ namespace BarrageEditor
         CreateBoss = 1403,
         SetBossInvincible = 1410,
         ShowBossBloodBar = 1411,
+        BossSetWanderProps = 1421,
+        BossWander = 1422,
         DefineSpellCard = 1451,
         SpellCardInit = 1452,
         SpellCardFinish = 1453,
@@ -435,13 +437,35 @@ namespace BarrageEditor
             cfg = new NodeConfig
             {
                 type = NodeType.ShowBossBloodBar,
-                shortcutPath = "bossshowbloodbar",
+                shortcutPath = "setwanderprops",
                 shortcutTip = "show blood bar",
                 defaultAttrValues = new List<object> { "boss", "true" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
             };
             _nodeCfgDic.Add(NodeType.ShowBossBloodBar, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.BossSetWanderProps,
+                shortcutPath = "setwanderprops",
+                shortcutTip = "set wander properties",
+                defaultAttrValues = new List<object> { "boss", "-96,96", "112,144", "16,32", "8,16", "IntModeLinear", "MoveXTowardsPlayer" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.BossSetWanderProps, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.BossWander,
+                shortcutPath = "bosswander",
+                shortcutTip = "boss wander",
+                defaultAttrValues = new List<object> { "boss", "60" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.BossWander, cfg);
 
             cfg = new NodeConfig
             {
@@ -622,7 +646,7 @@ namespace BarrageEditor
                 type = NodeType.CreateSimpleCollider,
                 shortcutPath = "simplecollider",
                 shortcutTip = "create simple collider",
-                defaultAttrValues = new List<object> { "TypeCircle", "64", "64", "0", "0" },
+                defaultAttrValues = new List<object> { "TypeCircle", "0", "0", "64", "64", "0" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
             };

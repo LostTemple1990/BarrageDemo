@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeDefineSpellCard : BaseNode
+    public class NodeDefineSpellCard : BaseNode, IEventReciver
     {
         public override void Init(RectTransform parentTf)
         {
@@ -12,6 +13,7 @@ namespace BarrageEditor
             _extraDepth = 0;
             base.Init(parentTf);
             _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "scdefine");
+            EventManager.GetInstance().Register(EditorEvents.DefineNodeDestroy, this);
         }
 
         public override void CreateDefaultAttrs()
@@ -117,11 +119,23 @@ namespace BarrageEditor
             base.OnAttributeValueChanged(attr);
         }
 
+        public override void Destroy()
+        {
+            EventManager.GetInstance().Remove(EditorEvents.DefineNodeDestroy, this);
+            if (_isWatchingData)
+            {
+                string typeName = GetAttrByIndex(0).GetValueString();
+                CustomDefine.RemoveData(CustomDefineType.SpellCard, typeName);
+                EventManager.GetInstance().PostEvent(EditorEvents.DefineNodeDestroy, new List<object> { CustomDefineType.SpellCard, typeName });
+            }
+            base.Destroy();
+        }
+
         public override string ToDesc()
         {
             bool isSpellCard = GetAttrByIndex(5).GetValueString() == "true" ? true : false;
             return string.Format("define {0}spell card \"{1}\" with name \"{2}\"",
-                isSpellCard ? "non-" : "",
+                isSpellCard ? "" : "non-",
                 GetAttrByIndex(0).GetValueString(), GetAttrByIndex(1).GetValueString());
         }
 
@@ -129,6 +143,22 @@ namespace BarrageEditor
         {
             string scTypeName = GetAttrByIndex(0).GetValueString();
             return string.Format("SpellCard[\"{0}\"] = {{}}\n", scTypeName);
+        }
+
+        public void Execute(int eventId, object data)
+        {
+            if (eventId == EditorEvents.DefineNodeDestroy)
+            {
+                if (!_isWatchingData)
+                {
+                    List<object> datas = data as List<object>;
+                    string typeName = GetAttrByIndex(0).GetValueString();
+                    if ((CustomDefineType)datas[0] == CustomDefineType.SpellCard && (string)datas[1] == typeName)
+                    {
+                        _isWatchingData = CustomDefine.AddData(CustomDefineType.SpellCard, typeName, "");
+                    }
+                }
+            }
         }
     }
 }

@@ -22,6 +22,10 @@ public class BossLuaInterface
     private static LuaCsClosureValue _funcSetMaxHp;
     private static LuaCsClosureValue _funcSetCollisionSize;
     private static LuaCsClosureValue _funcSetAni;
+    private static LuaCsClosureValue _funcSetWanderRange;
+    private static LuaCsClosureValue _funcSetWanderAmplitude;
+    private static LuaCsClosureValue _funcSetWanderMode;
+    private static LuaCsClosureValue _funcWander;
 
     private static LuaCsClosureValue _funcSetInvincible;
     private static LuaCsClosureValue _funcShowBloodBar;
@@ -48,6 +52,10 @@ public class BossLuaInterface
             _funcSetMaxHp = new LuaCsClosureValue(LuaLib.SetEnemyMaxHp);
             _funcSetCollisionSize = new LuaCsClosureValue(LuaLib.SetEnemyCollisionParas);
             _funcSetAni = new LuaCsClosureValue(LuaLib.SetBossAni);
+            _funcSetWanderRange = new LuaCsClosureValue(LuaLib.SetEnemyWanderRange);
+            _funcSetWanderAmplitude = new LuaCsClosureValue(LuaLib.SetEnemyWanderAmplitude);
+            _funcSetWanderMode = new LuaCsClosureValue(LuaLib.SetEnemyWanderMode);
+            _funcWander = new LuaCsClosureValue(LuaLib.EnemyDoWander);
 
             _funcSetInvincible = new LuaCsClosureValue(LuaLib.SetBossInvincible);
             _funcShowBloodBar = new LuaCsClosureValue(LuaLib.ShowBossBloodBar);
@@ -194,6 +202,18 @@ public class BossLuaInterface
                     return true;
                 case "SetAni":
                     res.SetClCsValue(_funcSetAni);
+                    return true;
+                case "SetWanderRange":
+                    res.SetClCsValue(_funcSetWanderRange);
+                    return true;
+                case "SetWanderAmplitude":
+                    res.SetClCsValue(_funcSetWanderAmplitude);
+                    return true;
+                case "SetWanderMode":
+                    res.SetClCsValue(_funcSetWanderMode);
+                    return true;
+                case "Wander":
+                    res.SetClCsValue(_funcWander);
                     return true;
                 #endregion
                 #region Boss专属变量

@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeDefineCollider : BaseNode
+    public class NodeDefineCollider : BaseNode, IEventReciver
     {
         public override void Init(RectTransform parentTf)
         {
@@ -12,6 +13,7 @@ namespace BarrageEditor
             _extraDepth = 0;
             base.Init(parentTf);
             _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "colliderdefine");
+            EventManager.GetInstance().Register(EditorEvents.DefineNodeDestroy, this);
         }
 
         public override void CreateDefaultAttrs()
@@ -98,6 +100,18 @@ namespace BarrageEditor
             base.OnAttributeValueChanged(attr);
         }
 
+        public override void Destroy()
+        {
+            EventManager.GetInstance().Remove(EditorEvents.DefineNodeDestroy, this);
+            if (_isWatchingData)
+            {
+                string typeName = GetAttrByIndex(0).GetValueString();
+                CustomDefine.RemoveData(CustomDefineType.Collider, typeName);
+                EventManager.GetInstance().PostEvent(EditorEvents.DefineNodeDestroy, new List<object> { CustomDefineType.Collider, typeName });
+            }
+            base.Destroy();
+        }
+
         public override string ToDesc()
         {
             return string.Format("define collider type \"{0}\"", attrs[0].GetValueString());
@@ -106,6 +120,24 @@ namespace BarrageEditor
         public override string ToLuaHead()
         {
             return string.Format("CustomizedColliderTable[\"{0}\"] = {{}}\n", attrs[0].GetValueString());
+        }
+
+        public void Execute(int eventId, object data)
+        {
+            if (eventId == EditorEvents.DefineNodeDestroy)
+            {
+                if (!_isWatchingData)
+                {
+                    List<object> datas = data as List<object>;
+                    string typeName = GetAttrByIndex(0).GetValueString();
+                    if ((CustomDefineType)datas[0] == CustomDefineType.Collider && (string)datas[1] == typeName)
+                    {
+                        BaseNode onCreteNode = GetChildByType(NodeType.OnColliderCreate);
+                        string paraList = onCreteNode.GetAttrByIndex(0).GetValueString();
+                        _isWatchingData = CustomDefine.AddData(CustomDefineType.Collider, typeName, paraList);
+                    }
+                }
+            }
         }
     }
 }

@@ -51,11 +51,7 @@ namespace BarrageEditor
 
         private void InitParas()
         {
-            CustomDefineType type = CustomDefineType.SimpleBullet;
-            if (_nodeAttr.Node.GetNodeType() == NodeType.CreateCustomizedBullet)
-            {
-                type = CustomDefineType.SimpleBullet;
-            }
+            CustomDefineType type = CustomDefine.GetTypeByNodeType(_nodeAttr.Node.GetNodeType());
             string typeName = _nodeAttr.Node.attrs[0].GetValueString();
             CustomDefineData data = CustomDefine.GetDataByTypeAndName(type, typeName);
             // 获取参数名称的列表

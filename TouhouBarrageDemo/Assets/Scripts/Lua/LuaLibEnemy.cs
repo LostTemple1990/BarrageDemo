@@ -79,7 +79,7 @@ public partial class LuaLib
         EnemyCfg cfg = EnemyManager.GetInstance().GetEnemyCfgById(enemyId);
         NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.NormalEnemy) as NormalEnemy;
         enemy.Init(cfg);
-        enemy.SetPosition(new Vector3(posX, posY, 0));
+        enemy.SetPosition(posX, posY);
         int onEliminateFuncRef = InterpreterManager.GetInstance().GetEnemyOnEliminateFuncRef(customizedName);
         if (onEliminateFuncRef != 0)
         {

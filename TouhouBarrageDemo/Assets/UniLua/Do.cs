@@ -37,6 +37,10 @@ namespace UniLua
 			{
 				NumCSharpCalls = oldNumCSharpCalls;
 				res = e.ErrCode;
+                if ( res != ThreadStatus.LUA_YIELD )
+                {
+                    Logger.Log(e.StackTrace);
+                }
 			}
 			NumCSharpCalls = oldNumCSharpCalls;
 			return res;

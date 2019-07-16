@@ -174,7 +174,7 @@ public class ColliderCircle : ObjectColliderBase
             nextColliderIndex = collParas.nextIndex;
             if ( DetectCollisionWithCollisionParas(collParas) )
             {
-                bullet.CollidedByObject(curColliderIndex);
+                bullet.CollidedByObject(curColliderIndex, _eliminateType);
                 isCollided = true;
             }
         } while (nextColliderIndex != -1);

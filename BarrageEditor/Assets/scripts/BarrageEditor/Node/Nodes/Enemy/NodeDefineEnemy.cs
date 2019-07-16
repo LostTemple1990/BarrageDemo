@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeDefineEnemy : BaseNode
+    public class NodeDefineEnemy : BaseNode, IEventReciver
     {
         public override void Init(RectTransform parentTf)
         {
@@ -12,6 +13,7 @@ namespace BarrageEditor
             _extraDepth = 0;
             base.Init(parentTf);
             _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "enemydefine");
+            EventManager.GetInstance().Register(EditorEvents.DefineNodeDestroy, this);
         }
 
         public override void CreateDefaultAttrs()
@@ -55,7 +57,7 @@ namespace BarrageEditor
                     if (newTypeName != "")
                     {
                         BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
-                        _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, newTypeName, onCreteNode.attrs[0].GetValueString());
+                        _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, newTypeName, onCreteNode.GetAttrByIndex(1).GetValueString());
                     }
                 }
                 else
@@ -70,7 +72,7 @@ namespace BarrageEditor
                         else
                         {
                             BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
-                            _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, attr.GetValueString(), onCreteNode.attrs[0].GetValueString());
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, attr.GetValueString(), onCreteNode.attrs[1].GetValueString());
                         }
                     }
                     else
@@ -79,7 +81,7 @@ namespace BarrageEditor
                         if (newTypeName != "")
                         {
                             BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
-                            _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, newTypeName, onCreteNode.attrs[0].GetValueString());
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, newTypeName, onCreteNode.GetAttrByIndex(1).GetValueString());
                         }
                     }
                 }
@@ -90,7 +92,7 @@ namespace BarrageEditor
                 if (typeName != "")
                 {
                     BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
-                    string paraList = onCreteNode.GetAttrByIndex(0).GetValueString();
+                    string paraList = onCreteNode.GetAttrByIndex(1).GetValueString();
                     _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, typeName, paraList);
                 }
             }
@@ -105,6 +107,36 @@ namespace BarrageEditor
         public override string ToLuaHead()
         {
             return string.Format("CustomizedEnemyTable[\"{0}\"] = {{}}\n", attrs[0].GetValueString());
+        }
+
+        public override void Destroy()
+        {
+            EventManager.GetInstance().Remove(EditorEvents.DefineNodeDestroy, this);
+            if (_isWatchingData)
+            {
+                string typeName = GetAttrByIndex(0).GetValueString();
+                CustomDefine.RemoveData(CustomDefineType.Enemy, typeName);
+                EventManager.GetInstance().PostEvent(EditorEvents.DefineNodeDestroy, new List<object> { CustomDefineType.Enemy, typeName });
+            }
+            base.Destroy();
+        }
+
+        public void Execute(int eventId, object data)
+        {
+            if (eventId == EditorEvents.DefineNodeDestroy)
+            {
+                if (!_isWatchingData)
+                {
+                    List<object> datas = data as List<object>;
+                    string typeName = GetAttrByIndex(0).GetValueString();
+                    if ((CustomDefineType)datas[0] == CustomDefineType.Enemy && (string)datas[1] == typeName)
+                    {
+                        BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
+                        string paraList = onCreteNode.GetAttrByIndex(1).GetValueString();
+                        _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, typeName, paraList);
+                    }
+                }
+            }
         }
     }
 }

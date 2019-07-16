@@ -98,6 +98,12 @@ namespace BarrageEditor
                 case NodeType.ShowBossBloodBar:
                     newNode = new NodeShowBossBloodBar();
                     break;
+                case NodeType.BossSetWanderProps:
+                    newNode = new NodeSetBossWanderProps();
+                    break;
+                case NodeType.BossWander:
+                    newNode = new NodeBossWander();
+                    break;
                 case NodeType.DefineSpellCard:
                     newNode = new NodeDefineSpellCard();
                     break;
@@ -260,6 +266,9 @@ namespace BarrageEditor
                     break;
                 case NodeAttrType.ShapeType:
                     nodeAttr = new NodeAttrShapeType();
+                    break;
+                case NodeAttrType.DirectionMode:
+                    nodeAttr = new NodeAttrDirectionMode();
                     break;
             }
             if (nodeAttr != null) return nodeAttr;

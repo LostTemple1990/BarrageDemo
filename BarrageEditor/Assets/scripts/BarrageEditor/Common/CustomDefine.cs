@@ -141,6 +141,7 @@ namespace BarrageEditor
             customDefineDic[CustomDefineType.Boss].Clear();
             customDefineDic[CustomDefineType.SpellCard].Clear();
             customDefineDic[CustomDefineType.STGObject].Clear();
+            customDefineDic[CustomDefineType.Collider].Clear();
         }
     }
 

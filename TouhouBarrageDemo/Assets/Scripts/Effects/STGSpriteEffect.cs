@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExecuter
+public class STGSpriteEffect : STGEffectBase, ISTGMovable, IAttachment, IAttachable, ITaskExecuter
 {
     private GameObject _effectGo;
     private Transform _effectTf;
@@ -127,6 +127,14 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     /// 是否连续跟随master
     /// </summary>
     protected bool _isFollowingMasterContinuously;
+    /// <summary>
+    /// 附件物体的列表
+    /// </summary>
+    protected List<IAttachment> _attachmentsList;
+    /// <summary>
+    /// 依附物体的个数
+    /// </summary>
+    protected int _attachmentsCount;
 
     protected List<Task> _taskList;
     protected int _taskCount;
@@ -136,6 +144,8 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
     {
         _effectType = EffectType.SpriteEffect;
         _taskList = new List<Task>();
+        _attachmentsList = new List<IAttachment>();
+        _attachmentsCount = 0;
     }
 
     public override void Clear()
@@ -157,6 +167,12 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         _effectGo = null;
         _effectTf = null;
         _spRenderer = null;
+        if (_attachmentsCount > 0)
+        {
+            _attachmentsList.Clear();
+            _attachmentsCount = 0;
+        }
+        _master = null;
     }
 
     public override void Init()
@@ -712,6 +728,31 @@ public class STGSpriteEffect : STGEffectBase ,ISTGMovable ,IAttachment ,ITaskExe
         _master = null;
         _isFinish = true;
     }
+
+    public void AddAttachment(IAttachment attachment)
+    {
+        for (int i = 0; i < _attachmentsCount; i++)
+        {
+            if (_attachmentsList[i] == attachment)
+            {
+                return;
+            }
+        }
+        _attachmentsList.Add(attachment);
+        _attachmentsCount++;
+    }
+
+    public void OnAttachmentEliminated(IAttachment attachment)
+    {
+        for (int i = 0; i < _attachmentsCount; i++)
+        {
+            if (_attachmentsList[i] == attachment)
+            {
+                _attachmentsList[i] = null;
+            }
+        }
+    }
+
     #endregion
 
     #region task

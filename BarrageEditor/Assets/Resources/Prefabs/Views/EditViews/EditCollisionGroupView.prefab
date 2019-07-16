@@ -56,12 +56,12 @@ GameObject:
   - component: {fileID: 222776171698825170}
   - component: {fileID: 114519869012947970}
   m_Layer: 0
-  m_Name: EditIgnoreCollisionGroupView
+  m_Name: EditCollisionGroupView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1344759203366188
 GameObject:
   m_ObjectHideFlags: 1

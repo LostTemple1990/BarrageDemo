@@ -172,7 +172,7 @@ namespace BarrageEditor
                 typeList = new List<NodeType>[]
                 {
                     new List<NodeType> { NodeType.DefineBoss, NodeType.CreateBoss },
-                    new List<NodeType> { NodeType.SetBossInvincible, NodeType.ShowBossBloodBar },
+                    new List<NodeType> { NodeType.SetBossInvincible, NodeType.ShowBossBloodBar, NodeType.BossSetWanderProps, NodeType.BossWander },
                     new List<NodeType> { NodeType.DefineSpellCard, NodeType.StartSpellCard, NodeType.SetBossPhaseData },
                 },
             };

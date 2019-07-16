@@ -42,7 +42,7 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            string ret = string.Format("StartSepllCard(SpellCard[\"{0}\"],{1})\n", 
+            string ret = string.Format("StartSpellCard(SpellCard[\"{0}\"],{1})\n", 
                 GetAttrByIndex(0).GetValueString(), GetAttrByIndex(1).GetValueString());
             if (GetAttrByIndex(2).GetValueString()=="true")
             {

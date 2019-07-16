@@ -225,7 +225,7 @@ public class ColliderRect : ObjectColliderBase
     /// <param name="curColliderIndex"></param>
     protected virtual void CollidedByEnemyBullet(EnemyBulletBase bullet,int curColliderIndex)
     {
-        bullet.CollidedByObject(curColliderIndex);
+        bullet.CollidedByObject(curColliderIndex, _eliminateType);
     }
 
     public override bool DetectCollisionWithCollisionParas(CollisionDetectParas collParas)

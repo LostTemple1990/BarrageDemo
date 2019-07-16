@@ -38,7 +38,7 @@ public partial class LuaLib
         int copyIndex = -numArgs - 2;
         for (int i = 0; i < numArgs; i++)
         {
-            luaState.Copy(copyIndex, -1);
+            luaState.PushValue(copyIndex);
         }
         luaState.Call(numArgs + 1, 0);
         // 返回结果

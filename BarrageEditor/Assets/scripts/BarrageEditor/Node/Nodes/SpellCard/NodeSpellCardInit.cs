@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using YKEngine;
 
@@ -11,6 +12,22 @@ namespace BarrageEditor
             _nodeType = NodeType.SpellCardInit;
             base.Init(parentTf);
             _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "onscstart");
+        }
+
+        public override void CreateDefualtChilds()
+        {
+            // 设置boss血量
+            BaseNode tmpNode = NodeManager.CreateNode(NodeType.Code);
+            tmpNode.SetAttrsValues(new List<object> { "boss:SetMaxHp(500)" });
+            InsertChildNode(tmpNode, -1);
+            // 设置符卡无敌时间
+            tmpNode = NodeManager.CreateNode(NodeType.SetBossInvincible);
+            tmpNode.SetAttrsValues(new List<object> { "boss", "5" });
+            InsertChildNode(tmpNode, -1);
+            // 显示BOSS血条
+            tmpNode = NodeManager.CreateNode(NodeType.ShowBossBloodBar);
+            tmpNode.SetAttrsValues(new List<object> { "boss", "true" });
+            InsertChildNode(tmpNode, -1);
         }
 
         public override string GetNodeName()

@@ -296,6 +296,11 @@ namespace BarrageEditor
         {
             for (int i=0;i<attrs.Count;i++)
             {
+                // 可能会因为增加节点属性导致保存的value不够，这个时候跳出循环即可
+                if ( i >= values.Count )
+                {
+                    break;
+                }
                 attrs[i].SetValue(values[i],false);
             }
             OnAttributeValueChanged();
@@ -561,11 +566,25 @@ namespace BarrageEditor
 
         public virtual void ToLua(int codeDepth, ref string luaStr)
         {
+            if (BarrageProject.IsDebugStage)
+            {
+                if (this == BarrageProject.DebugFromNode)
+                {
+                    luaStr += "end ";
+                }
+            }
             string luaHead = ToLuaHead();
             if ( luaHead != "" )
             {
                 NodeManager.ApplyDepthForLua(codeDepth, ref luaHead);
                 luaStr += luaHead;
+            }
+            if (BarrageProject.IsDebugStage)
+            {
+                if (this==BarrageProject.DebugStageNode)
+                {
+                    luaStr += "if false then ";
+                }
             }
             for (int i=0;i<childs.Count;i++)
             {
@@ -610,7 +629,7 @@ namespace BarrageEditor
             _isExpand = nd.isExpand;
         }
 
-        public void Destroy()
+        public virtual void Destroy()
         {
             int i;
             for (i = 0; i < childs.Count; i++)

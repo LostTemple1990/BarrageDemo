@@ -37,8 +37,8 @@ namespace BarrageEditor
                     if ((parentNode as NodeDefineEnemy).IsWatchingData)
                     {
                         // 参数列表发生变化，修改缓存
-                        string name = parentNode.GetAttrByIndex(0).GetValueString();
-                        CustomDefine.ModifyDefineParaList(CustomDefineType.Enemy, name, attr.GetValueString());
+                        string paraList = parentNode.GetAttrByIndex(1).GetValueString();
+                        CustomDefine.ModifyDefineParaList(CustomDefineType.Enemy, paraList, attr.GetValueString());
                     }
                 }
             }

@@ -56,6 +56,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 68d47302af782fc43a6554cda2c4d55c, type: 3}
   - {fileID: 21300000, guid: 57bbe612ac6e02d4f8f63270a15ebe78, type: 3}
   - {fileID: 21300000, guid: 656f2022785317441b7be2a52452e6cb, type: 3}
+  - {fileID: 21300000, guid: 6256093298293bd4ca3f910348a28ca4, type: 3}
   - {fileID: 21300000, guid: 7a8ed9321d2334c4a935f9a595f62d4f, type: 3}
   - {fileID: 21300000, guid: 7b413482ec9fe7e47bace1d3087e60ee, type: 3}
   - {fileID: 21300000, guid: f51435b20375e634db617d957e871914, type: 3}
@@ -85,7 +86,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: dc47d0754845d3d469124db42d05aa48, type: 3}
   - {fileID: 21300000, guid: e758d8959d95e9647a24432620d479b6, type: 3}
   - {fileID: 21300000, guid: e6fcb7a5e504aa24ebe2afceb7895c02, type: 3}
-  - {fileID: 21300000, guid: 22ff1ca5f0aa88e42af831166a4f69e6, type: 3}
   - {fileID: 21300000, guid: a346a9b5eb6712645ba098d06a9c10d9, type: 3}
   - {fileID: 21300000, guid: d47af7d534445fa4a8da4ed86ebfa934, type: 3}
   - {fileID: 21300000, guid: 28c68c0681a3b914eb1b56f35ab104b7, type: 3}
@@ -175,6 +175,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 6cc3ca7e88642a0479074caee7f671b2, type: 3}
   - {fileID: 21300000, guid: c99c97aecb2d59940b742d056916c570, type: 3}
   - {fileID: 21300000, guid: 92f130be5a040594294e399f56f9a5b0, type: 3}
+  - {fileID: 21300000, guid: 50c964ced64afaa48b1daaab586da9e6, type: 3}
   - {fileID: 21300000, guid: 068f18cef12c25a4eb49edb68abc56e3, type: 3}
   - {fileID: 21300000, guid: 483b900f2728ed64e8ba2fe26ad81795, type: 3}
   - {fileID: 21300000, guid: 7b35704f67795f14caeb842c76b52533, type: 3}
@@ -208,6 +209,7 @@ SpriteAtlas:
   - setrelpos
   - setstraightparas
   - folder
+  - bosswander
   - code
   - unitkill
   - shakescreen
@@ -237,7 +239,6 @@ SpriteAtlas:
   - laserbentdefine
   - taskclear
   - bosscreate
-  - taskbosswander
   - laserdefine
   - renderimage
   - loadsound
@@ -327,6 +328,7 @@ SpriteAtlas:
   - bglayer
   - bossphasedata
   - bgdefine
+  - setwanderprops
   - rebounderdefine
   - loadFX
   - unitdel
