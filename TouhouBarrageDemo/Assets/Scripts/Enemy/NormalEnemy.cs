@@ -43,6 +43,12 @@ public class NormalEnemy : EnemyBase
         _checkOutOfBorder = true;
     }
 
+    public void Init(string enemyId)
+    {
+        EnemyCfg cfg = EnemyManager.GetInstance().GetEnemyCfgById(enemyId);
+        Init(cfg);
+    }
+
     public override void Update()
     {
         UpdateTask();

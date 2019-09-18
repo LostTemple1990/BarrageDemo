@@ -88,6 +88,23 @@ namespace BarrageEditor
         SetBulletResistEliminatedTypes = 1507,
         ChangeBulletProperty = 1508,
 
+        DefineLaser = 1901,
+        OnLaserCreate = 1902,
+        CreateCustomizedLaser = 1903,
+        CreateLaser = 1904,
+        SetLaserStyle = 1905,
+        LaserTurnHalfOn = 1911,
+        LaserTurnOn = 1912,
+        LaserTurnOff = 1913,
+        LaserChangeLengthTo = 1915,
+
+        DefineLinearLaser = 2001,
+        OnLinearLaserCreate = 2002,
+        CreateCustomizedLinearLaser = 2003,
+        DefineCurveLaser = 2101,
+        OnCurveLaserCreate = 2102,
+        CreateCustomizedCurveLaser = 2103,
+
         UnitSetV = 1601,
         UnitSetAcce = 1602,
         UnitMoveTo = 1603,
@@ -98,6 +115,7 @@ namespace BarrageEditor
         UnitSetResistEliminatedTypes = 1622,
         UnitAttachTo = 1626,
         UnitSetRelativePos = 1627,
+        UnitEventTrigger = 1681,
         KillUnit = 1691,
         DelUnit = 1692,
 
@@ -148,6 +166,8 @@ namespace BarrageEditor
             InitEnemyNodeCfgs();
             InitBossNodeCfgs();
             InitBulletNodeCfgs();
+            InitLaserNodeCfgs();
+            InitLaserExNodeCfgs();
             InitColliderNodeCfgs();
             InitObjectNodeCfgs();
             InitUnitNodeCfgs();
@@ -311,7 +331,10 @@ namespace BarrageEditor
                 shortcutTip = "unit add task",
                 defaultAttrValues = new List<object> { "self" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
-                //needAncestors = new List<NodeType> { NodeType.Stage, NodeType.OnEnemyCreate, NodeType.OnBulletCreate, NodeType.Spel },
+                needAncestors = new List<NodeType> { NodeType.Stage, NodeType.DefineEnemy, NodeType.DefineBoss, NodeType.DefineSpellCard,
+                    NodeType.DefineBullet, NodeType.DefineLaser, NodeType.DefineLinearLaser, NodeType.DefineCurveLaser,
+                    NodeType.DefineCollider, NodeType.DefineCollider,
+                    NodeType.AddTask, },
             };
             _nodeCfgDic.Add(NodeType.AddTask, cfg);
             // TaskWait
@@ -604,6 +627,162 @@ namespace BarrageEditor
             _nodeCfgDic.Add(NodeType.ChangeBulletProperty, cfg);
         }
 
+        private void InitLaserNodeCfgs()
+        {
+            NodeConfig cfg;
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.DefineLaser,
+                shortcutPath = "laserdefine",
+                shortcutTip = "define laser",
+                defaultAttrValues = new List<object> { "" },
+                allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.DefineLaser, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.OnLaserCreate,
+                shortcutPath = "laserinit",
+                defaultAttrValues = new List<object> { "rot", "202011", "100", "16" },
+                editOnCreated = false,
+                isDeletable = false,
+            };
+            _nodeCfgDic.Add(NodeType.OnLaserCreate, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateCustomizedLaser,
+                shortcutPath = "lasercreate",
+                shortcutTip = "create laser",
+                defaultAttrValues = new List<object> { "", "self.x", "self.y", "" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.CreateCustomizedLaser, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.LaserTurnHalfOn,
+                shortcutPath = "laserturnhalfon",
+                shortcutTip = "laser turn half on",
+                defaultAttrValues = new List<object> { "self", "2", "0" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.LaserTurnHalfOn, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.LaserTurnOn,
+                shortcutPath = "laserturnon",
+                shortcutTip = "laser turn on",
+                defaultAttrValues = new List<object> { "self", "10" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.LaserTurnOn, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.LaserTurnOff,
+                shortcutPath = "laserturnoff",
+                shortcutTip = "laser turn off",
+                defaultAttrValues = new List<object> { "self", "10" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.LaserTurnOff, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.LaserChangeLengthTo,
+                shortcutPath = "lasergrow",
+                shortcutTip = "laser change length",
+                defaultAttrValues = new List<object> { "self", "100", "10" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.LaserChangeLengthTo, cfg);
+        }
+
+        private void InitLaserExNodeCfgs()
+        {
+            NodeConfig cfg;
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.DefineLinearLaser,
+                shortcutPath = "laserdefine",
+                shortcutTip = "define linear laser",
+                defaultAttrValues = new List<object> { "" },
+                allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.DefineLinearLaser, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.OnLinearLaserCreate,
+                shortcutPath = "laserinit",
+                defaultAttrValues = new List<object> { "", "202060", "45", "true", "true" },
+                editOnCreated = false,
+                isDeletable = false,
+            };
+            _nodeCfgDic.Add(NodeType.OnLinearLaserCreate, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateCustomizedLinearLaser,
+                shortcutPath = "lasercreate",
+                shortcutTip = "create linear laser",
+                defaultAttrValues = new List<object> { "", "self.x", "self.y", "" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.CreateCustomizedLinearLaser, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.DefineCurveLaser,
+                shortcutPath = "laserbentdefine",
+                shortcutTip = "define curve laser",
+                defaultAttrValues = new List<object> { "" },
+                allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.DefineCurveLaser, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.OnCurveLaserCreate,
+                shortcutPath = "laserbentinit",
+                defaultAttrValues = new List<object> { "", "401060", "45", "16" },
+                editOnCreated = false,
+                isDeletable = false,
+            };
+            _nodeCfgDic.Add(NodeType.OnCurveLaserCreate, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateCustomizedCurveLaser,
+                shortcutPath = "laserbentcreate",
+                shortcutTip = "create curve laser",
+                defaultAttrValues = new List<object> { "", "self.x", "self.y", "" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.CreateCustomizedCurveLaser, cfg);
+        }
+
         private void InitColliderNodeCfgs()
         {
             NodeConfig cfg;
@@ -860,6 +1039,17 @@ namespace BarrageEditor
                 allowChilds = new List<NodeType>(),
             };
             _nodeCfgDic.Add(NodeType.DelUnit, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.UnitEventTrigger,
+                shortcutPath = "callbackfunc",
+                shortcutTip = "unit event trigger",
+                defaultAttrValues = new List<object> { "OnKill" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.UnitEventTrigger, cfg);
         }
 
         /// <summary>

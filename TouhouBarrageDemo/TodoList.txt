@@ -38,17 +38,21 @@ Enemy的GetHit函数要加入伤害来源，用于判断是否吃B --finish
 检查进行符卡时重开是否已经结束掉当前符卡的task(WaitForSpellCardFinish
 实现终符的多段血条分段显示 --finish
 考虑修改DoAcce接口，传入一个true/false以消除是否当前速度方向的歧义
-给EnemyLaser加入MovableObject
+给EnemyLaser加入MovableObject --finish
 添加bullet的render方法，在每帧最后执行 --finish
 优化灵梦跟踪弹的寻找目标方式
 检查一下ObjectCollider的ColliderGroup是否正确生效 --finish
-考虑把人物立绘相关部分也整合到SpriteEffect中
+考虑把人物立绘相关部分也整合到SpriteEffect中 --finish
 添加SpellCard Bonus
 将SetBossInvincible方法提取出来给EnemyBase使用
+统一CustomizedBullet的接口，统一采用参数 customizedName,posX,posY...来操作  --finish
+添加一个 #define DEBUG_MODE 使得在该模式下LUA调用报错时会产生错误信息 --finish
 
 ---editor
-删除自定义的节点的时候，需要同时删除掉CustomDefine中对应的数据，否则撤销操作会报错
-
+删除自定义的节点的时候，需要同时删除掉CustomDefine中对应的数据，否则撤销操作会报错 --finish
+完成laser的编辑器相关功能 --finish
+完成linearLaser的编辑器相关功能 --finish
+完成curveLaser的编辑器相关功能 --finish
 
 COLOR_DEEP_RED=1
 COLOR_RED=2
@@ -66,4 +70,3 @@ COLOR_GOLDEN_YELLOW=13
 COLOR_ORANGE=14
 COLOR_DEEP_GRAY=15
 COLOR_GRAY=16
-

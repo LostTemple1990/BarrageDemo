@@ -139,6 +139,38 @@ namespace BarrageEditor
                     newNode = new NodeChangeBulletProperty();
                     break;
 
+                case NodeType.DefineLaser:
+                    newNode = new NodeDefineLaser();
+                    break;
+                case NodeType.OnLaserCreate:
+                    newNode = new NodeOnLaserCreate();
+                    break;
+                case NodeType.CreateLaser:
+                    newNode = new NodeCreateLaser();
+                    break;
+                case NodeType.LaserTurnHalfOn:
+                    newNode = new NodeLaserTurnHalfOn();
+                    break;
+                case NodeType.LaserTurnOn:
+                    newNode = new NodeLaserTurnOn();
+                    break;
+                case NodeType.LaserTurnOff:
+                    newNode = new NodeLaserTurnOff();
+                    break;
+                case NodeType.LaserChangeLengthTo:
+                    newNode = new NodeChangeLengthTo();
+                    break;
+
+                case NodeType.DefineLinearLaser:
+                    newNode = new NodeDefineLinearLaser();
+                    break;
+                case NodeType.OnLinearLaserCreate:
+                    newNode = new NodeOnLinearLaserCreate();
+                    break;
+                case NodeType.CreateCustomizedLinearLaser:
+                    newNode = new NodeCreateCustomizedLinearLaser();
+                    break;
+
                 case NodeType.DefineCollider:
                     newNode = new NodeDefineCollider();
                     break;
@@ -203,6 +235,9 @@ namespace BarrageEditor
                     break;
                 case NodeType.DelUnit:
                     newNode = new NodeDelUnit();
+                    break;
+                case NodeType.UnitEventTrigger:
+                    newNode = new NodeUnitEventTrigger();
                     break;
             }
             if (newNode != null)
@@ -269,6 +304,9 @@ namespace BarrageEditor
                     break;
                 case NodeAttrType.DirectionMode:
                     nodeAttr = new NodeAttrDirectionMode();
+                    break;
+                case NodeAttrType.UnitEventType:
+                    nodeAttr = new NodeAttrUnitEventType();
                     break;
             }
             if (nodeAttr != null) return nodeAttr;

@@ -620,10 +620,10 @@ public class STGSpriteEffect : STGEffectBase, ISTGMovable, IAttachment, IAttacha
 
     public float velocity
     {
-        get { return _movableObject.Velocity; }
+        get { return _movableObject.velocity; }
         set
         {
-            _movableObject.Velocity = value;
+            _movableObject.velocity = value;
         }
     }
     /// <summary>
@@ -631,10 +631,10 @@ public class STGSpriteEffect : STGEffectBase, ISTGMovable, IAttachment, IAttacha
     /// </summary>
     public float vx
     {
-        get { return _movableObject.Vx; }
+        get { return _movableObject.vx; }
         set
         {
-            _movableObject.Vx = value;
+            _movableObject.vx = value;
         }
     }
 
@@ -643,37 +643,37 @@ public class STGSpriteEffect : STGEffectBase, ISTGMovable, IAttachment, IAttacha
     /// </summary>
     public float vy
     {
-        get { return _movableObject.Vy; }
+        get { return _movableObject.vy; }
         set
         {
-            _movableObject.Vy = value;
+            _movableObject.vy = value;
         }
     }
 
     public float vAngle
     {
-        get { return _movableObject.VAngle; }
+        get { return _movableObject.vAngle; }
         set
         {
-            _movableObject.VAngle = value;
+            _movableObject.vAngle = value;
         }
     }
 
     public float acce
     {
-        get { return _movableObject.Acce; }
+        get { return _movableObject.acce; }
         set
         {
-            _movableObject.Acce = value;
+            _movableObject.acce = value;
         }
     }
 
     public float accAngle
     {
-        get { return _movableObject.AccAngle; }
+        get { return _movableObject.accAngle; }
         set
         {
-            _movableObject.AccAngle = value;
+            _movableObject.accAngle = value;
         }
     }
 
@@ -689,10 +689,10 @@ public class STGSpriteEffect : STGEffectBase, ISTGMovable, IAttachment, IAttacha
 
     public float maxVelocity
     {
-        get { return _movableObject.MaxVelocity; }
+        get { return _movableObject.maxVelocity; }
         set
         {
-            _movableObject.MaxVelocity = value;
+            _movableObject.maxVelocity = value;
         }
     }
 

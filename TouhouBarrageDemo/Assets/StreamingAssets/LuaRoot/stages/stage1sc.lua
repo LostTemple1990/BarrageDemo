@@ -747,10 +747,13 @@ SC["NazrinSC1_3"].OnFinish = function(boss)
 end
 
 CustomizedBulletTable.NazrinSC2Laser = {}
-CustomizedBulletTable.NazrinSC2Laser.Init = function(laser,posX,posY,angle,existDuration,createRandomBulletInterval)
+CustomizedBulletTable.NazrinSC2Laser.Init = function(laser,angle,existDuration,createRandomBulletInterval)
 	--lib.SetBulletResistEliminatedFlag(bullet,EliminateType.PlayerSpellCard + EliminateType.PlayerDead + EliminateType.HitPlayer)
-	lib.SetBulletStyleById(laser,"201060")
-	lib.SetLaserProps(laser,posX,posY,angle,500,2,150)
+	laser:SetStyleById(201060)
+	laser.rot = angle
+	laser:SetSize(500,2)
+	laser:SetExistDuration(150)
+	laser:TurnOn(0)
 	lib.SetBulletDetectCollision(laser,false)
 	lib.SetLaserCollisionFactor(laser,0.8)
 	lib.AddBulletTask(laser,function()
@@ -759,7 +762,7 @@ CustomizedBulletTable.NazrinSC2Laser.Init = function(laser,posX,posY,angle,exist
 		if coroutine.yield(30) == false then return end
 		if coroutine.yield(existDuration) == false then return end
 		lib.SetBulletDetectCollision(laser,false)
-		lib.ChangeLaserWidthTo(laser,0,0,10)
+		laser:TurnOff(10)
 		if coroutine.yield(10) == false then return end
 		lib.EliminateBullet(laser)
 	end)
@@ -783,10 +786,11 @@ CustomizedBulletTable.NazrinSC2Laser.Init = function(laser,posX,posY,angle,exist
 end
 
 CustomizedBulletTable.NazrinSC2Spark = {}
-CustomizedBulletTable.NazrinSC2Spark.Init = function(laser,posX,posY,canRotate)
+CustomizedBulletTable.NazrinSC2Spark.Init = function(laser,canRotate)
 	lib.SetBulletStyleById(laser,"202060")
-	local laserAngle = lib.GetAimToPlayerAngle(posX,posY)
-	lib.SetLaserProps(laser,posX,posY,laserAngle,0,2,500)
+	laser:SetSize(0,2)
+	laser.rot = Angle(laser,player)
+	laser:SetExistDuration(500)
 	lib.SetBulletDetectCollision(laser,false)
 	lib.SetBulletResistEliminatedFlag(laser,EliminateType.PlayerSpellCard + EliminateType.PlayerDead + EliminateType.HitPlayer)
 	lib.SetLaserCollisionFactor(laser,0.8)
@@ -851,8 +855,8 @@ SC["NazrinSC2_0"].Init = function(boss)
 			local posX,posY = lib.GetEnemyPos(boss)
 			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
 			for i=1,20 do
-				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+26.25+i*15,93-i*3,0,5)
-				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-26.25-i*15,93-i*3,0,5)
+				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+26.25+i*15,93-i*3,0)
+				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-26.25-i*15,93-i*3,0)
 				if coroutine.yield(3) == false then return end
 			end
 			if coroutine.yield(120) == false then return end
@@ -864,7 +868,7 @@ SC["NazrinSC2_0"].Init = function(boss)
 		if coroutine.yield(60) == false then return end
 		for _=1,Infinite do
 			local laserPosX,laserPosY = lib.GetEnemyPos(boss)
-			local laser = lib.CreateCustomizedLaser("NazrinSC2Spark",laserPosX,laserPosY,false,3)
+			local laser = lib.CreateCustomizedLaser("NazrinSC2Spark",laserPosX,laserPosY,false)
 			if coroutine.yield(180) == false then return end
 		end
 	end)
@@ -908,8 +912,8 @@ SC["NazrinSC2_1"].Init = function(boss)
 			local posX,posY = lib.GetEnemyPos(boss)
 			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
 			for i=1,20 do
-				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+26.25+i*15,93-i*3,50,5)
-				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-26.25-i*15,93-i*3,50,5)
+				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+26.25+i*15,93-i*3,50)
+				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-26.25-i*15,93-i*3,50)
 				if coroutine.yield(3) == false then return end
 			end
 			if coroutine.yield(120) == false then return end
@@ -921,7 +925,7 @@ SC["NazrinSC2_1"].Init = function(boss)
 		if coroutine.yield(60) == false then return end
 		for _=1,Infinite do
 			local laserPosX,laserPosY = lib.GetEnemyPos(boss)
-			local laser = lib.CreateCustomizedLaser("NazrinSC2Spark",laserPosX,laserPosY,false,3)
+			local laser = lib.CreateCustomizedLaser("NazrinSC2Spark",laserPosX,laserPosY,false)
 			if coroutine.yield(180) == false then return end
 		end
 	end)
@@ -965,8 +969,8 @@ SC["NazrinSC2_2"].Init = function(boss)
 			local posX,posY = lib.GetEnemyPos(boss)
 			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
 			for i=1,20 do
-				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+4.125+i*16.5,93-i*3,32,5)
-				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-4.125-i*16.5,93-i*3,32,5)
+				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+4.125+i*16.5,93-i*3,32)
+				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-4.125-i*16.5,93-i*3,32)
 				if coroutine.yield(3) == false then return end
 			end
 			if coroutine.yield(120) == false then return end
@@ -978,7 +982,7 @@ SC["NazrinSC2_2"].Init = function(boss)
 		if coroutine.yield(60) == false then return end
 		for _=1,Infinite do
 			local laserPosX,laserPosY = lib.GetEnemyPos(boss)
-			local laser = lib.CreateCustomizedLaser("NazrinSC2Spark",laserPosX,laserPosY,false,3)
+			local laser = lib.CreateCustomizedLaser("NazrinSC2Spark",laserPosX,laserPosY,false)
 			if coroutine.yield(180) == false then return end
 		end
 	end)
@@ -1022,8 +1026,8 @@ SC["NazrinSC2_3"].Init = function(boss)
 			local posX,posY = lib.GetEnemyPos(boss)
 			local playerAngle = lib.GetAimToPlayerAngle(posX,posY)
 			for i=1,20 do
-				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+4.125+i*16.5,93-i*3,32,5)
-				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-4.125-i*16.5,93-i*3,32,5)
+				local laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle+4.125+i*16.5,93-i*3,32)
+				laser = lib.CreateCustomizedLaser("NazrinSC2Laser",posX,posY,playerAngle-4.125-i*16.5,93-i*3,32)
 				if coroutine.yield(3) == false then return end
 			end
 			if coroutine.yield(120) == false then return end
@@ -1035,7 +1039,7 @@ SC["NazrinSC2_3"].Init = function(boss)
 		if coroutine.yield(60) == false then return end
 		for _=1,Infinite do
 			local laserPosX,laserPosY = lib.GetEnemyPos(boss)
-			local laser = lib.CreateCustomizedLaser("NazrinSC2Spark",laserPosX,laserPosY,true,3)
+			local laser = lib.CreateCustomizedLaser("NazrinSC2Spark",laserPosX,laserPosY,true)
 			if coroutine.yield(180) == false then return end
 		end
 	end)
@@ -1129,13 +1133,15 @@ SC["WriggleSC"].Init = function(boss)
 end
 
 CustomizedBulletTable.OrionidsLaser = {}
-CustomizedBulletTable.OrionidsLaser.Init = function(laser,posX,posY,angle,isAimToPlayer,styleId)
-	lib.SetBulletStyleById(laser,styleId)
-	if isAimToPlayer then 
-		angle = angle + lib.GetAimToPlayerAngle(posX,posY)
+CustomizedBulletTable.OrionidsLaser.Init = function(laser,angle,isAimToPlayer,styleId)
+	laser:SetStyleById(styleId)
+	laser:SetSize(0,2)
+	if isAimToPlayer then
+		angle = angle + Angle(laser,player)
 	end
-	lib.SetLaserProps(laser,posX,posY,angle,0,2,180)
-	lib.SetBulletDetectCollision(laser,false)
+	laser.rot = angle
+	laser:SetExistDuration(180)
+	laser:TurnHalfOn(2,0)
 	lib.ChangeLaserLengthTo(laser,900,0,50)
 end
 
@@ -1183,7 +1189,7 @@ CustomizedEnemyTable.OrionidsEnemy.Init = function(enemy,startPosX,startPosY,ang
 	end
 	lib.AddEnemyTask(enemy,function()
 		if coroutine.yield(60) == false then return end
-		lib.SetEnemyPos(enemy,startPosX,startPosY)
+		enemy:SetPos(startPosX,startPosY)
 		lib.SetEnemyInteractive(enemy,true)
 		lib.EnemyAccMoveTowardsWithLimitation(enemy,0,angle,0.15,10)
 	end)
@@ -1264,7 +1270,7 @@ SC["OrionidsSC"].Init = function(boss)
 			do
 				local angle,dAngle = 0,-11
 				for _=1,25 do
-					local laser = lib.CreateCustomizedLaser("OrionidsLaser",320*math.cos(math.rad(angle)),274+25*math.sin(math.rad(angle)),angle,false,"201060",5)
+					local laser = lib.CreateCustomizedLaser("OrionidsLaser",320*cos(angle),274+25*sin(angle),angle,false,"201060")
 					local enemy = lib.CreateCustomizedEnemy("OrionidsEnemy","100022",0,300,320*math.cos(math.rad(angle)),274+25*math.sin(math.rad(angle)),angle,false,4)
 					if coroutine.yield(4) == false then return end
 					angle = angle + dAngle
@@ -1276,7 +1282,7 @@ SC["OrionidsSC"].Init = function(boss)
 				local angle,dAngle = 0,-20
 				for _=1,9 do
 					local angleOffset = lib.GetRandomFloat(-5,5)
-					local laser = lib.CreateCustomizedLaser("OrionidsLaser",320*math.cos(math.rad(angle)),254+15*math.sin(math.rad(angle)),angleOffset,true,"201060",5)
+					local laser = lib.CreateCustomizedLaser("OrionidsLaser",320*math.cos(math.rad(angle)),254+15*math.sin(math.rad(angle)),angleOffset,true,"201060")
 					local enemy = lib.CreateCustomizedEnemy("OrionidsEnemy","100022",0,300,320*math.cos(math.rad(angle)),254+15*math.sin(math.rad(angle)),angleOffset,true,4)
 					if coroutine.yield(5) == false then return end
 					angle = angle + dAngle
@@ -1745,9 +1751,10 @@ CustomizedBulletTable.PatchouliNonSC0Bullet0.Init = function(bullet,laserId,acce
 		local laserStartAngle,dAngle = lib.GetRandomFloat(0,360),90
 		local posX,posY = lib.GetBulletPos(bullet)
 		for _=1,4 do
-			local laser = lib.CreateLaser(laserId,posX,posY,laserStartAngle,40,8,-1)
-			lib.AttatchToMaster(laser,bullet,true)
-			lib.SetAttachmentRelativePos(laser,0,0,laserStartAngle,true,true)
+			last = lib.CreateLaser(laserId,posX,posY,laserStartAngle,40,8,-1)
+			last:TurnOn(0)
+			lib.AttatchToMaster(last,bullet,true)
+			lib.SetAttachmentRelativePos(last,0,0,laserStartAngle,true,true)
 			laserStartAngle = laserStartAngle + dAngle
 		end
 	end
@@ -1836,7 +1843,7 @@ CustomizedEnemyTable.PatchouliEnemy0 = {}
 CustomizedEnemyTable.PatchouliEnemy0.Init = function(enemy,startRotation,omega)
 	lib.SetEnemyMaxHp(enemy,5)
 	lib.SetEnemyInteractive(enemy,false)
-	local laser = lib.CreateCustomizedLaser("PatchouliNonSC1Laser",202011,enemy,startRotation,omega,4)
+	local laser = lib.CreateCustomizedLaser("PatchouliNonSC1Laser",202011,enemy,startRotation,omega)
 	lib.AddEnemyTask(enemy,function()
 		local curRotation,dCurRotation = startRotation,omega
 		for _=1,210 do
@@ -1867,27 +1874,22 @@ CustomizedEnemyTable.PatchouliEnemy0.Init = function(enemy,startRotation,omega)
 end
 
 CustomizedBulletTable.PatchouliNonSC1Laser = {}
-CustomizedBulletTable.PatchouliNonSC1Laser.Init = function(laser,laserId,master,startRotation,omega)
-	lib.SetBulletStyleById(laser,laserId)
+CustomizedBulletTable.PatchouliNonSC1Laser.Init = function(self,laserId,master,startRotation,omega)
+	self:SetStyleById(laserId)
 	local posX,posY=  lib.GetEnemyPos(master)
-	lib.SetLaserProps(laser,posX,posY,startRotation,500,0,-1)
-	lib.SetBulletOrderInLayer(laser,-1)
-	lib.SetBulletDetectCollision(laser,false)
-	lib.ChangeLaserWidthTo(laser,80,0,45)
-	lib.AttatchToMaster(laser,master,true)
-	lib.SetAttachmentRelativePos(laser,0,0,startRotation,false,true)
-	lib.SetBulletAlpha(laser,0)
-	lib.ChangeLaserAlphaTo(laser,1,0,45)
-	lib.AddBulletTask(laser,function()
-		if coroutine.yield(20) == false then return end
-		lib.SetBulletDetectCollision(laser,true)
-		if coroutine.yield(25) == false then return end
-		lib.SetLaserRotateParaWithOmega(laser,omega,150)
+	lib.SetLaserProps(self,posX,posY,startRotation,500)
+	laser:SetExistDuration(80)
+	self.orderInLayer = -1
+	lib.AttatchToMaster(self,master,true)
+	lib.SetAttachmentRelativePos(self,0,0,startRotation,false,true)
+	self:TurnOn(45)
+	lib.AddBulletTask(self,function()
+		if coroutine.yield(45) == false then return end
+		lib.SetLaserRotateParaWithOmega(self,omega,150)
 		if coroutine.yield(105) == false then return end
-		lib.ChangeLaserWidthTo(laser,0,0,60)
-		lib.ChangeLaserAlphaTo(laser,0,0,60)
+		self:TurnOff(60)
 		if coroutine.yield(60) == false then return end
-		lib.EliminateBullet(laser)
+		lib.EliminateBullet(self)
 	end)
 end
 
@@ -1900,7 +1902,7 @@ SC["PatchouliNonSC1"].Init = function(boss)
 	lib.SetEnemyMaxHp(boss,500)
 	lib.ShowBossBloodBar(boss,true)
 	if coroutine.yield(60) == false then return end
-	if coroutine.yield(120) == false then return end
+	--if coroutine.yield(120) == false then return end
 	lib.SetEnemyWanderRange(boss,-100,100,112,144)
 	lib.SetEnemyWanderAmplitude(boss,24,60,5,15)
 	lib.SetEnemyWanderMode(boss,Constants.ModeLinear,Constants.DirModeMoveRandom)

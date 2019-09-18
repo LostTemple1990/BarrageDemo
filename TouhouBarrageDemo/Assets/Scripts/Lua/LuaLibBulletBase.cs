@@ -64,9 +64,7 @@ public partial class LuaLib
     /// <returns></returns>
     public static int GetBulletPos(ILuaState luaState)
     {
-        Logger.Log(luaState.GetTop());
         EnemyBulletBase bullet = luaState.ToUserData(-1) as EnemyBulletBase;
-        luaState.Pop(1);
         luaState.PushNumber(bullet.posX);
         luaState.PushNumber(bullet.posY);
         return 2;

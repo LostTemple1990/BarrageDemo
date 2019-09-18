@@ -122,6 +122,9 @@ namespace BarrageEditor
         public static CustomDefineType GetTypeByNodeType(NodeType nodeType)
         {
             if (nodeType == NodeType.CreateCustomizedBullet) return CustomDefineType.SimpleBullet;
+            if (nodeType == NodeType.CreateCustomizedLaser) return CustomDefineType.Laser;
+            if (nodeType == NodeType.CreateCustomizedLinearLaser) return CustomDefineType.LinearLaser;
+            if (nodeType == NodeType.CreateCustomizedCurveLaser) return CustomDefineType.CurveLaser;
             if (nodeType == NodeType.CreateCustomizedEnemy) return CustomDefineType.Enemy;
             if (nodeType == NodeType.CreateBoss) return CustomDefineType.Boss;
             if (nodeType == NodeType.StartSpellCard) return CustomDefineType.SpellCard;

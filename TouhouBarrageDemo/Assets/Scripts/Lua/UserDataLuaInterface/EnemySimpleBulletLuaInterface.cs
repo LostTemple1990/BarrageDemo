@@ -132,6 +132,11 @@ public class EnemySimpleBulletLuaInterface
                         res.SetNValue(bullet.timeSinceCreated);
                         return true;
                     }
+                case "alpha":
+                    {
+                        res.SetNValue(bullet.alpha);
+                        return true;
+                    }
                 case "SetSelfRotation":
                     {
                         res.SetClCsValue(_funcSetSelfRotaion);
@@ -304,6 +309,11 @@ public class EnemySimpleBulletLuaInterface
                 case "checkBorder":
                     {
                         bullet.SetCheckOutOfBorder(value.BValue());
+                        return true;
+                    }
+                case "alpha":
+                    {
+                        bullet.SetAlpha((float)value.NValue);
                         return true;
                     }
                 #endregion

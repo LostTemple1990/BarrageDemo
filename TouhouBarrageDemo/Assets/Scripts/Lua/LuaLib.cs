@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#define DEBUG_MODE
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UniLua;
@@ -67,7 +69,6 @@ public partial class LuaLib
             // LinearLaser
             new NameFuncPair("CreateLinearLaser",CreateLinearLaser),
             new NameFuncPair("SetLinearLaserLength",SetLinearLaserLength),
-            new NameFuncPair("LinearLaserDoStraightMove",LinearLaserDoStraightMove),
             new NameFuncPair("SetLinearLaserHeadEnable",SetLinearLaserHeadEnable),
             new NameFuncPair("SetLinearLaserSourceEnable",SetLinearLaserSourceEnable),
             new NameFuncPair("CreateCustomizedLinearLaser",CreateCustomizedLinearLaser),
@@ -218,9 +219,13 @@ public partial class LuaLib
             // Bullet
             new NameFuncPair("CreateSimpleBulletById", CreateSimpleBulletById),
             new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet),
+            new NameFuncPair("CreateCustomizedBullet1",CreateCustomizedBullet1),
+            new NameFuncPair("CreateCustomizedLaser",CreateCustomizedLaser),
+            new NameFuncPair("CreateCustomizedLinearLaser",CreateCustomizedLinearLaser),
+            new NameFuncPair("CreateCustomizedCurveLaser",CreateCustomizedCurveLaser),
             // Enemy
             new NameFuncPair("CreateNormalEnemyById",CreateNormalEnemyById),
-            new NameFuncPair("CreateCustomizedEnemy",CreateCustomizedEnemy),
+            new NameFuncPair("CreateCustomizedEnemy",CreateCustomizedEnemy1),
             // Boss
             new NameFuncPair("CreateBoss",CreateBoss),
             // SpellCard
@@ -249,6 +254,9 @@ public partial class LuaLib
         UniLua.Utl.RegisterSetLightUserDataPropValueFunctionDelegate(SetLightUserDataField);
 
         EnemySimpleBulletLuaInterface.Init();
+        EnemyLaserLuaInterface.Init();
+        LinearLaserLuaInterface.Init();
+        CurveLaserLuaInterface.Init();
         NormalEnemyLuaInterface.Init();
         BossLuaInterface.Init();
         STGObjectLuaInterface.Init();
@@ -261,6 +269,12 @@ public partial class LuaLib
         {
             case "EnemySimpleBullet":
                 return EnemySimpleBulletLuaInterface.Get(userData, key, out res);
+            case "EnemyLaser":
+                return EnemyLaserLuaInterface.Get(userData, key, out res);
+            case "EnemyLinearLaser":
+                return LinearLaserLuaInterface.Get(userData, key, out res);
+            case "EnemyCurveLaser":
+                return CurveLaserLuaInterface.Get(userData, key, out res);
             case "NormalEnemy":
                 return NormalEnemyLuaInterface.Get(userData, key, out res);
             case "Boss":
@@ -281,6 +295,12 @@ public partial class LuaLib
         {
             case "EnemySimpleBullet":
                 return EnemySimpleBulletLuaInterface.Set(userData, key, ref value);
+            case "EnemyLaser":
+                return EnemyLaserLuaInterface.Set(userData, key, ref value);
+            case "EnemyLinearLaser":
+                return LinearLaserLuaInterface.Set(userData, key, ref value);
+            case "EnemyCurveLaser":
+                return CurveLaserLuaInterface.Set(userData, key, ref value);
             case "NormalEnemy":
                 return NormalEnemyLuaInterface.Set(userData, key, ref value);
             case "Boss":
@@ -343,7 +363,7 @@ public partial class LuaLib
         laser.SetStyleById(id);
         laser.SetPosition(posX, posY);
         laser.SetRotation(angle);
-        laser.SetLaserSize(width, height);
+        laser.SetSize(width, height);
         laser.SetLaserExistDuration(existDuration);
         luaState.PushLightUserData(laser);
         return 1;
@@ -352,18 +372,20 @@ public partial class LuaLib
     /// <summary>
     /// 创建自定义的直线激光
     /// <para>customizedName 自定义直线激光类名</para>
+    /// <para>posX</para>
+    /// <para>posY</para>
     /// <para>...自定义参数</para>
-    /// <para>numArgs 参数个数</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
     public static int CreateCustomizedLaser(ILuaState luaState)
     {
-        int numArgs = luaState.ToInteger(-1);
-        // 弹出参数个数
-        luaState.Pop(1);
-        string customizedName = luaState.ToString(-1 - numArgs);
+        int numArgs = luaState.GetTop() - 3;
+        string customizedName = luaState.ToString(-3 - numArgs);
+        float posX = (float)luaState.ToNumber(-2 - numArgs);
+        float posY = (float)luaState.ToNumber(-1 - numArgs);
         EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Laser) as EnemyLaser;
+        laser.SetPosition(posX, posY);
         // 设置自定义的数据
         BCCustomizedTask bc = laser.AddComponent<BCCustomizedTask>();
         int funcRef = InterpreterManager.GetInstance().GetBulletInitFuncRef(customizedName);
@@ -372,9 +394,12 @@ public partial class LuaLib
         {
             Logger.Log("InitFuncRef of " + customizedName + " is not point to a function");
         }
-        luaState.Insert(-1 - numArgs);
         luaState.PushLightUserData(laser);
-        luaState.Insert(-1 - numArgs);
+        // 将自定义参数push到栈上
+        for (int i=0;i<numArgs;i++)
+        {
+            luaState.PushValue(-2 - numArgs);
+        }
         luaState.Call(numArgs + 1, 0);
         // 将laser压入栈
         luaState.PushLightUserData(laser);
@@ -452,24 +477,21 @@ public partial class LuaLib
     /// <para>angle 激光的角度，x正半轴为0,逆时针增加角度</para>
     /// <para>length 激光长度</para>
     /// <para>width 激光宽度</para>
-    /// <para>existDuration 存活时间 todo:随时砍掉这个</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
     public static int SetLaserProps(ILuaState luaState)
     {
-        EnemyLaser laser = luaState.ToUserData(-7) as EnemyLaser;
-        float posX = (float)luaState.ToNumber(-6);
-        float posY = (float)luaState.ToNumber(-5);
-        float angle = (float)luaState.ToNumber(-4);
-        float length = (float)luaState.ToNumber(-3);
-        float width = (float)luaState.ToNumber(-2);
-        int existDuration = luaState.ToInteger(-1);
+        EnemyLaser laser = luaState.ToUserData(-6) as EnemyLaser;
+        float posX = (float)luaState.ToNumber(-5);
+        float posY = (float)luaState.ToNumber(-4);
+        float angle = (float)luaState.ToNumber(-3);
+        float length = (float)luaState.ToNumber(-1);
+        float width = (float)luaState.ToNumber(-1);
         luaState.Pop(7);
         laser.SetPosition(posX, posY);
         laser.SetRotation(angle);
-        laser.SetLaserSize(length, width);
-        laser.SetLaserExistDuration(existDuration);
+        laser.SetSize(length, width);
         luaState.PushLightUserData(laser);
         return 1;
     }
@@ -508,7 +530,7 @@ public partial class LuaLib
         float length = (float)luaState.ToNumber(-2);
         float width = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
-        laser.SetLaserSize(length, width);
+        laser.SetSize(length, width);
         return 0;
     }
 
@@ -561,10 +583,69 @@ public partial class LuaLib
         return 0;
     }
 
-    #endregion
+    /// <summary>
+    /// 射线展开
+    /// <para>laser</para>
+    /// <para>int duraiton 展开时间</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int LaserTurnOn(ILuaState luaState)
+    {
+        EnemyLaser laser = luaState.ToUserData(-2) as EnemyLaser;
+        int duration = luaState.ToInteger(-1);
+        laser.TurnOn(duration);
+        return 0;
+    }
+
+    /// <summary>
+    /// 射线半展开
+    /// <para>laser</para>
+    /// <para>int duraiton 展开时间</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int LaserTurnHalfOn(ILuaState luaState)
+    {
+        EnemyLaser laser = luaState.ToUserData(-3) as EnemyLaser;
+        float toWidth = (float)luaState.ToNumber(-2);
+        int duration = luaState.ToInteger(-1);
+        laser.TurnHalfOn(toWidth,duration);
+        return 0;
+    }
+
+    /// <summary>
+    /// 射线关闭
+    /// <para>laser</para>
+    /// <para>int duraiton 关闭时间</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int LaserTurnOff(ILuaState luaState)
+    {
+        EnemyLaser laser = luaState.ToUserData(-2) as EnemyLaser;
+        int duration = luaState.ToInteger(-1);
+        laser.TurnOff(duration);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置射线发射源的尺寸
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetLaserSourceSize(ILuaState luaState)
+    {
+        EnemyLaser laser = luaState.ToUserData(-2) as EnemyLaser;
+        float size = (float)luaState.ToNumber(-1);
+        laser.SetSourceSize(size);
+        return 0;
+    }
+
+#endregion
 
 
-    #region 创建敌机相关
+#region 创建敌机相关
 
     //public static int EnemyMoveTo(ILuaState luaState)
     //{
@@ -576,9 +657,9 @@ public partial class LuaLib
     //    //enemy.DoMove()
     //    return 0;
     //}
-    #endregion
+#endregion
 
-    #region BOSS相关
+#region BOSS相关
     /// <summary>
     /// 创建boss
     /// <para>string typeName boss的自定义类型名称</para>
@@ -797,7 +878,7 @@ public partial class LuaLib
         luaState.Pop(count + 2);
         return 0;
     }
-    #endregion
+#endregion
 
     public static int ClearEnemyBulletsInRange(ILuaState luaState)
     {
@@ -814,7 +895,7 @@ public partial class LuaLib
         return 0;
     }
 
-    #region 音效相关
+#region 音效相关
     /// <summary>
     /// <para>soundName</para>
     /// <para>isLoop</para>
@@ -828,9 +909,9 @@ public partial class LuaLib
         SoundManager.GetInstance().Play(soundName, isLoop);
         return 0;
     }
-    #endregion
+#endregion
 
-    #region 随机数
+#region 随机数
     public static int GetRandomInt(ILuaState luaState)
     {
         int begin = luaState.ToInteger(-2);
@@ -858,7 +939,7 @@ public partial class LuaLib
         luaState.PushNumber(ret == 0 ? -1 : 1);
         return 1;
     }
-    #endregion
+#endregion
 
     /// <summary>
     /// 获取绕中心点顺时针旋转angle度之后的坐标
@@ -937,7 +1018,7 @@ public partial class LuaLib
         return 0;
     }
 
-    #region lua全局变量相关
+#region lua全局变量相关
     public static int SetGlobalVector2(ILuaState luaState)
     {
         string key = luaState.ToString(-3);
@@ -1001,5 +1082,5 @@ public partial class LuaLib
         InterpreterManager.GetInstance().RemoveGlobalUserData(key);
         return 0;
     }
-    #endregion
+#endregion
 }

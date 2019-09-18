@@ -6,6 +6,11 @@ namespace BarrageEditor
 {
     public class NodeOnBulletCreate : BaseNode
     {
+        /// <summary>
+        /// 参数列表的属性的索引
+        /// </summary>
+        public const int ParamListAttrIndex = 0;
+
         public override void Init(RectTransform parentTf)
         {
             _nodeType = NodeType.OnBulletCreate;
@@ -20,18 +25,22 @@ namespace BarrageEditor
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Parameter list", null);
             attrs.Add(nodeAttr);
+            // id
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.BulletId);
+            nodeAttr.Init(this, "Bullet Id", null);
+            attrs.Add(nodeAttr);
         }
 
         public override void OnAttributeValueChanged(BaseNodeAttr attr = null)
         {
             // 手动修改引起的参数变更
             // 则更新DefineList
-            if ( attr != null )
+            if ( attr != null && attr == GetAttrByIndex(ParamListAttrIndex) )
             {
                 if ((parentNode as NodeDefineBullet).IsWatchingData)
                 {
                     // 参数列表发生变化，修改缓存
-                    string name = parentNode.GetAttrByIndex(0).GetValueString();
+                    string name = parentNode.GetAttrByIndex(ParamListAttrIndex).GetValueString();
                     CustomDefine.ModifyDefineParaList(CustomDefineType.SimpleBullet, name, attr.GetValueString());
                 }
             }
@@ -45,15 +54,16 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("on create:({0})", attrs[0].GetValueString());
+            return string.Format("on create:({0})", attrs[ParamListAttrIndex].GetValueString());
         }
 
         public override string ToLuaHead()
         {
             string name = parentNode.GetAttrs()[0].GetValueString();
-            return string.Format("CustomizedTable[\"{0}\"].Init = function(self{1})\n",
+            return string.Format("CustomizedTable[\"{0}\"].Init = function(self{1})\n    self:SetStyleById({2})\n",
                 name,
-                attrs[0].GetValueString() == "" ? "" : "," + attrs[0].GetValueString()
+                attrs[ParamListAttrIndex].GetValueString() == "" ? "" : "," + attrs[ParamListAttrIndex].GetValueString(),
+                GetAttrByIndex(1).GetValueString()
                 );
         }
 

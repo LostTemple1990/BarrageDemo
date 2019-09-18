@@ -427,19 +427,16 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
     }
 
-    /// <summary>
-    /// 设置直线激光的角度
-    /// </summary>
-    /// <param name="angle"></param>
-    public void SetAngle(float angle)
+    public override void SetRotation(float value)
     {
         if (_isInitAngle) return;
         _isInitAngle = true;
-        _curVAngle = angle;
-        for (int i=0;i<_laserSegmentCount;i++)
+        _curVAngle = value;
+        for (int i = 0; i < _laserSegmentCount; i++)
         {
-            _laserSegmentList[i].SetAngle(angle);
+            _laserSegmentList[i].SetAngle(value);
         }
+        base.SetRotation(value);
     }
 
     public override void SetStyleById(string id)
@@ -479,16 +476,6 @@ public class EnemyLinearLaser : EnemyBulletBase
         return _laserLen;
     }
 
-    public void DoStraightMove(float velocity,float angle,float acce,float maxVelocity)
-    {
-        _curVelocity = velocity;
-        SetAngle(angle);
-        _curAcce = acce;
-        _movableObj.DoStraightMove(velocity, angle);
-        _movableObj.DoAccelerationWithLimitation(acce, Consts.VelocityAngle, maxVelocity);
-        _isMoving = true;
-    }
-
     /// <summary>
     /// 设置额外的直线运动的参数
     /// <para>一般是被引力场影响</para>
@@ -500,6 +487,7 @@ public class EnemyLinearLaser : EnemyBulletBase
     public override void AddExtraSpeedParas(float v, float angle, float acce, float accAngle)
     {
         if (!_isInitAngle) return;
+        angle = _curRotation;
         // 先计算投影长度
         Vector2 velocityVec = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * v;
         // 在激光角度方向上的速度
@@ -664,7 +652,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
     }
 
-    public void SetSourceEnable(bool isEnable,int sourceIndex=0)
+    public void SetSourceEnable(bool isEnable)
     {
         if ( _isSourceEnable != isEnable )
         {
@@ -935,6 +923,36 @@ public class EnemyLinearLaser : EnemyBulletBase
     }
     #endregion
 
+    public override void DoStraightMove(float v, float angle)
+    {
+        SetRotation(angle);
+        _movableObj.DoStraightMove(v, _curRotation);
+    }
+
+    public override void DoAcceleration(float acce, float accAngle)
+    {
+        SetRotation(accAngle);
+        _movableObj.DoAcceleration(acce, _curRotation);
+    }
+
+    public override void DoAccelerationWithLimitation(float acce, float accAngle, float maxVelocity)
+    {
+        SetRotation(accAngle);
+        _movableObj.DoAccelerationWithLimitation(acce, _curRotation, maxVelocity);
+    }
+
+    public override void SetStraightParas(float v, float angle, float acce, float accAngle)
+    {
+        SetRotation(angle);
+        _movableObj.DoStraightMove(v, _curRotation);
+        _movableObj.DoAccelerationWithLimitation(acce, _curRotation, -1);
+    }
+
+    public override void SetPolarParas(float radius, float angle, float deltaR, float omega)
+    {
+        return;
+    }
+
     public override string BulletId
     {
         get
@@ -972,22 +990,22 @@ public class EnemyLinearLaser : EnemyBulletBase
         switch (paraType)
         {
             case BulletParaType.Velocity:
-                _movableObj.Velocity = value;
+                _movableObj.velocity = value;
                 return true;
             case BulletParaType.VAngel:
                 if ( !_isInitAngle)
                 {
-                    _movableObj.VAngle = value;
+                    _movableObj.vAngle = value;
                     _isInitAngle = true;
                 }
                 return true;
             case BulletParaType.Acce:
-                _movableObj.Acce = value;
+                _movableObj.acce = value;
                 return true;
             case BulletParaType.AccAngle:
                 if ( !_isInitAngle )
                 {
-                    _movableObj.AccAngle = value;
+                    _movableObj.accAngle = value;
                     _isInitAngle = true;
                 }
                 return true;
@@ -997,6 +1015,48 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
         value = 0;
         return false;
+    }
+
+    public override float velocity
+    {
+        get { return _movableObj.velocity; }
+        set { _movableObj.velocity = value; }
+    }
+
+    public override float vx
+    {
+        get { return _movableObj.vx; }
+        set { _movableObj.vx = value; }
+    }
+
+    public override float vy
+    {
+        get { return _movableObj.vy; }
+        set { _movableObj.vy = value; }
+    }
+
+    public override float maxVelocity
+    {
+        get { return _movableObj.maxVelocity; }
+        set { _movableObj.maxVelocity = value; }
+    }
+
+    public override float vAngle
+    {
+        get { return _movableObj.vAngle; }
+        set { _movableObj.vAngle = value; }
+    }
+
+    public override float acce
+    {
+        get { return _movableObj.acce; }
+        set { _movableObj.acce = value; }
+    }
+
+    public override float accAngle
+    {
+        get { return _movableObj.accAngle; }
+        set { _movableObj.accAngle = value; }
     }
 
 

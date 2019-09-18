@@ -183,7 +183,7 @@ public class StateSTGMain : IState,ICommand
         _stgMain.Init();
         _stgMain.InitSTG();
         // 加载各个stage.lua文件
-        List<string> stageLuaList = new List<string> { /*"stage1", "stage1sc",*/ "TestEditorStage" };
+        List<string> stageLuaList = new List<string> { /*"stage1", "stage1sc"*/ "TestEditorStage" };
         for (int i = 0; i < stageLuaList.Count; i++)
         {
             InterpreterManager.GetInstance().LoadLuaFile(stageLuaList[i]);

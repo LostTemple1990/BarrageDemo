@@ -640,44 +640,44 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
 
     public float velocity
     {
-        get { return _movableObj.Velocity; }
-        set { _movableObj.Velocity = value; }
+        get { return _movableObj.velocity; }
+        set { _movableObj.velocity = value; }
     }
 
     public float vx
     {
-        get { return _movableObj.Vx; }
-        set { _movableObj.Vx = value; }
+        get { return _movableObj.vx; }
+        set { _movableObj.vx = value; }
     }
 
     public float vy
     {
-        get { return _movableObj.Vy; }
-        set { _movableObj.Vy = value; }
+        get { return _movableObj.vy; }
+        set { _movableObj.vy = value; }
     }
 
     public float maxVelocity
     {
-        get { return _movableObj.MaxVelocity; }
-        set { _movableObj.MaxVelocity = value; }
+        get { return _movableObj.maxVelocity; }
+        set { _movableObj.maxVelocity = value; }
     }
 
     public float vAngle
     {
-        get { return _movableObj.VAngle; }
-        set { _movableObj.VAngle = value; }
+        get { return _movableObj.vAngle; }
+        set { _movableObj.vAngle = value; }
     }
 
     public float acce
     {
-        get { return _movableObj.Acce; }
-        set { _movableObj.Acce = value; }
+        get { return _movableObj.acce; }
+        set { _movableObj.acce = value; }
     }
 
     public float accAngle
     {
-        get { return _movableObj.AccAngle; }
-        set { _movableObj.AccAngle = value; }
+        get { return _movableObj.accAngle; }
+        set { _movableObj.accAngle = value; }
     }
 
     public float dx

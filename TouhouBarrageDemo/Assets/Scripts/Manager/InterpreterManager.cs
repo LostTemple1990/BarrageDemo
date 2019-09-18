@@ -23,8 +23,7 @@ public class InterpreterManager
     private List<LuaPara> _funcParas;
 
     private Dictionary<string, int> _customizedInitFuncMap;
-    private Dictionary<string, int> _customizedEnemyInitMap;
-    private Dictionary<string, int> _customizedEnemyOnEliminateMap;
+    private Dictionary<string, CustomizedDefineData> _customizedEnemyDefMap;
     private Dictionary<string, int> _customizedSTGObjectFuncMap;
     private Dictionary<string, int> _customizedColliderFuncMap;
     /// <summary>
@@ -56,8 +55,7 @@ public class InterpreterManager
     public InterpreterManager()
     {
         _customizedInitFuncMap = new Dictionary<string, int>();
-        _customizedEnemyInitMap = new Dictionary<string, int>();
-        _customizedEnemyOnEliminateMap = new Dictionary<string, int>();
+        _customizedEnemyDefMap = new Dictionary<string, CustomizedDefineData>();
         _customizedSTGObjectFuncMap = new Dictionary<string, int>();
         _customizedColliderFuncMap = new Dictionary<string, int>();
         _stageMap = new Dictionary<string, int>();
@@ -232,7 +230,6 @@ public class InterpreterManager
     {
         _luaState.GetField(-1, "CustomizedEnemyTable");
         string customizedName;
-        int initFuncRef,onKillFuncRef;
         if (!_luaState.IsTable(-1))
         {
             Logger.Log("field CustomizedTable is not a table!");
@@ -247,31 +244,37 @@ public class InterpreterManager
             {
                 Logger.Log("sub field " + customizedName + " is not a table!");
             }
+            CustomizedDefineData defData = new CustomizedDefineData();
             _luaState.GetField(-1, "Init");
             if (!_luaState.IsFunction(-1))
             {
                 Logger.Log("sub field Init is not a function!");
+                defData.initFuncRef = 0;
+                _luaState.Pop(1);
             }
-            initFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
-            _customizedEnemyInitMap.Add(customizedName, initFuncRef);
+            else
+            {
+                defData.initFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
 #if LogLuaFuncRef
-            Logger.Log("InitFunction in Customized Class " + customizedName + " is Ref , ref = " + initFuncRef);
-            _luaRefDic.Add(initFuncRef, initFuncRef);
+                Logger.Log("InitFunction in Customized Class " + customizedName + " is Ref , ref = " + defData.initFuncRef);
+                _luaRefDic.Add(defData.initFuncRef, defData.initFuncRef);
 #endif
+            }
             _luaState.GetField(-1, "OnKill");
             if ( _luaState.IsFunction(-1) )
             {
-                onKillFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
-                _customizedEnemyOnEliminateMap.Add(customizedName, onKillFuncRef);
+                defData.onKillFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
 #if LogLuaFuncRef
-                Logger.Log("OnKillFunction in Customized Enemy " + customizedName + " is Ref , ref = " + onKillFuncRef);
-                _luaRefDic.Add(onKillFuncRef, onKillFuncRef);
+                Logger.Log("OnKillFunction in Customized Enemy " + customizedName + " is Ref , ref = " + defData.onKillFuncRef);
+                _luaRefDic.Add(defData.onKillFuncRef, defData.onKillFuncRef);
 #endif
             }
             else
             {
+                defData.onKillFuncRef = 0;
                 _luaState.Pop(1);
             }
+            _customizedEnemyDefMap.Add(customizedName, defData);
             _luaState.Pop(1);
         }
         _luaState.Pop(1);
@@ -281,7 +284,6 @@ public class InterpreterManager
     {
         _luaState.GetField(-1, "BossTable");
         string bossName;
-        int initRef;
         if ( !_luaState.IsTable(-1) )
         {
             Logger.Log("Return value BossTable is not a table!");
@@ -300,9 +302,10 @@ public class InterpreterManager
             {
                 Logger.Log("Init Funciton of Boss" + bossName + " is invalid");
             }
-            initRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
-            // boss与enemy公用一个initFuncMap
-            _customizedEnemyInitMap.Add(bossName, initRef);
+            // boss与enemy公用一个DefMap
+            CustomizedDefineData defData = new CustomizedDefineData();
+            defData.initFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+            _customizedEnemyDefMap.Add(bossName, defData);
             // 弹出table
             _luaState.Pop(1);
 #if LogLuaFuncRef
@@ -556,10 +559,10 @@ public class InterpreterManager
     /// <returns></returns>
     public int GetEnemyInitFuncRef(string customizedName)
     {
-        int funcRef;
-        if (_customizedEnemyInitMap.TryGetValue(customizedName, out funcRef))
+        CustomizedDefineData defData;
+        if (_customizedEnemyDefMap.TryGetValue(customizedName, out defData))
         {
-            return funcRef;
+            return defData.initFuncRef;
         }
         Logger.LogError("CustomizedFunc by Name " + customizedName + " is not exist");
         return 0;
@@ -572,10 +575,10 @@ public class InterpreterManager
     /// <returns></returns>
     public int GetEnemyOnEliminateFuncRef(string customizedName)
     {
-        int funcRef;
-        if (_customizedEnemyOnEliminateMap.TryGetValue(customizedName, out funcRef))
+        CustomizedDefineData defData;
+        if (_customizedEnemyDefMap.TryGetValue(customizedName, out defData))
         {
-            return funcRef;
+            return defData.onKillFuncRef;
         }
         return 0;
     }
@@ -874,29 +877,28 @@ public class InterpreterManager
     private void UnrefCustomizedEnemy()
     {
         // 敌机初始化函数
-        foreach (KeyValuePair<string, int> kv in _customizedEnemyInitMap)
+        foreach (KeyValuePair<string, CustomizedDefineData> kv in _customizedEnemyDefMap)
         {
             string customizedEnemyName = kv.Key;
-            int initFuncRef = kv.Value;
-            _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
+            CustomizedDefineData defData = kv.Value;
+            if (defData.initFuncRef != 0)
+            {
+                _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, defData.initFuncRef);
 #if LogLuaFuncRef
-            _luaRefDic.Remove(initFuncRef);
-            Logger.Log("Unref init function of enemy " + customizedEnemyName + " ref = " + initFuncRef);
+                _luaRefDic.Remove(defData.initFuncRef);
+                Logger.Log("Unref init function of enemy " + customizedEnemyName + " ref = " + defData.initFuncRef);
 #endif
-        }
-        _customizedEnemyInitMap.Clear();
-        // 敌机被消灭触发的函数
-        foreach (KeyValuePair<string, int> kv in _customizedEnemyOnEliminateMap)
-        {
-            string customizedEnemyName = kv.Key;
-            int killFuncRef = kv.Value;
-            _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, killFuncRef);
+            }
+            if (defData.onKillFuncRef != 0)
+            {
+                _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, defData.onKillFuncRef);
 #if LogLuaFuncRef
-            _luaRefDic.Remove(killFuncRef);
-            Logger.Log("Unref onEliminate function of enemy " + customizedEnemyName + " ref = " + killFuncRef);
+                _luaRefDic.Remove(defData.onKillFuncRef);
+                Logger.Log("Unref onEliminate function of enemy " + customizedEnemyName + " ref = " + defData.onKillFuncRef);
 #endif
+            }
         }
-        _customizedEnemyOnEliminateMap.Clear();
+        _customizedEnemyDefMap.Clear();
     }
 
     private void UnrefBoss()
@@ -958,4 +960,10 @@ struct LuaCoroutineData
     {
         luaState = null;
     }
+}
+
+struct CustomizedDefineData
+{
+    public int initFuncRef;
+    public int onKillFuncRef;
 }

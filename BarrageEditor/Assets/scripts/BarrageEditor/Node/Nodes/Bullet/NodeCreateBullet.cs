@@ -20,10 +20,6 @@ namespace BarrageEditor
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CustomizedType);
             nodeAttr.Init(this, "Type name", null);
             attrs.Add(nodeAttr);
-            // id
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.BulletId);
-            nodeAttr.Init(this, "Bullet Id", null);
-            attrs.Add(nodeAttr);
             // 初始x坐标
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "PosX", null);
@@ -45,29 +41,19 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("create bullet with id {0} of type\"{1}\" at ({2},{3}) with parameter {4}",
-                attrs[1].GetValueString(), attrs[0].GetValueString(), attrs[2].GetValueString(), attrs[3].GetValueString(), attrs[4].GetValueString());
+            return string.Format("create bullet of type\"{0}\" at ({1},{2}) with parameter {3}",
+                attrs[0].GetValueString(), attrs[1].GetValueString(), attrs[2].GetValueString(), attrs[3].GetValueString());
         }
 
         public override string ToLuaHead()
         {
             string typeName = attrs[0].GetValueString();
             CustomDefineData data = CustomDefine.GetDataByTypeAndName(CustomDefineType.SimpleBullet, typeName);
-            int paraCount = 0;
-            if ( data != null )
-            {
-                if (data.paraListStr.IndexOf(',') != -1)
-                {
-                    paraCount = data.paraListStr.Split(',').Length;
-                }
-            }
-            return string.Format("last = CreateCustomizedBullet(\"{0}\",{1},{2},{3},{4}{5})\n",
+            return string.Format("last = CreateCustomizedBullet1(\"{0}\",{1},{2}{3})\n",
                 typeName,
                 attrs[1].GetValueString(),
                 attrs[2].GetValueString(),
-                attrs[3].GetValueString(), 
-                attrs[4].GetValueString() == "" ? "" : attrs[4].GetValueString() + ",",
-                paraCount);
+                attrs[3].GetValueString() == "" ? "" : "," + attrs[3].GetValueString());
         }
     }
 }

@@ -215,20 +215,6 @@ public partial class LuaLib
         bullet.SetPosition(posX, posY);
         // 设置自定义的数据
         BCCustomizedTask bc = bullet.AddComponent<BCCustomizedTask>();
-        // 使用pcall
-        //luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, InterpreterManager.GetInstance().GetTracebackIndex());
-        //int funcRef = InterpreterManager.GetInstance().GetInitFuncRef(customizedName);
-        //luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
-        //if (!luaState.IsFunction(-1))
-        //{
-        //    Logger.LogError("InitFuncRef of " + customizedName + " is not point to a function");
-        //}
-        //luaState.PushLightUserData(bullet);
-        //luaState.Replace(-4 - numArgs);
-        //luaState.Replace(-4 - numArgs);
-        //luaState.Replace(-4 - numArgs);
-        //luaState.PCall(numArgs + 1, 0, -numArgs - 3);
-        // 使用call
         int funcRef = InterpreterManager.GetInstance().GetBulletInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         if (!luaState.IsFunction(-1))
@@ -241,6 +227,41 @@ public partial class LuaLib
         luaState.Call(numArgs + 1, 0);
         // 弹出剩余两个参数
         luaState.Pop(2);
+        luaState.PushLightUserData(bullet);
+        return 1;
+    }
+
+    /// <summary>
+    /// 创建自定义的simpleBullet
+    /// <para>customizedName 自定义的子弹名称</para>
+    /// <para>float posX</para>
+    /// <para>float posY</para>
+    /// <para>args...</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int CreateCustomizedBullet1(ILuaState luaState)
+    {
+        int numArgs = luaState.GetTop() - 3;
+        string customizedName = luaState.ToString(-3 - numArgs);
+        float posX = (float)luaState.ToNumber(-2 - numArgs);
+        float posY = (float)luaState.ToNumber(-1 - numArgs);
+        EnemySimpleBullet bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Simple) as EnemySimpleBullet;
+        bullet.SetPosition(posX, posY);
+        // 设置自定义的数据
+        BCCustomizedTask bc = bullet.AddComponent<BCCustomizedTask>();
+        int funcRef = InterpreterManager.GetInstance().GetBulletInitFuncRef(customizedName);
+        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
+        if (!luaState.IsFunction(-1))
+        {
+            Logger.LogError("InitFuncRef of " + customizedName + " is not point to a function");
+        }
+        luaState.PushLightUserData(bullet);
+        for (int i=0;i<numArgs;i++)
+        {
+            luaState.PushValue(-2 - numArgs);
+        }
+        luaState.Call(numArgs + 1, 0);
         luaState.PushLightUserData(bullet);
         return 1;
     }

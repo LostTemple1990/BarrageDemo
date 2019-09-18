@@ -70,6 +70,81 @@ namespace BarrageEditor
             SetProjectPath(null);
         }
 
+        private static Dictionary<string, NodeData> updateDic = new Dictionary<string, NodeData>();
+
+        public static void UpdateProject(string projectPath)
+        {
+            NodeData nd = FileUtils.DeserializeFileToObject(projectPath) as NodeData;
+            if (nd == null)
+            {
+                Logger.LogError("Deserialize nd file fail!");
+            }
+            updateDic.Clear();
+            UpdateNodeData(nd);
+            FileUtils.SerializableObjectToFile(projectPath, nd);
+        }
+
+        private static void UpdateNodeData(NodeData nd)
+        {
+            #region 第一版修改,将EnemyId从createEnemy变为OnCreateEnemy的属性
+            //// 修改的函数
+            //if (nd.type==(int)NodeType.DefineEnemy)
+            //{
+            //    string typeName = nd.attrValues[0];
+            //    if (!updateDic.ContainsKey(typeName))
+            //    {
+            //        updateDic.Add(typeName, nd.childs[0]);
+            //    }
+            //}
+            //else if (nd.type == (int)NodeType.CreateCustomizedEnemy)
+            //{
+            //    string typeName = nd.attrValues[0];
+            //    string enemyId = nd.attrValues[1];
+            //    nd.attrValues.RemoveAt(1);
+            //    NodeData updateData;
+            //    if (updateDic.TryGetValue(typeName, out updateData))
+            //    {
+            //        List<string> newValues = new List<string>();
+            //        newValues.Add(updateData.attrValues[1]);
+            //        newValues.Add(enemyId);
+            //        newValues.Add(updateData.attrValues[0]);
+            //        updateData.attrValues = newValues;
+            //        updateDic.Remove(typeName);
+            //    }
+            //}
+            #endregion
+            #region 第二版修改,将BulletId从createBullet变为OnCreateBullet的属性
+            // 修改的函数
+            //if (nd.type == (int)NodeType.DefineBullet)
+            //{
+            //    string typeName = nd.attrValues[0];
+            //    if (!updateDic.ContainsKey(typeName))
+            //    {
+            //        updateDic.Add(typeName, nd.childs[0]);
+            //    }
+            //}
+            //else if (nd.type == (int)NodeType.CreateCustomizedBullet)
+            //{
+            //    string typeName = nd.attrValues[0];
+            //    string enemyId = nd.attrValues[1];
+            //    nd.attrValues.RemoveAt(1);
+            //    NodeData updateData;
+            //    if (updateDic.TryGetValue(typeName, out updateData))
+            //    {
+            //        List<string> newValues = new List<string>();
+            //        newValues.Add(updateData.attrValues[0]);
+            //        newValues.Add(enemyId);
+            //        updateData.attrValues = newValues;
+            //        updateDic.Remove(typeName);
+            //    }
+            //}
+            #endregion
+            for (int i=0;i<nd.childs.Count;i++)
+            {
+                UpdateNodeData(nd.childs[i]);
+            }
+        }
+
 
         public static BaseNode DebugStageNode { get; private set; }
         public static BaseNode DebugFromNode { get; private set; }

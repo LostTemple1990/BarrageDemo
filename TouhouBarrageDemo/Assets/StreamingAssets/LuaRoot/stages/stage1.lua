@@ -26,7 +26,8 @@ end
 CustomizedTable.NazrinLaser = {}
 CustomizedTable.NazrinLaser.Init = function(laser,enemy,angle,existDuration,toAngle,rotateDuration)
 	local posX,posY = lib.GetEnemyPos(enemy)
-	lib.SetLaserProps(laser,posX,posY,angle,4,600,existDuration)
+	lib.SetLaserProps(laser,posX,posY,angle,4,600)
+	laser:SetExistDuration(existDuration)
 	lib.SetLaserRotatePara(laser,toAngle,rotateDuration)
 	lib.SetBulletDetectCollision(laser,false)
 	lib.ShowLaserWarningLine(laser,60)
@@ -38,28 +39,27 @@ CustomizedTable.NazrinLaser.Init = function(laser,enemy,angle,existDuration,toAn
 	end)
 	lib.AddBulletTask(laser,function()
 		for _=1,Infinite do
-			posX,posY = lib.GetEnemyPos(enemy)
+			posX,posY = enemy:GetPos()
 			lib.SetBulletPos(laser,posX,posY)
-			if ( coroutine.yield(1)==false ) then return end
+			if coroutine.yield(1)==false  then return end
 		end
 	end)
 end
 
 CustomizedTable.ReboundLinearLaser = {}
-CustomizedTable.ReboundLinearLaser.Init = function(laser,posX,posY,angle,reboundPara,reboundCount)
-	lib.SetBulletPos(laser,posX,posY)
+CustomizedTable.ReboundLinearLaser.Init = function(laser,angle,reboundPara,reboundCount)
 	lib.SetBulletStyleById(laser,"202060")
 	lib.SetLinearLaserLength(laser,45)
 	lib.LinearLaserDoStraightMove(laser,3.5,angle,false,0,0)
 	lib.AddBulletTask(laser,function()
 		lib.SetLinearLaserHeadEnable(laser,true)
-		lib.SetLinearLaserSourceEnable(laser,true,3)
+		lib.SetLinearLaserSourceEnable(laser,true)
 		for _=1,Infinite do
 			if reboundCount > 0 then
 				local reboundFlag = 0
 				local curPosX,curPosY = lib.GetBulletPos(laser)
 				local tmpRebound = reboundPara
-				local reboundAngle = lib.GetBulletPara(eBulletParaType.VAngel)
+				local reboundAngle = laser.vAngle
 				if tmpRebound >= Constants.ReboundBottom and curPosY < -224 then
 					reboundFlag = 1
 					reboundAngle = -reboundAngle
@@ -85,7 +85,7 @@ CustomizedTable.ReboundLinearLaser.Init = function(laser,posX,posY,angle,rebound
 				end
 				if reboundFlag == 1 then
 					reboundCount = reboundCount - 1
-					lib.CreateCustomizedLinearLaser("ReboundLinearLaser",curPosX,curPosY,reboundAngle,reboundPara,reboundCount,5)
+					lib.CreateCustomizedLinearLaser("ReboundLinearLaser",curPosX,curPosY,reboundAngle,reboundPara,reboundCount)
 					return
 				end
 			end
@@ -661,8 +661,8 @@ BossTable.MidBoss.Task = function(boss)
 		--扫射激光
 		lib.AddEnemyTask(boss,function()
 			for _=1,Infinite do
-				local laser = lib.CreateCustomizedLaser("NazrinLaser","etama_236",boss,-70,180,250,120,5)
-				laser = lib.CreateCustomizedLaser("NazrinLaser","etama_236",boss,250,180,-70,120,5)
+				local laser = lib.CreateCustomizedLaser("NazrinLaser","etama_236",boss,-70,180,250,120)
+				laser = lib.CreateCustomizedLaser("NazrinLaser","etama_236",boss,250,180,-70,120)
 				if ( coroutine.yield(220)==false ) then return end
 			end
 		end)
@@ -756,7 +756,7 @@ Stage["Stage1"] = function()
 			for _=1,5 do
 				local posX,posY = lib.GetEnemyPos(enemy)
 				for i=0,10 do
-					laser = lib.CreateCustomizedLinearLaser("ReboundLinearLaser",posX,posY,15+i*15,7,5,5)
+					laser = lib.CreateCustomizedLinearLaser("ReboundLinearLaser",posX,posY,15+i*15,7,5)
 				end
 				if ( coroutine.yield(60) == false ) then return end
 			end
@@ -770,7 +770,7 @@ Stage["Stage1"] = function()
 				local angle = lib.GetAimToPlayerAngle(posX,posY)
 				laser = lib.CreateCurveLaser("401100",45,posX,posY)
 				lib.SetCurveLaserCurveParas(laser,0,i*20,3,3)
-				lib.SetCurveLaserWidth(laser,5,3)
+				lib.SetCurveLaserWidth(laser,10)
 				if coroutine.yield(5) == false then return end
 			end
 		end)
@@ -799,7 +799,7 @@ Stage["Stage1"] = function()
 		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
 		if coroutine.yield(100) == false then return end
 		boss:SetPhaseData(1,1,1,1,true)
-		lib.StartSpellCard(SpellCard.PatchouliSC1,boss)
+		lib.StartSpellCard(SpellCard.OrionidsSC,boss)
 		--lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
 		lib.StartSpellCard(SpellCard.PatchouliNonSC1,boss)
@@ -878,12 +878,14 @@ Stage["Stage1"] = function()
 				lib.AddEnemyTask(tmpEnemy,function()
 					local posX,posY = lib.GetEnemyPos(tmpEnemy)
 					for _=1,999 do
-						local laser = lib.CreateLaser("etama_236",posX,posY,0,5,300,300)
-						lib.SetLaserRotatePara(laser,-80,150)
-						lib.SetLaserCollisionDetectParas(laser,3,300)
-						laser = lib.CreateLaser("etama_236",posX,posY,180,5,300,300)
-						lib.SetLaserRotatePara(laser,260,150)
-						lib.SetLaserCollisionDetectParas(laser,3,300)
+						last = lib.CreateLaser("etama_236",posX,posY,0,5,300,300)
+						last:TurnOn(0)
+						lib.SetLaserRotatePara(last,-80,150)
+						--lib.SetLaserCollisionDetectParas(last,3,300)
+						last = lib.CreateLaser("etama_236",posX,posY,180,5,300,300)
+						last:TurnOn(0)
+						lib.SetLaserRotatePara(last,260,150)
+						--lib.SetLaserCollisionDetectParas(last,3,300)
 						continue = coroutine.yield(350);
 						if ( continue==false ) then return end
 					end

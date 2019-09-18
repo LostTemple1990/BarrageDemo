@@ -222,13 +222,24 @@ namespace BarrageEditor
         private void CloseClickHander()
         {
             Close();
-            string filePath = Application.streamingAssetsPath + "../../../../TouhouBarrageDemo/Assets/StreamingAssets/LuaRoot/stages/TestEditorStage.lua";
-            if (filePath != null)
+            return;
+            //string filePath = Application.streamingAssetsPath + "../../../../TouhouBarrageDemo/Assets/StreamingAssets/LuaRoot/stages/TestEditorStage.lua";
+            //if (filePath != null)
+            //{
+            //    BaseNode root = BarrageProject.RootNode;
+            //    string luaData = "";
+            //    root.ToLua(0, ref luaData);
+            //    FileUtils.WriteToFile(luaData, filePath);
+            //}
+            string openPath = FileUtils.OpenFile("选择要更新的关卡数据", "关卡数据(*.nd)\0*.nd\0", false);
+            if (openPath != null)
             {
-                BaseNode root = BarrageProject.RootNode;
-                string luaData = "";
-                root.ToLua(0, ref luaData);
-                FileUtils.WriteToFile(luaData, filePath);
+                EventManager.GetInstance().PostEvent(EditorEvents.BeforeProjectChanged);
+                BarrageProject.UnloadProject();
+                BarrageProject.UpdateProject(openPath);
+                BarrageProject.LoadProject(openPath);
+                EventManager.GetInstance().PostEvent(EditorEvents.AfterProjectChanged);
+                BarrageProject.Log("current project file: " + FileUtils.GetFileNameByPath(openPath));
             }
         }
 

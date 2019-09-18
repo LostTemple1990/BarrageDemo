@@ -471,7 +471,11 @@ public class BulletsManager : ICommand
         string protoTypeName = "EnemyLaser" + bulletId;
         // 设置sprite以及material
         protoType.name = protoTypeName;
-        SpriteRenderer sp = protoType.transform.Find("LaserSprite").GetComponent<SpriteRenderer>();
+        // 激光发射源
+        SpriteRenderer sp = protoType.transform.Find("Source").GetComponent<SpriteRenderer>();
+        sp.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGBulletsAtlasName, "Bullet" + cfg.laserSourceTexId);
+        // 激光本体
+        sp = protoType.transform.Find("LaserSprite").GetComponent<SpriteRenderer>();
         sp.sprite = ResourceManager.GetInstance().GetSprite(cfg.laserAtlasName, cfg.laserTexName);
         if (cfg.blendMode != eBlendMode.Normal)
         {
@@ -673,7 +677,8 @@ public class BulletsManager : ICommand
 
     private void LogFrameStatistics()
     {
-        Logger.Log("CountOfPlayerBulletCreated = " + _countOfPlayerBulletCreatedInFrame);
-        Logger.Log("CountOfEnemyBulletCreated = " + _countOfEnemyBulletCreatedInFrame);
+        Logger.Log(string.Format("CountOfPlayerBulletCreated = {0}\nCountOfPlayerBulletTotal = {1}\nCountOfEnemyBulletCreated = {2}\nCountOfEnemyBulletTotal = {3}",
+            _countOfPlayerBulletCreatedInFrame,_playerBulletsCount,
+            _countOfEnemyBulletCreatedInFrame,_enemyBulletsCount));
     }
 }

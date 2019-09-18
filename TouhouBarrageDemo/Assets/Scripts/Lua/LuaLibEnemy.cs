@@ -98,6 +98,65 @@ public partial class LuaLib
         luaState.PushLightUserData(enemy);
         return 1;
     }
+
+    /// <summary>
+    /// 创建自定义的敌机
+    /// <para>customizedName 自定义的名称</para>
+    /// <para>posX</para>
+    /// <para>posY</para>
+    /// <para>paras...</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int CreateCustomizedEnemy1(ILuaState luaState)
+    {
+        int numArgs = luaState.GetTop() - 3;
+        string customizedName = luaState.ToString(-3 - numArgs);
+        float posX = (float)luaState.ToNumber(-2 - numArgs);
+        float posY = (float)luaState.ToNumber(-1 - numArgs);
+        // 创建敌机
+        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.NormalEnemy) as NormalEnemy;
+        enemy.SetPosition(posX, posY);
+        int onEliminateFuncRef = InterpreterManager.GetInstance().GetEnemyOnEliminateFuncRef(customizedName);
+        if (onEliminateFuncRef != 0)
+        {
+            enemy.SetOnEliminateFuncRef(onEliminateFuncRef);
+        }
+        // init函数
+        int initFuncRef = InterpreterManager.GetInstance().GetEnemyInitFuncRef(customizedName);
+        luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
+        luaState.PushLightUserData(enemy);
+        for (int i=0;i<numArgs;i++)
+        {
+            luaState.PushValue(-2 - numArgs);
+        }
+        luaState.Call(numArgs + 1, 0);
+        // 将返回值压入栈
+        luaState.PushLightUserData(enemy);
+        return 1;
+    }
+
+    /// <summary>
+    /// 初始化敌机
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int EnemyInit(ILuaState luaState)
+    {
+        string enemyId;
+        NormalEnemy enemy = luaState.ToUserData(-2) as NormalEnemy;
+        if (luaState.Type(-1) == LuaType.LUA_TNUMBER)
+        {
+            enemyId = luaState.ToInteger(-1).ToString();
+        }
+        else
+        {
+            enemyId = luaState.ToString(-1);
+        }
+        enemy.Init(enemyId);
+        return 0;
+    }
+
     public static int EnemyMoveTowards(ILuaState luaState)
     {
         EnemyBase enemy = luaState.ToUserData(-4) as EnemyBase;
@@ -172,8 +231,8 @@ public partial class LuaLib
     /// <returns></returns>
     public static int GetEnemyPos(ILuaState luaState)
     {
+        int top = luaState.GetTop();
         EnemyBase enemy = luaState.ToUserData(-1) as EnemyBase;
-        luaState.Pop(1);
         Vector2 pos = enemy.GetPosition();
         luaState.PushNumber(pos.x);
         luaState.PushNumber(pos.y);

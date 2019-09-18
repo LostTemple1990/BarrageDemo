@@ -99,6 +99,8 @@ namespace BarrageEditor
             Enemy,
             Boss,
             Bullet,
+            Laser,
+            LaserEx,
             Tools,
             Object,
             Unit,
@@ -189,6 +191,30 @@ namespace BarrageEditor
                 },
             };
             _nodeTabs.Add(tab);
+            // Laser
+            tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.Laser,
+                tabName = "Laser",
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.DefineLaser, NodeType.CreateCustomizedLaser, NodeType.LaserTurnHalfOn, NodeType.LaserTurnOn, NodeType.LaserTurnOff, NodeType.LaserChangeLengthTo },
+                    new List<NodeType> { NodeType.SetBulletStyle, NodeType.ChangeBulletProperty },
+                },
+            };
+            _nodeTabs.Add(tab);
+            // LaserEx
+            tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.LaserEx,
+                tabName = "LaserEx",
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.DefineLinearLaser, NodeType.CreateCustomizedLinearLaser },
+                    new List<NodeType> { NodeType.DefineCurveLaser, NodeType.CreateCustomizedCurveLaser },
+                },
+            };
+            _nodeTabs.Add(tab);
             // Tools
             tab = new NodeTab()
             {
@@ -218,6 +244,7 @@ namespace BarrageEditor
                 tabName = "Unit",
                 typeList = new List<NodeType>[]
                 {
+                    new List<NodeType> { NodeType.UnitEventTrigger },
                     new List<NodeType> { NodeType.UnitSetV, NodeType.UnitSetAcce, NodeType.UnitMoveTo, NodeType.UnitMoveTowards },
                     new List<NodeType> { NodeType.UnitSetStraightParas, NodeType.UnitSetPolarParas },
                     new List<NodeType> { NodeType.UnitSetResistEliminatedTypes },

@@ -354,7 +354,7 @@ public class MovableObject : IPoolClass
     /// <summary>
     /// 速度
     /// </summary>
-    public float Velocity
+    public float velocity
     {
         get { return Mathf.Sqrt(_vx * _vx + _vy * _vy); }
         set
@@ -392,7 +392,7 @@ public class MovableObject : IPoolClass
     /// <summary>
     /// x轴方向的速度
     /// </summary>
-    public float Vx
+    public float vx
     {
         get { return _vx; }
         set
@@ -400,14 +400,14 @@ public class MovableObject : IPoolClass
             _vx = value;
             _reCalV = false;
             _reCalVAngle = true;
-            Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
+            velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
         }
     }
 
     /// <summary>
     /// y轴方向的速度
     /// </summary>
-    public float Vy
+    public float vy
     {
         get { return _vy; }
         set
@@ -415,14 +415,14 @@ public class MovableObject : IPoolClass
             _vy = value;
             _reCalV = false;
             _reCalVAngle = true;
-            Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
+            velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
         }
     }
 
     /// <summary>
     /// 速度方向
     /// </summary>
-    public float VAngle
+    public float vAngle
     {
         get
         {
@@ -438,14 +438,14 @@ public class MovableObject : IPoolClass
             _curVAngle = value;
             _reCalV = true;
             _reCalVAngle = false;
-            Velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
+            velocity = Mathf.Sqrt(_vx * _vx + _vy * _vy);
         }
     }
 
     /// <summary>
     /// 加速度
     /// </summary>
-    public float Acce
+    public float acce
     {
         get { return _curAcce; }
         set
@@ -460,7 +460,7 @@ public class MovableObject : IPoolClass
     /// <summary>
     /// 加速度方向
     /// </summary>
-    public float AccAngle
+    public float accAngle
     {
         get { return _curAccAngle; }
         set
@@ -474,7 +474,7 @@ public class MovableObject : IPoolClass
     /// <summary>
     /// 最大速度限制
     /// </summary>
-    public float MaxVelocity
+    public float maxVelocity
     {
         get
         {
@@ -501,7 +501,7 @@ public class MovableObject : IPoolClass
     /// <summary>
     /// 极坐标运动的半径
     /// </summary>
-    public float CurveRadius
+    public float curveRadius
     {
         get { return _curRadius; }
         set { _curRadius = value; }
@@ -510,7 +510,7 @@ public class MovableObject : IPoolClass
     /// <summary>
     /// 极坐标运动的半径增量
     /// </summary>
-    public float CurveDeltaRadius
+    public float curveDeltaRadius
     {
         get { return _deltaRadius; }
         set { _deltaRadius = value; }
@@ -519,7 +519,7 @@ public class MovableObject : IPoolClass
     /// <summary>
     /// 极坐标运动的当前角度
     /// </summary>
-    public float CurveAngle
+    public float curveAngle
     {
         get { return _curCurveAngle; }
         set { _curCurveAngle = value; }
@@ -528,7 +528,7 @@ public class MovableObject : IPoolClass
     /// <summary>
     /// 极坐标运动的角速度
     /// </summary>
-    public float CurveOmega
+    public float curveOmega
     {
         get { return _curOmega; }
         set { _curOmega = value; }

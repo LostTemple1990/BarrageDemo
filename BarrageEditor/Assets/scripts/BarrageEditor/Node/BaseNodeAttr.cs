@@ -147,7 +147,15 @@ namespace BarrageEditor
             _dropDown.options.Clear();
             UIEventListener.Get(_editBtnGo).RemoveAllEvents();
             _dropDown = null;
+            if (!_arrowImg.gameObject.activeSelf)
+            {
+                _arrowImg.gameObject.SetActive(true);
+            }
             _arrowImg = null;
+            if (!_editBtnGo.gameObject.activeSelf)
+            {
+                _editBtnGo.gameObject.SetActive(true);
+            }
             _editBtnGo = null;
             _attrNameText = null;
             _valueText = null;
@@ -200,6 +208,7 @@ namespace BarrageEditor
         Layer = 15,
         ShapeType = 16,
         DirectionMode = 17,
+        UnitEventType = 18,
     }
 
     public class NodeAttrData

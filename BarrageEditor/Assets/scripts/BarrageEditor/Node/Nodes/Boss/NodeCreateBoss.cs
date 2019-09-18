@@ -29,7 +29,7 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("create boss of type\"{0}\"",
+            return string.Format("create boss of type \"{0}\"",
                 attrs[0].GetValueString());
         }
 

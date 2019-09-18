@@ -11,10 +11,12 @@ local CustomizedSTGObjectTable = {}
 --allow_practice=true
 CustomizedEnemyTable["TestOnKillEnemy"] = {}
 CustomizedEnemyTable["TestOnKillEnemy"].Init = function(self)
+    self:Init(100000)
     self:SetMaxHp(10)
 end
 CustomizedTable["YKBullet"] = {}
 CustomizedTable["YKBullet"].Init = function(self,v,angle)
+    self:SetStyleById()
     self:SetV(3,0,false)
     self:SetAcce(0.05,0,false)
     self:AddTask(function()
@@ -35,6 +37,19 @@ SpellCard["TestSC"].Init = function(boss)
 end
 SpellCard["TestSC"].OnFinish = function(boss)
 end
+SpellCard["天琴「Orionid Meteor Shower」"] = {}
+SpellCard["天琴「Orionid Meteor Shower」"].Init = function(boss)
+    SetSpellCardProperties("天琴「Orionid Meteor Shower」",1,60,ConditionEliminateAll,nil)
+    boss:SetMaxHp(1200)
+    boss:SetInvincible(5)
+    boss:ShowBloodBar(true)
+    last = CreateCustomizedSTGObject("NazrinCG")
+    boss:AddTask(function()
+        if Wait(90)==false then return end
+    end)
+end
+SpellCard["天琴「Orionid Meteor Shower」"].OnFinish = function(boss)
+end
 CustomizedSTGObjectTable["NazrinCG"] = {}
 CustomizedSTGObjectTable["NazrinCG"].Init = function(self)
     self:SetSprite("Characters/Satori","Satori",BlendMode_Normal,LayerEffectBottom,false)
@@ -51,6 +66,7 @@ CustomizedSTGObjectTable["NazrinCG"].Init = function(self)
 end
 CustomizedTable["NazrinSC1Bullet0"] = {}
 CustomizedTable["NazrinSC1Bullet0"].Init = function(self,waitTime,maxRadius)
+    self:SetStyleById(113020)
     self:SetResistEliminatedTypes(23)
     self:AddTask(function()
         local posX = self.x
@@ -64,6 +80,7 @@ CustomizedTable["NazrinSC1Bullet0"].Init = function(self,waitTime,maxRadius)
 end
 CustomizedEnemyTable["NazrinSC1Enemy"] = {}
 CustomizedEnemyTable["NazrinSC1Enemy"].Init = function(self,toPosX,toPosY,duration)
+    self:Init(100020)
     self:SetMaxHp(50)
     self:AddTask(function()
         self:MoveTo(toPosX,toPosY,60,IntModeEaseInQuad)
@@ -114,14 +131,14 @@ SpellCard["NazrinSC1_0"].Init = function(boss)
         local k = 1
         do for _=1,Infinite do
             local posX,posY = boss.x,boss.y
-            last = CreateCustomizedBullet("NazrinSC1Bullet0",113020,posX,posY,0,75,2)
+            last = CreateCustomizedBullet1("NazrinSC1Bullet0",posX,posY,0,75)
             local master = last
             last:SetPolarParas(0,23.5*0*k,0,1*k)
             last = CreateCustomizedSTGObject("NazrinShield",posX,posY,80)
             last:AttachTo(master,true)
             do local i,_d_i=(1),(1) for _=1,15 do
                 if Wait(1)==false then return end
-                last = CreateCustomizedBullet("NazrinSC1Bullet0",113020,posX,posY,i,75,2)
+                last = CreateCustomizedBullet1("NazrinSC1Bullet0",posX,posY,i,75)
                 last:SetPolarParas(0,23.5*i*k,0,1*k)
             i=i+_d_i end end
             k = -k
@@ -133,8 +150,8 @@ SpellCard["NazrinSC1_0"].Init = function(boss)
         if Wait(300)==false then return end
         do for _=1,Infinite do
             local duration = 120
-            last = CreateCustomizedEnemy("NazrinSC1Enemy",100020,boss.x,boss.y,-170,205,duration,3)
-            last = CreateCustomizedEnemy("NazrinSC1Enemy",100020,boss.x,boss.y,170,205,duration,3)
+            last = CreateCustomizedEnemy("NazrinSC1Enemy",boss.x,boss.y,-170,205,duration)
+            last = CreateCustomizedEnemy("NazrinSC1Enemy",boss.x,boss.y,170,205,duration)
             if Wait(180)==false then return end
         end end
     end)
@@ -152,9 +169,80 @@ SpellCard["NazrinSC1_0"].Init = function(boss)
 end
 SpellCard["NazrinSC1_0"].OnFinish = function(boss)
 end
+CustomizedTable["ReboundLinearLaser"] = {}
+CustomizedTable["ReboundLinearLaser"].Init = function(self,angle,reboundPara,reboundCount)
+    self:SetStyleById(202060)
+    self:SetLength(45)
+    self:SetSourceEnable(true)
+    self:SetHeadEnable(true)
+    self:SetV(3.5,angle,false)
+    self:AddTask(function()
+        do for _=1,Infinite do
+            if reboundCount > 0 then
+                local reboundFlag = false
+                local curPosX,curPosY = self.x,self.y
+                local tmpRebound = reboundPara
+                local reboundAngle = self.vAngle
+                if tmpRebound >= Constants.ReboundBottom and curPosY < -224 then
+                    reboundFlag = true
+                    reboundAngle = -reboundAngle
+                    curPosY = -448 - curPosY
+                    tmpRebound = tmpRebound - Constants.ReboundBottom
+                else
+                end
+                if tmpRebound >= Constants.ReboundTop and curPosY > 224 then
+                    reboundFlag = true
+                    reboundAngle = -reboundAngle
+                    curPosY = 448 - curPosY
+                    tmpRebound = tmpRebound - Constants.ReboundTop
+                else
+                end
+                if tmpRebound >= Constants.ReboundRight and curPosX > 192 then
+                    reboundFlag = true
+                    reboundAngle = 180 - reboundAngle
+                    curPosX = 384 - curPosX
+                    tmpRebound = tmpRebound - Constants.ReboundRight
+                else
+                end
+                if tmpRebound >= Constants.ReboundLeft and curPosX < -192 then
+                    reboundFlag = true
+                    reboundAngle = -180 - reboundAngle
+                    curPosX = -384 - curPosX
+                else
+                end
+                if reboundFlag == true then
+                    reboundCount = reboundCount - 1
+                    last = CreateCustomizedLinearLaser("ReboundLinearLaser",curPosX,curPosY,reboundAngle,reboundPara,reboundCount)
+					reboundCount = 0
+                else
+                end
+            else
+            end
+            if Wait(1)==false then return end
+        end end
+    end)
+end
+SpellCard["TestCustomizedLinearLaser"] = {}
+SpellCard["TestCustomizedLinearLaser"].Init = function(boss)
+    SetSpellCardProperties("unknown spell card",1,60,ConditionEliminateAll,nil)
+    boss:SetMaxHp(500)
+    boss:SetInvincible(5)
+    boss:ShowBloodBar(true)
+    boss:AddTask(function()
+        do for _=1,Infinite do
+            local posX,posY = boss.x,boss.y
+            do local i,_d_i=(0),(1) for _=1,11 do
+                last = CreateCustomizedLinearLaser("ReboundLinearLaser",posX,posY,15+i*15,7,5)
+            i=i+_d_i end end
+            if Wait(60)==false then return end
+        end end
+    end)
+end
+SpellCard["TestCustomizedLinearLaser"].OnFinish = function(boss)
+end
 Stage["Stage1"] = function()
     do
-        last = CreateCustomizedEnemy("TestOnKillEnemy",100000,0,185,0)
+        last = CreateCustomizedEnemy("TestOnKillEnemy",0,185)
         local enemy = last
         enemy:AddTask(function()
             if Wait(150)==false then return end
@@ -180,7 +268,7 @@ Stage["Stage1"] = function()
             do for _=1,Infinite do
                 local posX,posY = enemy.x,enemy.y
                 do local i,_d_i=(0),(1) for _=1,16 do
-                    last = CreateCustomizedBullet("NazrinSC1Bullet0",113020,posX,posY,i,75,2)
+                    last = CreateCustomizedBullet1("NazrinSC1Bullet0",posX,posY,i,75)
                     last:SetPolarParas(0,23.5*i*k,0,1*k)
                     if Wait(1)==false then return end
                 i=i+_d_i end end
@@ -214,7 +302,7 @@ Stage["__TestSCStage"] = function()
     boss:MoveTo(0,170,90,IntModeEaseInQuad)
     if Wait(100)==false then return end
     boss:SetPhaseData(1,true)
-StartSpellCard(SpellCard["NazrinSC1_0"],boss)
+    StartSpellCard(SpellCard["TestCustomizedLinearLaser"],boss)
     if WaitForSpellCardFinish() == false then return end
 end
 

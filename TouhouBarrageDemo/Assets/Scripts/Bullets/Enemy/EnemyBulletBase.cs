@@ -125,6 +125,12 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
         }
     }
 
+    public float alpha
+    {
+        set { SetAlpha(value); }
+        get { return _curAlpha; }
+    }
+
     /// <summary>
     /// 设置rgb颜色
     /// <para>取值为0~255</para>
@@ -376,36 +382,46 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
         throw new System.NotImplementedException();
     }
 
-    public float velocity
+    public virtual float velocity
     {
-        get
-        {
-            return 0;
-        }
+        get { return 0; }
+        set { }
     }
 
-    public float vAngle
+    public virtual float vx
     {
-        get
-        {
-            return 0;
-        }
+        get { return 0; }
+        set { }
     }
 
-    public float acce
+    public virtual float vy
     {
-        get
-        {
-            return 0;
-        }
+        get { return 0; }
+        set { }
     }
 
-    public float accAngle
+    public virtual float maxVelocity
     {
-        get
-        {
-            return 0;
-        }
+        get { return 0; }
+        set { }
+    }
+
+    public virtual float vAngle
+    {
+        get { return 0; }
+        set { }
+    }
+
+    public virtual float acce
+    {
+        get { return 0; }
+        set { }
+    }
+
+    public virtual float accAngle
+    {
+        get { return 0; }
+        set { }
     }
 
     public void AddTask(Task task)

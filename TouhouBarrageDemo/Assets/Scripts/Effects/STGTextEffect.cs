@@ -548,22 +548,22 @@ public class STGTextEffect : STGEffectBase, ISTGMovable, IAttachment, ITaskExecu
 
     public float velocity
     {
-        get { return _movableObject.Velocity; }
+        get { return _movableObject.velocity; }
     }
 
     public float vAngle
     {
-        get { return _movableObject.VAngle; }
+        get { return _movableObject.vAngle; }
     }
 
     public float acce
     {
-        get { return _movableObject.Acce; }
+        get { return _movableObject.acce; }
     }
 
     public float accAngle
     {
-        get { return _movableObject.AccAngle; }
+        get { return _movableObject.accAngle; }
     }
 
     public float dx

@@ -42,6 +42,7 @@ public class EnemyCurveLaser : EnemyBulletBase
     protected bool _uvModified;
 
     protected float _relationX, _relationY;
+    private bool _isPosModified;
 
     protected MovableObject _movableObj;
 
@@ -124,6 +125,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         _isCachedCollisionSegments = false;
         _collisionSegmentsList = new List<Vector2>();
         _collisionSegmentsCount = 0;
+        _isPosModified = false;
         if ( _movableObj == null )
         {
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
@@ -154,26 +156,27 @@ public class EnemyCurveLaser : EnemyBulletBase
         _vUnit = 1f / cfg.colorsCount;
         _startV = _vUnit * (index + 1);
         _endV = _vUnit * index;
+        _isPosModified = true;
     }
 
     public override void SetPosition(float posX, float posY)
     {
         base.SetPosition(posX, posY);
-        _trans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
         _movableObj.SetPos(0, 0);
         _relationX = posX;
         _relationY = posY;
         _trailsList.Add(Vector2.zero);
+        _isPosModified = true;
     }
 
     public override void SetPosition(Vector2 pos)
     {
         base.SetPosition(pos);
-        _trans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
         _movableObj.SetPos(0, 0);
         _relationX = pos.x;
         _relationY = pos.y;
         _trailsList.Add(Vector2.zero);
+        _isPosModified = true;
     }
 
     /// <summary>
@@ -185,12 +188,19 @@ public class EnemyCurveLaser : EnemyBulletBase
         _maxTrailLen = len;
     }
 
-    public void SetWidth(float halfWidth,float collisionHalfWidth)
+    public void SetWidth(float width)
     {
-        _laserHalfWidth = halfWidth;
-        _collisionRadius = collisionHalfWidth;
-        _grazeRadius = collisionHalfWidth * 1.5f;
+        _laserHalfWidth = width / 2;
+        _collisionRadius = _laserHalfWidth * 0.8f;
+        _grazeRadius = _laserHalfWidth + 12;
     }
+
+    //public void SetWidth(float halfWidth,float collisionHalfWidth)
+    //{
+    //    _laserHalfWidth = halfWidth;
+    //    _collisionRadius = collisionHalfWidth;
+    //    _grazeRadius = collisionHalfWidth * 1.5f;
+    //}
 
     public override void Update()
     {
@@ -209,6 +219,8 @@ public class EnemyCurveLaser : EnemyBulletBase
     public override void Render()
     {
         PopulateMesh();
+        if (_isPosModified)
+            RenderPosition();
     }
 
     protected override void OnFrameStarted()
@@ -298,7 +310,7 @@ public class EnemyCurveLaser : EnemyBulletBase
     }
     #endregion
 
-    public void SetStraightParas(float v, float angle, float acce, float accAngle)
+    public override void SetStraightParas(float v, float angle, float acce, float accAngle)
     {
         _movableObj.DoStraightMove(v, angle);
         _movableObj.DoAcceleration(acce, accAngle);
@@ -309,7 +321,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         _movableObj.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
     }
 
-    public void SetCurveParas(float radius,float angle,float deltaR,float omega)
+    public override void SetPolarParas(float radius,float angle,float deltaR,float omega)
     {
         _movableObj.SetPolarParas(radius, angle, deltaR, omega);
     }
@@ -493,9 +505,10 @@ public class EnemyCurveLaser : EnemyBulletBase
         uvs.Add(new Vector2(1, _startV));
     }
 
-    protected virtual void UpdatePos()
+    protected void RenderPosition()
     {
         _trans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
+        _isPosModified = false;
     }
 
     protected override bool IsOutOfBorder()
@@ -667,31 +680,31 @@ public class EnemyCurveLaser : EnemyBulletBase
         switch ( paraType)
         {
             case BulletParaType.Velocity:
-                value = _movableObj.Velocity;
+                value = _movableObj.velocity;
                 return true;
             case BulletParaType.VAngel:
-                value = _movableObj.VAngle;
+                value = _movableObj.vAngle;
                 return true;
             case BulletParaType.Acce:
-                value = _movableObj.Acce;
+                value = _movableObj.acce;
                 return true;
             case BulletParaType.AccAngle:
-                value = _movableObj.AccAngle;
+                value = _movableObj.accAngle;
                 return true;
             case BulletParaType.CurveRadius:
-                value = _movableObj.CurveRadius;
+                value = _movableObj.curveRadius;
                 return true;
             case BulletParaType.CurveAngle:
-                value = _movableObj.CurveAngle;
+                value = _movableObj.curveAngle;
                 return true;
             case BulletParaType.CurveDeltaR:
-                value = _movableObj.CurveDeltaRadius;
+                value = _movableObj.curveDeltaRadius;
                 return true;
             case BulletParaType.CurveOmega:
-                value = _movableObj.CurveOmega;
+                value = _movableObj.curveOmega;
                 return true;
             case BulletParaType.MaxVelocity:
-                value = _movableObj.MaxVelocity;
+                value = _movableObj.maxVelocity;
                 return true;
         }
         value = 0;
@@ -703,31 +716,31 @@ public class EnemyCurveLaser : EnemyBulletBase
         switch (paraType)
         {
             case BulletParaType.Velocity:
-                _movableObj.Velocity = value;
+                _movableObj.velocity = value;
                 return true;
             case BulletParaType.VAngel:
-                _movableObj.VAngle = value;
+                _movableObj.vAngle = value;
                 return true;
             case BulletParaType.Acce:
-                _movableObj.Acce = value;
+                _movableObj.acce = value;
                 return true;
             case BulletParaType.AccAngle:
-                _movableObj.AccAngle = value;
+                _movableObj.accAngle = value;
                 return true;
             case BulletParaType.CurveRadius:
-                _movableObj.CurveRadius = value;
+                _movableObj.curveRadius = value;
                 return true;
             case BulletParaType.CurveAngle:
-                _movableObj.CurveAngle = value;
+                _movableObj.curveAngle = value;
                 return true;
             case BulletParaType.CurveDeltaR:
-                _movableObj.CurveDeltaRadius = value;
+                _movableObj.curveDeltaRadius = value;
                 return true;
             case BulletParaType.CurveOmega:
-                _movableObj.CurveOmega = value;
+                _movableObj.curveOmega = value;
                 return true;
             case BulletParaType.MaxVelocity:
-                _movableObj.MaxVelocity = value;
+                _movableObj.maxVelocity = value;
                 return true;
         }
         return false;

@@ -39,36 +39,7 @@ public partial class LuaLib
     {
         EnemyLinearLaser laser = luaState.ToUserData(-2) as EnemyLinearLaser;
         int laserLen = luaState.ToInteger(-1);
-        luaState.Pop(2);
         laser.SetLength(laserLen);
-        return 0;
-    }
-
-    /// <summary>
-    /// 设置直线激光的速度等基础属性
-    /// <para>laser 直线激光本体</para>
-    /// <para>velocity 速度</para>
-    /// <para>angle 方向</para>
-    /// <para>isAimToPlayer 是否朝向玩家</para>
-    /// <para>acce 加速度</para>
-    /// <para>maxVelocity 最大速度限制</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int LinearLaserDoStraightMove(ILuaState luaState)
-    {
-        EnemyLinearLaser laser = luaState.ToUserData(-6) as EnemyLinearLaser;
-        float velocity = (float)luaState.ToNumber(-5);
-        float angle = (float)luaState.ToNumber(-4);
-        bool isAimToPlayer = luaState.ToBoolean(-3);
-        if ( isAimToPlayer )
-        {
-            angle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos - laser.GetPosition());
-        }
-        float acce = (float)luaState.ToNumber(-2);
-        float maxVelocity = (float)luaState.ToNumber(-1);
-        luaState.Pop(6);
-        laser.DoStraightMove(velocity, angle, acce, maxVelocity);
         return 0;
     }
 
@@ -81,7 +52,6 @@ public partial class LuaLib
     {
         EnemyLinearLaser laser = luaState.ToUserData(-2) as EnemyLinearLaser;
         bool isEnable = luaState.ToBoolean(-1);
-        luaState.Pop(2);
         laser.SetHeadEnable(isEnable);
         return 0;
     }
@@ -95,27 +65,29 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetLinearLaserSourceEnable(ILuaState luaState)
     {
-        EnemyLinearLaser laser = luaState.ToUserData(-3) as EnemyLinearLaser;
-        bool isEnable = luaState.ToBoolean(-2);
-        int sourceIndex = luaState.ToInteger(-1);
-        luaState.Pop(3);
-        laser.SetSourceEnable(isEnable, sourceIndex);
+        EnemyLinearLaser laser = luaState.ToUserData(-2) as EnemyLinearLaser;
+        bool isEnable = luaState.ToBoolean(-1);
+        laser.SetSourceEnable(isEnable);
         return 0;
     }
 
     public static int CreateCustomizedLinearLaser(ILuaState luaState)
     {
-        int numArgs = luaState.ToInteger(-1);
-        luaState.Pop(1);
-        string customizedName = luaState.ToString(-1-numArgs);
+        int numArgs = luaState.GetTop() - 3;
+        string customizedName = luaState.ToString(-3 - numArgs);
+        float posX = (float)luaState.ToNumber(-2 - numArgs);
+        float posY = (float)luaState.ToNumber(-1 - numArgs);
         int initFuncRef = InterpreterManager.GetInstance().GetBulletInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
-        luaState.Replace(-2 - numArgs);
         // 将本体插入执行栈中
         EnemyLinearLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_LinearLaser) as EnemyLinearLaser;
         laser.AddComponent<BCCustomizedTask>();
+        laser.SetPosition(posX, posY);
         luaState.PushLightUserData(laser);
-        luaState.Insert(-1-numArgs);
+        for (int i=0;i<numArgs;i++)
+        {
+            luaState.PushValue(-2 - numArgs);
+        }
         luaState.Call(numArgs + 1, 0);
         // 将返回值压入栈中
         luaState.PushLightUserData(laser);
@@ -209,32 +181,37 @@ public partial class LuaLib
         float deltaR = (float)luaState.ToNumber(-2);
         float omega = (float)luaState.ToNumber(-1);
         luaState.Pop(5);
-        laser.SetCurveParas(radius, angle, deltaR, omega);
+        laser.SetPolarParas(radius, angle, deltaR, omega);
         return 0;
     }
 
-
+    /// <summary>
+    /// 创建曲线激光
+    /// <para>string customizedName</para>
+    /// <para>posX</para>
+    /// <para>posY</para>
+    /// <para>...args</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
     public static int CreateCustomizedCurveLaser(ILuaState luaState)
     {
-        int numArgs = luaState.ToInteger(-1);
-        luaState.Pop(1);
-        string customizedName = luaState.ToString(-5 - numArgs);
-        string id = luaState.ToString(-4 - numArgs);
-        int laserLen = luaState.ToInteger(-3 - numArgs);
+        int numArgs = luaState.GetTop() - 3;
+        string customizedName = luaState.ToString(-3 - numArgs);
         float posX = (float)luaState.ToNumber(-2 - numArgs);
         float posY = (float)luaState.ToNumber(-1 - numArgs);
         int initFuncRef = InterpreterManager.GetInstance().GetBulletInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
         // 将本体插入执行栈中
         EnemyCurveLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_CurveLaser) as EnemyCurveLaser;
-        laser.SetStyleById(id);
+        laser.SetPosition(posX, posY);
         laser.AddComponent<BCCustomizedTask>();
         luaState.PushLightUserData(laser);
-        luaState.Replace(-3 - numArgs);
-        luaState.Replace(-3 - numArgs);
+        for (int i=0;i<numArgs;i++)
+        {
+            luaState.PushValue(-3 - numArgs);
+        }
         luaState.Call(numArgs + 1, 0);
-        // 将多出的参数弹出
-        luaState.Pop(3);
         // 将返回值压入栈中
         luaState.PushLightUserData(laser);
         return 1;
@@ -251,7 +228,6 @@ public partial class LuaLib
     {
         EnemyCurveLaser laser = luaState.ToUserData(-2) as EnemyCurveLaser;
         int len = luaState.ToInteger(-1);
-        luaState.Pop(2);
         laser.SetLength(len);
         return 0;
     }
@@ -259,18 +235,15 @@ public partial class LuaLib
     /// <summary>
     /// 设置曲线激光的宽带已经碰撞检测宽度
     /// <para>laser 曲线激光本体</para>
-    /// <para>len 设置的宽度(总宽度/2）</para>
-    /// <para>collisionHalfWidth 碰撞检测的宽度</para>
+    /// <para>width 设置的宽度</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
     public static int SetCurveLaserWidth(ILuaState luaState)
     {
-        EnemyCurveLaser laser = luaState.ToUserData(-3) as EnemyCurveLaser;
-        float halfWidth = (float)luaState.ToNumber(-2);
-        float collisionHalfWidth = (float)luaState.ToNumber(-1);
-        luaState.Pop(3);
-        laser.SetWidth(halfWidth, collisionHalfWidth);
+        EnemyCurveLaser laser = luaState.ToUserData(-2) as EnemyCurveLaser;
+        float width = (float)luaState.ToNumber(-1);
+        laser.SetWidth(width);
         return 0;
     }
 }
