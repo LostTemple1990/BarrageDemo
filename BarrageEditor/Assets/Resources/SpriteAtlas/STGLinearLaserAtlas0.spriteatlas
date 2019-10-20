@@ -1,0 +1,165 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: STGLinearLaserAtlas0
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 761c3f9d81d4c4649a16db0d24390a03, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: c9947720ed7b47540915970341504fff, type: 3}
+  - {fileID: 21300000, guid: ce07ac903f2f02c47b33365049048b46, type: 3}
+  - {fileID: 21300000, guid: 14ce14e06d9ea2e44a8be1d27b56bf58, type: 3}
+  - {fileID: 21300000, guid: 5f4436f0602b7b24fa514c457d56c902, type: 3}
+  - {fileID: 21300000, guid: a63849114fa65394cb5fcb465dec1dc6, type: 3}
+  - {fileID: 21300000, guid: 44c80b3111720554f8b5a572b89c567e, type: 3}
+  - {fileID: 21300000, guid: a90bcc6199822e546b5f57e850b9ce42, type: 3}
+  - {fileID: 21300000, guid: 6c59c0c1e470fe843b34f828ed61d2ad, type: 3}
+  - {fileID: 21300000, guid: 87e030f10d416964d8cdf4e781841e9c, type: 3}
+  - {fileID: 21300000, guid: dec5fa128a485a643acc70efd48aff4a, type: 3}
+  - {fileID: 21300000, guid: b1627f524bfa4354181804184c274aa0, type: 3}
+  - {fileID: 21300000, guid: 2d7323f2dce4dfb4189b3dfc2376822c, type: 3}
+  - {fileID: 21300000, guid: 1b61325331916e940acf4df652cff1c5, type: 3}
+  - {fileID: 21300000, guid: ef9750d3d339e23408f96b19673a14f8, type: 3}
+  - {fileID: 21300000, guid: 4f7990e335b2de3418890312873bdbc7, type: 3}
+  - {fileID: 21300000, guid: 5dd3eb44fb278ca4fb501ce3ee70a4d1, type: 3}
+  - {fileID: 21300000, guid: 7fa54b645c72e4d438973e38aad75fe4, type: 3}
+  - {fileID: 21300000, guid: dca4808470b205b43837f2b79e8d6467, type: 3}
+  - {fileID: 21300000, guid: 8c662794c6fc43648bcdb21b98e13519, type: 3}
+  - {fileID: 21300000, guid: eeda63b458178b342b799b7db1689ec5, type: 3}
+  - {fileID: 21300000, guid: 7f6db5f444df1d14b8cc6c7e96b4d606, type: 3}
+  - {fileID: 21300000, guid: 546e56254c01c0542942dbda8e23cabb, type: 3}
+  - {fileID: 21300000, guid: fc360925573c2174bb92ef9cad197b19, type: 3}
+  - {fileID: 21300000, guid: c59f09358f3cd4a4fa94eb03de16901b, type: 3}
+  - {fileID: 21300000, guid: 2b776a55a7c86e440960710a87bd6b14, type: 3}
+  - {fileID: 21300000, guid: 296405a51cef2eb4d893141e4eb60ade, type: 3}
+  - {fileID: 21300000, guid: df67afc588034c240ae8b667a408d1cc, type: 3}
+  - {fileID: 21300000, guid: a44ae8f57e614e343ada88f56bd40a70, type: 3}
+  - {fileID: 21300000, guid: aa75891670cf9e348a740c3398fc44a8, type: 3}
+  - {fileID: 21300000, guid: 0c5fae767740c4a42992f28226570a16, type: 3}
+  - {fileID: 21300000, guid: 51287ca67b272fa47bd4c0380fee7978, type: 3}
+  - {fileID: 21300000, guid: 695376d6a0573504388b39b22c08c79e, type: 3}
+  - {fileID: 21300000, guid: 7bd396d6dd74a4844a74674ead350bb9, type: 3}
+  - {fileID: 21300000, guid: 5879fc17b0fa499448773bd164a8afd3, type: 3}
+  - {fileID: 21300000, guid: 3e04c527217820b45957e7bd2082c486, type: 3}
+  - {fileID: 21300000, guid: 9ec6893729c30ed47b0372b73ce3f2d5, type: 3}
+  - {fileID: 21300000, guid: 69a00c97cfecc7b48b0c64be5d5cad42, type: 3}
+  - {fileID: 21300000, guid: 6283bd975f438ee40bbbdd2f2b32ff7a, type: 3}
+  - {fileID: 21300000, guid: 22679d589b7ea094ca257c4482961770, type: 3}
+  - {fileID: 21300000, guid: 4e6a01686681e4f44aea78af1be60193, type: 3}
+  - {fileID: 21300000, guid: 5b53778865d2033449c80d0c9a8c6cd6, type: 3}
+  - {fileID: 21300000, guid: c35231c8774ec924e974c87679750b57, type: 3}
+  - {fileID: 21300000, guid: 2eacaf490a3a42d4c8b0513f73a752b9, type: 3}
+  - {fileID: 21300000, guid: dd6ac369363e027469132080892f1b8f, type: 3}
+  - {fileID: 21300000, guid: a432dd79b4c2b3e4ea8678ef1ddf4aee, type: 3}
+  - {fileID: 21300000, guid: 8b0a5a2b6c83b5348865d30beacefe53, type: 3}
+  - {fileID: 21300000, guid: c390778bd42e2504c9bb047e4b31c9eb, type: 3}
+  - {fileID: 21300000, guid: 3b008a8b2d3d38b4b9609da568d34ef0, type: 3}
+  - {fileID: 21300000, guid: 1b83cabb89c889344baeab0e886e54e4, type: 3}
+  - {fileID: 21300000, guid: 29f973cbf4380bc41a440e4a8b9ec56e, type: 3}
+  - {fileID: 21300000, guid: 67a9f07c73a6dd6488acfb93e18e4040, type: 3}
+  - {fileID: 21300000, guid: c4d8497c793a1b644a78bd068b380c96, type: 3}
+  - {fileID: 21300000, guid: 00c14c0d70668e84cbca43c6e6747ff8, type: 3}
+  - {fileID: 21300000, guid: 7193f73d0d0125e44beac2ba5fdb4314, type: 3}
+  - {fileID: 21300000, guid: 04798f3d2f8a53b45b8380ea7e0288aa, type: 3}
+  - {fileID: 21300000, guid: d4ae958db1e612a4c82f611ff626d4cd, type: 3}
+  - {fileID: 21300000, guid: 5e7717ade0d2b4a42a669c029c3f972d, type: 3}
+  - {fileID: 21300000, guid: c2e2badd5ab094f4790fe005b60b2587, type: 3}
+  - {fileID: 21300000, guid: c5c210ed534a7b64bbe2ffe2fc80941f, type: 3}
+  - {fileID: 21300000, guid: 3bb2b24eb0d3d324db7b0c9ad0e69467, type: 3}
+  - {fileID: 21300000, guid: a64dd08e7467d8542b6f628d34bf3d81, type: 3}
+  - {fileID: 21300000, guid: e6937b4fe1abe8d4bad6a9396da585e3, type: 3}
+  - {fileID: 21300000, guid: b7f3715f934c99c4f9b3dd75a6e4495b, type: 3}
+  - {fileID: 21300000, guid: b22eb36f4614964428a6ef660617b4cc, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Laser303150
+  - Laser303020
+  - Laser301130
+  - Laser302020
+  - Laser301110
+  - Laser302140
+  - Laser303050
+  - Laser304020
+  - Laser303010
+  - Laser302040
+  - Laser303080
+  - Laser302090
+  - Laser302080
+  - Laser301150
+  - Laser304080
+  - Laser304140
+  - Laser302050
+  - Laser304090
+  - Laser301030
+  - Laser301000
+  - Laser301090
+  - Laser302070
+  - Laser302120
+  - Laser301020
+  - Laser301080
+  - Laser304130
+  - Laser303130
+  - Laser303140
+  - Laser301040
+  - Laser302110
+  - Laser301010
+  - Laser304050
+  - Laser303040
+  - Laser302010
+  - Laser301070
+  - Laser304110
+  - Laser304040
+  - Laser301050
+  - Laser304120
+  - Laser304010
+  - Laser304150
+  - Laser302060
+  - Laser303070
+  - Laser303000
+  - Laser301100
+  - Laser303100
+  - Laser302130
+  - Laser303120
+  - Laser303090
+  - Laser302030
+  - Laser301060
+  - Laser302100
+  - Laser304070
+  - Laser303110
+  - Laser302000
+  - Laser301140
+  - Laser304100
+  - Laser304000
+  - Laser302150
+  - Laser303060
+  - Laser304030
+  - Laser301120
+  - Laser304060
+  - Laser303030
+  m_Tag: STGLinearLaserAtlas0
+  m_IsVariant: 0

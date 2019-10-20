@@ -904,7 +904,7 @@ public class EnemyLinearLaser : EnemyBulletBase
             // 直线碰撞检测
             float minDis = MathUtil.GetMinDisFromPointToLineSegment(_pathList[(int)segmentVec.x], _pathList[(int)segmentVec.y], Global.PlayerPos);
             // 擦弹判断
-            if (minDis <= DefaultLaserHalfHeight + Global.PlayerGrazeRadius)
+            if (minDis <= DefaultCollisionHalfHeight + Global.PlayerGrazeRadius)
             {
                 if (!_isGrazed)
                 {
@@ -912,7 +912,7 @@ public class EnemyLinearLaser : EnemyBulletBase
                     _grazeCoolDown = GrazeCoolDown;
                     PlayerService.GetInstance().AddGraze(1);
                 }
-                if (minDis <= DefaultLaserHalfHeight + Global.PlayerCollisionVec.z)
+                if (minDis <= DefaultCollisionHalfHeight + Global.PlayerCollisionVec.z)
                 {
                     PlayerService.GetInstance().GetCharacter().BeingHit();
                     // 直线激光击中玩家不消除

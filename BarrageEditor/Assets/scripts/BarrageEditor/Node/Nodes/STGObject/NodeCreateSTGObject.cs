@@ -20,6 +20,14 @@ namespace BarrageEditor
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CustomizedType);
             nodeAttr.Init(this, "Type name", null);
             attrs.Add(nodeAttr);
+            // posX
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CustomizedType);
+            nodeAttr.Init(this, "PosX", null);
+            attrs.Add(nodeAttr);
+            // posY
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CustomizedType);
+            nodeAttr.Init(this, "PosY", null);
+            attrs.Add(nodeAttr);
             // 参数列表
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.ParaList);
             nodeAttr.Init(this, "Parameter list", null);
@@ -33,10 +41,12 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            string ret = string.Format("create object with of type\"{0}\"", attrs[0].GetValueString());
+            string ret = string.Format("create object with of type\"{0}\" at ({1},{2})",
+                attrs[0].GetValueString(),
+                attrs[1].GetValueString(), attrs[2].GetValueString());
             if (GetAttrByIndex(1).GetValueString() != "")
             {
-                ret = ret + string.Format(" with parameter {0}", attrs[1].GetValueString());
+                ret = ret + string.Format(" with parameter {0}", attrs[3].GetValueString());
             }
             return ret;
         }
@@ -44,18 +54,11 @@ namespace BarrageEditor
         public override string ToLuaHead()
         {
             string typeName = attrs[0].GetValueString();
-            CustomDefineData data = CustomDefine.GetDataByTypeAndName(CustomDefineType.Enemy, typeName);
-            int paraCount = 0;
-            if (data != null)
-            {
-                if (data.paraListStr.IndexOf(',') != -1)
-                {
-                    paraCount = data.paraListStr.Split(',').Length;
-                }
-            }
-            return string.Format("last = CreateCustomizedSTGObject(\"{0}\"{1})\n",
+            return string.Format("last = CreateCustomizedSTGObject(\"{0}\",{1},{2}{3})\n",
                 typeName,
-                GetAttrByIndex(1).GetValueString() == "" ? "" : "," + GetAttrByIndex(1).GetValueString());
+                attrs[1].GetValueString(),
+                attrs[2].GetValueString(),
+                attrs[3].GetValueString() == "" ? "" : "," + attrs[3].GetValueString());
         }
     }
 }

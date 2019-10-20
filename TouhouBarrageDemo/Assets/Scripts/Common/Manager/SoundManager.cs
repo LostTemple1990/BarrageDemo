@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//#define SoundEnable 
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -25,6 +27,8 @@ public class SoundManager
 
     private float _curVolume = 0.0f;
 
+    private Dictionary<string, int> _soundLoadedMap;
+
     public void Init(Transform tf)
     {
         _toPlayList = new List<SoundEntity>();
@@ -32,10 +36,34 @@ public class SoundManager
         _curPlayList = new List<SoundEntity>();
         _defaultSourceTf = tf;
         _pool = new Stack<SoundEntity>();
+        _soundLoadedMap = new Dictionary<string, int>();
     }
 
-    public void Play(string name,bool isLoop)
+    public void Play(string name, bool isLoop = false,bool isSTGSound = true)
     {
+#if SoundEnable
+        int i;
+        for (i = 0; i < _toPlayListCount; i++)
+        {
+            if (_toPlayList[i].soundName == name)
+            {
+                return;
+            }
+        }
+        //Logger.Log("Play New Sound " + name);
+        SoundEntity entity = GetAtPool();
+        entity.soundName = name;
+        entity.volume = 0.5f;
+        entity.isLoop = isLoop;
+        entity.isSTGSound = isSTGSound;
+        _toPlayList.Add(entity);
+        _toPlayListCount++;
+#endif
+    }
+
+    public void Play(string name, float volume, bool isLoop = false,bool isSTGSound = true)
+    {
+#if SoundEnable
         int i;
         for (i=0;i<_toPlayListCount;i++)
         {
@@ -47,9 +75,107 @@ public class SoundManager
         //Logger.Log("Play New Sound " + name);
         SoundEntity entity = GetAtPool();
         entity.soundName = name;
+        entity.volume = Mathf.Clamp01(volume);
         entity.isLoop = isLoop;
+        entity.isSTGSound = isSTGSound;
         _toPlayList.Add(entity);
         _toPlayListCount++;
+#endif
+    }
+
+    public void Pause(string name)
+    {
+        SoundEntity entity;
+        for (int i=0;i<_curPlayCount;i++)
+        {
+            entity = _curPlayList[i];
+            if (entity != null && entity.soundName == name)
+            {
+                entity.pauseTime = Time.realtimeSinceStartup;
+                entity.isPause = true;
+                entity.source.Pause();
+                break;
+            }
+        }
+    }
+
+    public void Resume(string name)
+    {
+        SoundEntity entity;
+        for (int i = 0; i < _curPlayCount; i++)
+        {
+            entity = _curPlayList[i];
+            if (entity != null && entity.soundName == name)
+            {
+                if (entity.isPause)
+                {
+                    // 更新该音效的结束时间
+                    // 当该音效有明确的结束时间的时候才进行更新
+                    // 即，非循环音效
+                    if (entity.endTime > 0)
+                    {
+                        entity.endTime += Time.realtimeSinceStartup - entity.pauseTime;
+                    }
+                    entity.isPause = false;
+                    entity.source.UnPause();
+                }
+                break;
+            }
+        }
+    }
+
+    public void Stop(string name)
+    {
+        SoundEntity entity;
+        for (int i = 0; i < _curPlayCount; i++)
+        {
+            entity = _curPlayList[i];
+            if (entity != null && entity.soundName == name)
+            {
+                entity.source.Stop();
+                entity.isFinish = true;
+                break;
+            }
+        }
+    }
+
+    public AudioClip Load(string name,bool isPreload = false)
+    {
+        int flag;
+        if (isPreload && _soundLoadedMap.TryGetValue(name, out flag))
+        {
+            return null;
+        }
+        AudioClip clip = Resources.Load<AudioClip>("Sounds/" + name);
+        _soundLoadedMap.Add(name, 1);
+        if (isPreload)
+        {
+            //GameObject.Destroy(clip);
+            return null;
+        }
+        return clip;
+    }
+
+    public void Clear(bool onlySTGSound = true)
+    {
+        SoundEntity entity;
+        for (int i = 0; i < _curPlayCount; i++)
+        {
+            entity = _curPlayList[i];
+            if (entity == null)
+                continue;
+            if (onlySTGSound && !entity.isSTGSound)
+                return;
+            if (entity.source != null)
+            {
+                entity.source.Stop();
+            }
+            RestoreToPool(entity);
+        }
+        _curPlayList.Clear();
+        _curPlayCount = 0;
+        _toPlayList.Clear();
+        _toPlayListCount = 0;
     }
 
     public void Update()
@@ -106,7 +232,7 @@ public class SoundManager
             if ( source == null )
             {
                 source = soundObj.AddComponent<AudioSource>();
-                source.volume = _curVolume;
+                source.volume = toPlayEntity.volume;
                 toPlayEntity.source = source;
             }
             // 起始播放时间
@@ -135,9 +261,17 @@ public class SoundManager
         for (i=0;i<_curPlayCount;i++)
         {
             curPlayEntity = _curPlayList[i];
-            if ( !curPlayEntity.isLoop && curPlayEntity.endTime < curTime )
+            if (curPlayEntity.isPause)
+                continue;
+            if (!curPlayEntity.isFinish)
             {
-                curPlayEntity.isFinish = true;
+                if (!curPlayEntity.isLoop && curPlayEntity.endTime < curTime)
+                {
+                    curPlayEntity.isFinish = true;
+                }
+            }
+            if (curPlayEntity.isFinish)
+            {
                 RestoreToPool(curPlayEntity);
                 _curPlayList[i] = null;
             }
@@ -181,11 +315,7 @@ public class SoundManager
 
     private void RestoreToPool(SoundEntity entity)
     {
-        if ( entity.source != null )
-        {
-            entity.source.Stop();
-            entity.source.clip = null;
-        }
+        entity.Clear();
         _pool.Push(entity);
     }
 }
@@ -206,4 +336,37 @@ public class SoundEntity
     public bool isFinish;
     public GameObject soundObj;
     public AudioSource source;
+    /// <summary>
+    /// 音量大小
+    /// </summary>
+    public float volume;
+    /// <summary>
+    /// 当前音效是否暂停中
+    /// </summary>
+    public bool isPause;
+    /// <summary>
+    /// 暂停的时间
+    /// </summary>
+    public double pauseTime = 0;
+    /// <summary>
+    /// 是否STG播放的音效
+    /// </summary>
+    public bool isSTGSound;
+
+    public SoundEntity()
+    {
+        isFinish = false;
+        isPause = false;
+    }
+
+    public void Clear()
+    {
+        if (source != null)
+        {
+            source.Stop();
+            source.clip = null;
+        }
+        isFinish = false;
+        isPause = false;
+    }
 }

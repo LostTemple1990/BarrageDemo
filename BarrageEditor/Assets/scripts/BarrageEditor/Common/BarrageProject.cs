@@ -139,6 +139,17 @@ namespace BarrageEditor
             //    }
             //}
             #endregion
+            #region 第三版修改，统一CreateCustomizedSTGObject接口
+            if (nd.type == (int)NodeType.CreateCusomizedSTGObject)
+            {
+                List<string> newValues = new List<string>();
+                newValues.Add(nd.attrValues[0]);
+                newValues.Add("0");
+                newValues.Add("0");
+                newValues.Add(nd.attrValues[1]);
+                nd.attrValues = newValues;
+            }
+            #endregion
             for (int i=0;i<nd.childs.Count;i++)
             {
                 UpdateNodeData(nd.childs[i]);

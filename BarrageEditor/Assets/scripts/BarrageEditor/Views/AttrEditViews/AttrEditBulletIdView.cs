@@ -135,7 +135,8 @@ namespace BarrageEditor
         private void OnColorEditBtnClickHandler()
         {
             List<object> datas = new List<object>();
-            datas.Add(_curBulletId);
+            datas.Add(_colorList);
+            datas.Add(_colorId);
             Action<int> callback = new Action<int>(SelectStyleCallback);
             datas.Add(callback);
             UIManager.GetInstance().OpenView(ViewID.AttrSelectBulletColorView, datas);
@@ -204,13 +205,13 @@ namespace BarrageEditor
         private void InitAllShow()
         {
             _styleIndex = (_curBulletId % 100000) / 1000;
+            _colorId = (_curBulletId % 1000) / 10;
+            _blendIndex = _curBulletId % 10;
             _styleDropdown.value = _styleIndex;
             // 更新子弹颜色的下拉框
             UpdateColorDropdownOptions();
-            _colorId = (_curBulletId % 1000) / 10;
             _colorDropdown.value = _colorList.IndexOf(_colorId);
             // blendMode下拉框
-            _blendIndex = _curBulletId % 10;
             _blendModeDropdown.value = _blendIndex;
 
             UpdateBulletIdTextAndPreview();

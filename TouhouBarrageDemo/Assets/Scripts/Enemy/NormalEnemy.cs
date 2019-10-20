@@ -32,7 +32,6 @@ public class NormalEnemy : EnemyBase
 
     public void Init(EnemyCfg cfg)
     {
-        base.Init();
         _cfg = cfg;
         _enemyObj = EnemyManager.GetInstance().CreateEnemyObjectByType(cfg.type);
         _enemyObj.SetEnemyAni(cfg.aniId);

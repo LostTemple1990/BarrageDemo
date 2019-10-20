@@ -180,7 +180,6 @@ public partial class LuaLib
         float angle = (float)luaState.ToNumber(-3);
         float deltaR = (float)luaState.ToNumber(-2);
         float omega = (float)luaState.ToNumber(-1);
-        luaState.Pop(5);
         laser.SetPolarParas(radius, angle, deltaR, omega);
         return 0;
     }

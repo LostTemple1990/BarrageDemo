@@ -104,6 +104,7 @@ namespace BarrageEditor
             Tools,
             Object,
             Unit,
+            Audio,
             Count,
         };
 
@@ -250,6 +251,18 @@ namespace BarrageEditor
                     new List<NodeType> { NodeType.UnitSetResistEliminatedTypes },
                     new List<NodeType> { NodeType.UnitAttachTo, NodeType.UnitSetRelativePos },
                     new List<NodeType> { NodeType.KillUnit, NodeType.DelUnit },
+                },
+            };
+            _nodeTabs.Add(tab);
+            // Audio
+            tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.Audio,
+                tabName = "Audio",
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.LoadSound },
+                    new List<NodeType> { NodeType.PlaySound, NodeType.StopSound, NodeType.PauseSound, NodeType.ResumeSound },
                 },
             };
             _nodeTabs.Add(tab);

@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: STGLinearLaserAtlas1
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 3bd07f6886d668a4c9429081a2317504, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 46e3d5a0e75ff184b826981c5f1c9a3e, type: 3}
+  - {fileID: 21300000, guid: 044820f4cc955d94eb4f8aa550b6611a, type: 3}
+  - {fileID: 21300000, guid: 1076a935708f2434eb625fadf322fc00, type: 3}
+  - {fileID: 21300000, guid: 803f79652068e8a418f4c6255fbe6361, type: 3}
+  - {fileID: 21300000, guid: 11c45476239755b46bec88ee82d52c4b, type: 3}
+  - {fileID: 21300000, guid: 6e8e75a65a5d63148a252b95f2099cd6, type: 3}
+  - {fileID: 21300000, guid: 62bea3175bd2f82418bbd20826930552, type: 3}
+  - {fileID: 21300000, guid: a4496e5771d6a574d964c6146c262776, type: 3}
+  - {fileID: 21300000, guid: 2cc8f0f8fbca604468e2e77feb970245, type: 3}
+  - {fileID: 21300000, guid: 2ad62469ffc1aa648adb791fcb133aa6, type: 3}
+  - {fileID: 21300000, guid: 583330f90c44efe43a7324d341bec5c2, type: 3}
+  - {fileID: 21300000, guid: 843575f90344fe24381023e6eafaa2ff, type: 3}
+  - {fileID: 21300000, guid: 2b2e2d7b5f2fd69489148190ddb39075, type: 3}
+  - {fileID: 21300000, guid: f74734abafea9a9459a54b4e30d2d12b, type: 3}
+  - {fileID: 21300000, guid: b972d30c4966ad54ca5aeb1c9935d00c, type: 3}
+  - {fileID: 21300000, guid: 125b9cbe9b791254891fce7c7ee0f211, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Laser305030
+  - Laser305020
+  - Laser305090
+  - Laser305000
+  - Laser305140
+  - Laser305080
+  - Laser305100
+  - Laser305070
+  - Laser305050
+  - Laser305110
+  - Laser305120
+  - Laser305060
+  - Laser305150
+  - Laser305040
+  - Laser305010
+  - Laser305130
+  m_Tag: STGLinearLaserAtlas1
+  m_IsVariant: 0

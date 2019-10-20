@@ -98,5 +98,10 @@ namespace YKEngine
         {
 
         }
+
+        protected void StartCoroutine(IEnumerator routine)
+        {
+            _view.GetComponent<UView>().StartCoroutine(routine);
+        }
     }
 }

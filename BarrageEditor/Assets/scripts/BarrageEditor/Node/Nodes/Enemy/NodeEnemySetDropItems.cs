@@ -122,7 +122,7 @@ namespace BarrageEditor
                     }
                 }
             }
-            string ret = string.Format("{0}:SetDropItems({1},{2},{3})",
+            string ret = string.Format("{0}:SetDropItems({1},{2},{3})\n",
                 GetAttrByIndex(0).GetValueString(),
                 itemListStr,
                 GetAttrByIndex(1).GetValueString(), GetAttrByIndex(2).GetValueString());

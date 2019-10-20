@@ -14,20 +14,19 @@ namespace BarrageEditor
 
         struct ColorItem
         {
-            public GameObject item;
+            public int colorId;
+            public GameObject itemGo;
             public GameObject btn;
             public GameObject selectImgGo;
 
             public void Clear()
             {
-                item = null;
+                itemGo = null;
                 btn = null;
                 selectImgGo = null;
             }
         }
 
-        private int _bulletId;
-        private int _styleId;
         private int _colorId;
 
         private List<ColorItem> _itemList;
@@ -46,12 +45,10 @@ namespace BarrageEditor
             AddListeners();
         }
 
-        private void InitColorItems()
+        private void InitColorItems(List<int> availableColors)
         {
             _itemList = new List<ColorItem>();
-            BulletStyleCfg styleCfg = DatabaseManager.BulletDatabase.GetBulletStyleCfgByStyleId(_styleId);
-            
-            List<int> availableColors = styleCfg.availableColors;
+
             for (int i = 0; i < availableColors.Count; i++)
             {
                 ColorCfg cfg = DatabaseManager.BulletDatabase.GetColorCfgByColorId(availableColors[i]);
@@ -60,10 +57,11 @@ namespace BarrageEditor
                 itemTf.SetParent(_itemContainerTf, false);
                 // 初始化StyleItem结构
                 ColorItem colorItem = new ColorItem();
-                colorItem.item = item;
+                colorItem.itemGo = item;
                 colorItem.btn = itemTf.Find("BtnBg").gameObject;
                 colorItem.selectImgGo = itemTf.Find("SelectImg").gameObject;
-                colorItem.selectImgGo.SetActive(false);
+                // 设置选中
+                colorItem.selectImgGo.SetActive(cfg.colorId == _colorId);
                 // 设置子弹图像
                 Image colorImg = itemTf.Find("ColorImg").GetComponent<Image>();
                 colorImg.sprite = ResourceManager.GetInstance().GetSprite(cfg.packName, cfg.resName);
@@ -81,24 +79,20 @@ namespace BarrageEditor
             UIEventListener.Get(_closeBtn).AddClick(OnCloseBtnClickHandler);
         }
 
+        /// <summary>
+        /// <para>datas List</para>
+        /// <para>availableColors List</para>
+        /// <para>colorSelected int</para>
+        /// <para>selectCallback Action(int) 参数为colorId</para>
+        /// </summary>
+        /// <param name="data"></param>
         public override void OnShow(object data)
         {
             List<object> datas = data as List<object>;
-            _bulletId = (int)datas[0];
-            _styleId = (_bulletId % 100000) / 1000;
-            _colorId = (_bulletId % 1000) / 10;
-            _selectCallback = datas[1] as Action<int>;
-            InitColorItems();
-            UpdateSelectColor();
-        }
-
-        private void UpdateSelectColor()
-        {
-            // 获取对应的id
-            BulletStyleCfg styleCfg = DatabaseManager.BulletDatabase.GetBulletStyleCfgByStyleId(_styleId);
-            List<int> availableColors = styleCfg.availableColors;
-            int itemIndex = availableColors.IndexOf(_colorId);
-            _itemList[itemIndex].selectImgGo.SetActive(true);
+            List<int> availableColors = datas[0] as List<int>;
+            _colorId = (int)datas[1];
+            _selectCallback = datas[2] as Action<int>;
+            InitColorItems(availableColors);
         }
 
         private void OnColorItemClickHandler(int colorId)
@@ -121,7 +115,7 @@ namespace BarrageEditor
             {
                 ColorItem colorItem = _itemList[i];
                 UIEventListener.Get(colorItem.btn).RemoveAllEvents();
-                GameObject.Destroy(colorItem.item);
+                GameObject.Destroy(colorItem.itemGo);
                 _itemList[i].Clear();
             }
             _itemList.Clear();

@@ -17,7 +17,7 @@ namespace BarrageEditor
         {
             BaseNodeAttr nodeAttr;
             // id
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.EnemyStyle);
             nodeAttr.Init(this, "Enemy Id", null);
             attrs.Add(nodeAttr);
             // hp

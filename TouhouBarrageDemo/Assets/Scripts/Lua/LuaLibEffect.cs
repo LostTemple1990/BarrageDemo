@@ -120,6 +120,8 @@ public partial class LuaLib
     /// <summary>
     /// 创建自定义的STGObject
     /// <para>string customizedName 自定义名称</para>
+    /// <para>posX</para>
+    /// <para>posY</para>
     /// <para>args...</para>
     /// </summary>
     /// <param name="luaState"></param>
@@ -127,11 +129,14 @@ public partial class LuaLib
     public static int CreateCustomizedSTGObject(ILuaState luaState)
     {
         int top = luaState.GetTop();
-        int numArgs = top - 1;
+        int numArgs = top - 3;
         string customizedName = luaState.ToString(-top);
+        float posX = (float)luaState.ToNumber(-top + 1);
+        float posY = (float)luaState.ToNumber(-top + 2);
         int funcRef = InterpreterManager.GetInstance().GetCustomizedFuncRef(customizedName, eCustomizedType.STGObject, eCustomizedFuncRefType.Init);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         STGSpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
+        effect.SetPosition(posX, posY);
         luaState.PushLightUserData(effect);
         // 复制参数
         int copyIndex = -numArgs - 2;
@@ -189,8 +194,9 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetSpriteEffectColor(ILuaState luaState)
     {
+        int top = luaState.GetTop();
         // 检测带不带alpha
-        if (luaState.GetTop() == 5)
+        if (top == 5)
         {
             STGSpriteEffect effect = luaState.ToUserData(-5) as STGSpriteEffect;
             float rValue = (float)luaState.ToNumber(-4);
@@ -199,13 +205,25 @@ public partial class LuaLib
             float aValue = (float)luaState.ToNumber(-1);
             effect.SetSpriteColor(rValue, gValue, bValue, aValue);
         }
-        else
+        else if (top == 4)
         {
             STGSpriteEffect effect = luaState.ToUserData(-4) as STGSpriteEffect;
             float rValue = (float)luaState.ToNumber(-3);
             float gValue = (float)luaState.ToNumber(-2);
             float bValue = (float)luaState.ToNumber(-1);
             effect.SetSpriteColor(rValue, gValue, bValue);
+        }
+        else if (top == 1)
+        {
+            STGSpriteEffect effect = luaState.ToUserData(-2) as STGSpriteEffect;
+            long color = (long)luaState.ToNumber(-1);
+            float bValue = color & 0xff;
+            color >>= 8;
+            float gValue = color & 0xff;
+            color >>= 8;
+            float rValue = color & 0xff;
+            color >>= 8;
+            effect.SetSpriteColor(rValue / 255f, gValue / 255f, bValue / 255f);
         }
         return 0;
     }

@@ -89,7 +89,6 @@ public partial class LuaLib
             new NameFuncPair("EnemyMoveToPos",EnemyMoveToPos),
             new NameFuncPair("GetEnemyPos", GetEnemyPos),
             new NameFuncPair("SetEnemyPos", SetEnemyPos),
-            new NameFuncPair("PlaySound", PlaySound),
             new NameFuncPair("SetEnemyDropItems",SetEnemyDropItems),
             new NameFuncPair("DropItems",DropItems),
             new NameFuncPair("SetEnemyInteractive",SetEnemyInteractive),
@@ -170,6 +169,8 @@ public partial class LuaLib
             new NameFuncPair("DoAcceleration",STGMovableDoAcceleration),
             new NameFuncPair("DoAccelerationWithLimitation",STGMovableDoAccelerationWithLimitation),
             new NameFuncPair("DoCurvedMove",STGMovableDoCurvedMove),
+            // 音效
+            new NameFuncPair("PlaySound", PlaySound),
             // 通用类相关
             new NameFuncPair("GetRandomInt", GetRandomInt),
             new NameFuncPair("GetRandomFloat", GetRandomFloat),
@@ -240,6 +241,12 @@ public partial class LuaLib
             // Unit
             new NameFuncPair("KillUnit",KillUnit),
             new NameFuncPair("DelUnit",DelUnit),
+            // Audio
+            new NameFuncPair("PlaySound",PlaySound),
+            new NameFuncPair("PauseSound",PauseSound),
+            new NameFuncPair("ResumeSound",ResumeSound),
+            new NameFuncPair("StopSound",StopSound),
+            new NameFuncPair("LoadSound",LoadSound),
         };
         luaState.PushGlobalTable();
         luaState.L_SetFuncs(define, 0);
@@ -261,12 +268,21 @@ public partial class LuaLib
         BossLuaInterface.Init();
         STGObjectLuaInterface.Init();
         ColliderCircleLuaInterface.Init();
+
+        ReimuALuaInterface.Init();
+        MarisaALuaInterface.Init();
     }
 
     public static bool GetLightUserDataField(object userData, TValue key, out TValue res)
     {
         switch (userData.GetType().Name)
         {
+            // Character
+            case "Reimu":
+                return ReimuALuaInterface.Get(userData, key, out res);
+            case "MarisaA":
+                return MarisaALuaInterface.Get(userData, key, out res);
+            // EnemyBullet
             case "EnemySimpleBullet":
                 return EnemySimpleBulletLuaInterface.Get(userData, key, out res);
             case "EnemyLaser":
@@ -293,6 +309,12 @@ public partial class LuaLib
     {
         switch (userData.GetType().Name)
         {
+            // Character
+            case "Reimu":
+                return ReimuALuaInterface.Set(userData, key, ref value);
+            case "MarisaA":
+                return MarisaALuaInterface.Set(userData, key, ref value);
+            // EnemyBullet
             case "EnemySimpleBullet":
                 return EnemySimpleBulletLuaInterface.Set(userData, key, ref value);
             case "EnemyLaser":
@@ -841,7 +863,7 @@ public partial class LuaLib
     public static int SetSpellCardProperties(ILuaState luaState)
     {
         SpellCard sc = STGStageManager.GetInstance().GetSpellCard();
-        string scName = luaState.ToString(-4);
+        string scName = luaState.ToString(-5);
         float duration = (float)luaState.ToNumber(-3);
         int condition = luaState.ToInteger(-2);
         bool isSpellCard = luaState.ToBoolean(-1);
@@ -898,20 +920,70 @@ public partial class LuaLib
 #region 音效相关
     /// <summary>
     /// <para>soundName</para>
+    /// <para>volume</para>
     /// <para>isLoop</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
     public static int PlaySound(ILuaState luaState)
     {
-        string soundName = luaState.ToString(-2);
+        string soundName = luaState.ToString(-3);
+        float volume = (float)luaState.ToNumber(-2);
         bool isLoop = luaState.ToBoolean(-1);
-        SoundManager.GetInstance().Play(soundName, isLoop);
+        SoundManager.GetInstance().Play(soundName, volume, isLoop);
         return 0;
     }
-#endregion
 
-#region 随机数
+    /// <summary>
+    /// 暂停音效
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int PauseSound(ILuaState luaState)
+    {
+        string sourceName = luaState.ToString(-1);
+        SoundManager.GetInstance().Pause(sourceName);
+        return 0;
+    }
+
+    /// <summary>
+    /// 恢复音效
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int ResumeSound(ILuaState luaState)
+    {
+        string sourceName = luaState.ToString(-1);
+        SoundManager.GetInstance().Resume(sourceName);
+        return 0;
+    }
+
+    /// <summary>
+    /// 停止音效
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int StopSound(ILuaState luaState)
+    {
+        string sourceName = luaState.ToString(-1);
+        SoundManager.GetInstance().Stop(sourceName);
+        return 0;
+    }
+
+    /// <summary>
+    /// 预加载音效
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int LoadSound(ILuaState luaState)
+    {
+        string sourceName = luaState.ToString(-1);
+        SoundManager.GetInstance().Load(sourceName, true);
+        return 0;
+    }
+    #endregion
+
+    #region 随机数
     public static int GetRandomInt(ILuaState luaState)
     {
         int begin = luaState.ToInteger(-2);

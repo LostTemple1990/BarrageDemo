@@ -524,6 +524,14 @@ public class STGSpriteEffect : STGEffectBase, ISTGMovable, IAttachment, IAttacha
     }
 
     /// <summary>
+    /// 透明度
+    /// </summary>
+    public float alpha
+    {
+        get { return _spriteAlpha; }
+    }
+
+    /// <summary>
     /// 设置颜色
     /// </summary>
     /// <param name="rValue"></param>

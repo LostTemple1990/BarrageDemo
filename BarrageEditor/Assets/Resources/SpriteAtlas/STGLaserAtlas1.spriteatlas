@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: STGLaserAtlas1
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 0aa1a154481de264da1a7804e9c45853, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: c82bd250a1655db459b68599fb31a6b4, type: 3}
+  - {fileID: 21300000, guid: b9e6a2903622afc4bbb6d020b83ac2a6, type: 3}
+  - {fileID: 21300000, guid: 599900227dd410f4887fc3a13d7baa53, type: 3}
+  - {fileID: 21300000, guid: 91cb7282b8d343a46b5b1d2f1e09958c, type: 3}
+  - {fileID: 21300000, guid: 6e573a46295c5364c960defdafb3478b, type: 3}
+  - {fileID: 21300000, guid: 5ed9b466c95b66545afea387595ee63a, type: 3}
+  - {fileID: 21300000, guid: f3564796ad45751449771695986bc4dd, type: 3}
+  - {fileID: 21300000, guid: 0e81c2da12ac39149ab03f75134e7f79, type: 3}
+  - {fileID: 21300000, guid: af52dedaaa9b2094a9ec759ecb1ae4e7, type: 3}
+  - {fileID: 21300000, guid: 19724bea8c343894cbc73ed251e1f677, type: 3}
+  - {fileID: 21300000, guid: 9c085c9b1c090b248885dd6657f11962, type: 3}
+  - {fileID: 21300000, guid: 4cda260cf46a2974798786e787773b0e, type: 3}
+  - {fileID: 21300000, guid: 455cf26c80c71e5439787a08b5acc471, type: 3}
+  - {fileID: 21300000, guid: af5575dedc474a3408b23f92fcfbb6b4, type: 3}
+  - {fileID: 21300000, guid: 6c03f43fb499a264da56d590ec8c247c, type: 3}
+  - {fileID: 21300000, guid: 4861c8ef56634c34a9b8963a430d77f8, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Laser305110
+  - Laser305030
+  - Laser305080
+  - Laser305010
+  - Laser305120
+  - Laser305150
+  - Laser305130
+  - Laser305090
+  - Laser305070
+  - Laser305050
+  - Laser305140
+  - Laser305020
+  - Laser305040
+  - Laser305060
+  - Laser305000
+  - Laser305100
+  m_Tag: STGLaserAtlas1
+  m_IsVariant: 0

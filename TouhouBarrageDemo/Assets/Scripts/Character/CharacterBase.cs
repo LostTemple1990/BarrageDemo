@@ -334,6 +334,9 @@ public class CharacterBase : IAffectedMovableObject
     {
         _waitRebornTime = 0;
         _stateUpdateFunc = StateWaitRebornUpdate;
+        // 创建死亡特效
+        STGPlayerDeadEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.PlayerDeadEffect) as STGPlayerDeadEffect;
+        effect.SetPosition(_curPos.x, _curPos.y);
         CommandManager.GetInstance().RunCommand(CommandConsts.PlayerMiss);
     }
 

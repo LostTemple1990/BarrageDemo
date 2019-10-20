@@ -26,7 +26,7 @@ namespace BarrageEditor
             nodeAttr.Init(this, "Parameter list", null);
             attrs.Add(nodeAttr);
             // 敌机id
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.EnemyStyle);
             nodeAttr.Init(this, "EnemyId", null);
             attrs.Add(nodeAttr);
             // 血量
@@ -46,7 +46,7 @@ namespace BarrageEditor
                     if ((parentNode as NodeDefineEnemy).IsWatchingData)
                     {
                         // 参数列表发生变化，修改缓存
-                        string paraList = parentNode.GetAttrByIndex(1).GetValueString();
+                        string paraList = parentNode.GetAttrByIndex(ParamListAttrIndex).GetValueString();
                         CustomDefine.ModifyDefineParaList(CustomDefineType.Enemy, paraList, attr.GetValueString());
                     }
                 }

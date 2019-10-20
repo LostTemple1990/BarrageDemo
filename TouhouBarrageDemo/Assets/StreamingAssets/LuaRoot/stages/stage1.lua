@@ -763,7 +763,7 @@ Stage["Stage1"] = function()
 		end)
 		--测试曲线激光
 		lib.AddEnemyTask(enemy,function()
-			if coroutine.yield(10000) == false then return end
+			--if coroutine.yield(10000) == false then return end
 			local laser,i
 			for i=1,18 do
 				local posX,posY = lib.GetEnemyPos(enemy)

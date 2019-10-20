@@ -43,6 +43,10 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     protected float _relationX, _relationY;
     private bool _isPosModified;
+    /// <summary>
+    /// 是否已经初始化位置
+    /// </summary>
+    private bool _isInitPos;
 
     protected MovableObject _movableObj;
 
@@ -126,6 +130,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         _collisionSegmentsList = new List<Vector2>();
         _collisionSegmentsCount = 0;
         _isPosModified = false;
+        _isInitPos = false;
         if ( _movableObj == null )
         {
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
@@ -161,22 +166,21 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     public override void SetPosition(float posX, float posY)
     {
+        if (!_isInitPos)
+        {
+            _isInitPos = true;
+            _relationX = posX;
+            _relationY = posY;
+            _trailsList.Add(Vector2.zero);
+            _isPosModified = true;
+        }
         base.SetPosition(posX, posY);
-        _movableObj.SetPos(0, 0);
-        _relationX = posX;
-        _relationY = posY;
-        _trailsList.Add(Vector2.zero);
-        _isPosModified = true;
+        _movableObj.SetPos(posX, posY);
     }
 
     public override void SetPosition(Vector2 pos)
     {
-        base.SetPosition(pos);
-        _movableObj.SetPos(0, 0);
-        _relationX = pos.x;
-        _relationY = pos.y;
-        _trailsList.Add(Vector2.zero);
-        _isPosModified = true;
+        SetPosition(pos.x, pos.y);
     }
 
     /// <summary>
@@ -194,13 +198,6 @@ public class EnemyCurveLaser : EnemyBulletBase
         _collisionRadius = _laserHalfWidth * 0.8f;
         _grazeRadius = _laserHalfWidth + 12;
     }
-
-    //public void SetWidth(float halfWidth,float collisionHalfWidth)
-    //{
-    //    _laserHalfWidth = halfWidth;
-    //    _collisionRadius = collisionHalfWidth;
-    //    _grazeRadius = collisionHalfWidth * 1.5f;
-    //}
 
     public override void Update()
     {
@@ -376,7 +373,7 @@ public class EnemyCurveLaser : EnemyBulletBase
                 }
             }
         }
-        _trailsList.Add(new Vector2(_curPos.x, _curPos.y));
+        _trailsList.Add(new Vector2(_curPos.x - _relationX, _curPos.y - _relationY));
     }
 
     private void PopulateMesh()
@@ -744,6 +741,12 @@ public class EnemyCurveLaser : EnemyBulletBase
                 return true;
         }
         return false;
+    }
+
+    public override void SetOrderInLayer(int orderInLayer)
+    {
+        base.SetOrderInLayer(orderInLayer);
+        _isPosModified = true;
     }
 
     public override void Clear()

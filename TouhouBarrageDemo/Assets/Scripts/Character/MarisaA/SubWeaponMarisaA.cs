@@ -42,9 +42,9 @@ public class SubWeaponMarisaA : SubWeaponBase
         _posOffset[3] = new Vector3[] { new Vector3(-32f, 0f, 0), new Vector3(-12f, 32f, 0), new Vector3(12f, 32f, 0), new Vector3(32f, 0f, 0) };
         _shootAngles = new float[4][];
         _shootAngles[0] = new float[] { 90f };
-        _shootAngles[1] = new float[] { 135f, 45f };
-        _shootAngles[2] = new float[] { 135f, 90f, 45f };
-        _shootAngles[3] = new float[] { 135f, 90f, 90f, 45f };
+        _shootAngles[1] = new float[] { 90f, 90f };
+        _shootAngles[2] = new float[] { 100f, 90f, 80f };
+        _shootAngles[3] = new float[] { 100f, 90f, 90f, 80f };
         _subWeaponTf = _subTf.Find("SubWeapon");
         _highLightBgTf = _subTf.Find("HighLightBg");
         _highLightStarTf = _subTf.Find("HighLightStar");

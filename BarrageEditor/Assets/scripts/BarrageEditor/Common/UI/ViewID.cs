@@ -43,6 +43,18 @@ namespace BarrageEditor
         /// 编辑抵抗的消除类型
         /// </summary>
         public const int AttrEditResistEliminatedTypes = 2008;
+        // <summary>
+        /// 激光id选择界面
+        /// </summary>
+        public const int AttrEditLaserIdView = 2009;
+        /// <summary>
+        /// 激光弹型选择界面
+        /// </summary>
+        public const int AttrSelectLaserStyleView = 2010;
+        /// <summary>
+        /// 敌机id选择界面
+        /// </summary>
+        public const int AttrSelectEnemyStyle = 2011;
 
 
         private static Dictionary<int, ViewCfg> _viewCfgMap;
@@ -156,6 +168,36 @@ namespace BarrageEditor
                 layer = LayerId.Normal
             };
             _viewCfgMap.Add(AttrEditResistEliminatedTypes, cfg);
+            #endregion
+            #region 激光id选择界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrEditLaserIdView,
+                resPath = "EditViews/EditLaserIdView",
+                className = "BarrageEditor.AttrEditLaserIdView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(cfg.viewId, cfg);
+            #endregion
+            #region 激光弹型选择界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrSelectLaserStyleView,
+                resPath = "EditViews/SelectLaserStyleView",
+                className = "BarrageEditor.AttrSelectLaserStyleView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(cfg.viewId, cfg);
+            #endregion
+            #region 敌机类型选择界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrSelectEnemyStyle,
+                resPath = "EditViews/SelectEnemyStyleView",
+                className = "BarrageEditor.AttrSelectEnemyStyleView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(cfg.viewId, cfg);
             #endregion
             UIManager.GetInstance().InitViewCfgs(_viewCfgMap);
         }

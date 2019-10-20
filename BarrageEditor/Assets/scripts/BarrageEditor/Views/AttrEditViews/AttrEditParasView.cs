@@ -61,7 +61,14 @@ namespace BarrageEditor
             }
             else
             {
-                _paraNameList = new List<string>(data.paraListStr.Split(','));
+                if (data.paraListStr == "")
+                {
+                    _paraNameList = new List<string>();
+                }
+                else
+                {
+                    _paraNameList = new List<string>(data.paraListStr.Split(','));
+                }
             }
             // 获取参数值的列表
             List<string> paraValueList = new List<string>(_nodeAttr.GetValueString().Split(','));

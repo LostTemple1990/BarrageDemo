@@ -130,6 +130,12 @@ namespace BarrageEditor
         OnColliderCreate = 1802,
         CreateCustomizedCollider = 1803,
         CreateSimpleCollider = 1804,
+
+        PlaySound = 2201,
+        PauseSound = 2202,
+        ResumeSound = 2203,
+        StopSound = 2204,
+        LoadSound = 2205,
     }
 
     public class NodeDatabase
@@ -171,6 +177,7 @@ namespace BarrageEditor
             InitColliderNodeCfgs();
             InitObjectNodeCfgs();
             InitUnitNodeCfgs();
+            InitAudioNodeCfgs();
         }
 
         private void InitGeneralNodeCfgs()
@@ -333,7 +340,7 @@ namespace BarrageEditor
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 needAncestors = new List<NodeType> { NodeType.Stage, NodeType.DefineEnemy, NodeType.DefineBoss, NodeType.DefineSpellCard,
                     NodeType.DefineBullet, NodeType.DefineLaser, NodeType.DefineLinearLaser, NodeType.DefineCurveLaser,
-                    NodeType.DefineCollider, NodeType.DefineCollider,
+                    NodeType.DefineCollider, NodeType.DefineSTGObject,
                     NodeType.AddTask, },
             };
             _nodeCfgDic.Add(NodeType.AddTask, cfg);
@@ -345,6 +352,7 @@ namespace BarrageEditor
                 shortcutTip = "wait",
                 defaultAttrValues = new List<object> { "60" },
                 needAncestors = new List<NodeType> { NodeType.Stage, NodeType.AddTask },
+                allowChilds = new List<NodeType>(),
             };
             _nodeCfgDic.Add(NodeType.TaskWait, cfg);
         }
@@ -359,7 +367,7 @@ namespace BarrageEditor
                 shortcutTip = "define enemy",
                 defaultAttrValues = new List<object> { "" },
                 allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
-                allowChilds = new List<NodeType>(),
+                allowChilds = new List<NodeType> { NodeType.UnitEventTrigger },
                 editOnCreated = true,
             };
             _nodeCfgDic.Add(NodeType.DefineEnemy, cfg);
@@ -379,7 +387,7 @@ namespace BarrageEditor
                 type = NodeType.CreateCustomizedEnemy,
                 shortcutPath = "enemycreate",
                 shortcutTip = "create enemy",
-                defaultAttrValues = new List<object> { "", "100000", "0", "0", "" },
+                defaultAttrValues = new List<object> { "", "0", "0", "" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
                 editOnCreated = true,
@@ -863,7 +871,7 @@ namespace BarrageEditor
                 type = NodeType.CreateCusomizedSTGObject,
                 shortcutPath = "objectcreate",
                 shortcutTip = "create object",
-                defaultAttrValues = new List<object> { "", "" },
+                defaultAttrValues = new List<object> { "", "0", "0", "" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
                 editOnCreated = true,
@@ -1046,10 +1054,66 @@ namespace BarrageEditor
                 shortcutPath = "callbackfunc",
                 shortcutTip = "unit event trigger",
                 defaultAttrValues = new List<object> { "OnKill" },
-                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
-                allowChilds = new List<NodeType>(),
+                allowParents = new List<NodeType> { NodeType.DefineEnemy, NodeType.DefineBoss, NodeType.DefineCollider, NodeType.DefineSTGObject,
+                    NodeType.DefineBullet, NodeType.DefineLaser, NodeType.DefineLinearLaser, NodeType.DefineCurveLaser },
             };
             _nodeCfgDic.Add(NodeType.UnitEventTrigger, cfg);
+        }
+
+        private void InitAudioNodeCfgs()
+        {
+            NodeConfig cfg;
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.PlaySound,
+                shortcutPath = "playbgm",
+                shortcutTip = "play sound",
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+            };
+            cfg.defaultAttrValues = new List<object> { "se_tan00", "0.5", "false" };
+            _nodeCfgDic.Add(NodeType.PlaySound, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.StopSound,
+                shortcutPath = "stopbgm",
+                shortcutTip = "stop sound",
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+            };
+            cfg.defaultAttrValues = new List<object> { "bgm" };
+            _nodeCfgDic.Add(NodeType.StopSound, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.PauseSound,
+                shortcutPath = "pausebgm",
+                shortcutTip = "pause sound",
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+            };
+            cfg.defaultAttrValues = new List<object> { "bgm" };
+            _nodeCfgDic.Add(NodeType.PauseSound, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.ResumeSound,
+                shortcutPath = "resumebgm",
+                shortcutTip = "resume sound",
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+            };
+            cfg.defaultAttrValues = new List<object> { "bgm" };
+            _nodeCfgDic.Add(NodeType.ResumeSound, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.LoadSound,
+                shortcutPath = "loadbgm",
+                shortcutTip = "load sound",
+                allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder, NodeType.CodeBlock },
+                allowChilds = new List<NodeType>(),
+            };
+            cfg.defaultAttrValues = new List<object> { "bgm" };
+            _nodeCfgDic.Add(NodeType.LoadSound, cfg);
         }
 
         /// <summary>

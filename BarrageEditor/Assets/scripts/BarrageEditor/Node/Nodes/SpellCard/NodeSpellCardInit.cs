@@ -64,11 +64,12 @@ namespace BarrageEditor
                 }
             }
             string ret = string.Format("SpellCard[\"{0}\"].Init = function({1})\n", scTypeName, paramStr);
-            ret += string.Format("    SetSpellCardProperties(\"{0}\",{1},{2},{3},nil)\n",
+            ret += string.Format("    SetSpellCardProperties(\"{0}\",{1},{2},{3},{4})\n",
                 parentNode.GetAttrByIndex(1).GetValueString(),//符卡名称
-                parentNode.GetAttrByIndex(2).GetValueString(),//持续时间
-                parentNode.GetAttrByIndex(3).GetValueString(),//击破条件
-                parentNode.GetAttrByIndex(4).GetValueString());//是否符卡
+                parentNode.GetAttrByIndex(2).GetValueString(),//boss的个数
+                parentNode.GetAttrByIndex(3).GetValueString(),//持续时间
+                parentNode.GetAttrByIndex(4).GetValueString(),//击破条件
+                parentNode.GetAttrByIndex(5).GetValueString());//是否符卡
             return ret;
         }
 

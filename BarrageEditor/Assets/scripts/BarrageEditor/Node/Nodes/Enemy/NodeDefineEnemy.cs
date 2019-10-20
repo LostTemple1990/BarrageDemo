@@ -92,7 +92,7 @@ namespace BarrageEditor
                 if (typeName != "")
                 {
                     BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
-                    string paraList = onCreteNode.GetAttrByIndex(1).GetValueString();
+                    string paraList = onCreteNode.GetAttrByIndex(0).GetValueString();
                     _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, typeName, paraList);
                 }
             }

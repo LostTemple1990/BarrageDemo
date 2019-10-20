@@ -55,6 +55,9 @@ public class EffectsManager
                 case EffectType.EnemyEliminated:
                     effect = new STGEnemyEliminatedEffect();
                     break;
+                case EffectType.PlayerDeadEffect:
+                    effect = new STGPlayerDeadEffect();
+                    break;
             }
         }
         if ( effect != null )
@@ -191,4 +194,5 @@ public enum EffectType : byte
     BulletEliminate = 6,
     EnemyEliminated = 7,
     TextEffect = 8,
+    PlayerDeadEffect = 9,
 }

@@ -26,7 +26,7 @@ namespace BarrageEditor
             nodeAttr.Init(this, "Parameter list", null);
             attrs.Add(nodeAttr);
             // laserId
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.LaserId);
             nodeAttr.Init(this, "Laser Id", null);
             attrs.Add(nodeAttr);
             // length

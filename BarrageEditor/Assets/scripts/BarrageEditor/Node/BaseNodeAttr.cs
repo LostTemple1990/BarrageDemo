@@ -209,6 +209,8 @@ namespace BarrageEditor
         ShapeType = 16,
         DirectionMode = 17,
         UnitEventType = 18,
+        LaserId = 19,
+        EnemyStyle = 20,
     }
 
     public class NodeAttrData

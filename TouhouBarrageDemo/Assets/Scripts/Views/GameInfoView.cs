@@ -4,10 +4,17 @@ using UnityEngine.UI;
 
 public class GameInfoView : ViewBase,ICommand
 {
+    private const int BonusTimeTextDuration = 60;
+    /// <summary>
+    /// Bonus Fail/Get Bouns文字的动画的持续时间
+    /// </summary>
+    private const int BonusResultAniDuration = 30;
+    private const int ResultDuration = 180;
+
     struct SpriteNumData
     {
         public GameObject go;
-        public Transform tf;
+        public RectTransform tf;
         public SpriteRenderer sr;
     };
 
@@ -35,11 +42,25 @@ public class GameInfoView : ViewBase,ICommand
     private GameObject _finishTimePanel;
     private GameObject _finishTimeContainer;
     private SpriteNumData[] _finishTimeDatas;
+    private SpriteRenderer _finishTimeText;
 
 
     private GameObject _realTimePanel;
     private GameObject _realTimeContainer;
     private SpriteNumData[] _realTimeDatas;
+    private SpriteRenderer _realTimeText;
+
+    /// <summary>
+    /// 当前是否正在显示符卡结算界面
+    /// </summary>
+    private bool _isShowingSCResult;
+    /// <summary>
+    /// 是否击破符卡
+    /// </summary>
+    private bool _isFinishSC;
+    private int _bonusTime;
+    private int _resultTime;
+    private int _resultState;
 
     public override void Init(GameObject viewObj)
     {
@@ -64,6 +85,7 @@ public class GameInfoView : ViewBase,ICommand
         // 符卡击破时间相关ui
         Transform finishTimePanelTf = spellCardResultPanelTf.Find("FinishTimePanel");
         _finishTimePanel = finishTimePanelTf.gameObject;
+        _finishTimeText = finishTimePanelTf.Find("TextFinishTime").GetComponent<SpriteRenderer>();
         Transform finishTimeContainerTf = finishTimePanelTf.Find("FinishTimeContainer");
         _finishTimeContainer = finishTimeContainerTf.gameObject;
         _finishTimeDatas = new SpriteNumData[10];
@@ -71,7 +93,7 @@ public class GameInfoView : ViewBase,ICommand
         for (i=0;i<10;i++)
         {
             SpriteNumData data = new SpriteNumData();
-            data.tf = finishTimeContainerTf.Find("Num" + i);
+            data.tf = finishTimeContainerTf.Find("Num" + i).GetComponent<RectTransform>();
             data.go = data.tf.gameObject;
             data.sr = data.tf.GetComponent<SpriteRenderer>();
             _finishTimeDatas[i] = data;
@@ -79,13 +101,14 @@ public class GameInfoView : ViewBase,ICommand
         //通过符卡实际时间ui
         Transform realTimePanelTf = spellCardResultPanelTf.Find("RealTimePanel");
         _realTimePanel = realTimePanelTf.gameObject;
+        _realTimeText = realTimePanelTf.Find("TextRealTime").GetComponent<SpriteRenderer>();
         Transform realTimeContainerTf = realTimePanelTf.Find("RealTimeContainer");
         _realTimeContainer = realTimeContainerTf.gameObject;
         _realTimeDatas = new SpriteNumData[10];
         for (i = 0; i < 10; i++)
         {
             SpriteNumData data = new SpriteNumData();
-            data.tf = realTimeContainerTf.Find("Num" + i);
+            data.tf = realTimeContainerTf.Find("Num" + i).GetComponent<RectTransform>();
             data.go = data.tf.gameObject;
             data.sr = data.tf.GetComponent<SpriteRenderer>();
             _realTimeDatas[i] = data;
@@ -103,6 +126,8 @@ public class GameInfoView : ViewBase,ICommand
         CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
         CommandManager.GetInstance().Register(CommandConsts.ShowSpellCardInfo, this);
         CommandManager.GetInstance().Register(CommandConsts.SpellCardFinish, this);
+
+        UIManager.GetInstance().RegisterViewUpdate(this);
     }
 
     public override void OnHide()
@@ -221,8 +246,8 @@ public class GameInfoView : ViewBase,ICommand
         if ( isSpellCard == true )
         {
             _spellCardResultPanel.SetActive(true);
-            bool isFinishSpellCard = (bool)datas[1];
-            if ( isFinishSpellCard )
+            _isFinishSC = (bool)datas[1];
+            if (_isFinishSC)
             {
                 // 显示符卡击破时间
                 _finishTimePanel.SetActive(true);
@@ -238,7 +263,7 @@ public class GameInfoView : ViewBase,ICommand
                 else
                 {
                     _getBonusGo.SetActive(false);
-                    _bonusFailGo.SetActive(false);
+                    _bonusFailGo.SetActive(true);
                 }
             }
             else
@@ -250,6 +275,25 @@ public class GameInfoView : ViewBase,ICommand
             // 显示实际时间
             int realTimePassed = (int)datas[4];
             UpdateShowTime(realTimePassed, _realTimeDatas);
+            // 设置符卡结果面板动画参数
+            _resultState = 0;
+            _resultTime = 0;
+            for (int i=0;i<10;i++)
+            {
+                _realTimeDatas[i].sr.color = new Color(1, 1, 1, 0);
+            }
+            _realTimeText.color = new Color(1, 1, 1, 0);
+            if (_isFinishSC)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    _finishTimeDatas[i].sr.color = new Color(1, 1, 1, 0);
+                }
+                _finishTimeText.color = new Color(1, 1, 1, 0);
+            }
+            _getBonusGo.transform.localScale = new Vector3(100, 100, 1);
+            _bonusFailGo.transform.localScale = new Vector3(100, 100, 1);
+            _isShowingSCResult = true;
         }
         else
         {
@@ -291,7 +335,7 @@ public class GameInfoView : ViewBase,ICommand
             num = tmp / baseNum;
             data = goDatas[i];
             data.go.SetActive(true);
-            data.tf.localPosition = new Vector3(posX, 0, 0);
+            data.tf.anchoredPosition = new Vector2(posX, 0);
             data.tf.localScale = new Vector3(50, 50, 1);
             data.sr.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "ResultChar" + num);
 
@@ -302,7 +346,8 @@ public class GameInfoView : ViewBase,ICommand
         // 添加小数点
         data = goDatas[i++];
         data.go.SetActive(true);
-        data.tf.localPosition = new Vector3(posX, 0, 0);
+        data.tf.anchoredPosition = new Vector2(posX, 0);
+        //data.tf.localPosition = new Vector3(posX, 0, 0);
         data.tf.localScale = new Vector3(25, 25, 1);
         data.sr.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "ResultCharDot");
         posX += 8;
@@ -312,7 +357,7 @@ public class GameInfoView : ViewBase,ICommand
             num = tmp / baseNum;
             data = goDatas[i];
             data.go.SetActive(true);
-            data.tf.localPosition = new Vector3(posX, 0, 0);
+            data.tf.anchoredPosition = new Vector2(posX, 0);
             data.tf.localScale = new Vector3(25, 25, 1);
             data.sr.sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "ResultChar" + num);
 
@@ -322,7 +367,7 @@ public class GameInfoView : ViewBase,ICommand
         }
         for (; i < 10; i++)
         {
-            data = _finishTimeDatas[i];
+            data = goDatas[i];
             data.go.SetActive(false);
         }
     }
@@ -335,7 +380,82 @@ public class GameInfoView : ViewBase,ICommand
         // 符卡名称
         TweenManager.GetInstance().RemoveTweenByGo(_scNameObject);
         _scNameObject.SetActive(false);
+        // 隐藏符卡结算ui
         _isShowSpellCardInfo = false;
+        _isShowingSCResult = false;
+        _spellCardResultPanel.SetActive(false);
+    }
+
+    public override void Update()
+    {
+        if (Global.IsPause)
+            return;
+        if (_isShowingSCResult)
+        {
+            UpdateShowingSCResult();
+        }
+    }
+
+    private void UpdateShowingSCResult()
+    {
+        if (_resultState == 0)
+        {
+            _resultTime++;
+            float alpha = (float)_resultTime / BonusTimeTextDuration;
+            for (int i=0;i<10;i++)
+            {
+                _realTimeDatas[i].sr.color = new Color(1, 1, 1, alpha);
+            }
+            if (_isFinishSC)
+            {
+                for (int i = 0; i < 10; i++)
+                    _finishTimeDatas[i].sr.color = new Color(1, 1, 1, alpha);
+            }
+            _realTimeText.color = new Color(1, 1, 1, alpha);
+            _finishTimeText.color = new Color(1, 1, 1, alpha);
+            if (_resultTime >= BonusTimeTextDuration)
+            {
+                _resultState = 1;
+                _resultTime = 0;
+            }
+        }
+        else if (_resultState == 1)
+        {
+            _resultTime++;
+            if (_resultTime >= 60)
+            {
+                _resultState = 2;
+                _resultTime = 0;
+            }
+        }
+        else if (_resultState == 2)
+        {
+            _resultTime++;
+            // y轴缩放
+            if (_resultTime <= BonusResultAniDuration)
+            {
+                float scaleY = 1 - (float)_resultTime / BonusResultAniDuration;
+                _getBonusGo.transform.localScale = new Vector3(100, scaleY * 100, 1);
+                _bonusFailGo.transform.localScale = new Vector3(100, scaleY * 100, 1);
+            }
+            float alpha = 1 - (float)_resultTime / BonusTimeTextDuration;
+            for (int i = 0; i < 10; i++)
+            {
+                _realTimeDatas[i].sr.color = new Color(1, 1, 1, alpha);
+            }
+            if (_isFinishSC)
+            {
+                for (int i = 0; i < 10; i++)
+                    _finishTimeDatas[i].sr.color = new Color(1, 1, 1, alpha);
+            }
+            _realTimeText.color = new Color(1, 1, 1, alpha);
+            _finishTimeText.color = new Color(1, 1, 1, alpha);
+            if (_resultTime >= 60)
+            {
+                _spellCardResultPanel.SetActive(false);
+                _isShowingSCResult = false;
+            }
+        }
     }
 
     public override LayerId GetLayerId()

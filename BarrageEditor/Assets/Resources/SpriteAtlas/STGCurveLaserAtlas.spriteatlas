@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: STGCurveLaserAtlas
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 96ab09dbd2b610448a1a9aedc5464383, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 44da68f0dcffc9e448bc2e47b1263255, type: 3}
+  - {fileID: 21300000, guid: d1db1992743f4634a8a30d57639fcb57, type: 3}
+  - {fileID: 21300000, guid: 396c35035b7dc534ba329fce7fa26e75, type: 3}
+  - {fileID: 21300000, guid: f90b5d2539db04e4cb613833f05fbec9, type: 3}
+  - {fileID: 21300000, guid: 340e5c06c3fda004b95e461efc2209f7, type: 3}
+  - {fileID: 21300000, guid: 5290e526520e1d94c81e358e6f7617bc, type: 3}
+  - {fileID: 21300000, guid: cdc8b636e8d7b6a4194fcacdc943c1a1, type: 3}
+  - {fileID: 21300000, guid: c47d425722b5aa44c9bec9537c2cccce, type: 3}
+  - {fileID: 21300000, guid: a185e8b799c1cc7479345f4149cfab9d, type: 3}
+  - {fileID: 21300000, guid: ad231099dd3329e4eab24004b71a4ad6, type: 3}
+  - {fileID: 21300000, guid: cf855dd94f9731246b02c31dec7f2175, type: 3}
+  - {fileID: 21300000, guid: f807f5f95e7e7ef4fa414a6f30b5055b, type: 3}
+  - {fileID: 21300000, guid: bd9a8a2b95538dc418af0ea69ab210a5, type: 3}
+  - {fileID: 21300000, guid: fe19213e233e25d4eafeacca908f5c38, type: 3}
+  - {fileID: 21300000, guid: bdf04e6e90a74a34ea09f478b7adf6b1, type: 3}
+  - {fileID: 21300000, guid: 6a24cdef136260649b7ace8a9328d01b, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Laser405130
+  - Laser405000
+  - Laser405050
+  - Laser405060
+  - Laser405150
+  - Laser405110
+  - Laser405080
+  - Laser405040
+  - Laser405020
+  - Laser405010
+  - Laser405090
+  - Laser405140
+  - Laser405030
+  - Laser405100
+  - Laser405120
+  - Laser405070
+  m_Tag: STGCurveLaserAtlas
+  m_IsVariant: 0

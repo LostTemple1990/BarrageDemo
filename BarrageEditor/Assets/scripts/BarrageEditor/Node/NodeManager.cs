@@ -239,6 +239,22 @@ namespace BarrageEditor
                 case NodeType.UnitEventTrigger:
                     newNode = new NodeUnitEventTrigger();
                     break;
+
+                case NodeType.PlaySound:
+                    newNode = new NodePlaySound();
+                    break;
+                case NodeType.StopSound:
+                    newNode = new NodeStopSound();
+                    break;
+                case NodeType.PauseSound:
+                    newNode = new NodePauseSound();
+                    break;
+                case NodeType.ResumeSound:
+                    newNode = new NodeResumeSound();
+                    break;
+                case NodeType.LoadSound:
+                    newNode = new NodeLoadSound();
+                    break;
             }
             if (newNode != null)
             {
@@ -307,6 +323,12 @@ namespace BarrageEditor
                     break;
                 case NodeAttrType.UnitEventType:
                     nodeAttr = new NodeAttrUnitEventType();
+                    break;
+                case NodeAttrType.LaserId:
+                    nodeAttr = new NodeAttrLaserId();
+                    break;
+                case NodeAttrType.EnemyStyle:
+                    nodeAttr = new NodeAttrSelectEnemyStyle();
                     break;
             }
             if (nodeAttr != null) return nodeAttr;

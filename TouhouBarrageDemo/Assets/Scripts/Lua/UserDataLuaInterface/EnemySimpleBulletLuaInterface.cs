@@ -316,6 +316,11 @@ public class EnemySimpleBulletLuaInterface
                         bullet.SetAlpha((float)value.NValue);
                         return true;
                     }
+                case "omega":
+                    {
+                        bullet.SetSelfRotation((float)value.NValue);
+                        return true;
+                    }
                 #endregion
             }
         }

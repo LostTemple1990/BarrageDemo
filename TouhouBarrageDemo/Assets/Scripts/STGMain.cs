@@ -180,6 +180,7 @@ public class STGMain
         BackgroundManager.GetInstance().Clear();
         STGStageManager.GetInstance().Clear();
         InterpreterManager.GetInstance().Clear(type);
+        SoundManager.GetInstance().Clear();
     }
 
     /// <summary>

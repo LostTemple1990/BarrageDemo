@@ -163,6 +163,11 @@ public class STGObjectLuaInterface
                         res.SetClCsValue(_funcSetBlendMode);
                         return true;
                     }
+                case "alpha":
+                    {
+                        res.SetNValue(sprite.alpha);
+                        return true;
+                    }
                 #endregion
                 #region 运动类专属方法 ISTGMovable
                 case "SetV":
@@ -292,7 +297,12 @@ public class STGObjectLuaInterface
                         sprite.SetOrderInLayer((int)value.NValue);
                         return true;
                     }
-                    #endregion
+                case "alpha":
+                    {
+                        sprite.SetSpriteAlpha((float)value.NValue);
+                        return true;
+                    }
+                #endregion
             }
         }
         value.SetSValue(string.Format("SetField of userData fail!Invalid key {0} for type {1}", key, typeof(STGSpriteEffect).Name));
