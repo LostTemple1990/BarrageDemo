@@ -57,6 +57,27 @@ public class STGPauseView : ViewBase
     private GameObject _curYesNoItem;
 
     private int _state;
+    /// <summary>
+    /// 可用的item索引
+    /// <para>按位统计，为1说明该索引可用</para>
+    /// </summary>
+    private int _availableIndex;
+    /// <summary>
+    /// 总共显示的item的个数
+    /// </summary>
+    private int _showItemCount;
+    /// <summary>
+    /// 可选择的item的索引，值i对应_selectItems[i]
+    /// </summary>
+    private List<int> _availableList;
+    /// <summary>
+    /// 可选择的item的个数
+    /// </summary>
+    private int _availableCount;
+    /// <summary>
+    /// 当前选择的item在availableList中对应的索引
+    /// </summary>
+    private int _curSelectAvailableIndex;
 
     public override void Init(GameObject viewObj)
     {
@@ -78,6 +99,7 @@ public class STGPauseView : ViewBase
         _state = StatePause;
         // 隐藏yesno面板
         _yesNoPanel.SetActive(false);
+        InitAvailableItems(0);
         PlayShowAni();
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
@@ -93,6 +115,7 @@ public class STGPauseView : ViewBase
             ResetImgColor(_curYesNoItem);
             _curYesNoItem = null;
         }
+        _availableList.Clear();
     }
 
     /// <summary>
@@ -123,6 +146,48 @@ public class STGPauseView : ViewBase
     }
 
     /// <summary>
+    /// 界面打开时根据状态来显示不同的item
+    /// <para>0 普通暂停</para>
+    /// <para>1 stage all clear之后的暂停</para>
+    /// </summary>
+    /// <param name="state"></param>
+    private void InitAvailableItems(int state)
+    {
+        _availableIndex = 0;
+        if (state == 0)
+        {
+            _availableIndex |= 1 << 0;
+            _availableIndex |= 1 << 1;
+            _availableIndex |= 1 << 2;
+            _availableIndex |= 1 << 3;
+            _showItemCount = 4;
+        }
+        else if (state == 1)
+        {
+            _availableIndex |= 1 << 1;
+            _availableIndex |= 1 << 2;
+            _availableIndex |= 1 << 3;
+            _showItemCount = 4;
+        }
+        _availableList = new List<int>();
+        Image img;
+        for (int i=0;i<_showItemCount;i++)
+        {
+            img = _selectItems[i].GetComponent<Image>();
+            if ((_availableIndex & (1 << i)) != 0)
+            {
+                img.color = new Color(1, 1, 1, 1);
+                _availableList.Add(i);
+            }
+            else
+            {
+                img.color = new Color(1, 1, 1, 0.3f);
+            }
+        }
+        _availableCount = _availableList.Count;
+    }
+
+    /// <summary>
     /// 界面打开的时候的界面动画
     /// </summary>
     private void PlayShowAni()
@@ -147,7 +212,16 @@ public class STGPauseView : ViewBase
             // 透明度
             tweenAlpha = TweenManager.GetInstance().Create<TweenAlpha>();
             tweenAlpha.SetParas(go, 0, dDelay * i, ePlayMode.Once);
-            tweenAlpha.SetParas(0, 1, InterpolationMode.None);
+            // todo 暂时使用取巧的写法
+            float endAlpha = 1;
+            if (i >= 1)
+            {
+                if ((_availableIndex & (1 << (i-1))) == 0)
+                {
+                    endAlpha = 0.3f;
+                }
+            }
+            tweenAlpha.SetParas(0, endAlpha, InterpolationMode.None);
             TweenManager.GetInstance().AddTween(go, tweenPos);
             TweenManager.GetInstance().AddTween(go, tweenAlpha);
         }
@@ -157,7 +231,8 @@ public class STGPauseView : ViewBase
     {
         _isShowAniFinish = true;
         _state = StatePause;
-        SetCurSelectItem(0);
+        _curSelectAvailableIndex = 0;
+        SetCurSelectItem(_availableList[0]);
     }
 
     private void SetCurSelectItem(int index)
@@ -178,6 +253,10 @@ public class STGPauseView : ViewBase
         TweenManager.GetInstance().AddTween(_curSelectItem, tween);
     }
 
+    /// <summary>
+    /// index取值为0或者1，代表yes or no
+    /// </summary>
+    /// <param name="index"></param>
     private void SetCurYesNoItem(int index)
     {
         if (_curYesNoItem != null)
@@ -307,8 +386,8 @@ public class STGPauseView : ViewBase
     {
         if ( _state == StatePause )
         {
-            int nextIndex = (_curSelectIndex - 1 + SelectItemsCount) % SelectItemsCount;
-            SetCurSelectItem(nextIndex);
+            _curSelectAvailableIndex = (_curSelectAvailableIndex - 1 + _availableCount) % _availableCount;
+            SetCurSelectItem(_availableList[_curSelectAvailableIndex]);
         }
         else
         {
@@ -320,8 +399,8 @@ public class STGPauseView : ViewBase
     {
         if ( _state == StatePause )
         {
-            int nextIndex = (_curSelectIndex + 1) % SelectItemsCount;
-            SetCurSelectItem(nextIndex);
+            _curSelectAvailableIndex = (_curSelectAvailableIndex + 1) % _availableCount;
+            SetCurSelectItem(_availableList[_curSelectAvailableIndex]);
         }
         else if ( _state == StateConfirm )
         {

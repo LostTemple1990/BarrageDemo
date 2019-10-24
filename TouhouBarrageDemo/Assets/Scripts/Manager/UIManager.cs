@@ -189,7 +189,7 @@ public class UIManager {
         ViewBase view;
         if ( !_viewsMap.TryGetValue(name,out view) )
         {
-            GameObject viewGO = ResourceManager.GetInstance().GetPrefab("Prefab/Views", name);
+            GameObject viewGO = ResourceManager.GetInstance().GetCommonPrefab("Prefab/Views", name);
             if ( viewGO != null )
             {
                 System.Type classType = System.Type.GetType(name);

@@ -196,6 +196,9 @@ public class StateSTGMain : IState,ICommand
         UIManager.GetInstance().ShowView(WindowName.GameInfoView, null);
         UIManager.GetInstance().ShowView(WindowName.STGBottomView, null);
         UIManager.GetInstance().ShowView(WindowName.GameMainView);
+
+        //UIManager.GetInstance().ShowView(WindowName.STGDialogView);
+
         _curState = StateLoadStageLua;
     }
 

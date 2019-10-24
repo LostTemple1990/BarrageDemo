@@ -13,4 +13,6 @@ public class WindowName
 
     public const string GameLoadingView = "GameLoadingView";
     public const string STGBgLoadingView = "STGBgLoadingView";
+
+    public const string STGDialogView = "STGDialogView";
 }

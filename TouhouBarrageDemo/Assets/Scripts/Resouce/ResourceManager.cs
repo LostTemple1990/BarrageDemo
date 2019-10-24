@@ -173,6 +173,13 @@ public class ResourceManager
         return default(T);
     }
 
+    public GameObject GetCommonPrefab(string packName,string resName)
+    {
+        Object obj = Resources.Load(packName + "/" + resName);
+        GameObject prefab = GameObject.Instantiate(obj) as GameObject;
+        return prefab;
+    }
+
     public GameObject GetPrefab(string packName,string resName)
     {
         GameObject prefab = ObjectsPool.GetInstance().GetPrefabAtPool(resName);
