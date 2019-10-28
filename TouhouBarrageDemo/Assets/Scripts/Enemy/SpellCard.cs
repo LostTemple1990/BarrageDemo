@@ -293,7 +293,7 @@ public class SpellCard : ICommand
         return _bossList[index];
     }
 
-    public void Execute(int cmd, object[] data)
+    public void Execute(int cmd, object data)
     {
         switch ( cmd )
         {

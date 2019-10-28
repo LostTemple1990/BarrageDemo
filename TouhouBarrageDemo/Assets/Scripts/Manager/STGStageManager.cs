@@ -35,6 +35,14 @@ public class STGStageManager
     /// <para>优先判断该值，若为false，则不允许射击</para>
     /// </summary>
     private bool _isEnableToShoot;
+    /// <summary>
+    /// 是否在剧情模式
+    /// </summary>
+    private bool _isInDialogMode;
+    /// <summary>
+    /// 剧情模式的task
+    /// </summary>
+    private Task _dialogTask;
 
     public STGStageManager()
     {
@@ -52,6 +60,16 @@ public class STGStageManager
         {
             _frameSinceStageStart++;
             //Logger.Log("--------------STG Frame " + _frameSinceStageStart + " finish------------");
+            if (_isInDialogMode)
+            {
+                UpdateDialogTask();
+                if (_isInDialogMode)
+                {
+                    CommandManager.GetInstance().RunCommand(CommandConsts.UpdateDialog);
+                    return;
+                }
+            }
+            CommandManager.GetInstance().RunCommand(CommandConsts.UpdateDialog);
             if ( !_isWaitingForSpellCard )
             {
                 OnStageTaskUpdate();
@@ -82,6 +100,7 @@ public class STGStageManager
         _state = StateUpdateStageTask;
         _frameSinceStageStart = 0;
         _isEnableToShoot = true;
+        _isInDialogMode = false;
     }
 
     /// <summary>
@@ -161,11 +180,108 @@ public class STGStageManager
         return _isEnableToShoot;
     }
 
+    /// <summary>
+    /// 创建对话
+    /// </summary>
+    public void StartDialog(int funcRef)
+    {
+        _isInDialogMode = true;
+        _dialogTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
+        _dialogTask.funcRef = funcRef;
+        InterpreterManager.GetInstance().CallTaskCoroutine(_dialogTask);
+        CommandManager.GetInstance().RunCommand(CommandConsts.StartDialog);
+    }
+
+    public void UpdateDialogTask()
+    {
+        if (!_dialogTask.isFinish)
+        {
+            InterpreterManager.GetInstance().CallTaskCoroutine(_dialogTask);
+        }
+        if (_dialogTask.isFinish)
+        {
+            _isInDialogMode = false;
+            ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(_dialogTask);
+            _dialogTask = null;
+        }
+    }
+
+    /// <summary>
+    /// 结束对话
+    /// </summary>
+    public void FinishDialog()
+    {
+        CommandManager.GetInstance().RunCommand(CommandConsts.FinishDialog);
+    }
+
+    /// <summary>
+    /// 创建对话CG
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="spName"></param>
+    /// <param name="posX"></param>
+    /// <param name="posY"></param>
+    public void CreateDialogCG(string name,string spName,float posX,float posY)
+    {
+        List<object> datas = new List<object>();
+        datas.Add(name);
+        datas.Add(spName);
+        datas.Add(posX);
+        datas.Add(posY);
+        CommandManager.GetInstance().RunCommand(CommandConsts.CreateDialogCG, datas);
+    }
+
+    /// <summary>
+    /// 高亮角色CG
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="highlight"></param>
+    public void HighlightDialogCG(string name,bool highlight)
+    {
+        List<object> datas = new List<object>();
+        datas.Add(name);
+        datas.Add(highlight);
+        CommandManager.GetInstance().RunCommand(CommandConsts.HighlightDialogCG, datas);
+    }
+
+    public void DelDialogCG(string name)
+    {
+        CommandManager.GetInstance().RunCommand(CommandConsts.FadeOutDialogCG, name);
+    }
+
+    /// <summary>
+    /// 创建对话框
+    /// </summary>
+    /// <param name="style">对话框样式</param>
+    /// <param name="text">文本</param>
+    /// <param name="posX">对话框左上角位置(scale为负数时是右上角的位置)</param>
+    /// <param name="posY">对话框左上角位置(scale为负数时是右上角的位置)</param>
+    /// <param name="duration">持续时间</param>
+    /// <param name="scale">缩放</param>
+    public void CreateDialogBox(int style,string text,float posX,float posY,int duration,float scale)
+    {
+        List<object> datas = new List<object>();
+        datas.Add(style);
+        datas.Add(text);
+        datas.Add(posX);
+        datas.Add(posY);
+        datas.Add(duration);
+        datas.Add(scale);
+        CommandManager.GetInstance().RunCommand(CommandConsts.CreateDialogBox, datas);
+    }
+
     public void Clear()
     {
         _curSpellCard.Clear();
         _isCastingSpellCard = false;
         _isWaitingForSpellCard = false;
+        if (!_isInDialogMode)
+        {
+            InterpreterManager.GetInstance().StopTaskThread(_dialogTask);
+            ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(_dialogTask);
+            _dialogTask = null;
+            _isInDialogMode = false;
+        }
         InterpreterManager.GetInstance().StopTaskThread(_curStageTask);
     }
 }

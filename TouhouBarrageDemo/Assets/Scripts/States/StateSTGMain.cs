@@ -49,7 +49,7 @@ public class StateSTGMain : IState,ICommand
 
     private STGMain _stgMain;
 
-    public void Execute(int cmd, object[] datas)
+    public void Execute(int cmd, object data)
     {
         switch (cmd)
         {
@@ -183,8 +183,8 @@ public class StateSTGMain : IState,ICommand
         _stgMain.Init();
         _stgMain.InitSTG();
         // 加载各个stage.lua文件
-        //List<string> stageLuaList = new List<string> { "stage1", "stage1sc" };
-        List<string> stageLuaList = new List<string> { "TestEditorStage" };
+        List<string> stageLuaList = new List<string> { "stage1", "stage1sc" };
+        //List<string> stageLuaList = new List<string> { "TestEditorStage" };
         for (int i = 0; i < stageLuaList.Count; i++)
         {
             InterpreterManager.GetInstance().LoadLuaFile(stageLuaList[i]);
@@ -197,7 +197,7 @@ public class StateSTGMain : IState,ICommand
         UIManager.GetInstance().ShowView(WindowName.STGBottomView, null);
         UIManager.GetInstance().ShowView(WindowName.GameMainView);
 
-        //UIManager.GetInstance().ShowView(WindowName.STGDialogView);
+        UIManager.GetInstance().ShowView(WindowName.STGDialogView);
 
         _curState = StateLoadStageLua;
     }

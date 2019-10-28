@@ -42,12 +42,12 @@ public class BgCameraDistortEffect : MonoBehaviour ,ICommand
         }
     }
 
-    public void Execute(int cmd, object[] datas)
+    public void Execute(int cmd, object data)
     {
         switch ( cmd )
         {
             case CommandConsts.UpdateBgDistortEffectProps:
-                UpdateDistortMatProps(datas);
+                UpdateDistortMatProps(data);
                 break;
             case CommandConsts.RemoveBgDistortEffect:
                 ClearDistortMat();
@@ -55,8 +55,9 @@ public class BgCameraDistortEffect : MonoBehaviour ,ICommand
         }
     }
 
-    private void UpdateDistortMatProps(object[] datas)
+    private void UpdateDistortMatProps(object data)
     {
+        object[] datas = data as object[];
         if ( _distortMat == null )
         {
             _distortMat = Resources.Load<Material>("Materials/DistortMat");

@@ -50,7 +50,7 @@ public class CommandManager
         }
     }
 
-    public void RunCommand(int cmd,object[] datas=null)
+    public void RunCommand(int cmd,object datas=null)
     {
         List<ICommand> commandList;
         if (_commandsMap.TryGetValue(cmd, out commandList))
@@ -79,5 +79,5 @@ public class CommandManager
 
 public interface ICommand
 {
-    void Execute(int cmd, object[] data);
+    void Execute(int cmd, object datas);
 }

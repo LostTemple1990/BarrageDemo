@@ -247,6 +247,14 @@ public partial class LuaLib
             new NameFuncPair("ResumeSound",ResumeSound),
             new NameFuncPair("StopSound",StopSound),
             new NameFuncPair("LoadSound",LoadSound),
+            // Dialog
+            new NameFuncPair("StartDialog",StartDialog),
+            new NameFuncPair("CreateDialogCG",CreateDialogCG),
+            new NameFuncPair("HighlightDialogCG",HighlightDialogCG),
+            new NameFuncPair("FadeOutDialogCG",FadeOutDialogCG),
+            new NameFuncPair("CreateDialogBox",CreateDialogBox),
+            //Debug
+            new NameFuncPair("PrintCurFrame",LogFrameSinceStageStart),
         };
         luaState.PushGlobalTable();
         luaState.L_SetFuncs(define, 0);
@@ -863,7 +871,7 @@ public partial class LuaLib
     public static int SetSpellCardProperties(ILuaState luaState)
     {
         SpellCard sc = STGStageManager.GetInstance().GetSpellCard();
-        string scName = luaState.ToString(-5);
+        string scName = luaState.ToString(-luaState.GetTop());
         float duration = (float)luaState.ToNumber(-3);
         int condition = luaState.ToInteger(-2);
         bool isSpellCard = luaState.ToBoolean(-1);

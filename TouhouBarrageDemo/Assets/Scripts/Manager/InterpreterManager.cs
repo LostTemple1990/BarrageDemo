@@ -483,8 +483,16 @@ public class InterpreterManager
         {
             // get waitTime
             task.curWaitTime = 0;
-            task.totalWaitTime = task.luaState.ToInteger(-1);
-            task.luaState.Pop(1);
+            int top = task.luaState.GetTop();
+            if ( top >= 1)
+            {
+                task.totalWaitTime = task.luaState.ToInteger(-1);
+                task.luaState.Pop(1);
+            }
+            else
+            {
+                task.totalWaitTime = 0;
+            }
             //Logger.Log("EnemyTask wait for " + task.totalWaitTime + " frames");
         }
         else if (status == ThreadStatus.LUA_OK)
@@ -498,7 +506,9 @@ public class InterpreterManager
         }
         else
         {
-            Logger.LogError("Call Coroutine Error!Status = " + status + "\n" + task.luaState.ToString(-1));
+            // 获取栈顶
+            int top = task.luaState.GetTop();
+            Logger.LogError("Call Coroutine Error!Status = " + status + "\n" + task.luaState.ToString(-top));
             //Logger.LogError("Call Coroutine Error!Status = " + status);
         }
     }

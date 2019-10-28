@@ -27,12 +27,12 @@ public class STGBottomView : ViewBase,ICommand
         Reset();
     }
 
-    public void Execute(int cmd, object[] datas)
+    public void Execute(int cmd, object data)
     {
         switch ( cmd )
         {
             case CommandConsts.PlayCharacterCGAni:
-                PlayCGAni(datas);
+                PlayCGAni(data as object[]);
                 break;
             case CommandConsts.RetryStage:
             case CommandConsts.RetryGame:

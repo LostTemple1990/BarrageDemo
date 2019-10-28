@@ -144,8 +144,9 @@ public class GameInfoView : ViewBase,ICommand
         _spellCardResultPanel.SetActive(false);
     }
 
-    public void Execute(int cmd, object[] datas)
+    public void Execute(int cmd, object data)
     {
+        object[] datas = data as object[];
         switch ( cmd )
         {
             case CommandConsts.NewSpellCardTime:

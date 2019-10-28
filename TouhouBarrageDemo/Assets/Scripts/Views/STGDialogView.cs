@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Create(name,packName,resName,posX,posY,appearPosX,appearPosY,highlightPosX,hightlightPosY)
 /// Highlight(name,bool)
-/// Sentence(style,posX,posY,scale,text,duration)
+/// Sentence(style,text,posX,posY,scale,duration)
 /// Disappear(name,dir)
 /// </summary>
 public class STGDialogView : ViewBase, ICommand
@@ -62,7 +62,7 @@ public class STGDialogView : ViewBase, ICommand
         private readonly static List<Vector2> LeftBorders = new List<Vector2> { new Vector2(80, 128) };
         private readonly static List<Vector2> RightBorders = new List<Vector2> { new Vector2(80, 128) };
         private readonly static List<Vector2> TextOffsets = new List<Vector2> { new Vector2(20, -40) };
-        private readonly static List<float> RightBorderOffset = new List<float> { 4};
+        private readonly static List<float> RightBorderOffset = new List<float> { 6 };
 
         private int _style;
         private float _itemScale;
@@ -126,7 +126,6 @@ public class STGDialogView : ViewBase, ICommand
             _dialogBoxScale = Mathf.Abs(scale);
             _curPos = new Vector2(posX, posY);
             _itemTf.localScale = new Vector3(0, 1, 0);
-            _dialogLTf.localScale = _dialogRTf.localScale = new Vector3(_dialogBoxScale, _dialogBoxScale, 1);
             _itemTf.anchoredPosition = _curPos;
             _existTime = 0;
             _existDuration = duration;
@@ -153,28 +152,28 @@ public class STGDialogView : ViewBase, ICommand
             Vector2 textOffset = TextOffsets[_style];
             float rightBorderOffset = RightBorderOffset[_style];
 
-            float preferredWidth = _dialogText.preferredWidth + textOffset.x * _dialogBoxScale * 2;
+            float preferredWidth = _dialogText.preferredWidth + textOffset.x * 2;
             // 计算对话框的宽度
-            float minWidth = leftBorder.x + rightBorder.x;
+            float minWidth = (leftBorder.x + rightBorder.x);
             float leftWidth = preferredWidth > minWidth ? preferredWidth - rightBorder.x : leftBorder.x;
-            _dialogLTf.sizeDelta = new Vector2(leftWidth, leftBorder.y);
+            _dialogLTf.sizeDelta = new Vector2(leftWidth, leftBorder.y * _dialogBoxScale);
             // 计算对话框左边与右边的位置
             //Vector3 dialogLPos = new Vector3(_curPos.x + leftWidth / 2, -_curPos.y - DialogLBorder.y / 2);
             _dialogLTf.anchoredPosition = Vector2.zero;
             // 右边框偏移量
-            _dialogRTf.sizeDelta = new Vector2(rightBorder.x + rightBorderOffset, rightBorder.y);
-            Vector2 dialogRPos = new Vector3((leftWidth - rightBorderOffset) * _dialogBoxScale, 0);
+            _dialogRTf.sizeDelta = new Vector2(rightBorder.x + rightBorderOffset, rightBorder.y * _dialogBoxScale);
+            Vector2 dialogRPos = new Vector3(leftWidth - rightBorderOffset, 0);
             _dialogRTf.anchoredPosition = dialogRPos;
             // 文本的位置
             _textTf.sizeDelta = new Vector2(_dialogText.preferredWidth, _dialogText.preferredHeight);
             Vector2 textPos = Vector2.zero;
             if (_itemScale == 1)
             {
-                textPos = new Vector3(textOffset.x * _dialogBoxScale, textOffset.y * _dialogBoxScale);
+                textPos = new Vector3(textOffset.x, textOffset.y * _dialogBoxScale);
             }
             else
             {
-                textPos = new Vector3(textOffset.x * _dialogBoxScale + _dialogText.preferredWidth, textOffset.y * _dialogBoxScale);
+                textPos = new Vector3(textOffset.x + _dialogText.preferredWidth, textOffset.y * _dialogBoxScale);
             }
             _textTf.anchoredPosition = textPos;
         }
@@ -479,8 +478,16 @@ public class STGDialogView : ViewBase, ICommand
     public override void OnShow(object[] data)
     {
         base.OnShow(data);
+        // 注册事件监听
+        CommandManager.GetInstance().Register(CommandConsts.StartDialog, this);
+        CommandManager.GetInstance().Register(CommandConsts.CreateDialogCG, this);
+        CommandManager.GetInstance().Register(CommandConsts.HighlightDialogCG, this);
+        CommandManager.GetInstance().Register(CommandConsts.FadeOutDialogCG, this);
+        CommandManager.GetInstance().Register(CommandConsts.CreateDialogBox, this);
+        CommandManager.GetInstance().Register(CommandConsts.DelDialogBox, this);
+        CommandManager.GetInstance().Register(CommandConsts.UpdateDialog, this);
         // 重新初始化
-        UIManager.GetInstance().RegisterViewUpdate(this);
+        //UIManager.GetInstance().RegisterViewUpdate(this);
         //DialogItem item = DialogItem.Create(_viewTf);
         //item.Init("Marisa", "Marisa", 0, 0, 0, 0, 1, 0, 0);
         //item.SetText("Test Dialog!!!!");
@@ -493,9 +500,51 @@ public class STGDialogView : ViewBase, ICommand
     /// </summary>
     /// <param name="cmd"></param>
     /// <param name="args"></param>
-    public void Execute(int cmd, object[] args)
+    public void Execute(int cmd, object data)
     {
-
+        if (cmd == CommandConsts.StartDialog)
+        {
+            
+        }
+        else if (cmd == CommandConsts.CreateDialogCG)
+        {
+            List<object> datas = data as List<object>;
+            CharacterItem item = new CharacterItem(_viewTf);
+            item.Init(datas[0] as string, datas[1] as string, (float)datas[2], (float)datas[3]);
+            AddItem(item);
+        }
+        else if (cmd == CommandConsts.HighlightDialogCG)
+        {
+            List<object> datas = data as List<object>;
+            CharacterItem item = GetCGItemByName(datas[0] as string);
+            if (item != null)
+            {
+                item.Highlight((bool)datas[1]);
+            }
+        }
+        else if (cmd == CommandConsts.FadeOutDialogCG)
+        {
+            CharacterItem item = GetCGItemByName(data as string);
+            if (item != null)
+            {
+                item.FadeOut();
+            }
+        }
+        else if (cmd == CommandConsts.CreateDialogBox)
+        {
+            List<object> datas = data as List<object>;
+            DialogItem item = new DialogItem(_viewTf);
+            item.Init((int)datas[0], datas[1] as string, (float)datas[2], (float)datas[3], (int)datas[4], (float)datas[5]);
+            AddItem(item);
+        }
+        else if (cmd == CommandConsts.DelDialogBox)
+        {
+            DelDialogItem();
+        }
+        else if (cmd == CommandConsts.UpdateDialog)
+        {
+            UpdateDialog();
+        }
     }
 
     private int _time = 0;
@@ -518,7 +567,7 @@ public class STGDialogView : ViewBase, ICommand
             CharacterItem tmpCG = GetCGItemByName("Marisa");
             tmpCG.Highlight(true);
             DialogItem tmpDialog = new DialogItem(_viewTf);
-            tmpDialog.Init(0, "Test Dialog!!!!", 100, 150, 120, 1);
+            tmpDialog.Init(0, "Test Dialog!!!!", 100, 150, 120, 0.5f);
             AddItem(tmpDialog);
         }
         if (_time == 240)
@@ -528,7 +577,7 @@ public class STGDialogView : ViewBase, ICommand
             tmpCG = GetCGItemByName("Nazrin");
             tmpCG.Highlight(true);
             DialogItem tmpDialog = new DialogItem(_viewTf);
-            tmpDialog.Init(0, "Test Dialog!!!!", 450, 150, 120, -1);
+            tmpDialog.Init(0, "Test Dialog!!!!", 450, 150, 120, -0.5f);
             AddItem(tmpDialog);
         }
         //if (_time == 360)
@@ -576,9 +625,46 @@ public class STGDialogView : ViewBase, ICommand
             if (tmp != null && tmp.GetItemType() == eItemType.Character && tmp.name == name)
             {
                 item = tmp as CharacterItem;
+                break;
             }
         }
         return item;
+    }
+
+    private void DelDialogItem()
+    {
+        DialogItem item = null;
+        BaseDialogItem tmp;
+        for (int i = 0; i < _itemCount; i++)
+        {
+            tmp = _items[i];
+            if (tmp != null && tmp.GetItemType() == eItemType.Dialog)
+            {
+                item = tmp as DialogItem;
+                item.Delete();
+                return;
+            }
+        }
+    }
+
+    private void UpdateDialog(int dFrame = 0)
+    {
+        if (Global.IsPause) return;
+        BaseDialogItem item;
+        for (int i = 0; i < _itemCount; i++)
+        {
+            item = _items[i];
+            if (item == null)
+                continue;
+            item.Update();
+            if (!item.isEnable)
+            {
+                item.Clear();
+                _items[i] = null;
+            }
+        }
+
+        _time++;
     }
 
     public override void OnHide()

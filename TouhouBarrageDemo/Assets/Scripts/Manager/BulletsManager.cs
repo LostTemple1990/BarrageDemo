@@ -657,7 +657,7 @@ public class BulletsManager : ICommand
         _enemyBulletsCount = 0;
     }
 
-    public void Execute(int cmd, object[] data)
+    public void Execute(int cmd, object data)
     {
         if ( cmd == CommandConsts.STGFrameStart )
         {

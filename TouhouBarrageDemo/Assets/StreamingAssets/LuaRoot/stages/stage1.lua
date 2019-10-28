@@ -690,7 +690,7 @@ BossTable.MidBoss.Task = function(boss)
 end
 
 Stage["Stage1"] = function()
-	lib.PlaySound("bgm",true)
+	lib.PlaySound("bgm",0.1,true)
 	--local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
 	--lib.SetEffectToPos(spriteEffect,0,0)
 	--lib.SetSpriteEffectSize(spriteEffect,500,500)
@@ -794,10 +794,39 @@ Stage["Stage1"] = function()
 		end)
 	end
 	if coroutine.yield(300) == false then return end
+	if StartDialog(function()
+		PrintCurFrame()
+		CreateDialogCG("Marisa","Marisa",100,150)
+		if Wait(30) == false then return end
+		PrintCurFrame()
+		HighlightDialogCG("Marisa",true)
+		CreateDialogBox(0,"TestDialogBox0.....",100,150,120,1)
+		if Wait(120) == false then return end
+		PrintCurFrame()
+		HighlightDialogCG("Marisa",false)
+	end) == false then return end
+	last = CreateBoss("MidBoss")
+	local boss = last
+	boss:MoveTo(0,170,90,Constants.ModeEaseInQuad)
+	if coroutine.yield(100) == false then return end
+	if StartDialog(function()
+		CreateDialogCG("Nazrin","Nazrin",450,150)
+		if Wait(30) == false then return end
+		HighlightDialogCG("Nazrin",true)
+		CreateDialogBox(0,"TestDialogBox1.....",450,150,120,-1)
+		if Wait(120) == false then return end
+		HighlightDialogCG("Nazrin",false)
+		HighlightDialogCG("Marisa",true)
+		CreateDialogBox(0,"TestDialogBox2.....",100,150,120,1)
+		if Wait(120) == false then return end
+		FadeOutDialogCG("Marisa")
+		FadeOutDialogCG("Nazrin")
+		if Wait(100) == false then return end
+	end) == false then return end
 	do
-		local boss = lib.CreateBoss("MidBoss")
-		lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
-		if coroutine.yield(100) == false then return end
+		--local boss = lib.CreateBoss("MidBoss")
+		--lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
+		--if coroutine.yield(100) == false then return end
 		boss:SetPhaseData(1,1,1,1,true)
 		lib.StartSpellCard(SpellCard.OrionidsSC,boss)
 		--lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)

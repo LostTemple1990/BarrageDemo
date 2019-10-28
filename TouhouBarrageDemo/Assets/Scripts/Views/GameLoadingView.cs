@@ -23,7 +23,7 @@ public class GameLoadingView : ViewBase ,ICommand
         _waitCommandList = new List<int>();
     }
 
-    public void Execute(int cmd, object[] data)
+    public void Execute(int cmd, object data)
     {
         int index = _waitCommandList.IndexOf(cmd);
         if ( index != -1 )

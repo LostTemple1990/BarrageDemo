@@ -90,7 +90,7 @@ public class GameMainView : ViewBase,ICommand
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
 
-    public void Execute(int cmd,object[] args)
+    public void Execute(int cmd,object data)
     {
 
     }

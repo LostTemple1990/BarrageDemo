@@ -26,6 +26,53 @@
     public const int SpellCardFinish = 2012;
 
     /// <summary>
+    /// 创建对话
+    /// </summary>
+    public const int StartDialog = 2021;
+    /// <summary>
+    /// 创建剧情对话CG
+    /// <para>string name 自定义名称</para>
+    /// <para>string spName sprite的资源名称</para>
+    /// <para>float posX float posY CG位置</para>
+    /// </summary>
+    public const int CreateDialogCG = 2022;
+    /// <summary>
+    /// 高亮剧情对话CG
+    /// <para>string name </para>
+    /// <para>bool highlight 高亮/取消高亮</para>
+    /// </summary>
+    public const int HighlightDialogCG = 2023;
+    /// <summary>
+    /// 淡出剧情对话CG
+    /// <para>string name</para>
+    /// </summary>
+    public const int FadeOutDialogCG = 2024;
+    /// <summary>
+    /// 创建对话框
+    /// <para>int style 对话框样式</para>
+    /// <para>string text 文本</para>
+    /// <para>float posX</para>
+    /// <para>float posY</para>
+    /// <para>duration 持续时间</para>
+    /// <para>float scale</para>
+    /// </summary>
+    public const int CreateDialogBox = 2025;
+    /// <summary>
+    /// 删除对话框
+    /// </summary>
+    public const int DelDialogBox = 2026;
+    /// <summary>
+    /// 更新对话进程
+    /// <para>dTime</para>
+    /// </summary>
+    public const int UpdateDialog = 2027;
+    /// <summary>
+    /// 结束对话进程
+    /// </summary>
+    public const int FinishDialog = 2027;
+
+
+    /// <summary>
     /// 玩家进入决死状态
     /// </summary>
     public const int PlayerDying = 2100;
