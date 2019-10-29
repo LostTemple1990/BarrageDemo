@@ -330,7 +330,7 @@ public class STGPauseView : ViewBase
             if ( _curSelectIndex == IndexReturnToGame )
             {
                 Hide();
-                Global.IsPause = false;
+                CommandManager.GetInstance().RunCommand(CommandConsts.ContinueGame);
             }
             else if ( _curSelectIndex == IndexBackToTitle )
             {

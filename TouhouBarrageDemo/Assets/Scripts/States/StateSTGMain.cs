@@ -253,6 +253,7 @@ public class StateSTGMain : IState,ICommand
         {
             UIManager.GetInstance().ShowView(WindowName.STGPauseView);
             Global.IsPause = true;
+            CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
         }
         if ( !Global.IsPause )
         {

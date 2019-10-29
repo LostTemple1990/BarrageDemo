@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class STGStageManager
 {
@@ -65,7 +66,6 @@ public class STGStageManager
                 UpdateDialogTask();
                 if (_isInDialogMode)
                 {
-                    CommandManager.GetInstance().RunCommand(CommandConsts.UpdateDialog);
                     return;
                 }
             }
@@ -177,6 +177,8 @@ public class STGStageManager
     /// <returns></returns>
     public bool GetIsEnableToShoot()
     {
+        if (_isInDialogMode)
+            return false;
         return _isEnableToShoot;
     }
 
@@ -194,8 +196,15 @@ public class STGStageManager
 
     public void UpdateDialogTask()
     {
+        int dTime = 1;
         if (!_dialogTask.isFinish)
         {
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                dTime = _dialogTask.totalWaitTime - _dialogTask.curWaitTime;
+                _dialogTask.curWaitTime = _dialogTask.totalWaitTime;
+            }
+            CommandManager.GetInstance().RunCommand(CommandConsts.UpdateDialog,dTime);
             InterpreterManager.GetInstance().CallTaskCoroutine(_dialogTask);
         }
         if (_dialogTask.isFinish)

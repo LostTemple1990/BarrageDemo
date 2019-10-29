@@ -1843,7 +1843,7 @@ CustomizedEnemyTable.PatchouliEnemy0 = {}
 CustomizedEnemyTable.PatchouliEnemy0.Init = function(enemy,startRotation,omega)
 	lib.SetEnemyMaxHp(enemy,5)
 	lib.SetEnemyInteractive(enemy,false)
-	local laser = lib.CreateCustomizedLaser("PatchouliNonSC1Laser",202011,enemy,startRotation,omega)
+	local laser = lib.CreateCustomizedLaser("PatchouliNonSC1Laser",enemy.x,enemy.y,enemy,startRotation,omega)
 	lib.AddEnemyTask(enemy,function()
 		local curRotation,dCurRotation = startRotation,omega
 		for _=1,210 do
@@ -1874,11 +1874,11 @@ CustomizedEnemyTable.PatchouliEnemy0.Init = function(enemy,startRotation,omega)
 end
 
 CustomizedBulletTable.PatchouliNonSC1Laser = {}
-CustomizedBulletTable.PatchouliNonSC1Laser.Init = function(self,laserId,master,startRotation,omega)
-	self:SetStyleById(laserId)
+CustomizedBulletTable.PatchouliNonSC1Laser.Init = function(self,master,startRotation,omega)
+	self:SetStyleById(202011)
 	local posX,posY=  lib.GetEnemyPos(master)
-	lib.SetLaserProps(self,posX,posY,startRotation,500)
-	laser:SetExistDuration(80)
+	self:SetSize(500,32)
+	self:SetExistDuration(80)
 	self.orderInLayer = -1
 	lib.AttatchToMaster(self,master,true)
 	lib.SetAttachmentRelativePos(self,0,0,startRotation,false,true)

@@ -518,7 +518,6 @@ public partial class LuaLib
         float angle = (float)luaState.ToNumber(-3);
         float length = (float)luaState.ToNumber(-1);
         float width = (float)luaState.ToNumber(-1);
-        luaState.Pop(7);
         laser.SetPosition(posX, posY);
         laser.SetRotation(angle);
         laser.SetSize(length, width);
@@ -559,7 +558,6 @@ public partial class LuaLib
         EnemyLaser laser = luaState.ToUserData(-3) as EnemyLaser;
         float length = (float)luaState.ToNumber(-2);
         float width = (float)luaState.ToNumber(-1);
-        luaState.Pop(3);
         laser.SetSize(length, width);
         return 0;
     }

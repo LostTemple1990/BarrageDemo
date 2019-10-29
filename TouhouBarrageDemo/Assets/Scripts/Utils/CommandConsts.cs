@@ -112,4 +112,8 @@
     /// 继续游戏
     /// </summary>
     public const int ContinueGame = 3012;
+    /// <summary>
+    /// 暂停游戏
+    /// </summary>
+    public const int PauseGame = 3013;
 }

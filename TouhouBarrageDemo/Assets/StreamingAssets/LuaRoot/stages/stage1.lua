@@ -795,14 +795,11 @@ Stage["Stage1"] = function()
 	end
 	if coroutine.yield(300) == false then return end
 	if StartDialog(function()
-		PrintCurFrame()
 		CreateDialogCG("Marisa","Marisa",100,150)
 		if Wait(30) == false then return end
-		PrintCurFrame()
 		HighlightDialogCG("Marisa",true)
 		CreateDialogBox(0,"TestDialogBox0.....",100,150,120,1)
 		if Wait(120) == false then return end
-		PrintCurFrame()
 		HighlightDialogCG("Marisa",false)
 	end) == false then return end
 	last = CreateBoss("MidBoss")

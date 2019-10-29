@@ -29,7 +29,7 @@ public class STGDialogView : ViewBase, ICommand
             _isEnable = true;
         }
 
-        public virtual void Update()
+        public virtual void Update(int dTime)
         {
 
         }
@@ -193,14 +193,14 @@ public class STGDialogView : ViewBase, ICommand
             _scaleDuration = 15;
         }
 
-        public override void Update()
+        public override void Update(int dTime)
         {
             if (!_isEnable)
                 return;
             if (_isScaling)
             {
-                _scaleTime++;
-                float factor = (float)_scaleTime / _scaleDuration;
+                _scaleTime += dTime;
+                float factor = _scaleTime >= _scaleDuration ? 1 : (float)_scaleTime / _scaleDuration;
                 _curScale = Mathf.Lerp(_beginScale, _endScale, factor);
                 _itemTf.localScale = new Vector3(_curScale, 1, 1);
                 if (_scaleTime >= _scaleDuration)
@@ -214,7 +214,7 @@ public class STGDialogView : ViewBase, ICommand
             }
             if (_existDuration > 0)
             {
-                _existTime++;
+                _existTime += dTime;
                 if (_existTime >= _existDuration)
                 {
                     _isEnable = false;
@@ -361,7 +361,7 @@ public class STGDialogView : ViewBase, ICommand
             _endColor.a = 0;
         }
 
-        public override void Update()
+        public override void Update(int dTime)
         {
             if (!_isEnable)
                 return;
@@ -464,6 +464,16 @@ public class STGDialogView : ViewBase, ICommand
 
     private List<BaseDialogItem> _items;
     private int _itemCount;
+    /// <summary>
+    /// 开始剧情模式的时间
+    /// </summary>
+    private int _timeSinceStarted;
+    /// <summary>
+    /// 是否因为暂停而被隐藏
+    /// </summary>
+    private bool _isHiddenByPause;
+    private GameObject _containerGo;
+    private Transform _containerTf;
 
     public STGDialogView() : base()
     {
@@ -473,6 +483,8 @@ public class STGDialogView : ViewBase, ICommand
     public override void Init(GameObject viewObj)
     {
         base.Init(viewObj);
+        _containerTf = _viewTf.Find("Container");
+        _containerGo = _containerTf.gameObject; ;
     }
 
     public override void OnShow(object[] data)
@@ -486,13 +498,14 @@ public class STGDialogView : ViewBase, ICommand
         CommandManager.GetInstance().Register(CommandConsts.CreateDialogBox, this);
         CommandManager.GetInstance().Register(CommandConsts.DelDialogBox, this);
         CommandManager.GetInstance().Register(CommandConsts.UpdateDialog, this);
-        // 重新初始化
-        //UIManager.GetInstance().RegisterViewUpdate(this);
-        //DialogItem item = DialogItem.Create(_viewTf);
-        //item.Init("Marisa", "Marisa", 0, 0, 0, 0, 1, 0, 0);
-        //item.SetText("Test Dialog!!!!");
+        CommandManager.GetInstance().Register(CommandConsts.PauseGame, this);
+        CommandManager.GetInstance().Register(CommandConsts.ContinueGame, this);
+        CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
+        CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
 
         _itemCount = 0;
+        _isHiddenByPause = false;
+        _containerGo.SetActive(true);
     }
 
     /// <summary>
@@ -502,106 +515,68 @@ public class STGDialogView : ViewBase, ICommand
     /// <param name="args"></param>
     public void Execute(int cmd, object data)
     {
-        if (cmd == CommandConsts.StartDialog)
+        switch (cmd)
         {
-            
+            case CommandConsts.StartDialog:
+                _timeSinceStarted = 0;
+                break;
+            case CommandConsts.CreateDialogCG:
+                {
+                    List<object> datas = data as List<object>;
+                    CharacterItem item = new CharacterItem(_containerTf);
+                    item.Init(datas[0] as string, datas[1] as string, (float)datas[2], (float)datas[3]);
+                    AddItem(item);
+                    break;
+                }
+            case CommandConsts.HighlightDialogCG:
+                {
+                    List<object> datas = data as List<object>;
+                    CharacterItem item = GetCGItemByName(datas[0] as string);
+                    if (item != null)
+                    {
+                        item.Highlight((bool)datas[1]);
+                    }
+                    break;
+                }
+            case CommandConsts.FadeOutDialogCG:
+                {
+                    CharacterItem item = GetCGItemByName(data as string);
+                    if (item != null)
+                    {
+                        item.FadeOut();
+                    }
+                    break;
+                }
+            case CommandConsts.CreateDialogBox:
+                {
+                    List<object> datas = data as List<object>;
+                    DialogItem item = new DialogItem(_containerTf);
+                    item.Init((int)datas[0], datas[1] as string, (float)datas[2], (float)datas[3], (int)datas[4], (float)datas[5]);
+                    AddItem(item);
+                    break;
+                }
+            case CommandConsts.DelDialogBox:
+                DelDialogItem();
+                break;
+            case CommandConsts.UpdateDialog:
+                {
+                    int dTime = data == null ? 1 : (int)data;
+                    UpdateDialog(dTime);
+                    break;
+                }
+            case CommandConsts.PauseGame:
+                OnSTGPause();
+                break;
+            case CommandConsts.ContinueGame:
+                OnSTGContinue();
+                break;
+            case CommandConsts.RetryGame:
+                OnRetry();
+                break;
+            case CommandConsts.RetryStage:
+                OnRetry();
+                break;
         }
-        else if (cmd == CommandConsts.CreateDialogCG)
-        {
-            List<object> datas = data as List<object>;
-            CharacterItem item = new CharacterItem(_viewTf);
-            item.Init(datas[0] as string, datas[1] as string, (float)datas[2], (float)datas[3]);
-            AddItem(item);
-        }
-        else if (cmd == CommandConsts.HighlightDialogCG)
-        {
-            List<object> datas = data as List<object>;
-            CharacterItem item = GetCGItemByName(datas[0] as string);
-            if (item != null)
-            {
-                item.Highlight((bool)datas[1]);
-            }
-        }
-        else if (cmd == CommandConsts.FadeOutDialogCG)
-        {
-            CharacterItem item = GetCGItemByName(data as string);
-            if (item != null)
-            {
-                item.FadeOut();
-            }
-        }
-        else if (cmd == CommandConsts.CreateDialogBox)
-        {
-            List<object> datas = data as List<object>;
-            DialogItem item = new DialogItem(_viewTf);
-            item.Init((int)datas[0], datas[1] as string, (float)datas[2], (float)datas[3], (int)datas[4], (float)datas[5]);
-            AddItem(item);
-        }
-        else if (cmd == CommandConsts.DelDialogBox)
-        {
-            DelDialogItem();
-        }
-        else if (cmd == CommandConsts.UpdateDialog)
-        {
-            UpdateDialog();
-        }
-    }
-
-    private int _time = 0;
-
-    public override void Update()
-    {
-        if (Global.IsPause) return;
-        BaseDialogItem item;
-        if ( _time == 0 )
-        {
-            CharacterItem tmpCG = new CharacterItem(_viewTf);
-            tmpCG.Init("Marisa", "Marisa", 100, 150);
-            AddItem(tmpCG);
-            tmpCG = new CharacterItem(_viewTf);
-            tmpCG.Init("Nazrin", "Nazrin", 450, 150);
-            AddItem(tmpCG);
-        }
-        if ( _time == 120)
-        {
-            CharacterItem tmpCG = GetCGItemByName("Marisa");
-            tmpCG.Highlight(true);
-            DialogItem tmpDialog = new DialogItem(_viewTf);
-            tmpDialog.Init(0, "Test Dialog!!!!", 100, 150, 120, 0.5f);
-            AddItem(tmpDialog);
-        }
-        if (_time == 240)
-        {
-            CharacterItem tmpCG = GetCGItemByName("Marisa");
-            tmpCG.Highlight(false);
-            tmpCG = GetCGItemByName("Nazrin");
-            tmpCG.Highlight(true);
-            DialogItem tmpDialog = new DialogItem(_viewTf);
-            tmpDialog.Init(0, "Test Dialog!!!!", 450, 150, 120, -0.5f);
-            AddItem(tmpDialog);
-        }
-        //if (_time == 360)
-        //{
-        //    CharacterItem tmpCG = GetCGItemByName("Marisa");
-        //    tmpCG.FadeOut();
-        //    tmpCG = GetCGItemByName("Nazrin");
-        //    tmpCG.FadeOut();
-        //}
-
-        for (int i=0;i<_itemCount;i++)
-        {
-            item = _items[i];
-            if (item == null)
-                continue;
-            item.Update();
-            if (!item.isEnable)
-            {
-                item.Clear();
-                _items[i] = null;
-            }
-        }
-
-        _time++;
     }
 
     private void AddItem(BaseDialogItem item)
@@ -647,7 +622,35 @@ public class STGDialogView : ViewBase, ICommand
         }
     }
 
-    private void UpdateDialog(int dFrame = 0)
+    /// <summary>
+    /// 游戏暂停，隐藏剧情界面
+    /// </summary>
+    private void OnSTGPause()
+    {
+        _isHiddenByPause = true;
+        _containerGo.SetActive(false);
+    }
+
+    /// <summary>
+    /// 继续游戏
+    /// </summary>
+    private void OnSTGContinue()
+    {
+        _isHiddenByPause = false;
+        _containerGo.SetActive(true);
+    }
+
+    private void OnRetry()
+    {
+        ClearAllItems();
+        if (_isHiddenByPause)
+        {
+            _containerGo.SetActive(true);
+            _isHiddenByPause = false;
+        }
+    }
+
+    private void UpdateDialog(int dFrame = 1)
     {
         if (Global.IsPause) return;
         BaseDialogItem item;
@@ -656,7 +659,7 @@ public class STGDialogView : ViewBase, ICommand
             item = _items[i];
             if (item == null)
                 continue;
-            item.Update();
+            item.Update(dFrame);
             if (!item.isEnable)
             {
                 item.Clear();
@@ -664,12 +667,28 @@ public class STGDialogView : ViewBase, ICommand
             }
         }
 
-        _time++;
+        _timeSinceStarted++;
     }
 
     public override void OnHide()
     {
-        for (int i=0;i<_itemCount;i++)
+        ClearAllItems();
+        CommandManager.GetInstance().Remove(CommandConsts.StartDialog, this);
+        CommandManager.GetInstance().Remove(CommandConsts.CreateDialogCG, this);
+        CommandManager.GetInstance().Remove(CommandConsts.HighlightDialogCG, this);
+        CommandManager.GetInstance().Remove(CommandConsts.FadeOutDialogCG, this);
+        CommandManager.GetInstance().Remove(CommandConsts.CreateDialogBox, this);
+        CommandManager.GetInstance().Remove(CommandConsts.DelDialogBox, this);
+        CommandManager.GetInstance().Remove(CommandConsts.UpdateDialog, this);
+        CommandManager.GetInstance().Remove(CommandConsts.PauseGame, this);
+        CommandManager.GetInstance().Remove(CommandConsts.ContinueGame, this);
+        CommandManager.GetInstance().Remove(CommandConsts.RetryGame, this);
+        CommandManager.GetInstance().Remove(CommandConsts.RetryStage, this);
+    }
+
+    private void ClearAllItems()
+    {
+        for (int i = 0; i < _itemCount; i++)
         {
             if (_items[i] != null)
             {
@@ -677,6 +696,7 @@ public class STGDialogView : ViewBase, ICommand
             }
         }
         _items.Clear();
+        _itemCount = 0;
     }
 
     public override LayerId GetLayerId()
