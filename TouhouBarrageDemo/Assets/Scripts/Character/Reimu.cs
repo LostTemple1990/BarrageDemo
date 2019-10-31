@@ -45,11 +45,11 @@ public class Reimu : CharacterBase
     /// <summary>
     /// 高低速切换起始模式
     /// </summary>
-    private int _subMoveFromMode;
+    private ePlayerMoveMode _subMoveFromMode;
     /// <summary>
     /// 高低速切换结束模式
     /// </summary>
-    private int _subMoveToMode;
+    private ePlayerMoveMode _subMoveToMode;
 
     public override void Init()
     {
@@ -153,7 +153,7 @@ public class Reimu : CharacterBase
             for (int i = 0; i < _availableSubCount; i++)
             {
                 subWeapon = _subWeapons[i];
-                Vector2 pos = _subPosOffset[_curMoveMode][_availableSubCount - 1][i];
+                Vector2 pos = GetSubWeaponDefaultPos(_curMoveMode, _availableSubCount, i);
                 subWeapon.SetToPosition(pos);
             }
         }
@@ -169,8 +169,8 @@ public class Reimu : CharacterBase
             {
                 subWeapon = _subWeapons[i];
                 rate = (float)_subMoveTime / _subMoveDuration;
-                startPos = _subPosOffset[_subMoveFromMode][_availableSubCount - 1][i];
-                endPos = _subPosOffset[_subMoveToMode][_availableSubCount - 1][i];
+                startPos = GetSubWeaponDefaultPos(_subMoveFromMode, _availableSubCount, i);
+                endPos = GetSubWeaponDefaultPos(_subMoveToMode, _availableSubCount, i);
                 pos = Vector2.Lerp(startPos, endPos, rate);
                 subWeapon.SetToPosition(pos);
             }
@@ -212,8 +212,21 @@ public class Reimu : CharacterBase
         for (int i = 0; i < _availableSubCount; i++)
         {
             subWeapon = _subWeapons[i];
-            Vector2 pos = _subPosOffset[_curMoveMode][_availableSubCount - 1][i];
+            Vector2 pos = GetSubWeaponDefaultPos(_curMoveMode, _availableSubCount, i);
             subWeapon.SetToPosition(pos);
         }
+    }
+
+    /// <summary>
+    /// 获取在子机数为totalCount的情况下，在高速/低速状态时第n个子机的默认位置
+    /// </summary>
+    /// <param name="moveMode"></param>
+    /// <param name="totalCount"></param>
+    /// <param name="n"></param>
+    /// <returns></returns>
+    private Vector2 GetSubWeaponDefaultPos(ePlayerMoveMode moveMode, int totalCount, int n)
+    {
+        int moveModeIndex = moveMode == ePlayerMoveMode.HighSpeed ? 0 : 1;
+        return _subPosOffset[moveModeIndex][totalCount - 1][n];
     }
 }

@@ -79,9 +79,9 @@ public class STGMain
         }
 #else
         // 逻辑部分
+        _opController.Update();
         STGStageManager.GetInstance().Update();
         ColliderManager.GetInstance().UpdateFields();
-        _opController.Update();
         _char.Update();
         EnemyManager.GetInstance().Update();
         BulletsManager.GetInstance().Update();
@@ -170,7 +170,7 @@ public class STGMain
     {
         PlayerService.GetInstance().Clear();
         _char = null;
-        _opController.Clear();
+        OperationController.GetInstance().Clear();
         ColliderManager.GetInstance().Clear();
         BulletsManager.GetInstance().Clear();
         EnemyManager.GetInstance().Clear();
@@ -186,15 +186,13 @@ public class STGMain
     /// <summary>
     /// 初始化STG的数据、玩家对象、控制器等
     /// </summary>
-    public void InitSTG()
+    public void InitSTG(long seed)
     {
-        // 初始化随机数种子
-        long seed = System.DateTime.Now.Ticks % 0xffffffff;
         MTRandom.Init(seed);
         PlayerService.GetInstance().Init();
         _char = PlayerService.GetInstance().GetCharacter();
-        _opController = new OperationController();
-        _opController.InitCharacter(_char);
+        _opController = OperationController.GetInstance();
+        _opController.InitCharacter();
         BackgroundManager.GetInstance().Init();
 
         CommandManager.GetInstance().RunCommand(CommandConsts.STGInitComplete);

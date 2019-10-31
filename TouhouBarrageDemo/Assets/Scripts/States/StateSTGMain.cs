@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 
 public class StateSTGMain : IState,ICommand
@@ -35,9 +36,13 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private int _curState;
     /// <summary>
-    /// 是否在录像模式
+    /// 录像是否已经结束
     /// </summary>
-    private bool _isInReplayMode;
+    private bool _isReplayFinish;
+    /// <summary>
+    /// 随机数种子
+    /// </summary>
+    private long _seed;
 
     public StateSTGMain()
     {
@@ -64,6 +69,12 @@ public class StateSTGMain : IState,ICommand
                 break;
             case CommandConsts.ContinueGame:
                 OnContinueGame();
+                break;
+            case CommandConsts.StageClear:
+                OnStageClear();
+                break;
+            case CommandConsts.SaveReplay:
+                OnSaveReplay();
                 break;
         }
     }
@@ -92,10 +103,12 @@ public class StateSTGMain : IState,ICommand
         CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
         CommandManager.GetInstance().Register(CommandConsts.ContinueGame, this);
+        CommandManager.GetInstance().Register(CommandConsts.StageClear, this);
+        CommandManager.GetInstance().Register(CommandConsts.SaveReplay, this);
         // 设置需要载入的stage
         _nextStageName = datas[0] as string;
-        _isInReplayMode = (bool)datas[1];
-        Global.IsInReplayMode = _isInReplayMode;
+        //_isInReplayMode = (bool)datas[1];
+        //Global.IsInReplayMode = _isInReplayMode;
         // 实例化STGMain
         if (_stgMain == null )
         {
@@ -108,6 +121,8 @@ public class StateSTGMain : IState,ICommand
         CommandManager.GetInstance().Remove(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Remove(CommandConsts.RetryStage, this);
         CommandManager.GetInstance().Remove(CommandConsts.ContinueGame, this);
+        CommandManager.GetInstance().Remove(CommandConsts.StageClear, this);
+        CommandManager.GetInstance().Remove(CommandConsts.SaveReplay, this);
     }
 
     public void OnUpdate()
@@ -181,7 +196,8 @@ public class StateSTGMain : IState,ICommand
     private void OnStateInitSTGMainUpdate()
     {
         _stgMain.Init();
-        _stgMain.InitSTG();
+        _seed = InitSeed();
+        _stgMain.InitSTG(_seed);
         // 加载各个stage.lua文件
         List<string> stageLuaList = new List<string> { "stage1", "stage1sc" };
         //List<string> stageLuaList = new List<string> { "TestEditorStage" };
@@ -200,6 +216,15 @@ public class StateSTGMain : IState,ICommand
         UIManager.GetInstance().ShowView(WindowName.STGDialogView);
 
         _curState = StateLoadStageLua;
+    }
+
+    /// <summary>
+    /// 初始化随机数种子
+    /// </summary>
+    /// <returns></returns>
+    private long InitSeed()
+    {
+        return System.DateTime.Now.Ticks % 0xffffffff;
     }
 
     /// <summary>
@@ -236,7 +261,15 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnStateInitSTGUpdate()
     {
-        _stgMain.InitSTG();
+        if (!Global.IsInReplayMode)
+        {
+            _seed = InitSeed();
+        }
+        else
+        {
+            _seed = _replayData.seed;
+        }
+        _stgMain.InitSTG(_seed);
         // 设置初始残机数和符卡数目
         PlayerService.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
         PlayerService.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
@@ -248,6 +281,20 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnSTGMainUpdate()
     {
+        // 录像状态中，检测是否进行到了录像的最后一帧
+        if (Global.IsInReplayMode)
+        {
+            if (_isReplayFinish)
+                return;
+            int curFrame = STGStageManager.GetInstance().GetFrameSinceStageStart();
+            if (curFrame >= ReplayManager.GetInstance().GetReplayLastFrame())
+            {
+                _isReplayFinish = true;
+                UIManager.GetInstance().ShowView(WindowName.STGPauseView);
+                Global.IsPause = true;
+                CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame, 1);
+            }
+        }
         // 检测是否在游戏进行中按下Esc进行暂停
         if (!Global.IsPause && Input.GetKeyDown(KeyCode.Escape))
         {
@@ -260,4 +307,71 @@ public class StateSTGMain : IState,ICommand
             _stgMain.Update();
         }
     }
+
+    /// <summary>
+    /// 通关当前关卡
+    /// </summary>
+    private void OnStageClear()
+    {
+        UIManager.GetInstance().ShowView(WindowName.STGPauseView, 1);
+        Global.IsPause = true;
+        CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
+    }
+
+    #region replay
+    [Serializable]
+    class ReplayData
+    {
+        /// <summary>
+        /// 机签
+        /// </summary>
+        public int name;
+        /// <summary>
+        /// 完成时间
+        /// </summary>
+        public long completeTimeTicks;
+        /// <summary>
+        /// 随机数种子
+        /// </summary>
+        public long seed;
+        /// <summary>
+        /// 按键
+        /// </summary>
+        public List<eSTGKey> keyList;
+        /// <summary>
+        /// 结束帧
+        /// </summary>
+        public int lastFrame;
+    }
+
+    private ReplayData _replayData;
+
+    public void SaveReplayData()
+    {
+        _replayData = new ReplayData();
+        _replayData.seed = _seed;
+        _replayData.keyList = OperationController.GetInstance().GetOperationKeyList();
+        _replayData.lastFrame = STGStageManager.GetInstance().GetFrameSinceStageStart();
+    }
+
+    /// <summary>
+    /// 保存并播放replay
+    /// </summary>
+    private void OnSaveReplay()
+    {
+        SaveReplayData();
+        Logger.Log("Save Replay");
+        // 以replay模式重新播放
+        ReplayManager.GetInstance().SetReplayData(_replayData.keyList, _replayData.lastFrame);
+        Global.IsInReplayMode = true;
+
+        _curState = StateClear;
+        _nextStageName = _curStageName;
+        // 打开loadingView
+        List<object> commandList = new List<object>();
+        commandList.Add(CommandConsts.STGLoadStageLuaComplete);
+        object[] commandArr = commandList.ToArray();
+        UIManager.GetInstance().ShowView(WindowName.GameLoadingView, commandArr);
+    }
+    #endregion
 }

@@ -487,7 +487,7 @@ public class STGDialogView : ViewBase, ICommand
         _containerGo = _containerTf.gameObject; ;
     }
 
-    public override void OnShow(object[] data)
+    public override void OnShow(object data)
     {
         base.OnShow(data);
         // 注册事件监听
@@ -502,6 +502,7 @@ public class STGDialogView : ViewBase, ICommand
         CommandManager.GetInstance().Register(CommandConsts.ContinueGame, this);
         CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
+        CommandManager.GetInstance().Register(CommandConsts.SaveReplay, this);
 
         _itemCount = 0;
         _isHiddenByPause = false;
@@ -574,6 +575,9 @@ public class STGDialogView : ViewBase, ICommand
                 OnRetry();
                 break;
             case CommandConsts.RetryStage:
+                OnRetry();
+                break;
+            case CommandConsts.SaveReplay:
                 OnRetry();
                 break;
         }
@@ -684,6 +688,7 @@ public class STGDialogView : ViewBase, ICommand
         CommandManager.GetInstance().Remove(CommandConsts.ContinueGame, this);
         CommandManager.GetInstance().Remove(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Remove(CommandConsts.RetryStage, this);
+        CommandManager.GetInstance().Remove(CommandConsts.SaveReplay, this);
     }
 
     private void ClearAllItems()

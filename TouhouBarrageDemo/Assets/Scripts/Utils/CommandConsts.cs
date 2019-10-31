@@ -116,4 +116,12 @@
     /// 暂停游戏
     /// </summary>
     public const int PauseGame = 3013;
+    /// <summary>
+    /// 关卡完成
+    /// </summary>
+    public const int StageClear = 3014;
+    /// <summary>
+    /// 保存录像
+    /// </summary>
+    public const int SaveReplay = 3015;
 }

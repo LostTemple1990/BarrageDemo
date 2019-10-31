@@ -52,8 +52,8 @@ public class CharacterBase : IAffectedMovableObject
     /// 是否可以移动
     /// </summary>
     protected bool _isMovable;
-    protected int _preMoveMode;
-    protected int _curMoveMode;
+    protected ePlayerMoveMode _preMoveMode;
+    protected ePlayerMoveMode _curMoveMode;
     protected Transform _collisionPointTf;
     protected Transform _rotatePointTf;
     protected Vector3 _collisionPointRotateVec3;
@@ -399,10 +399,11 @@ public class CharacterBase : IAffectedMovableObject
     public void CheckMoveMode()
     {
         _preMoveMode = _curMoveMode;
-        if ( _curMoveMode != _inputMoveMode )
+        ePlayerMoveMode inputMoveMode = OperationController.GetInstance().GetKey(eSTGKey.KeyShift) ? ePlayerMoveMode.LowSpeed : ePlayerMoveMode.HighSpeed;
+        if ( _curMoveMode != inputMoveMode)
         {
-            _curMoveMode = _inputMoveMode;
-            if ( _curMoveMode == Consts.MoveModeHighSpeed )
+            _curMoveMode = inputMoveMode;
+            if ( _curMoveMode == ePlayerMoveMode.HighSpeed )
             {
                 _collisionPointTf.gameObject.SetActive(false);
             }
@@ -411,7 +412,7 @@ public class CharacterBase : IAffectedMovableObject
                 _collisionPointTf.gameObject.SetActive(true);
             }
         }
-        if ( _curMoveMode == Consts.MoveModeLowSpeed )
+        if ( _curMoveMode == ePlayerMoveMode.LowSpeed )
         {
             RotateCollisionPoint();
         }
@@ -455,23 +456,24 @@ public class CharacterBase : IAffectedMovableObject
         float speed = GetMoveSpeed();
         Vector2 pos = _curPos;
         bool isIdle = true;
-        if ((_inputDir & Consts.DIR_LEFT) != 0)
+        OperationController op = OperationController.GetInstance();
+        if (op.IsDirKeyAvailable(eSTGKey.KeyLeft))
         {
             pos.x -= speed;
             isIdle = false;
             _aniChar.Play(AniActionType.Move, Consts.DIR_LEFT);
         }
-        else if ((_inputDir & Consts.DIR_RIGHT) != 0)
+        else if (op.IsDirKeyAvailable(eSTGKey.KeyRight))
         {
             pos.x += speed;
             isIdle = false;
             _aniChar.Play(AniActionType.Move, Consts.DIR_RIGHT);
         }
-        if ((_inputDir & Consts.DIR_DOWN) != 0)
+        if (op.IsDirKeyAvailable(eSTGKey.KeyDown))
         {
             pos.y -= speed;
         }
-        else if ((_inputDir & Consts.DIR_UP) != 0)
+        else if (op.IsDirKeyAvailable(eSTGKey.KeyUp))
         {
             pos.y += speed;
         }
@@ -507,7 +509,7 @@ public class CharacterBase : IAffectedMovableObject
     /// </summary>
     public virtual float GetMoveSpeed()
     {
-        float speed = _inputMoveMode == Consts.MoveModeHighSpeed ? Consts.HighSpeed : Consts.SlowSpeed;
+        float speed = _curMoveMode == ePlayerMoveMode.HighSpeed ? Consts.HighSpeed : Consts.SlowSpeed;
         return speed;
     }
 
@@ -852,14 +854,6 @@ public class CharacterBase : IAffectedMovableObject
     }
 
     /// <summary>
-    /// 键盘输入的高低速模式
-    /// </summary>
-    public int InputMoveMode
-    {
-        set { _inputMoveMode = value; }
-    }
-
-    /// <summary>
     /// 键盘输入方向
     /// </summary>
     public int InputDir
@@ -886,7 +880,7 @@ public class CharacterBase : IAffectedMovableObject
     /// <summary>
     /// 上一帧的移动模式
     /// </summary>
-    public int PreMoveMode
+    public ePlayerMoveMode PreMoveMode
     {
         get { return _preMoveMode; }
     }
@@ -894,7 +888,7 @@ public class CharacterBase : IAffectedMovableObject
     /// <summary>
     /// 当前帧的移动模式
     /// </summary>
-    public int CurModeMode
+    public ePlayerMoveMode CurModeMode
     {
         get { return _curMoveMode; }
     }

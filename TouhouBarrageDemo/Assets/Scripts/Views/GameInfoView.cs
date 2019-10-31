@@ -118,7 +118,7 @@ public class GameInfoView : ViewBase,ICommand
         //_bgmText = _viewTf.Find("BGMText").GetComponent<Text>();
     }
 
-    public override void OnShow(object[] data)
+    public override void OnShow(object data)
     {
         CommandManager.GetInstance().Register(CommandConsts.NewSpellCardTime, this);
         CommandManager.GetInstance().Register(CommandConsts.UpdateSpellCardTime, this);
@@ -126,6 +126,7 @@ public class GameInfoView : ViewBase,ICommand
         CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
         CommandManager.GetInstance().Register(CommandConsts.ShowSpellCardInfo, this);
         CommandManager.GetInstance().Register(CommandConsts.SpellCardFinish, this);
+        CommandManager.GetInstance().Register(CommandConsts.SaveReplay, this);
 
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
@@ -138,6 +139,7 @@ public class GameInfoView : ViewBase,ICommand
         CommandManager.GetInstance().Remove(CommandConsts.RetryStage, this);
         CommandManager.GetInstance().Remove(CommandConsts.ShowSpellCardInfo, this);
         CommandManager.GetInstance().Remove(CommandConsts.SpellCardFinish, this);
+        CommandManager.GetInstance().Remove(CommandConsts.SaveReplay, this);
         _isShowSpellCardTime = false;
         _scTimeObject.SetActive(false);
         _bgmObject.SetActive(false);
@@ -164,6 +166,9 @@ public class GameInfoView : ViewBase,ICommand
                 break;
             case CommandConsts.SpellCardFinish:
                 OnSpellCardFinish(datas);
+                break;
+            case CommandConsts.SaveReplay:
+                Reset();
                 break;
         }
     }

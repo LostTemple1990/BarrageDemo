@@ -20,7 +20,7 @@ public class ViewBase
     //    UIManager.GetInstance().AddGoToLayer(viewObj, GetLayerId());
     //}
 
-    public void Show(object[] data)
+    public void Show(object data)
     {
         if ( _view != null )
         {
@@ -34,7 +34,7 @@ public class ViewBase
 
     }
 
-    public virtual void OnShow(object[] data)
+    public virtual void OnShow(object data)
     {
 
     }

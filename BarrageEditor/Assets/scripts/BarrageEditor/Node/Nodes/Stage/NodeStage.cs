@@ -39,7 +39,7 @@ namespace BarrageEditor
 
         public override string ToLuaFoot()
         {
-            return string.Format("end\n");
+            return string.Format("    FinishStage()\nend\n");
         }
     }
 }

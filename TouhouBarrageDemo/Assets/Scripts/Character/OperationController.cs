@@ -4,22 +4,33 @@ using UnityEngine;
 
 public class OperationController
 {
-    private const int KeyLeft = 1 << 0;
-    private const int KeyRight = 1 << 1;
-    private const int KeyUp = 1 << 2;
-    private const int KeyDown = 1 << 3;
-    private const int KeyShift = 1 << 4;
-    private const int KeyZ = 1 << 5;
-    private const int KeyX = 1 << 6;
-    private const int KeyC = 1 << 7;
+    private static OperationController _instance;
+    public static OperationController GetInstance()
+    {
+        if (_instance == null)
+        {
+            _instance = new OperationController();
+        }
+        return _instance;
+    }
 
     private CharacterBase _character;
-    private List<int> _dirInput;
-    private Dictionary<int, int> _dirDic;
+    /// <summary>
+    /// 按照按键顺序记录的方向键的输入
+    /// </summary>
+    private List<eSTGKey> _dirInput;
+    /// <summary>
+    /// 四个方向键的list
+    /// </summary>
+    private List<eSTGKey> _dirKeyList;
+    /// <summary>
+    /// 上一帧的输入
+    /// </summary>
+    private eSTGKey _lastInput;
     /// <summary>
     /// 当前帧的输入
     /// </summary>
-    private int _curInput;
+    private eSTGKey _curInput;
 
     /// <summary>
     /// 玩家设置的对应按键
@@ -33,16 +44,21 @@ public class OperationController
     private KeyCode _pZ;
     private KeyCode _pX;
     private KeyCode _pC;
+    private KeyCode _pCtrl;
+    /// <summary>
+    /// 每帧玩家的按键顺序
+    /// </summary>
+    private List<eSTGKey> _keyList;
+    /// <summary>
+    /// 有效的方向键输入
+    /// </summary>
+    private eSTGKey _availableDirKey;
 
 
-    public OperationController()
+    private OperationController()
     {
-        _dirInput = new List<int>();
-        _dirDic = new Dictionary<int, int>();
-        _dirDic.Add(KeyUp, Consts.DIR_UP);
-        _dirDic.Add(KeyDown, Consts.DIR_DOWN);
-        _dirDic.Add(KeyLeft, Consts.DIR_LEFT);
-        _dirDic.Add(KeyRight, Consts.DIR_RIGHT);
+        _dirInput = new List<eSTGKey>();
+        _dirKeyList = new List<eSTGKey> { eSTGKey.KeyUp, eSTGKey.KeyDown, eSTGKey.KeyLeft, eSTGKey.KeyRight };
         InitDefaultKeyCode();
     }
 
@@ -56,38 +72,106 @@ public class OperationController
         _pZ = KeyCode.Z;
         _pX = KeyCode.X;
         _pC = KeyCode.C;
+        _pCtrl = KeyCode.LeftControl;
     }
 
-    public void InitCharacter(CharacterBase character)
+    public void InitCharacter()
     {
-        _character = character;
+        _character = PlayerService.GetInstance().GetCharacter();
+        if (!Global.IsInReplayMode)
+        {
+            _keyList = new List<eSTGKey>();
+        }
+        else
+        {
+            _keyList = ReplayManager.GetInstance().GetReplayKeyList();
+        }
+        _lastInput = eSTGKey.None;
+        _curInput = eSTGKey.None;
     }
 
     public void Update()
     {
+        _lastInput = _curInput;
         GetInput();
         CheckMove();
         CheckShoot();
         CheckBomb();
     }
 
+    /// <summary>
+    /// 获取玩家当前的操作按键
+    /// </summary>
+    /// <returns></returns>
+    public List<eSTGKey> GetOperationKeyList()
+    {
+        return _keyList;
+    }
+
+    /// <summary>
+    /// 当前帧该按键是否处于按下状态
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public bool GetKey(eSTGKey key)
+    {
+        return (_curInput & key) != 0;
+    }
+
+    /// <summary>
+    /// 当前帧该按键是否按下
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public bool GetKeyDown(eSTGKey key)
+    {
+        // 上一帧已经按下这个按键了，所以直接返回
+        if ((_lastInput & key) != 0)
+            return false;
+        // 当前帧该键按下
+        if ((_curInput & key) != 0)
+            return true;
+        return false;
+    }
+
+    /// <summary>
+    /// 当前帧该按键是否松开
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public bool GetKeyUp(eSTGKey key)
+    {
+        // 上一帧该按键不在按下状态，直接返回
+        if ((_lastInput & key) == 0)
+            return false;
+        // 当前帧该键按下
+        if ((_curInput & key) == 0)
+            return true;
+        return false;
+    }
+
+
     private void GetInput()
     {
-        _curInput = 0;
+        _curInput = eSTGKey.None; ;
         if ( Global.IsInReplayMode )
         {
-
+            int curFrame = STGStageManager.GetInstance().GetFrameSinceStageStart();
+            _curInput = _keyList[curFrame];
         }
         else
         {
-            if (Input.GetKey(_pLeft)) _curInput |= KeyLeft;
-            if (Input.GetKey(_pRight)) _curInput |= KeyRight;
-            if (Input.GetKey(_pUp)) _curInput |= KeyUp;
-            if (Input.GetKey(_pDown)) _curInput |= KeyDown;
-            if (Input.GetKey(_pShift)) _curInput |= KeyShift;
-            if (Input.GetKey(_pZ)) _curInput |= KeyZ;
-            if (Input.GetKey(_pX)) _curInput |= KeyX;
-            if (Input.GetKey(_pC)) _curInput |= KeyC;
+            if (Input.GetKey(_pLeft)) _curInput |= eSTGKey.KeyLeft;
+            if (Input.GetKey(_pRight)) _curInput |= eSTGKey.KeyRight;
+            if (Input.GetKey(_pUp)) _curInput |= eSTGKey.KeyUp;
+            if (Input.GetKey(_pDown)) _curInput |= eSTGKey.KeyDown;
+            if (Input.GetKey(_pShift)) _curInput |= eSTGKey.KeyShift;
+            if (Input.GetKey(_pZ)) _curInput |= eSTGKey.KeyZ;
+            if (Input.GetKey(_pX)) _curInput |= eSTGKey.KeyX;
+            if (Input.GetKey(_pC)) _curInput |= eSTGKey.KeyC;
+            if (Input.GetKey(_pCtrl)) _curInput |= eSTGKey.KeyCtrl;
+            // 添加到keyList中
+            _keyList.Add(_curInput);
         }
     }
     
@@ -96,48 +180,55 @@ public class OperationController
     /// </summary>
     private void CheckMove()
     {
-        foreach (KeyValuePair<int,int> kv in _dirDic)
+        foreach (eSTGKey dirKey in _dirKeyList)
         {
             // 检测按下
-            if ( (_curInput & kv.Key) != 0 )
+            if (GetKey(dirKey))
             {
-                if (_dirInput.IndexOf(kv.Value) == -1)
+                if (_dirInput.IndexOf(dirKey) == -1)
                 {
-                    _dirInput.Add(kv.Value);
+                    _dirInput.Add(dirKey);
                 }
             }
-            else if ( _dirInput.IndexOf(kv.Value) != -1 )
+            else if (_dirInput.IndexOf(dirKey) != -1)
             {
-                _dirInput.Remove(kv.Value);
+                _dirInput.Remove(dirKey);
             }
         }
         // 判定移动方向，相反方向的话根据后按的那个来进行
-        int dir = Consts.DIR_NULL;
+        _availableDirKey = eSTGKey.None;
         // 上下
-        int upIndex = _dirInput.IndexOf(Consts.DIR_UP);
-        int downIndex = _dirInput.IndexOf(Consts.DIR_DOWN);
+        int upIndex = _dirInput.IndexOf(eSTGKey.KeyUp);
+        int downIndex = _dirInput.IndexOf(eSTGKey.KeyDown);
         if ( upIndex > downIndex )
         {
-            dir |= Consts.DIR_UP;
+            _availableDirKey |= eSTGKey.KeyUp;
         }
         else if ( upIndex < downIndex )
         {
-            dir |= Consts.DIR_DOWN;
+            _availableDirKey |= eSTGKey.KeyDown;
         }
         // 左右
-        int leftIndex = _dirInput.IndexOf(Consts.DIR_LEFT);
-        int rightIndex = _dirInput.IndexOf(Consts.DIR_RIGHT);
+        int leftIndex = _dirInput.IndexOf(eSTGKey.KeyLeft);
+        int rightIndex = _dirInput.IndexOf(eSTGKey.KeyRight);
         if (leftIndex > rightIndex)
         {
-            dir |= Consts.DIR_LEFT;
+            _availableDirKey |= eSTGKey.KeyLeft;
         }
         else if (leftIndex < rightIndex)
         {
-            dir |= Consts.DIR_RIGHT;
+            _availableDirKey |= eSTGKey.KeyRight;
         }
-        int moveMode = (_curInput & KeyShift) != 0 ? Consts.MoveModeLowSpeed : Consts.MoveModeHighSpeed;
-        _character.InputMoveMode = moveMode;
-        _character.InputDir = dir;
+    }
+
+    /// <summary>
+    /// 在当前帧下key对应的方向键是否为有效输入
+    /// <para>用于自机移动</para>
+    /// </summary>
+    /// <returns></returns>
+    public bool IsDirKeyAvailable(eSTGKey key)
+    {
+        return (_availableDirKey & key) != 0;
     }
 
     /// <summary>
@@ -145,7 +236,7 @@ public class OperationController
     /// </summary>
     private void CheckShoot()
     {
-        if ( (_curInput & KeyZ) != 0 )
+        if ( (_curInput & eSTGKey.KeyZ) != 0 )
         {
             _character.InputShoot = true;
         }
@@ -157,7 +248,7 @@ public class OperationController
 
     private void CheckBomb()
     {
-        if ( (_curInput & KeyX) != 0 )
+        if ( (_curInput & eSTGKey.KeyX) != 0 )
         {
             _character.InputBomb = true;
         }

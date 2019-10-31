@@ -184,7 +184,7 @@ public class UIManager {
         Global.STGActualSize = new Vector2(Consts.GameWidth*scaleWidth,Consts.GameHeight*scaleHeight);
     }
 
-    public void ShowView(string name,object[] data=null)
+    public void ShowView(string name,object data=null)
     {
         ViewBase view;
         if ( !_viewsMap.TryGetValue(name,out view) )

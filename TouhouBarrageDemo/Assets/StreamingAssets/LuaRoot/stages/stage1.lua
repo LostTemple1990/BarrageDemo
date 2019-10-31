@@ -826,7 +826,7 @@ Stage["Stage1"] = function()
 		--if coroutine.yield(100) == false then return end
 		boss:SetPhaseData(1,1,1,1,true)
 		lib.StartSpellCard(SpellCard.OrionidsSC,boss)
-		--lib.StartSpellCard(SpellCard.NazrinSC2_0,boss)
+		--lib.StartSpellCard(SpellCard.NazrinSC2_2,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
 		lib.StartSpellCard(SpellCard.PatchouliNonSC1,boss)
 		if lib.WaitForSpellCardFinish() == false then return end

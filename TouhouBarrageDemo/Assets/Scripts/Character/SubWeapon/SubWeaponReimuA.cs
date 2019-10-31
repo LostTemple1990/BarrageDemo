@@ -77,7 +77,7 @@ public class SubWeaponReimuA : SubWeaponBase
     private float GetShootBulletAngle()
     {
         float angle;
-        if ( _moveMode == Consts.MoveModeLowSpeed )
+        if ( _moveMode == ePlayerMoveMode.LowSpeed )
         {
             angle = 90f;
         }

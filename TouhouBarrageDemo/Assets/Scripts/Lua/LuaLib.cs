@@ -217,6 +217,7 @@ public partial class LuaLib
             // Common
             new NameFuncPair("Wait",Wait),
             new NameFuncPair("SetDebugStageName",SetDebugStageName),
+            new NameFuncPair("FinishStage",FinishStage),
             // Bullet
             new NameFuncPair("CreateSimpleBulletById", CreateSimpleBulletById),
             new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet),
@@ -923,7 +924,7 @@ public partial class LuaLib
         return 0;
     }
 
-#region 音效相关
+    #region 音效相关
     /// <summary>
     /// <para>soundName</para>
     /// <para>volume</para>
@@ -1093,6 +1094,17 @@ public partial class LuaLib
     {
         string debugStageName = luaState.ToString(-1);
         Global.DebugStageName = debugStageName;
+        return 0;
+    }
+
+    /// <summary>
+    /// 关卡结束
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int FinishStage(ILuaState luaState)
+    {
+        CommandManager.GetInstance().RunCommand(CommandConsts.StageClear);
         return 0;
     }
 

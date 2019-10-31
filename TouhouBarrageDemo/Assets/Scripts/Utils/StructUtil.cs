@@ -339,6 +339,34 @@ public enum eCustomizedFuncRefType : byte
     Other = 5,
 }
 
+/// <summary>
+/// STG的操作按键枚举
+/// </summary>
+[Flags]
+public enum eSTGKey : int
+{
+    None = 0,
+    KeyLeft = 1 << 0,
+    KeyRight = 1 << 1,
+    KeyUp = 1 << 2,
+    KeyDown = 1 << 3,
+    KeyShift = 1 << 4,
+    KeyZ = 1 << 5,
+    KeyX = 1 << 6,
+    KeyC = 1 << 7,
+    KeyCtrl = 1 << 8,
+}
+
+/// <summary>
+/// 玩家的移动状态
+/// <para>高速，低速</para>
+/// </summary>
+public enum ePlayerMoveMode : byte
+{
+    HighSpeed = 0,
+    LowSpeed = 1,
+}
+
 #region struct ItemWithFramentsCounter
 /// <summary>
 /// 带碎片的道具计数器

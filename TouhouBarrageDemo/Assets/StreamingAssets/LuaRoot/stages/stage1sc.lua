@@ -766,12 +766,13 @@ CustomizedBulletTable.NazrinSC2Laser.Init = function(laser,angle,existDuration,c
 		if coroutine.yield(10) == false then return end
 		lib.EliminateBullet(laser)
 	end)
+	local posX,posY = laser:GetPos()
 	if createRandomBulletInterval ~= 0 then
 		lib.AddBulletTask(laser,function()
 			if coroutine.yield(existDuration+30) == false then return end
 			local createBulletCount = math.floor(500/createRandomBulletInterval)
-			local normalizedX = math.cos(math.rad(angle))
-			local normalizedY = math.sin(math.rad(angle))
+			local normalizedX = cos(angle)
+			local normalizedY = sin(angle)
 			for i=1,createBulletCount do
 				local x = normalizedX * i * createRandomBulletInterval + posX
 				local y = normalizedY * i * createRandomBulletInterval + posY
@@ -787,17 +788,18 @@ end
 
 CustomizedBulletTable.NazrinSC2Spark = {}
 CustomizedBulletTable.NazrinSC2Spark.Init = function(laser,canRotate)
-	lib.SetBulletStyleById(laser,"202060")
-	laser:SetSize(0,2)
+	laser:SetStyleById(202060)
+	laser:SetSize(0,128)
 	laser.rot = Angle(laser,player)
 	laser:SetExistDuration(500)
 	lib.SetBulletDetectCollision(laser,false)
 	lib.SetBulletResistEliminatedFlag(laser,EliminateType.PlayerSpellCard + EliminateType.PlayerDead + EliminateType.HitPlayer)
 	lib.SetLaserCollisionFactor(laser,0.8)
+	laser:TurnHalfOn(2,0)
 	lib.AddBulletTask(laser,function()
 		lib.ChangeLaserLengthTo(laser,500,0,30)
 		if coroutine.yield(60) == false then return end
-		lib.ChangeLaserWidthTo(laser,128,0,10)
+		laser:TurnOn(10)
 		lib.SetBulletDetectCollision(laser,true)
 		if coroutine.yield(60) == false then return end
 		lib.SetBulletDetectCollision(laser,false)
@@ -808,9 +810,9 @@ CustomizedBulletTable.NazrinSC2Spark.Init = function(laser,canRotate)
 	--转向玩家的方向
 	if canRotate then
 		lib.AddBulletTask(laser,function()
-			local prePlayerPosX,prePlayerPosY = lib.GetPlayerPos()
+			local prePlayerPosX,prePlayerPosY = player:GetPos()
 			if coroutine.yield(70) == false then return end
-			local nowPlayerPosX,nowPlayerPosY = lib.GetPlayerPos()
+			local nowPlayerPosX,nowPlayerPosY = player:GetPos()
 			local omega = prePlayerPosX > nowPlayerPosX and -0.2 or 0.2
 			lib.SetLaserRotateParaWithOmega(laser,omega,60)
 		end)

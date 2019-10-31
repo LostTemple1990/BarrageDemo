@@ -156,4 +156,14 @@ public class Consts
     public const int STGTopEffectLayerPosZ = 12;
     public const int STGInfoLayerPosZ = 10;
 
+    public const int KeyLeft = 1 << 0;
+    public const int KeyRight = 1 << 1;
+    public const int KeyUp = 1 << 2;
+    public const int KeyDown = 1 << 3;
+    public const int KeyShift = 1 << 4;
+    public const int KeyZ = 1 << 5;
+    public const int KeyX = 1 << 6;
+    public const int KeyC = 1 << 7;
+    public const int KeyCtrl = 1 << 8;
+
 }

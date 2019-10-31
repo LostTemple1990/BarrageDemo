@@ -7,6 +7,11 @@ public class STGStageManager
     private const int StateUpdateStageTask = 2;
     private const int StateUpdateSpellCard = 3;
 
+    /// <summary>
+    /// ctrl跳过剧情部分的时间间隔
+    /// </summary>
+    private const int SkipDialogTimeInterval = 10;
+
     private static STGStageManager _instance = new STGStageManager();
 
     public static STGStageManager GetInstance()
@@ -44,6 +49,10 @@ public class STGStageManager
     /// 剧情模式的task
     /// </summary>
     private Task _dialogTask;
+    /// <summary>
+    /// 上次跳过剧情对话的时间间隔
+    /// </summary>
+    private int _timeSinceLastSkip;
 
     public STGStageManager()
     {
@@ -188,6 +197,7 @@ public class STGStageManager
     public void StartDialog(int funcRef)
     {
         _isInDialogMode = true;
+        _timeSinceLastSkip = SkipDialogTimeInterval;
         _dialogTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
         _dialogTask.funcRef = funcRef;
         InterpreterManager.GetInstance().CallTaskCoroutine(_dialogTask);
@@ -197,12 +207,14 @@ public class STGStageManager
     public void UpdateDialogTask()
     {
         int dTime = 1;
+        _timeSinceLastSkip++;
         if (!_dialogTask.isFinish)
         {
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (CheckCanSkip())
             {
                 dTime = _dialogTask.totalWaitTime - _dialogTask.curWaitTime;
                 _dialogTask.curWaitTime = _dialogTask.totalWaitTime;
+                _timeSinceLastSkip = 0;
             }
             CommandManager.GetInstance().RunCommand(CommandConsts.UpdateDialog,dTime);
             InterpreterManager.GetInstance().CallTaskCoroutine(_dialogTask);
@@ -213,6 +225,18 @@ public class STGStageManager
             ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(_dialogTask);
             _dialogTask = null;
         }
+    }
+
+    private bool CheckCanSkip()
+    {
+        if (OperationController.GetInstance().GetKeyDown(eSTGKey.KeyZ))
+            return true;
+        if (OperationController.GetInstance().GetKey(eSTGKey.KeyCtrl))
+        {
+            if (_timeSinceLastSkip >= SkipDialogTimeInterval)
+                return true;
+        }
+        return false;
     }
 
     /// <summary>
@@ -284,7 +308,7 @@ public class STGStageManager
         _curSpellCard.Clear();
         _isCastingSpellCard = false;
         _isWaitingForSpellCard = false;
-        if (!_isInDialogMode)
+        if (_isInDialogMode)
         {
             InterpreterManager.GetInstance().StopTaskThread(_dialogTask);
             ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(_dialogTask);

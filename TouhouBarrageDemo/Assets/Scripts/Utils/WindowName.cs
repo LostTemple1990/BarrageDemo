@@ -8,6 +8,7 @@ public class WindowName
     public const string STGBottomView = "STGBottomView";
     /// <summary>
     /// 暂停界面
+    /// <para>showState 0 :通常暂停 1：Stage Clear之后的暂停</para>
     /// </summary>
     public const string STGPauseView = "STGPauseView";
 

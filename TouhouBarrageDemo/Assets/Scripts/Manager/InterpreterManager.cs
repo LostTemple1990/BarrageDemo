@@ -508,7 +508,7 @@ public class InterpreterManager
         {
             // 获取栈顶
             int top = task.luaState.GetTop();
-            Logger.LogError("Call Coroutine Error!Status = " + status + "\n" + task.luaState.ToString(-top));
+            Logger.LogError("Call Coroutine Error!Status = " + status + "\n" + task.luaState.ToString(top));
             //Logger.LogError("Call Coroutine Error!Status = " + status);
         }
     }
@@ -822,6 +822,7 @@ public class InterpreterManager
 
     private static int Traceback(ILuaState lua)
     {
+        int top = lua.GetTop();
         var msg = lua.ToString(1);
         if (msg != null)
         {

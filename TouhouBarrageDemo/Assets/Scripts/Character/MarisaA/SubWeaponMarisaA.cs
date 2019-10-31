@@ -84,8 +84,8 @@ public class SubWeaponMarisaA : SubWeaponBase
             Vector3 laserPos = playerPos + _curPos;
             _laser.SetPosition(laserPos);
             // 更新激光角度
-            int mode = _character.CurModeMode;
-            float laserAngle = mode == Consts.MoveModeLowSpeed ? 90f : _shootAngles[subAvailable - 1][_subIndex];
+            ePlayerMoveMode mode = _character.CurModeMode;
+            float laserAngle = mode == ePlayerMoveMode.LowSpeed ? 90f : _shootAngles[subAvailable - 1][_subIndex];
             _laser.SetAngle(laserAngle);
             _isShooting = true;
         }

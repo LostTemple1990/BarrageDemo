@@ -24,7 +24,7 @@ public class SubWeaponBase
 
     protected int _curShootCD;
 
-    protected int _moveMode;
+    protected ePlayerMoveMode _moveMode;
     /// <summary>
     /// 当前与自机的位置偏移
     /// </summary>

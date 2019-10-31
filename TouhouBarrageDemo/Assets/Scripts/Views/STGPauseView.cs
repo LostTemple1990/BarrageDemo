@@ -93,13 +93,14 @@ public class STGPauseView : ViewBase
         _yesNoItems.Add(_yesNoPanel.transform.Find("No").gameObject);
     }
 
-    public override void OnShow(object[] data)
+    public override void OnShow(object data)
     {
         _isShowAniFinish = false;
         _state = StatePause;
         // 隐藏yesno面板
         _yesNoPanel.SetActive(false);
-        InitAvailableItems(0);
+        int showState = data == null ? 0 : (int)data;
+        InitAvailableItems(showState);
         PlayShowAni();
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
@@ -372,7 +373,7 @@ public class STGPauseView : ViewBase
                 }
                 else if (_curSelectIndex == IndexSaveReplay)
                 {
-
+                    OnSaveReplay();
                 }
                 else if (_curSelectIndex == IndexRetry)
                 {
@@ -422,6 +423,12 @@ public class STGPauseView : ViewBase
     private void OnRetry()
     {
         CommandManager.GetInstance().RunCommand(CommandConsts.RetryGame);
+        Hide();
+    }
+
+    private void OnSaveReplay()
+    {
+        CommandManager.GetInstance().RunCommand(CommandConsts.SaveReplay);
         Hide();
     }
 

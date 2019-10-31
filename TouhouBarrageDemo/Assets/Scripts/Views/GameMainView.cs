@@ -81,7 +81,7 @@ public class GameMainView : ViewBase,ICommand
         _curPower = -1;
     }
 
-    public override void OnShow(object[] data)
+    public override void OnShow(object data)
     {
         base.OnShow(data);
         // 重新初始化
