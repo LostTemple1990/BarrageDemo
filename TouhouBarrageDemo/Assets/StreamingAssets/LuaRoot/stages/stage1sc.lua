@@ -3,8 +3,27 @@ local Condition = Constants.eSpellCardCondition
 local EliminateType = Constants.eEliminateType
 lib = require "LuaLib"
 
+local Stage = {}
 local CustomizedBulletTable = {}
 local CustomizedEnemyTable = {}
+local BossTable = {}
+local CustomizedSTGObjectTable = {}
+
+
+CustomizedSTGObjectTable["NazrinCG"] = {}
+CustomizedSTGObjectTable["NazrinCG"].Init = function(self)
+    self:SetSprite("Characters/Satori","Satori",BlendMode_Normal,LayerEffectBottom,false)
+    self:SetPos(200,200)
+    self:AddTask(function()
+        self:MoveTo(0,0,30,IntModeEaseInQuad)
+        if Wait(60)==false then return end
+        self:MoveTo(-200,-200,60,IntModeEaseOutQuad)
+        if Wait(30)==false then return end
+        self:ChangeAlphaTo(0,30)
+        if Wait(30)==false then return end
+        DelUnit(self)
+    end)
+end
 
 
 --waitTime之后变换成札弹的子弹
@@ -1240,30 +1259,7 @@ SC["OrionidsSC"].Init = function(boss)
 	lib.SetEnemyMaxHp(boss,1200)
 	lib.ShowBossBloodBar(boss,true)
 	--bossCG
-	do
-		local tweenList = {}
-		do
-			local tween = {type=Constants.eTweenType.Pos2D,delay=0,duration=30,beginValue={x=200,y=200},endValue={x=0,y=0},mode=Constants.ModeEaseInQuad}
-			table.insert(tweenList,tween)
-		end
-		do
-			local tween = {type=Constants.eTweenType.Pos2D,delay=60,duration=60,beginValue={x=0,y=0},endValue={x=-200,y=-200},mode=Constants.ModeEaseOutQuad}
-			table.insert(tweenList,tween)
-		end
-		do
-			local tween = {type=Constants.eTweenType.Alpha,delay=0,duration=0,beginValue=1,endValue=1,mode=Constants.ModeLinear}
-			table.insert(tweenList,tween)
-		end
-		do
-			local tween = {type=Constants.eTweenType.Alpha,delay=90,duration=30,beginValue=1,endValue=0,mode=Constants.ModeLinear}
-			table.insert(tweenList,tween)
-		end
-		do
-			local tween = {type=Constants.eTweenType.Scale,delay=0,duration=0,beginValue={x=0.75,y=0.75,z=1},endValue={x=0.75,y=0.75,z=1},mode=Constants.ModeLinear}
-			table.insert(tweenList,tween)
-		end
-		lib.PlayCharacterCG("CG/face04ct",tweenList)
-	end
+	last = CreateCustomizedSTGObject("NazrinCG",0,0)
 	lib.AddEnemyTask(boss,function()
 		local bossPosX,bossPosY = lib.GetEnemyPos(boss)
 		lib.CreateChargeEffect(bossPosX,bossPosY)
@@ -2169,8 +2165,9 @@ end
 
 return
 {
-	CustomizedBulletTable = CustomizedBulletTable,
-	CustomizedEnemyTable = CustomizedEnemyTable,
-	BossTable = {},
-	Stage = {},
+   CustomizedBulletTable = CustomizedBulletTable,
+   CustomizedEnemyTable = CustomizedEnemyTable,
+   BossTable = BossTable,
+   CustomizedSTGObjectTable = CustomizedSTGObjectTable,
+   Stage = Stage,
 }

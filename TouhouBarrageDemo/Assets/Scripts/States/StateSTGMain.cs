@@ -224,7 +224,8 @@ public class StateSTGMain : IState,ICommand
     /// <returns></returns>
     private long InitSeed()
     {
-        return System.DateTime.Now.Ticks % 0xffffffff;
+        Global.RandomSeed = System.DateTime.Now.Ticks % 0xffffffff;
+        return Global.RandomSeed;
     }
 
     /// <summary>
@@ -243,6 +244,10 @@ public class StateSTGMain : IState,ICommand
         }
         _stgMain.EnterStage(_curStageName);
         Global.IsPause = false;
+        if (Global.IsInReplayMode)
+        {
+            _isReplayFinish = false;
+        }
         _curState = StateUpdateSTG;
     }
 
@@ -267,7 +272,7 @@ public class StateSTGMain : IState,ICommand
         }
         else
         {
-            _seed = _replayData.seed;
+            _seed = ReplayManager.GetInstance().GetSeed();
         }
         _stgMain.InitSTG(_seed);
         // 设置初始残机数和符卡数目
@@ -290,15 +295,23 @@ public class StateSTGMain : IState,ICommand
             if (curFrame >= ReplayManager.GetInstance().GetReplayLastFrame())
             {
                 _isReplayFinish = true;
-                UIManager.GetInstance().ShowView(WindowName.STGPauseView);
+                UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseAfterReplayFinished);
                 Global.IsPause = true;
-                CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame, 1);
+                CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
+                return;
             }
         }
         // 检测是否在游戏进行中按下Esc进行暂停
         if (!Global.IsPause && Input.GetKeyDown(KeyCode.Escape))
         {
-            UIManager.GetInstance().ShowView(WindowName.STGPauseView);
+            if (Global.IsInReplayMode)
+            {
+                UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseInReplay);
+            }
+            else
+            {
+                UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseInGame);
+            }
             Global.IsPause = true;
             CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
         }
@@ -313,7 +326,7 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnStageClear()
     {
-        UIManager.GetInstance().ShowView(WindowName.STGPauseView, 1);
+        UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseAfterGameClear);
         Global.IsPause = true;
         CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
     }
@@ -359,10 +372,9 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnSaveReplay()
     {
-        SaveReplayData();
         Logger.Log("Save Replay");
+        ReplayManager.GetInstance().SaveReplay();
         // 以replay模式重新播放
-        ReplayManager.GetInstance().SetReplayData(_replayData.keyList, _replayData.lastFrame);
         Global.IsInReplayMode = true;
 
         _curState = StateClear;

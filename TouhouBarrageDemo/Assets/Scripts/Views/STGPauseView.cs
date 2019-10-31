@@ -78,6 +78,10 @@ public class STGPauseView : ViewBase
     /// 当前选择的item在availableList中对应的索引
     /// </summary>
     private int _curSelectAvailableIndex;
+    /// <summary>
+    /// 暂停的状态
+    /// </summary>
+    private ePauseViewState _pauseState;
 
     public override void Init(GameObject viewObj)
     {
@@ -99,8 +103,8 @@ public class STGPauseView : ViewBase
         _state = StatePause;
         // 隐藏yesno面板
         _yesNoPanel.SetActive(false);
-        int showState = data == null ? 0 : (int)data;
-        InitAvailableItems(showState);
+        _pauseState = data == null ? 0 : (ePauseViewState)data;
+        InitAvailableItems(_pauseState);
         PlayShowAni();
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
@@ -150,12 +154,14 @@ public class STGPauseView : ViewBase
     /// 界面打开时根据状态来显示不同的item
     /// <para>0 普通暂停</para>
     /// <para>1 stage all clear之后的暂停</para>
+    /// <para>2 播放录像时的暂停</para>
+    /// <para>3 录像播放完毕之后的暂停</para>
     /// </summary>
     /// <param name="state"></param>
-    private void InitAvailableItems(int state)
+    private void InitAvailableItems(ePauseViewState state)
     {
         _availableIndex = 0;
-        if (state == 0)
+        if (state == ePauseViewState.PauseInGame)
         {
             _availableIndex |= 1 << 0;
             _availableIndex |= 1 << 1;
@@ -163,18 +169,34 @@ public class STGPauseView : ViewBase
             _availableIndex |= 1 << 3;
             _showItemCount = 4;
         }
-        else if (state == 1)
+        else if (state == ePauseViewState.PauseAfterGameClear)
         {
             _availableIndex |= 1 << 1;
             _availableIndex |= 1 << 2;
             _availableIndex |= 1 << 3;
             _showItemCount = 4;
         }
+        else if (state == ePauseViewState.PauseInReplay)
+        {
+            _availableIndex |= 1 << 0;
+            _availableIndex |= 1 << 1;
+            _availableIndex |= 1 << 3;
+            _showItemCount = 4;
+        }
+        else if (state == ePauseViewState.PauseAfterReplayFinished)
+        {
+            _availableIndex |= 1 << 1;
+            _availableIndex |= 1 << 3;
+            _showItemCount = 4;
+        }
         _availableList = new List<int>();
         Image img;
+        RectTransform tf;
         for (int i=0;i<_showItemCount;i++)
         {
-            img = _selectItems[i].GetComponent<Image>();
+            tf = _selectItems[i].GetComponent<RectTransform>();
+            img = tf.GetComponent<Image>();
+            tf.anchoredPosition = new Vector2(2000, 2000);
             if ((_availableIndex & (1 << i)) != 0)
             {
                 img.color = new Color(1, 1, 1, 1);
@@ -316,6 +338,10 @@ public class STGPauseView : ViewBase
         // 若当前正在暂停界面，则直接返回游戏
         else if (_state == StatePause)
         {
+            if (_pauseState == ePauseViewState.PauseAfterGameClear)
+                return;
+            if (_pauseState == ePauseViewState.PauseAfterReplayFinished)
+                return;
             Hide();
             CommandManager.GetInstance().RunCommand(CommandConsts.ContinueGame);
         }
@@ -446,4 +472,12 @@ public class STGPauseView : ViewBase
     {
         return LayerId.GameInfo;
     }
+}
+
+public enum ePauseViewState : byte
+{
+    PauseInGame = 0,
+    PauseAfterGameClear = 1,
+    PauseInReplay = 2,
+    PauseAfterReplayFinished = 3,
 }

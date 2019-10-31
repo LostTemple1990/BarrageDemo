@@ -1,8 +1,12 @@
 lib = require "LuaLib"
 local consts = Constants
-local Stage = {}
 
+local Stage = {}
 local CustomizedTable = {}
+local CustomizedEnemyTable = {}
+local BossTable = {}
+local CustomizedSTGObjectTable = {}
+
 CustomizedTable.SinBullet = {}
 CustomizedTable.SinBullet.Init = function(self,incX,angle,isNegative)
 	lib.AddBulletTask(self,function()
@@ -991,8 +995,9 @@ end
 
 return
 {
-	CustomizedBulletTable = CustomizedTable,
-	CustomizedEnemyTable = CustomizedEnemyTable,
-	BossTable = BossTable,
-	Stage = Stage,
+   CustomizedBulletTable = CustomizedTable,
+   CustomizedEnemyTable = CustomizedEnemyTable,
+   BossTable = BossTable,
+   CustomizedSTGObjectTable = CustomizedSTGObjectTable,
+   Stage = Stage,
 }
