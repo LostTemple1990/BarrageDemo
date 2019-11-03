@@ -124,4 +124,18 @@
     /// 保存录像
     /// </summary>
     public const int SaveReplay = 3015;
+    /// <summary>
+    /// 选择难度
+    /// </summary>
+    public const int SelectDifficulty = 3101;
+    /// <summary>
+    /// 选择角色
+    /// <para>int characterIndex</para>
+    /// <para>0 灵梦 1 魔理沙</para>
+    /// </summary>
+    public const int SelectCharacter = 3102;
+    /// <summary>
+    /// 取消角色选择，返回主界面
+    /// </summary>
+    public const int CancelSelectCharacter = 3103;
 }

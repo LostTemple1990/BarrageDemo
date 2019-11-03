@@ -186,11 +186,9 @@ public class STGMain
     /// <summary>
     /// 初始化STG的数据、玩家对象、控制器等
     /// </summary>
-    public void InitSTG(long seed)
+    public void InitSTG(int characterIndex)
     {
-        MTRandom.Init(seed);
-        PlayerService.GetInstance().Init();
-        _char = PlayerService.GetInstance().GetCharacter();
+        _char = PlayerService.GetInstance().CreateCharacter(characterIndex);
         _opController = OperationController.GetInstance();
         _opController.InitCharacter();
         BackgroundManager.GetInstance().Init();

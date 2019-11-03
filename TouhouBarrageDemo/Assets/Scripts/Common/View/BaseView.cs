@@ -4,12 +4,12 @@ using System.Collections;
 public class ViewBase
 {
     protected GameObject _view;
-    protected Transform _viewTf;
+    protected RectTransform _viewTf;
 
     public virtual void Init(GameObject viewObj)
     {
         _view = viewObj;
-        _viewTf = _view.transform;
+        _viewTf = _view.GetComponent<RectTransform>();
         UIManager.GetInstance().AddGoToLayer(viewObj, GetLayerId());
     }
 
@@ -25,6 +25,7 @@ public class ViewBase
         if ( _view != null )
         {
             _view.SetActive(true);
+            Adaptive();
             OnShow(data);
         }
     }

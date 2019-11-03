@@ -66,9 +66,4 @@ public class Global
     /// 测试的Stage名称
     /// </summary>
     public static string DebugStageName = "";
-    /// <summary>
-    /// 随机数种子
-    /// <para>todo 暂时写在这里，等主界面写完之后统一修改</para>
-    /// </summary>
-    public static long RandomSeed = 0;
 }

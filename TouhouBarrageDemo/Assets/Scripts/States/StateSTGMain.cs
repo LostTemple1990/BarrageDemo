@@ -40,9 +40,9 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private bool _isReplayFinish;
     /// <summary>
-    /// 随机数种子
+    /// 当前STG的基本数据
     /// </summary>
-    private long _seed;
+    private STGData _stgData;
 
     public StateSTGMain()
     {
@@ -81,7 +81,7 @@ public class StateSTGMain : IState,ICommand
 
     public int GetStateId()
     {
-        return _curState;
+        return (int)eGameState.STG;
     }
 
     public void OnInit(IFSM fsm)
@@ -89,7 +89,7 @@ public class StateSTGMain : IState,ICommand
         _fsm = fsm as GameStateMachine;
     }
 
-    public void OnStateEnter(object[] datas=null)
+    public void OnStateEnter(object data=null)
     {
         // 初始化STGMain
         _curState = StateInitSTGMain;
@@ -105,8 +105,9 @@ public class StateSTGMain : IState,ICommand
         CommandManager.GetInstance().Register(CommandConsts.ContinueGame, this);
         CommandManager.GetInstance().Register(CommandConsts.StageClear, this);
         CommandManager.GetInstance().Register(CommandConsts.SaveReplay, this);
+        _stgData = (STGData)data;
         // 设置需要载入的stage
-        _nextStageName = datas[0] as string;
+        _nextStageName = _stgData.stageName;
         //_isInReplayMode = (bool)datas[1];
         //Global.IsInReplayMode = _isInReplayMode;
         // 实例化STGMain
@@ -196,8 +197,9 @@ public class StateSTGMain : IState,ICommand
     private void OnStateInitSTGMainUpdate()
     {
         _stgMain.Init();
-        _seed = InitSeed();
-        _stgMain.InitSTG(_seed);
+        _stgData.seed = InitSeed();
+        MTRandom.Init(_stgData.seed);
+        _stgMain.InitSTG(_stgData.characterIndex);
         // 加载各个stage.lua文件
         List<string> stageLuaList = new List<string> { "stage1", "stage1sc" };
         //List<string> stageLuaList = new List<string> { "TestEditorStage" };
@@ -224,8 +226,8 @@ public class StateSTGMain : IState,ICommand
     /// <returns></returns>
     private long InitSeed()
     {
-        Global.RandomSeed = System.DateTime.Now.Ticks % 0xffffffff;
-        return Global.RandomSeed;
+        long seed = System.DateTime.Now.Ticks % 0xffffffff;
+        return seed;
     }
 
     /// <summary>
@@ -268,13 +270,14 @@ public class StateSTGMain : IState,ICommand
     {
         if (!Global.IsInReplayMode)
         {
-            _seed = InitSeed();
+            _stgData.seed = InitSeed();
         }
         else
         {
-            _seed = ReplayManager.GetInstance().GetSeed();
+            _stgData = ReplayManager.GetInstance().GetReplaySTGData();
         }
-        _stgMain.InitSTG(_seed);
+        MTRandom.Init(_stgData.seed);
+        _stgMain.InitSTG(_stgData.characterIndex);
         // 设置初始残机数和符卡数目
         PlayerService.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
         PlayerService.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
@@ -332,40 +335,6 @@ public class StateSTGMain : IState,ICommand
     }
 
     #region replay
-    [Serializable]
-    class ReplayData
-    {
-        /// <summary>
-        /// 机签
-        /// </summary>
-        public int name;
-        /// <summary>
-        /// 完成时间
-        /// </summary>
-        public long completeTimeTicks;
-        /// <summary>
-        /// 随机数种子
-        /// </summary>
-        public long seed;
-        /// <summary>
-        /// 按键
-        /// </summary>
-        public List<eSTGKey> keyList;
-        /// <summary>
-        /// 结束帧
-        /// </summary>
-        public int lastFrame;
-    }
-
-    private ReplayData _replayData;
-
-    public void SaveReplayData()
-    {
-        _replayData = new ReplayData();
-        _replayData.seed = _seed;
-        _replayData.keyList = OperationController.GetInstance().GetOperationKeyList();
-        _replayData.lastFrame = STGStageManager.GetInstance().GetFrameSinceStageStart();
-    }
 
     /// <summary>
     /// 保存并播放replay
@@ -373,7 +342,7 @@ public class StateSTGMain : IState,ICommand
     private void OnSaveReplay()
     {
         Logger.Log("Save Replay");
-        ReplayManager.GetInstance().SaveReplay();
+        ReplayManager.GetInstance().SaveReplay(_stgData);
         // 以replay模式重新播放
         Global.IsInReplayMode = true;
 

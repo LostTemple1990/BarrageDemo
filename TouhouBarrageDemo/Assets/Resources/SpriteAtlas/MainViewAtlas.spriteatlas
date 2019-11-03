@@ -1,0 +1,157 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: MainViewAtlas
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 3e5666c534e26e94498322dd92ebf8ae, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 8a0535b0e25b3af4ea3d4766a189b088, type: 3}
+  - {fileID: 21300000, guid: b40d0cd0f27ca4041b065a58ffedbcd5, type: 3}
+  - {fileID: 21300000, guid: 672f0d0154ae46f47a43e5cfe3eda67a, type: 3}
+  - {fileID: 21300000, guid: 239e3051afebd9748a07cdf2b8257a33, type: 3}
+  - {fileID: 21300000, guid: bc062191a4f5a6341bfd6d77a676865c, type: 3}
+  - {fileID: 21300000, guid: 5bb714c119df03d4c8bbb32e36ca9009, type: 3}
+  - {fileID: 21300000, guid: 6b42ddf10e19dae41b84dcfb011953ea, type: 3}
+  - {fileID: 21300000, guid: ddc48a223a4f94d4ea803bcec68eb2de, type: 3}
+  - {fileID: 21300000, guid: 921a4b22c74eb6c48ba5b5e1d2e37483, type: 3}
+  - {fileID: 21300000, guid: 06c65a92bb8fb8643a888b3e4db93a8b, type: 3}
+  - {fileID: 21300000, guid: 03bfc133ec339fc438e73c4321627568, type: 3}
+  - {fileID: 21300000, guid: 293e256312732c14688628ca0be276a7, type: 3}
+  - {fileID: 21300000, guid: 01845983240cc8b4eab306692ea92efd, type: 3}
+  - {fileID: 21300000, guid: 55321093ba184f8458986b4dfd575caf, type: 3}
+  - {fileID: 21300000, guid: efee29a3e392e7e4b8d3f684d68f8cdc, type: 3}
+  - {fileID: 21300000, guid: 87fba5242e8437345bef8c3e93212c7f, type: 3}
+  - {fileID: 21300000, guid: 59d54764e57b7f94c95cd22142b8a38b, type: 3}
+  - {fileID: 21300000, guid: a7947bb4464d19b4088e46e2bb303acc, type: 3}
+  - {fileID: 21300000, guid: 969af0e4ead605b478aafb9b0672e962, type: 3}
+  - {fileID: 21300000, guid: 363bef0599f84e84c9f5333659a96a70, type: 3}
+  - {fileID: 21300000, guid: c9cd3025e45842440a37efe60fd39b55, type: 3}
+  - {fileID: 21300000, guid: ae3f364581970fd41a625f82c54f73ad, type: 3}
+  - {fileID: 21300000, guid: 629762957c628da499c0eb2f9e8743fb, type: 3}
+  - {fileID: 21300000, guid: d812c795298082040b412fe28eb66cf5, type: 3}
+  - {fileID: 21300000, guid: 5d7fb2e5031e93d41a354520068ac026, type: 3}
+  - {fileID: 21300000, guid: 9738abe50fdf08b4684969e1ebe0762a, type: 3}
+  - {fileID: 21300000, guid: b96af5460bf732f4e92ca2674d0a851f, type: 3}
+  - {fileID: 21300000, guid: e0a4b8760f80a7941bad61414457ef6e, type: 3}
+  - {fileID: 21300000, guid: 6418f2969e878004eafc9e578e0b8daf, type: 3}
+  - {fileID: 21300000, guid: 796b9b47bdeaa7f48867a0edd890ce35, type: 3}
+  - {fileID: 21300000, guid: 7a9f6ea757a080f4a909c2e717ff5800, type: 3}
+  - {fileID: 21300000, guid: 0f21051835b411b41abe931bc8f95e6c, type: 3}
+  - {fileID: 21300000, guid: 6cf3a328eabd21f4fae632d75bfaa5e2, type: 3}
+  - {fileID: 21300000, guid: 5ae0e428ba76ca44c8a908b57e227145, type: 3}
+  - {fileID: 21300000, guid: f01ca968181dbde429a825c1e36d9ddb, type: 3}
+  - {fileID: 21300000, guid: b03f9a786742164488f0fd56b03ee81e, type: 3}
+  - {fileID: 21300000, guid: e924de98fcd712947ac067cbbce7a7b9, type: 3}
+  - {fileID: 21300000, guid: 08e78cb80f587754784af15a88f61405, type: 3}
+  - {fileID: 21300000, guid: 30a43879c3842ca408086452cbfd80e2, type: 3}
+  - {fileID: 21300000, guid: b1f8b2f93262f864db0e0449a455b32b, type: 3}
+  - {fileID: 21300000, guid: d328db0ad2a5fac4e87c9b25c7e14d06, type: 3}
+  - {fileID: 21300000, guid: a140981a9d7cdb64bbc1413033d4fd0f, type: 3}
+  - {fileID: 21300000, guid: a443133a6ce471947aa6207b01685f7e, type: 3}
+  - {fileID: 21300000, guid: 71d3e28a9bf3ef94cb19bec8c212c301, type: 3}
+  - {fileID: 21300000, guid: f2891baabf63cff48ad19bd30f370005, type: 3}
+  - {fileID: 21300000, guid: a1793baa64a815a4a92540bf16cf1a9d, type: 3}
+  - {fileID: 21300000, guid: a19a9bcac2e3a0d4aa3100d0606d5b4b, type: 3}
+  - {fileID: 21300000, guid: b5c6579b2bf095f43a487fdfbae69b67, type: 3}
+  - {fileID: 21300000, guid: a63221bb8a1e87449a0fbcd65290f608, type: 3}
+  - {fileID: 21300000, guid: f81d9c2c6d6e3e94197efc422d1e8329, type: 3}
+  - {fileID: 21300000, guid: e09bad5cba1f9634c8d462d471ecf3f4, type: 3}
+  - {fileID: 21300000, guid: 46214d9c4902eb848a52466293909703, type: 3}
+  - {fileID: 21300000, guid: a793d81d3cc30da458f43cdb64c4b00d, type: 3}
+  - {fileID: 21300000, guid: 2365c4cdd4e3fd645a65665d59c5d684, type: 3}
+  - {fileID: 21300000, guid: defa19cd3b9403048ae9903ff5e15245, type: 3}
+  - {fileID: 21300000, guid: 1506e5fdaf287ad4fb9fa80d6222b052, type: 3}
+  - {fileID: 21300000, guid: 4f87eb4ebc15fd74dbef0147863372b4, type: 3}
+  - {fileID: 21300000, guid: c6c08edee5638564ca222f3c6f030693, type: 3}
+  - {fileID: 21300000, guid: 24f9b3fe60be486429c17f5146a86e6b, type: 3}
+  - {fileID: 21300000, guid: bced416fddd92f14cabec4dceb168165, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - BGMVol_1
+  - Num4_0
+  - MainUITitle_47
+  - MusicRoom_1
+  - NumP_1
+  - Num1_0
+  - MainUITitle_58
+  - PlayerData_0
+  - SEVol_1
+  - KeyConfig_1
+  - Num7_1
+  - SEVol_0
+  - MainUITitle_50
+  - Num5_0
+  - Option_0
+  - GameStart_0
+  - MainUITitle_51
+  - MainUITitle_59
+  - Num1_1
+  - PracticeStart_1
+  - Num3_1
+  - ExtraStart_0
+  - MainUITitle_38
+  - MainUITitle_46
+  - PlayerData_1
+  - Quit_0
+  - Default_1
+  - MainUITitle_55
+  - Quit_1
+  - NumP_0
+  - MainUITitle_39
+  - KeyConfig_0
+  - Num3_0
+  - GameStart_1
+  - Num2_1
+  - Num5_1
+  - Num7_0
+  - Num4_1
+  - Num0_1
+  - BGMVol_0
+  - Num9_0
+  - Num6_1
+  - MainUITitle_35
+  - MainUITitle_34
+  - MainUITitle_43
+  - ExtraStart_1
+  - Num2_0
+  - MainUITitle_54
+  - Num6_0
+  - Num8_0
+  - Replay_1
+  - MusicRoom_0
+  - Option_1
+  - Num9_1
+  - Replay_0
+  - Num0_0
+  - PracticeStart_0
+  - Default_0
+  - Num8_1
+  - MainUITitle_42
+  m_Tag: MainViewAtlas
+  m_IsVariant: 0

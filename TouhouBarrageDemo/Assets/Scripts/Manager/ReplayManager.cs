@@ -22,13 +22,20 @@ public class ReplayManager
     private List<eSTGKey> _keyList;
     private long _seed;
 
-    public void SaveReplay()
+    private STGData _stgData;
+
+    public void SaveReplay(STGData data)
     {
         if (Global.IsInReplayMode)
             return;
         _keyList = OperationController.GetInstance().GetOperationKeyList();
         _lastFrame = STGStageManager.GetInstance().GetFrameSinceStageStart();
-        _seed = Global.RandomSeed;
+        _seed = data.seed;
+    }
+
+    public STGData GetReplaySTGData()
+    {
+        return _stgData;
     }
 
     public void SetReplayData(List<eSTGKey> keyList,int lastFrame)

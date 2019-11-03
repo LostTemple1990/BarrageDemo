@@ -10,7 +10,7 @@ public class GameStateMachine : IFSM
     private int _curStateId;
     private int _nextStateId;
 
-    private object[] _nextStateDatas;
+    private object _nextStateData;
 
     public void Init()
     {
@@ -44,10 +44,10 @@ public class GameStateMachine : IFSM
         return _curStateId;
     }
 
-    public void SetNextStateId(int stateId,object[] datas=null)
+    public void SetNextStateId(int stateId,object data=null)
     {
         _nextStateId = stateId;
-        _nextStateDatas = datas;
+        _nextStateData = data;
     }
 
     public void Update()
@@ -77,8 +77,9 @@ public class GameStateMachine : IFSM
             _curStateId = _nextStateId;
             _nextStateId = -1;
             _curState = nextState;
-            nextState.OnStateEnter(_nextStateDatas);
-            _nextStateDatas = null;
+            object tmpData = _nextStateData;
+            _nextStateData = null;
+            nextState.OnStateEnter(tmpData);
         }
     }
 }

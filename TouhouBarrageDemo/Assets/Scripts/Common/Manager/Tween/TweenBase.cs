@@ -199,5 +199,6 @@ public class TweenBase : IPoolClass
         _isFinish = true;
         _tweenGo = null;
         _finishCallBack = null;
+        _ignoreTimeScale = true;
     }
 }

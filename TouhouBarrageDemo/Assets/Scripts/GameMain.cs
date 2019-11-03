@@ -49,9 +49,14 @@ public class GameMain : MonoBehaviour
         _fsm = new GameStateMachine();
         _fsm.Init();
         _fsm.AddState((int)eGameState.STG, new StateSTGMain());
-        string stageName = "Stage1";
-        object[] datas = { stageName, false };
-        _fsm.SetNextStateId((int)eGameState.STG,datas);
+        _fsm.AddState((int)eGameState.Title, new StateTitle());
+        //STGData data = new STGData()
+        //{
+        //    stageName = "Stage1",
+        //    characterIndex = 1,
+        //};
+        //_fsm.SetNextStateId((int)eGameState.STG, data);
+        _fsm.SetNextStateId((int)eGameState.Title);
         Application.targetFrameRate = 60;
     }
 }

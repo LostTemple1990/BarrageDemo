@@ -190,7 +190,7 @@ public enum ePlayMode : int
 
 public enum eGameState : int
 {
-    Main = 1,
+    Title = 1,
     STG = 3,
 }
 
@@ -365,6 +365,15 @@ public enum ePlayerMoveMode : byte
 {
     HighSpeed = 0,
     LowSpeed = 1,
+}
+
+public struct STGData
+{
+    public string stageName;
+    public int difficulty;
+    public int characterIndex;
+    public long seed;
+    public bool isReplay;
 }
 
 #region struct ItemWithFramentsCounter

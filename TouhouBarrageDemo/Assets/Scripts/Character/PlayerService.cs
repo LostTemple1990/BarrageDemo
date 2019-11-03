@@ -59,6 +59,32 @@ public class PlayerService
         _character.Init();
     }
 
+    /// <summary>
+    /// 创建角色
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public CharacterBase CreateCharacter(int index)
+    {
+        _curPower = 100;
+        _graze = 0;
+        _signalValue = 0;
+        if (index == 0)
+        {
+            _character = new Reimu();
+        }
+        else if (index == 1)
+        {
+            _character = new MarisaA();
+        }
+        if (_character == null)
+        {
+            throw new System.Exception("invalid index of character!");
+        }
+        _character.Init();
+        return _character;
+    }
+
     public CharacterBase GetCharacter()
     {
         return _character;

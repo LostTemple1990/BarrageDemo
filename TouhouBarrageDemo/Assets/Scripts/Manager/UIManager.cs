@@ -157,7 +157,7 @@ public class UIManager {
         //Global.BulletLBBorderPos.y = Global.GameLBBorderPos.y - 100;
         //Global.BulletRTBorderPos.x = Global.GameRTBorderPos.x + 100;
         //Global.BulletRTBorderPos.y = Global.GameRTBorderPos.y + 100;
-        Logger.Log("Screem : width = " + Screen.width + "  height = " + Screen.height);
+        Logger.Log("Screen : width = " + Screen.width + "  height = " + Screen.height);
         //Logger.Log(Global.BulletLBBorderPos + "  " + Global.BulletRTBorderPos);
         // 玩家坐标边界
         Global.PlayerLBBorderPos = new Vector2(Global.GameLBBorderPos.x + Consts.PlayerHalfWidth, Global.GameLBBorderPos.y + Consts.PlayerHalfHeight);
@@ -283,6 +283,11 @@ public class UIManager {
     public Transform GetSTGLayerTf()
     {
         return _stgLayerTf;
+    }
+
+    public Vector2 GetUIRootSize()
+    {
+        return _uiRootTf.sizeDelta;
     }
 }
 
