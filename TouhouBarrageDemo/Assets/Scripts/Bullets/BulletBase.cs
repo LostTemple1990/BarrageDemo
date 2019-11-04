@@ -13,6 +13,10 @@ public class BulletBase :IPosition,ICollisionObject
     /// </summary>
     protected Vector2 _curPos;
     /// <summary>
+    /// 是否已经初始化了位置
+    /// </summary>
+    protected bool _isInitPos;
+    /// <summary>
     /// 当前旋转的角度
     /// </summary>
     protected float _curRotation;
@@ -70,6 +74,7 @@ public class BulletBase :IPosition,ICollisionObject
         _isMoving = false;
         _lastPos = Vector2.zero;
         _curPos = Vector2.zero;
+        _isInitPos = false;
         _curRotation = 0;
         _isRotationDirty = true;
         _orderInLayer = 0;
@@ -102,12 +107,22 @@ public class BulletBase :IPosition,ICollisionObject
     public virtual void SetPosition(Vector2 pos)
     {
         _curPos = pos;
+        if (!_isInitPos)
+        {
+            _isInitPos = true;
+            _lastPos = pos;
+        }
     }
 
     public virtual void SetPosition(float posX,float posY)
     {
         _curPos.x = posX;
         _curPos.y = posY;
+        if (!_isInitPos)
+        {
+            _isInitPos = true;
+            _lastPos = _curPos;
+        }
     }
 
     public virtual Vector2 GetPosition()

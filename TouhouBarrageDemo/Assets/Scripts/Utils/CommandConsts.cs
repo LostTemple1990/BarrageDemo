@@ -125,6 +125,11 @@
     /// </summary>
     public const int SaveReplay = 3015;
     /// <summary>
+    /// 返回主菜单
+    /// </summary>
+    public const int BackToTitle = 3016;
+
+    /// <summary>
     /// 选择难度
     /// </summary>
     public const int SelectDifficulty = 3101;

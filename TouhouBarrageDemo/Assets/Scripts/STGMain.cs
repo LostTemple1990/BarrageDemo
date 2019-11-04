@@ -166,7 +166,7 @@ public class STGMain
         //shakeEffect.DoShake(200, 9999, 6, 1, 5, 3, 15);
     }
 
-    public void Clear(eSTGClearType type)
+    public void Clear()
     {
         PlayerService.GetInstance().Clear();
         _char = null;
@@ -179,7 +179,7 @@ public class STGMain
         ExtraTaskManager.GetInstance().Clear();
         BackgroundManager.GetInstance().Clear();
         STGStageManager.GetInstance().Clear();
-        InterpreterManager.GetInstance().Clear(type);
+        InterpreterManager.GetInstance().Clear();
         SoundManager.GetInstance().Clear();
     }
 

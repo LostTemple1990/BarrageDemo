@@ -199,7 +199,7 @@ public class Reimu : CharacterBase
 
     public override float GetMoveSpeed()
     {
-        float speed = _inputMoveMode == Consts.MoveModeHighSpeed ? HighSpeedStateSpeed : LowSpeedStateSpeed;
+        float speed = _curMoveMode == ePlayerMoveMode.HighSpeed ? HighSpeedStateSpeed : LowSpeedStateSpeed;
         return speed;
     }
 

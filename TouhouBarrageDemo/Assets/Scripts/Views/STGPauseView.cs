@@ -395,7 +395,7 @@ public class STGPauseView : ViewBase
             {
                 if (_curSelectIndex == IndexBackToTitle)
                 {
-
+                    OnBackToTitle();
                 }
                 else if (_curSelectIndex == IndexSaveReplay)
                 {
@@ -440,7 +440,8 @@ public class STGPauseView : ViewBase
     /// </summary>
     private void OnBackToTitle()
     {
-
+        CommandManager.GetInstance().RunCommand(CommandConsts.BackToTitle);
+        Hide();
     }
 
     /// <summary>

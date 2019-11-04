@@ -71,10 +71,13 @@ public class StateSTGMain : IState,ICommand
                 OnContinueGame();
                 break;
             case CommandConsts.StageClear:
-                OnStageClear();
+                OnStageFinished();
                 break;
             case CommandConsts.SaveReplay:
                 OnSaveReplay();
+                break;
+            case CommandConsts.BackToTitle:
+                OnBackToTitle();
                 break;
         }
     }
@@ -105,15 +108,24 @@ public class StateSTGMain : IState,ICommand
         CommandManager.GetInstance().Register(CommandConsts.ContinueGame, this);
         CommandManager.GetInstance().Register(CommandConsts.StageClear, this);
         CommandManager.GetInstance().Register(CommandConsts.SaveReplay, this);
+        CommandManager.GetInstance().Register(CommandConsts.BackToTitle, this);
         _stgData = (STGData)data;
         // 设置需要载入的stage
         _nextStageName = _stgData.stageName;
-        //_isInReplayMode = (bool)datas[1];
-        //Global.IsInReplayMode = _isInReplayMode;
+        // 打开界面
+        UIManager.GetInstance().ShowView(WindowName.GameInfoView, null);
+        UIManager.GetInstance().ShowView(WindowName.STGBottomView, null);
+        UIManager.GetInstance().ShowView(WindowName.GameMainView);
+
+        UIManager.GetInstance().ShowView(WindowName.STGDialogView);
         // 实例化STGMain
         if (_stgMain == null )
         {
-            _stgMain = new STGMain();
+            _curState = StateInitSTGMain;
+        }
+        else
+        {
+            _curState = StateInitSTG;
         }
     }
 
@@ -124,6 +136,12 @@ public class StateSTGMain : IState,ICommand
         CommandManager.GetInstance().Remove(CommandConsts.ContinueGame, this);
         CommandManager.GetInstance().Remove(CommandConsts.StageClear, this);
         CommandManager.GetInstance().Remove(CommandConsts.SaveReplay, this);
+        CommandManager.GetInstance().Remove(CommandConsts.BackToTitle, this);
+
+        UIManager.GetInstance().HideView(WindowName.GameInfoView);
+        UIManager.GetInstance().HideView(WindowName.STGBottomView);
+        UIManager.GetInstance().HideView(WindowName.GameMainView);
+        UIManager.GetInstance().HideView(WindowName.STGDialogView);
     }
 
     public void OnUpdate()
@@ -196,10 +214,8 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnStateInitSTGMainUpdate()
     {
+        _stgMain = new STGMain();
         _stgMain.Init();
-        _stgData.seed = InitSeed();
-        MTRandom.Init(_stgData.seed);
-        _stgMain.InitSTG(_stgData.characterIndex);
         // 加载各个stage.lua文件
         List<string> stageLuaList = new List<string> { "stage1", "stage1sc" };
         //List<string> stageLuaList = new List<string> { "TestEditorStage" };
@@ -207,17 +223,8 @@ public class StateSTGMain : IState,ICommand
         {
             InterpreterManager.GetInstance().LoadLuaFile(stageLuaList[i]);
         }
-        // 设置初始残机数和符卡数目
-        PlayerService.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
-        PlayerService.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
-        // 打开界面
-        UIManager.GetInstance().ShowView(WindowName.GameInfoView, null);
-        UIManager.GetInstance().ShowView(WindowName.STGBottomView, null);
-        UIManager.GetInstance().ShowView(WindowName.GameMainView);
 
-        UIManager.GetInstance().ShowView(WindowName.STGDialogView);
-
-        _curState = StateLoadStageLua;
+        _curState = StateInitSTG;
     }
 
     /// <summary>
@@ -259,7 +266,7 @@ public class StateSTGMain : IState,ICommand
     private void OnStateClearUpdate()
     {
         _curState = StateWait;
-        _stgMain.Clear(eSTGClearType.RetryCurStage);
+        _stgMain.Clear();
         _curState = StateInitSTG;
     }
 
@@ -327,11 +334,17 @@ public class StateSTGMain : IState,ICommand
     /// <summary>
     /// 通关当前关卡
     /// </summary>
-    private void OnStageClear()
+    private void OnStageFinished()
     {
         UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseAfterGameClear);
         Global.IsPause = true;
         CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
+    }
+
+    private void OnBackToTitle()
+    {
+        _stgMain.Clear();
+        _fsm.SetNextStateId((int)eGameState.Title);
     }
 
     #region replay

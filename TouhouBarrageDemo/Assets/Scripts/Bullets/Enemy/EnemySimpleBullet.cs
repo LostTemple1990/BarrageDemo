@@ -135,7 +135,7 @@ public class EnemySimpleBullet : EnemyBulletMovable
         if (_isColorChanged) UpdateColor();
         if (_aniFrameCount != 0) UpdateAni();
         CheckRotateImg();
-        UpdatePos();
+        RenderPosition();
         OnFrameStarted();
     }
 

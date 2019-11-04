@@ -854,15 +854,6 @@ public class CharacterBase : IAffectedMovableObject
     }
 
     /// <summary>
-    /// 键盘输入方向
-    /// </summary>
-    public int InputDir
-    {
-        set { _inputDir = value; }
-        get { return _inputDir; }
-    }
-
-    /// <summary>
     /// 键盘输入是否射击
     /// </summary>
     public bool InputShoot

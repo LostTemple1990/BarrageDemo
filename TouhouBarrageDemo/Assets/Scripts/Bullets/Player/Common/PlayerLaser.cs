@@ -139,7 +139,7 @@ public class PlayerLaser : PlayerBulletBase
     {
         if (_hitObject) CreateHitEffect(_bulletCfg.hitEffectParas);
         RenderLaser();
-        UpdateTransform();
+        RenderPosition();
         OnFrameStarted();
     }
 

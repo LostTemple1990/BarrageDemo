@@ -346,7 +346,7 @@ public class EnemyBulletMovable : EnemyBulletBase
         _hasExtraSpeed = false;
     }
 
-    protected virtual void UpdatePos()
+    protected virtual void RenderPosition()
     {
         _trans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
     }

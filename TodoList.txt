@@ -48,7 +48,7 @@ Enemy的GetHit函数要加入伤害来源，用于判断是否吃B --finish
 统一CustomizedBullet的接口，统一采用参数 customizedName,posX,posY...来操作  --finish
 添加一个 #define DEBUG_MODE 使得在该模式下LUA调用报错时会产生错误信息 --finish
 改进ColliderTrigger
-游戏主界面
+游戏主界面 --finish
 Replay系统
 添加残机、Bomb等道具
 所有GameObject的Layer修正
@@ -56,7 +56,10 @@ Boss的符卡数目显示相关，击杀BOSS的特效
 添加StageClear之后的UI --finish
 曲线激光动画
 添加对话系统 --finish
-梦机子弹发射bug修复
+梦机子弹发射bug修复 --finish
+简易replay界面
+删除characterBase中的inputShoot和inputBomb
+残机计算，添加疮痍的暂停界面
 
 ---editor
 删除自定义的节点的时候，需要同时删除掉CustomDefine中对应的数据，否则撤销操作会报错 --finish

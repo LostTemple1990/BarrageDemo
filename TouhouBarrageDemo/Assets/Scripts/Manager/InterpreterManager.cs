@@ -151,33 +151,13 @@ public class InterpreterManager
         RefCustomizedSprite();
         RefCustomizedCollider();
         RefStageTable();
-    }
-
-    /// <summary>
-    /// 加载关卡对应的符卡配置
-    /// </summary>
-    /// <param name="stageId"></param>
-    public void LoadSpellCardConfig(int stageId)
-    {
-        _spellCardLoadedList.Add(stageId);
-        var status = _luaState.L_DoFile("stages/stage" + stageId + "sc.lua");
-        if (status != ThreadStatus.LUA_OK)
-        {
-            throw new Exception(_luaState.ToString(-1));
-        }
-        RefCustomizedBullet();
-        RefCustomizedEnemy();
-        // 弹出对应的sc.lua的返回table
         _luaState.Pop(1);
     }
 
     public Task CreateStageTask(string stageName)
     {
         // 记录全局变量player
-        _luaState.PushGlobalTable();
-        _luaState.PushLightUserData(PlayerService.GetInstance().GetCharacter());
-        _luaState.SetField(-2, "player");
-        _luaState.Pop(1);
+        SetGlobalField("player", PlayerService.GetInstance().GetCharacter(), LuaParaType.LightUserData);
 
         Task stageTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
         int taskFuncRef;
@@ -846,18 +826,9 @@ public class InterpreterManager
         return _traceBackIndex;
     }
 
-    public void Clear(eSTGClearType type)
+    public void Clear()
     {
         _funcParas.Clear();
-        if (type != eSTGClearType.RetryCurStage)
-        {
-            UnrefCustomizedBullets();
-            UnrefCustomizedEnemy();
-            // 弹出当前stage.lua返回的table
-            _luaState.Pop(1);
-            _curStageId = -1;
-        }
-        //UnrefBoss();
         ClearLuaGlobal();
 #if LogLuaFuncRef
         Logger.Log("InterpreterManager Clear Finished!\n Count of FuncRefDic = " + _luaRefDic.Count);
@@ -957,20 +928,6 @@ public enum LuaParaType : byte
     Number = 3,
     String = 4,
     LightUserData = 5,
-}
-
-struct LuaCoroutineData
-{
-    public int funcRef;
-    public ILuaState luaState;
-    public int curWaitTime;
-    public int totalWaitTime;
-    public bool isFinish;
-
-    public void Clear()
-    {
-        luaState = null;
-    }
 }
 
 struct CustomizedDefineData

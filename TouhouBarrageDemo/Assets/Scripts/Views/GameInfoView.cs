@@ -140,10 +140,7 @@ public class GameInfoView : ViewBase,ICommand
         CommandManager.GetInstance().Remove(CommandConsts.ShowSpellCardInfo, this);
         CommandManager.GetInstance().Remove(CommandConsts.SpellCardFinish, this);
         CommandManager.GetInstance().Remove(CommandConsts.SaveReplay, this);
-        _isShowSpellCardTime = false;
-        _scTimeObject.SetActive(false);
-        _bgmObject.SetActive(false);
-        _spellCardResultPanel.SetActive(false);
+        Reset();
     }
 
     public void Execute(int cmd, object data)

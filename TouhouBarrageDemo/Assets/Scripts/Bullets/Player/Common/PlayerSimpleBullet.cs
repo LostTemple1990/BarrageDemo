@@ -64,14 +64,14 @@ public class PlayerBulletSimple : PlayerBulletBase
 
     public override void Render()
     {
-        UpdateTransform();
+        RenderPosition();
         OnFrameStarted();
     }
 
-    protected override void UpdateTransform()
+    protected override void RenderPosition()
     {
         CheckRotated();
-        base.UpdateTransform();
+        base.RenderPosition();
     }
 
     protected virtual void UpdatePosition()
@@ -82,15 +82,13 @@ public class PlayerBulletSimple : PlayerBulletBase
 
     public override void SetPosition(Vector2 pos)
     {
-        _curPos.x = pos.x;
-        _curPos.y = pos.y;
+        base.SetPosition(pos);
         _movableObject.SetPos(_curPos.x, _curPos.y);
     }
 
     public override void SetPosition(float posX, float posY)
     {
-        _curPos.x = posX;
-        _curPos.y = posY;
+        base.SetPosition(posX, posY);
         _movableObject.SetPos(_curPos.x, _curPos.y);
     }
 
