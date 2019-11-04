@@ -19,4 +19,5 @@ public class WindowName
 
     public const string MainView = "MainView";
     public const string SelectCharView = "SelectCharView";
+    public const string ReplayView = "ReplayView";
 }

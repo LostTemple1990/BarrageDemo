@@ -85,6 +85,20 @@ public class PlayerService
         return _character;
     }
 
+    /// <summary>
+    /// 根据id获取角色名称
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public string GetCharacterNameByIndex(int index)
+    {
+        if (index == 0)
+            return "ReimuA";
+        else if (index == 1)
+            return "MarisaA";
+        throw new System.Exception("invalid index of character!");
+    }
+
     public CharacterBase GetCharacter()
     {
         return _character;

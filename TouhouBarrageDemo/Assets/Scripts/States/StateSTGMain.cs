@@ -74,7 +74,7 @@ public class StateSTGMain : IState,ICommand
                 OnStageFinished();
                 break;
             case CommandConsts.SaveReplay:
-                OnSaveReplay();
+                OnSaveReplay((ReplayInfo)data);
                 break;
             case CommandConsts.BackToTitle:
                 OnBackToTitle();
@@ -243,20 +243,25 @@ public class StateSTGMain : IState,ICommand
     private void OnStateLoadStageLuaUpdate()
     {
         _curState = StateWait;
-        if (Global.DebugStageName != "")
-        {
-            _curStageName = Global.DebugStageName;
-        }
-        else
-        {
-            _curStageName = _nextStageName;
-        }
-        _stgMain.EnterStage(_curStageName);
-        Global.IsPause = false;
         if (Global.IsInReplayMode)
         {
             _isReplayFinish = false;
+            _curStageName = _stgData.stageName;
         }
+        else
+        {
+            if (Global.DebugStageName != "")
+            {
+                _curStageName = Global.DebugStageName;
+            }
+            else
+            {
+                _curStageName = _nextStageName;
+            }
+        }
+        _stgData.stageName = _curStageName;
+        _stgMain.EnterStage(_curStageName);
+        Global.IsPause = false;
         _curState = StateUpdateSTG;
     }
 
@@ -275,13 +280,11 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnStateInitSTGUpdate()
     {
+        if (_stgData.isReplay)
+            Global.IsInReplayMode = true;
         if (!Global.IsInReplayMode)
         {
             _stgData.seed = InitSeed();
-        }
-        else
-        {
-            _stgData = ReplayManager.GetInstance().GetReplaySTGData();
         }
         MTRandom.Init(_stgData.seed);
         _stgMain.InitSTG(_stgData.characterIndex);
@@ -352,20 +355,21 @@ public class StateSTGMain : IState,ICommand
     /// <summary>
     /// 保存并播放replay
     /// </summary>
-    private void OnSaveReplay()
+    private void OnSaveReplay(ReplayInfo info)
     {
         Logger.Log("Save Replay");
-        ReplayManager.GetInstance().SaveReplay(_stgData);
+        ReplayManager.GetInstance().SaveReplay(info.replayIndex, info.name, _stgData);
+        CommandManager.GetInstance().RunCommand(CommandConsts.SaveReplaySuccess);
         // 以replay模式重新播放
-        Global.IsInReplayMode = true;
+        //Global.IsInReplayMode = true;
 
-        _curState = StateClear;
-        _nextStageName = _curStageName;
-        // 打开loadingView
-        List<object> commandList = new List<object>();
-        commandList.Add(CommandConsts.STGLoadStageLuaComplete);
-        object[] commandArr = commandList.ToArray();
-        UIManager.GetInstance().ShowView(WindowName.GameLoadingView, commandArr);
+        //_curState = StateClear;
+        //_nextStageName = _curStageName;
+        //// 打开loadingView
+        //List<object> commandList = new List<object>();
+        //commandList.Add(CommandConsts.STGLoadStageLuaComplete);
+        //object[] commandArr = commandList.ToArray();
+        //UIManager.GetInstance().ShowView(WindowName.GameLoadingView, commandArr);
     }
     #endregion
 }

@@ -29,6 +29,7 @@ public class MainView : ViewBase, ICommand
         AppearAni = 0,
         Normal = 1,
         SelectChar = 2,
+        SelectReplay = 3,
     }
 
     /// <summary>
@@ -142,6 +143,10 @@ public class MainView : ViewBase, ICommand
         {
             _isWaitingEvent = false;
         }
+        else if (cmd == CommandConsts.CancelSelectReplay)
+        {
+            _isWaitingEvent = false;
+        }
     }
 
     public override void Init(GameObject viewObj)
@@ -242,6 +247,10 @@ public class MainView : ViewBase, ICommand
         {
             OnSelCharacterStateUpdate();
         }
+        else if (_state == eMainViewState.SelectReplay)
+        {
+            OnSelReplayStateUpdate();
+        }
     }
 
     private void OnAppearAniStateUpdate()
@@ -297,7 +306,10 @@ public class MainView : ViewBase, ICommand
         }
         else if (_selectIndex == IndexReplay)
         {
-
+            CommandManager.GetInstance().Register(CommandConsts.CancelSelectReplay, this);
+            _state = eMainViewState.SelectReplay;
+            _isWaitingEvent = true;
+            UIManager.GetInstance().ShowView(WindowName.ReplayView, eReplayViewMode.Load);
         }
         else if (_selectIndex == IndexQuit)
         {
@@ -329,6 +341,14 @@ public class MainView : ViewBase, ICommand
     }
 
     private void OnSelCharacterStateUpdate()
+    {
+        if (!_isWaitingEvent)
+        {
+            _state = eMainViewState.Normal;
+        }
+    }
+
+    private void OnSelReplayStateUpdate()
     {
         if (!_isWaitingEvent)
         {

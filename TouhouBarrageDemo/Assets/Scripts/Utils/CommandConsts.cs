@@ -143,4 +143,16 @@
     /// 取消角色选择，返回主界面
     /// </summary>
     public const int CancelSelectCharacter = 3103;
+    /// <summary>
+    /// 取消录像选择，返回主界面
+    /// </summary>
+    public const int CancelSelectReplay = 3104;
+    /// <summary>
+    /// 保存录像成功
+    /// </summary>
+    public const int SaveReplaySuccess = 3105;
+    /// <summary>
+    /// 载入录像成功
+    /// </summary>
+    public const int LoadReplaySuccess = 3106;
 }

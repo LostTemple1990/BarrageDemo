@@ -455,7 +455,7 @@ public class STGPauseView : ViewBase
 
     private void OnSaveReplay()
     {
-        CommandManager.GetInstance().RunCommand(CommandConsts.SaveReplay);
+        UIManager.GetInstance().ShowView(WindowName.ReplayView, eReplayViewMode.Save);
         Hide();
     }
 

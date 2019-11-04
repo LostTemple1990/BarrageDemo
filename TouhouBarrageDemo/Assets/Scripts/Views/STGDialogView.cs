@@ -502,7 +502,7 @@ public class STGDialogView : ViewBase, ICommand
         CommandManager.GetInstance().Register(CommandConsts.ContinueGame, this);
         CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
-        CommandManager.GetInstance().Register(CommandConsts.SaveReplay, this);
+        CommandManager.GetInstance().Register(CommandConsts.BackToTitle, this);
 
         _itemCount = 0;
         _isHiddenByPause = false;
@@ -577,7 +577,7 @@ public class STGDialogView : ViewBase, ICommand
             case CommandConsts.RetryStage:
                 OnRetry();
                 break;
-            case CommandConsts.SaveReplay:
+            case CommandConsts.BackToTitle:
                 OnRetry();
                 break;
         }
@@ -688,7 +688,7 @@ public class STGDialogView : ViewBase, ICommand
         CommandManager.GetInstance().Remove(CommandConsts.ContinueGame, this);
         CommandManager.GetInstance().Remove(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Remove(CommandConsts.RetryStage, this);
-        CommandManager.GetInstance().Remove(CommandConsts.SaveReplay, this);
+        CommandManager.GetInstance().Remove(CommandConsts.BackToTitle, this);
     }
 
     private void ClearAllItems()

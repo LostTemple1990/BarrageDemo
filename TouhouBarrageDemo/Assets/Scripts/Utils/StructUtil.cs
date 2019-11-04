@@ -343,6 +343,7 @@ public enum eCustomizedFuncRefType : byte
 /// STG的操作按键枚举
 /// </summary>
 [Flags]
+[Serializable]
 public enum eSTGKey : int
 {
     None = 0,
@@ -374,6 +375,32 @@ public struct STGData
     public int characterIndex;
     public long seed;
     public bool isReplay;
+}
+
+/// <summary>
+/// Replay的基础信息
+/// </summary>
+[Serializable]
+public struct ReplayInfo
+{
+    public int replayIndex;
+    public string name;
+    public long dateTick;
+    public int lastFrame;
+    public string stageName;
+    public int characterIndex;
+}
+
+/// <summary>
+/// Replay的详细数据
+/// </summary>
+[Serializable]
+public struct ReplayData
+{
+    public ReplayInfo info;
+    public long seed;
+    public List<eSTGKey> keyList;
+    public int lastFrame;
 }
 
 #region struct ItemWithFramentsCounter

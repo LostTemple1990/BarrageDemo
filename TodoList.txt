@@ -57,9 +57,10 @@ Boss的符卡数目显示相关，击杀BOSS的特效
 曲线激光动画
 添加对话系统 --finish
 梦机子弹发射bug修复 --finish
-简易replay界面
+简易replay界面 --finish
 删除characterBase中的inputShoot和inputBomb
 残机计算，添加疮痍的暂停界面
+继续测试replay界面的bug
 
 ---editor
 删除自定义的节点的时候，需要同时删除掉CustomDefine中对应的数据，否则撤销操作会报错 --finish

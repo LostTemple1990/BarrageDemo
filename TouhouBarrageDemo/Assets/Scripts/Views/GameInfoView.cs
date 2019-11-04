@@ -126,7 +126,7 @@ public class GameInfoView : ViewBase,ICommand
         CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
         CommandManager.GetInstance().Register(CommandConsts.ShowSpellCardInfo, this);
         CommandManager.GetInstance().Register(CommandConsts.SpellCardFinish, this);
-        CommandManager.GetInstance().Register(CommandConsts.SaveReplay, this);
+        CommandManager.GetInstance().Register(CommandConsts.BackToTitle, this);
 
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
@@ -139,7 +139,7 @@ public class GameInfoView : ViewBase,ICommand
         CommandManager.GetInstance().Remove(CommandConsts.RetryStage, this);
         CommandManager.GetInstance().Remove(CommandConsts.ShowSpellCardInfo, this);
         CommandManager.GetInstance().Remove(CommandConsts.SpellCardFinish, this);
-        CommandManager.GetInstance().Remove(CommandConsts.SaveReplay, this);
+        CommandManager.GetInstance().Remove(CommandConsts.BackToTitle, this);
         Reset();
     }
 
@@ -164,7 +164,7 @@ public class GameInfoView : ViewBase,ICommand
             case CommandConsts.SpellCardFinish:
                 OnSpellCardFinish(datas);
                 break;
-            case CommandConsts.SaveReplay:
+            case CommandConsts.BackToTitle:
                 Reset();
                 break;
         }
