@@ -500,6 +500,7 @@ public class STGDialogView : ViewBase, ICommand
         CommandManager.GetInstance().Register(CommandConsts.UpdateDialog, this);
         CommandManager.GetInstance().Register(CommandConsts.PauseGame, this);
         CommandManager.GetInstance().Register(CommandConsts.ContinueGame, this);
+        CommandManager.GetInstance().Register(CommandConsts.ContinueGameAfterGameOver, this);
         CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
         CommandManager.GetInstance().Register(CommandConsts.BackToTitle, this);
@@ -569,6 +570,9 @@ public class STGDialogView : ViewBase, ICommand
                 OnSTGPause();
                 break;
             case CommandConsts.ContinueGame:
+                OnSTGContinue();
+                break;
+            case CommandConsts.ContinueGameAfterGameOver:
                 OnSTGContinue();
                 break;
             case CommandConsts.RetryGame:
@@ -686,6 +690,7 @@ public class STGDialogView : ViewBase, ICommand
         CommandManager.GetInstance().Remove(CommandConsts.UpdateDialog, this);
         CommandManager.GetInstance().Remove(CommandConsts.PauseGame, this);
         CommandManager.GetInstance().Remove(CommandConsts.ContinueGame, this);
+        CommandManager.GetInstance().Remove(CommandConsts.ContinueGameAfterGameOver, this);
         CommandManager.GetInstance().Remove(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Remove(CommandConsts.RetryStage, this);
         CommandManager.GetInstance().Remove(CommandConsts.BackToTitle, this);
@@ -706,6 +711,6 @@ public class STGDialogView : ViewBase, ICommand
 
     public override LayerId GetLayerId()
     {
-        return LayerId.GameUI_Normal;
+        return LayerId.GameUI_Bottom;
     }
 }

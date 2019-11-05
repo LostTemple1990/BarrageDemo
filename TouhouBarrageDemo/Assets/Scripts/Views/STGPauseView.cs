@@ -26,7 +26,8 @@ public class STGPauseView : ViewBase
     private const int IndexYes = 0;
     private const int IndexNo = 1;
 
-    private List<GameObject> _imgList;
+    private List<GameObject> _itemGoList;
+    private List<Image> _itemImgList;
     private List<Vector3> _imgMovementDatas;
     /// <summary>
     /// 是、否选项的Panel
@@ -86,10 +87,11 @@ public class STGPauseView : ViewBase
     public override void Init(GameObject viewObj)
     {
         base.Init(viewObj);
-        _imgList = new List<GameObject>();
+        _itemGoList = new List<GameObject>();
+        _itemImgList = new List<Image>();
         _imgMovementDatas = new List<Vector3>();
         AddOnShowAniDatas();
-        _selectItems = _imgList.GetRange(1, 4);
+        _selectItems = _itemGoList.GetRange(1, 4);
         // 初始化是、否面板
         _yesNoPanel = _viewTf.Find("YesNoPanel").gameObject;
         _yesNoItems = new List<GameObject>();
@@ -129,23 +131,33 @@ public class STGPauseView : ViewBase
     private void AddOnShowAniDatas()
     {
         // 暂停title
-        _imgList.Add(_viewTf.Find("ImgPause").gameObject);
+        RectTransform tf = _viewTf.Find("ImgPause").GetComponent<RectTransform>();
+        _itemGoList.Add(tf.gameObject);
+        _itemImgList.Add(tf.GetComponent<Image>());
         _imgMovementDatas.Add(new Vector3(-135,200,0));
         _imgMovementDatas.Add(new Vector3(-135,30,0));
         // 返回游戏
-        _imgList.Add(_viewTf.Find("ReturnToGame").gameObject);
+        tf = _viewTf.Find("ReturnToGame").GetComponent<RectTransform>();
+        _itemGoList.Add(tf.gameObject);
+        _itemImgList.Add(tf.GetComponent<Image>());
         _imgMovementDatas.Add(new Vector3(80, 0, 0));
         _imgMovementDatas.Add(new Vector3(-120, 0, 0));
         // 返回标题画面
-        _imgList.Add(_viewTf.Find("BackToTitle").gameObject);
+        tf = _viewTf.Find("BackToTitle").GetComponent<RectTransform>();
+        _itemGoList.Add(tf.gameObject);
+        _itemImgList.Add(tf.GetComponent<Image>());
         _imgMovementDatas.Add(new Vector3(90, -20, 0));
         _imgMovementDatas.Add(new Vector3(-110, -20, 0));
         // 保存replay
-        _imgList.Add(_viewTf.Find("SaveReplay").gameObject);
+        tf = _viewTf.Find("SaveReplay").GetComponent<RectTransform>();
+        _itemGoList.Add(tf.gameObject);
+        _itemImgList.Add(tf.GetComponent<Image>());
         _imgMovementDatas.Add(new Vector3(100, -40, 0));
         _imgMovementDatas.Add(new Vector3(-100, -40, 0));
         // 重新开始
-        _imgList.Add(_viewTf.Find("Retry").gameObject);
+        tf = _viewTf.Find("Retry").GetComponent<RectTransform>();
+        _itemGoList.Add(tf.gameObject);
+        _itemImgList.Add(tf.GetComponent<Image>());
         _imgMovementDatas.Add(new Vector3(110, -60, 0));
         _imgMovementDatas.Add(new Vector3(-90, -60, 0));
     }
@@ -163,6 +175,8 @@ public class STGPauseView : ViewBase
         _availableIndex = 0;
         if (state == ePauseViewState.PauseInGame)
         {
+            _itemImgList[0].sprite = ResourceManager.GetInstance().GetSprite("STGPauseViewAtlas", "ImgPause");
+            _itemImgList[1].sprite = ResourceManager.GetInstance().GetSprite("STGPauseViewAtlas", "ImgReturnToGame");
             _availableIndex |= 1 << 0;
             _availableIndex |= 1 << 1;
             _availableIndex |= 1 << 2;
@@ -171,6 +185,8 @@ public class STGPauseView : ViewBase
         }
         else if (state == ePauseViewState.PauseAfterGameClear)
         {
+            _itemImgList[0].sprite = ResourceManager.GetInstance().GetSprite("STGPauseViewAtlas", "ImgPause");
+            _itemImgList[1].sprite = ResourceManager.GetInstance().GetSprite("STGPauseViewAtlas", "ImgReturnToGame");
             _availableIndex |= 1 << 1;
             _availableIndex |= 1 << 2;
             _availableIndex |= 1 << 3;
@@ -178,6 +194,8 @@ public class STGPauseView : ViewBase
         }
         else if (state == ePauseViewState.PauseInReplay)
         {
+            _itemImgList[0].sprite = ResourceManager.GetInstance().GetSprite("STGPauseViewAtlas", "ImgPause");
+            _itemImgList[1].sprite = ResourceManager.GetInstance().GetSprite("STGPauseViewAtlas", "ImgReturnToGame");
             _availableIndex |= 1 << 0;
             _availableIndex |= 1 << 1;
             _availableIndex |= 1 << 3;
@@ -185,7 +203,22 @@ public class STGPauseView : ViewBase
         }
         else if (state == ePauseViewState.PauseAfterReplayFinished)
         {
+            _itemImgList[0].sprite = ResourceManager.GetInstance().GetSprite("STGPauseViewAtlas", "ImgPause");
+            _itemImgList[1].sprite = ResourceManager.GetInstance().GetSprite("STGPauseViewAtlas", "ImgReturnToGame");
             _availableIndex |= 1 << 1;
+            _availableIndex |= 1 << 3;
+            _showItemCount = 4;
+        }
+        else if (state == ePauseViewState.PauseAfterGameOver)
+        {
+            _itemImgList[0].sprite = ResourceManager.GetInstance().GetSprite("STGPauseViewAtlas", "ImgGameOver");
+            _itemImgList[1].sprite = ResourceManager.GetInstance().GetSprite("STGPauseViewAtlas", "ImgContinue");
+            _availableIndex |= 1 << 0;
+            _availableIndex |= 1 << 1;
+            if (ReplayManager.GetInstance().IsReplayEnable())
+            {
+                _availableIndex |= 1 << 2;
+            }
             _availableIndex |= 1 << 3;
             _showItemCount = 4;
         }
@@ -223,7 +256,7 @@ public class STGPauseView : ViewBase
         int duration = dDelay;
         for (i=0;i<5;i++)
         {
-            go = _imgList[i];
+            go = _itemGoList[i];
             // 位置
             tweenPos = TweenManager.GetInstance().Create<TweenPos3D>();
             tweenPos.SetParas(go, dDelay * i, duration, ePlayMode.Once);
@@ -342,6 +375,8 @@ public class STGPauseView : ViewBase
                 return;
             if (_pauseState == ePauseViewState.PauseAfterReplayFinished)
                 return;
+            if (_pauseState == ePauseViewState.PauseAfterGameOver)
+                return;
             Hide();
             CommandManager.GetInstance().RunCommand(CommandConsts.ContinueGame);
         }
@@ -357,7 +392,10 @@ public class STGPauseView : ViewBase
             if ( _curSelectIndex == IndexReturnToGame )
             {
                 Hide();
-                CommandManager.GetInstance().RunCommand(CommandConsts.ContinueGame);
+                if (_pauseState == ePauseViewState.PauseAfterGameOver)
+                    CommandManager.GetInstance().RunCommand(CommandConsts.ContinueGameAfterGameOver);
+                else
+                    CommandManager.GetInstance().RunCommand(CommandConsts.ContinueGame);
             }
             else if ( _curSelectIndex == IndexBackToTitle )
             {
@@ -481,4 +519,5 @@ public enum ePauseViewState : byte
     PauseAfterGameClear = 1,
     PauseInReplay = 2,
     PauseAfterReplayFinished = 3,
+    PauseAfterGameOver = 4,
 }

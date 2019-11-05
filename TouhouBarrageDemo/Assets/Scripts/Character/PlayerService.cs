@@ -82,6 +82,7 @@ public class PlayerService
             throw new System.Exception("invalid index of character!");
         }
         _character.Init();
+        InterpreterManager.GetInstance().SetGlobalField("player", _character, LuaParaType.LightUserData);
         return _character;
     }
 
@@ -182,8 +183,8 @@ public class PlayerService
 
     /// <summary>
     /// 自机Miss
+    /// <para>返回值为false说明残机为0</para>
     /// </summary>
-    /// <returns>返回值为false说明残机为0</returns>
     public bool Miss()
     {
         return _lifeCounter.CostItem(1);

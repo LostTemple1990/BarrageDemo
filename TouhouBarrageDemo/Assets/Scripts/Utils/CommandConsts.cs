@@ -117,17 +117,21 @@
     /// </summary>
     public const int PauseGame = 3013;
     /// <summary>
+    /// 疮痍之后继续游戏
+    /// </summary>
+    public const int ContinueGameAfterGameOver = 3104;
+    /// <summary>
     /// 关卡完成
     /// </summary>
-    public const int StageClear = 3014;
+    public const int StageClear = 3015;
     /// <summary>
     /// 保存录像
     /// </summary>
-    public const int SaveReplay = 3015;
+    public const int SaveReplay = 3016;
     /// <summary>
     /// 返回主菜单
     /// </summary>
-    public const int BackToTitle = 3016;
+    public const int BackToTitle = 3017;
 
     /// <summary>
     /// 选择难度

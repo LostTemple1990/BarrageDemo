@@ -232,6 +232,6 @@ public class GameMainView : ViewBase,ICommand
 
     public override LayerId GetLayerId()
     {
-        return LayerId.GameUI_Normal;
+        return LayerId.GameUI_Bottom;
     }
 }

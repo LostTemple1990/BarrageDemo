@@ -320,6 +320,7 @@ public class CharacterBase : IAffectedMovableObject
         if ( _dyingTime >= _dyingDuration )
         {
             _nextState = eCharacterState.WaitReborn;
+            CommandManager.GetInstance().RunCommand(CommandConsts.PlayerMiss);
         }
     }
 
@@ -337,7 +338,6 @@ public class CharacterBase : IAffectedMovableObject
         // 创建死亡特效
         STGPlayerDeadEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.PlayerDeadEffect) as STGPlayerDeadEffect;
         effect.SetPosition(_curPos.x, _curPos.y);
-        CommandManager.GetInstance().RunCommand(CommandConsts.PlayerMiss);
     }
 
     protected virtual void StateWaitRebornUpdate()

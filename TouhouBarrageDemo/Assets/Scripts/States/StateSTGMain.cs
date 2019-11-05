@@ -43,6 +43,10 @@ public class StateSTGMain : IState,ICommand
     /// 当前STG的基本数据
     /// </summary>
     private STGData _stgData;
+    /// <summary>
+    /// 是否已经疮痍
+    /// </summary>
+    private bool _isGameOver;
 
     public StateSTGMain()
     {
@@ -78,6 +82,12 @@ public class StateSTGMain : IState,ICommand
                 break;
             case CommandConsts.BackToTitle:
                 OnBackToTitle();
+                break;
+            case CommandConsts.PlayerMiss:
+                OnPlayerMiss();
+                break;
+            case CommandConsts.ContinueGameAfterGameOver:
+                OnContinueAfterGameOver();
                 break;
         }
     }
@@ -137,6 +147,9 @@ public class StateSTGMain : IState,ICommand
         CommandManager.GetInstance().Remove(CommandConsts.StageClear, this);
         CommandManager.GetInstance().Remove(CommandConsts.SaveReplay, this);
         CommandManager.GetInstance().Remove(CommandConsts.BackToTitle, this);
+
+        CommandManager.GetInstance().Remove(CommandConsts.PlayerMiss, this);
+        CommandManager.GetInstance().Remove(CommandConsts.ContinueGameAfterGameOver, this);
 
         UIManager.GetInstance().HideView(WindowName.GameInfoView);
         UIManager.GetInstance().HideView(WindowName.STGBottomView);
@@ -242,7 +255,6 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnStateLoadStageLuaUpdate()
     {
-        _curState = StateWait;
         if (Global.IsInReplayMode)
         {
             _isReplayFinish = false;
@@ -261,7 +273,13 @@ public class StateSTGMain : IState,ICommand
         }
         _stgData.stageName = _curStageName;
         _stgMain.EnterStage(_curStageName);
+        // 添加事件监听
+        CommandManager.GetInstance().Register(CommandConsts.PlayerMiss, this);
+        CommandManager.GetInstance().Register(CommandConsts.ContinueGameAfterGameOver, this);
+        _isGameOver = false;
         Global.IsPause = false;
+        ReplayManager.GetInstance().SetReplayEnable(true);
+
         _curState = StateUpdateSTG;
     }
 
@@ -270,8 +288,10 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnStateClearUpdate()
     {
-        _curState = StateWait;
         _stgMain.Clear();
+        CommandManager.GetInstance().Remove(CommandConsts.PlayerMiss, this);
+        CommandManager.GetInstance().Remove(CommandConsts.ContinueGameAfterGameOver, this);
+
         _curState = StateInitSTG;
     }
 
@@ -294,6 +314,7 @@ public class StateSTGMain : IState,ICommand
         _curState = StateLoadStageLua;
     }
 
+    #region STG主线程相关
     /// <summary>
     /// 更新STG主线程
     /// </summary>
@@ -313,22 +334,35 @@ public class StateSTGMain : IState,ICommand
                 CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
                 return;
             }
-        }
-        // 检测是否在游戏进行中按下Esc进行暂停
-        if (!Global.IsPause && Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (Global.IsInReplayMode)
+            // 检测是否在游戏进行中按下Esc进行暂停
+            if (!Global.IsPause && Input.GetKeyDown(KeyCode.Escape))
             {
                 UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseInReplay);
+                Global.IsPause = true;
+                CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
             }
-            else
+        }
+        else
+        {
+            if (_isGameOver)
+            {
+                if (!Global.IsPause)
+                {
+                    UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseAfterGameOver);
+                    Global.IsPause = true;
+                    CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
+                }
+                return;
+            }
+            // 检测是否在游戏进行中按下Esc进行暂停
+            if (!Global.IsPause && Input.GetKeyDown(KeyCode.Escape))
             {
                 UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseInGame);
+                Global.IsPause = true;
+                CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
             }
-            Global.IsPause = true;
-            CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
         }
-        if ( !Global.IsPause )
+        if (!Global.IsPause)
         {
             _stgMain.Update();
         }
@@ -343,6 +377,28 @@ public class StateSTGMain : IState,ICommand
         Global.IsPause = true;
         CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
     }
+
+    /// <summary>
+    /// 玩家死亡之后消失
+    /// </summary>
+    private void OnPlayerMiss()
+    {
+        _isGameOver = !PlayerService.GetInstance().Miss();
+    }
+
+    /// <summary>
+    /// 疮痍之后继续游戏
+    /// </summary>
+    private void OnContinueAfterGameOver()
+    {
+        ReplayManager.GetInstance().SetReplayEnable(false);
+        Global.IsPause = false;
+        _isGameOver = false;
+        // 设置初始残机数和符卡数目
+        PlayerService.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
+        PlayerService.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
+    }
+    #endregion
 
     private void OnBackToTitle()
     {

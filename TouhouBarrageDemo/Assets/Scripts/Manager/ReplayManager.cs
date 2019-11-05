@@ -31,6 +31,8 @@ public class ReplayManager
     private List<ReplayInfo> _replayInfoList;
     private ReplayData _repData;
 
+    private bool _isEnable;
+
     public void Init()
     {
         // 加载info文件
@@ -161,6 +163,24 @@ public class ReplayManager
     public List<eSTGKey> GetReplayKeyList()
     {
         return _repData.keyList;
+    }
+
+    /// <summary>
+    /// 设置是否允许录像
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetReplayEnable(bool value)
+    {
+        _isEnable = value;
+    }
+
+    /// <summary>
+    /// 是否允许录像
+    /// </summary>
+    /// <returns></returns>
+    public bool IsReplayEnable()
+    {
+        return _isEnable;
     }
 
     /// <summary>

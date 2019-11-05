@@ -82,7 +82,6 @@ public class InterpreterManager
         // 添加错误log函数
         _luaState.PushCSharpFunction(Traceback);
         _traceBackIndex = _luaState.GetTop();
-        //_traceBackIndex = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
         // 加载Constants.lua
         var status = _luaState.L_DoFile("Constants.lua");
         if (status != ThreadStatus.LUA_OK)
@@ -156,9 +155,6 @@ public class InterpreterManager
 
     public Task CreateStageTask(string stageName)
     {
-        // 记录全局变量player
-        SetGlobalField("player", PlayerService.GetInstance().GetCharacter(), LuaParaType.LightUserData);
-
         Task stageTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
         int taskFuncRef;
         if (!_stageMap.TryGetValue(stageName, out taskFuncRef))

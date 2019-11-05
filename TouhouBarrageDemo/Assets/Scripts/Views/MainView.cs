@@ -26,10 +26,12 @@ public class MainView : ViewBase, ICommand
 
     enum eMainViewState : byte
     {
-        AppearAni = 0,
-        Normal = 1,
-        SelectChar = 2,
-        SelectReplay = 3,
+        None = 0,
+        AppearAni = 1,
+        Normal = 2,
+        SelectChar = 3,
+        SelectReplay = 4,
+        QuitAni = 5,
     }
 
     /// <summary>
@@ -216,7 +218,7 @@ public class MainView : ViewBase, ICommand
             }
             // 添加缓动动画
             TweenAnchoredPos tween = TweenManager.GetInstance().Create<TweenAnchoredPos>();
-            tween.SetParas(item.go, 15 * i, 20, ePlayMode.Once);
+            tween.SetParas(item.go, 10 * i, 15, ePlayMode.Once);
             tween.SetParas(item.end, InterpolationMode.EaseInQuad);
             if (i == _itemCount - 1)
             {
@@ -250,6 +252,10 @@ public class MainView : ViewBase, ICommand
         else if (_state == eMainViewState.SelectReplay)
         {
             OnSelReplayStateUpdate();
+        }
+        else if (_state == eMainViewState.QuitAni)
+        {
+            OnQuitAniStateUpdate();
         }
     }
 
@@ -313,8 +319,33 @@ public class MainView : ViewBase, ICommand
         }
         else if (_selectIndex == IndexQuit)
         {
-
+            Quit();
         }
+    }
+
+    private void Quit()
+    {
+        TitleItem item;
+        for (int i = 0; i < _itemCount; i++)
+        {
+            item = _itemList[i];
+            // 添加缓动动画
+            TweenAnchoredPos tween = TweenManager.GetInstance().Create<TweenAnchoredPos>();
+            tween.SetParas(item.go, 5 * i, 10, ePlayMode.Once);
+            tween.SetParas(item.start, InterpolationMode.EaseOutQuad);
+            if (i == _itemCount - 1)
+            {
+                tween.SetFinishCallBack(OnQuitAniFinish);
+            }
+            TweenManager.GetInstance().AddTween(tween);
+        }
+        _isAniFinish = false;
+        _state = eMainViewState.QuitAni;
+    }
+
+    private void OnQuitAniFinish(GameObject go)
+    {
+        _isAniFinish = true;
     }
 
     /// <summary>
@@ -353,6 +384,15 @@ public class MainView : ViewBase, ICommand
         if (!_isWaitingEvent)
         {
             _state = eMainViewState.Normal;
+        }
+    }
+
+    private void OnQuitAniStateUpdate()
+    {
+        if (_isAniFinish)
+        {
+            _state = eMainViewState.None;
+            Application.Quit();
         }
     }
 
