@@ -464,14 +464,14 @@ public class EnemySimpleBullet : EnemyBulletMovable
             {
                 if (!_isGrazed)
                 {
-                    PlayerService.GetInstance().AddGraze(1);
+                    PlayerInterface.GetInstance().AddGraze(1);
                     _isGrazed = true;
                 }
                 // 在擦弹范围内，进行实际的碰撞检测
                 if (detValue <= _detCollisonValue)
                 {
                     Eliminate(eEliminateDef.HitPlayer);
-                    PlayerService.GetInstance().GetCharacter().BeingHit();
+                    PlayerInterface.GetInstance().GetCharacter().BeingHit();
                 }
             }
         }
@@ -501,14 +501,14 @@ public class EnemySimpleBullet : EnemyBulletMovable
                 if (!_isGrazed)
                 {
                     _isGrazed = true;
-                    PlayerService.GetInstance().AddGraze(1);
+                    PlayerInterface.GetInstance().AddGraze(1);
                 }
                 rate = (len - Global.PlayerCollisionVec.z) / len;
                 relativeVec *= rate;
                 if (rate <= 0 || (Mathf.Abs(relativeVec.x) < _collisionHalfHeight && Mathf.Abs(relativeVec.y) < _collisionHalfWidth))
                 {
                     Eliminate(eEliminateDef.HitPlayer);
-                    PlayerService.GetInstance().GetCharacter().BeingHit();
+                    PlayerInterface.GetInstance().GetCharacter().BeingHit();
                 }
             }
         }

@@ -143,7 +143,7 @@ SpellCard["NazrinSC1_0"] = {}
 SpellCard["NazrinSC1_0"].Init = function(boss)
     SetSpellCardProperties("Easy-SpellCard",1,60,ConditionEliminateAll,true)
     last = CreateCustomizedSTGObject("NazrinCG",0,0)
-    boss:SetMaxHp(50)
+    boss:SetMaxHp(500)
     boss:SetInvincible(5)
     boss:ShowBloodBar(true)
     --圈形子弹
@@ -358,13 +358,14 @@ Stage["Stage1"] = function()
     do
         last = CreateCustomizedSTGObject("Stage1Logo",0,150)
     end
+    FinishStage()
 end
 Stage["Stage2"] = function()
     PlaySound("bgm",0.5,true)
     do
+        if Wait(100)==false then return end
         last = CreateCustomizedEnemy("TestOnKillEnemy",0,185)
         local enemy = last
-        if Wait(10000)==false then return end
         enemy:AddTask(function()
             if Wait(150)==false then return end
             enemy:MoveTowards(1,315,false,200)
@@ -397,37 +398,50 @@ Stage["Stage2"] = function()
                 if Wait(90)==false then return end
             end end
         end)
+        if Wait(500)==false then return end
     end
     do
         if Wait(300)==false then return end
+        if StartDialog(function()
+            CreateDialogCG("Marisa","Marisa",100,150)
+            if Wait(30)==false then return end
+            HighlightDialogCG("Marisa",true)
+            CreateDialogBox(0,"TestDialogBox0.....",100,150,120,1)
+            if Wait(120)==false then return end
+            HighlightDialogCG("Marisa",false)
+        end) == false then return end
         last = CreateBoss("Marisa")
         local boss = last
         boss:MoveTo(0,170,90,IntModeEaseInQuad)
         if Wait(100)==false then return end
+        if StartDialog(function()
+            CreateDialogCG("Nazrin","Nazrin",450,150)
+            if Wait(30)==false then return end
+            HighlightDialogCG("Nazrin",true)
+            CreateDialogBox(0,"TestDialogBox1.....",450,150,120,-1)
+            if Wait(120)==false then return end
+            HighlightDialogCG("Nazrin",false)
+            HighlightDialogCG("Marisa",true)
+            CreateDialogBox(0,"TestDialogBox2....",100,150,120,1)
+            if Wait(120)==false then return end
+            FadeOutDialogCG("Nazrin")
+            FadeOutDialogCG("Marisa")
+            if Wait(100)==false then return end
+        end) == false then return end
         boss:SetPhaseData(1,1,1,1,true)
+        StartSpellCard(SpellCard["NazrinSC1_0"],boss)
+        if WaitForSpellCardFinish() == false then return end
+        StartSpellCard(SpellCard["NazrinSC1_0"],boss)
+        if WaitForSpellCardFinish() == false then return end
+        StartSpellCard(SpellCard["NazrinSC1_0"],boss)
+        if WaitForSpellCardFinish() == false then return end
         StartSpellCard(SpellCard["NazrinSC1_0"],boss)
         if WaitForSpellCardFinish() == false then return end
     end
     last = CreateCustomizedSTGObject("竖版开海",500,0)
+    if Wait(1000)==false then return end
+    FinishStage()
 end
-
-SetDebugStageName("__TestSCStage")
-BossTable["__TestSCBoss"] = {}
-BossTable["__TestSCBoss"].Init = function(self)
-    self:SetAni(2001)
-    self:SetPos(0,280)
-    self:SetCollisionSize(32,32)
-end
-Stage["__TestSCStage"] = function()
-    last = CreateBoss("__TestSCBoss")
-    local boss = last
-    boss:MoveTo(0,170,90,IntModeEaseInQuad)
-    if Wait(100)==false then return end
-    boss:SetPhaseData(1,true)
-    StartSpellCard(SpellCard["NazrinSC1_0"],boss)
-    if WaitForSpellCardFinish() == false then return end
-end
-
 return
 {
    CustomizedBulletTable = CustomizedTable,

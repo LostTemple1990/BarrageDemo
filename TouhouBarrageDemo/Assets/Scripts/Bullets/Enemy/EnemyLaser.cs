@@ -643,7 +643,7 @@ public class EnemyLaser : EnemyBulletBase
             if ( !_isGrazed )
             {
                 _isGrazed = true;
-                PlayerService.GetInstance().AddGraze(1);
+                PlayerInterface.GetInstance().AddGraze(1);
                 _grazeCoolDown = GrazeCoolDown;
             }
             rate = (len - Global.PlayerCollisionVec.z) / len;
@@ -651,7 +651,7 @@ public class EnemyLaser : EnemyBulletBase
             if (rate <= 0 || (Mathf.Abs(relativeVec.x) < _laserHalfLength && Mathf.Abs(relativeVec.y) < _laserHalfWidth * _collisionFactor))
             {
                 Eliminate(eEliminateDef.HitPlayer);
-                PlayerService.GetInstance().GetCharacter().BeingHit();
+                PlayerInterface.GetInstance().GetCharacter().BeingHit();
             }
         }
     }

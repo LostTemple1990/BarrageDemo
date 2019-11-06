@@ -64,6 +64,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 6342e053d67776146918fefd805cb6c8, type: 3}
   - {fileID: 21300000, guid: 2f29f05338b8d7342b36e9f06f71be39, type: 3}
   - {fileID: 21300000, guid: f7b272730861c3745ada05fa837bc509, type: 3}
+  - {fileID: 21300000, guid: 5f9ef6739b8b3cb41a37dde46cf08bbb, type: 3}
   - {fileID: 21300000, guid: 38b96493d4229624b9b5443feb1f51f0, type: 3}
   - {fileID: 21300000, guid: 5e00ab93c4490df428165dde836dfe02, type: 3}
   - {fileID: 21300000, guid: f330b1a34dbf44e4595ae79ff23c0082, type: 3}
@@ -85,6 +86,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: d2d446d47c94c50468bf19c089bc0aa5, type: 3}
   - {fileID: 21300000, guid: 66f056e4d8191554dbbaa500c5dab8b8, type: 3}
   - {fileID: 21300000, guid: c858b0f4b75b01840ab2325c3c09ad1c, type: 3}
+  - {fileID: 21300000, guid: 0a6685f476b777d4b9c0c0ccce00eac4, type: 3}
   - {fileID: 21300000, guid: 98877505dbfcb6f498048bf502712730, type: 3}
   - {fileID: 21300000, guid: 8e190e55c650c8346917833ff2d8f30d, type: 3}
   - {fileID: 21300000, guid: d4552775da0ff324caea755926fbef9d, type: 3}
@@ -115,6 +117,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 6a5bc1988dba0814db7573f1196bacf8, type: 3}
   - {fileID: 21300000, guid: 0330d3b8c6337a243994f49596fee908, type: 3}
   - {fileID: 21300000, guid: 33cee3b8d8b5d344fb5ea1ff57b441c5, type: 3}
+  - {fileID: 21300000, guid: b83af7c866b21284e9d95f9b8f6401ca, type: 3}
   - {fileID: 21300000, guid: 55deb0d85f383864da1810218b601816, type: 3}
   - {fileID: 21300000, guid: 204bbbf83dadc7f46a9fccfb18fd76bc, type: 3}
   - {fileID: 21300000, guid: 7e461a3933567064b861514d10149bd8, type: 3}
@@ -173,6 +176,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: be7fab4de9485fa4a8c3b064eed7be5a, type: 3}
   - {fileID: 21300000, guid: 316d445d82639cb43aff3da5bf2abaf5, type: 3}
   - {fileID: 21300000, guid: 4bfa227d448e9224b8c32e0fcad97af1, type: 3}
+  - {fileID: 21300000, guid: 5e4be18ddc50f5b43908a9c21885966e, type: 3}
   - {fileID: 21300000, guid: 68fce69d472ecbf4a85f04ecadf63438, type: 3}
   - {fileID: 21300000, guid: 62665aadb7bfffd42b0a24f9dc9206e8, type: 3}
   - {fileID: 21300000, guid: bfe36cadadc0859489c390b18ab506a6, type: 3}
@@ -220,7 +224,7 @@ SpriteAtlas:
   - redo
   - onscfinish
   - tasker
-  - dialog
+  - createdialog
   - shakescreen
   - laserbentdefine
   - explode
@@ -233,6 +237,7 @@ SpriteAtlas:
   - objectcreate
   - shoot
   - bulletchangeprops
+  - delsentence
   - loadFX
   - bulletinit
   - bosswander
@@ -254,8 +259,9 @@ SpriteAtlas:
   - setv
   - defaultaction
   - folder
+  - highlightdialogcg
   - laserturnon
-  - dialogtask
+  - dialogwait
   - taskbreak
   - bossshowbloodbar
   - setgravity
@@ -284,6 +290,7 @@ SpriteAtlas:
   - undo
   - laserbentcreate
   - setstraightparas
+  - createdialogcg
   - playsound
   - Warning
   - laserturnhalfon
@@ -342,6 +349,7 @@ SpriteAtlas:
   - bossinvincible
   - unitkill
   - sentence
+  - fadeoutdialogcg
   - stage
   - rebounderinit
   - setwanderprops

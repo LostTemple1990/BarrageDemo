@@ -56,6 +56,13 @@ namespace BarrageEditor
 
         StageGroup = 1101,
         Stage = 1102,
+        StartDialog = 1121,
+        DialogWait = 1122,
+        CreateDialogCG = 1123,
+        HighlightDialogCG = 1124,
+        FadeoutDialogCG = 1125,
+        CreateSentence = 1131,
+        DelSentence = 1132,
 
         AddTask = 1201,
         TaskWait = 1202,
@@ -325,6 +332,71 @@ namespace BarrageEditor
                 editOnCreated = true,
             };
             _nodeCfgDic.Add(NodeType.Stage, cfg);
+            // StartDialog
+            cfg = new NodeConfig
+            {
+                type = NodeType.StartDialog,
+                shortcutPath = "createdialog",
+                shortcutTip = "StartDialog",
+                defaultAttrValues = new List<object> { "" },
+                needAncestors = new List<NodeType> { NodeType.Stage },
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+            // DialogWait
+            cfg = new NodeConfig
+            {
+                type = NodeType.DialogWait,
+                shortcutPath = "dialogwait",
+                shortcutTip = "DialogWait",
+                defaultAttrValues = new List<object> { "120" },
+                needAncestors = new List<NodeType> { NodeType.StartDialog },
+                allowChilds = new List<NodeType> { },
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+            // CreateDialogCG
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateDialogCG,
+                shortcutPath = "createdialogcg",
+                shortcutTip = "CreateDialogCG",
+                defaultAttrValues = new List<object> { "Reimu", "Reimu", "100", "150" },
+                needAncestors = new List<NodeType> { NodeType.StartDialog },
+                allowChilds = new List<NodeType> { },
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+            // HighlightDialogCG
+            cfg = new NodeConfig
+            {
+                type = NodeType.HighlightDialogCG,
+                shortcutPath = "highlightdialogcg",
+                shortcutTip = "HighlightDialogCG",
+                defaultAttrValues = new List<object> { "Reimu", "true" },
+                needAncestors = new List<NodeType> { NodeType.StartDialog },
+                allowChilds = new List<NodeType> { },
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+            // FadeOutDialogCG
+            cfg = new NodeConfig
+            {
+                type = NodeType.FadeoutDialogCG,
+                shortcutPath = "fadeoutdialogcg",
+                shortcutTip = "FadeOutDialogCG",
+                defaultAttrValues = new List<object> { "Reimu" },
+                needAncestors = new List<NodeType> { NodeType.StartDialog },
+                allowChilds = new List<NodeType> { },
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+            // CreateDialogBox
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateSentence,
+                shortcutPath = "sentence",
+                shortcutTip = "CreateDialogBox",
+                defaultAttrValues = new List<object> { "0", "Test DialogBox...", "100", "150", "120", "1" },
+                needAncestors = new List<NodeType> { NodeType.StartDialog },
+                allowChilds = new List<NodeType> { },
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
         }
 
         private void InitTaskNodeCfgs()

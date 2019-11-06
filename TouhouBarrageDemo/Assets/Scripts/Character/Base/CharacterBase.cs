@@ -155,6 +155,10 @@ public class CharacterBase : IAffectedMovableObject
     /// 被赋予的额外加速度的y分量
     /// </summary>
     protected float _extraAcceY;
+    /// <summary>
+    /// 在该帧擦过弹
+    /// </summary>
+    protected bool _isGrazedDuringFrame;
 
     #region 状态机相关
 
@@ -251,6 +255,7 @@ public class CharacterBase : IAffectedMovableObject
 
     protected virtual void StateNormalUpdate()
     {
+        OnFrameStarted();
         CheckMoveMode();
         Move();
         UpdateCD();
@@ -287,7 +292,7 @@ public class CharacterBase : IAffectedMovableObject
         _availableSubCount = -1;
         _isShootAvailable = false;
         // 信号相关
-        PlayerService.GetInstance().SetSignalValue(0);
+        PlayerInterface.GetInstance().SetSignalValue(0);
     }
     #endregion
 
@@ -519,7 +524,7 @@ public class CharacterBase : IAffectedMovableObject
         {
             return;
         }
-        if ( PlayerService.GetInstance().CastSpellCard() )
+        if ( PlayerInterface.GetInstance().CastSpellCard() )
         {
             OnCastSpellCard();
             _bomb.Start();
@@ -575,7 +580,7 @@ public class CharacterBase : IAffectedMovableObject
 
     protected void UpdateSubWeaponsVisible()
     {
-        int intPower = PlayerService.GetInstance().GetPower() / 100;
+        int intPower = PlayerInterface.GetInstance().GetPower() / 100;
         if ( intPower != _availableSubCount )
         {
             SubWeaponBase subWeapon;
@@ -684,20 +689,40 @@ public class CharacterBase : IAffectedMovableObject
     {
         if ( _curPos.y > Consts.AutoGetItemY )
         {
-            float value = PlayerService.GetInstance().GetSignalValue();
+            float value = PlayerInterface.GetInstance().GetSignalValue();
             if ( value <= 100 )
             {
                 value = value + 50f >= 100 ? 100 : value + 50;
-                PlayerService.GetInstance().SetSignalValue(value);
+                PlayerInterface.GetInstance().SetSignalValue(value);
             }
             else
             {
-                PlayerService.GetInstance().AddToSignalValue(0.09f);
+                PlayerInterface.GetInstance().AddToSignalValue(0.09f);
             }
         }
         else
         {
-            PlayerService.GetInstance().AddToSignalValue(-0.3f);
+            PlayerInterface.GetInstance().AddToSignalValue(-0.3f);
+        }
+    }
+
+    protected void OnFrameStarted()
+    {
+        _isGrazedDuringFrame = false;
+    }
+
+    public void PlayGrazeEffect()
+    {
+        if (!_isGrazedDuringFrame)
+        {
+            _isGrazedDuringFrame = true;
+            STGSpriteEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
+            effect.SetPrefab("GrazeEffect", LayerId.STGTopEffect, true);
+            effect.SetPosition(_curPos);
+            effect.SetExistDuration(36);
+            float angle = Random.Range(0, 360);
+            effect.DoStraightMove(0.6f, angle);
+            SoundManager.GetInstance().Play("se_graze", 0.05f, false, true);
         }
     }
 

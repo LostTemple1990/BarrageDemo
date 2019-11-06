@@ -129,7 +129,7 @@ public class MarisaA : CharacterBase
     /// </summary>
     private void UpdateSubWeaponsAvailableCount()
     {
-        int availableCount = PlayerService.GetInstance().GetPower() / 100;
+        int availableCount = PlayerInterface.GetInstance().GetPower() / 100;
         if (availableCount != _availableSubCount)
         {
             SubWeaponBase subWeapon;
@@ -209,7 +209,7 @@ public class MarisaA : CharacterBase
     {
         _availableSubCount = -1;
         UpdateSubWeaponsAvailableCount();
-        _availableSubCount = PlayerService.GetInstance().GetPower() / 100;
+        _availableSubCount = PlayerInterface.GetInstance().GetPower() / 100;
         SubWeaponBase subWeapon;
         for (int i = 0; i < _availableSubCount; i++)
         {

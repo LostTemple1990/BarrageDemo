@@ -97,7 +97,7 @@ public class GravitationFieldRect : ObjectColliderBase , IGravitationField
         if (Mathf.Abs(playerPos.x - _curPosX) <= _halfWidth + playerCollisionRadius &&
             Mathf.Abs(playerPos.y - _curPosY) <= _halfHeight + playerCollisionRadius)
         {
-            CharacterBase player = PlayerService.GetInstance().GetCharacter();
+            CharacterBase player = PlayerInterface.GetInstance().GetCharacter();
             CollidedByObject(player);
         }
     }

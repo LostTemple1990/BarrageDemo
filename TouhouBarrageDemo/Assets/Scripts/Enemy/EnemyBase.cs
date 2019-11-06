@@ -259,7 +259,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
             Mathf.Abs(playerPos.y - _curPos.y) <= _collisionHalfHeight + Global.PlayerCollisionVec.z )
         {
             //Logger.Log("Hit By Enemy!");
-            PlayerService.GetInstance().GetCharacter().BeingHit();
+            PlayerInterface.GetInstance().GetCharacter().BeingHit();
         }
     }
 

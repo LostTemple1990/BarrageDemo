@@ -168,7 +168,7 @@ public class STGMain
 
     public void Clear()
     {
-        PlayerService.GetInstance().Clear();
+        PlayerInterface.GetInstance().Clear();
         _char = null;
         OperationController.GetInstance().Clear();
         ColliderManager.GetInstance().Clear();
@@ -188,7 +188,7 @@ public class STGMain
     /// </summary>
     public void InitSTG(int characterIndex)
     {
-        _char = PlayerService.GetInstance().CreateCharacter(characterIndex);
+        _char = PlayerInterface.GetInstance().CreateCharacter(characterIndex);
         _opController = OperationController.GetInstance();
         _opController.InitCharacter();
         BackgroundManager.GetInstance().Init();

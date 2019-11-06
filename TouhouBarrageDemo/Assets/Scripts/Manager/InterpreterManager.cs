@@ -493,6 +493,8 @@ public class InterpreterManager
     {
         if (task.isFinish) return;
         ILuaState luaState = task.luaState;
+        if (luaState == null)
+            return;
         luaState.PushBoolean(false);
         ThreadStatus status = luaState.Resume(luaState, 1);
         if (status == ThreadStatus.LUA_OK)
@@ -511,6 +513,8 @@ public class InterpreterManager
 
     public void StopTaskThread(ILuaState luaState,int taskFuncRef)
     {
+        if (luaState == null)
+            return;
         luaState.PushBoolean(false);
         ThreadStatus status = luaState.Resume(luaState, 1);
         if ( status == ThreadStatus.LUA_OK )

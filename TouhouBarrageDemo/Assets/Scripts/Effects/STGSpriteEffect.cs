@@ -491,6 +491,41 @@ public class STGSpriteEffect : STGEffectBase, ISTGMovable, IAttachment, IAttacha
         }
     }
 
+    public void SetPrefab(string prefabName, LayerId layerId, bool isUsingCache = false)
+    {
+        _isUsingCache = isUsingCache;
+        _effectGoName = prefabName;
+        _effectGo = ObjectsPool.GetInstance().GetPrefabAtPool(_effectGoName);
+        if (_effectGo == null)
+        {
+            GameObject protoType = ObjectsPool.GetInstance().GetProtoType(_effectGoName);
+            if (protoType == null)
+            {
+                protoType = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", prefabName);
+                protoType.name = _effectGoName;
+                Transform tf = protoType.transform;
+                tf.localPosition = new Vector3(2000, 2000, 0);
+                UIManager.GetInstance().AddGoToLayer(protoType, layerId);
+                ObjectsPool.GetInstance().AddProtoType(_effectGoName, protoType);
+            }
+            _effectGo = GameObject.Instantiate<GameObject>(protoType);
+            UIManager.GetInstance().AddGoToLayer(_effectGo, layerId);
+        }
+        _effectTf = _effectGo.transform;
+        _spRenderer = _effectTf.Find("Sprite").GetComponent<SpriteRenderer>();
+        // 获取sprite对象的原始尺寸
+        Sprite sp = _spRenderer.sprite;
+        if (sp != null)
+        {
+            Vector3 size = sp.bounds.extents * 2 * sp.pixelsPerUnit;
+            _originalWidth = size.x;
+            _originalHeight = size.y;
+            // 计算实际尺寸
+            _curWidth = _originalWidth;
+            _curHeight = _originalHeight;
+        }
+    }
+
     /// <summary>
     /// 设置特效所在的层级
     /// </summary>

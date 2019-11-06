@@ -25,8 +25,6 @@ public class SoundManager
     private Transform _defaultSourceTf;
     private Stack<SoundEntity> _pool;
 
-    private float _curVolume = 0.0f;
-
     private Dictionary<string, int> _soundLoadedMap;
 
     public void Init(Transform tf)
@@ -50,7 +48,7 @@ public class SoundManager
                 return;
             }
         }
-        //Logger.Log("Play New Sound " + name);
+        //Logger.Log("PlaySound \"+" + name + "\" PoolCount = " + _pool.Count);
         SoundEntity entity = GetAtPool();
         entity.soundName = name;
         entity.volume = 0.5f;
@@ -72,7 +70,7 @@ public class SoundManager
                 return;
             }
         }
-        //Logger.Log("Play New Sound " + name);
+        //Logger.Log("PlaySound \"" + name + "\" PoolCount = " + _pool.Count);
         SoundEntity entity = GetAtPool();
         entity.soundName = name;
         entity.volume = Mathf.Clamp01(volume);
@@ -210,13 +208,14 @@ public class SoundManager
                         curEntity.endTime = curTime + curEntity.source.clip.length;
                         curEntity.source.Play();
                         //Logger.Log("Sound exist, Play Again");
-                        isInCurPlayList = true;
                     }
+                    isInCurPlayList = true;
                     break;
                 }
             }
             if ( isInCurPlayList )
             {
+                RestoreToPool(toPlayEntity);
                 continue;
             }
             // 没有播放，则创建新的音效
@@ -224,7 +223,7 @@ public class SoundManager
             if ( soundObj == null )
             {
                 soundObj = new GameObject();
-                soundObj.transform.SetParent(_defaultSourceTf);
+                soundObj.transform.SetParent(_defaultSourceTf, false);
                 toPlayEntity.soundObj = soundObj;
             }
             soundObj.name = "Audio_" + toPlayEntity.soundName;
@@ -232,9 +231,9 @@ public class SoundManager
             if ( source == null )
             {
                 source = soundObj.AddComponent<AudioSource>();
-                source.volume = toPlayEntity.volume;
                 toPlayEntity.source = source;
             }
+            source.volume = toPlayEntity.volume;
             // 起始播放时间
             toPlayEntity.startTime = curTime;
             source.clip = Resources.Load<AudioClip>("Sounds/" + toPlayEntity.soundName);
@@ -315,6 +314,7 @@ public class SoundManager
 
     private void RestoreToPool(SoundEntity entity)
     {
+        //Logger.Log("Restore \"" + entity.soundName + "\" to Pool ,PoolCount = " + (_pool.Count+1));
         entity.Clear();
         _pool.Push(entity);
     }

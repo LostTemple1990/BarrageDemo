@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class STGPlayerDeadEffect : STGEffectBase
 {
-    private const float CircleRadius = 32f;
+    private const float CircleRadius = 128f;
     private const string EffectGoName = "DeadEffectGo";
 
     private GameObject _effectGo;

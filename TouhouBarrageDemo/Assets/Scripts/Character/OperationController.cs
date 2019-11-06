@@ -77,7 +77,7 @@ public class OperationController
 
     public void InitCharacter()
     {
-        _character = PlayerService.GetInstance().GetCharacter();
+        _character = PlayerInterface.GetInstance().GetCharacter();
         if (!Global.IsInReplayMode)
         {
             _keyList = new List<eSTGKey>();

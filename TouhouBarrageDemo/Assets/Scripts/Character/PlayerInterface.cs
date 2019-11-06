@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerService
+public class PlayerInterface
 {
-    private static PlayerService _instance = new PlayerService();
+    private static PlayerInterface _instance = new PlayerInterface();
 
-    public static PlayerService GetInstance()
+    public static PlayerInterface GetInstance()
     {
         return _instance;
     }
@@ -33,7 +33,7 @@ public class PlayerService
     /// </summary>
     private float _faithValue;
 
-    public PlayerService()
+    public PlayerInterface()
     {
         _lifeCounter = new ItemWithFramentsCounter
         {
@@ -132,6 +132,7 @@ public class PlayerService
     public void AddGraze(int value)
     {
         _graze += value;
+        _character.PlayGrazeEffect();
         AddToSignalValue(value * 8);
     }
 

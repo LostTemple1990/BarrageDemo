@@ -47,6 +47,10 @@ public class StateSTGMain : IState,ICommand
     /// 是否已经疮痍
     /// </summary>
     private bool _isGameOver;
+    /// <summary>
+    /// 损失所有残机之后的计时
+    /// </summary>
+    private int _gameOverTimeCounter;
 
     public StateSTGMain()
     {
@@ -309,8 +313,8 @@ public class StateSTGMain : IState,ICommand
         MTRandom.Init(_stgData.seed);
         _stgMain.InitSTG(_stgData.characterIndex);
         // 设置初始残机数和符卡数目
-        PlayerService.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
-        PlayerService.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
+        PlayerInterface.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
+        PlayerInterface.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
         _curState = StateLoadStageLua;
     }
 
@@ -348,11 +352,15 @@ public class StateSTGMain : IState,ICommand
             {
                 if (!Global.IsPause)
                 {
-                    UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseAfterGameOver);
-                    Global.IsPause = true;
-                    CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
+                    _gameOverTimeCounter++;
+                    if (_gameOverTimeCounter >= 60)
+                    {
+                        UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseAfterGameOver);
+                        Global.IsPause = true;
+                        CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
+                        return;
+                    }
                 }
-                return;
             }
             // 检测是否在游戏进行中按下Esc进行暂停
             if (!Global.IsPause && Input.GetKeyDown(KeyCode.Escape))
@@ -383,7 +391,9 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnPlayerMiss()
     {
-        _isGameOver = !PlayerService.GetInstance().Miss();
+        _isGameOver = !PlayerInterface.GetInstance().Miss();
+        if (_isGameOver)
+            _gameOverTimeCounter = 0;
     }
 
     /// <summary>
@@ -395,8 +405,8 @@ public class StateSTGMain : IState,ICommand
         Global.IsPause = false;
         _isGameOver = false;
         // 设置初始残机数和符卡数目
-        PlayerService.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
-        PlayerService.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
+        PlayerInterface.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
+        PlayerInterface.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
     }
     #endregion
 

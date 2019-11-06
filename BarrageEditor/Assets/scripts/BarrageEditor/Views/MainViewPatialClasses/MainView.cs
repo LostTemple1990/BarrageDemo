@@ -142,6 +142,7 @@ namespace BarrageEditor
                 typeList = new List<NodeType>[]
                 {
                     new List<NodeType> { NodeType.StageGroup, NodeType.Stage },
+                    new List<NodeType> { NodeType.StartDialog, NodeType.DialogWait, NodeType.CreateDialogCG, NodeType.HighlightDialogCG, NodeType.FadeoutDialogCG, NodeType.CreateSentence },
                 },
             };
             _nodeTabs.Add(tab);

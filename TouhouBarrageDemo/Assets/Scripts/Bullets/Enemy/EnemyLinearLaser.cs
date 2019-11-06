@@ -910,11 +910,11 @@ public class EnemyLinearLaser : EnemyBulletBase
                 {
                     _isGrazed = true;
                     _grazeCoolDown = GrazeCoolDown;
-                    PlayerService.GetInstance().AddGraze(1);
+                    PlayerInterface.GetInstance().AddGraze(1);
                 }
                 if (minDis <= DefaultCollisionHalfHeight + Global.PlayerCollisionVec.z)
                 {
-                    PlayerService.GetInstance().GetCharacter().BeingHit();
+                    PlayerInterface.GetInstance().GetCharacter().BeingHit();
                     // 直线激光击中玩家不消除
                     //Eliminate(eEliminateDef.HitPlayer);
                 }

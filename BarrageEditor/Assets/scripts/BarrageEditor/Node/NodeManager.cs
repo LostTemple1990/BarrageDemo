@@ -55,12 +55,32 @@ namespace BarrageEditor
                 case NodeType.Comment:
                     newNode = new NodeComment();
                     break;
+
                 case NodeType.StageGroup:
                     newNode = new NodeStageGroup();
                     break;
                 case NodeType.Stage:
                     newNode = new NodeStage();
                     break;
+                case NodeType.StartDialog:
+                    newNode = new NodeStartDialog();
+                    break;
+                case NodeType.DialogWait:
+                    newNode = new NodeDialogWait();
+                    break;
+                case NodeType.CreateDialogCG:
+                    newNode = new NodeCreateDialogCG();
+                    break;
+                case NodeType.HighlightDialogCG:
+                    newNode = new NodeHighlightDialogCG();
+                    break;
+                case NodeType.FadeoutDialogCG:
+                    newNode = new NodeFadeOutDialogCG();
+                    break;
+                case NodeType.CreateSentence:
+                    newNode = new NodeCreateDialogBox();
+                    break;
+
                 case NodeType.AddTask:
                     newNode = new NodeAddTask();
                     break;

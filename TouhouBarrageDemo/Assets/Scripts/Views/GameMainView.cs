@@ -109,7 +109,7 @@ public class GameMainView : ViewBase,ICommand
     /// </summary>
     private void UpdatePowerValue()
     {
-        int power = PlayerService.GetInstance().GetPower();
+        int power = PlayerInterface.GetInstance().GetPower();
         if ( power != _curPower )
         {
             _curPower = power;
@@ -124,7 +124,7 @@ public class GameMainView : ViewBase,ICommand
 
     private void UpdateGrazeValue()
     {
-        int graze = PlayerService.GetInstance().GetGraze();
+        int graze = PlayerInterface.GetInstance().GetGraze();
         if ( graze != _curGraze )
         {
             int bit = GetBit(graze);
@@ -172,7 +172,7 @@ public class GameMainView : ViewBase,ICommand
 
     private void UpdateLifeValue()
     {
-        ItemWithFramentsCounter lifeCounter = PlayerService.GetInstance().GetLifeCounter();
+        ItemWithFramentsCounter lifeCounter = PlayerInterface.GetInstance().GetLifeCounter();
         if ( lifeCounter != _curLifeCounter )
         {
             _curLifeCounter = lifeCounter;
@@ -196,7 +196,7 @@ public class GameMainView : ViewBase,ICommand
 
     private void UpdateSpellCardValue()
     {
-        ItemWithFramentsCounter spellCardCounter = PlayerService.GetInstance().GetSpellCardCounter();
+        ItemWithFramentsCounter spellCardCounter = PlayerInterface.GetInstance().GetSpellCardCounter();
         if (spellCardCounter != _curSpellCardCounter)
         {
             _curSpellCardCounter = spellCardCounter;

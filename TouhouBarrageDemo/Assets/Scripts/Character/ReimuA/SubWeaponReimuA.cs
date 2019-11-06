@@ -32,7 +32,7 @@ public class SubWeaponReimuA : SubWeaponBase
     public override void Update()
     {
         _moveMode = _character.CurModeMode;
-        _powerLevel = PlayerService.GetInstance().GetPower() / 100;
+        _powerLevel = PlayerInterface.GetInstance().GetPower() / 100;
         UpdatePos();
         Shoot();
         UpdateAni();

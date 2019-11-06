@@ -54,7 +54,7 @@ public class ColliderCircle : ObjectColliderBase
     /// </summary>
     protected virtual void CollidedByPlayer()
     {
-        PlayerService.GetInstance().GetCharacter().BeingHit();
+        PlayerInterface.GetInstance().GetCharacter().BeingHit();
     }
 
     protected override void CheckCollisionWithPlayerBullet()

@@ -95,7 +95,7 @@ public class ReplayView : ViewBase, ICommand
                 _repNameText.text = info.name;
                 DateTime date = new DateTime(info.dateTick);
                 _dateText.text = date.ToString("yyyy/MM/dd");
-                _charText.text = PlayerService.GetInstance().GetCharacterNameByIndex(info.characterIndex);
+                _charText.text = PlayerInterface.GetInstance().GetCharacterNameByIndex(info.characterIndex);
 
                 date = new DateTime();
                 int sec = Mathf.RoundToInt(info.lastFrame / 60);

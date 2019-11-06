@@ -569,7 +569,7 @@ public class EnemyCurveLaser : EnemyBulletBase
                     if (!_isGrazed)
                     {
                         _isGrazed = true;
-                        PlayerService.GetInstance().AddGraze(1);
+                        PlayerInterface.GetInstance().AddGraze(1);
                         _grazeCoolDown = GrazeCoolDown;
                     }
                     // 检测_trailsList[i]与_trailsList[tmpIdx]之间的线段与玩家的碰撞判定
@@ -580,7 +580,7 @@ public class EnemyCurveLaser : EnemyBulletBase
                     if (minDis < _collisionRadius + Global.PlayerCollisionVec.z)
                     {
                         //EliminateByRange(i, tmpIdx);
-                        PlayerService.GetInstance().GetCharacter().BeingHit();
+                        PlayerInterface.GetInstance().GetCharacter().BeingHit();
                     }
                 }
             }

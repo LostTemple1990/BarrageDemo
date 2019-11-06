@@ -75,7 +75,7 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
         float dis = Vector2.Distance(_curPos, Global.PlayerPos);
         if (dis <= Global.PlayerCollisionVec.z + _radius)
         {
-            CharacterBase player = PlayerService.GetInstance().GetCharacter();
+            CharacterBase player = PlayerInterface.GetInstance().GetCharacter();
             CollidedByObject(player);
         }
     }

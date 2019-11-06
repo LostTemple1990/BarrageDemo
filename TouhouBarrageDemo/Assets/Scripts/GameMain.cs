@@ -42,7 +42,7 @@ public class GameMain : MonoBehaviour
         CommandManager.GetInstance().Init();
         DataManager.GetInstance().Init();
         ResourceManager.GetInstance().Init();
-        SoundManager.GetInstance().Init(transform);
+        SoundManager.GetInstance().Init(GameObject.Find("Sound").transform);
         TimerManager.GetInstance().Init();
         TweenManager.GetInstance().Init();
         UIManager.GetInstance().Init();
@@ -54,6 +54,7 @@ public class GameMain : MonoBehaviour
         //{
         //    stageName = "Stage1",
         //    characterIndex = 0,
+        //    isReplay = false,
         //};
         //_fsm.SetNextStateId((int)eGameState.STG, data);
         _fsm.SetNextStateId((int)eGameState.Title);

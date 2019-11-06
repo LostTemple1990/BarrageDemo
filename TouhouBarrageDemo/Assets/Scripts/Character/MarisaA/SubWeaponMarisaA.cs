@@ -60,7 +60,7 @@ public class SubWeaponMarisaA : SubWeaponBase
     {
         if ( _character.CanShoot() && _character.IsInShootingStatus() )
         {
-            int subAvailable = PlayerService.GetInstance().GetPower() / 100;
+            int subAvailable = PlayerInterface.GetInstance().GetPower() / 100;
             if ( !_isShooting )
             {
                 // 射出激光的特效
