@@ -19,7 +19,7 @@ public class ItemManager
         //_itemTypeList = new List<ItemType>() { ItemType.PPointNormal, ItemType.PPointBig };
         // 初始化最大的缓存数目
         _maxCacheCountDatas = new Dictionary<ItemType, int>();
-        _maxCacheCountDatas.Add(ItemType.PPointNormal, 100); // 小P点
+        _maxCacheCountDatas.Add(ItemType.PowerNormal, 100); // 小P点
     }
 
     private List<ItemBase> _itemList;
@@ -166,8 +166,26 @@ public class ItemManager
         ItemBase item;
         switch (itemType)
         {
-            case ItemType.PPointNormal:
-                item = new ItemPPointNormal();
+            case ItemType.PowerNormal:
+                item = new ItemPowerNormal();
+                break;
+            case ItemType.PowerBig:
+                item = new ItemPowerBig();
+                break;
+            case ItemType.PowerFull:
+                item = new ItemPowerFull();
+                break;
+            case ItemType.LifeFragment:
+                item = new ItemLifeFragment();
+                break;
+            case ItemType.Life:
+                item = new ItemLife();
+                break;
+            case ItemType.BombFragment:
+                item = new ItemBombFragment();
+                break;
+            case ItemType.Bomb:
+                item = new ItemBomb();
                 break;
             default:
                 item = null;
@@ -220,26 +238,25 @@ public class ItemManager
         foreach (ItemType type in keys)
         {
             int maxCacheCount;
-            if ( _maxCacheCountDatas.TryGetValue(type,out maxCacheCount) )
+            if (!_maxCacheCountDatas.TryGetValue(type, out maxCacheCount))
+                maxCacheCount = 0;
+            if (_itemsPool.TryGetValue(type, out stack))
             {
-                if ( _itemsPool.TryGetValue(type, out stack) )
+                int stackCount = stack.Count;
+                if (stackCount > maxCacheCount)
                 {
-                    int stackCount = stack.Count;
-                    if ( stack.Count > maxCacheCount )
+                    int count = 0;
+                    while (count <= Consts.MaxDestroyCountPerFrame && stackCount > maxCacheCount)
                     {
-                        int count = 0;
-                        while ( count <= Consts.MaxDestroyCountPerFrame && stackCount > maxCacheCount )
-                        {
-                            // 销毁对象
-                            item = stack.Pop();
-                            item.Destroy();
-                            // 更新计数
-                            count++;
-                            stackCount--;
-                        }
+                        // 销毁对象
+                        item = stack.Pop();
+                        item.Destroy();
+                        // 更新计数
+                        count++;
+                        stackCount--;
                     }
-                    return true;
                 }
+                return true;
             }
         }
         return false;
@@ -248,6 +265,11 @@ public class ItemManager
 
 public enum ItemType
 {
-    PPointNormal = 1,
-    PPointBig = 2,
+    PowerNormal = 1,
+    PowerBig = 2,
+    PowerFull = 3,
+    LifeFragment = 4,
+    Life = 5,
+    BombFragment = 6,
+    Bomb = 7,
 }

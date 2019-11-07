@@ -1,15 +1,7 @@
-﻿//define 定义
-// LogLuaFuncRef  是否log出记录在c#这边的lua变量的索引
-
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameMain : MonoBehaviour
 {
-    OperationController _opController;
-    CharacterBase _char;
-
-    private int _state;
-
     private GameStateMachine _fsm;
 
 	// Use this for initialization

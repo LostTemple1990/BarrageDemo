@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: ItemAtlas
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 144778e3213191e49a7deb8ea965473f, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 06450f4308fa0154eb940427f4a56f37, type: 3}
+  - {fileID: 21300000, guid: 771fdcc420f6f784fac8e6c78369be25, type: 3}
+  - {fileID: 21300000, guid: b96e375582bf1d9458d73f5353b1a9bd, type: 3}
+  - {fileID: 21300000, guid: 7c5aad8581ef04d49b85508a06ed0171, type: 3}
+  - {fileID: 21300000, guid: c6f61c771361e414db28bd983849d4aa, type: 3}
+  - {fileID: 21300000, guid: ce40ba682fcb0414488496a20d62b687, type: 3}
+  - {fileID: 21300000, guid: dc1b3ee8f45d05644973e46288afa1f9, type: 3}
+  - {fileID: 21300000, guid: fc3eee49ea3654d43aced76be95d6afe, type: 3}
+  - {fileID: 21300000, guid: b0c89c4bb4608324788402c421216bce, type: 3}
+  - {fileID: 21300000, guid: 01176b5b44504c748ab2eeb5f309f19e, type: 3}
+  - {fileID: 21300000, guid: b771956cb4b54ff44a6d1c9f831551b9, type: 3}
+  - {fileID: 21300000, guid: b76ced7c4bb0d97469988765045ba5f1, type: 3}
+  - {fileID: 21300000, guid: af3cde4d8fce3e94a8092c099a5559c8, type: 3}
+  - {fileID: 21300000, guid: 6750a25d30df40645b06a9b4b2c28560, type: 3}
+  - {fileID: 21300000, guid: 703e17ddd823d144fa3fd58dd7047e63, type: 3}
+  - {fileID: 21300000, guid: 4ad2b68e0753a944783c2d40ec9bcefe, type: 3}
+  - {fileID: 21300000, guid: 1b485daecbf7cd841ba444fffb268a8c, type: 3}
+  - {fileID: 21300000, guid: b6e0c15f275848b41b7350ce6e0fe07d, type: 3}
+  - {fileID: 21300000, guid: f335567f588fcc743aac6e00efec60e2, type: 3}
+  - {fileID: 21300000, guid: c9f716cfd3a03fc44ba5f6ca2951b0a5, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - item_5
+  - PowerBig
+  - Life
+  - Bomb
+  - BombFragment
+  - PowerFull_Up
+  - LifeFragment_Up
+  - LifeFragment
+  - PowerBig_Up
+  - BombFragment_Up
+  - item_10
+  - item_17
+  - PowerFull
+  - Bomb_Up
+  - item_8
+  - PowerNormal
+  - item_7
+  - PowerNormal_Up
+  - item_19
+  - Life_Up
+  m_Tag: ItemAtlas
+  m_IsVariant: 0

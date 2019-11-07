@@ -414,6 +414,12 @@ public struct ItemWithFramentsCounter
     public int fragmentCount;
     public int maxFragmentCount;
 
+    public void Add(int value,int fragmentValue)
+    {
+        AddFragmentCount(fragmentValue);
+        AddItemCount(value);
+    }
+
     public void AddItemCount(int value)
     {
         itemCount = Mathf.Min(maxItemCount, itemCount + value);

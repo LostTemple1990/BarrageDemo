@@ -219,7 +219,7 @@ public class CharacterBase : IAffectedMovableObject
         _invincibleDuration = Consts.AppearInvincibleDuration;
         _stateUpdateFunc = StateAppearUpdate;
         _character.SetActive(true);
-        _preMoveMode = _curMoveMode = Consts.MoveModeHighSpeed;
+        _preMoveMode = _curMoveMode = ePlayerMoveMode.HighSpeed;
         // 显示副武器
         //UpdateSubWeaponsVisible();
         ResetSubWeapons();
@@ -379,8 +379,8 @@ public class CharacterBase : IAffectedMovableObject
         _collisionPointTf = collisionPointGo.transform;
         _rotatePointTf = _collisionPointTf.Find("Point");
         UIManager.GetInstance().AddGoToLayer(collisionPointGo, LayerId.PlayerCollisionPoint);
-        _preMoveMode = Consts.MoveModeHighSpeed;
-        _curMoveMode = Consts.MoveModeHighSpeed;
+        _preMoveMode = ePlayerMoveMode.HighSpeed;
+        _curMoveMode = ePlayerMoveMode.HighSpeed;
         collisionPointGo.SetActive(false);
         _collisionPointRotateVec3 = new Vector3(0, 0, 3f);
         // 初始化副武器的层
@@ -907,5 +907,10 @@ public class CharacterBase : IAffectedMovableObject
     public ePlayerMoveMode CurModeMode
     {
         get { return _curMoveMode; }
+    }
+
+    public virtual int CharacterIndex
+    {
+        get { throw new System.NotImplementedException(); }
     }
 }

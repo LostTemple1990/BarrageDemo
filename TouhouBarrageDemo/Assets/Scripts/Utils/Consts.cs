@@ -10,15 +10,6 @@ public class Consts
     public const int DIR_UP = 4;
     public const int DIR_DOWN = 8;
 
-    /// <summary>
-    /// 高速移动
-    /// </summary>
-    public const int MoveModeHighSpeed = 0;
-    /// <summary>
-    /// 低速移动
-    /// </summary>
-    public const int MoveModeLowSpeed = 1;
-
     public const float HighSpeed = 4.5f;
     public const float SlowSpeed = 2f;
 
@@ -47,6 +38,7 @@ public class Consts
 
     public const float AutoGetItemY = 140;
     public const float ItemBottomBorderY = -240;
+    public const float ItemTopBorderY = GameHeight / 2;
     /// <summary>
     /// 最大信号强度
     /// </summary>

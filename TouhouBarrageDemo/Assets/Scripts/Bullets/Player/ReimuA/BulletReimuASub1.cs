@@ -22,6 +22,7 @@ public class BulletReimuASub1 : PlayerBulletSimple
     public BulletReimuASub1()
     {
         _type = BulletType.ReimuA_Sub1;
+        _damage = 2;
     }
 
     public override void Init()

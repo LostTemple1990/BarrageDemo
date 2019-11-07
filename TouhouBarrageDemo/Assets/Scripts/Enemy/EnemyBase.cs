@@ -553,7 +553,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
             {
                 if ( !task.isFinish  )
                 {
-                    InterpreterManager.GetInstance().StopTaskThread(task.luaState, task.funcRef);
+                    InterpreterManager.GetInstance().StopTaskThread(task);
                 }
                 ObjectsPool.GetInstance().RestorePoolClassToPool<Task>(task);
             }

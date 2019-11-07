@@ -83,17 +83,19 @@ public class Reimu : CharacterBase
         // 初始化副武器的位置偏移量
         _subPosOffset = new Vector2[2][][];
         // 高速
-        _subPosOffset[Consts.MoveModeHighSpeed] = new Vector2[4][];
-        _subPosOffset[Consts.MoveModeHighSpeed][0] = new Vector2[] { new Vector2(0f, 32f) };
-        _subPosOffset[Consts.MoveModeHighSpeed][1] = new Vector2[] { new Vector2(-12f, 32f), new Vector2(12f, 32f) };
-        _subPosOffset[Consts.MoveModeHighSpeed][2] = new Vector2[] { new Vector2(-32f, 0f), new Vector2(0f, 32f), new Vector2(32f, 0f) };
-        _subPosOffset[Consts.MoveModeHighSpeed][3] = new Vector2[] { new Vector2(-32f, 0f), new Vector2(-12f, 32f), new Vector2(12f, 32f), new Vector2(32f, 0f) };
+        int index = GetMoveModeIndex(ePlayerMoveMode.HighSpeed);
+        _subPosOffset[index] = new Vector2[4][];
+        _subPosOffset[index][0] = new Vector2[] { new Vector2(0f, 32f) };
+        _subPosOffset[index][1] = new Vector2[] { new Vector2(-12f, 32f), new Vector2(12f, 32f) };
+        _subPosOffset[index][2] = new Vector2[] { new Vector2(-32f, 0f), new Vector2(0f, 32f), new Vector2(32f, 0f) };
+        _subPosOffset[index][3] = new Vector2[] { new Vector2(-32f, 0f), new Vector2(-12f, 32f), new Vector2(12f, 32f), new Vector2(32f, 0f) };
         // 低速
-        _subPosOffset[Consts.MoveModeLowSpeed] = new Vector2[4][];
-        _subPosOffset[Consts.MoveModeLowSpeed][0] = new Vector2[] { new Vector2(0f, 28f) };
-        _subPosOffset[Consts.MoveModeLowSpeed][1] = new Vector2[] { new Vector2(-12f, 28f), new Vector2(12f, 28f) };
-        _subPosOffset[Consts.MoveModeLowSpeed][2] = new Vector2[] { new Vector2(-28f, 4f), new Vector2(0f, 28f), new Vector2(28f, 4f) };
-        _subPosOffset[Consts.MoveModeLowSpeed][3] = new Vector2[] { new Vector2(-28f, 4f), new Vector2(-12f, 28f), new Vector2(12f, 28f), new Vector2(28f, 4f) };
+        index = GetMoveModeIndex(ePlayerMoveMode.LowSpeed);
+        _subPosOffset[index] = new Vector2[4][];
+        _subPosOffset[index][0] = new Vector2[] { new Vector2(0f, 28f) };
+        _subPosOffset[index][1] = new Vector2[] { new Vector2(-12f, 28f), new Vector2(12f, 28f) };
+        _subPosOffset[index][2] = new Vector2[] { new Vector2(-28f, 4f), new Vector2(0f, 28f), new Vector2(28f, 4f) };
+        _subPosOffset[index][3] = new Vector2[] { new Vector2(-28f, 4f), new Vector2(-12f, 28f), new Vector2(12f, 28f), new Vector2(28f, 4f) };
         _isSubMoving = false;
         _subMoveDuration = SubMoveDuration;
     }
@@ -105,11 +107,13 @@ public class Reimu : CharacterBase
         bullet.ChangeStyleById(_mainBulletId);
         bullet.DoStraightMove(18f, 90f);
         bullet.SetPosition(_curPos.x + _leftBulletOffset.x, _curPos.y + _leftBulletOffset.y);
+        bullet.SetDamage(6);
         // 右侧子弹
         bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Player_Simple) as PlayerBulletSimple;
         bullet.ChangeStyleById(_mainBulletId);
         bullet.DoStraightMove(18f, 90f);
         bullet.SetPosition(_curPos.x + _rightBulletOffset.x, _curPos.y + _rightBulletOffset.y);
+        bullet.SetDamage(6);
     }
 
     protected override void UpdateSubWeapons()
@@ -217,6 +221,11 @@ public class Reimu : CharacterBase
         }
     }
 
+    private int GetMoveModeIndex(ePlayerMoveMode mode)
+    {
+        return mode == ePlayerMoveMode.HighSpeed ? 0 : 1;
+    }
+
     /// <summary>
     /// 获取在子机数为totalCount的情况下，在高速/低速状态时第n个子机的默认位置
     /// </summary>
@@ -228,5 +237,13 @@ public class Reimu : CharacterBase
     {
         int moveModeIndex = moveMode == ePlayerMoveMode.HighSpeed ? 0 : 1;
         return _subPosOffset[moveModeIndex][totalCount - 1][n];
+    }
+
+    public override int CharacterIndex
+    {
+        get
+        {
+            return 0;
+        }
     }
 }

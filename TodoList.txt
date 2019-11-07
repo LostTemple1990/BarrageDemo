@@ -62,10 +62,11 @@ Boss的符卡数目显示相关，击杀BOSS的特效
 残机计算，添加疮痍的暂停界面 --finish
 继续测试replay界面的bug
 添加擦弹时的粒子特效 --finish
-稍微修正一下灵梦的火力
-返回主界面的时候先打开LoadingView
+稍微修正一下灵梦的火力,重新给梦机写一个B
+返回主界面的时候先打开LoadingView --finish
 思考一下Dialog是否需要单独提取出来
-随缘查一下Retry时报错的问题
+随缘查一下Retry时报错的问题 --finish
+测试一下不同分辨率下的显示问题
 
 ---editor
 删除自定义的节点的时候，需要同时删除掉CustomDefine中对应的数据，否则撤销操作会报错 --finish

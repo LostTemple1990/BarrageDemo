@@ -304,8 +304,7 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnStateInitSTGUpdate()
     {
-        if (_stgData.isReplay)
-            Global.IsInReplayMode = true;
+        Global.IsInReplayMode = _stgData.isReplay;
         if (!Global.IsInReplayMode)
         {
             _stgData.seed = InitSeed();
@@ -412,6 +411,11 @@ public class StateSTGMain : IState,ICommand
 
     private void OnBackToTitle()
     {
+        // 打开loadingView
+        List<object> commandList = new List<object>();
+        commandList.Add(CommandConsts.OnEnterTitle);
+        object[] commandArr = commandList.ToArray();
+        UIManager.GetInstance().ShowView(WindowName.GameLoadingView, commandArr);
         _stgMain.Clear();
         _fsm.SetNextStateId((int)eGameState.Title);
     }

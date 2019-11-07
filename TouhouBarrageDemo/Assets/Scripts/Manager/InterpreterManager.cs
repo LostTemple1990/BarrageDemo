@@ -441,6 +441,7 @@ public class InterpreterManager
                 Logger.LogError("Task funcRef " + task.funcRef + " is not point to a function!");
                 return;
             }
+            task.isStarted = true;
             PushParasToStack(task.luaState);
             status = task.luaState.Resume(null, numArgs);
         }
@@ -491,10 +492,8 @@ public class InterpreterManager
 
     public void StopTaskThread(Task task)
     {
-        if (task.isFinish) return;
+        if (task.isFinish || !task.isStarted) return;
         ILuaState luaState = task.luaState;
-        if (luaState == null)
-            return;
         luaState.PushBoolean(false);
         ThreadStatus status = luaState.Resume(luaState, 1);
         if (status == ThreadStatus.LUA_OK)
@@ -514,7 +513,9 @@ public class InterpreterManager
     public void StopTaskThread(ILuaState luaState,int taskFuncRef)
     {
         if (luaState == null)
+        {
             return;
+        }
         luaState.PushBoolean(false);
         ThreadStatus status = luaState.Resume(luaState, 1);
         if ( status == ThreadStatus.LUA_OK )
@@ -643,8 +644,6 @@ public class InterpreterManager
         }
         PushParasToStack(_luaState);
         _luaState.PCall(paraCount, retCount, _traceBackIndex);
-        // 弹出traceback函数
-        //_luaState.Pop(1);
         return 1;
     }
 

@@ -15,6 +15,10 @@ public class PlayerBulletSimple : PlayerBulletBase
     protected int _eliminatingTime;
     protected int _eliminatingDuration;
     protected Color _bulletColor;
+    /// <summary>
+    /// 击中时造成的伤害
+    /// </summary>
+    protected int _damage;
 
     public PlayerBulletSimple()
     {
@@ -198,9 +202,14 @@ public class PlayerBulletSimple : PlayerBulletBase
         return _detectCollision && !_isEliminating;
     }
 
+    public void SetDamage(int value)
+    {
+        _damage = value;
+    }
+
     protected override int GetDamage()
     {
-        return 2;
+        return _damage;
     }
 
     public override void Clear()

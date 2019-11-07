@@ -175,8 +175,22 @@ public class MainView : ViewBase, ICommand
 
     public override void Adaptive()
     {
-        float bgRealWidth = Mathf.Round(Consts.RefResolutionY / BgHeight * BgWidth);
-        _bgTf.sizeDelta = new Vector2(bgRealWidth, Consts.RefResolutionY);
+        // 计算背景图在实际UI尺寸下的大小
+        Vector2 uiSize = UIManager.GetInstance().GetUIRootSize();
+        float refFactor = uiSize.x / uiSize.y;
+        float imgFactor = BgWidth / BgHeight;
+        float bgWidth, bgHeight;
+        if (refFactor >= imgFactor)
+        {
+            bgWidth = uiSize.x;
+            bgHeight = Mathf.Round(uiSize.x / BgWidth * BgHeight);
+        }
+        else
+        {
+            bgHeight = uiSize.y;
+            bgWidth = Mathf.Round(uiSize.y / BgHeight * BgWidth);
+        }
+        _bgTf.sizeDelta = new Vector2(bgWidth, bgHeight);
     }
 
     public override void OnShow(object data = null)

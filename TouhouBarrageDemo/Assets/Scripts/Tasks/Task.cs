@@ -9,11 +9,13 @@ public class Task : IPoolClass
     public int curWaitTime;
     public int totalWaitTime;
     public bool isFinish;
+    public bool isStarted;
 
     public Task()
     {
         luaState = null;
         isFinish = false;
+        isStarted = false;
     }
 
     public void Update()
@@ -28,5 +30,6 @@ public class Task : IPoolClass
     {
         isFinish = false;
         luaState = null;
+        isStarted = false;
     }
 }

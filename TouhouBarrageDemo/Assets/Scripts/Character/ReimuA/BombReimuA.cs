@@ -5,7 +5,9 @@ using System.Collections.Generic;
 public class BombReimuA : BombBase
 {
     private const int BombCount = 3;
-    private const float DefaultRadius = 32;
+    private const float DefaultRadius = 128;
+    private const float State1EndScale = 40f / DefaultRadius;
+    private const float State2EndScale = 320 / DefaultRadius;
     /// <summary>
     /// 生成炸弹的地点偏移量
     /// </summary>
@@ -56,7 +58,8 @@ public class BombReimuA : BombBase
             tf.localPosition = bombPos;
             tf.localScale = Vector3.zero;
             SpriteRenderer sp = tf.Find("Bomb").GetComponent<SpriteRenderer>();
-            sp.material.SetColor("_Color", _colors[i]);
+            sp.color = _colors[i];
+            //sp.material.SetColor("_Color", _colors[i]);
             // 创建ObjectCollider
             collider = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Circle) as ColliderCircle;
             collider.SetSize(0,0);
@@ -91,7 +94,7 @@ public class BombReimuA : BombBase
     public void UpdateState1()
     {
         _time++;
-        _curScale = MathUtil.GetEaseOutQuadInterpolation(0, 1.25f, _time, _duration);
+        _curScale = MathUtil.GetEaseOutQuadInterpolation(0, State1EndScale, _time, _duration);
         _detectRadius = _curScale * DefaultRadius;
         for (int i=0;i<BombCount;i++)
         {
@@ -109,7 +112,7 @@ public class BombReimuA : BombBase
     public void UpdateState2()
     {
         _time++;
-        _curScale = MathUtil.GetEaseOutQuadInterpolation(1.25f, 10f, _time, _duration);
+        _curScale = MathUtil.GetEaseOutQuadInterpolation(State1EndScale, State2EndScale, _time, _duration);
         _detectRadius = _curScale * DefaultRadius;
         //CheckCollisionWithEnemyBullets();
         //CheckCollisionWithEnemy();

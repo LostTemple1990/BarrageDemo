@@ -159,4 +159,8 @@
     /// 载入录像成功
     /// </summary>
     public const int LoadReplaySuccess = 3106;
+    /// <summary>
+    /// 进入标题画面
+    /// </summary>
+    public const int OnEnterTitle = 3107;
 }

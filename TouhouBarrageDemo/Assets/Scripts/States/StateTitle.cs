@@ -54,6 +54,7 @@ public class StateTitle : IState, ICommand
         // 打开起始界面
         UIManager.GetInstance().ShowView(WindowName.MainView);
         ReplayManager.GetInstance().Init();
+        CommandManager.GetInstance().RunCommand(CommandConsts.OnEnterTitle);
     }
 
     public void OnStateExit()

@@ -48,6 +48,11 @@ public class MarisaALuaInterface
                         res.SetClCsValue(_funcGetPos);
                         return true;
                     }
+                case "characterIndex":
+                    {
+                        res.SetNValue(character.CharacterIndex);
+                        return true;
+                    }
             }
         }
         res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(MarisaA).Name));
