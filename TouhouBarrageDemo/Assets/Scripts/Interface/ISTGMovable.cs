@@ -7,6 +7,7 @@ public interface ISTGMovable : IPosition
     void DoAccelerationWithLimitation(float acce, float accAngle, float maxVelocity);
 
     void SetPolarParas(float radius, float angle, float deltaR, float omega);
+    void SetPolarParas(float radius, float angle, float deltaR, float omega,float centerPosX,float centerPosY);
 
     void MoveTo(float endX, float endY, int duration, InterpolationMode mode);
     void MoveTowards(float v, float angle, int duration);

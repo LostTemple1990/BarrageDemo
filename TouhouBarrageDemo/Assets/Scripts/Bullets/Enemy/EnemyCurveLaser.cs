@@ -323,6 +323,11 @@ public class EnemyCurveLaser : EnemyBulletBase
         _movableObj.SetPolarParas(radius, angle, deltaR, omega);
     }
 
+    public override void SetPolarParas(float radius, float angle, float deltaR, float omega, float centerPosX, float centerPosY)
+    {
+        _movableObj.SetPolarParas(radius, angle, deltaR, omega, centerPosX, centerPosY);
+    }
+
     public override void AddExtraSpeedParas(float v, float vAngle, float acce, float accAngle)
     {
         _movableObj.AddExtraSpeedParas(v, vAngle, acce, accAngle);

@@ -114,6 +114,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     public override void Update()
     {
         base.Update();
+        UpdateComponents();
         _dx = 0;
         _dy = 0;
         if ( !_isFollowingMasterContinuously )
@@ -157,7 +158,6 @@ public class EnemyBulletMovable : EnemyBulletBase
                 _curPos = relativePos + _attachableMaster.GetPosition();
             }
         }
-        UpdateComponents();
     }
 
     #region 直线运动
@@ -295,6 +295,25 @@ public class EnemyBulletMovable : EnemyBulletBase
     public override void SetPolarParas(float radius, float angle, float deltaR, float omega)
     {
         _centerPos = new Vector2(_curPos.x, _curPos.y);
+        _curRadius = radius;
+        _curCurveAngle = angle;
+        _deltaRadius = deltaR;
+        _curOmega = omega;
+        _lastCurvePos = _centerPos;
+        _isMovingCurve = true;
+    }
+
+    /// <summary>
+    /// 做圆周运动，原点为Vector2(centerPosX,centerPosY)
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <param name="angle"></param>
+    /// <param name="deltaR"></param>
+    /// <param name="omega"></param>
+    public override void SetPolarParas(float radius, float angle, float deltaR, float omega, float centerPosX, float centerPosY)
+    {
+        _curPos = new Vector2(centerPosX, centerPosY);
+        _centerPos = _curPos;
         _curRadius = radius;
         _curCurveAngle = angle;
         _deltaRadius = deltaR;

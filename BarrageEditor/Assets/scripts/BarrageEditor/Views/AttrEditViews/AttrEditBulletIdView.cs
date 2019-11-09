@@ -93,8 +93,8 @@ namespace BarrageEditor
             if ( !CheckColorAvailable(_styleIndex,_colorId) )
             {
                 _colorId = cfg.availableColors[0];
-                _colorDropdown.value = _colorList.IndexOf(_colorId);
             }
+            _colorDropdown.value = _colorList.IndexOf(_colorId);
             UpdateBulletId();
             UpdateBulletIdTextAndPreview();
         }
@@ -194,7 +194,14 @@ namespace BarrageEditor
         public override void OnShow(object data)
         {
             _nodeAttr = data as BaseNodeAttr;
-            _curBulletId = int.Parse(_nodeAttr.GetValueString());
+            try
+            {
+                _curBulletId = int.Parse(_nodeAttr.GetValueString());
+            }
+            catch
+            {
+                _curBulletId = 0;
+            }
             if (_curBulletId == 0 || !CheckColorAvailable(_curBulletId))
             {
                 _curBulletId = 107010;

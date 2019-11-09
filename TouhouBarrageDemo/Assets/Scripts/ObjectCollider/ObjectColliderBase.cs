@@ -374,6 +374,11 @@ public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, IST
         _movableObject.SetPolarParas(radius, angle, deltaR, omega);
     }
 
+    public void SetPolarParas(float radius, float angle, float deltaR, float omega, float centerPosX, float centerPosY)
+    {
+        _movableObject.SetPolarParas(radius, angle, deltaR, omega, centerPosX, centerPosY);
+    }
+
     public float velocity
     {
         get { return _movableObject.velocity; }

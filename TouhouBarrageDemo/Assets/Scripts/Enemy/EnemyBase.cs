@@ -784,6 +784,11 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     {
         _movableObj.SetPolarParas(radius, angle, deltaR, omega);
     }
+
+    public void SetPolarParas(float radius, float angle, float deltaR, float omega, float centerPosX, float centerPosY)
+    {
+        _movableObj.SetPolarParas(radius, angle, deltaR, omega, centerPosX, centerPosY);
+    }
 }
 
 public enum EnemyType : byte

@@ -201,6 +201,7 @@ public partial class LuaLib
             new NameFuncPair("GetPos",IPosition_GetPosition),
             new NameFuncPair("SetPos",IPosition_SetPosition),
             new NameFuncPair("Angle",IPosition_Angle),
+            new NameFuncPair("Distance",IPosition_Distance),
             // Math
             new NameFuncPair("sin",Math_Sin),
             new NameFuncPair("cos",Math_Cos),
@@ -386,15 +387,15 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-6);
         float posY = (float)luaState.ToNumber(-5);
         float angle = (float)luaState.ToNumber(-4);
-        float width = (float)luaState.ToNumber(-3);
-        float height = (float)luaState.ToNumber(-2);
+        float length = (float)luaState.ToNumber(-3);
+        float width = (float)luaState.ToNumber(-2);
         int existDuration = luaState.ToInteger(-1);
         luaState.Pop(7);
         EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Laser) as EnemyLaser;
         laser.SetStyleById(id);
         laser.SetPosition(posX, posY);
         laser.SetRotation(angle);
-        laser.SetSize(width, height);
+        laser.SetSize(width, length);
         laser.SetLaserExistDuration(existDuration);
         luaState.PushLightUserData(laser);
         return 1;
@@ -517,11 +518,11 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-5);
         float posY = (float)luaState.ToNumber(-4);
         float angle = (float)luaState.ToNumber(-3);
-        float length = (float)luaState.ToNumber(-1);
+        float length = (float)luaState.ToNumber(-2);
         float width = (float)luaState.ToNumber(-1);
         laser.SetPosition(posX, posY);
         laser.SetRotation(angle);
-        laser.SetSize(length, width);
+        laser.SetSize(width, length);
         luaState.PushLightUserData(laser);
         return 1;
     }
@@ -559,7 +560,7 @@ public partial class LuaLib
         EnemyLaser laser = luaState.ToUserData(-3) as EnemyLaser;
         float length = (float)luaState.ToNumber(-2);
         float width = (float)luaState.ToNumber(-1);
-        laser.SetSize(length, width);
+        laser.SetSize(width, length);
         return 0;
     }
 
@@ -671,10 +672,36 @@ public partial class LuaLib
         return 0;
     }
 
-#endregion
+    /// <summary>
+    /// 设置射线的宽度
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetLaserWidth(ILuaState luaState)
+    {
+        EnemyLaser laser = luaState.ToUserData(-2) as EnemyLaser;
+        float width = (float)luaState.ToNumber(-1);
+        laser.SetWidth(width);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置射线的长度
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetLaserLength(ILuaState luaState)
+    {
+        EnemyLaser laser = luaState.ToUserData(-2) as EnemyLaser;
+        float length = (float)luaState.ToNumber(-1);
+        laser.SetLength(length);
+        return 0;
+    }
+
+    #endregion
 
 
-#region 创建敌机相关
+    #region 创建敌机相关
 
     //public static int EnemyMoveTo(ILuaState luaState)
     //{
@@ -686,9 +713,9 @@ public partial class LuaLib
     //    //enemy.DoMove()
     //    return 0;
     //}
-#endregion
+    #endregion
 
-#region BOSS相关
+    #region BOSS相关
     /// <summary>
     /// 创建boss
     /// <para>string typeName boss的自定义类型名称</para>

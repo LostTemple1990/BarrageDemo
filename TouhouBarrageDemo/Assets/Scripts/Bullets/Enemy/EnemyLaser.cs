@@ -282,13 +282,12 @@ public class EnemyLaser : EnemyBulletBase
         _existDuration = existDuration;
     }
 
-    public virtual void SetSize(float length, float width)
+    public virtual void SetSize(float width, float length)
     {
-        _width = width;
+        if (width != Consts.OriginalWidth)
+            _width = width;
         if (length != Consts.OriginalHeight)
-        {
             SetLength(length);
-        }
     }
 
     public void SetSourceSize(float size)
@@ -350,6 +349,11 @@ public class EnemyLaser : EnemyBulletBase
     public override void SetPolarParas(float radius, float angle, float deltaR, float omega)
     {
         _movableObject.SetPolarParas(radius, angle, deltaR, omega);
+    }
+
+    public override void SetPolarParas(float radius, float angle, float deltaR, float omega, float centerPosX, float centerPosY)
+    {
+        _movableObject.SetPolarParas(radius, angle, deltaR, omega, centerPosX, centerPosY);
     }
 
     public void DoRotate(float toAngle,int duration)
@@ -683,6 +687,24 @@ public class EnemyLaser : EnemyBulletBase
             _laserHalfLength = value / 2;
             _isDirty = true;
         }
+    }
+
+    /// <summary>
+    /// 激光长度
+    /// </summary>
+    /// <returns></returns>
+    public float GetLength()
+    {
+        return _curLength;
+    }
+
+    /// <summary>
+    /// 激光宽度
+    /// </summary>
+    /// <returns></returns>
+    public float GetWidth()
+    {
+        return _curWidth;
     }
 
     public override string BulletId

@@ -91,10 +91,10 @@ namespace BarrageEditor
             UIEventListener.Get(_styleEditBtn).AddClick(OnStyleEditBtnClickHandler);
         }
 
-        private void OnStyleDropdownValueChangedHandler(int value)
+        private void OnStyleDropdownValueChangedHandler(int index)
         {
             //Logger.Log("Change style to value " + value);
-            _curLaserCfg = _styleCfgs[value];
+            _curLaserCfg = _styleCfgs[index];
             _styleId = _curLaserCfg.styleId;
             _styleText.text = _curLaserCfg.name;
             UpdateColorDropdownOptions();
@@ -102,6 +102,10 @@ namespace BarrageEditor
             if (!CheckColorAvailable(_styleId, _colorId))
             {
                 _colorId = _curLaserCfg.availableColors[0];
+                _colorDropdown.value = _colorList.IndexOf(_colorId);
+            }
+            else
+            {
                 _colorDropdown.value = _colorList.IndexOf(_colorId);
             }
             if (_blendIndex == -1)
@@ -123,8 +127,17 @@ namespace BarrageEditor
             UIManager.GetInstance().OpenView(ViewID.AttrSelectLaserStyleView, datas);
         }
 
-        private void SelectStyleCallback(int index)
+        private void SelectStyleCallback(int styleId)
         {
+            int index = -1;
+            for (int i = 0; i < _styleCfgs.Count; i++)
+            {
+                if (_styleCfgs[i].styleId == styleId)
+                {
+                    index = i;
+                    break;
+                }
+            }
             OnStyleDropdownValueChangedHandler(index);
         }
 
@@ -152,7 +165,7 @@ namespace BarrageEditor
             List<object> datas = new List<object>();
             datas.Add(_colorList);
             datas.Add(_colorId);
-            Action<int> callback = new Action<int>(SelectStyleCallback);
+            Action<int> callback = new Action<int>(SelectColorCallback);
             datas.Add(callback);
             UIManager.GetInstance().OpenView(ViewID.AttrSelectBulletColorView, datas);
         }

@@ -225,6 +225,7 @@ namespace BarrageEditor
                 typeList = new List<NodeType>[]
                 {
                     new List<NodeType> { NodeType.DefineCollider, NodeType.CreateCustomizedCollider, NodeType.CreateSimpleCollider },
+                    new List<NodeType> { NodeType.ColliderTrigger, NodeType.Rebound },
                 },
             };
             _nodeTabs.Add(tab);

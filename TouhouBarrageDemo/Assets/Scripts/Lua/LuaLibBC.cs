@@ -63,7 +63,6 @@ public partial class LuaLib
         InterpolationMode intMode = (InterpolationMode)luaState.ToInteger(-3);
         int repeatCount = luaState.ToInteger(-2);
         int repeatInterval = luaState.ToInteger(-1);
-        luaState.Pop(12);
         BCParasChange bc = bullet.AddComponent<BCParasChange>();
         ParaChangeValue changeValue = new ParaChangeValue
         {
@@ -89,8 +88,7 @@ public partial class LuaLib
         EnemyBulletBase bullet = luaState.ToUserData(-3) as EnemyBulletBase;
         int triggerType = luaState.ToInteger(-2);
         int triggerFuncRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
-        luaState.Pop(2);
-        BCColliderTrigger bc = bullet.GetComponent<BCColliderTrigger>();
+        BCColliderTrigger bc = bullet.AddComponent<BCColliderTrigger>();
         bc.Register(triggerType, triggerFuncRef);
         return 0;
     }

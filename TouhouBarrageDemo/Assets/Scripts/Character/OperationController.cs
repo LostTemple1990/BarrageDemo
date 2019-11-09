@@ -14,6 +14,8 @@ public class OperationController
         return _instance;
     }
 
+    private const eSTGKey DirKeys = eSTGKey.KeyUp | eSTGKey.KeyDown | eSTGKey.KeyLeft | eSTGKey.KeyRight;
+
     private CharacterBase _character;
     /// <summary>
     /// 按照按键顺序记录的方向键的输入
@@ -229,6 +231,13 @@ public class OperationController
     public bool IsDirKeyAvailable(eSTGKey key)
     {
         return (_availableDirKey & key) != 0;
+    }
+
+    public bool IsKeyAvailable(eSTGKey key)
+    {
+        if ((key & DirKeys) != 0)
+            return IsDirKeyAvailable(key);
+        return (_curInput & key) != 0;
     }
 
     /// <summary>

@@ -367,6 +367,11 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
         throw new System.NotImplementedException();
     }
 
+    public virtual void SetPolarParas(float radius, float angle, float deltaR, float omega, float centerPosX, float centerPosY)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public virtual void MoveTo(float endX, float endY, int duration, InterpolationMode intMode)
     {
         throw new System.NotImplementedException();

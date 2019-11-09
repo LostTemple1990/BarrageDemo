@@ -41,7 +41,7 @@ namespace BarrageEditor
                 styleId = 1,
                 name = "Style1",
                 packName = "STGLaserAtlas0",
-                resName = "Laser101010",
+                resName = "Laser201010",
                 showScale = 1,
                 availableColors = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
             };
@@ -55,7 +55,7 @@ namespace BarrageEditor
                 styleId = 2,
                 name = "Style2",
                 packName = "STGLaserAtlas0",
-                resName = "Laser102010",
+                resName = "Laser202010",
                 showScale = 1,
                 availableColors = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
             };
@@ -69,7 +69,7 @@ namespace BarrageEditor
                 styleId = 3,
                 name = "Style3",
                 packName = "STGLaserAtlas0",
-                resName = "Laser101010",
+                resName = "Laser203010",
                 showScale = 1,
                 availableColors = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
             };
@@ -83,7 +83,7 @@ namespace BarrageEditor
                 styleId = 4,
                 name = "Style4",
                 packName = "STGLaserAtlas0",
-                resName = "Bullet104010",
+                resName = "Laser204010",
                 showScale = 1,
                 availableColors = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
             };

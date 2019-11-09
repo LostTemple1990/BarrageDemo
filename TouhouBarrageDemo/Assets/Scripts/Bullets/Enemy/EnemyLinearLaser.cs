@@ -309,6 +309,10 @@ public class EnemyLinearLaser : EnemyBulletBase
     /// 激光头部sp
     /// </summary>
     protected SpriteRenderer _headSp;
+    /// <summary>
+    /// 是否需要渲染本体的位置
+    /// </summary>
+    protected bool _renderObjPos;
 
     protected int _existTime;
 
@@ -407,7 +411,7 @@ public class EnemyLinearLaser : EnemyBulletBase
     {
         base.Init();
         _isSized = false;
-        _curPos = Vector3.zero;
+        _curPos = Vector2.zero;
         _existDuration = -1;
         BulletsManager.GetInstance().RegisterEnemyBullet(this);
         _isDirty = false;
@@ -421,6 +425,7 @@ public class EnemyLinearLaser : EnemyBulletBase
         _collidedSegmentCount = 0;
         _isInitAngle = false;
         _laserLen = 0;
+        _renderObjPos = true;
         if ( _movableObj == null )
         {
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
@@ -450,7 +455,6 @@ public class EnemyLinearLaser : EnemyBulletBase
         _prefabName = _cfg.id.ToString();
         _laserObj = BulletsManager.GetInstance().CreateBulletGameObject(BulletType.Enemy_LinearLaser, _cfg.id);
         _objTrans = _laserObj.transform;
-        _objTrans.localPosition = new Vector3(0, 0, -_orderInLayer);
         // 发射源
         _laserSourceTf = _objTrans.Find("Source");
         _laserSourceGo = _laserSourceTf.gameObject;
@@ -629,10 +633,7 @@ public class EnemyLinearLaser : EnemyBulletBase
     public override void SetOrderInLayer(int orderInLayer)
     {
         base.SetOrderInLayer(orderInLayer);
-        if ( _objTrans != null )
-        {
-            _objTrans.localPosition = new Vector3(0, 0, -_orderInLayer);
-        }
+        _renderObjPos = true;
     }
 
     /// <summary>
@@ -667,6 +668,11 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     public override void Render()
     {
+        if (_renderObjPos)
+        {
+            _renderObjPos = false;
+            _objTrans.localPosition = new Vector3(0, 0, -_orderInLayer);
+        }
         if (_isSourceEnable)
         {
             UpdateLaserSource();
@@ -949,6 +955,11 @@ public class EnemyLinearLaser : EnemyBulletBase
     }
 
     public override void SetPolarParas(float radius, float angle, float deltaR, float omega)
+    {
+        return;
+    }
+
+    public override void SetPolarParas(float radius, float angle, float deltaR, float omega, float centerPosX, float centerPosY)
     {
         return;
     }

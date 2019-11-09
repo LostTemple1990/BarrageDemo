@@ -18,6 +18,14 @@ namespace BarrageEditor
             
         }
 
+        public override void CreateDefualtChilds()
+        {
+            // comment
+            BaseNode commentNode = NodeManager.CreateNode(NodeType.Comment);
+            commentNode.GetAttrByIndex(0).SetValue("insert dialog node here");
+            InsertChildNode(commentNode, -1);
+        }
+
         public override string GetNodeName()
         {
             return "start dialog";

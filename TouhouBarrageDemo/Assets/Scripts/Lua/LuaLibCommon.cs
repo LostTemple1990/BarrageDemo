@@ -50,6 +50,20 @@ public partial class LuaLib
     }
 
     /// <summary>
+    /// 获取两个对象间的距离
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int IPosition_Distance(ILuaState luaState)
+    {
+        IPosition from = luaState.ToUserData(-2) as IPosition;
+        IPosition to = luaState.ToUserData(-1) as IPosition;
+        float dis = Vector2.Distance(from.GetPosition(), to.GetPosition());
+        luaState.PushNumber(dis);
+        return 1;
+    }
+
+    /// <summary>
     /// 获取IPosition对象相对于自机的角度
     /// <para>IPosition</para>
     /// </summary>
@@ -243,13 +257,27 @@ public partial class LuaLib
     /// <returns></returns>
     public static int STGMovableDoCurvedMove(ILuaState luaState)
     {
-        ISTGMovable movableObject = luaState.ToUserData(-5) as ISTGMovable;
-        float radius = (float)luaState.ToNumber(-4);
-        float angle = (float)luaState.ToNumber(-3);
-        float deltaR = (float)luaState.ToNumber(-2);
-        float omega = (float)luaState.ToNumber(-1);
-        luaState.Pop(5);
-        movableObject.SetPolarParas(radius, angle, deltaR, omega);
+        int top = luaState.GetTop();
+        if (top == 5)
+        {
+            ISTGMovable movableObject = luaState.ToUserData(-5) as ISTGMovable;
+            float radius = (float)luaState.ToNumber(-4);
+            float angle = (float)luaState.ToNumber(-3);
+            float deltaR = (float)luaState.ToNumber(-2);
+            float omega = (float)luaState.ToNumber(-1);
+            movableObject.SetPolarParas(radius, angle, deltaR, omega);
+        }
+        else if (top == 7)
+        {
+            ISTGMovable movableObject = luaState.ToUserData(-7) as ISTGMovable;
+            float radius = (float)luaState.ToNumber(-6);
+            float angle = (float)luaState.ToNumber(-5);
+            float deltaR = (float)luaState.ToNumber(-4);
+            float omega = (float)luaState.ToNumber(-3);
+            float centerPosX = (float)luaState.ToNumber(-2);
+            float centerPosY = (float)luaState.ToNumber(-1);
+            movableObject.SetPolarParas(radius, angle, deltaR, omega, centerPosX, centerPosY);
+        }
         return 0;
     }
 

@@ -266,7 +266,7 @@ CustomizedTable["竖版开海"].Init = function(self)
     self:SetLength(20)
     self:SetSourceEnable(false)
     self:SetHeadEnable(true)
-    self:SetV(8,270,false)
+    self:SetV(7.5,270,false)
 end
 CustomizedSTGObjectTable["竖版开海"] = {}
 CustomizedSTGObjectTable["竖版开海"].Init = function(self)
@@ -274,23 +274,130 @@ CustomizedSTGObjectTable["竖版开海"].Init = function(self)
     self:AddTask(function()
         do for _=1,Infinite do
             local leftPosX,rightPosX = -185,185
-            do local i,_d_i=(1),(1) for _=1,25 do
-                local k = i / 25
-                k = math.pow(k,1.4)
-                last = CreateCustomizedLinearLaser("竖版开海",leftPosX + 171 * k,224)
-                last = CreateCustomizedLinearLaser("竖版开海",rightPosX - 171 * k,224)
+            do local i,_d_i=(1),(1) for _=1,15 do
+                local k = i / 15
+                k = k * k
+                last = CreateCustomizedLinearLaser("竖版开海",leftPosX + 85.5 * k,224)
+                last = CreateCustomizedLinearLaser("竖版开海",rightPosX - 85.5 * k,224)
+                if Wait(2)==false then return end
+            i=i+_d_i end end
+            leftPosX,rightPosX = -99.5,99.5
+            do local i,_d_i=(1),(1) for _=1,15 do
+                local k = i / 15
+                k = -k * k + 2 * k
+                last = CreateCustomizedLinearLaser("竖版开海",leftPosX + 85.5 * k,224)
+                last = CreateCustomizedLinearLaser("竖版开海",rightPosX - 85.5 * k,224)
                 if Wait(2)==false then return end
             i=i+_d_i end end
             leftPosX,rightPosX = -14,14
-            do local i,_d_i=(1),(1) for _=1,25 do
-                local k = i / 25
-                k = math.pow(k,1.4)
-                last = CreateCustomizedLinearLaser("竖版开海",leftPosX - 171 * k,224)
-                last = CreateCustomizedLinearLaser("竖版开海",rightPosX + 171 * k,224)
+            do local i,_d_i=(1),(1) for _=1,15 do
+                local k = i / 15
+                k = k * k
+                last = CreateCustomizedLinearLaser("竖版开海",leftPosX - 85.5 * k,224)
+                last = CreateCustomizedLinearLaser("竖版开海",rightPosX + 85.5 * k,224)
+                if Wait(2)==false then return end
+            i=i+_d_i end end
+            leftPosX,rightPosX = -99.5,99.5
+            do local i,_d_i=(1),(1) for _=1,15 do
+                local k = i / 15
+                k = -k * k + 2 * k
+                last = CreateCustomizedLinearLaser("竖版开海",leftPosX - 85.5 * k,224)
+                last = CreateCustomizedLinearLaser("竖版开海",rightPosX + 85.5 * k,224)
                 if Wait(2)==false then return end
             i=i+_d_i end end
         end end
     end)
+end
+CustomizedTable["ColliderTriggerLaser"] = {}
+CustomizedTable["ColliderTriggerLaser"].Init = function(self,angle)
+    self:SetStyleById(201061)
+    self:SetSize(0,20)
+    self.rot = angle
+    local createCounter = 0
+    local hitCollider,minDis = nil,1000
+    self:AddTask(function()
+        self:TurnHalfOn(5,20)
+        if Wait(150)==false then return end
+        self:TurnOn(50)
+    end)
+    self:AddTask(function()
+        do local laserAngle,_d_laserAngle=(angle),(0.2) for _=1,Infinite do
+            self.rot = laserAngle
+            createCounter = createCounter + 1
+            if self.length < 400 then
+                self.length = self.length + 2.5
+            else
+            end
+            if Wait(1)==false then return end
+        laserAngle=laserAngle+_d_laserAngle end end
+    end)
+    self:AddTask(function()
+        if Wait(200)==false then return end
+        self:AddColliderTrigger(2048,function(collider,collIndex)
+            local tmpDis = Distance(self,collider)
+            if tmpDis < minDis then
+                hitCollider = collider
+                minDis = tmpDis
+            else
+            end
+        end)
+    end)
+    self:AddTask(function()
+        do for _=1,Infinite do
+            if hitCollider ~= nil and createCounter % 20 == 0 then
+                last = CreateSimpleBulletById(126050,hitCollider.x,hitCollider.y)
+                last:SetStraightParas(1,self.rot,false,0,UseVelocityAngle)
+            else
+            end
+            if self.length > minDis then
+                self:SetLength(minDis)
+            else
+            end
+            hitCollider = nil
+            minDis = 1000
+            if Wait(1)==false then return end
+        end end
+    end)
+end
+CustomizedTable["TestColliderBullet"] = {}
+CustomizedTable["TestColliderBullet"].Init = function(self,dir)
+    self:SetStyleById(118050)
+    self:AddTask(function()
+        self:SetPolarParas(30,0,3,dir,0,30)
+        if Wait(20)==false then return end
+        self:SetPolarParas(90,20 * dir,0.25,dir,0,30)
+    end)
+    last = CreateSimpleCollider(TypeCircle)
+    last:SetPos(0,2000)
+    last:SetSize(14,14)
+    last:SetCollisionGroup(2048)
+    last:AttachTo(self,true)
+    last:SetRelativePos(0,0,0,false,true)
+end
+SpellCard["TestColliderTriggerSC"] = {}
+SpellCard["TestColliderTriggerSC"].Init = function(boss)
+    SetSpellCardProperties("TestColliderTriggerSC",1,60,ConditionEliminateAll,true)
+    boss:SetMaxHp(500)
+    boss:SetInvincible(5)
+    boss:ShowBloodBar(true)
+    local dir = 1
+    boss:MoveTo(0,30,60,IntModeEaseOutQuad)
+    boss:AddTask(function()
+        if Wait(60)==false then return end
+        do local laserAngle,_d_laserAngle=(0),(360/14) for _=1,14 do
+            last = CreateCustomizedLaser("ColliderTriggerLaser",0,30,laserAngle)
+        laserAngle=laserAngle+_d_laserAngle end end
+        do for _=1,Infinite do
+            dir = -dir
+            do local curveAngle,_d_curveAngle=(RandomFloat(0,360)),(-30 * dir) for _=1,6 do
+                last = CreateCustomizedBullet1("TestColliderBullet",0,2000,dir)
+                if Wait(30)==false then return end
+            curveAngle=curveAngle+_d_curveAngle end end
+            if Wait(150)==false then return end
+        end end
+    end)
+end
+SpellCard["TestColliderTriggerSC"].OnFinish = function(boss)
 end
 LoadSound("oborozuki")
 LoadSound("se_tan00")
@@ -442,6 +549,24 @@ Stage["Stage2"] = function()
     if Wait(1000)==false then return end
     FinishStage()
 end
+
+SetDebugStageName("__TestSCStage")
+BossTable["__TestSCBoss"] = {}
+BossTable["__TestSCBoss"].Init = function(self)
+    self:SetAni(2001)
+    self:SetPos(0,280)
+    self:SetCollisionSize(32,32)
+end
+Stage["__TestSCStage"] = function()
+    last = CreateBoss("__TestSCBoss")
+    local boss = last
+    boss:MoveTo(0,170,90,IntModeEaseInQuad)
+    if Wait(100)==false then return end
+    boss:SetPhaseData(1,true)
+    StartSpellCard(SpellCard["TestColliderTriggerSC"],boss)
+    if WaitForSpellCardFinish() == false then return end
+end
+
 return
 {
    CustomizedBulletTable = CustomizedTable,

@@ -305,6 +305,25 @@ public class MovableObject : IPoolClass
         _isActive = true;
     }
 
+    /// <summary>
+    /// 做圆周运动，原点为Vector2(centerPosX,centerPosY)
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <param name="angle"></param>
+    /// <param name="deltaR"></param>
+    /// <param name="omega"></param>
+    public virtual void SetPolarParas(float radius, float angle, float deltaR, float omega, float centerPosX, float centerPosY)
+    {
+        _centerPos = new Vector2(centerPosX, centerPosY);
+        _curRadius = radius;
+        _curCurveAngle = angle;
+        _deltaRadius = deltaR;
+        _curOmega = omega;
+        _lastCurvePos = _centerPos;
+        _isMovingCurve = true;
+        _isActive = true;
+    }
+
     protected virtual void MoveCurve()
     {
         _curRadius += _deltaRadius;

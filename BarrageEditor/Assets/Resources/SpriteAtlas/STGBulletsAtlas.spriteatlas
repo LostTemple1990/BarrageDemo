@@ -441,10 +441,10 @@ SpriteAtlas:
   - Bullet124130
   - Bullet106070
   - Bullet101010
-  - Bullet127130_0
+  - Bullet127130
   - LaserHead_R2
   - Bullet115030
-  - Bullet127010_0
+  - Bullet127010
   - Bullet109070
   - Bullet201030
   - Bullet201020
@@ -457,7 +457,7 @@ SpriteAtlas:
   - Bullet127030_1
   - Bullet109030
   - Bullet102130
-  - Bullet126130_0
+  - Bullet126130
   - Bullet105020
   - etama_69
   - Bullet108050
@@ -507,7 +507,7 @@ SpriteAtlas:
   - Bullet105060
   - Bullet126010_1
   - Bullet100040
-  - Bullet127030_0
+  - Bullet127030
   - Bullet109020
   - Bullet113100
   - Bullet110110
@@ -543,7 +543,7 @@ SpriteAtlas:
   - Bullet102020
   - Bullet126030_2
   - Bullet125130
-  - Bullet126010_0
+  - Bullet126010
   - Bullet126130_1
   - Bullet113140
   - Bullet111140
@@ -616,7 +616,7 @@ SpriteAtlas:
   - Bullet107070
   - LaserHead_R0
   - Bullet116010
-  - Bullet126050_0
+  - Bullet126050
   - Bullet124010
   - Bullet200000
   - etama6_39
@@ -727,12 +727,12 @@ SpriteAtlas:
   - Bullet127050_1
   - Bullet104140
   - Bullet127010_2
-  - Bullet126030_0
+  - Bullet126030
   - Bullet111050
   - Bullet108100
   - Bullet110060
   - Bullet115150
-  - Bullet127050_0
+  - Bullet127050
   - Bullet124000
   - Bullet117030
   - Bullet122130

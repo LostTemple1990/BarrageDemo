@@ -46,6 +46,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 45c855318d6581146bbddd75c2f08878, type: 3}
   - {fileID: 21300000, guid: 341c8831dbb11b045b9fe18713cdc97c, type: 3}
   - {fileID: 21300000, guid: 4f18e7516dc760345ae465596a81628b, type: 3}
+  - {fileID: 21300000, guid: 3443cd713512c2a44a68c9718c4fc675, type: 3}
   - {fileID: 21300000, guid: 801edb9107aa3e348a7be081348dd336, type: 3}
   - {fileID: 21300000, guid: 28d56e917e2c2e44993eb5b634f3bf55, type: 3}
   - {fileID: 21300000, guid: cf9319c14ce6b7040b589688c1f632e3, type: 3}
@@ -53,6 +54,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c4f913d15e0b8994599678f120a5864f, type: 3}
   - {fileID: 21300000, guid: 8b72c8d1ef8dc5d4887d9810c23063af, type: 3}
   - {fileID: 21300000, guid: 81984dd1519e76c43a733695ec62e146, type: 3}
+  - {fileID: 21300000, guid: 314756e14b8ba9b468b57471447576fb, type: 3}
   - {fileID: 21300000, guid: 78299cf10766ce1439ac9acd1fe7cab3, type: 3}
   - {fileID: 21300000, guid: 68d47302af782fc43a6554cda2c4d55c, type: 3}
   - {fileID: 21300000, guid: 57bbe612ac6e02d4f8f63270a15ebe78, type: 3}
@@ -203,6 +205,7 @@ SpriteAtlas:
   - objectcreate
   - _node_dir
   - enemyinit
+  - rebound
   - laserinit
   - simplerebounder
   - laserturnhalfon
@@ -210,6 +213,7 @@ SpriteAtlas:
   - changealphato
   - explode
   - bulletclear
+  - collidertrigger
   - simplecollider
   - setrelpos
   - setstraightparas

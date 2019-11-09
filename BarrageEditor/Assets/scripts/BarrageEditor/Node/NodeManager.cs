@@ -165,7 +165,7 @@ namespace BarrageEditor
                 case NodeType.OnLaserCreate:
                     newNode = new NodeOnLaserCreate();
                     break;
-                case NodeType.CreateLaser:
+                case NodeType.CreateCustomizedLaser:
                     newNode = new NodeCreateLaser();
                     break;
                 case NodeType.LaserTurnHalfOn:
@@ -190,6 +190,15 @@ namespace BarrageEditor
                 case NodeType.CreateCustomizedLinearLaser:
                     newNode = new NodeCreateCustomizedLinearLaser();
                     break;
+                case NodeType.DefineCurveLaser:
+                    newNode = new NodeDefineCurveLaser();
+                    break;
+                case NodeType.OnCurveLaserCreate:
+                    newNode = new NodeOnCurveLaserCreate();
+                    break;
+                case NodeType.CreateCustomizedCurveLaser:
+                    newNode = new NodeCreateCustomizedCurveLaser();
+                    break;
 
                 case NodeType.DefineCollider:
                     newNode = new NodeDefineCollider();
@@ -202,6 +211,12 @@ namespace BarrageEditor
                     break;
                 case NodeType.CreateSimpleCollider:
                     newNode = new NodeCreateSimpleCollider();
+                    break;
+                case NodeType.ColliderTrigger:
+                    newNode = new NodeColliderTrigger();
+                    break;
+                case NodeType.Rebound:
+                    newNode = new NodeRebound();
                     break;
 
                 case NodeType.DefineSTGObject:

@@ -26,6 +26,8 @@ public class EnemySimpleBulletLuaInterface
     private static LuaCsClosureValue _funcSetResistEliminatedTypes;
     private static LuaCsClosureValue _funcChangeProperty;
 
+    private static LuaCsClosureValue _funcAddColliderTrigger;
+
 
     public static void Init()
     {
@@ -48,7 +50,9 @@ public class EnemySimpleBulletLuaInterface
             _funcSetSelfRotaion = new LuaCsClosureValue(LuaLib.SetBulletSelfRotation);
             _funcSetStyleById = new LuaCsClosureValue(LuaLib.SetBulletStyleById);
             _funcSetResistEliminatedTypes = new LuaCsClosureValue(LuaLib.SetBulletResistEliminatedFlag);
+
             _funcChangeProperty = new LuaCsClosureValue(LuaLib.AddBulletParaChangeEvent);
+            _funcAddColliderTrigger = new LuaCsClosureValue(LuaLib.AddBulletColliderTriggerEvent);
 
             _isInit = true;
         }
@@ -219,6 +223,13 @@ public class EnemySimpleBulletLuaInterface
                         return true;
                     }
                 #endregion
+                #region Component
+                case "AddColliderTrigger":
+                    {
+                        res.SetClCsValue(_funcAddColliderTrigger);
+                        return true;
+                    }
+                    #endregion
             }
         }
         res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(EnemySimpleBullet).Name));

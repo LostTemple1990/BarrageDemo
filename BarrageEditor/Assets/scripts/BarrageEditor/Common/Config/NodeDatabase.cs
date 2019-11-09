@@ -137,6 +137,9 @@ namespace BarrageEditor
         OnColliderCreate = 1802,
         CreateCustomizedCollider = 1803,
         CreateSimpleCollider = 1804,
+        Rebound = 1812,
+        ColliderTrigger = 1813,
+
 
         PlaySound = 2201,
         PauseSound = 2202,
@@ -181,7 +184,7 @@ namespace BarrageEditor
             InitBulletNodeCfgs();
             InitLaserNodeCfgs();
             InitLaserExNodeCfgs();
-            InitColliderNodeCfgs();
+            InitToolsNodeCfgs();
             InitObjectNodeCfgs();
             InitUnitNodeCfgs();
             InitAudioNodeCfgs();
@@ -655,7 +658,7 @@ namespace BarrageEditor
                 type = NodeType.CreateCustomizedBullet,
                 shortcutPath = "bulletcreate",
                 shortcutTip = "create bullet",
-                defaultAttrValues = new List<object> { "", "107010", "0", "0", "" },
+                defaultAttrValues = new List<object> { "", "0", "0", "" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
                 editOnCreated = true,
@@ -863,7 +866,7 @@ namespace BarrageEditor
             _nodeCfgDic.Add(NodeType.CreateCustomizedCurveLaser, cfg);
         }
 
-        private void InitColliderNodeCfgs()
+        private void InitToolsNodeCfgs()
         {
             NodeConfig cfg;
             cfg = new NodeConfig
@@ -909,7 +912,28 @@ namespace BarrageEditor
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
             };
-            _nodeCfgDic.Add(NodeType.CreateSimpleCollider, cfg);
+            _nodeCfgDic.Add(cfg.type, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.Rebound,
+                shortcutPath = "rebound",
+                shortcutTip = "add rebound",
+                defaultAttrValues = new List<object> { "self", "15", "1" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.ColliderTrigger,
+                shortcutPath = "collidertrigger",
+                shortcutTip = "add collider trigger",
+                defaultAttrValues = new List<object> { "self", "2048" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
         }
 
         private void InitObjectNodeCfgs()
@@ -1048,7 +1072,7 @@ namespace BarrageEditor
                 type = NodeType.UnitSetPolarParas,
                 shortcutPath = "setpolarparas",
                 shortcutTip = "set polar paras",
-                defaultAttrValues = new List<object> { "self", "3", "0", "1", "60" },
+                defaultAttrValues = new List<object> { "self", "3", "0", "1", "1", "" },
                 allowChilds = new List<NodeType>(),
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
             };

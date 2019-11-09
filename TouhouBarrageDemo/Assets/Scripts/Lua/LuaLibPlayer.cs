@@ -27,7 +27,6 @@ public partial class LuaLib
     {
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
-        luaState.Pop(2);
         PlayerInterface.GetInstance().GetCharacter().SetPosition(posX, posY);
         return 0;
     }
@@ -41,7 +40,6 @@ public partial class LuaLib
     public static int SetPlayerIsMovable(ILuaState luaState)
     {
         bool isMovable = luaState.ToBoolean(-1);
-        luaState.Pop(1);
         PlayerInterface.GetInstance().GetCharacter().IsMovable = isMovable;
         return 0;
     }

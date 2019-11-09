@@ -159,6 +159,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: f8408c6bc76f1d749b8c9b43212a76ca, type: 3}
   - {fileID: 21300000, guid: 727b897b8dd89bf44b46c3c45a23573d, type: 3}
   - {fileID: 21300000, guid: 69fc228b5e9a9d34b92441c729694734, type: 3}
+  - {fileID: 21300000, guid: 4060978bf1d6df141839ffd912b6f1fe, type: 3}
   - {fileID: 21300000, guid: 4696579be47b73f42b35bc8402342186, type: 3}
   - {fileID: 21300000, guid: e103dfbb02abb7547b832f9df2af2f43, type: 3}
   - {fileID: 21300000, guid: 94b26dcb5697adc408520095afa0bb01, type: 3}
@@ -180,6 +181,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 68fce69d472ecbf4a85f04ecadf63438, type: 3}
   - {fileID: 21300000, guid: 62665aadb7bfffd42b0a24f9dc9206e8, type: 3}
   - {fileID: 21300000, guid: bfe36cadadc0859489c390b18ab506a6, type: 3}
+  - {fileID: 21300000, guid: 79784dbd6bb771f4795e9cef3b47286d, type: 3}
   - {fileID: 21300000, guid: 7298d8cd800c1b54c9abf61b406d6042, type: 3}
   - {fileID: 21300000, guid: 72086acdf6d934141a8a79eaa8402c40, type: 3}
   - {fileID: 21300000, guid: dc67da4ec53e435408eec15667ae2790, type: 3}
@@ -332,6 +334,7 @@ SpriteAtlas:
   - loadani
   - changealphato
   - stagegroup
+  - collidertrigger
   - laserinit
   - playbgm
   - Error
@@ -353,6 +356,7 @@ SpriteAtlas:
   - stage
   - rebounderinit
   - setwanderprops
+  - rebound
   - kill
   - enemysimple
   - pausebgm

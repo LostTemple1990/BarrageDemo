@@ -23,7 +23,7 @@ public class EnemyLaserLuaInterface
     private static LuaCsClosureValue _funcSetStraightParas;
     private static LuaCsClosureValue _funcSetSelfRotaion;
     private static LuaCsClosureValue _funcSetStyleById;
-
+    private static LuaCsClosureValue _funcAddColliderTrigger;
 
     private static LuaCsClosureValue _funcSetSourceSize;
     private static LuaCsClosureValue _funcTurnOn;
@@ -34,6 +34,8 @@ public class EnemyLaserLuaInterface
     private static LuaCsClosureValue _funcChangeAlphaTo;
     private static LuaCsClosureValue _funcSetSize;
     private static LuaCsClosureValue _funcSetExistDuration;
+    private static LuaCsClosureValue _funcSetLength;
+    private static LuaCsClosureValue _funcSetWidth;
 
     public static void Init()
     {
@@ -56,6 +58,8 @@ public class EnemyLaserLuaInterface
             _funcSetSelfRotaion = new LuaCsClosureValue(LuaLib.SetBulletSelfRotation);
             _funcSetStyleById = new LuaCsClosureValue(LuaLib.SetBulletStyleById);
 
+            _funcAddColliderTrigger = new LuaCsClosureValue(LuaLib.AddBulletColliderTriggerEvent);
+
             _funcSetSourceSize = new LuaCsClosureValue(LuaLib.SetLaserSourceSize);
             _funcTurnOn = new LuaCsClosureValue(LuaLib.LaserTurnOn);
             _funcTurnHalfOn = new LuaCsClosureValue(LuaLib.LaserTurnHalfOn);
@@ -65,6 +69,8 @@ public class EnemyLaserLuaInterface
             _funcChangeAlphaTo = new LuaCsClosureValue(LuaLib.ChangeLaserAlphaTo);
             _funcSetSize = new LuaCsClosureValue(LuaLib.SetLaserSize);
             _funcSetExistDuration = new LuaCsClosureValue(LuaLib.SetLaserExistDuration);
+            _funcSetWidth = new LuaCsClosureValue(LuaLib.SetLaserWidth);
+            _funcSetLength = new LuaCsClosureValue(LuaLib.SetLaserLength);
 
             _isInit = true;
         }
@@ -266,6 +272,33 @@ public class EnemyLaserLuaInterface
                         res.SetClCsValue(_funcSetExistDuration);
                         return true;
                     }
+                case "SetWidth":
+                    {
+                        res.SetClCsValue(_funcSetWidth);
+                        return true;
+                    }
+                case "SetLength":
+                    {
+                        res.SetClCsValue(_funcSetLength);
+                        return true;
+                    }
+                case "length":
+                    {
+                        res.SetNValue(bullet.GetLength());
+                        return true;
+                    }
+                case "width":
+                    {
+                        res.SetNValue(bullet.GetWidth());
+                        return true;
+                    }
+                #endregion
+                #region Component
+                case "AddColliderTrigger":
+                    {
+                        res.SetClCsValue(_funcAddColliderTrigger);
+                        return true;
+                    }
                     #endregion
             }
         }
@@ -352,6 +385,18 @@ public class EnemyLaserLuaInterface
                 case "checkBorder":
                     {
                         bullet.SetCheckOutOfBorder(value.BValue());
+                        return true;
+                    }
+                #endregion
+                #region 激光相关参数
+                case "length":
+                    {
+                        bullet.SetLength((float)value.NValue);
+                        return true;
+                    }
+                case "width":
+                    {
+                        bullet.SetWidth((float)value.NValue);
                         return true;
                     }
                     #endregion

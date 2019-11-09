@@ -350,9 +350,9 @@ namespace BarrageEditor
                 styleId = 26,
                 name = "炎弹",
                 packName = "STGBulletsAtlas",
-                resName = "Bullet126010_0",
+                resName = "Bullet126010",
                 showScale = 1,
-                availableColors = new List<int> { 1, 5, 9, 13 },
+                availableColors = new List<int> { 1, 3, 5, 13 },
             };
             _styleCfgList.Add(cfg);
             #endregion
@@ -362,7 +362,7 @@ namespace BarrageEditor
                 styleId = 27,
                 name = "音符",
                 packName = "STGBulletsAtlas",
-                resName = "Bullet127010_0",
+                resName = "Bullet127010",
                 showScale = 1,
                 availableColors = new List<int> { 1, 5, 9, 13 },
             };
@@ -458,7 +458,7 @@ namespace BarrageEditor
                 colorId = 8,
                 colorName = "Cyan",
                 packName = "ColorAtlas",
-                resName = "COLOR_DEEP_CYAN",
+                resName = "COLOR_CYAN",
             };
             _colorCfgList.Add(colorCfg);
             #endregion
