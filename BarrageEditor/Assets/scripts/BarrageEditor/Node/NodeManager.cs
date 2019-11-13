@@ -112,7 +112,7 @@ namespace BarrageEditor
                 case NodeType.CreateBoss:
                     newNode = new NodeCreateBoss();
                     break;
-                case NodeType.SetBossInvincible:
+                case NodeType.SetInvincible:
                     newNode = new NodeSetBossInvincible();
                     break;
                 case NodeType.ShowBossBloodBar:
@@ -217,6 +217,9 @@ namespace BarrageEditor
                     break;
                 case NodeType.Rebound:
                     newNode = new NodeRebound();
+                    break;
+                case NodeType.DropItems:
+                    newNode = new NodeDropItems();
                     break;
 
                 case NodeType.DefineSTGObject:
@@ -364,6 +367,12 @@ namespace BarrageEditor
                     break;
                 case NodeAttrType.EnemyStyle:
                     nodeAttr = new NodeAttrSelectEnemyStyle();
+                    break;
+                case NodeAttrType.ReboundBorder:
+                    nodeAttr = new NodeAttrReboundBorder();
+                    break;
+                case NodeAttrType.DropItems:
+                    nodeAttr = new NodeAttrDropItems();
                     break;
             }
             if (nodeAttr != null) return nodeAttr;

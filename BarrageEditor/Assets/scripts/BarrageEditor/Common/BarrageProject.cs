@@ -140,13 +140,24 @@ namespace BarrageEditor
             //}
             #endregion
             #region 第三版修改，统一CreateCustomizedSTGObject接口
-            if (nd.type == (int)NodeType.CreateCusomizedSTGObject)
+            //if (nd.type == (int)NodeType.CreateCusomizedSTGObject)
+            //{
+            //    List<string> newValues = new List<string>();
+            //    newValues.Add(nd.attrValues[0]);
+            //    newValues.Add("0");
+            //    newValues.Add("0");
+            //    newValues.Add(nd.attrValues[1]);
+            //    nd.attrValues = newValues;
+            //}
+            #endregion
+            #region 第四版修改，删除NodeDropItem中的ItemType，ItemCount属性
+            if (nd.type == (int)NodeType.SetDropItems)
             {
                 List<string> newValues = new List<string>();
                 newValues.Add(nd.attrValues[0]);
-                newValues.Add("0");
-                newValues.Add("0");
                 newValues.Add(nd.attrValues[1]);
+                newValues.Add(nd.attrValues[2]);
+                newValues.Add(nd.attrValues[7]);
                 nd.attrValues = newValues;
             }
             #endregion

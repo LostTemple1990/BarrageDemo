@@ -163,7 +163,6 @@ public partial class LuaLib
         float v = (float)luaState.ToNumber(-3);
         float angle = (float)luaState.ToNumber(-2);
         int duration = luaState.ToInteger(-1);
-        luaState.Pop(4);
         enemy.MoveTowards(v, angle, duration);
         return 0;
     }
@@ -175,7 +174,6 @@ public partial class LuaLib
         float endY = (float)luaState.ToNumber(-3);
         int duration = luaState.ToInteger(-2);
         int moveMode = luaState.ToInteger(-1);
-        luaState.Pop(5);
         enemy.MoveTo(endX, endY, duration, (InterpolationMode)moveMode);
         return 0;
     }
@@ -195,7 +193,6 @@ public partial class LuaLib
         float velocity = (float)luaState.ToNumber(-3);
         float angle = (float)luaState.ToNumber(-2);
         float acc = (float)luaState.ToNumber(-1);
-        luaState.Pop(4);
         enemy.AccMoveTowards(velocity, angle, acc);
         return 0;
     }
@@ -217,7 +214,6 @@ public partial class LuaLib
         float angle = (float)luaState.ToNumber(-3);
         float acc = (float)luaState.ToNumber(-2);
         float maxVelocity = (float)luaState.ToNumber(-1);
-        luaState.Pop(5);
         enemy.AccMoveTowardsWithLimitation(velocity, angle, acc, maxVelocity);
         return 0;
     }
@@ -252,7 +248,6 @@ public partial class LuaLib
         EnemyBase enemy = luaState.ToUserData(-3) as EnemyBase;
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
-        luaState.Pop(3);
         enemy.SetPosition(new Vector3(posX, posY));
         return 0;
     }
@@ -261,7 +256,6 @@ public partial class LuaLib
     {
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
         int damage = luaState.ToInteger(-1);
-        luaState.Pop(2);
         enemy.TakeDamage(damage);
         return 0;
     }
@@ -277,7 +271,6 @@ public partial class LuaLib
     {
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
         int resistFlag = luaState.ToInteger(-1);
-        luaState.Pop(2);
         enemy.SetResistEliminateFlag(resistFlag);
         return 0;
     }
@@ -308,7 +301,6 @@ public partial class LuaLib
         float maxX = (float)luaState.ToNumber(-3);
         float minY = (float)luaState.ToNumber(-2);
         float maxY = (float)luaState.ToNumber(-1);
-        luaState.Pop(5);
         enemy.SetWanderRange(minX, maxX, minY, maxY);
         return 0;
     }
@@ -325,7 +317,6 @@ public partial class LuaLib
         float maxX = (float)luaState.ToNumber(-3);
         float minY = (float)luaState.ToNumber(-2);
         float maxY = (float)luaState.ToNumber(-1);
-        luaState.Pop(5);
         enemy.SetWanderAmplitude(minX, maxX, minY, maxY);
         return 0;
     }
@@ -340,7 +331,6 @@ public partial class LuaLib
         EnemyBase enemy = luaState.ToUserData(-3) as EnemyBase;
         InterpolationMode moveMode = (InterpolationMode)luaState.ToInteger(-2);
         DirectionMode dirMode = (DirectionMode)luaState.ToInteger(-1);
-        luaState.Pop(3);
         enemy.SetWanderMode(moveMode, dirMode);
         return 0;
     }
@@ -354,7 +344,6 @@ public partial class LuaLib
     {
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
         int duration = luaState.ToInteger(-1);
-        luaState.Pop(2);
         enemy.DoWander(duration);
         return 0;
     }
@@ -368,7 +357,6 @@ public partial class LuaLib
     {
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
         int maxHp = luaState.ToInteger(-1);
-        luaState.Pop(2);
         enemy.SetMaxHp(maxHp);
         return 0;
     }
@@ -413,19 +401,16 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetEnemyDropItems(ILuaState luaState)
     {
+        int top = luaState.GetTop();
+        NormalEnemy enemy = luaState.ToUserData(-top) as NormalEnemy;
         float halfWidth = (float)luaState.ToNumber(-2);
         float halfHeight = (float)luaState.ToNumber(-1);
         // 遍历dropItemDatas
         List<int> itemDatas = new List<int>();
-        int pos = -3;
-        while (luaState.Type(pos)== LuaType.LUA_TNUMBER)
+        for (int index = -(top - 1); index <= -3; index += 2)
         {
-            pos--;
-        }
-        NormalEnemy enemy = luaState.ToUserData(pos) as NormalEnemy;
-        for (pos = pos + 1; pos <= -3; pos++)
-        {
-            itemDatas.Add(luaState.ToInteger(pos));
+            itemDatas.Add(luaState.ToInteger(index));
+            itemDatas.Add(luaState.ToInteger(index+1));
         }
         enemy.SetDropItemDatas(itemDatas, halfWidth, halfHeight);
         return 0;
@@ -443,28 +428,18 @@ public partial class LuaLib
     /// <returns></returns>
     public static int DropItems(ILuaState luaState)
     {
-        float centerX = (float)luaState.ToNumber(-4);
-        float centerY = (float)luaState.ToNumber(-3);
-        float halfWidth = (float)luaState.ToNumber(-2);
-        float halfHeight = (float)luaState.ToNumber(-1);
-        //弹出前4个基本数据，开始遍历dropTable
-        luaState.Pop(4);
+        int top = luaState.GetTop();
+        float centerX = (float)luaState.ToNumber(-top);
+        float centerY = (float)luaState.ToNumber(-top + 1);
+        float halfWidth = (float)luaState.ToNumber(-top + 2);
+        float halfHeight = (float)luaState.ToNumber(-top + 3);
+        // 遍历
         List<int> itemDatas = new List<int>();
-        int itemType, itemCount;
-        luaState.PushNil();
-        while ( luaState.Next(-2) )
+        for (int index = -top + 4; index <= -1; index += 2)
         {
-            luaState.GetField(-1, "itemType");
-            luaState.GetField(-2, "itemCount");
-            itemType = luaState.ToInteger(-2);
-            itemCount = luaState.ToInteger(-1);
-            itemDatas.Add(itemType);
-            itemDatas.Add(itemCount);
-            // 只保留key
-            luaState.Pop(3);
+            itemDatas.Add(luaState.ToInteger(index));
+            itemDatas.Add(luaState.ToInteger(index + 1));
         }
-        // 弹出table
-        luaState.Pop(1);
         ItemManager.GetInstance().DropItems(itemDatas, centerX, centerY, halfWidth, halfHeight);
         return 0;
     }
@@ -480,7 +455,6 @@ public partial class LuaLib
     {
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
         bool isInteractive = luaState.ToBoolean(-1);
-        luaState.Pop(2);
         enemy.SetInteractive(isInteractive);
         return 0;
     }

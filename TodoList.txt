@@ -66,7 +66,9 @@ Boss的符卡数目显示相关，击杀BOSS的特效
 返回主界面的时候先打开LoadingView --finish
 思考一下Dialog是否需要单独提取出来
 随缘查一下Retry时报错的问题 --finish
-测试一下不同分辨率下的显示问题
+测试一下不同分辨率下的显示问题 --finish
+统一一下碰撞判定，考虑将碰撞方法单独提取出来
+可能需要稍微修改一下敌机的碰撞判定大小（碰撞方式）
 
 ---editor
 删除自定义的节点的时候，需要同时删除掉CustomDefine中对应的数据，否则撤销操作会报错 --finish
@@ -76,6 +78,9 @@ Boss的符卡数目显示相关，击杀BOSS的特效
 添加laser以及enemy的可视化选择界面 --finish
 对话系统的编辑器相关功能 --finish
 拿编辑器复刻之前写的所有符卡
+给掉落道具添加可视化编辑界面 --finish
+对AttrItem进行改进，某些属性下文本框不可手动编辑
+完成Rebound属性的编辑界面 --finish
 
 COLOR_DEEP_RED=1
 COLOR_RED=2

@@ -229,6 +229,17 @@ public enum eBlendMode : int
     SoftAdditive = 1,
 }
 
+public enum ItemType
+{
+    PowerNormal = 1,
+    PowerBig = 2,
+    PowerFull = 3,
+    LifeFragment = 4,
+    Life = 5,
+    BombFragment = 6,
+    Bomb = 7,
+}
+
 [Flags]
 public enum eColliderGroup : int
 {

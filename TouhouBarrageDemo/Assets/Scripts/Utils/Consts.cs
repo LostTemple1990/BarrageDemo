@@ -52,7 +52,7 @@ public class Consts
     /// <summary>
     /// 最大持续时间
     /// </summary>
-    public const int MaxDuration = 9999;
+    public const int MaxDuration = 99999;
     /// <summary>
     /// 当前速度对应的角度
     /// </summary>
@@ -148,14 +148,8 @@ public class Consts
     public const int STGTopEffectLayerPosZ = 12;
     public const int STGInfoLayerPosZ = 10;
 
-    public const int KeyLeft = 1 << 0;
-    public const int KeyRight = 1 << 1;
-    public const int KeyUp = 1 << 2;
-    public const int KeyDown = 1 << 3;
-    public const int KeyShift = 1 << 4;
-    public const int KeyZ = 1 << 5;
-    public const int KeyX = 1 << 6;
-    public const int KeyC = 1 << 7;
-    public const int KeyCtrl = 1 << 8;
-
+    /// <summary>
+    /// 默认UI音效的音量大小
+    /// </summary>
+    public const float DefaultUISEVolume = 0.25f;
 }

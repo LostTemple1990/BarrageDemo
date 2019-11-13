@@ -51,6 +51,10 @@ public class StateSTGMain : IState,ICommand
     /// 损失所有残机之后的计时
     /// </summary>
     private int _gameOverTimeCounter;
+    /// <summary>
+    /// 是否恢复STG音效
+    /// </summary>
+    private bool _resumeSTGSE;
 
     public StateSTGMain()
     {
@@ -223,6 +227,7 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnContinueGame()
     {
+        _resumeSTGSE = true;
         Global.IsPause = false;
     }
 
@@ -280,8 +285,10 @@ public class StateSTGMain : IState,ICommand
         // 添加事件监听
         CommandManager.GetInstance().Register(CommandConsts.PlayerMiss, this);
         CommandManager.GetInstance().Register(CommandConsts.ContinueGameAfterGameOver, this);
+        // 各种参数初始化
         _isGameOver = false;
         Global.IsPause = false;
+        _resumeSTGSE = false;
         ReplayManager.GetInstance().SetReplayEnable(true);
 
         _curState = StateUpdateSTG;
@@ -334,6 +341,7 @@ public class StateSTGMain : IState,ICommand
                 _isReplayFinish = true;
                 UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseAfterReplayFinished);
                 Global.IsPause = true;
+                SoundManager.GetInstance().PauseAllSTGSound();
                 CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
                 return;
             }
@@ -342,6 +350,7 @@ public class StateSTGMain : IState,ICommand
             {
                 UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseInReplay);
                 Global.IsPause = true;
+                SoundManager.GetInstance().PauseAllSTGSound();
                 CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
             }
         }
@@ -352,10 +361,11 @@ public class StateSTGMain : IState,ICommand
                 if (!Global.IsPause)
                 {
                     _gameOverTimeCounter++;
-                    if (_gameOverTimeCounter >= 60)
+                    if (_gameOverTimeCounter >= 30)
                     {
                         UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseAfterGameOver);
                         Global.IsPause = true;
+                        SoundManager.GetInstance().PauseAllSTGSound();
                         CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
                         return;
                     }
@@ -366,8 +376,14 @@ public class StateSTGMain : IState,ICommand
             {
                 UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseInGame);
                 Global.IsPause = true;
+                SoundManager.GetInstance().PauseAllSTGSound();
                 CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
             }
+        }
+        if (_resumeSTGSE)
+        {
+            _resumeSTGSE = false;
+            SoundManager.GetInstance().ResumeAllSTGSound();
         }
         if (!Global.IsPause)
         {
@@ -403,6 +419,7 @@ public class StateSTGMain : IState,ICommand
         ReplayManager.GetInstance().SetReplayEnable(false);
         Global.IsPause = false;
         _isGameOver = false;
+        _resumeSTGSE = true;
         // 设置初始残机数和符卡数目
         PlayerInterface.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
         PlayerInterface.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);

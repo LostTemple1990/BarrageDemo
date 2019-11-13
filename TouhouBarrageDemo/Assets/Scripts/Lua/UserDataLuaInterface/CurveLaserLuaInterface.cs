@@ -19,6 +19,7 @@ public class CurveLaserLuaInterface
     private static LuaCsClosureValue _funcSetRelativePos;
 
     private static LuaCsClosureValue _funcAddTask;
+    private static LuaCsClosureValue _funcChangeProperty;
 
     private static LuaCsClosureValue _funcSetStraightParas;
     private static LuaCsClosureValue _funcSetSelfRotaion;
@@ -43,6 +44,7 @@ public class CurveLaserLuaInterface
             _funcSetRelativePos = new LuaCsClosureValue(LuaLib.SetAttachmentRelativePos);
 
             _funcAddTask = new LuaCsClosureValue(LuaLib.AddTask);
+            _funcChangeProperty = new LuaCsClosureValue(LuaLib.AddBulletParaChangeEvent);
 
             _funcSetStraightParas = new LuaCsClosureValue(LuaLib.SetBulletStraightParas);
             _funcSetSelfRotaion = new LuaCsClosureValue(LuaLib.SetBulletSelfRotation);
@@ -198,10 +200,15 @@ public class CurveLaserLuaInterface
                         return true;
                     }
                 #endregion
-                #region ITaskExecuter
+                #region Component
                 case "AddTask":
                     {
                         res.SetClCsValue(_funcAddTask);
+                        return true;
+                    }
+                case "ChangeProperty":
+                    {
+                        res.SetClCsValue(_funcChangeProperty);
                         return true;
                     }
                 #endregion
@@ -219,7 +226,7 @@ public class CurveLaserLuaInterface
                     #endregion
             }
         }
-        res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(EnemySimpleBullet).Name));
+        res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(EnemyCurveLaser).Name));
         return false;
     }
 
@@ -307,7 +314,7 @@ public class CurveLaserLuaInterface
                     #endregion
             }
         }
-        value.SetSValue(string.Format("SetField of userData fail!Invalid key {0} for type {1}", key, typeof(EnemySimpleBullet).Name));
+        value.SetSValue(string.Format("SetField of userData fail!Invalid key {0} for type {1}", key, typeof(EnemyCurveLaser).Name));
         return false;
     }
 }

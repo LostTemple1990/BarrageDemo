@@ -164,7 +164,8 @@ namespace BarrageEditor
                 tabName = "Enemy",
                 typeList = new List<NodeType>[]
                 {
-                    new List<NodeType> { NodeType.DefineEnemy, NodeType.CreateCustomizedEnemy, NodeType.CreateSimpleEnemy ,NodeType.SetDropItems },
+                    new List<NodeType> { NodeType.DefineEnemy, NodeType.CreateCustomizedEnemy, NodeType.CreateSimpleEnemy },
+                    new List<NodeType> { NodeType.SetDropItems, NodeType.SetInvincible },
                 },
             };
             _nodeTabs.Add(tab);
@@ -176,7 +177,7 @@ namespace BarrageEditor
                 typeList = new List<NodeType>[]
                 {
                     new List<NodeType> { NodeType.DefineBoss, NodeType.CreateBoss },
-                    new List<NodeType> { NodeType.SetBossInvincible, NodeType.ShowBossBloodBar, NodeType.BossSetWanderProps, NodeType.BossWander },
+                    new List<NodeType> { NodeType.ShowBossBloodBar, NodeType.BossSetWanderProps, NodeType.BossWander },
                     new List<NodeType> { NodeType.DefineSpellCard, NodeType.StartSpellCard, NodeType.SetBossPhaseData },
                 },
             };
@@ -226,6 +227,7 @@ namespace BarrageEditor
                 {
                     new List<NodeType> { NodeType.DefineCollider, NodeType.CreateCustomizedCollider, NodeType.CreateSimpleCollider },
                     new List<NodeType> { NodeType.ColliderTrigger, NodeType.Rebound },
+                    new List<NodeType> { NodeType.DropItems },
                 },
             };
             _nodeTabs.Add(tab);

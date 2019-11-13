@@ -69,6 +69,14 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
 
     protected bool _isInteractive;
     /// <summary>
+    /// 当前是否处于无敌状态
+    /// </summary>
+    protected bool _isInvincible;
+    /// <summary>
+    /// 无敌状态剩余时间
+    /// </summary>
+    protected int _invincibleTimeLeft;
+    /// <summary>
     /// 被击中时调用函数
     /// </summary>
     protected int _onHitFuncRef;
@@ -154,7 +162,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
         {
             Move();
         }
-        UpdateTransform();
+        RenderTransform();
         _isDirty = false;
     }
 
@@ -350,7 +358,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
         InterpreterManager.GetInstance().CallLuaFunction(_onHitFuncRef, 1);
     }
 
-    protected virtual void UpdateTransform()
+    protected virtual void RenderTransform()
     {
         _enemyTf.localPosition = _curPos;
     }
@@ -581,6 +589,28 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     }
 
     /// <summary>
+    /// 设置无敌时间
+    /// </summary>
+    /// <param name="duration"></param>
+    public void SetInvincible(float duration = -1)
+    {
+        if (duration == -1)
+            _invincibleTimeLeft = Consts.MaxDuration;
+        else
+            _invincibleTimeLeft = (int)(duration * 60);
+        _isInvincible = _invincibleTimeLeft != 0;
+    }
+
+    protected void UpdateInvincibleStatus()
+    {
+        _invincibleTimeLeft--;
+        if (_invincibleTimeLeft <= 0)
+        {
+            _isInvincible = false;
+        }
+    }
+
+    /// <summary>
     /// 设置不会被某些东西消除
     /// </summary>
     /// <param name="flag"></param>
@@ -778,6 +808,11 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     public void DoAccelerationWithLimitation(float acce, float accAngle, float maxVelocity)
     {
         _movableObj.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
+    }
+
+    public void SetStraightParas(float v, float vAngle, float acce, float accAngle)
+    {
+        _movableObj.SetStraightParas(v, vAngle, acce, accAngle);
     }
 
     public void SetPolarParas(float radius, float angle, float deltaR, float omega)

@@ -6,6 +6,8 @@ namespace BarrageEditor
 {
     public class NodeRepeat : BaseNode
     {
+        private const int VarCount = 3;
+
         public override void Init(RectTransform parentTf)
         {
             _nodeType = NodeType.Repeat;
@@ -40,6 +42,16 @@ namespace BarrageEditor
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Var 2 increment", null);
             attrs.Add(nodeAttr);
+            // 变量3
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr.Init(this, "Var 3 name", null);
+            attrs.Add(nodeAttr);
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr.Init(this, "Var 3 init value", null);
+            attrs.Add(nodeAttr);
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr.Init(this, "Var 3 increment", null);
+            attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()
@@ -49,9 +61,10 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
+            int endIndex = 1 + VarCount * 3;
             BaseNodeAttr nodeAttr = GetAttrByIndex(0);
             string ret = string.Format("repeat {0} times", nodeAttr.GetValueString());
-            for (int i=1;i<7;i=i+3)
+            for (int i = 1; i < endIndex; i = i + 3)
             {
                 nodeAttr = GetAttrByIndex(i);
                 if ( nodeAttr.GetValueString() != "" )
@@ -65,9 +78,10 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
+            int endIndex = 1 + VarCount * 3;
             BaseNodeAttr nodeAttr;
             string ret = "do";
-            for (int i = 1; i < 7; i = i + 3)
+            for (int i = 1; i < endIndex; i = i + 3)
             {
                 nodeAttr = GetAttrByIndex(i);
                 if (nodeAttr.GetValueString() != "")
@@ -84,9 +98,10 @@ namespace BarrageEditor
 
         public override string ToLuaFoot()
         {
+            int endIndex = 1 + VarCount * 3;
             BaseNodeAttr nodeAttr;
             string ret = "";
-            for (int i = 1; i < 7; i = i + 3)
+            for (int i = 1; i < endIndex; i = i + 3)
             {
                 nodeAttr = GetAttrByIndex(i);
                 if (nodeAttr.GetValueString() != "")

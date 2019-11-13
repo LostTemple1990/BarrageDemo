@@ -81,7 +81,7 @@ public partial class LuaLib
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, initFuncRef);
         // 将本体插入执行栈中
         EnemyLinearLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_LinearLaser) as EnemyLinearLaser;
-        laser.AddComponent<BCCustomizedTask>();
+        laser.AddOrGetComponent<BCCustomizedTask>();
         laser.SetPosition(posX, posY);
         luaState.PushLightUserData(laser);
         for (int i=0;i<numArgs;i++)
@@ -204,11 +204,11 @@ public partial class LuaLib
         // 将本体插入执行栈中
         EnemyCurveLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_CurveLaser) as EnemyCurveLaser;
         laser.SetPosition(posX, posY);
-        laser.AddComponent<BCCustomizedTask>();
+        laser.AddOrGetComponent<BCCustomizedTask>();
         luaState.PushLightUserData(laser);
         for (int i=0;i<numArgs;i++)
         {
-            luaState.PushValue(-3 - numArgs);
+            luaState.PushValue(-2 - numArgs);
         }
         luaState.Call(numArgs + 1, 0);
         // 将返回值压入栈中

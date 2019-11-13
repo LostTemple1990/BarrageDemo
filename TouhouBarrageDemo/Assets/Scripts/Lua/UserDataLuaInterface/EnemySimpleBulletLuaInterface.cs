@@ -8,6 +8,7 @@ public class EnemySimpleBulletLuaInterface
     private static LuaCsClosureValue _funcSetV;
     private static LuaCsClosureValue _funcSetAcce;
     private static LuaCsClosureValue _funcSetPolarParas;
+    private static LuaCsClosureValue _funcSetStraightParas;
 
     private static LuaCsClosureValue _funcMoveTo;
     private static LuaCsClosureValue _funcMoveTowards;
@@ -20,13 +21,13 @@ public class EnemySimpleBulletLuaInterface
 
     private static LuaCsClosureValue _funcAddTask;
 
-    private static LuaCsClosureValue _funcSetStraightParas;
     private static LuaCsClosureValue _funcSetSelfRotaion;
     private static LuaCsClosureValue _funcSetStyleById;
     private static LuaCsClosureValue _funcSetResistEliminatedTypes;
-    private static LuaCsClosureValue _funcChangeProperty;
 
+    private static LuaCsClosureValue _funcChangeProperty;
     private static LuaCsClosureValue _funcAddColliderTrigger;
+    private static LuaCsClosureValue _funcAddRebound;
 
 
     public static void Init()
@@ -53,6 +54,7 @@ public class EnemySimpleBulletLuaInterface
 
             _funcChangeProperty = new LuaCsClosureValue(LuaLib.AddBulletParaChangeEvent);
             _funcAddColliderTrigger = new LuaCsClosureValue(LuaLib.AddBulletColliderTriggerEvent);
+            _funcAddRebound = new LuaCsClosureValue(LuaLib.AddBulletRebound);
 
             _isInit = true;
         }
@@ -227,6 +229,11 @@ public class EnemySimpleBulletLuaInterface
                 case "AddColliderTrigger":
                     {
                         res.SetClCsValue(_funcAddColliderTrigger);
+                        return true;
+                    }
+                case "AddRebound":
+                    {
+                        res.SetClCsValue(_funcAddRebound);
                         return true;
                     }
                     #endregion

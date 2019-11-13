@@ -1,4 +1,4 @@
-﻿//#define SoundEnable 
+﻿#define SoundEnable 
 
 using UnityEngine;
 using System.Collections;
@@ -97,6 +97,69 @@ public class SoundManager
         }
     }
 
+    /// <summary>
+    /// 停止所有STG音效
+    /// </summary>
+    public void PauseAllSTGSound()
+    {
+        SoundEntity entity;
+        for (int i = 0; i < _curPlayCount; i++)
+        {
+            entity = _curPlayList[i];
+            if (entity != null && entity.isSTGSound)
+            {
+                entity.pauseTime = Time.realtimeSinceStartup;
+                entity.isPause = true;
+                entity.source.Pause();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 恢复所有STG音效
+    /// </summary>
+    public void ResumeAllSTGSound()
+    {
+        SoundEntity entity;
+        for (int i = 0; i < _curPlayCount; i++)
+        {
+            entity = _curPlayList[i];
+            if (entity != null && entity.isSTGSound)
+            {
+                if (entity.isPause)
+                {
+                    // 更新该音效的结束时间
+                    // 当该音效有明确的结束时间的时候才进行更新
+                    // 即，非循环音效
+                    if (entity.endTime > 0)
+                    {
+                        entity.endTime += Time.realtimeSinceStartup - entity.pauseTime;
+                    }
+                    entity.isPause = false;
+                    entity.source.UnPause();
+                }
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 停止所有STG音效
+    /// </summary>
+    public void StopAllSTGSound()
+    {
+        SoundEntity entity;
+        for (int i = 0; i < _curPlayCount; i++)
+        {
+            entity = _curPlayList[i];
+            if (entity != null && entity.isSTGSound)
+            {
+                entity.source.Stop();
+                entity.isFinish = true;
+            }
+        }
+    }
+
     public void Resume(string name)
     {
         SoundEntity entity;
@@ -163,17 +226,13 @@ public class SoundManager
             if (entity == null)
                 continue;
             if (onlySTGSound && !entity.isSTGSound)
-                return;
+                continue;
             if (entity.source != null)
             {
                 entity.source.Stop();
             }
-            RestoreToPool(entity);
+            entity.isFinish = true;
         }
-        _curPlayList.Clear();
-        _curPlayCount = 0;
-        _toPlayList.Clear();
-        _toPlayListCount = 0;
     }
 
     public void Update()

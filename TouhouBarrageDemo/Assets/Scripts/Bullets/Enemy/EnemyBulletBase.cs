@@ -155,7 +155,7 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
         throw new System.NotImplementedException();
     }
 
-    public virtual T AddComponent<T>()
+    public virtual T AddOrGetComponent<T>()
         where T : BulletComponent, new()
     {
         for (int i=0;i<_componentsCount;i++)
@@ -434,7 +434,7 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
         BCCustomizedTask component = GetComponent<BCCustomizedTask>();
         if ( component == null )
         {
-            component = AddComponent<BCCustomizedTask>();
+            component = AddOrGetComponent<BCCustomizedTask>();
         }
         component.AddTask(task);
     }

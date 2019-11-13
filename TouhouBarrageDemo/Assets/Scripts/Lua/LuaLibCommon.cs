@@ -72,7 +72,6 @@ public partial class LuaLib
     public static int GetAngleToPlayer(ILuaState luaState)
     {
         IPosition positionCls = luaState.ToUserData(-1) as IPosition;
-        luaState.Pop(1);
         Vector2 pos = positionCls.GetPosition();
         float angle = MathUtil.GetAngleBetweenXAxis(Global.PlayerPos - pos);
         luaState.PushNumber(angle);
@@ -91,7 +90,6 @@ public partial class LuaLib
         IAttachment attachment = luaState.ToUserData(-3) as IAttachment;
         IAttachable master = luaState.ToUserData(-2) as IAttachable;
         bool eliminatedWithMaster = luaState.ToBoolean(-1);
-        luaState.Pop(3);
         attachment.AttachTo(master, eliminatedWithMaster);
         return 0;
     }
@@ -134,7 +132,6 @@ public partial class LuaLib
         float v = (float)luaState.ToNumber(-3);
         float angle = (float)luaState.ToNumber(-2);
         bool isAimToPlayer = luaState.ToBoolean(-1);
-        luaState.Pop(4);
         if ( isAimToPlayer )
         {
             Vector2 playerPos = PlayerInterface.GetInstance().GetCharacter().GetPosition();
@@ -161,7 +158,6 @@ public partial class LuaLib
         float angle = (float)luaState.ToNumber(-3);
         bool isAimToPlayer = luaState.ToBoolean(-2);
         int duration = luaState.ToInteger(-1);
-        luaState.Pop(5);
         if (isAimToPlayer)
         {
             Vector2 playerPos = PlayerInterface.GetInstance().GetCharacter().GetPosition();
@@ -186,7 +182,6 @@ public partial class LuaLib
         float acce = (float)luaState.ToNumber(-3);
         float angle = luaState.Type(-2) == LuaType.LUA_TBOOLEAN ? movableObject.vAngle : (float)luaState.ToNumber(-2);
         bool isAimToPlayer = luaState.ToBoolean(-1);
-        luaState.Pop(4);
         if (isAimToPlayer)
         {
             Vector2 playerPos = PlayerInterface.GetInstance().GetCharacter().GetPosition();
@@ -213,7 +208,6 @@ public partial class LuaLib
         float angle = luaState.Type(-3) == LuaType.LUA_TBOOLEAN ? movableObject.vAngle : (float)luaState.ToNumber(-3);
         bool isAimToPlayer = luaState.ToBoolean(-2);
         float maxVelocity = (float)luaState.ToNumber(-1);
-        luaState.Pop(5);
         if (isAimToPlayer)
         {
             Vector2 playerPos = PlayerInterface.GetInstance().GetCharacter().GetPosition();
@@ -240,7 +234,6 @@ public partial class LuaLib
         float toY = (float)luaState.ToNumber(-3);
         int duration = luaState.ToInteger(-2);
         InterpolationMode mode = (InterpolationMode)luaState.ToInteger(-1);
-        luaState.Pop(5);
         movableObject.MoveTo(toX, toY, duration, mode);
         return 0;
     }

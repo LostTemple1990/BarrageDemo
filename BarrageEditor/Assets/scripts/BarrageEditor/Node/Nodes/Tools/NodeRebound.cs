@@ -20,33 +20,32 @@ namespace BarrageEditor
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
             attrs.Add(nodeAttr);
-            // 检测碰撞的类型
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CollisionGroups);
-            nodeAttr.Init(this, "CollisionGroup", null);
+            // 反弹参数
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.ReboundBorder);
+            nodeAttr.Init(this, "ReboundPara", null);
+            attrs.Add(nodeAttr);
+            // 反弹次数
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr.Init(this, "ReboundCount", null);
             attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()
         {
-            return "collider trigger";
+            return "add rebound";
         }
 
         public override string ToDesc()
         {
-            return string.Format("add collider trigger for {0}",
+            return string.Format("add rebound for {0}",
                 attrs[0].GetValueString());
         }
 
         public override string ToLuaHead()
         {
-            return string.Format("{0}:AddColliderTrigger({1},function(collider,collIndex)\n",
+            return string.Format("{0}:AddRebound({1},{2})\n",
                 attrs[0].GetValueString(),
-                attrs[1].GetValueString());
-        }
-
-        public override string ToLuaFoot()
-        {
-            return string.Format("end)\n");
+                attrs[1].GetValueString(), attrs[2].GetValueString());
         }
     }
 }

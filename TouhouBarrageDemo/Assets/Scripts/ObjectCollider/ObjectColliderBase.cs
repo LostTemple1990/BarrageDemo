@@ -369,6 +369,11 @@ public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, IST
         _movableObject.MoveTo(endX, endY, duration, mode);
     }
 
+    public void SetStraightParas(float v, float vAngle, float acce, float accAngle)
+    {
+        _movableObject.SetStraightParas(v, vAngle, acce, accAngle);
+    }
+
     public void SetPolarParas(float radius, float angle, float deltaR, float omega)
     {
         _movableObject.SetPolarParas(radius, angle, deltaR, omega);

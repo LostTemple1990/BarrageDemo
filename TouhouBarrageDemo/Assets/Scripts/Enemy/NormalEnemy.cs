@@ -50,13 +50,17 @@ public class NormalEnemy : EnemyBase
 
     public override void Update()
     {
+        if (_isInvincible)
+        {
+            UpdateInvincibleStatus();
+        }
         UpdateTask();
         UpdatePos();
         if ( !IsOutOfBorder() )
         {
             CheckCollisionWithCharacter();
             _enemyObj.Update();
-            UpdateTransform();
+            RenderTransform();
         }
         else
         {

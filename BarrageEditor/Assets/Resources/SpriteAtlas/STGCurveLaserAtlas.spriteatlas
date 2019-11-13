@@ -49,21 +49,21 @@ SpriteAtlas:
   - {fileID: 21300000, guid: bdf04e6e90a74a34ea09f478b7adf6b1, type: 3}
   - {fileID: 21300000, guid: 6a24cdef136260649b7ace8a9328d01b, type: 3}
   m_PackedSpriteNamesToIndex:
-  - Laser405130
-  - Laser405000
-  - Laser405050
-  - Laser405060
-  - Laser405150
-  - Laser405110
-  - Laser405080
-  - Laser405040
-  - Laser405020
-  - Laser405010
-  - Laser405090
-  - Laser405140
-  - Laser405030
-  - Laser405100
-  - Laser405120
-  - Laser405070
+  - Laser401130
+  - Laser401000
+  - Laser401050
+  - Laser401060
+  - Laser401150
+  - Laser401110
+  - Laser401080
+  - Laser401040
+  - Laser401020
+  - Laser401010
+  - Laser401090
+  - Laser401140
+  - Laser401030
+  - Laser401100
+  - Laser401120
+  - Laser401070
   m_Tag: STGCurveLaserAtlas
   m_IsVariant: 0

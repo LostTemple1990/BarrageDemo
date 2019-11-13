@@ -274,6 +274,7 @@ public class STGBreakScreenEffect : STGEffectBase
             fragData = _fragList[i];
             fragData.vx = Random.Range(-0.5f, 0.5f);
             fragData.vy = Random.Range(-3f, -5f);
+            fragData.acce = -Random.Range(0.025f, 0.05f);
             fragData.rotateEulerAngle = new Vector3(0, Random.Range(1.5f,2.5f), 0);
             fragData.isFinish = false;
             if ( !fragData.fragTf.gameObject.activeSelf )
@@ -303,6 +304,7 @@ public class STGBreakScreenEffect : STGEffectBase
                 fragTf = fragData.fragTf;
                 pos = fragTf.localPosition;
                 pos.x += fragData.vx;
+                fragData.vy += fragData.acce;
                 pos.y += fragData.vy;
                 fragTf.localPosition = pos;
                 fragTf.Rotate(fragData.rotateEulerAngle);
@@ -356,6 +358,7 @@ class FragmentObject
     public Vector3 originalPos;
     public float vx;
     public float vy;
+    public float acce;
     public Vector3 rotateEulerAngle;
     public bool isFinish;
 }

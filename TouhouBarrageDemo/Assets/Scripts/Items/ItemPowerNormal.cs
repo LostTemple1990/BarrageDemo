@@ -6,7 +6,7 @@ public class ItemPowerNormal : ItemBase
     public override void Init()
     {
         _itemType = ItemType.PowerNormal;
-        _itemGO = ResourceManager.GetInstance().GetPrefab("item", "PowerNormal");
+        _itemGO = ResourceManager.GetInstance().GetPrefab("Item", "ItemPowerNormal");
         UIManager.GetInstance().AddGoToLayer(_itemGO, LayerId.Item);
         _collisionHalfWidth = _collisionHalfHeight = 6;
         _halfWidth = _halfHeight = 6;

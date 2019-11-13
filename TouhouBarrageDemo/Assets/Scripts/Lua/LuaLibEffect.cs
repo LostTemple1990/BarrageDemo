@@ -18,7 +18,6 @@ public partial class LuaLib
         STGEffectBase effect = luaState.ToUserData(-3) as STGEffectBase;
         float posX = (float)luaState.ToNumber(-2);
         float posY = (float)luaState.ToNumber(-1);
-        luaState.Pop(3);
         effect.SetPosition(posX, posY);
         return 0;
     }
@@ -365,14 +364,67 @@ public partial class LuaLib
         return 0;
     }
 
+    /// <summary>
+    /// 创建蓄力特效
+    /// <para>posX</para>
+    /// <para>posY</para>
+    /// <para>[optional]scale</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
     public static int CreateChargeEffect(ILuaState luaState)
     {
-        float posX = (float)luaState.ToNumber(-2);
-        float posY = (float)luaState.ToNumber(-1);
-        luaState.Pop(2);
+        int top = luaState.GetTop();
         STGChargeEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ChargeEffect) as STGChargeEffect;
-        effect.SetPosition(posX, posY);
+        if (top == 2)
+        {
+            float posX = (float)luaState.ToNumber(-2);
+            float posY = (float)luaState.ToNumber(-1);
+            effect.SetPosition(posX, posY);
+        }
+        else
+        {
+            float posX = (float)luaState.ToNumber(-3);
+            float posY = (float)luaState.ToNumber(-2);
+            float scale = (float)luaState.ToNumber(-1);
+            effect.SetPosition(posX, posY);
+        }
         luaState.PushLightUserData(effect);
         return 1;
+    }
+
+    /// <summary>
+    /// 创建爆发特效
+    /// <para>posX</para>
+    /// <para>posY</para>
+    /// <para>[optional]scale</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int CreateBurstEffect(ILuaState luaState)
+    {
+        int top = luaState.GetTop();
+        STGBurstEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.BurstEffect) as STGBurstEffect;
+        if (top == 2)
+        {
+            float posX = (float)luaState.ToNumber(-2);
+            float posY = (float)luaState.ToNumber(-1);
+            effect.SetPosition(posX, posY);
+        }
+        else
+        {
+            float posX = (float)luaState.ToNumber(-3);
+            float posY = (float)luaState.ToNumber(-2);
+            float scale = (float)luaState.ToNumber(-1);
+            effect.SetPosition(posX, posY);
+            effect.SetSize(scale);
+        }
+        luaState.PushLightUserData(effect);
+        return 1;
+    }
+
+    public static int CreateShakeEffect(ILuaState luaState)
+    {
+        return 0;
     }
 }

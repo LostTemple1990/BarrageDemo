@@ -167,19 +167,20 @@ namespace BarrageEditor
         private void OnBlendModeDropdownValueChangedHandler(int value)
         {
             _blendIndex = value;
-            _blendText.text = ((eBlendMode)value).ToString();
+            UpdateBulletId();
             UpdateBulletIdTextAndPreview();
         }
 
         private void UpdateBulletId()
         {
-            _curBulletId = 100000 + _styleIndex * 1000 + _colorId * 10;
+            _curBulletId = 100000 + _styleIndex * 1000 + _colorId * 10 + _blendIndex;
         }
 
         private void UpdateBulletIdTextAndPreview()
         {
             _bulletIdText.text = "BulletId : " + _curBulletId;
-            _bulletPreviewImg.sprite = ResourceManager.GetInstance().GetSprite("STGBulletsAtlas", "Bullet" + _curBulletId);
+            string spName = "Bullet" + (100000 + _styleIndex * 1000 + _colorId * 10).ToString();
+            _bulletPreviewImg.sprite = ResourceManager.GetInstance().GetSprite("STGBulletsAtlas", spName);
             _bulletPreviewImg.material = ResourceManager.GetInstance().GetSpriteMatByBlendMode((eBlendMode)_blendIndex);
             _bulletPreviewImg.SetNativeSize();
         }

@@ -8,7 +8,7 @@ namespace BarrageEditor
     {
         public override void Init(RectTransform parentTf)
         {
-            _nodeType = NodeType.SetBossInvincible;
+            _nodeType = NodeType.SetInvincible;
             base.Init(parentTf);
             _functionImg.sprite = ResourceManager.GetInstance().GetSprite("NodeIcon", "bossinvincible");
         }

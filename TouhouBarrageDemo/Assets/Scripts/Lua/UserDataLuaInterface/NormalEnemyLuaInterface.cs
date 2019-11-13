@@ -7,6 +7,7 @@ public class NormalEnemyLuaInterface
 
     private static LuaCsClosureValue _funcSetV;
     private static LuaCsClosureValue _funcSetAcce;
+    private static LuaCsClosureValue _funcSetStraightParas;
     private static LuaCsClosureValue _funcSetPolarParas;
 
     private static LuaCsClosureValue _funcMoveTo;
@@ -24,6 +25,9 @@ public class NormalEnemyLuaInterface
     private static LuaCsClosureValue _funcSetDropItems;
     private static LuaCsClosureValue _funcInit;
 
+    private static LuaCsClosureValue _funcSetInvincible;
+    private static LuaCsClosureValue _funcSetInteractive;
+
 
     public static void Init()
     {
@@ -31,6 +35,7 @@ public class NormalEnemyLuaInterface
         {
             _funcSetV = new LuaCsClosureValue(LuaLib.STGMovableDoStraightMove);
             _funcSetAcce = new LuaCsClosureValue(LuaLib.STGMovableDoAcceleration);
+            _funcSetStraightParas = new LuaCsClosureValue(LuaLib.STGMovableSetStraightParas);
             _funcSetPolarParas = new LuaCsClosureValue(LuaLib.STGMovableDoCurvedMove);
             _funcMoveTo = new LuaCsClosureValue(LuaLib.STGMovableMoveTo);
             _funcMoveTowards = new LuaCsClosureValue(LuaLib.STGMovableMoveTowards);
@@ -46,6 +51,9 @@ public class NormalEnemyLuaInterface
             _funcSetCollisionSize = new LuaCsClosureValue(LuaLib.SetEnemyCollisionParas);
             _funcSetDropItems = new LuaCsClosureValue(LuaLib.SetEnemyDropItems);
             _funcInit = new LuaCsClosureValue(LuaLib.EnemyInit);
+
+            _funcSetInvincible = new LuaCsClosureValue(LuaLib.SetEnemyInvincible);
+            _funcSetInteractive = new LuaCsClosureValue(LuaLib.SetEnemyInteractive);
 
             _isInit = true;
         }
@@ -144,6 +152,11 @@ public class NormalEnemyLuaInterface
                         res.SetClCsValue(_funcSetAcce);
                         return true;
                     }
+                case "SetStraightParas":
+                    {
+                        res.SetClCsValue(_funcSetStraightParas);
+                        return true;
+                    }
                 case "SetPolarParas":
                     {
                         res.SetClCsValue(_funcSetPolarParas);
@@ -192,11 +205,17 @@ public class NormalEnemyLuaInterface
                 case "Init":
                     res.SetClCsValue(_funcInit);
                     return true;
+                case "SetInvincible":
+                    res.SetClCsValue(_funcSetInvincible);
+                    return true;
+                case "SetInteractive":
+                    res.SetClCsValue(_funcSetInteractive);
+                    return true;
                     #endregion
 
             }
         }
-        res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(EnemySimpleBullet).Name));
+        res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(NormalEnemy).Name));
         return false;
     }
 
@@ -267,7 +286,7 @@ public class NormalEnemyLuaInterface
                 #endregion
             }
         }
-        value.SetSValue(string.Format("SetField of userData fail!Invalid key {0} for type {1}", key, typeof(EnemySimpleBullet).Name));
+        value.SetSValue(string.Format("SetField of userData fail!Invalid key {0} for type {1}", key, typeof(NormalEnemy).Name));
         return false;
     }
 }

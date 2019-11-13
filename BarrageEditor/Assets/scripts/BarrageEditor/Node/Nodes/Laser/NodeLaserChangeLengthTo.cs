@@ -24,6 +24,10 @@ namespace BarrageEditor
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "To Length", null);
             attrs.Add(nodeAttr);
+            // 延迟
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr.Init(this, "Delay", null);
+            attrs.Add(nodeAttr);
             // 展开时间
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Duration", null);
@@ -37,12 +41,17 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("change length to {0} in {1} frame(s)", GetAttrByIndex(1).GetValueString(), GetAttrByIndex(2).GetValueString());
+            return string.Format("change length to {0} in {1} frame(s),delay {2} frame(s)",
+                GetAttrByIndex(1).GetValueString(),
+                GetAttrByIndex(3).GetValueString(), GetAttrByIndex(2).GetValueString());
         }
 
         public override string ToLuaHead()
         {
-            return string.Format("{0}:ChangeLengthTo({1},{2})\n", GetAttrByIndex(0).GetValueString(), GetAttrByIndex(1).GetValueString(), GetAttrByIndex(2).GetValueString());
+            return string.Format("{0}:ChangeLengthTo({1},{2},{3})\n",
+                GetAttrByIndex(0).GetValueString(),
+                GetAttrByIndex(1).GetValueString(),
+                GetAttrByIndex(2).GetValueString(), GetAttrByIndex(3).GetValueString());
         }
     }
 }

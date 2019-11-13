@@ -100,7 +100,8 @@ public class EnemyBulletMovable : EnemyBulletBase
         _isMoving = false;
         _isMovingStraight = false;
         _isMovingCurve = false;
-        _vx = _vy = _dvx = _dvy = _curVelocity = 0;
+        _vx = _vy = _dvx = _dvy = _curVelocity = _curAcce = 0;
+        _curVAngle = _curAccAngle = 0;
         _maxVelocity = -1;
         _isInitVelocity = false;
         _isMovingTo = false;
@@ -240,7 +241,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     {
         _vx += _dvx;
         _vy += _dvy;
-        _reCalVAngle = _vx == 0 && _vy == 0 ? false : true;
+        _reCalVAngle = _curAcce == 0 ? false : true;
         if ( _maxVelocity >= 0 )
         {
             float value = _vx * _vx + _vy * _vy;

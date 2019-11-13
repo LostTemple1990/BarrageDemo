@@ -14,8 +14,13 @@ namespace BarrageEditor
         {
             base.BindItem(item);
             List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
-            optionList.Add(new Dropdown.OptionData("PPointNormal"));
-            optionList.Add(new Dropdown.OptionData("PPointBig"));
+            optionList.Add(new Dropdown.OptionData("PowerNormal"));
+            optionList.Add(new Dropdown.OptionData("PowerBig"));
+            optionList.Add(new Dropdown.OptionData("PowerFull"));
+            optionList.Add(new Dropdown.OptionData("LifeFragment"));
+            optionList.Add(new Dropdown.OptionData("Life"));
+            optionList.Add(new Dropdown.OptionData("BombFragment"));
+            optionList.Add(new Dropdown.OptionData("Bomb"));
             _dropDown.options = optionList;
             _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
 

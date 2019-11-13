@@ -14,9 +14,6 @@ public class Boss : EnemyBase
     protected int _playAniTime;
     protected int _playAniDuration;
 
-    protected bool _isInvincible;
-    protected int _invincibleTimeLeft;
-
     protected SpriteRenderer _bloodBarSp;
     protected List<GameObject> _segmentGoList;
     protected Transform _bloodBarLayerTf;
@@ -175,7 +172,7 @@ public class Boss : EnemyBase
         {
             CheckPlayAni();
         }
-        UpdateTransform();
+        RenderTransform();
     }
 
     public void PlayAni(AniActionType at,int dir,int duration)
@@ -205,16 +202,6 @@ public class Boss : EnemyBase
     }
 
     /// <summary>
-    /// 设置无敌时间
-    /// </summary>
-    /// <param name="duration"></param>
-    public void SetInvincible(float duration)
-    {
-        _invincibleTimeLeft = (int)(duration * 60);
-        _isInvincible = _invincibleTimeLeft != 0;
-    }
-
-    /// <summary>
     /// 显示BOSS血条
     /// </summary>
     /// <param name="value"></param>
@@ -232,16 +219,8 @@ public class Boss : EnemyBase
     /// </summary>
     public void OnSpellCardFinish()
     {
+        ShowBloodBar(false);
         ClearTasks();
-    }
-
-    protected void UpdateInvincibleStatus()
-    {
-        _invincibleTimeLeft--;
-        if ( _invincibleTimeLeft <= 0 )
-        {
-            _isInvincible = false;
-        }
     }
 
     protected void CheckPlayAni()
@@ -262,6 +241,8 @@ public class Boss : EnemyBase
 
     public override bool CanHit()
     {
+        if (!_isInteractive)
+            return false;
         return true;
     }
 

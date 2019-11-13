@@ -539,7 +539,7 @@ public class EnemySimpleBullet : EnemyBulletMovable
     {
         if ( base.Eliminate(eliminateType) )
         {
-            if ( eliminateType != eEliminateDef.PlayerSpellCard && eliminateType != eEliminateDef.ForcedDelete )
+            if ( eliminateType != eEliminateDef.ForcedDelete )
             {
                 Color eliminateColor = _cfg.eliminateColor;
                 STGBulletEliminateEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.BulletEliminate) as STGBulletEliminateEffect;

@@ -166,7 +166,7 @@ public class EnemyLaser : EnemyBulletBase
         _curWidth = _laserHalfWidth = 0;
         _curAlpha = 0;
         _isDirty = false;
-        _collisionFactor = 0.8f;
+        _collisionFactor = 0.5f;
         _isRotating = false;
         _isSourceEnable = false;
         _isTurningOn = false;

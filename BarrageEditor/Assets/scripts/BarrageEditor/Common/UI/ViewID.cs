@@ -55,6 +55,14 @@ namespace BarrageEditor
         /// 敌机id选择界面
         /// </summary>
         public const int AttrSelectEnemyStyle = 2011;
+        /// <summary>
+        /// 子弹反弹组件编辑界面
+        /// </summary>
+        public const int AttrEditReboundView = 2012;
+        /// <summary>
+        /// 编辑掉落道具的界面
+        /// </summary>
+        public const int AttrEditDropItemView = 2013;
 
 
         private static Dictionary<int, ViewCfg> _viewCfgMap;
@@ -195,6 +203,26 @@ namespace BarrageEditor
                 viewId = AttrSelectEnemyStyle,
                 resPath = "EditViews/SelectEnemyStyleView",
                 className = "BarrageEditor.AttrSelectEnemyStyleView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(cfg.viewId, cfg);
+            #endregion
+            #region 子弹反弹编辑界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrEditReboundView,
+                resPath = "EditViews/EditReoundView",
+                className = "BarrageEditor.AttrEditReboundView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(cfg.viewId, cfg);
+            #endregion
+            #region 掉落道具编辑界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrEditDropItemView,
+                resPath = "EditViews/EditDropItemsView",
+                className = "BarrageEditor.AttrEditDropItemsView",
                 layer = LayerId.Normal
             };
             _viewCfgMap.Add(cfg.viewId, cfg);

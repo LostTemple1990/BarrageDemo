@@ -78,10 +78,17 @@ namespace BarrageEditor
                 attrs[0].GetValueString(),
                 attrs[1].GetValueString(),
                 attrs[2].GetValueString());
+            string acce = "0";
+            string accAngle = "0";
+            if (attrs[6].GetValueString() != "")
+            {
+                acce = attrs[6].GetValueString();
+                accAngle = attrs[7].GetValueString();
+            }
             retStr = string.Format("{0}last:SetStraightParas({1},{2},{3},{4},{5})\n",
                 retStr,
                 attrs[3].GetValueString(), attrs[4].GetValueString(), attrs[5].GetValueString(),
-                attrs[6].GetValueString(), attrs[7].GetValueString());
+                acce, accAngle);
             if (attrs[8].GetValueString() != "")
             {
                 retStr = string.Format("{0}last.maxV = {1}\n",

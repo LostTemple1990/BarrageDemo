@@ -262,14 +262,3 @@ public class ItemManager
         return false;
     }
 }
-
-public enum ItemType
-{
-    PowerNormal = 1,
-    PowerBig = 2,
-    PowerFull = 3,
-    LifeFragment = 4,
-    Life = 5,
-    BombFragment = 6,
-    Bomb = 7,
-}

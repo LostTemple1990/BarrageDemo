@@ -65,6 +65,26 @@ namespace BarrageEditor
         CustomizedType5 = 2 << 15,
     }
 
+    [Flags]
+    public enum eReboundBorder : int
+    {
+        Left = 0x01,
+        Right = 0x02,
+        Top = 0x04,
+        Bottom = 0x08,
+    }
+
+    public enum eDropItemType : byte
+    {
+        PowerNormal = 1,
+        PowerBig = 2,
+        PowerFull = 3,
+        LifeFragment = 4,
+        Life = 5,
+        BombFragment = 6,
+        Bomb = 7,
+    }
+
     public class BarrageEnum
     {
     }

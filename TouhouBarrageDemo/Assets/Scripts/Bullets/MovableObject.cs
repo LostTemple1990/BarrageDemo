@@ -91,6 +91,11 @@ public class MovableObject : IPoolClass
     /// </summary>
     protected bool _reCalV;
 
+    public MovableObject()
+    {
+        Reset();
+    }
+
     public void Update()
     {
         _dx = 0;
@@ -345,6 +350,7 @@ public class MovableObject : IPoolClass
         _isMovingStraight = false;
         _isMovingCurve = false;
         _vx = _vy = _dvx = _dvy = 0;
+        _curAcce = _curAccAngle = _curVAngle = 0;
         _maxVelocity = -1;
         _isActive = false;
         _curRotation = 0;

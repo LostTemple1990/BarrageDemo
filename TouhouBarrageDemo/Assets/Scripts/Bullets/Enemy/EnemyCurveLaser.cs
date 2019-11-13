@@ -157,10 +157,10 @@ public class EnemyCurveLaser : EnemyBulletBase
         Transform laserTrans = _trans.Find("LaserObject");
         _mesh = laserTrans.GetComponent<MeshFilter>().mesh;
         int index = cfg.colorIndex;
-        _textureIndex = index;
+        _textureIndex = 16 - index;
         _vUnit = 1f / cfg.colorsCount;
-        _startV = _vUnit * (index + 1);
-        _endV = _vUnit * index;
+        _startV = _vUnit * (_textureIndex - 1);
+        _endV = _vUnit * _textureIndex;
         _isPosModified = true;
     }
 
@@ -195,13 +195,14 @@ public class EnemyCurveLaser : EnemyBulletBase
     public void SetWidth(float width)
     {
         _laserHalfWidth = width / 2;
-        _collisionRadius = _laserHalfWidth * 0.8f;
+        _collisionRadius = _laserHalfWidth * 0.45f;
         _grazeRadius = _laserHalfWidth + 12;
     }
 
     public override void Update()
     {
         base.Update();
+        UpdateComponents();
         CheckDivideIntoMultiple();
         UpdateGrazeCoolDown();
         UpdatePath();
@@ -307,10 +308,20 @@ public class EnemyCurveLaser : EnemyBulletBase
     }
     #endregion
 
-    public override void SetStraightParas(float v, float angle, float acce, float accAngle)
+    #region ISTGMovable
+    public override void DoStraightMove(float v, float angle)
     {
         _movableObj.DoStraightMove(v, angle);
+    }
+
+    public override void DoAcceleration(float acce, float accAngle)
+    {
         _movableObj.DoAcceleration(acce, accAngle);
+    }
+
+    public override void SetStraightParas(float v, float angle, float acce, float accAngle)
+    {
+        _movableObj.SetStraightParas(v, angle, acce, accAngle);
     }
 
     public override void DoAccelerationWithLimitation(float acce,float accAngle,float maxVelocity)
@@ -327,6 +338,50 @@ public class EnemyCurveLaser : EnemyBulletBase
     {
         _movableObj.SetPolarParas(radius, angle, deltaR, omega, centerPosX, centerPosY);
     }
+
+    public override float velocity
+    {
+        get { return _movableObj.velocity; }
+        set { _movableObj.velocity = value; }
+    }
+
+    public override float vx
+    {
+        get { return _movableObj.vx; }
+        set { _movableObj.vx = value; }
+    }
+
+    public override float vy
+    {
+        get { return _movableObj.vy; }
+        set { _movableObj.vy = value; }
+    }
+
+    public override float maxVelocity
+    {
+        get { return _movableObj.maxVelocity; }
+        set { _movableObj.maxVelocity = value; }
+    }
+
+    public override float vAngle
+    {
+        get { return _movableObj.vAngle; }
+        set { _movableObj.vAngle = value; }
+    }
+
+    public override float acce
+    {
+        get { return _movableObj.acce; }
+        set { _movableObj.acce = value; }
+    }
+
+    public override float accAngle
+    {
+        get { return _movableObj.accAngle; }
+        set { _movableObj.accAngle = value; }
+    }
+
+    #endregion
 
     public override void AddExtraSpeedParas(float v, float vAngle, float acce, float accAngle)
     {
@@ -752,6 +807,11 @@ public class EnemyCurveLaser : EnemyBulletBase
     {
         base.SetOrderInLayer(orderInLayer);
         _isPosModified = true;
+    }
+
+    public override float GetRotation()
+    {
+        return _movableObj.vAngle;
     }
 
     public override void Clear()

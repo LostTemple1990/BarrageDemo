@@ -174,7 +174,7 @@ public class SelectCharView : ViewBase, ICommand
         int next = _selectIndex - 1;
         if (next < 0)
             next = _charDatas.Count - 1;
-        SetSelectIndex(next, Consts.KeyLeft);
+        SetSelectIndex(next, Consts.DIR_LEFT);
     }
 
     private void OnPressKeyZ()

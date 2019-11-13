@@ -195,7 +195,8 @@ namespace BarrageEditor
         private void OnBlendModeDropdownValueChangedHandler(int value)
         {
             _blendIndex = value;
-            _blendText.text = ((eBlendMode)value).ToString();
+            //_blendText.text = ((eBlendMode)value).ToString();
+            UpdateBulletId();
             UpdateBulletIdTextAndPreview();
         }
 

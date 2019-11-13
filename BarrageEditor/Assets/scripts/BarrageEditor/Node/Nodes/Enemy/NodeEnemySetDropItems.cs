@@ -33,22 +33,8 @@ namespace BarrageEditor
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "RectHalfHeight", null);
             attrs.Add(nodeAttr);
-            // 物品1
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.ItemType);
-            nodeAttr.Init(this, "Item 1 type", null);
-            attrs.Add(nodeAttr);
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
-            nodeAttr.Init(this, "Item 1 count", null);
-            attrs.Add(nodeAttr);
-            // 物品2
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.ItemType);
-            nodeAttr.Init(this, "Item 2 type", null);
-            attrs.Add(nodeAttr);
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
-            nodeAttr.Init(this, "Item 2 count", null);
-            attrs.Add(nodeAttr);
             // 表达式
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.DropItems);
             nodeAttr.Init(this, "Item List", null);
             attrs.Add(nodeAttr);
         }
@@ -62,29 +48,10 @@ namespace BarrageEditor
         {
             BaseNodeAttr nodeAttr;
             string ret = string.Format("set {0}'s drop items", GetAttrByIndex(0).GetValueString());
-            nodeAttr = GetAttrByIndex(7);
+            nodeAttr = GetAttrByIndex(3);
             if (nodeAttr.GetValueString() != "")
             {
                 ret = ret + string.Format(" with itemList {0}", nodeAttr.GetValueString());
-            }
-            else
-            {
-                // 从3开始
-                int startIndex = 3;
-                int count = 0;
-                for (int i=0;i<2;i+=2)
-                {
-                    nodeAttr = GetAttrByIndex(startIndex + i);
-                    if (nodeAttr.GetValueString() != "")
-                    {
-                        if (count != 0)
-                        {
-                            ret += ",";
-                        }
-                        ret += nodeAttr.GetValueString();
-                        count++;
-                    }
-                }
             }
             ret = string.Format("{0} in rect (halfwidth={1},halfHeight={2})", ret, GetAttrByIndex(1).GetValueString(), GetAttrByIndex(2).GetValueString());
             return ret;
@@ -92,36 +59,11 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            if (GetAttrByIndex(3).GetValueString() == "" &&
-                GetAttrByIndex(5).GetValueString() == "" &&
-                GetAttrByIndex(7).GetValueString() == "")
+            if (GetAttrByIndex(3).GetValueString() == "")
             {
                 return "";
             }
-            string itemListStr;
-            if (GetAttrByIndex(7).GetValueString() != "")
-            {
-                itemListStr = GetAttrByIndex(7).GetValueString();
-            }
-            else
-            {
-                int startIndex = 3;
-                int counter = 0;
-                BaseNodeAttr nodeAttr;
-                itemListStr = "";
-                for (int i = 0; i < 2; i += 2)
-                {
-                    nodeAttr = GetAttrByIndex(startIndex + i);
-                    if (nodeAttr.GetValueString() != "")
-                    {
-                        if (counter == 0)
-                            itemListStr += string.Format("{0},{1}", nodeAttr.GetValueString(), GetAttrByIndex(startIndex + i + 1).GetValueString());
-                        else
-                            itemListStr += string.Format(",{0},{1}", nodeAttr.GetValueString(), GetAttrByIndex(startIndex + i + 1).GetValueString());
-                        counter++;
-                    }
-                }
-            }
+            string itemListStr = GetAttrByIndex(3).GetValueString();
             string ret = string.Format("{0}:SetDropItems({1},{2},{3})\n",
                 GetAttrByIndex(0).GetValueString(),
                 itemListStr,

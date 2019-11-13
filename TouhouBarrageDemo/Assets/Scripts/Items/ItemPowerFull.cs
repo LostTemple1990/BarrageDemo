@@ -6,7 +6,7 @@ public class ItemPowerFull : ItemBase
     public override void Init()
     {
         _itemType = ItemType.PowerFull;
-        _itemGO = ResourceManager.GetInstance().GetPrefab("item", "PowerFull");
+        _itemGO = ResourceManager.GetInstance().GetPrefab("Item", "ItemPowerFull");
         UIManager.GetInstance().AddGoToLayer(_itemGO, LayerId.Item);
         _collisionHalfWidth = _collisionHalfHeight = 11;
         _halfWidth = _halfHeight = 11;

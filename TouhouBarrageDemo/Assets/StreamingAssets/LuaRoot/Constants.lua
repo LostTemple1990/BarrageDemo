@@ -188,3 +188,11 @@ Prop_LaserWidth = 32
 
 PPointNormal = 1
 PPointBig = 2
+
+PowerNormal = 1
+PowerBig = 2
+PowerFull = 3
+LifeFragment = 4
+Life = 5
+BombFragment = 6
+Bomb = 7

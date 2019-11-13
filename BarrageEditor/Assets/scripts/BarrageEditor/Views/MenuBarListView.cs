@@ -102,7 +102,7 @@ namespace BarrageEditor
             {
                 id = ItemId_File,
                 name = "exit...",
-                clickHandler = OpenClickHander,
+                clickHandler = ExitClickHandler,
             };
             _itemDataDic.Add(ItemId_Exit, itemData);
             #endregion
@@ -241,6 +241,11 @@ namespace BarrageEditor
                 EventManager.GetInstance().PostEvent(EditorEvents.AfterProjectChanged);
                 BarrageProject.Log("current project file: " + FileUtils.GetFileNameByPath(openPath));
             }
+        }
+
+        private void ExitClickHandler()
+        {
+            Application.Quit();
         }
 
         public void Execute(int eventId, object data)

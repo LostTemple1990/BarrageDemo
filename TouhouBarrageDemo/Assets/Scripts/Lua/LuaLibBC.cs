@@ -17,15 +17,15 @@ public partial class LuaLib
         luaState.Pop(2);
         if ( type == BulletComponentType.ParasChange )
         {
-            bullet.AddComponent<BCParasChange>();
+            bullet.AddOrGetComponent<BCParasChange>();
         }
         else if ( type == BulletComponentType.Rebound )
         {
-            bullet.AddComponent<BCRebound>();
+            bullet.AddOrGetComponent<BCRebound>();
         }
         else if (type == BulletComponentType.ColliderTrigger)
         {
-            bullet.AddComponent<BCColliderTrigger>();
+            bullet.AddOrGetComponent<BCColliderTrigger>();
         }
         return 0;
     }
@@ -63,7 +63,7 @@ public partial class LuaLib
         InterpolationMode intMode = (InterpolationMode)luaState.ToInteger(-3);
         int repeatCount = luaState.ToInteger(-2);
         int repeatInterval = luaState.ToInteger(-1);
-        BCParasChange bc = bullet.AddComponent<BCParasChange>();
+        BCParasChange bc = bullet.AddOrGetComponent<BCParasChange>();
         ParaChangeValue changeValue = new ParaChangeValue
         {
             argType = valueType,
@@ -88,8 +88,27 @@ public partial class LuaLib
         EnemyBulletBase bullet = luaState.ToUserData(-3) as EnemyBulletBase;
         int triggerType = luaState.ToInteger(-2);
         int triggerFuncRef = luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
-        BCColliderTrigger bc = bullet.AddComponent<BCColliderTrigger>();
+        BCColliderTrigger bc = bullet.AddOrGetComponent<BCColliderTrigger>();
         bc.Register(triggerType, triggerFuncRef);
+        return 0;
+    }
+
+    /// <summary>
+    /// 添加反弹
+    /// <para>bullet</para>
+    /// <para>reboundPara 反弹参数</para>
+    /// <para>reboundCount 反弹次数</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int AddBulletRebound(ILuaState luaState)
+    {
+        EnemyBulletBase bullet = luaState.ToUserData(-3) as EnemyBulletBase;
+        int reboundPara = luaState.ToInteger(-2);
+        int reboundCount = luaState.ToInteger(-1);
+        BCRebound rebound = bullet.AddOrGetComponent<BCRebound>();
+        if (rebound != null)
+            rebound.AddReboundPara(reboundPara, reboundCount);
         return 0;
     }
 }

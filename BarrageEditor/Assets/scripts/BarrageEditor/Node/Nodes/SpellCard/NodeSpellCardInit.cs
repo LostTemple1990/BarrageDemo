@@ -21,7 +21,7 @@ namespace BarrageEditor
             tmpNode.SetAttrsValues(new List<object> { "boss:SetMaxHp(500)" });
             InsertChildNode(tmpNode, -1);
             // 设置符卡无敌时间
-            tmpNode = NodeManager.CreateNode(NodeType.SetBossInvincible);
+            tmpNode = NodeManager.CreateNode(NodeType.SetInvincible);
             tmpNode.SetAttrsValues(new List<object> { "boss", "5" });
             InsertChildNode(tmpNode, -1);
             // 显示BOSS血条

@@ -236,7 +236,11 @@ public class SpellCard : ICommand
         int framePassed = _frameTotal - _frameLeft;
         int timePassed = framePassed * 1000 / Consts.TargetFrameRate;
         // 是否获得符卡奖励
-        bool getBonus = (_dyingCount == 0 && _castSCCount == 0) ? true : false;
+        bool getBonus = true;
+        if (!_isFinishSpellCard)
+            getBonus = false;
+        else if (_dyingCount != 0 || _castSCCount != 0)
+            getBonus = false;
         // 计算通过符卡实际经过的时间
         long scFinishTimeTick = System.DateTime.Now.Ticks;
         int realTimePassed = (int)((scFinishTimeTick - _scStartTimeTick) / 10000);
@@ -245,8 +249,10 @@ public class SpellCard : ICommand
 
         if (_finishFuncRef != 0)
         {
+            InterpreterManager.GetInstance().AddPara(_bossList[0], LuaParaType.LightUserData);
             InterpreterManager.GetInstance().AddPara(_isFinishSpellCard, LuaParaType.Bool);
-            InterpreterManager.GetInstance().CallLuaFunction(_finishFuncRef, 1);
+            InterpreterManager.GetInstance().AddPara(getBonus, LuaParaType.Bool);
+            InterpreterManager.GetInstance().CallLuaFunction(_finishFuncRef, 3);
         }
         // 清除BossTask
         for (int i = 0; i < _bossCount; i++)

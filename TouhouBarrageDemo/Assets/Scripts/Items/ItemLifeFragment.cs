@@ -6,7 +6,7 @@ public class ItemLifeFragment : ItemBase
     public override void Init()
     {
         _itemType = ItemType.LifeFragment;
-        _itemGO = ResourceManager.GetInstance().GetPrefab("item", "LifeFragment");
+        _itemGO = ResourceManager.GetInstance().GetPrefab("Item", "ItemLifeFragment");
         UIManager.GetInstance().AddGoToLayer(_itemGO, LayerId.Item);
         _collisionHalfWidth = _collisionHalfHeight = 11;
         _halfWidth = _halfHeight = 11;

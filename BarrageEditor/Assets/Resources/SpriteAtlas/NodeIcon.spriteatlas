@@ -187,6 +187,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 111bf24f57e029a4c8bf187e04588b54, type: 3}
   - {fileID: 21300000, guid: 3cabff4fe2deed346b8db63f079dceb1, type: 3}
   - {fileID: 21300000, guid: 19dce85fd18afe8458949f83360b4751, type: 3}
+  - {fileID: 21300000, guid: 53feaf9f8984b8a4aa229e31c5c1cffd, type: 3}
   - {fileID: 21300000, guid: f070c6af36afad64a86348384e7c39cd, type: 3}
   - {fileID: 21300000, guid: ccab5daf0a82b6b4097e2cbfd2dcb80c, type: 3}
   - {fileID: 21300000, guid: b7716cefa3c36af48b49d9efba255805, type: 3}
@@ -346,6 +347,7 @@ SpriteAtlas:
   - sentence
   - taskreturn
   - bulletinit
+  - dropitems
   - bossdefine
   - _node_rot
   - bgrender

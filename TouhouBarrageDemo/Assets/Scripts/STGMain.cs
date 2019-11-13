@@ -143,6 +143,12 @@ public class STGMain
         //    effect.SetToPos(Random.Range(-8, 8), Random.Range(-8, 8));
         //    effect.SetColor(Random.value, Random.value, Random.value, 1);
         //}
+        // 测试抖动效果
+        //if (frameNode == 200)
+        //{
+        //    ShakeEffect shakeEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ShakeEffect) as ShakeEffect;
+        //    shakeEffect.DoShake(200, 9999, 6, 1, 5, 3, 15);
+        //}
     }
 
     private int frameNode = 0;
@@ -160,10 +166,6 @@ public class STGMain
         ExtraTaskManager.GetInstance().Init();
 
         EffectsManager.GetInstance().Init();
-
-        // 测试抖动效果
-        //ShakeEffect shakeEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ShakeEffect) as ShakeEffect;
-        //shakeEffect.DoShake(200, 9999, 6, 1, 5, 3, 15);
     }
 
     public void Clear()
@@ -180,7 +182,7 @@ public class STGMain
         BackgroundManager.GetInstance().Clear();
         STGStageManager.GetInstance().Clear();
         InterpreterManager.GetInstance().Clear();
-        SoundManager.GetInstance().Clear();
+        SoundManager.GetInstance().Clear(true);
     }
 
     /// <summary>

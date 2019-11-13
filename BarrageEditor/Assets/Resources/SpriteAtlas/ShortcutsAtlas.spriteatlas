@@ -52,6 +52,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: be8a145282e972e45a687ff6cc4bcb9e, type: 3}
   - {fileID: 21300000, guid: 9613aa52ab0ee384e809368a2a6bd0ac, type: 3}
   - {fileID: 21300000, guid: 0bd25c5235fcf6240ac2d36f0a77fe8c, type: 3}
+  - {fileID: 21300000, guid: ea7eb182f9fc718428420cc5c908e32f, type: 3}
   - {fileID: 21300000, guid: 7e67c482e6baa2c438b7b5fa51458c85, type: 3}
   - {fileID: 21300000, guid: 1fbd9e8239cdba04b952823851324fef, type: 3}
   - {fileID: 21300000, guid: 94794f9256f1c18459b93e0a0fb1ca97, type: 3}
@@ -227,6 +228,7 @@ SpriteAtlas:
   - onscfinish
   - tasker
   - createdialog
+  - dropitems
   - shakescreen
   - laserbentdefine
   - explode

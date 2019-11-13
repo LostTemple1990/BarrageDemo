@@ -194,7 +194,7 @@ public partial class LuaLib
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int CreateCustomizedBullet(ILuaState luaState)
+    public static int CreateCustomizedBullet2(ILuaState luaState)
     {
         int numArgs = luaState.ToInteger(-1);
         string customizedName = luaState.ToString(-5 - numArgs);
@@ -214,7 +214,7 @@ public partial class LuaLib
         bullet.SetStyleById(sysId);
         bullet.SetPosition(posX, posY);
         // 设置自定义的数据
-        BCCustomizedTask bc = bullet.AddComponent<BCCustomizedTask>();
+        BCCustomizedTask bc = bullet.AddOrGetComponent<BCCustomizedTask>();
         int funcRef = InterpreterManager.GetInstance().GetBulletInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         if (!luaState.IsFunction(-1))
@@ -240,7 +240,7 @@ public partial class LuaLib
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int CreateCustomizedBullet1(ILuaState luaState)
+    public static int CreateCustomizedBullet(ILuaState luaState)
     {
         int numArgs = luaState.GetTop() - 3;
         string customizedName = luaState.ToString(-3 - numArgs);
@@ -249,7 +249,7 @@ public partial class LuaLib
         EnemySimpleBullet bullet = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Simple) as EnemySimpleBullet;
         bullet.SetPosition(posX, posY);
         // 设置自定义的数据
-        BCCustomizedTask bc = bullet.AddComponent<BCCustomizedTask>();
+        BCCustomizedTask bc = bullet.AddOrGetComponent<BCCustomizedTask>();
         int funcRef = InterpreterManager.GetInstance().GetBulletInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         if (!luaState.IsFunction(-1))

@@ -184,7 +184,7 @@ public class GameMainView : ViewBase,ICommand
             // 有残机碎片且残机没有达到最大值时，显示残机碎片
             if ( _curLifeCounter.fragmentCount > 0 && _curLifeCounter.itemCount != _curLifeCounter.maxItemCount )
             {
-                _lifeImgList[i].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "life" + _curLifeCounter.fragmentCount + "/" + _curLifeCounter.maxFragmentCount);
+                _lifeImgList[i].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "life" + _curLifeCounter.fragmentCount + "-" + _curLifeCounter.maxFragmentCount);
                 i++;
             }
             for (;i<Consts.PlayerMaxLifeCount;i++)
@@ -208,7 +208,7 @@ public class GameMainView : ViewBase,ICommand
             // 有符卡碎片且符卡没有达到最大值时，显示符卡碎片
             if (_curSpellCardCounter.fragmentCount > 0 && _curSpellCardCounter.itemCount != _curSpellCardCounter.maxItemCount)
             {
-                _spellCardImgList[i].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "sc" + _curSpellCardCounter.fragmentCount + "/" + _curSpellCardCounter.maxFragmentCount);
+                _spellCardImgList[i].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "sc" + _curSpellCardCounter.fragmentCount + "-" + _curSpellCardCounter.maxFragmentCount);
                 i++;
             }
             for (; i < Consts.PlayerMaxSpellCardCount; i++)

@@ -44,7 +44,7 @@ public class GameMain : MonoBehaviour
         _fsm.AddState((int)eGameState.Title, new StateTitle());
         STGData data = new STGData()
         {
-            stageName = "Stage2",
+            stageName = "Stage1",
             characterIndex = 0,
             isReplay = false,
         };

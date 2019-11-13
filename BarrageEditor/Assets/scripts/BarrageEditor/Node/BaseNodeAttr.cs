@@ -211,6 +211,8 @@ namespace BarrageEditor
         UnitEventType = 18,
         LaserId = 19,
         EnemyStyle = 20,
+        ReboundBorder = 21,
+        DropItems = 22,
     }
 
     public class NodeAttrData

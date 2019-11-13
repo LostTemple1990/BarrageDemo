@@ -76,7 +76,7 @@ namespace BarrageEditor
         DefineBoss = 1401,
         OnBossCreate = 1042,
         CreateBoss = 1403,
-        SetBossInvincible = 1410,
+        SetInvincible = 1410,
         ShowBossBloodBar = 1411,
         BossSetWanderProps = 1421,
         BossWander = 1422,
@@ -139,6 +139,7 @@ namespace BarrageEditor
         CreateSimpleCollider = 1804,
         Rebound = 1812,
         ColliderTrigger = 1813,
+        DropItems = 1821,
 
 
         PlaySound = 2201,
@@ -275,7 +276,7 @@ namespace BarrageEditor
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
             };
             values = new List<object> { "Infinite" };
-            for (i=0;i<6;i++)
+            for (i=0;i<9;i++)
             {
                 values.Add("");
             }
@@ -451,7 +452,7 @@ namespace BarrageEditor
             {
                 type = NodeType.OnEnemyCreate,
                 shortcutPath = "enemyinit",
-                defaultAttrValues = new List<object> { "10", "" },
+                defaultAttrValues = new List<object> { "", "100000", "10" },
                 editOnCreated = false,
                 isDeletable = false,
             };
@@ -485,11 +486,22 @@ namespace BarrageEditor
                 type = NodeType.SetDropItems,
                 shortcutPath = "dropitem",
                 shortcutTip = "set drop items",
-                defaultAttrValues = new List<object> { "self", "32", "32", "PPointNormal", "3", "", "", "" },
+                defaultAttrValues = new List<object> { "self", "32", "32", "1,1" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
             };
             _nodeCfgDic.Add(NodeType.SetDropItems, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.SetInvincible,
+                shortcutPath = "unknow",
+                shortcutTip = "set invincible",
+                defaultAttrValues = new List<object> { "self", "5" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(NodeType.SetInvincible, cfg);
         }
 
         private void InitBossNodeCfgs()
@@ -528,17 +540,6 @@ namespace BarrageEditor
                 editOnCreated = true,
             };
             _nodeCfgDic.Add(NodeType.CreateBoss, cfg);
-
-            cfg = new NodeConfig
-            {
-                type = NodeType.SetBossInvincible,
-                shortcutPath = "unknow",
-                shortcutTip = "set invincible",
-                defaultAttrValues = new List<object> { "boss", "5" },
-                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
-                allowChilds = new List<NodeType>(),
-            };
-            _nodeCfgDic.Add(NodeType.SetBossInvincible, cfg);
 
             cfg = new NodeConfig
             {
@@ -658,7 +659,7 @@ namespace BarrageEditor
                 type = NodeType.CreateCustomizedBullet,
                 shortcutPath = "bulletcreate",
                 shortcutTip = "create bullet",
-                defaultAttrValues = new List<object> { "", "0", "0", "" },
+                defaultAttrValues = new List<object> { "", "self.x", "self.y", "" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
                 editOnCreated = true,
@@ -786,7 +787,7 @@ namespace BarrageEditor
                 type = NodeType.LaserChangeLengthTo,
                 shortcutPath = "lasergrow",
                 shortcutTip = "laser change length",
-                defaultAttrValues = new List<object> { "self", "100", "10" },
+                defaultAttrValues = new List<object> { "self", "100", "0", "10" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
             };
@@ -934,6 +935,16 @@ namespace BarrageEditor
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
             };
             _nodeCfgDic.Add(cfg.type, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.DropItems,
+                shortcutPath = "dropitems",
+                shortcutTip = "drop items",
+                defaultAttrValues = new List<object> { "0", "150", "32", "32", "1,3" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
         }
 
         private void InitObjectNodeCfgs()
@@ -1061,7 +1072,7 @@ namespace BarrageEditor
                 type = NodeType.UnitSetStraightParas,
                 shortcutPath = "setstraightparas",
                 shortcutTip = "set straight paras",
-                defaultAttrValues = new List<object> { "self", "3", "0", "false", "UseVelocityAngle", "0" },
+                defaultAttrValues = new List<object> { "self", "3", "0", "false", "0", "UseVelocityAngle" },
                 allowChilds = new List<NodeType>(),
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
             };

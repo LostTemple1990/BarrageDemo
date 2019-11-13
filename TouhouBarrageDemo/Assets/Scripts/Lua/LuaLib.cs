@@ -29,7 +29,7 @@ public partial class LuaLib
             new NameFuncPair("GetBulletCollisionDetectParas",GetBulletCollisionDetectParas),
             // SimpleBullet
             new NameFuncPair("CreateSimpleBulletById", CreateSimpleBulletById),
-            new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet),
+            new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet2),
             new NameFuncPair("SetBulletSelfRotation",SetBulletSelfRotation),
             new NameFuncPair("SetBulletScale",SetBulletScale),
             new NameFuncPair("BulletDoScale",BulletDoScale),
@@ -101,7 +101,7 @@ public partial class LuaLib
             new NameFuncPair("SetBossCurPhaseData",SetBossCurPhaseData),
             new NameFuncPair("GetBossSpellCardHpRate",GetBossSpellCardHpRate),
             new NameFuncPair("GetSpellCardTimeLeftRate",GetSpellCardTimeLeftRate),
-            new NameFuncPair("SetBossInvincible",SetBossInvincible),
+            new NameFuncPair("SetBossInvincible",SetEnemyInvincible),
             new NameFuncPair("ShowBossBloodBar",ShowBossBloodBar),
 
             new NameFuncPair("StartSpellCard",StartSpellCard),
@@ -222,7 +222,6 @@ public partial class LuaLib
             // Bullet
             new NameFuncPair("CreateSimpleBulletById", CreateSimpleBulletById),
             new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet),
-            new NameFuncPair("CreateCustomizedBullet1",CreateCustomizedBullet1),
             new NameFuncPair("CreateCustomizedLaser",CreateCustomizedLaser),
             new NameFuncPair("CreateCustomizedLinearLaser",CreateCustomizedLinearLaser),
             new NameFuncPair("CreateCustomizedCurveLaser",CreateCustomizedCurveLaser),
@@ -238,6 +237,11 @@ public partial class LuaLib
             // Collider
             new NameFuncPair("CreateCustomizedCollider",CreateCustomizedCollider),
             new NameFuncPair("CreateSimpleCollider",CreateObjectColliderByType),
+            // Tools
+            new NameFuncPair("DropItems",DropItems),
+            new NameFuncPair("CreateChargeEffect",CreateChargeEffect),
+            new NameFuncPair("CreateBurstEffect",CreateBurstEffect),
+            new NameFuncPair("CreateShakeEffect",CreateShakeEffect),
             // STGObject
             new NameFuncPair("CreateCustomizedSTGObject",CreateCustomizedSTGObject),
             // Unit
@@ -419,7 +423,7 @@ public partial class LuaLib
         EnemyLaser laser = ObjectsPool.GetInstance().CreateBullet(BulletType.Enemy_Laser) as EnemyLaser;
         laser.SetPosition(posX, posY);
         // 设置自定义的数据
-        BCCustomizedTask bc = laser.AddComponent<BCCustomizedTask>();
+        BCCustomizedTask bc = laser.AddOrGetComponent<BCCustomizedTask>();
         int funcRef = InterpreterManager.GetInstance().GetBulletInitFuncRef(customizedName);
         luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, funcRef);
         if (!luaState.IsFunction(-1))
@@ -459,7 +463,6 @@ public partial class LuaLib
         float toWidth = (float)luaState.ToNumber(-3);
         int changeDelay = luaState.ToInteger(-2);
         int changeDuration = luaState.ToInteger(-1);
-        luaState.Pop(4);
         laser.ChangeToWidth(toWidth, changeDelay, changeDuration);
         return 0;
     }
@@ -476,7 +479,6 @@ public partial class LuaLib
         float toLength = (float)luaState.ToNumber(-3);
         int changeDelay = luaState.ToInteger(-2);
         int changeDuration = luaState.ToInteger(-1);
-        luaState.Pop(4);
         laser.ChangeToLength(toLength, changeDelay, changeDuration);
         return 0;
     }
@@ -496,7 +498,6 @@ public partial class LuaLib
         float toAlpha = (float)luaState.ToNumber(-3);
         int changeDelay = luaState.ToInteger(-2);
         int changeDuration = luaState.ToInteger(-1);
-        luaState.Pop(4);
         laser.ChangeToAlpha(toAlpha, changeDelay, changeDuration);
         return 0;
     }
@@ -806,12 +807,20 @@ public partial class LuaLib
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int SetBossInvincible(ILuaState luaState)
+    public static int SetEnemyInvincible(ILuaState luaState)
     {
-        Boss boss = luaState.ToUserData(-2) as Boss;
-        float duration = (float)luaState.ToNumber(-1);
-        luaState.Pop(2);
-        boss.SetInvincible(duration);
+        int top = luaState.GetTop();
+        if (top == 1)
+        {
+            EnemyBase enemy = luaState.ToUserData(-1) as EnemyBase;
+            enemy.SetInvincible(-1);
+        }
+        else
+        {
+            EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
+            float durationInS = (float)luaState.ToNumber(-1);
+            enemy.SetInvincible(durationInS);
+        }
         return 0;
     }
 

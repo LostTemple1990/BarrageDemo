@@ -57,7 +57,7 @@ namespace BarrageEditor
                     if (newTypeName != "")
                     {
                         BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
-                        _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, newTypeName, onCreteNode.GetAttrByIndex(1).GetValueString());
+                        _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, newTypeName, onCreteNode.GetAttrByIndex(0).GetValueString());
                     }
                 }
                 else
@@ -72,7 +72,7 @@ namespace BarrageEditor
                         else
                         {
                             BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
-                            _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, attr.GetValueString(), onCreteNode.attrs[1].GetValueString());
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, attr.GetValueString(), onCreteNode.attrs[0].GetValueString());
                         }
                     }
                     else
@@ -81,7 +81,7 @@ namespace BarrageEditor
                         if (newTypeName != "")
                         {
                             BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
-                            _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, newTypeName, onCreteNode.GetAttrByIndex(1).GetValueString());
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, newTypeName, onCreteNode.GetAttrByIndex(0).GetValueString());
                         }
                     }
                 }

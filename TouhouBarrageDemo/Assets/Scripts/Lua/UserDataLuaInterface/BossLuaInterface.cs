@@ -57,7 +57,7 @@ public class BossLuaInterface
             _funcSetWanderMode = new LuaCsClosureValue(LuaLib.SetEnemyWanderMode);
             _funcWander = new LuaCsClosureValue(LuaLib.EnemyDoWander);
 
-            _funcSetInvincible = new LuaCsClosureValue(LuaLib.SetBossInvincible);
+            _funcSetInvincible = new LuaCsClosureValue(LuaLib.SetEnemyInvincible);
             _funcShowBloodBar = new LuaCsClosureValue(LuaLib.ShowBossBloodBar);
             _funcSetPhaseData = new LuaCsClosureValue(LuaLib.SetBossCurPhaseData);
 

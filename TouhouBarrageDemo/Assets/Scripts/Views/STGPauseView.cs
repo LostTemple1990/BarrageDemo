@@ -108,6 +108,7 @@ public class STGPauseView : ViewBase
         _pauseState = data == null ? 0 : (ePauseViewState)data;
         InitAvailableItems(_pauseState);
         PlayShowAni();
+        SoundManager.GetInstance().Play("se_pause", Consts.DefaultUISEVolume, false, false);
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
 

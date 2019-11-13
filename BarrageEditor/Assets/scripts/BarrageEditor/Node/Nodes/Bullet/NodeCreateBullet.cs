@@ -49,7 +49,7 @@ namespace BarrageEditor
         {
             string typeName = attrs[0].GetValueString();
             CustomDefineData data = CustomDefine.GetDataByTypeAndName(CustomDefineType.SimpleBullet, typeName);
-            return string.Format("last = CreateCustomizedBullet1(\"{0}\",{1},{2}{3})\n",
+            return string.Format("last = CreateCustomizedBullet(\"{0}\",{1},{2}{3})\n",
                 typeName,
                 attrs[1].GetValueString(),
                 attrs[2].GetValueString(),
