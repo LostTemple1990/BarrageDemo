@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class GameInfoView : ViewBase,ICommand
@@ -10,6 +10,10 @@ public class GameInfoView : ViewBase,ICommand
     /// </summary>
     private const int BonusResultAniDuration = 30;
     private const int ResultDuration = 180;
+    /// <summary>
+    /// 代表剩余符卡数量的星星图片的间隔
+    /// </summary>
+    private const float BossInfoSCCountIntervalX = 11;
 
     struct SpriteNumData
     {
@@ -30,8 +34,6 @@ public class GameInfoView : ViewBase,ICommand
     // 符卡名称
     private GameObject _scNameObject;
     private Text _scNameText;
-    // boss名称
-    private Text _bossNameText;
 
     private bool _isShowSpellCardInfo;
 
@@ -61,6 +63,31 @@ public class GameInfoView : ViewBase,ICommand
     private int _bonusTime;
     private int _resultTime;
     private int _resultState;
+
+    /// <summary>
+    /// 获取残机的提示UI
+    /// </summary>
+    private bool _isShowImgExtend;
+    private GameObject _imgExtendGo;
+    private Image _imgExtend;
+
+    /// <summary>
+    /// 当前是否显示BOSS信息
+    /// </summary>
+    private bool _isShowBossInfo;
+    private GameObject _bossInfoGo;
+    private Text _bossInfoNameText;
+    private RectTransform _bossInfoContainerTf;
+    private GameObject _bossInfoStarProto;
+    private List<Image> _bossInfoStarList;
+    /// <summary>
+    /// 当前可用的star总数
+    /// </summary>
+    private int _bossInfoStarTotalCount;
+    /// <summary>
+    /// 当前剩余的符卡数量
+    /// </summary>
+    private int _bossInfoSCLeft;
 
     public override void Init(GameObject viewObj)
     {
@@ -113,8 +140,20 @@ public class GameInfoView : ViewBase,ICommand
             data.sr = data.tf.GetComponent<SpriteRenderer>();
             _realTimeDatas[i] = data;
         }
-
+        // 获取残机UI
+        _imgExtendGo = _viewTf.Find("ImgExtend").gameObject;
+        _imgExtend = _imgExtendGo.GetComponent<Image>();
+        _isShowImgExtend = false;
         Reset();
+        // Boss信息UI
+        Transform bossInfoTf = _viewTf.Find("BossInfoPanel");
+        _bossInfoGo = bossInfoTf.gameObject;
+        _bossInfoNameText = bossInfoTf.Find("NameText").GetComponent<Text>();
+        _bossInfoContainerTf = bossInfoTf.Find("Container").GetComponent<RectTransform>();
+        _bossInfoStarProto = _bossInfoContainerTf.Find("Star").gameObject;
+        _bossInfoStarList = new List<Image>();
+        _bossInfoStarList.Add(_bossInfoStarProto.GetComponent<Image>());
+        _bossInfoStarTotalCount = 1;
         //_bgmText = _viewTf.Find("BGMText").GetComponent<Text>();
     }
 
@@ -127,6 +166,8 @@ public class GameInfoView : ViewBase,ICommand
         CommandManager.GetInstance().Register(CommandConsts.ShowSpellCardInfo, this);
         CommandManager.GetInstance().Register(CommandConsts.SpellCardFinish, this);
         CommandManager.GetInstance().Register(CommandConsts.BackToTitle, this);
+        CommandManager.GetInstance().Register(CommandConsts.PlayerExtend, this);
+        CommandManager.GetInstance().Register(CommandConsts.ShowBossInfo, this);
 
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
@@ -140,6 +181,8 @@ public class GameInfoView : ViewBase,ICommand
         CommandManager.GetInstance().Remove(CommandConsts.ShowSpellCardInfo, this);
         CommandManager.GetInstance().Remove(CommandConsts.SpellCardFinish, this);
         CommandManager.GetInstance().Remove(CommandConsts.BackToTitle, this);
+        CommandManager.GetInstance().Remove(CommandConsts.PlayerExtend, this);
+        CommandManager.GetInstance().Remove(CommandConsts.ShowBossInfo, this);
         Reset();
     }
 
@@ -166,6 +209,12 @@ public class GameInfoView : ViewBase,ICommand
                 break;
             case CommandConsts.BackToTitle:
                 Reset();
+                break;
+            case CommandConsts.PlayerExtend:
+                OnPlayerExtend();
+                break;
+            case CommandConsts.ShowBossInfo:
+                OnShowBossInfo((string)datas[0], (int)datas[1]);
                 break;
         }
     }
@@ -262,6 +311,7 @@ public class GameInfoView : ViewBase,ICommand
                 {
                     _getBonusGo.SetActive(true);
                     _bonusFailGo.SetActive(false);
+                    SoundManager.GetInstance().Play("se_scbonus", Consts.DefaultUISEVolume, false, false);
                 }
                 else
                 {
@@ -274,6 +324,7 @@ public class GameInfoView : ViewBase,ICommand
                 _finishTimePanel.SetActive(false);
                 _getBonusGo.SetActive(false);
                 _bonusFailGo.SetActive(true);
+                SoundManager.GetInstance().Play("se_scfault", Consts.DefaultUISEVolume, false, false);
             }
             // 显示实际时间
             int realTimePassed = (int)datas[4];
@@ -297,6 +348,28 @@ public class GameInfoView : ViewBase,ICommand
             _getBonusGo.transform.localScale = new Vector3(100, 100, 1);
             _bonusFailGo.transform.localScale = new Vector3(100, 100, 1);
             _isShowingSCResult = true;
+            // 更新BossInfo
+            if (_isShowBossInfo)
+            {
+                if (_bossInfoSCLeft > 0)
+                {
+                    _bossInfoSCLeft--;
+                    GameObject starGo = _bossInfoStarList[_bossInfoSCLeft].gameObject;
+                    TweenAlpha tween0 = TweenManager.GetInstance().Create<TweenAlpha>();
+                    tween0.SetParas(starGo, 0, 30, ePlayMode.Once);
+                    tween0.SetParas(0, InterpolationMode.Linear);
+                    TweenManager.GetInstance().AddTween(tween0);
+                    TweenScale tween1 = TweenManager.GetInstance().Create<TweenScale>();
+                    tween1.SetParas(starGo, 0, 30, ePlayMode.Once);
+                    tween1.SetParas(new Vector3(2, 2, 1), InterpolationMode.EaseOutQuad);
+                    TweenManager.GetInstance().AddTween(tween1);
+                }
+                else
+                {
+                    _isShowBossInfo = false;
+                    _bossInfoGo.SetActive(false);
+                }
+            }
         }
         else
         {
@@ -387,6 +460,18 @@ public class GameInfoView : ViewBase,ICommand
         _isShowSpellCardInfo = false;
         _isShowingSCResult = false;
         _spellCardResultPanel.SetActive(false);
+        if (_isShowImgExtend)
+        {
+            _imgExtendGo.SetActive(false);
+            TweenManager.GetInstance().RemoveTweenByGo(_imgExtendGo);
+        }
+        _isShowImgExtend = false;
+        _bossInfoSCLeft = 0;
+        if (_isShowBossInfo)
+        {
+            _bossInfoGo.SetActive(false);
+            _isShowBossInfo = false;
+        }
     }
 
     public override void Update()
@@ -459,6 +544,99 @@ public class GameInfoView : ViewBase,ICommand
                 _isShowingSCResult = false;
             }
         }
+    }
+
+    private void OnPlayerExtend()
+    {
+        if (_isShowImgExtend)
+        {
+            TweenManager.GetInstance().RemoveTweenByGo(_imgExtendGo);
+        }
+        else
+        {
+            _isShowImgExtend = true;
+            _imgExtendGo.SetActive(true);
+            _imgExtend.color = new Color(1, 1, 1, 0);
+        }
+        // 出现
+        TweenAlpha tween = TweenManager.GetInstance().Create<TweenAlpha>();
+        tween.SetParas(_imgExtendGo, 0, 10, ePlayMode.Once);
+        tween.SetParas(1, InterpolationMode.Linear);
+        TweenManager.GetInstance().AddTween(tween);
+        // 渐隐
+        tween = TweenManager.GetInstance().Create<TweenAlpha>();
+        tween.SetParas(_imgExtendGo, 120, 20, ePlayMode.Once);
+        tween.SetParas(0, InterpolationMode.Linear);
+        tween.SetFinishCallBack(OnExtendFinish);
+        TweenManager.GetInstance().AddTween(tween);
+        SoundManager.GetInstance().Play("se_extend", Consts.DefaultUISEVolume, false, false);
+    }
+
+    private void OnExtendFinish(GameObject go)
+    {
+        if (_isShowImgExtend)
+        {
+            _isShowImgExtend = false;
+            _imgExtendGo.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// 设置UI左上方BOSS信息
+    /// <para>scLeft 为0时表示最后一张符卡，不显示代表剩余数量的星星，依次类推</para>
+    /// </summary>
+    /// <param name="bossName"></param>
+    /// <param name="scLeft"></param>
+    private void OnShowBossInfo(string bossName,int scLeft)
+    {
+        GameObject go;
+        Image img;
+        TweenAlpha tween;
+        if (!_isShowBossInfo)
+        {
+            // 整个面板设置为可见
+            _bossInfoGo.SetActive(true);
+            // bossName
+            Color textCol = _bossInfoNameText.color;
+            textCol.a = 0;
+            _bossInfoNameText.color = textCol;
+            tween = TweenManager.GetInstance().Create<TweenAlpha>();
+            tween.SetParas(_bossInfoNameText.gameObject, 0, 30, ePlayMode.Once);
+            tween.SetParas(1, InterpolationMode.Linear);
+            TweenManager.GetInstance().AddTween(tween);
+        }
+        _bossInfoNameText.text = bossName;
+        if (scLeft < 0) scLeft = 0;
+        // scCount
+        // 如果剩余符卡数比当前创建的星星数量多，则先创建
+        if (scLeft > _bossInfoStarTotalCount)
+        {
+            while (_bossInfoStarTotalCount < scLeft)
+            {
+                go = GameObject.Instantiate(_bossInfoStarProto, _bossInfoContainerTf, false);
+                go.GetComponent<RectTransform>().anchoredPosition = new Vector2(_bossInfoStarTotalCount * BossInfoSCCountIntervalX, 0);
+                _bossInfoStarList.Add(go.GetComponent<Image>());
+                _bossInfoStarTotalCount++;
+            }
+        }
+        for (int i = 0; i < scLeft; i++)
+        {
+            img = _bossInfoStarList[i];
+            go = img.gameObject;
+            go.SetActive(true);
+            go.transform.localScale = Vector3.one;
+            img.color = new Color(1, 1, 1, 0);
+            tween = TweenManager.GetInstance().Create<TweenAlpha>();
+            tween.SetParas(go.gameObject, 0, 30, ePlayMode.Once);
+            tween.SetParas(1, InterpolationMode.Linear);
+            TweenManager.GetInstance().AddTween(tween);
+        }
+        for (int i = scLeft; i < _bossInfoStarTotalCount; i++)
+        {
+            _bossInfoStarList[i].gameObject.SetActive(false);
+        }
+        _bossInfoSCLeft = scLeft;
+        _isShowBossInfo = true;
     }
 
     public override LayerId GetLayerId()

@@ -10,9 +10,9 @@ public class ItemLife : ItemBase
         UIManager.GetInstance().AddGoToLayer(_itemGO, LayerId.Item);
         _collisionHalfWidth = _collisionHalfHeight = 11;
         _halfWidth = _halfHeight = 11;
-        _aboveY = Consts.ItemTopBorderY + _halfHeight;
-        _defaultSp = "ItemLife";
-        _upSp = "ItemLife_Up";
+        _upPosY = Consts.ItemTopBorderY - 16;
+        _defaultSp = "Life";
+        _upSp = "Life_Up";
         _sr = _itemGO.transform.Find("Sprite").GetComponent<SpriteRenderer>();
         base.Init();
     }

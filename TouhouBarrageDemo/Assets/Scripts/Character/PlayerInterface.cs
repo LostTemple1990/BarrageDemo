@@ -112,6 +112,8 @@ public class PlayerInterface
 
     public void AddPower(int value)
     {
+        if (_curPower >= Consts.PlayerMaxPower)
+            return;
         _curPower += value;
         if ( _curPower > Consts.PlayerMaxPower )
         {
@@ -170,7 +172,10 @@ public class PlayerInterface
     /// <param name="count"></param>
     public void AddLifeCount(int count)
     {
+        int pre = _lifeCounter.itemCount;
         _lifeCounter.AddItemCount(count);
+        if (pre < _lifeCounter.itemCount)
+            CommandManager.GetInstance().RunCommand(CommandConsts.PlayerExtend);
     }
 
     /// <summary>
@@ -179,7 +184,10 @@ public class PlayerInterface
     /// <param name="fragmentCount"></param>
     public void AddLifeFragmentCount(int fragmentCount)
     {
+        int pre = _lifeCounter.itemCount;
         _lifeCounter.AddFragmentCount(fragmentCount);
+        if (pre < _lifeCounter.itemCount)
+            CommandManager.GetInstance().RunCommand(CommandConsts.PlayerExtend);
     }
 
     /// <summary>

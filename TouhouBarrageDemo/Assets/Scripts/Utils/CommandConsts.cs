@@ -2,6 +2,12 @@
 {
     public const int NewSpellCardTime = 1000;
     public const int UpdateSpellCardTime = 1001;
+    /// <summary>
+    /// 显示Boss信息
+    /// <para>name Boss名称</para>
+    /// <para>scLeft 剩余符卡数量</para>
+    /// </summary>
+    public const int ShowBossInfo = 1002;
 
     public const int CreateBgDistortEffect = 2000;
     public const int UpdateBgDistortEffectProps = 2001;
@@ -84,6 +90,14 @@
     /// 玩家放B
     /// </summary>
     public const int PlayerCastSC = 2102;
+    /// <summary>
+    /// 玩家获取额外残机
+    /// </summary>
+    public const int PlayerExtend = 2111;
+    /// <summary>
+    /// 玩家吃到满P
+    /// </summary>
+    public const int PlayerGetFullPower = 2112;
 
     /// <summary>
     /// 进入关卡

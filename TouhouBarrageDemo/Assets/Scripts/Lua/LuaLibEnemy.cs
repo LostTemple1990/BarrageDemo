@@ -59,7 +59,7 @@ public partial class LuaLib
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int CreateCustomizedEnemy(ILuaState luaState)
+    public static int CreateCustomizedEnemy2(ILuaState luaState)
     {
         int numArgs = luaState.ToInteger(-1);
         luaState.Pop(1);
@@ -108,7 +108,7 @@ public partial class LuaLib
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
-    public static int CreateCustomizedEnemy1(ILuaState luaState)
+    public static int CreateCustomizedEnemy(ILuaState luaState)
     {
         int numArgs = luaState.GetTop() - 3;
         string customizedName = luaState.ToString(-3 - numArgs);

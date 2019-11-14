@@ -54,6 +54,10 @@ public class ItemBase
     /// </summary>
     protected float _aboveY;
     /// <summary>
+    /// 使用up图像时的位置
+    /// </summary>
+    protected float _upPosY;
+    /// <summary>
     /// 默认的SpriteName
     /// </summary>
     protected string _defaultSp;
@@ -81,6 +85,7 @@ public class ItemBase
         _clearFlag = 0;
         _character = PlayerInterface.GetInstance().GetCharacter();
         _isAboveBorder = false;
+        _aboveY = Consts.ItemTopBorderY;
     }
 
     public virtual void Update()
@@ -176,6 +181,7 @@ public class ItemBase
 
     protected void Render()
     {
+        Vector3 pos = _curPos;
         if (_curPos.y >= _aboveY)
         {
             if (!_isAboveBorder)
@@ -183,6 +189,7 @@ public class ItemBase
                 _isAboveBorder = true;
                 _sr.sprite = ResourceManager.GetInstance().GetSprite("ItemAtlas", _upSp);
             }
+            pos.y = _upPosY;
         }
         else
         {
@@ -192,7 +199,7 @@ public class ItemBase
                 _sr.sprite = ResourceManager.GetInstance().GetSprite("ItemAtlas", _defaultSp);
             }
         }
-        _itemGO.transform.localPosition = _curPos;
+        _itemGO.transform.localPosition = pos;
     }
 
     public int clearFlag

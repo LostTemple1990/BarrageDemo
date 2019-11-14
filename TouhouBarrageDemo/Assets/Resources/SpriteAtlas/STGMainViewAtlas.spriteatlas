@@ -144,7 +144,7 @@ SpriteAtlas:
   m_PackedSpriteNamesToIndex:
   - BigNum2
   - STGUI_38
-  - STGUI_14
+  - ImgExtend
   - STGUI_17
   - SmallNum1
   - STGUI_34
@@ -157,7 +157,7 @@ SpriteAtlas:
   - STGUI_33
   - ResultCharComma
   - ResultChar7
-  - STGUI_32
+  - SCCountStar
   - BigNum3
   - ResultCharSlash
   - TextLunatic
@@ -171,7 +171,7 @@ SpriteAtlas:
   - sc0
   - sc3-5
   - STGUI_13
-  - STGUI_16
+  - ImgFullPower
   - STGUI_3
   - Star1
   - BigNum9

@@ -10,7 +10,7 @@ public class ItemBomb : ItemBase
         UIManager.GetInstance().AddGoToLayer(_itemGO, LayerId.Item);
         _collisionHalfWidth = _collisionHalfHeight = 11;
         _halfWidth = _halfHeight = 11;
-        _aboveY = Consts.ItemTopBorderY + _halfHeight;
+        _upPosY = Consts.ItemTopBorderY - 16;
         _defaultSp = "Bomb";
         _upSp = "Bomb_Up";
         _sr = _itemGO.transform.Find("Sprite").GetComponent<SpriteRenderer>();

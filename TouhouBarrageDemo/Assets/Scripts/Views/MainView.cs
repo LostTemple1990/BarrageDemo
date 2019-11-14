@@ -305,6 +305,7 @@ public class MainView : ViewBase, ICommand
         if (_curIndexInAvailableList >= _availableIndexList.Count)
             _curIndexInAvailableList = 0;
         SetSelectIndex(_availableIndexList[_curIndexInAvailableList]);
+        SoundManager.GetInstance().Play("se_select", Consts.DefaultUISEVolume, false, false);
     }
 
     private void OnPressUpArrow()
@@ -313,12 +314,14 @@ public class MainView : ViewBase, ICommand
         if (_curIndexInAvailableList < 0)
             _curIndexInAvailableList = _availableIndexList.Count - 1;
         SetSelectIndex(_availableIndexList[_curIndexInAvailableList]);
+        SoundManager.GetInstance().Play("se_select", Consts.DefaultUISEVolume, false, false);
     }
 
     private void OnPressKeyZ()
     {
         if (_selectIndex == IndexStartGame)
         {
+            SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
             CommandManager.GetInstance().Register(CommandConsts.CancelSelectCharacter, this);
             _state = eMainViewState.SelectChar;
             _isWaitingEvent = true;
@@ -326,6 +329,7 @@ public class MainView : ViewBase, ICommand
         }
         else if (_selectIndex == IndexReplay)
         {
+            SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
             CommandManager.GetInstance().Register(CommandConsts.CancelSelectReplay, this);
             _state = eMainViewState.SelectReplay;
             _isWaitingEvent = true;
@@ -333,6 +337,7 @@ public class MainView : ViewBase, ICommand
         }
         else if (_selectIndex == IndexQuit)
         {
+            SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
             Quit();
         }
     }

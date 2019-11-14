@@ -311,6 +311,7 @@ public class ReplayView : ViewBase, ICommand
         if (next >= MaxInfoCount)
             next = 0;
         SetSelectIndex(next, true);
+        SoundManager.GetInstance().Play("se_select", Consts.DefaultUISEVolume, false, false);
     }
 
     private void OnPressUpArrow()
@@ -319,6 +320,7 @@ public class ReplayView : ViewBase, ICommand
         if (next < 0)
             next = MaxInfoCount - 1;
         SetSelectIndex(next, true);
+        SoundManager.GetInstance().Play("se_select", Consts.DefaultUISEVolume, false, false);
     }
 
     private void OnPressKeyZ()
@@ -337,6 +339,7 @@ public class ReplayView : ViewBase, ICommand
                 if (isSuccess)
                 {
                     Logger.Log("Load replay" + info.replayIndex + " success!");
+                    SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
                 }
                 else
                 {
@@ -358,6 +361,7 @@ public class ReplayView : ViewBase, ICommand
             Hide();
             CommandManager.GetInstance().RunCommand(CommandConsts.BackToTitle);
         }
+        SoundManager.GetInstance().Play("se_selectcancel", Consts.DefaultUISEVolume, false, false);
     }
     #endregion
 
@@ -382,6 +386,7 @@ public class ReplayView : ViewBase, ICommand
 
     private void OnSaveReplaySuccess()
     {
+        SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
         InitReplayItemInfo();
         _viewState = eViewState.Wait;
         _stateTime = 0;

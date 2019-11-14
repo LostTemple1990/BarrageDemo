@@ -1095,6 +1095,7 @@ Stage["Stage1"] = function()
             end) == false then return end
         end
         last = CreateBoss("YKS1_MidBoss")
+        ShowBossInfo("Nazrin",0)
         local boss = last
         boss:MoveTo(0,170,90,IntModeEaseInQuad)
         if Wait(100)==false then return end

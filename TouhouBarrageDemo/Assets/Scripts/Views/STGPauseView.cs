@@ -368,6 +368,7 @@ public class STGPauseView : ViewBase
             TweenManager.GetInstance().RemoveTweenByGo(_curYesNoItem);
             _yesNoPanel.SetActive(false);
             SetCurSelectItem(_curSelectIndex);
+            SoundManager.GetInstance().Play("se_selectcancel", Consts.DefaultUISEVolume, false, false);
         }
         // 若当前正在暂停界面，则直接返回游戏
         else if (_state == StatePause)
@@ -380,6 +381,7 @@ public class STGPauseView : ViewBase
                 return;
             Hide();
             CommandManager.GetInstance().RunCommand(CommandConsts.ContinueGame);
+            SoundManager.GetInstance().Play("se_selectcancel", Consts.DefaultUISEVolume, false, false);
         }
     }
 
@@ -397,6 +399,7 @@ public class STGPauseView : ViewBase
                     CommandManager.GetInstance().RunCommand(CommandConsts.ContinueGameAfterGameOver);
                 else
                     CommandManager.GetInstance().RunCommand(CommandConsts.ContinueGame);
+                SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
             }
             else if ( _curSelectIndex == IndexBackToTitle )
             {
@@ -404,6 +407,7 @@ public class STGPauseView : ViewBase
                 _yesNoPanel.SetActive(true);
                 TweenManager.GetInstance().RemoveTweenByGo(_curSelectItem);
                 SetCurYesNoItem(IndexNo);
+                SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
             }
             else if (_curSelectIndex == IndexSaveReplay)
             {
@@ -411,6 +415,7 @@ public class STGPauseView : ViewBase
                 _yesNoPanel.SetActive(true);
                 TweenManager.GetInstance().RemoveTweenByGo(_curSelectItem);
                 SetCurYesNoItem(IndexNo);
+                SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
             }
             else if (_curSelectIndex == IndexRetry)
             {
@@ -418,6 +423,7 @@ public class STGPauseView : ViewBase
                 _yesNoPanel.SetActive(true);
                 TweenManager.GetInstance().RemoveTweenByGo(_curSelectItem);
                 SetCurYesNoItem(IndexNo);
+                SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
             }
         }
         else if ( _state == StateConfirm )
@@ -429,6 +435,7 @@ public class STGPauseView : ViewBase
                 TweenManager.GetInstance().RemoveTweenByGo(_curYesNoItem);
                 _yesNoPanel.SetActive(false);
                 SetCurSelectItem(_curSelectIndex);
+                SoundManager.GetInstance().Play("se_selectcancel", Consts.DefaultUISEVolume, false, false);
             }
             else if ( _curYesNoIndex == IndexYes )
             {
@@ -444,6 +451,7 @@ public class STGPauseView : ViewBase
                 {
                     OnRetry();
                 }
+                SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
             }
         }
     }
@@ -459,6 +467,7 @@ public class STGPauseView : ViewBase
         {
             SetCurYesNoItem(1 - _curYesNoIndex);
         }
+        SoundManager.GetInstance().Play("se_select", Consts.DefaultUISEVolume, false, false);
     }
 
     private void OnDirDownHandler()
@@ -472,6 +481,7 @@ public class STGPauseView : ViewBase
         {
             SetCurYesNoItem(1 - _curYesNoIndex);
         }
+        SoundManager.GetInstance().Play("se_select", Consts.DefaultUISEVolume, false, false);
     }
     
     /// <summary>

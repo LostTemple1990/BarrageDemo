@@ -40,7 +40,7 @@ public partial class LuaLib
             new NameFuncPair("DoBulletAccelerationWithLimitation",DoBulletAccelerationWithLimitation),
 
             new NameFuncPair("CreateNormalEnemyById",CreateNormalEnemyById),
-            new NameFuncPair("CreateCustomizedEnemy",CreateCustomizedEnemy),
+            new NameFuncPair("CreateCustomizedEnemy",CreateCustomizedEnemy2),
             new NameFuncPair("HitEnemy",HitEnemy),
             new NameFuncPair("SetEnemyResistEliminateFlag",SetEnemyResistEliminateFlag),
             new NameFuncPair("EliminateEnemy",EliminateEnemy),
@@ -227,9 +227,10 @@ public partial class LuaLib
             new NameFuncPair("CreateCustomizedCurveLaser",CreateCustomizedCurveLaser),
             // Enemy
             new NameFuncPair("CreateNormalEnemyById",CreateNormalEnemyById),
-            new NameFuncPair("CreateCustomizedEnemy",CreateCustomizedEnemy1),
+            new NameFuncPair("CreateCustomizedEnemy",CreateCustomizedEnemy),
             // Boss
             new NameFuncPair("CreateBoss",CreateBoss),
+            new NameFuncPair("ShowBossInfo",ShowBossInfo),
             // SpellCard
             new NameFuncPair("SetSpellCardProperties",SetSpellCardProperties),
             new NameFuncPair("StartSpellCard",StartSpellCard),
@@ -911,6 +912,22 @@ public partial class LuaLib
         int condition = luaState.ToInteger(-2);
         bool isSpellCard = luaState.ToBoolean(-1);
         sc.SetProperties(scName, duration, (eSpellCardCondition)condition,isSpellCard);
+        return 0;
+    }
+
+    /// <summary>
+    /// 显示boss信息
+    /// <para>name boss名称</para>
+    /// <para>scLeft 剩余符卡数量</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int ShowBossInfo(ILuaState luaState)
+    {
+        string name = luaState.ToString(-2);
+        int scLeft = luaState.ToInteger(-1);
+        object[] datas = new object[] { name, scLeft };
+        CommandManager.GetInstance().RunCommand(CommandConsts.ShowBossInfo, datas);
         return 0;
     }
 

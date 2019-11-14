@@ -167,6 +167,7 @@ public class SelectCharView : ViewBase, ICommand
         if (next >= _charDatas.Count)
             next = 0;
         SetSelectIndex(next, Consts.DIR_RIGHT);
+        SoundManager.GetInstance().Play("se_select", Consts.DefaultUISEVolume, false, false);
     }
 
     private void OnPressLeftArrow()
@@ -175,10 +176,12 @@ public class SelectCharView : ViewBase, ICommand
         if (next < 0)
             next = _charDatas.Count - 1;
         SetSelectIndex(next, Consts.DIR_LEFT);
+        SoundManager.GetInstance().Play("se_select", Consts.DefaultUISEVolume, false, false);
     }
 
     private void OnPressKeyZ()
     {
+        SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
         SelCharacterData data = _charDatas[_selectIndex];
         CommandManager.GetInstance().RunCommand(CommandConsts.SelectCharacter, data.index);
     }
@@ -187,6 +190,7 @@ public class SelectCharView : ViewBase, ICommand
     {
         CommandManager.GetInstance().RunCommand(CommandConsts.CancelSelectCharacter);
         Hide();
+        SoundManager.GetInstance().Play("se_selectcancel", Consts.DefaultUISEVolume, false, false);
     }
 
 
