@@ -222,9 +222,11 @@ public class EnemyBulletMovable : EnemyBulletBase
     {
         _moveStraightTime++;
         Vector2 targetPos = _moveToIntFunc(_moveFromPos, _moveToPos, _moveStraightTime, _moveStraightDuration);
-        _dx += targetPos.x - _curPos.x;
-        _dy += targetPos.y - _curPos.y;
+        //_dx += targetPos.x - _curPos.x;
+        //_dy += targetPos.y - _curPos.y;
         _curPos = _moveToIntFunc(_moveFromPos, _moveToPos, _moveStraightTime, _moveStraightDuration);
+        if (_moveStraightTime >= _moveStraightDuration)
+            _isMovingTo = false;
     }
 
     public override void MoveTowards(float v, float angle, int duration)

@@ -427,4 +427,21 @@ public partial class LuaLib
     {
         return 0;
     }
+
+    /// <summary>
+    /// 创建boss死亡特效（暂用
+    /// <para>posX</para>
+    /// <para>posY</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int CreateBossDeadEffect(ILuaState luaState)
+    {
+        STGPlayerDeadEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.PlayerDeadEffect) as STGPlayerDeadEffect;
+        float posX = (float)luaState.ToNumber(-2);
+        float posY = (float)luaState.ToNumber(-1);
+        effect.SetPosition(posX, posY);
+        luaState.PushLightUserData(effect);
+        return 1;
+    }
 }

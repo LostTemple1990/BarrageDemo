@@ -137,7 +137,7 @@ namespace BarrageEditor
             List<object> datas = new List<object>();
             datas.Add(_colorList);
             datas.Add(_colorId);
-            Action<int> callback = new Action<int>(SelectStyleCallback);
+            Action<int> callback = new Action<int>(SelectColorCallback);
             datas.Add(callback);
             UIManager.GetInstance().OpenView(ViewID.AttrSelectBulletColorView, datas);
         }

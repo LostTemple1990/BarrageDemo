@@ -91,7 +91,7 @@ namespace BarrageEditor
                     {
                         if (_isWatchingData)
                         {
-                            CustomDefine.ModifyDefineName(CustomDefineType.SpellCard, fromName, attr.GetValueString());
+                            _isWatchingData = CustomDefine.ModifyDefineName(CustomDefineType.SpellCard, fromName, attr.GetValueString());
                         }
                         else
                         {

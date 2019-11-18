@@ -19,16 +19,18 @@ public class EnemySimpleBulletLuaInterface
     private static LuaCsClosureValue _funcAttachTo;
     private static LuaCsClosureValue _funcSetRelativePos;
 
-    private static LuaCsClosureValue _funcAddTask;
-
     private static LuaCsClosureValue _funcSetSelfRotaion;
     private static LuaCsClosureValue _funcSetStyleById;
     private static LuaCsClosureValue _funcSetResistEliminatedTypes;
+    private static LuaCsClosureValue _funcSetColor;
 
+    private static LuaCsClosureValue _funcAddTask;
     private static LuaCsClosureValue _funcChangeProperty;
     private static LuaCsClosureValue _funcAddColliderTrigger;
     private static LuaCsClosureValue _funcAddRebound;
 
+    private static LuaCsClosureValue _funcDisableAppearEffect;
+    private static LuaCsClosureValue _funcSetScale;
 
     public static void Init()
     {
@@ -51,10 +53,14 @@ public class EnemySimpleBulletLuaInterface
             _funcSetSelfRotaion = new LuaCsClosureValue(LuaLib.SetBulletSelfRotation);
             _funcSetStyleById = new LuaCsClosureValue(LuaLib.SetBulletStyleById);
             _funcSetResistEliminatedTypes = new LuaCsClosureValue(LuaLib.SetBulletResistEliminatedFlag);
+            _funcSetColor = new LuaCsClosureValue(LuaLib.SetBulletColor);
 
             _funcChangeProperty = new LuaCsClosureValue(LuaLib.AddBulletParaChangeEvent);
             _funcAddColliderTrigger = new LuaCsClosureValue(LuaLib.AddBulletColliderTriggerEvent);
             _funcAddRebound = new LuaCsClosureValue(LuaLib.AddBulletRebound);
+
+            _funcDisableAppearEffect = new LuaCsClosureValue(LuaLib.DisableBulletAppearEffect);
+            _funcSetScale = new LuaCsClosureValue(LuaLib.SetBulletScale);
 
             _isInit = true;
         }
@@ -92,6 +98,11 @@ public class EnemySimpleBulletLuaInterface
                 case "dy":
                     {
                         res.SetNValue(bullet.dy);
+                        return true;
+                    }
+                case "id":
+                    {
+                        res.SetNValue(int.Parse(bullet.BulletId));
                         return true;
                     }
                 #endregion
@@ -158,9 +169,21 @@ public class EnemySimpleBulletLuaInterface
                         res.SetClCsValue(_funcSetResistEliminatedTypes);
                         return true;
                     }
-                case "ChangeProperty":
+                case "SetColor":
                     {
-                        res.SetClCsValue(_funcChangeProperty);
+                        res.SetClCsValue(_funcSetColor);
+                        return true;
+                    }
+                #endregion
+                #region SimpleBullet 专属变量
+                case "DisableAppearEffect":
+                    {
+                        res.SetClCsValue(_funcDisableAppearEffect);
+                        return true;
+                    }
+                case "SetScale":
+                    {
+                        res.SetClCsValue(_funcSetScale);
                         return true;
                     }
                 #endregion
@@ -236,7 +259,12 @@ public class EnemySimpleBulletLuaInterface
                         res.SetClCsValue(_funcAddRebound);
                         return true;
                     }
-                    #endregion
+                case "ChangeProperty":
+                    {
+                        res.SetClCsValue(_funcChangeProperty);
+                        return true;
+                    }
+                #endregion
             }
         }
         res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(EnemySimpleBullet).Name));
@@ -339,7 +367,22 @@ public class EnemySimpleBulletLuaInterface
                         bullet.SetSelfRotation((float)value.NValue);
                         return true;
                     }
-                #endregion
+                case "scale":
+                    {
+                        bullet.SetScale((float)value.NValue);
+                        return true;
+                    }
+                case "scaleX":
+                    {
+                        bullet.SetBulletPara(BulletParaType.ScaleX, (float)value.NValue);
+                        return true;
+                    }
+                case "scaleY":
+                    {
+                        bullet.SetBulletPara(BulletParaType.ScaleY, (float)value.NValue);
+                        return true;
+                    }
+                    #endregion
             }
         }
         value.SetSValue(string.Format("SetField of userData fail!Invalid key {0} for type {1}", key, typeof(EnemySimpleBullet).Name));

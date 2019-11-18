@@ -58,11 +58,11 @@ namespace BarrageEditor
                     "\nSetDebugStageName(\"__TestSCStage\")\n",
                     string.Format("BossTable[\"{0}\"] = {{}}\n","__TestSCBoss"),
                     string.Format("BossTable[\"{0}\"].Init = function(self)\n    self:SetAni(2001)\n    self:SetPos(0,280)\n    self:SetCollisionSize(32,32)\nend\n", "__TestSCBoss"),
-                    "Stage[\"__TestSCStage\"] = function()\n    last = CreateBoss(\"__TestSCBoss\")\n    local boss = last\n",
+                    "Stage[\"__TestSCStage\"] = function()\n    local boss = CreateBoss(\"__TestSCBoss\",0,280)\n",
                     "    boss:MoveTo(0,170,90,IntModeEaseInQuad)\n    if Wait(100)==false then return end\n",
                     "    boss:SetPhaseData(1,true)\n",
                     string.Format("    StartSpellCard(SpellCard[\"{0}\"],boss)\n",scName),
-                    "    if WaitForSpellCardFinish() == false then return end\nend\n\n"
+                    "    if WaitForSpellCardFinish() == false then return end\n    FinishStage()\nend\n\n"
                     );
             }
             ret += string.Format("{0}{1}{2}{3}{4}{5}{6}",

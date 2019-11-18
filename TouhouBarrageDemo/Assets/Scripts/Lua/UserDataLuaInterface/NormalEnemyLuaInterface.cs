@@ -284,6 +284,11 @@ public class NormalEnemyLuaInterface
                         return true;
                     }
                 #endregion
+                case "checkBorder":
+                    {
+                        enemy.SetCheckOutOfBorder(value.BValue());
+                        return true;
+                    }
             }
         }
         value.SetSValue(string.Format("SetField of userData fail!Invalid key {0} for type {1}", key, typeof(NormalEnemy).Name));

@@ -238,9 +238,9 @@ public class PlayerLaser : PlayerBulletBase
         }
     }
 
-    protected override int GetDamage()
+    protected override float GetDamage()
     {
-        return 2;
+        return 0.1f;
     }
 
     public override bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)

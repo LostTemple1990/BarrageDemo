@@ -882,25 +882,6 @@ public class InterpreterManager
         _customizedEnemyDefMap.Clear();
     }
 
-    private void UnrefBoss()
-    {
-        Dictionary<string, BossRefData> datas = EnemyManager.GetInstance().GetAllBossRefData();
-        // BOSS部分
-        foreach (KeyValuePair<string, BossRefData> kv in datas)
-        {
-            string bossName = kv.Key;
-            BossRefData refData = kv.Value;
-            _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, refData.initFuncRef);
-            _luaState.L_Unref(LuaDef.LUA_REGISTRYINDEX, refData.taskFuncRef);
-#if LogLuaFuncRef
-            _luaRefDic.Remove(refData.initFuncRef);
-            _luaRefDic.Remove(refData.taskFuncRef);
-            Logger.Log("Unref init function of boss " + bossName + " ref = " + refData.initFuncRef + " and " + refData.taskFuncRef);
-#endif
-        }
-        datas.Clear();
-    }
-
     private void ClearLuaGlobal()
     {
         _luaState.PushGlobalTable();

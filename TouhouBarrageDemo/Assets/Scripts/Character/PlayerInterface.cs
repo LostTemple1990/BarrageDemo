@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerInterface
 {
@@ -196,6 +196,28 @@ public class PlayerInterface
     /// </summary>
     public bool Miss()
     {
+        // power减少100
+        _curPower = _curPower - 100;
+        if (_curPower < 0)
+            _curPower = 0;
+        // B大于3时不变，小于3时设置为3
+        if (_spellCardCounter.itemCount < 3)
+        {
+            SetSpellCardCounter(3, 0);
+        }
+        List<int> items;
+        if (_lifeCounter.itemCount == 1)
+        {
+            // 剩余1残的时候掉落满P点
+            items = new List<int> { (int)ItemType.PowerFull, 1 };
+        }
+        else
+        {
+            // 掉落5个小P点道具
+            items = new List<int> { (int)ItemType.PowerNormal, 5 };
+        }
+        Vector2 pos = _character.GetPosition();
+        ItemManager.GetInstance().DropItems(items, pos.x, pos.y + 130, 80, 80);
         return _lifeCounter.CostItem(1);
     }
     #endregion

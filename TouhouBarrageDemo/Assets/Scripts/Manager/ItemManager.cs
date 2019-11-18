@@ -246,7 +246,7 @@ public class ItemManager
                 if (stackCount > maxCacheCount)
                 {
                     int count = 0;
-                    while (count <= Consts.MaxDestroyCountPerFrame && stackCount > maxCacheCount)
+                    while (count <= Consts.MaxDestroyItemCountPerFrame && stackCount > maxCacheCount)
                     {
                         // 销毁对象
                         item = stack.Pop();

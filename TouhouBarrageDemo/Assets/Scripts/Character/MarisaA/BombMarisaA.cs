@@ -157,11 +157,12 @@ public class BombMarisaA : BombBase
             // 设置碰撞
             _colliderRect = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Rect) as ColliderRect;
             _colliderRect.SetSize(MasterSparkHitBoxWidth, MasterSpartHitBoxHeight);
-            _colliderRect.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy);
+            _colliderRect.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy | eColliderGroup.Boss);
             _colliderRect.SetEliminateType(eEliminateDef.PlayerSpellCard);
             _colliderRect.SetHitEnemyDamage(3);
             _colliderRect.SetPosition(Global.PlayerPos.x + _posOffset.x, Global.PlayerPos.y + _posOffset.y);
             _duration = 240;
+            SoundManager.GetInstance().Play("se_masterspark", 0.1f, false, true);
         }
         _time++;
     }

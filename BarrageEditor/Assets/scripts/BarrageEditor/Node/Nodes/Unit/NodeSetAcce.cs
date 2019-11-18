@@ -43,7 +43,7 @@ namespace BarrageEditor
         {
 
             BaseNodeAttr aimToPlayerAttr = GetAttrByIndex(3);
-            return string.Format("set {0}'s acce,a = {0},angle = {1} {2}",
+            return string.Format("set {0}'s acce,a = {1},angle = {2} {3}",
                 GetAttrByIndex(0).GetValueString(),
                 GetAttrByIndex(1).GetValueString(),
                 GetAttrByIndex(2).GetValueString(),

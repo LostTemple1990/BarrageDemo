@@ -709,6 +709,12 @@ Stage["Stage1"] = function()
 	--lib.InitGravitationField(field,1,0.5,0,0,0,0.05,0,0,0)
 	--lib.SetObjectColliderColliderGroup(field,eColliderGroup.EnemyBullet)
 	--
+	last = CreateSimpleBulletById(123051,0,0)
+	last:SetV(0,268.9,false)
+	last.scaleX = 1.9
+	last.scaleY = 12
+	last:SetColor(100,100,255,1)
+	if coroutine.yield(20000) == false then return end
 	if coroutine.yield(200) == false then return end
 	do
 		--local enemy = lib.CreateNormalEnemyById("100000",500,0,185);
@@ -806,8 +812,7 @@ Stage["Stage1"] = function()
 		if Wait(120) == false then return end
 		HighlightDialogCG("Marisa",false)
 	end) == false then return end
-	last = CreateBoss("MidBoss")
-	local boss = last
+	local boss = CreateBoss("MidBoss",0,280)
 	boss:MoveTo(0,170,90,Constants.ModeEaseInQuad)
 	if coroutine.yield(100) == false then return end
 	if StartDialog(function()
@@ -829,7 +834,7 @@ Stage["Stage1"] = function()
 		--lib.EnemyMoveToPos(boss,0,170,90,Constants.ModeEaseInQuad)
 		--if coroutine.yield(100) == false then return end
 		boss:SetPhaseData(1,1,1,1,true)
-		lib.StartSpellCard(SpellCard.OrionidsSC,boss)
+		lib.StartSpellCard(SpellCard.MarisaSC0,boss)
 		--lib.StartSpellCard(SpellCard.NazrinSC2_2,boss)
 		if lib.WaitForSpellCardFinish() == false then return end
 		lib.StartSpellCard(SpellCard.PatchouliNonSC1,boss)

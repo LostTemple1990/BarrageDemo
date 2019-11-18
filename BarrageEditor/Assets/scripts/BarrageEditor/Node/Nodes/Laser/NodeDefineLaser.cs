@@ -68,7 +68,7 @@ namespace BarrageEditor
                     {
                         if (_isWatchingData)
                         {
-                            CustomDefine.ModifyDefineName(CustomDefineType.Laser, fromName, attr.GetValueString());
+                            _isWatchingData = CustomDefine.ModifyDefineName(CustomDefineType.Laser, fromName, attr.GetValueString());
                         }
                         else
                         {

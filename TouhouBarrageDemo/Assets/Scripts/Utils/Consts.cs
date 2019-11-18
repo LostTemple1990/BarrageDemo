@@ -110,7 +110,7 @@ public class Consts
     /// <summary>
     /// 初始残机数目
     /// </summary>
-    public const int STGInitLifeCount = 2;
+    public const int STGInitLifeCount = 5;
     /// <summary>
     /// 初始符卡数目
     /// </summary>
@@ -126,10 +126,10 @@ public class Consts
     public const string STGLaserAtlasName = "STGLaserAtlas";
 
     /// <summary>
-    /// 每帧最多销毁的对象的个数
+    /// 每帧最多销毁的item对象的个数
     /// </summary>
-    public const int MaxDestroyCountPerFrame = 10;
-    public const int MaxDestroyPrefabCountPerFrame = 2;
+    public const int MaxDestroyItemCountPerFrame = 10;
+    public const int MaxDestroyPrefabCountPerFrame = 10;
     public const int MaxDestroyClassCountPerFrame = 2;
     /// <summary>
     /// 不执行对象回收的系统繁忙最小值

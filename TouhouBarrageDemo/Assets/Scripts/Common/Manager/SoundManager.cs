@@ -298,6 +298,8 @@ public class SoundManager
             source.clip = Resources.Load<AudioClip>("Sounds/" + toPlayEntity.soundName);
             // 结束播放时间
             toPlayEntity.endTime = toPlayEntity.isLoop ? -1 : curTime + source.clip.length;
+            // 是否循环
+            source.loop = toPlayEntity.isLoop;
             //Logger.Log("Begin Play sound " + toPlayEntity.soundName + " length = " + source.clip.length);
             toPlayEntity.isFinish = false;
             // 添加到播放列表中

@@ -42,8 +42,19 @@ public partial class LuaLib
     {
         EnemySimpleBullet bullet = luaState.ToUserData(-2) as EnemySimpleBullet;
         bool isAvailable = luaState.ToBoolean(-1);
-        luaState.Pop(2);
         bullet.SetAppearEffectAvailable(isAvailable);
+        return 0;
+    }
+
+    /// <summary>
+    /// 禁用子弹的出现特效
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int DisableBulletAppearEffect(ILuaState luaState)
+    {
+        EnemySimpleBullet bullet = luaState.ToUserData(-1) as EnemySimpleBullet;
+        bullet.SetAppearEffectAvailable(false);
         return 0;
     }
 
@@ -66,16 +77,29 @@ public partial class LuaLib
 
     /// <summary>
     /// 设置子弹的缩放
-    /// <para>scale 缩放值</para>
+    /// <para>bullet</para>
+    /// <para>(1)scale 缩放值</para>
+    /// <para>(2)float scaleX,float scaleY</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
     public static int SetBulletScale(ILuaState luaState)
     {
-        EnemySimpleBullet bullet = luaState.ToUserData(-2) as EnemySimpleBullet;
-        float scale = (float)luaState.ToNumber(-1);
-        luaState.Pop(2);
-        bullet.SetScale(scale);
+        int top = luaState.GetTop();
+        if (top == 2)
+        {
+            EnemySimpleBullet bullet = luaState.ToUserData(-2) as EnemySimpleBullet;
+            float scale = (float)luaState.ToNumber(-1);
+            bullet.SetScale(scale);
+        }
+        else
+        {
+            EnemySimpleBullet bullet = luaState.ToUserData(-3) as EnemySimpleBullet;
+            float scaleX = (float)luaState.ToNumber(-2);
+            float scaleY = (float)luaState.ToNumber(-1);
+            bullet.SetBulletPara(BulletParaType.ScaleX, scaleX);
+            bullet.SetBulletPara(BulletParaType.ScaleY, scaleY);
+        }
         return 0;
     }
 

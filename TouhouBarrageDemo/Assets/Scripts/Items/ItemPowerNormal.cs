@@ -19,7 +19,7 @@ public class ItemPowerNormal : ItemBase
 
     protected override void DoEffect()
     {
-        PlayerInterface.GetInstance().AddPower(10);
+        PlayerInterface.GetInstance().AddPower(2);
     }
 
     public override void Clear()

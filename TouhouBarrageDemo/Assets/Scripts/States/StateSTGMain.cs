@@ -398,6 +398,7 @@ public class StateSTGMain : IState,ICommand
     {
         UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseAfterGameClear);
         Global.IsPause = true;
+        SoundManager.GetInstance().PauseAllSTGSound();
         CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
     }
 

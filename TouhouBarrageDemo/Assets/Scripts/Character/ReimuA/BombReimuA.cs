@@ -63,7 +63,7 @@ public class BombReimuA : BombBase
             // 创建ObjectCollider
             collider = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Circle) as ColliderCircle;
             collider.SetSize(0,0);
-            collider.SetColliderGroup(eColliderGroup.EnemyBullet|eColliderGroup.Enemy);
+            collider.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy | eColliderGroup.Boss);
             collider.SetPosition(bombPos.x, bombPos.y);
             collider.SetEliminateType(eEliminateDef.PlayerSpellCard);
             collider.SetHitEnemyDamage(1);

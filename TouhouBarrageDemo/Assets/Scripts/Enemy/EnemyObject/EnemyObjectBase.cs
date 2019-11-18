@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemyObjectBase
 {
-    public virtual EnemyObjectType GetObjectType()
+    public virtual eEnemyObjectType GetObjectType()
     {
         throw new System.NotImplementedException();
     }

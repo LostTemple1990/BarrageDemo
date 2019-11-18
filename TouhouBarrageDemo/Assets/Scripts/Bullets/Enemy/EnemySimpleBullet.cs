@@ -382,7 +382,7 @@ public class EnemySimpleBullet : EnemyBulletMovable
         }
         if ( _isRotationDirty )
         {
-            _trans.localRotation = Quaternion.Euler(new Vector3(0, 0, _curRotation - 90));
+            _trans.localRotation = Quaternion.Euler(new Vector3(0, 0, _curRotation));
             _isRotationDirty = false;
         }
     }
@@ -453,6 +453,8 @@ public class EnemySimpleBullet : EnemyBulletMovable
         if (!_detectCollision) return;
         // 弹雾生成时无判定
         if (_isAppearEffectAvailable && _timeSinceCreated <= AppearEffectExistDuration) return;
+        // 有一个为0时无判定
+        if (_collisionHalfWidth == 0 || _collisionHalfHeight == 0) return;
         if ( _collisionHalfWidth == _collisionHalfHeight )
         {
             float dx = Mathf.Abs(_curPos.x - Global.PlayerPos.x);
@@ -491,7 +493,7 @@ public class EnemySimpleBullet : EnemyBulletMovable
             else
             {
                 Vector2 tmpVec = relativeVec * rate;
-                if (Mathf.Abs(tmpVec.x) < _collisionHalfHeight && Mathf.Abs(tmpVec.y) < _collisionHalfWidth)
+                if (Mathf.Abs(tmpVec.x) < _collisionHalfWidth && Mathf.Abs(tmpVec.y) < _collisionHalfHeight)
                 {
                     isGrazing = true;
                 }
@@ -505,7 +507,7 @@ public class EnemySimpleBullet : EnemyBulletMovable
                 }
                 rate = (len - Global.PlayerCollisionVec.z) / len;
                 relativeVec *= rate;
-                if (rate <= 0 || (Mathf.Abs(relativeVec.x) < _collisionHalfHeight && Mathf.Abs(relativeVec.y) < _collisionHalfWidth))
+                if (rate <= 0 || (Mathf.Abs(relativeVec.x) < _collisionHalfWidth && Mathf.Abs(relativeVec.y) < _collisionHalfHeight))
                 {
                     Eliminate(eEliminateDef.HitPlayer);
                     PlayerInterface.GetInstance().GetCharacter().BeingHit();

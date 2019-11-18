@@ -28,6 +28,7 @@ public class BossLuaInterface
     private static LuaCsClosureValue _funcWander;
 
     private static LuaCsClosureValue _funcSetInvincible;
+    private static LuaCsClosureValue _funcSetInteractive;
     private static LuaCsClosureValue _funcShowBloodBar;
     private static LuaCsClosureValue _funcSetPhaseData;
 
@@ -58,6 +59,7 @@ public class BossLuaInterface
             _funcWander = new LuaCsClosureValue(LuaLib.EnemyDoWander);
 
             _funcSetInvincible = new LuaCsClosureValue(LuaLib.SetEnemyInvincible);
+            _funcSetInteractive = new LuaCsClosureValue(LuaLib.SetEnemyInteractive);
             _funcShowBloodBar = new LuaCsClosureValue(LuaLib.ShowBossBloodBar);
             _funcSetPhaseData = new LuaCsClosureValue(LuaLib.SetBossCurPhaseData);
 
@@ -214,6 +216,9 @@ public class BossLuaInterface
                     return true;
                 case "Wander":
                     res.SetClCsValue(_funcWander);
+                    return true;
+                case "SetInteractive":
+                    res.SetClCsValue(_funcSetInteractive);
                     return true;
                 #endregion
                 #region Boss专属变量

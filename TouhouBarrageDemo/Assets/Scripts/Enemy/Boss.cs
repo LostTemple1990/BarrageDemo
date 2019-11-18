@@ -30,7 +30,7 @@ public class Boss : EnemyBase
     public Boss()
         :base()
     {
-        _type = EnemyType.Boss;
+        _type = eEnemyType.Boss;
         _segmentGoList = new List<GameObject>();
     }
 
@@ -78,6 +78,7 @@ public class Boss : EnemyBase
             _segmentGoList.Add(segmentGo);
         }
         _remainingWeight = _totalWeight;
+        weights.Reverse();
         // 设置segmentGo的位置
         float tmpWeight = 0;
         float angle;
@@ -189,7 +190,7 @@ public class Boss : EnemyBase
     /// <para>因此重新计算血条位置</para>
     /// </summary>
     /// <param name="maxHp"></param>
-    public override void SetMaxHp(int maxHp)
+    public override void SetMaxHp(float maxHp)
     {
         // 计算血量
         _curSubPhase--;
@@ -246,7 +247,7 @@ public class Boss : EnemyBase
         return true;
     }
 
-    public override void TakeDamage(int damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
+    public override void TakeDamage(float damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
     {
         if ((_resistEliminateFlag & (int)eliminateType) != 0) return;
         if ( !_isInvincible )

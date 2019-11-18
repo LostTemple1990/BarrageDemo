@@ -7,11 +7,11 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     /// <summary>
     /// 当前生命值
     /// </summary>
-    protected int _curHp;
+    protected float _curHp;
     /// <summary>
     /// 最大生命值
     /// </summary>
-    protected int _maxHp;
+    protected float _maxHp;
    /// <summary>
    /// 当前位置
    /// </summary>
@@ -43,9 +43,9 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
 
     protected bool _isDirty;
 
-    protected EnemyType _type;
+    protected eEnemyType _type;
 
-    protected int _clearFlag;
+    protected bool _isAvailable;
 
     protected int _curDir;
 
@@ -134,7 +134,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
 
     public virtual void Init()
     {
-        _clearFlag = 0;
+        _isAvailable = true;
         _curDir = Consts.DIR_NULL;
         _isExplosive = false;
         if ( _tasks == null )
@@ -262,6 +262,8 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
 
     protected void CheckCollisionWithCharacter()
     {
+        if (!_isInteractive)
+            return;
         Vector2 playerPos = Global.PlayerPos;
         if ( Mathf.Abs(playerPos.x-_curPos.x) <= _collisionHalfWidth + Global.PlayerCollisionVec.z &&
             Mathf.Abs(playerPos.y - _curPos.y) <= _collisionHalfHeight + Global.PlayerCollisionVec.z )
@@ -273,10 +275,10 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
 
     public virtual bool Eliminate(eEliminateDef eliminateType=0)
     {
-        if (_clearFlag == 1) return false;
+        if (!_isAvailable) return false;
         if ((_resistEliminateFlag & (int)eliminateType) != 0) return false;
         OnEliminate(eliminateType);
-        _clearFlag = 1;
+        _isAvailable = false;
         return true;
     }
 
@@ -308,7 +310,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     /// </summary>
     /// <param name="damage"></param>
     /// <param name="eliminateType"></param>
-    public virtual void TakeDamage(int damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
+    public virtual void TakeDamage(float damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
     {
 
     }
@@ -401,7 +403,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
         _collisionHalfHeight = collisionHH;
     }
 
-    public virtual void SetMaxHp(int maxHp)
+    public virtual void SetMaxHp(float maxHp)
     {
         _maxHp = maxHp;
         _curHp = maxHp;
@@ -447,14 +449,17 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     public virtual void DoWander(int duration)
     {
         // 记录移动方向是否有效的数组
-        bool[] dirAvailable = {true,true};
+        List<int> availableDir = new List<int>();
         int dir;
         float minX, maxX, minY, maxY,toX,toY;
         // 根据dirMode计算重新计算边界
         Vector2 playerPos = Global.PlayerPos;
-        if (_curPos.x - _wanderAmplitudeX.x < _wanderRangeX.x) dirAvailable[0] = false;
-        if (_curPos.x + _wanderAmplitudeX.x > _wanderRangeX.y) dirAvailable[1] = false;
-        if (!dirAvailable[0] && !dirAvailable[1])
+        // 向左
+        if (_curPos.x - _wanderAmplitudeX.x >= _wanderRangeX.x)
+            availableDir.Add(0);
+        if (_curPos.x + _wanderAmplitudeX.x <= _wanderRangeX.y)
+            availableDir.Add(1);
+        if (availableDir.Count == 0)
         {
             toX = _curPos.x;
         }
@@ -465,18 +470,15 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
             {
                 //往左移动
                 if (playerPos.x < _curPos.x)
-                {
                     dir = 0;
-                }
                 else
-                {
                     dir = 1;
-                }
+                if (availableDir.IndexOf(dir) == -1)
+                    dir = 1 - dir;
             }
-            // 这步算出来的dir一定是有效的
-            if ( dirAvailable[dir] == false )
+            else
             {
-                dir = 1 - dir;
+                dir = MTRandom.GetNextInt(0, availableDir.Count - 1);
             }
             // 左移动，计算左移动的最大值和最小值
             if ( dir == 0 )
@@ -492,39 +494,38 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
             toX = MTRandom.GetNextFloat(minX, maxX);
         }
         // 计算Y的范围 0 = 下, 1 = 上
-        dirAvailable[0] = true;
-        dirAvailable[1] = true;
-        if (_curPos.y - _wanderAmplitudeY.x < _wanderRangeY.x) dirAvailable[0] = false;
-        if (_curPos.y + _wanderAmplitudeY.x > _wanderRangeY.y) dirAvailable[1] = false;
-        if (!dirAvailable[0] && !dirAvailable[1])
+        availableDir.Clear();
+        // 往下
+        if (_curPos.y - _wanderAmplitudeY.x >= _wanderRangeY.x)
+            availableDir.Add(0);
+        // 往上
+        if (_curPos.y + _wanderAmplitudeY.x <= _wanderRangeY.y)
+            availableDir.Add(1);
+        if (availableDir.Count == 0)
         {
             toY = _curPos.y;
         }
         else
         {
-            dir = MTRandom.GetNextInt(0, 1);
             if (_dirMode == DirectionMode.MoveYTowardsPlayer || _dirMode == DirectionMode.MoveTowardsPlayer)
             {
                 //往下移动
                 if (playerPos.y < _curPos.y)
-                {
                     dir = 0;
-                }
                 else
-                {
                     dir = 1;
-                }
+                if (availableDir.IndexOf(dir) == -1)
+                    dir = 1 - dir;
             }
-            // 这步算出来的dir一定是有效的
-            if (dirAvailable[dir] == false)
+            else
             {
-                dir = 1 - dir;
+                dir = MTRandom.GetNextInt(0, availableDir.Count - 1);
             }
             // 向下移动
             if (dir == 0)
             {
                 maxY = _curPos.y - _wanderAmplitudeY.x;
-                minY = _curPos.y - _wanderAmplitudeY.y < _wanderRangeY.y ? _wanderRangeY.y : _curPos.y - _wanderAmplitudeY.y;
+                minY = _curPos.y - _wanderAmplitudeY.y < _wanderRangeY.x ? _wanderRangeY.x : _curPos.y - _wanderAmplitudeY.y;
             }
             else
             {
@@ -534,6 +535,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
             toY = MTRandom.GetNextFloat(minY, maxY);
         }
         MoveTo(toX, toY, duration, _wanderMode);
+        //Logger.Log("wander from " + _curPos + " to " + new Vector2(toX, toY));
     }
 
     public virtual void Clear()
@@ -619,7 +621,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
         _resistEliminateFlag = flag;
     }
 
-    public EnemyType GetEnemyType()
+    public eEnemyType GetEnemyType()
     {
         return _type;
     }
@@ -636,7 +638,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     public virtual bool CanHit()
     {
         if (!_isInteractive) return false;
-        if (_clearFlag == 1) return false;
+        if (!_isAvailable) return false;
         return _curHp > 0;
     }
 
@@ -644,7 +646,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     /// 获取当前血量
     /// </summary>
     /// <returns></returns>
-    public int GetCurHp()
+    public float GetCurHp()
     {
         return _curHp;
     }
@@ -653,19 +655,19 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     /// 获取当前最大血量
     /// </summary>
     /// <returns></returns>
-    public int GetMaxHp()
+    public float GetMaxHp()
     {
         return _maxHp;
     }
 
-    public EnemyType Type
+    public eEnemyType type
     {
         get { return _type; }
     }
 
-    public int ClearFlag
+    public bool isAvailable
     {
-        get { return _clearFlag; }
+        get { return _isAvailable; }
     }
 
     public float velocity
@@ -824,10 +826,4 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     {
         _movableObj.SetPolarParas(radius, angle, deltaR, omega, centerPosX, centerPosY);
     }
-}
-
-public enum EnemyType : byte
-{
-    NormalEnemy = 1,
-    Boss = 2,
 }

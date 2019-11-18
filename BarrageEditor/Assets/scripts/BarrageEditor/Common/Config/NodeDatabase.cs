@@ -427,7 +427,7 @@ namespace BarrageEditor
                 shortcutPath = "taskwait",
                 shortcutTip = "wait",
                 defaultAttrValues = new List<object> { "60" },
-                needAncestors = new List<NodeType> { NodeType.Stage, NodeType.AddTask },
+                needAncestors = new List<NodeType> { NodeType.Stage, NodeType.AddTask, NodeType.SpellCardInit },
                 allowChilds = new List<NodeType>(),
             };
             _nodeCfgDic.Add(NodeType.TaskWait, cfg);
@@ -534,7 +534,7 @@ namespace BarrageEditor
                 type = NodeType.CreateBoss,
                 shortcutPath = "bosscreate",
                 shortcutTip = "create boss",
-                defaultAttrValues = new List<object> { "" },
+                defaultAttrValues = new List<object> { "", "0", "240", "boss" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
                 editOnCreated = true,
@@ -647,7 +647,7 @@ namespace BarrageEditor
                 type = NodeType.OnBulletCreate,
                 shortcutPath = "bulletdefine",
                 shortcutTip = "define bullet",
-                defaultAttrValues = new List<object> { "v,angle" },
+                defaultAttrValues = new List<object> { "v,angle", "107020" },
                 editOnCreated = false,
                 isDeletable = false,
             };
@@ -1177,6 +1177,7 @@ namespace BarrageEditor
                 shortcutPath = "playbgm",
                 shortcutTip = "play sound",
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
             };
             cfg.defaultAttrValues = new List<object> { "se_tan00", "0.5", "false" };
             _nodeCfgDic.Add(NodeType.PlaySound, cfg);
@@ -1187,6 +1188,7 @@ namespace BarrageEditor
                 shortcutPath = "stopbgm",
                 shortcutTip = "stop sound",
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
             };
             cfg.defaultAttrValues = new List<object> { "bgm" };
             _nodeCfgDic.Add(NodeType.StopSound, cfg);
@@ -1197,6 +1199,7 @@ namespace BarrageEditor
                 shortcutPath = "pausebgm",
                 shortcutTip = "pause sound",
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
             };
             cfg.defaultAttrValues = new List<object> { "bgm" };
             _nodeCfgDic.Add(NodeType.PauseSound, cfg);
@@ -1207,6 +1210,7 @@ namespace BarrageEditor
                 shortcutPath = "resumebgm",
                 shortcutTip = "resume sound",
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
             };
             cfg.defaultAttrValues = new List<object> { "bgm" };
             _nodeCfgDic.Add(NodeType.ResumeSound, cfg);

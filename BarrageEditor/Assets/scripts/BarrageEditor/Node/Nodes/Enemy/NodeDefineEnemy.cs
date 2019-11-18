@@ -67,7 +67,7 @@ namespace BarrageEditor
                     {
                         if (_isWatchingData)
                         {
-                            CustomDefine.ModifyDefineName(CustomDefineType.Enemy, fromName, attr.GetValueString());
+                            _isWatchingData = CustomDefine.ModifyDefineName(CustomDefineType.Enemy, fromName, attr.GetValueString());
                         }
                         else
                         {

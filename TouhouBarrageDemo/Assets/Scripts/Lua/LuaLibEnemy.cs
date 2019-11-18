@@ -29,7 +29,7 @@ public partial class LuaLib
         float posY = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
         EnemyCfg cfg = EnemyManager.GetInstance().GetEnemyCfgById(enemyId);
-        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.NormalEnemy) as NormalEnemy;
+        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(eEnemyType.NormalEnemy) as NormalEnemy;
         enemy.Init(cfg);
         enemy.SetMaxHp(maxHp);
         enemy.SetPosition(new Vector3(posX, posY, 0));
@@ -77,7 +77,7 @@ public partial class LuaLib
         float posY = (float)luaState.ToNumber(-1 - numArgs);
         // 创建敌机
         EnemyCfg cfg = EnemyManager.GetInstance().GetEnemyCfgById(enemyId);
-        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.NormalEnemy) as NormalEnemy;
+        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(eEnemyType.NormalEnemy) as NormalEnemy;
         enemy.Init(cfg);
         enemy.SetPosition(posX, posY);
         int onEliminateFuncRef = InterpreterManager.GetInstance().GetEnemyOnEliminateFuncRef(customizedName);
@@ -115,7 +115,7 @@ public partial class LuaLib
         float posX = (float)luaState.ToNumber(-2 - numArgs);
         float posY = (float)luaState.ToNumber(-1 - numArgs);
         // 创建敌机
-        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.NormalEnemy) as NormalEnemy;
+        NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(eEnemyType.NormalEnemy) as NormalEnemy;
         enemy.SetPosition(posX, posY);
         int onEliminateFuncRef = InterpreterManager.GetInstance().GetEnemyOnEliminateFuncRef(customizedName);
         if (onEliminateFuncRef != 0)
@@ -356,7 +356,7 @@ public partial class LuaLib
     public static int SetEnemyMaxHp(ILuaState luaState)
     {
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
-        int maxHp = luaState.ToInteger(-1);
+        float maxHp = (float)luaState.ToNumber(-1);
         enemy.SetMaxHp(maxHp);
         return 0;
     }

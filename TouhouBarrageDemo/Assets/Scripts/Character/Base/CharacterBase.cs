@@ -299,7 +299,7 @@ public class CharacterBase : IAffectedMovableObject
     #region 自机决死状态
     protected virtual void OnStateDyingEnter()
     {
-        SoundManager.GetInstance().Play("se_pldead00", false);
+        SoundManager.GetInstance().Play("se_pldead00", 0.1f, false, true);
         _dyingTime = 0;
         _stateUpdateFunc = StateDyingUpdate;
         _stateExitFunc = OnStateDyingExit;
@@ -444,7 +444,7 @@ public class CharacterBase : IAffectedMovableObject
         CreateMainBullets();
         // 设置发射冷却
         _curShootCD = _shootCoolDown;
-        SoundManager.GetInstance().Play("se_plst00", false);
+        SoundManager.GetInstance().Play("se_plst00", 0.1f, false, true);
     }
 
     /// <summary>

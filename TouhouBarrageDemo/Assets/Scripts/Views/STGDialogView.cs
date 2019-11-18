@@ -59,30 +59,21 @@ public class STGDialogView : ViewBase, ICommand
     #region BaseDialogItem
     class DialogItem : BaseDialogItem
     {
-        private readonly static List<Vector2> LeftBorders = new List<Vector2> { new Vector2(80, 128) };
-        private readonly static List<Vector2> RightBorders = new List<Vector2> { new Vector2(80, 128) };
-        private readonly static List<Vector2> TextOffsets = new List<Vector2> { new Vector2(20, -40) };
-        private readonly static List<float> RightBorderOffset = new List<float> { 6 };
+        private readonly static List<Vector2> DialogSize = new List<Vector2> { new Vector2(160, 128) };
+        private readonly static List<Vector2> TextOffsetsL = new List<Vector2> { new Vector2(24, -40) };
+        private readonly static List<Vector2> TextOffsetsR = new List<Vector2> { new Vector2(24, -40) };
 
         private int _style;
         private float _itemScale;
         private float _dialogBoxScale;
         /// <summary>
-        /// 对话框左部分
+        /// 对话框tf
         /// </summary>
-        private RectTransform _dialogLTf;
+        private RectTransform _dialogTf;
         /// <summary>
-        /// 对话框左部分
+        /// 对话框图像
         /// </summary>
-        private Image _dialogL;
-        /// <summary>
-        /// 对话框右部分
-        /// </summary>
-        private RectTransform _dialogRTf;
-        /// <summary>
-        /// 对话框右部分
-        /// </summary>
-        private Image _dialogR;
+        private Image _dialogImg;
         /// <summary>
         /// 对话框文本
         /// </summary>
@@ -109,10 +100,8 @@ public class STGDialogView : ViewBase, ICommand
             _itemGo = ResourceManager.GetInstance().GetCommonPrefab("Prefab/Views", "STGDialogBoxItem");
             _itemGo.transform.SetParent(viewTf, false);
             _itemTf = _itemGo.GetComponent<RectTransform>();
-            _dialogLTf = _itemTf.Find("DialogL").GetComponent<RectTransform>();
-            _dialogL = _dialogLTf.GetComponent<Image>();
-            _dialogRTf = _itemTf.Find("DialogR").GetComponent<RectTransform>();
-            _dialogR = _dialogLTf.GetComponent<Image>();
+            _dialogTf = _itemTf.Find("DialogImg").GetComponent<RectTransform>();
+            _dialogImg = _dialogTf.GetComponent<Image>();
             _textTf = _itemTf.Find("Text").GetComponent<RectTransform>();
             _dialogText = _textTf.GetComponent<Text>();
             // 注册事件
@@ -147,27 +136,18 @@ public class STGDialogView : ViewBase, ICommand
 
         private void TextDirtyLayoutCallback()
         {
-            Vector2 leftBorder = LeftBorders[_style];
-            Vector2 rightBorder = RightBorders[_style];
-            Vector2 textOffset = TextOffsets[_style];
-            float rightBorderOffset = RightBorderOffset[_style];
-
-            float preferredWidth = _dialogText.preferredWidth + textOffset.x * 2;
+            Vector2 textOffset = _itemScale >= 0 ? TextOffsetsL[_style] : TextOffsetsR[_style];
+            float preferredWidth = _dialogText.preferredWidth + TextOffsetsL[_style].x + TextOffsetsR[_style].x;
             // 计算对话框的宽度
-            float minWidth = (leftBorder.x + rightBorder.x);
-            float leftWidth = preferredWidth > minWidth ? preferredWidth - rightBorder.x : leftBorder.x;
-            _dialogLTf.sizeDelta = new Vector2(leftWidth, leftBorder.y * _dialogBoxScale);
-            // 计算对话框左边与右边的位置
-            //Vector3 dialogLPos = new Vector3(_curPos.x + leftWidth / 2, -_curPos.y - DialogLBorder.y / 2);
-            _dialogLTf.anchoredPosition = Vector2.zero;
-            // 右边框偏移量
-            _dialogRTf.sizeDelta = new Vector2(rightBorder.x + rightBorderOffset, rightBorder.y * _dialogBoxScale);
-            Vector2 dialogRPos = new Vector3(leftWidth - rightBorderOffset, 0);
-            _dialogRTf.anchoredPosition = dialogRPos;
+            float minWidth = DialogSize[_style].x;
+            if (preferredWidth < minWidth)
+                preferredWidth = minWidth;
+            _dialogTf.sizeDelta = new Vector2(preferredWidth, DialogSize[_style].y * _dialogBoxScale);
+            _dialogTf.anchoredPosition = Vector2.zero;
             // 文本的位置
             _textTf.sizeDelta = new Vector2(_dialogText.preferredWidth, _dialogText.preferredHeight);
             Vector2 textPos = Vector2.zero;
-            if (_itemScale == 1)
+            if (_itemScale >= 0)
             {
                 textPos = new Vector3(textOffset.x, textOffset.y * _dialogBoxScale);
             }

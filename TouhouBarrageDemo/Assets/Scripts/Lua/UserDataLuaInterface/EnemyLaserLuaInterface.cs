@@ -23,6 +23,8 @@ public class EnemyLaserLuaInterface
     private static LuaCsClosureValue _funcSetStraightParas;
     private static LuaCsClosureValue _funcSetSelfRotaion;
     private static LuaCsClosureValue _funcSetStyleById;
+    private static LuaCsClosureValue _funcSetColor;
+
     private static LuaCsClosureValue _funcAddColliderTrigger;
 
     private static LuaCsClosureValue _funcSetSourceSize;
@@ -57,6 +59,7 @@ public class EnemyLaserLuaInterface
             _funcSetStraightParas = new LuaCsClosureValue(LuaLib.SetBulletStraightParas);
             _funcSetSelfRotaion = new LuaCsClosureValue(LuaLib.SetBulletSelfRotation);
             _funcSetStyleById = new LuaCsClosureValue(LuaLib.SetBulletStyleById);
+            _funcSetColor = new LuaCsClosureValue(LuaLib.SetBulletColor);
 
             _funcAddColliderTrigger = new LuaCsClosureValue(LuaLib.AddBulletColliderTriggerEvent);
 
@@ -162,6 +165,11 @@ public class EnemyLaserLuaInterface
                 case "SetStyleById":
                     {
                         res.SetClCsValue(_funcSetStyleById);
+                        return true;
+                    }
+                case "SetColor":
+                    {
+                        res.SetClCsValue(_funcSetColor);
                         return true;
                     }
                 #endregion

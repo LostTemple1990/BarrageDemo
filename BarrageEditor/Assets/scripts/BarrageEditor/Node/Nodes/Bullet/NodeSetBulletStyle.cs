@@ -21,7 +21,7 @@ namespace BarrageEditor
             nodeAttr.Init(this, "Unit", null);
             attrs.Add(nodeAttr);
             // 样式的id
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.BulletId);
             nodeAttr.Init(this, "Style id", null);
             attrs.Add(nodeAttr);
         }

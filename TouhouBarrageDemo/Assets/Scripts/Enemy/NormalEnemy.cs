@@ -27,7 +27,7 @@ public class NormalEnemy : EnemyBase
 
     public NormalEnemy()
     {
-        _type = EnemyType.NormalEnemy;
+        _type = eEnemyType.NormalEnemy;
     }
 
     public void Init(EnemyCfg cfg)
@@ -159,7 +159,7 @@ public class NormalEnemy : EnemyBase
         }
     }
 
-    public override void TakeDamage(int damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
+    public override void TakeDamage(float damage,eEliminateDef eliminateType=eEliminateDef.PlayerBullet)
     {
         if ((_resistEliminateFlag & (int)eliminateType) != 0) return;
         if (!_isInteractive) return;

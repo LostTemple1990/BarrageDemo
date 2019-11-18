@@ -52,9 +52,9 @@ public class SpinningEnemy : EnemyObjectBase
         return _go;
     }
 
-    public override EnemyObjectType GetObjectType()
+    public override eEnemyObjectType GetObjectType()
     {
-        return EnemyObjectType.SpinningEnemy;
+        return eEnemyObjectType.SpinningEnemy;
     }
 
     public override void Clear()

@@ -393,6 +393,18 @@ public class EnemyLinearLaser : EnemyBulletBase
     /// 用于复制的激光段的原型
     /// </summary>
     private GameObject _laserSegmentProtoType;
+    /// <summary>
+    /// 自上一次改变速度的时间
+    /// </summary>
+    private int _timeSinceLastVChanged;
+    /// <summary>
+    /// 上一帧的速度
+    /// </summary>
+    private float _preV;
+    /// <summary>
+    /// 这一帧的速度
+    /// </summary>
+    private float _curV;
 
 
     public EnemyLinearLaser()
@@ -426,6 +438,8 @@ public class EnemyLinearLaser : EnemyBulletBase
         _isInitAngle = false;
         _laserLen = 0;
         _renderObjPos = true;
+        _timeSinceLastVChanged = 0;
+        _preV = 0;
         if ( _movableObj == null )
         {
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
@@ -509,6 +523,7 @@ public class EnemyLinearLaser : EnemyBulletBase
     public override void Update()
     {
         base.Update();
+        _timeSinceLastVChanged++;
         UpdateComponents();
         CheckDivideIntoMutiple();
         UpdatePath();
@@ -537,10 +552,13 @@ public class EnemyLinearLaser : EnemyBulletBase
         _curPos = _movableObj.GetPos();
         // 添加新的路径点
         _pathList.Add(_curPos);
+        _curV = _movableObj.velocity;
+        if (_curV != _preV)
+            _timeSinceLastVChanged = 0;
         if ( _pathCount > _laserLen )
         {
             // 加速度不为0，说明长度改变了，重绘激光图像
-            if ( _curAcce != 0 )
+            if (_curAcce != 0 || _timeSinceLastVChanged <= _laserLen)
             {
                 _isDirty = true;
             }
@@ -770,12 +788,15 @@ public class EnemyLinearLaser : EnemyBulletBase
         {
             int realIndex = index >= 0 ? index : _collisionSegmentCount + index;
             Vector2 segment = _collisionSegmentList[realIndex];
+            Vector2 lineVec = _pathList[(int)segment.y] - _pathList[(int)segment.x];
+            float segmentLen = lineVec.magnitude;
             paras = new CollisionDetectParas()
             {
-                type = CollisionDetectType.Circle,
+                type = CollisionDetectType.ItalicRect,
                 centerPos = (_pathList[(int)segment.x] + _pathList[(int)segment.y]) / 2,
                 nextIndex = realIndex + 1 >= _collisionSegmentCount ? -1 : realIndex + 1,
-                radius = DefaultCollisionHalfHeight,
+                halfWidth = segmentLen / 2,
+                halfHeight = DefaultCollisionHalfHeight,
             };
         }
         return paras;
@@ -949,9 +970,11 @@ public class EnemyLinearLaser : EnemyBulletBase
 
     public override void SetStraightParas(float v, float angle, float acce, float accAngle)
     {
-        SetRotation(angle);
-        _movableObj.DoStraightMove(v, _curRotation);
-        _movableObj.DoAccelerationWithLimitation(acce, _curRotation, -1);
+        if (v == 0 && acce != 0)
+            SetRotation(accAngle);
+        else
+            SetRotation(angle);
+        _movableObj.SetStraightParas(v, angle, acce, accAngle);
     }
 
     public override void SetPolarParas(float radius, float angle, float deltaR, float omega)
@@ -977,16 +1000,16 @@ public class EnemyLinearLaser : EnemyBulletBase
         switch ( paraType )
         {
             case BulletParaType.Velocity:
-                value = _curVelocity;
+                value = _movableObj.velocity;
                 return true;
             case BulletParaType.VAngel:
-                value = _curVAngle;
+                value = _movableObj.vAngle;
                 return true;
             case BulletParaType.Acce:
-                value = _curAcce;
+                value = _movableObj.acce;
                 return true;
             case BulletParaType.AccAngle:
-                value = _curAccAngle;
+                value = _movableObj.accAngle;
                 return true;
             case BulletParaType.Alpha:
                 value = _curAlpha;
@@ -1001,8 +1024,10 @@ public class EnemyLinearLaser : EnemyBulletBase
         switch (paraType)
         {
             case BulletParaType.Velocity:
-                _movableObj.velocity = value;
-                return true;
+                {
+                    _movableObj.velocity = value;
+                    return true;
+                }
             case BulletParaType.VAngel:
                 if ( !_isInitAngle)
                 {
@@ -1011,8 +1036,10 @@ public class EnemyLinearLaser : EnemyBulletBase
                 }
                 return true;
             case BulletParaType.Acce:
-                _movableObj.acce = value;
-                return true;
+                {
+                    _movableObj.acce = value;
+                    return true;
+                }
             case BulletParaType.AccAngle:
                 if ( !_isInitAngle )
                 {

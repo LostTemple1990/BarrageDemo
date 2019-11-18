@@ -85,9 +85,13 @@ namespace BarrageEditor
             return dic.TryGetValue(typeName, out data);
         }
 
-        public static void ModifyDefineName(CustomDefineType type, string fromName,string toName)
+        public static bool ModifyDefineName(CustomDefineType type, string fromName,string toName)
         {
             Dictionary<string, CustomDefineData> dic = customDefineDic[type];
+            if (dic.ContainsKey(toName))
+            {
+                return false;
+            }
             CustomDefineData data;
             if ( dic.TryGetValue(fromName, out data) )
             {
@@ -98,6 +102,7 @@ namespace BarrageEditor
                     dic.Add(toName, data);
                 }
             }
+            return true;
         }
 
         public static void ModifyDefineParaList(CustomDefineType type,string name,string paraList)

@@ -74,8 +74,8 @@ public class Fairy : EnemyObjectBase
         _enemyAni = null;
     }
 
-    public override EnemyObjectType GetObjectType()
+    public override eEnemyObjectType GetObjectType()
     {
-        return EnemyObjectType.Fairy;
+        return eEnemyObjectType.Fairy;
     }
 }

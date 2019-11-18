@@ -149,26 +149,34 @@ public class ColliderRect : ObjectColliderBase
         EnemyBase enemy;
         CollisionDetectParas para;
         float dx, dy;
+        eEliminateDef specialEliminateDef = eEliminateDef.CodeEliminate | eEliminateDef.CodeRawEliminate;
+        bool checkWithEnemy = (_colliderGroups & (int)eColliderGroup.Enemy) != 0;
+        bool checkWithBoss = (_colliderGroups & (int)eColliderGroup.Boss) != 0;
         for (int i = 0; i < count; i++)
         {
             enemy = enemyList[i];
-            if (enemy != null && enemy.IsInteractive)
+            if (enemy != null)
             {
-                para = enemy.GetCollisionDetectParas(0);
-                // 敌机全部使用矩形判定
-                dx = Mathf.Abs(_curPosX - para.centerPos.x);
-                dy = Mathf.Abs(_curPosY - para.centerPos.y);
-                if (dx <= _halfWidth + para.halfWidth && dy <= _halfHeight + para.halfHeight)
+                if ((enemy.type == eEnemyType.NormalEnemy && checkWithEnemy) || (enemy.type == eEnemyType.Boss && checkWithBoss))
                 {
-                    CollidedByEnemy(enemy);
+                    para = enemy.GetCollisionDetectParas(0);
+                    // 敌机全部使用矩形判定
+                    dx = Mathf.Abs(_curPosX - para.centerPos.x);
+                    dy = Mathf.Abs(_curPosY - para.centerPos.y);
+                    if (dx <= _halfWidth + para.halfWidth && dy <= _halfHeight + para.halfHeight)
+                    {
+                        if ((_eliminateType & specialEliminateDef) != 0)
+                        {
+                            enemy.Eliminate(_eliminateType);
+                        }
+                        else
+                        {
+                            enemy.TakeDamage(_hitEnemyDamage, _eliminateType);
+                        }
+                    }
                 }
             }
         }
-    }
-
-    protected virtual void CollidedByEnemy(EnemyBase enemy)
-    {
-        enemy.TakeDamage(_hitEnemyDamage, _eliminateType);
     }
 
     protected override void CheckCollisionWithEnemyBullet()

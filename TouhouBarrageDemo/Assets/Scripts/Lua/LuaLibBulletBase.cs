@@ -13,7 +13,6 @@ public partial class LuaLib
     public static int GetBulletId(ILuaState luaState)
     {
         BulletBase bullet = luaState.ToUserData(-1) as BulletBase;
-        luaState.Pop(1);
         luaState.PushString(bullet.BulletId);
         return 1;
     }
@@ -50,7 +49,6 @@ public partial class LuaLib
     {
         BulletBase bullet = luaState.ToUserData(-2) as BulletBase;
         int order = luaState.ToInteger(-1);
-        luaState.Pop(2);
         bullet.SetOrderInLayer(order);
         return 0;
     }
@@ -164,12 +162,24 @@ public partial class LuaLib
     /// <returns></returns>
     public static int SetBulletColor(ILuaState luaState)
     {
-        EnemyBulletBase bullet = luaState.ToUserData(-4) as EnemyBulletBase;
-        float rValue = (float)luaState.ToNumber(-3);
-        float gValue = (float)luaState.ToNumber(-2);
-        float bValue = (float)luaState.ToNumber(-1);
-        luaState.Pop(4);
-        bullet.SetColor(rValue, gValue, bValue);
+        int top = luaState.GetTop();
+        if (top == 4)
+        {
+            EnemyBulletBase bullet = luaState.ToUserData(-4) as EnemyBulletBase;
+            float rValue = (float)luaState.ToNumber(-3);
+            float gValue = (float)luaState.ToNumber(-2);
+            float bValue = (float)luaState.ToNumber(-1);
+            bullet.SetColor(rValue, gValue, bValue);
+        }
+        else
+        {
+            EnemyBulletBase bullet = luaState.ToUserData(-5) as EnemyBulletBase;
+            float rValue = (float)luaState.ToNumber(-4);
+            float gValue = (float)luaState.ToNumber(-3);
+            float bValue = (float)luaState.ToNumber(-2);
+            float alpha = (float)luaState.ToNumber(-1);
+            bullet.SetColor(rValue, gValue, bValue, alpha);
+        }
         return 0;
     }
 

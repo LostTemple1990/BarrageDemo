@@ -47,6 +47,9 @@ public class BCParasChange : BulletComponent
         changeData.changeValue = value;
         changeData.delay = delay;
         changeData.changeTime = 0;
+        // duration小于等于0时默认设置为1，以免报错
+        if (duration <= 0)
+            duration = 1;
         changeData.changeDuration = duration;
         changeData.repeatCount = repeatCount;
         changeData.repeatInterval = repeatInterval;
@@ -221,7 +224,7 @@ public class BulletParasChangeData : IPoolClass
 }
 
 /// <summary>
-/// 子弹移动相关的变量对应enum
+/// 子弹相关的变量对应enum
 /// </summary>
 public enum BulletParaType :byte
 {
@@ -282,6 +285,14 @@ public enum BulletParaType :byte
     /// 激光的宽度
     /// </summary>
     LaserWidth = 32,
+    /// <summary>
+    /// 初始碰撞长半轴
+    /// </summary>
+    CollHalfW = 51,
+    /// <summary>
+    /// 初始碰撞短半轴
+    /// </summary>
+    CollHalfH = 52,
 }
 
 /// <summary>

@@ -189,7 +189,10 @@ public class STGPauseView : ViewBase
             _itemImgList[0].sprite = ResourceManager.GetInstance().GetSprite("STGPauseViewAtlas", "ImgPause");
             _itemImgList[1].sprite = ResourceManager.GetInstance().GetSprite("STGPauseViewAtlas", "ImgReturnToGame");
             _availableIndex |= 1 << 1;
-            _availableIndex |= 1 << 2;
+            if (ReplayManager.GetInstance().IsReplayEnable())
+            {
+                _availableIndex |= 1 << 2;
+            }
             _availableIndex |= 1 << 3;
             _showItemCount = 4;
         }

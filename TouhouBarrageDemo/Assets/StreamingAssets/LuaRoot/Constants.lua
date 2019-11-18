@@ -95,6 +95,7 @@ Group_PlayerBullet = 2
 Group_Enemy = 4
 Group_EnemyBullet = 8
 Group_Item = 16
+Group_Boss = 32
 Group_CustomizedGroup0 = 2^10
 Group_CustomizedGroup1 = 2^11
 Group_CustomizedGroup2 = 2^12

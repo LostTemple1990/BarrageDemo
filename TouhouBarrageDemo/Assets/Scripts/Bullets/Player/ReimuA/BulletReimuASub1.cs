@@ -22,7 +22,7 @@ public class BulletReimuASub1 : PlayerBulletSimple
     public BulletReimuASub1()
     {
         _type = BulletType.ReimuA_Sub1;
-        _damage = 2;
+        _damage = 0.5f;
     }
 
     public override void Init()
@@ -99,7 +99,7 @@ public class BulletReimuASub1 : PlayerBulletSimple
         _curPos.y += _vy;
     }
 
-    protected override int GetDamage()
+    protected override float GetDamage()
     {
         return 1;
     }

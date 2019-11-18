@@ -273,8 +273,7 @@ public class SpellCard : ICommand
         collider.SetPosition(0, 120);
         collider.SetSize(0, 0);
         collider.SetEliminateType(eEliminateDef.CodeEliminate);
-        collider.SetColliderGroup(eColliderGroup.Enemy | eColliderGroup.EnemyBullet);
-        collider.SetHitEnemyDamage(9999);
+        collider.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy);
         collider.ScaleToSize(400, 400, 30);
         collider.SetExistDuration(30);
     }

@@ -18,7 +18,7 @@ public class PlayerBulletSimple : PlayerBulletBase
     /// <summary>
     /// 击中时造成的伤害
     /// </summary>
-    protected int _damage;
+    protected float _damage;
 
     public PlayerBulletSimple()
     {
@@ -202,12 +202,12 @@ public class PlayerBulletSimple : PlayerBulletBase
         return _detectCollision && !_isEliminating;
     }
 
-    public void SetDamage(int value)
+    public void SetDamage(float value)
     {
         _damage = value;
     }
 
-    protected override int GetDamage()
+    protected override float GetDamage()
     {
         return _damage;
     }

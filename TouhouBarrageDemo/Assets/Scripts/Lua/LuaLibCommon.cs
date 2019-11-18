@@ -43,23 +43,47 @@ public partial class LuaLib
     /// <returns></returns>
     public static int IPosition_Angle(ILuaState luaState)
     {
-        IPosition from = luaState.ToUserData(-2) as IPosition;
-        IPosition to = luaState.ToUserData(-1) as IPosition;
-        luaState.PushNumber(MathUtil.GetAngleBetweenXAxis(to.GetPosition() - from.GetPosition()));
+        int top = luaState.GetTop();
+        if (top == 2)
+        {
+            IPosition from = luaState.ToUserData(-2) as IPosition;
+            IPosition to = luaState.ToUserData(-1) as IPosition;
+            luaState.PushNumber(MathUtil.GetAngleBetweenXAxis(to.GetPosition() - from.GetPosition()));
+        }
+        else
+        {
+            Vector2 fromVec = new Vector2((float)luaState.ToNumber(-4), (float)luaState.ToNumber(-3));
+            Vector2 toVec = new Vector2((float)luaState.ToNumber(-2), (float)luaState.ToNumber(-1));
+            float angle = MathUtil.GetAngleBetweenXAxis(toVec - fromVec);
+            luaState.PushNumber(angle);
+        }
         return 1;
     }
 
     /// <summary>
     /// 获取两个对象间的距离
+    /// <para>IPosition from,IPosition to</para>
+    /// <para>float vec0.x,float vec0.y,float vec1.x,float vec1.y</para>
     /// </summary>
     /// <param name="luaState"></param>
     /// <returns></returns>
     public static int IPosition_Distance(ILuaState luaState)
     {
-        IPosition from = luaState.ToUserData(-2) as IPosition;
-        IPosition to = luaState.ToUserData(-1) as IPosition;
-        float dis = Vector2.Distance(from.GetPosition(), to.GetPosition());
-        luaState.PushNumber(dis);
+        int top = luaState.GetTop();
+        if (top == 2)
+        {
+            IPosition from = luaState.ToUserData(-2) as IPosition;
+            IPosition to = luaState.ToUserData(-1) as IPosition;
+            float dis = Vector2.Distance(from.GetPosition(), to.GetPosition());
+            luaState.PushNumber(dis);
+        }
+        else
+        {
+            Vector2 fromVec = new Vector2((float)luaState.ToNumber(-4), (float)luaState.ToNumber(-3));
+            Vector2 toVec = new Vector2((float)luaState.ToNumber(-2), (float)luaState.ToNumber(-1));
+            float dis = Vector2.Distance(fromVec, toVec);
+            luaState.PushNumber(dis);
+        }
         return 1;
     }
 

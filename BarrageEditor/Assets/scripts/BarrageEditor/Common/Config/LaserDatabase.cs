@@ -126,7 +126,7 @@ namespace BarrageEditor
                 styleId = 4,
                 name = "Style4",
                 packName = "STGLinearLaserAtlas0",
-                resName = "Bullet304010",
+                resName = "Laser304010",
                 showScale = 1,
                 availableColors = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
             };

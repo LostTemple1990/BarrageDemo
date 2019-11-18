@@ -124,11 +124,17 @@ public enum DirectionMode : byte
     MoveRandom = 4,
 }
 
-public enum EnemyObjectType  : byte
+public enum eEnemyObjectType  : byte
 {
     Fairy = 1,
     SpinningEnemy = 2,
     Ghost = 3,
+}
+
+public enum eEnemyType : byte
+{
+    NormalEnemy = 1,
+    Boss = 2,
 }
 
 [Flags]
@@ -248,6 +254,7 @@ public enum eColliderGroup : int
     Enemy = 4,
     EnemyBullet = 8,
     Item = 16,
+    Boss = 32,
     CustomizedType0 = 2 << 10,
     CustomizedType1 = 2 << 11,
     CustomizedType2 = 2 << 12,

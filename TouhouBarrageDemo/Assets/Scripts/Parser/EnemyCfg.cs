@@ -7,7 +7,7 @@ public class EnemyCfg : IParser
     /// <summary>
     /// Enemy类别
     /// </summary>
-    public EnemyObjectType type;
+    public eEnemyObjectType type;
     /// <summary>
     /// sprite数据所在的贴图名称
     /// </summary>
@@ -30,7 +30,7 @@ public class EnemyCfg : IParser
     {
         id = xmlElement.GetAttribute("id");
         name = xmlElement.GetAttribute("name");
-        type = (EnemyObjectType)int.Parse(xmlElement.GetAttribute("type"));
+        type = (eEnemyObjectType)int.Parse(xmlElement.GetAttribute("type"));
         aniId = xmlElement.GetAttribute("aniId");
         eliminatedEffectStyle = int.Parse(xmlElement.GetAttribute("eliminateEffectStyle"));
         collisionHalfWidth = float.Parse(xmlElement.GetAttribute("collHW"));

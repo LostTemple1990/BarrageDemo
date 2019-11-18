@@ -243,6 +243,7 @@ public partial class LuaLib
             new NameFuncPair("CreateChargeEffect",CreateChargeEffect),
             new NameFuncPair("CreateBurstEffect",CreateBurstEffect),
             new NameFuncPair("CreateShakeEffect",CreateShakeEffect),
+            new NameFuncPair("CreateBossDeadEffect",CreateBossDeadEffect),
             // STGObject
             new NameFuncPair("CreateCustomizedSTGObject",CreateCustomizedSTGObject),
             // Unit
@@ -726,10 +727,12 @@ public partial class LuaLib
     /// <returns></returns>
     public static int CreateBoss(ILuaState luaState)
     {
-        string bossName = luaState.ToString(-1);
-        luaState.Pop(1);
-        Boss boss = EnemyManager.GetInstance().CreateEnemyByType(EnemyType.Boss) as Boss;
+        string bossName = luaState.ToString(-3);
+        float posX = (float)luaState.ToNumber(-2);
+        float posY = (float)luaState.ToNumber(-1);
+        Boss boss = EnemyManager.GetInstance().CreateEnemyByType(eEnemyType.Boss) as Boss;
         boss.Init(bossName);
+        boss.SetPosition(posX, posY);
         luaState.PushLightUserData(boss);
         return 1;
     }
@@ -957,7 +960,6 @@ public partial class LuaLib
             weights.Add((float)luaState.ToNumber(index));
         }
         boss.SetCurPhaseData(weights, isMultiPhase);
-        luaState.Pop(count + 2);
         return 0;
     }
 #endregion

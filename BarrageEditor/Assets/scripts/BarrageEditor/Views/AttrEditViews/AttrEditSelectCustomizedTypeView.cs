@@ -14,6 +14,8 @@ namespace BarrageEditor
         private GameObject _closeBtn;
         private GameObject _okBtn;
 
+        private ScrollRect _contentScrollRect;
+        private Scrollbar _contentScrollbar;
         private RectTransform _itemContainerTf;
 
         private int _curSelectedItemIndex;
@@ -22,11 +24,18 @@ namespace BarrageEditor
 
         private BaseNodeAttr _nodeAttr;
 
+        private Vector2 _contentDefaultSize;
+        private float _contentPreferredHeight;
+
         protected override void Init()
         {
             _closeBtn = _viewTf.Find("Panel/CancelBtn").gameObject;
             _okBtn = _viewTf.Find("Panel/OKBtn").gameObject;
+            _contentScrollRect = _viewTf.Find("Panel/Window/ScrollView").GetComponent<ScrollRect>();
+            _contentScrollbar = _viewTf.Find("Panel/Window/ScrollView/Scrollbar Vertical").GetComponent<Scrollbar>();
             _itemContainerTf = _viewTf.Find("Panel/Window/ScrollView/Viewport/Content").GetComponent<RectTransform>();
+            _contentDefaultSize = _itemContainerTf.sizeDelta;
+            _contentPreferredHeight = _contentDefaultSize.y;
 
             _itemList = new List<GameObject>();
 
@@ -60,17 +69,27 @@ namespace BarrageEditor
                 item.GetComponent<Image>().color = UnSelectedColor;
                 int itemIndex = i;
                 UIEventListener.Get(item).AddClick(() =>{
-                    OnItemClickHandler(itemIndex);
+                    OnItemClickHandler(itemIndex, false);
                 });
                 _itemList.Add(item);
             }
+            // 计算content面板的高度
+            float preferredHeight = _typeNameList.Count * 30 + 5;
+            _contentPreferredHeight = preferredHeight < _contentDefaultSize.y ? _contentDefaultSize.y : preferredHeight;
+            _itemContainerTf.sizeDelta = new Vector2(_contentDefaultSize.x, _contentPreferredHeight);
+            _contentScrollRect.Rebuild(CanvasUpdate.PostLayout);
             _curSelectedItemIndex = -1;
             // 默认选中节点值的那个item，如果没有对应的，则不选中任何一个
             int index = _typeNameList.IndexOf(_nodeAttr.GetValueString());
-            OnItemClickHandler(index);
+            OnItemClickHandler(index, true);
         }
 
-        private void OnItemClickHandler(int itemIndex)
+        /// <summary>
+        /// <para>bool scrollToItem 是否将滚动条设置到item处</para>
+        /// </summary>
+        /// <param name="itemIndex"></param>
+        /// <param name="scrollToItem"></param>
+        private void OnItemClickHandler(int itemIndex,bool scrollToItem)
         {
             if ( _curSelectedItemIndex != -1 )
             {
@@ -79,6 +98,17 @@ namespace BarrageEditor
             _curSelectedItemIndex = itemIndex;
             if (_curSelectedItemIndex == -1) return;
             _itemList[_curSelectedItemIndex].GetComponent<Image>().color = SelectedColor;
+            if (scrollToItem)
+            {
+                float toY = (itemIndex - 1) * 30 + 5;
+                float maxY = _contentPreferredHeight - _contentDefaultSize.y;
+                float value;
+                if (toY >= maxY)
+                    value = 0;
+                else
+                    value = 1 - toY / _contentPreferredHeight;
+                _contentScrollbar.value = value;
+            }
         }
 
         private void OnOKBtnHandler()

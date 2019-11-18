@@ -35,7 +35,7 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            return string.Format("do\n");
+            return string.Format("do  --{0}\n", GetAttrByIndex(0).GetValueString());
         }
 
         public override string ToLuaFoot()

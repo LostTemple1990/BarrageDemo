@@ -192,7 +192,7 @@ public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, IST
         {
             CheckCollisionWithPlayerBullet();
         }
-        if ((_colliderGroups & (int)eColliderGroup.Enemy) != 0)
+        if ((_colliderGroups & (int)eColliderGroup.Enemy) != 0 || (_colliderGroups & (int)eColliderGroup.Boss) != 0)
         {
             CheckCollisionWithEnemy();
         }

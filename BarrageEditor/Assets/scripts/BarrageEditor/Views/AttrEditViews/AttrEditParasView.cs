@@ -71,7 +71,7 @@ namespace BarrageEditor
                 }
             }
             // 获取参数值的列表
-            List<string> paraValueList = new List<string>(_nodeAttr.GetValueString().Split(','));
+            List<string> paraValueList = GetParaValuesFromParaStr(_nodeAttr.GetValueString());
             for (int i = 0; i < _paraNameList.Count; i++)
             {
                 GameObject item = ResourceManager.GetInstance().GetPrefab("Prefabs/Views/EditViews", "EditParaItem");
@@ -134,6 +134,40 @@ namespace BarrageEditor
             }
             _paraNameList.Clear();
             _itemList.Clear();
+        }
+
+        private List<string> GetParaValuesFromParaStr(string paraStr)
+        {
+            List<string> values = new List<string>();
+            if (paraStr != "")
+            {
+                char[] arr = paraStr.ToCharArray();
+                char c;
+                string value;
+                int count = 0;
+                int strStartIndex = 0;
+                for (int i=0;i< arr.Length;i++)
+                {
+                    c = arr[i];
+                    if (c == '(' || c == '[')
+                    {
+                        count++;
+                    }
+                    else if (c == ')' || c == ']')
+                    {
+                        count--;
+                    }
+                    if (c == ',' && count == 0)
+                    {
+                        value = paraStr.Substring(strStartIndex, i - strStartIndex);
+                        values.Add(value);
+                        strStartIndex = i + 1;
+                    }
+                }
+                value = paraStr.Substring(strStartIndex);
+                values.Add(value);
+            }
+            return values;
         }
     }
 }
