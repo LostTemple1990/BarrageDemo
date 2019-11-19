@@ -24,6 +24,10 @@ public class SoundManager
     private int _curPlayCount;
     private Transform _defaultSourceTf;
     private Stack<SoundEntity> _pool;
+    /// <summary>
+    /// 当前是否正在暂停所有STG音效
+    /// </summary>
+    private bool _isPausingSTGSound;
 
     private Dictionary<string, int> _soundLoadedMap;
 
@@ -35,6 +39,7 @@ public class SoundManager
         _defaultSourceTf = tf;
         _pool = new Stack<SoundEntity>();
         _soundLoadedMap = new Dictionary<string, int>();
+        _isPausingSTGSound = false;
     }
 
     public void Play(string name, bool isLoop = false,bool isSTGSound = true)
@@ -113,6 +118,7 @@ public class SoundManager
                 entity.source.Pause();
             }
         }
+        _isPausingSTGSound = true;
     }
 
     /// <summary>
@@ -138,9 +144,9 @@ public class SoundManager
                     entity.isPause = false;
                     entity.source.UnPause();
                 }
-                break;
             }
         }
+        _isPausingSTGSound = false;
     }
 
     /// <summary>
@@ -154,8 +160,8 @@ public class SoundManager
             entity = _curPlayList[i];
             if (entity != null && entity.isSTGSound)
             {
-                entity.source.Stop();
-                entity.isFinish = true;
+                RestoreToPool(entity);
+                _curPlayList[i] = null;
             }
         }
     }
@@ -193,8 +199,8 @@ public class SoundManager
             entity = _curPlayList[i];
             if (entity != null && entity.soundName == name)
             {
-                entity.source.Stop();
-                entity.isFinish = true;
+                RestoreToPool(entity);
+                _curPlayList[i] = null;
                 break;
             }
         }
@@ -227,12 +233,10 @@ public class SoundManager
                 continue;
             if (onlySTGSound && !entity.isSTGSound)
                 continue;
-            if (entity.source != null)
-            {
-                entity.source.Stop();
-            }
-            entity.isFinish = true;
+            RestoreToPool(entity);
+            _curPlayList[i] = null;
         }
+        _isPausingSTGSound = false;
     }
 
     public void Update()
@@ -258,6 +262,8 @@ public class SoundManager
             for (j=0;j<_curPlayCount;j++)
             {
                 curEntity = _curPlayList[j];
+                if (curEntity == null)
+                    continue;
                 // 当前音效正在播放，则重复播放
                 if ( curEntity.soundName == toPlayEntity.soundName )
                 {
@@ -296,16 +302,21 @@ public class SoundManager
             // 起始播放时间
             toPlayEntity.startTime = curTime;
             source.clip = Resources.Load<AudioClip>("Sounds/" + toPlayEntity.soundName);
-            // 结束播放时间
-            toPlayEntity.endTime = toPlayEntity.isLoop ? -1 : curTime + source.clip.length;
             // 是否循环
             source.loop = toPlayEntity.isLoop;
+            // 结束播放时间
+            toPlayEntity.endTime = toPlayEntity.isLoop ? -1 : curTime + source.clip.length;
             //Logger.Log("Begin Play sound " + toPlayEntity.soundName + " length = " + source.clip.length);
             toPlayEntity.isFinish = false;
             // 添加到播放列表中
             _curPlayList.Add(toPlayEntity);
             _curPlayCount++;
             source.Play();
+            // 如果当前STG音效处于暂停状态，则直接暂停该音效
+            if (_isPausingSTGSound && toPlayEntity.isSTGSound)
+            {
+                Pause(toPlayEntity.soundName);
+            }
         }
         // 清空待播放列表
         _toPlayList.Clear();
@@ -321,6 +332,8 @@ public class SoundManager
         for (i=0;i<_curPlayCount;i++)
         {
             curPlayEntity = _curPlayList[i];
+            if (curPlayEntity == null)
+                continue;
             if (curPlayEntity.isPause)
                 continue;
             if (!curPlayEntity.isFinish)

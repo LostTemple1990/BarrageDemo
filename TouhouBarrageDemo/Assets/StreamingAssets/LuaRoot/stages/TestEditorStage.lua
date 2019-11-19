@@ -5,7 +5,6 @@ local CustomizedTable = {}
 local CustomizedEnemyTable = {}
 local BossTable = {}
 local CustomizedSTGObjectTable = {}
-SetDebugStageName("Stage1")
 
 -- Mod name: unnamed
 --author="YK"
@@ -103,13 +102,16 @@ CustomizedEnemyTable["NazrinSC1Enemy"].Init = function(self,toPosX,toPosY,durati
     self:SetMaxHp(50)
     self:SetInteractive(false)
     self:AddTask(function()
-        self:MoveTo(toPosX,toPosY,60,IntModeEaseInQuad)
-        if Wait(60+duration)==false then return end
+        self:MoveTo(toPosX,toPosY,30,IntModeEaseInQuad)
+        if Wait(30)==false then return end
+        CreateChargeEffect(self.x,self.y)
+        if Wait(30+duration)==false then return end
         KillUnit(self,true)
     end)
     self:AddTask(function()
         if Wait(60)==false then return end
         do for _=1,Infinite do
+            PlaySound("se_tan00",0.05,false)
             if RandomInt(0,1) == 0 then
                 last = CreateSimpleBulletById(118010,self.x,self.y)
                 last:SetStraightParas(12,RandomInt(-45,45),true,0,0)
@@ -363,6 +365,7 @@ end
 CustomizedTable["TestColliderBullet"] = {}
 CustomizedTable["TestColliderBullet"].Init = function(self,dir)
     self:SetStyleById(118050)
+    self:SetResistEliminatedTypes(7)
     self:AddTask(function()
         self:SetPolarParas(30,0,3,dir,0,30)
         if Wait(20)==false then return end
@@ -443,7 +446,7 @@ CustomizedEnemyTable["YKStage1Enemy1"] = {}
 CustomizedEnemyTable["YKStage1Enemy1"].Init = function(self,life,attach)
     self:Init(100010)
     self:SetMaxHp(life)
-    self:SetDropItems(1,2,32,32)
+    self:SetDropItems(1,20,2,1,64,64)
     self:MoveTo(self.x,144,60,IntModeLinear)
     self:AddTask(function()
         if Wait(60)==false then return end
@@ -494,6 +497,27 @@ CustomizedEnemyTable["YKStage1Enemy1"].Init = function(self,life,attach)
         end end
     end)
 end
+CustomizedEnemyTable["YKStage1Enemy1_1"] = {}
+CustomizedEnemyTable["YKStage1Enemy1_1"].Init = function(self,r,omega)
+    self:Init(100010)
+    self:SetMaxHp(140)
+    self:SetDropItems(1,10,64,64)
+    self:MoveTo(self.x,144,60,IntModeLinear)
+    self:AddTask(function()
+        if Wait(60)==false then return end
+        do local an,_d_an=(RandomFloat(0,360)),(omega * 5) local startAngle,_d_startAngle=(RandomFloat(0,360)),(15) for _=1,Infinite do
+            local posX = r * cos(an) + self.x
+            local posY = r * sin(an) + self.y
+            PlaySound("se_tan00",0.1,false)
+            do local vAngle,_d_vAngle=(startAngle + RandomFloat(-7,7)),(360 / 12) for _=1,12 do
+                last = CreateSimpleBulletById(107020,posX,posY)
+                last:SetStraightParas(2.5,vAngle,false,0,UseVelocityAngle)
+                last:AttachTo(self,true)
+            vAngle=vAngle+_d_vAngle end end
+            if Wait(5)==false then return end
+        an=an+_d_an startAngle=startAngle+_d_startAngle end end
+    end)
+end
 CustomizedTable["YKStage1Enemy2Bullet"] = {}
 CustomizedTable["YKStage1Enemy2Bullet"].Init = function(self,id,v,angle)
     self:SetStyleById(id)
@@ -541,7 +565,7 @@ end
 CustomizedEnemyTable["YKStage1Enemy3"] = {}
 CustomizedEnemyTable["YKStage1Enemy3"].Init = function(self)
     self:Init(100022)
-    self:SetMaxHp(800)
+    self:SetMaxHp(700)
     self:SetDropItems(1,5,2,1,64,64)
     --测试反弹子弹
     self:MoveTo(0,144,60,IntModeLinear)
@@ -870,7 +894,7 @@ SpellCard["YKS1_M_SC"] = {}
 SpellCard["YKS1_M_SC"].Init = function(boss)
     SetSpellCardProperties("FirstSpellCard",1,60,ConditionEliminateAll,true)
     last = CreateCustomizedSTGObject("NazrinCG",0,0)
-    boss:SetMaxHp(1000)
+    boss:SetMaxHp(750)
     boss:SetInvincible(5)
     boss:ShowBloodBar(true)
     --圈形子弹
@@ -1162,6 +1186,7 @@ SpellCard["YKS1_F_NSC2"] = {}
 SpellCard["YKS1_F_NSC2"].Init = function(boss)
     SetSpellCardProperties("",1,45,ConditionEliminateAll,false)
     boss:SetMaxHp(1000)
+    boss:MoveTo(0,136,60,IntModeLinear)
     boss:SetWanderRange(-96,96,128,144)
     boss:SetWanderAmplitude(32,64,0,32)
     boss:SetWanderMode(IntModeEaseOutQuad,MoveXTowardsPlayer)
@@ -1875,7 +1900,7 @@ end
 CustomizedEnemyTable["YKS1_F_SC4_Enemy"] = {}
 CustomizedEnemyTable["YKS1_F_SC4_Enemy"].Init = function(self,startPosX,startPosY,angle,isAimToPlayer)
     self:Init(100022)
-    self:SetMaxHp(10)
+    self:SetMaxHp(4)
     self:SetInteractive(false)
     self.checkBorder = false
     if isAimToPlayer then
@@ -2127,7 +2152,7 @@ CustomizedSTGObjectTable["Stage1Logo"].Init = function(self)
     end)
 end
 Stage["Stage1"] = function()
-if false then     PlaySound("oborozuki",0.5,true)
+    PlaySound("oborozuki",0.5,true)
     do  --初始敌机
         if Wait(60)==false then return end
         do for _=1,8 do
@@ -2144,15 +2169,14 @@ if false then     PlaySound("oborozuki",0.5,true)
         if Wait(400)==false then return end
     end
     do  --Phase2
-        last = CreateCustomizedEnemy("YKStage1Enemy1",-150,240,200,false)
-        if Wait(300)==false then return end
-        last = CreateCustomizedEnemy("YKStage1Enemy1",150,240,200,false)
-        if Wait(300)==false then return end
-        last = CreateCustomizedEnemy("YKStage1Enemy1",0,240,600,true)
+        last = CreateCustomizedEnemy("YKStage1Enemy1_1",-130,240,30,6)
+        last = CreateCustomizedEnemy("YKStage1Enemy1_1",130,240,30,6)
+        if Wait(720)==false then return end
+        last = CreateCustomizedEnemy("YKStage1Enemy1",0,240,240,true)
         if Wait(600)==false then return end
     end
     do  --Phase3
-        if Wait(60)==false then return end
+        if Wait(120)==false then return end
         do for _=1,20 do
             last = CreateCustomizedEnemy("YKStage1Enemy2",-150,240,1)
             last = CreateCustomizedEnemy("YKStage1Enemy2",-75,240,1)
@@ -2264,7 +2288,7 @@ if false then     PlaySound("oborozuki",0.5,true)
         last = CreateCustomizedEnemy("YKS1P7Enemy0",0,240)
         if Wait(1800)==false then return end
     end
-end     do  --FinalBoss
+    do  --FinalBoss
         StopSound("oborozuki")
         if Wait(200)==false then return end
         --dialog
@@ -2361,8 +2385,10 @@ end     do  --FinalBoss
         if Wait(30)==false then return end
         CreateBossDeadEffect(boss.x,boss.y)
         PlaySound("se_bossexplosive",0.2,false)
+        if Wait(60)==false then return end
+        DelUnit(boss)
     end
-    if Wait(120)==false then return end
+    if Wait(60)==false then return end
     if StartDialog(function()
         CreateDialogBox(0,"Test stage is finished...",170,250,120,0.8)
         if Wait(120)==false then return end

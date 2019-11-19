@@ -10,9 +10,6 @@ public class Consts
     public const int DIR_UP = 4;
     public const int DIR_DOWN = 8;
 
-    public const float HighSpeed = 4.5f;
-    public const float SlowSpeed = 2f;
-
     public const int CharID_Reimu = 1;
     public const int CharID_Marisa = 2;
 

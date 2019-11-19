@@ -514,7 +514,7 @@ public class CharacterBase : IAffectedMovableObject
     /// </summary>
     public virtual float GetMoveSpeed()
     {
-        float speed = _curMoveMode == ePlayerMoveMode.HighSpeed ? Consts.HighSpeed : Consts.SlowSpeed;
+        float speed = _curMoveMode == ePlayerMoveMode.HighSpeed ? 4.5f : 2f;
         return speed;
     }
 
@@ -896,7 +896,7 @@ public class CharacterBase : IAffectedMovableObject
     /// <summary>
     /// 上一帧的移动模式
     /// </summary>
-    public ePlayerMoveMode PreMoveMode
+    public ePlayerMoveMode preMoveMode
     {
         get { return _preMoveMode; }
     }
@@ -904,7 +904,7 @@ public class CharacterBase : IAffectedMovableObject
     /// <summary>
     /// 当前帧的移动模式
     /// </summary>
-    public ePlayerMoveMode CurModeMode
+    public ePlayerMoveMode curModeMode
     {
         get { return _curMoveMode; }
     }

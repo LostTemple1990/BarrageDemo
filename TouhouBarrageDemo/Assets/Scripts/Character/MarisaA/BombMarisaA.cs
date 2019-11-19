@@ -97,11 +97,11 @@ public class BombMarisaA : BombBase
         _movementBodyTf = _sparkContainerTf.Find("MovementBody");
         // 黑底
         _effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.SpriteEffect) as STGSpriteEffect;
-        _effect.SetSprite("STGCommonAtlas", "Circle",eBlendMode.Normal, LayerId.STGBottomEffect, false);
-        _effect.SetScale(0, 0);
+        _effect.SetSprite("ShapeAtlas", "ShapeCircle", eBlendMode.Normal, LayerId.STGBottomEffect, false);
+        _effect.SetSize(0, 0);
         _effect.SetSpriteColor(0, 0, 0, 1);
-        _effect.ChangeWidthTo(512, 30, InterpolationMode.EaseInQuad);
-        _effect.ChangeHeightTo(512, 30, InterpolationMode.EaseInQuad);
+        _effect.ChangeWidthTo(1024, 50, InterpolationMode.EaseInQuad);
+        _effect.ChangeHeightTo(1024, 50, InterpolationMode.EaseInQuad);
         _effect.SetPosition(playerPos.x, playerPos.y);
         // 基础属性
         _curState = 1;
@@ -159,7 +159,7 @@ public class BombMarisaA : BombBase
             _colliderRect.SetSize(MasterSparkHitBoxWidth, MasterSpartHitBoxHeight);
             _colliderRect.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy | eColliderGroup.Boss);
             _colliderRect.SetEliminateType(eEliminateDef.PlayerSpellCard);
-            _colliderRect.SetHitEnemyDamage(3);
+            _colliderRect.SetHitEnemyDamage(1.5f);
             _colliderRect.SetPosition(Global.PlayerPos.x + _posOffset.x, Global.PlayerPos.y + _posOffset.y);
             _duration = 240;
             SoundManager.GetInstance().Play("se_masterspark", 0.1f, false, true);

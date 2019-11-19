@@ -297,6 +297,10 @@ public class MainView : ViewBase, ICommand
         {
             OnPressKeyZ();
         }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnPressKeyEsc();
+        }
     }
 
     private void OnPressDownArrow()
@@ -336,6 +340,20 @@ public class MainView : ViewBase, ICommand
             UIManager.GetInstance().ShowView(WindowName.ReplayView, eReplayViewMode.Load);
         }
         else if (_selectIndex == IndexQuit)
+        {
+            SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
+            Quit();
+        }
+    }
+
+    private void OnPressKeyEsc()
+    {
+        if (_selectIndex != IndexQuit)
+        {
+            SetSelectIndex(IndexQuit);
+            SoundManager.GetInstance().Play("se_select", Consts.DefaultUISEVolume, false, false);
+        }
+        else
         {
             SoundManager.GetInstance().Play("se_selectok", Consts.DefaultUISEVolume, false, false);
             Quit();

@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class SubWeaponMarisaA : SubWeaponBase
 {
-    private static Vector3 RotateEuler = new Vector3(0f, 0f, 2f);
+    private static Vector3 RotateEuler = new Vector3(0f, 0f, 5f);
     /// <summary>
     /// 星星特效的scale变化
     /// </summary>
-    private const float ScaleDelta = 0.016f;
+    private const float ScaleDelta = 0.030f;
 
     protected float[][] _shootAngles;
     /// <summary>
@@ -84,7 +84,7 @@ public class SubWeaponMarisaA : SubWeaponBase
             Vector3 laserPos = playerPos + _curPos;
             _laser.SetPosition(laserPos);
             // 更新激光角度
-            ePlayerMoveMode mode = _character.CurModeMode;
+            ePlayerMoveMode mode = _character.curModeMode;
             float laserAngle = mode == ePlayerMoveMode.LowSpeed ? 90f : _shootAngles[subAvailable - 1][_subIndex];
             _laser.SetAngle(laserAngle);
             _isShooting = true;

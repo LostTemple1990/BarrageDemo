@@ -66,7 +66,7 @@ public class PlayerInterface
     /// <returns></returns>
     public CharacterBase CreateCharacter(int index)
     {
-        _curPower = 100;
+        _curPower = Consts.PlayerInitPower;
         _graze = 0;
         _signalValue = 0;
         if (index == 0)

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 public class GameMainView : ViewBase,ICommand
 {
@@ -9,6 +10,9 @@ public class GameMainView : ViewBase,ICommand
     /// 擦弹最大位数
     /// </summary>
     private const int GrazeBitMaxCount = 6;
+    private const int TickArrSize = 150;
+    private const int UpdateFpsInterval = 60;
+
     /// <summary>
     /// power整数位
     /// </summary>
@@ -45,6 +49,24 @@ public class GameMainView : ViewBase,ICommand
     /// </summary>
     private ItemWithFramentsCounter _curSpellCardCounter;
     private List<Image> _spellCardImgList;
+    /// <summary>
+    /// 显示fps的文本框
+    /// </summary>
+    private Text _fpsText;
+    /// <summary>
+    /// 当前帧的时间
+    /// </summary>
+    private int _curTimeTickIndex;
+    /// <summary>
+    /// 上一帧的时间
+    /// </summary>
+    private int _lastTimeTickIndex;
+    /// <summary>
+    /// 帧计数
+    /// </summary>
+    private int _updateFrameTimer;
+
+    private long[] _frameTimeTick;
 
     public override void Init(GameObject viewObj)
     {
@@ -79,6 +101,8 @@ public class GameMainView : ViewBase,ICommand
             }
         }
         _curPower = -1;
+        _fpsText = _viewTf.Find("FpsText").GetComponent<Text>();
+        _frameTimeTick = new long[TickArrSize];
     }
 
     public override void OnShow(object data)
@@ -87,7 +111,16 @@ public class GameMainView : ViewBase,ICommand
         // 重新初始化
         _curLifeCounter = new ItemWithFramentsCounter();
         _curSpellCardCounter = new ItemWithFramentsCounter();
+        ResetFpsText();
         UIManager.GetInstance().RegisterViewUpdate(this);
+    }
+
+    private void ResetFpsText()
+    {
+        _lastTimeTickIndex = -1;
+        _curTimeTickIndex = -1;
+        _updateFrameTimer = 0;
+        _fpsText.text = "";
     }
 
     public void Execute(int cmd,object data)
@@ -97,6 +130,7 @@ public class GameMainView : ViewBase,ICommand
 
     public override void Update()
     {
+        UpdateFps();
         if (Global.IsPause) return;
         UpdatePowerValue();
         UpdateGrazeValue();
@@ -215,6 +249,30 @@ public class GameMainView : ViewBase,ICommand
             {
                 _spellCardImgList[i].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, "sc0");
             }
+        }
+    }
+
+    private void UpdateFps()
+    {
+        _updateFrameTimer++;
+        _curTimeTickIndex = _curTimeTickIndex + 1 >= TickArrSize ? 0 : _curTimeTickIndex + 1;
+        _frameTimeTick[_curTimeTickIndex] = DateTime.Now.Ticks;
+        if (_lastTimeTickIndex == -1)
+        {
+            _lastTimeTickIndex = 0;
+            return;
+        }
+        if (_frameTimeTick[_curTimeTickIndex] - _frameTimeTick[_lastTimeTickIndex] >= 20000000)
+        {
+            int frameCount = (_curTimeTickIndex + TickArrSize - _lastTimeTickIndex) % TickArrSize;
+            double fps = frameCount * 10000000d / (_frameTimeTick[_curTimeTickIndex] - _frameTimeTick[_lastTimeTickIndex]);
+            fps = Math.Round(fps, 1);
+            if (_updateFrameTimer >= UpdateFpsInterval)
+            {
+                _fpsText.text = fps + "fps";
+                _updateFrameTimer = 0;
+            }
+            _lastTimeTickIndex = _lastTimeTickIndex + 1 >= TickArrSize ? 0 : _lastTimeTickIndex + 1;
         }
     }
 

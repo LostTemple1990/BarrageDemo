@@ -94,9 +94,9 @@ public class MarisaA : CharacterBase
         index = GetMoveModeIndex(ePlayerMoveMode.LowSpeed);
         _subPosOffset[index] = new Vector2[4][];
         _subPosOffset[index][0] = new Vector2[] { new Vector2(0f, 28f) };
-        _subPosOffset[index][1] = new Vector2[] { new Vector2(-12f, 28f), new Vector2(12f, 28f) };
-        _subPosOffset[index][2] = new Vector2[] { new Vector2(-28f, 4f), new Vector2(0f, 28f), new Vector2(28f, 4f) };
-        _subPosOffset[index][3] = new Vector2[] { new Vector2(-28f, 4f), new Vector2(-12f, 28f), new Vector2(12f, 28f), new Vector2(28f, 4f) };
+        _subPosOffset[index][1] = new Vector2[] { new Vector2(-8f, 28f), new Vector2(8f, 28f) };
+        _subPosOffset[index][2] = new Vector2[] { new Vector2(-20f, 12f), new Vector2(0f, 28f), new Vector2(20f, 12f) };
+        _subPosOffset[index][3] = new Vector2[] { new Vector2(-20f, 12f), new Vector2(-8f, 28f), new Vector2(8f, 28f), new Vector2(20f, 12f) };
         _isSubMoving = false;
         _subMoveDuration = SubMoveDuration;
     }
@@ -161,6 +161,7 @@ public class MarisaA : CharacterBase
                 Vector2 pos = GetSubWeaponDefaultPos(_curMoveMode, _availableSubCount, i);
                 subWeapon.SetToPosition(pos);
             }
+            _isSubMoving = false;
         }
         else if ( _isSubMoving )
         {

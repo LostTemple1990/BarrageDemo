@@ -42,15 +42,15 @@ public class GameMain : MonoBehaviour
         _fsm.Init();
         _fsm.AddState((int)eGameState.STG, new StateSTGMain());
         _fsm.AddState((int)eGameState.Title, new StateTitle());
-        STGData data = new STGData()
-        {
-            stageName = "Stage1",
-            characterIndex = 0,
-            isReplay = false,
-        };
-        _fsm.SetNextStateId((int)eGameState.STG, data);
-        ReplayManager.GetInstance().Init();
-        //_fsm.SetNextStateId((int)eGameState.Title);
+        //STGData data = new STGData()
+        //{
+        //    stageName = "Stage1",
+        //    characterIndex = 0,
+        //    isReplay = false,
+        //};
+        //_fsm.SetNextStateId((int)eGameState.STG, data);
+        //ReplayManager.GetInstance().Init();
+        _fsm.SetNextStateId((int)eGameState.Title);
         Application.targetFrameRate = 60;
     }
 }

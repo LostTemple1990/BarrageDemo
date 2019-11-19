@@ -31,7 +31,7 @@ public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, IST
     /// <summary>
     /// 与敌机发生碰撞时对敌机造成的伤害
     /// </summary>
-    protected int _hitEnemyDamage;
+    protected float _hitEnemyDamage;
 
     /// <summary>
     /// 附件物体的列表
@@ -267,7 +267,7 @@ public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, IST
     /// 设置ObjectCollider击中敌机时造成的伤害
     /// </summary>
     /// <param name="damage"></param>
-    public void SetHitEnemyDamage(int damage)
+    public void SetHitEnemyDamage(float damage)
     {
         _hitEnemyDamage = damage;
     }

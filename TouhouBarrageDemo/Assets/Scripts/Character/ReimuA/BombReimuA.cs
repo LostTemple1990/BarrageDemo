@@ -66,7 +66,7 @@ public class BombReimuA : BombBase
             collider.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy | eColliderGroup.Boss);
             collider.SetPosition(bombPos.x, bombPos.y);
             collider.SetEliminateType(eEliminateDef.PlayerSpellCard);
-            collider.SetHitEnemyDamage(1);
+            collider.SetHitEnemyDamage(0.1f);
             _colliderList.Add(collider);
         }
         _curState = 1;
@@ -129,7 +129,7 @@ public class BombReimuA : BombBase
             collider.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy);
             collider.SetPosition(Global.PlayerPos.x, Global.PlayerPos.y);
             collider.SetEliminateType(eEliminateDef.PlayerSpellCard);
-            collider.SetHitEnemyDamage(400);
+            collider.SetHitEnemyDamage(150);
             collider.SetExistDuration(1);
             _curState = 3;
         }
