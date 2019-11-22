@@ -46,6 +46,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 47a8db4125dfd1d4db7ea107be72a9b8, type: 3}
   - {fileID: 21300000, guid: 7d7ee181c806e6040a468bfb8cbef7cd, type: 3}
   - {fileID: 21300000, guid: dd7aefa19df6b1b44bb40854839002a9, type: 3}
+  - {fileID: 21300000, guid: d49cb2d1543d9744f89099182b1b4233, type: 3}
   - {fileID: 21300000, guid: a4830912ff72e014481c7a4ae5afedda, type: 3}
   - {fileID: 21300000, guid: d1f03622b9ed276438c82fce4049528f, type: 3}
   - {fileID: 21300000, guid: a996f922ea3c9424ea8f693b82e2ceef, type: 3}
@@ -139,6 +140,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 39aa494ae10847a45823af24e4cc32d3, type: 3}
   - {fileID: 21300000, guid: 5d71725ad4541874b8a734fc2be23c28, type: 3}
   - {fileID: 21300000, guid: ac2fa85aed864224cb0c5caa1cce2591, type: 3}
+  - {fileID: 21300000, guid: 2a79f96a7cbd1174b9310dd5427543aa, type: 3}
   - {fileID: 21300000, guid: 12da237a8287bf44c864696b81f7893f, type: 3}
   - {fileID: 21300000, guid: 723dec7ac057cd74ab5ff8f598b384c9, type: 3}
   - {fileID: 21300000, guid: c58c198af7bda374db1c75ab9f6d3b8c, type: 3}
@@ -222,6 +224,7 @@ SpriteAtlas:
   - stagefinish
   - _node_rot
   - pactrometer
+  - charge
   - bulletcreatestraight
   - stagefinishgroup
   - redo
@@ -315,6 +318,7 @@ SpriteAtlas:
   - copy
   - bossphasedata
   - break
+  - burst
   - unitdel
   - resumebgm
   - find

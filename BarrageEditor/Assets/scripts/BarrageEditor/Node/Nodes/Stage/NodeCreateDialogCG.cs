@@ -19,17 +19,17 @@ namespace BarrageEditor
             // 自定义标识名称
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 图片名称
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "SpriteName", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "PosX", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "PosY", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

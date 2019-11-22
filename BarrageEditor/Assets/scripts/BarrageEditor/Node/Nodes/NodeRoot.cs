@@ -17,6 +17,7 @@ namespace BarrageEditor
             // 移动描述文本的位置
             rect = _selectedImg.GetComponent<RectTransform>();
             rect.anchoredPosition = new Vector2(31, 0);
+            _isVisible = true;
         }
 
         public override string GetNodeName()

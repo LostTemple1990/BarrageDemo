@@ -22,7 +22,7 @@ namespace BarrageEditor
             // 定义的子弹类型
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Type name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override void CreateDefualtChilds()
@@ -58,7 +58,7 @@ namespace BarrageEditor
                     if (newTypeName != "")
                     {
                         BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
-                        _isWatchingData = CustomDefine.AddData(CustomDefineType.SimpleBullet, newTypeName, onCreteNode.attrs[0].GetValueString());
+                        _isWatchingData = CustomDefine.AddData(CustomDefineType.SimpleBullet, newTypeName, onCreteNode.GetAttrByIndex(0).GetValueString());
                     }
                 }
                 else
@@ -73,7 +73,7 @@ namespace BarrageEditor
                         else
                         {
                             BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
-                            _isWatchingData = CustomDefine.AddData(CustomDefineType.SimpleBullet, attr.GetValueString(), onCreteNode.attrs[0].GetValueString());
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.SimpleBullet, attr.GetValueString(), onCreteNode.GetAttrByIndex(0).GetValueString());
                         }
                     }
                     else
@@ -82,7 +82,7 @@ namespace BarrageEditor
                         if (newTypeName != "")
                         {
                             BaseNode onCreteNode = GetChildByType(NodeType.OnBulletCreate);
-                            _isWatchingData = CustomDefine.AddData(CustomDefineType.SimpleBullet, newTypeName, onCreteNode.attrs[0].GetValueString());
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.SimpleBullet, newTypeName, onCreteNode.GetAttrByIndex(0).GetValueString());
                         }
                     }
                 }
@@ -114,12 +114,12 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("define bullet type \"{0}\"", attrs[0].GetValueString());
+            return string.Format("define bullet type \"{0}\"", _attrs[0].GetValueString());
         }
 
         public override string ToLuaHead()
         {
-            return string.Format("CustomizedTable[\"{0}\"] = {{}}\n",attrs[0].GetValueString());
+            return string.Format("CustomizedTable[\"{0}\"] = {{}}\n",_attrs[0].GetValueString());
         }
 
         public void Execute(int eventId, object data)

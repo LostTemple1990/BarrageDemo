@@ -20,7 +20,7 @@ namespace BarrageEditor
             // 代码块名称
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Title", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()
@@ -30,7 +30,7 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return attrs[0].GetValueString();
+            return _attrs[0].GetValueString();
         }
 
         public override string ToLuaHead()

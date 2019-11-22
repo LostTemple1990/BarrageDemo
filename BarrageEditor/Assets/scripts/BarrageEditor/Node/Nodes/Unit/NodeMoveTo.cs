@@ -19,23 +19,23 @@ namespace BarrageEditor
             // 单位
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 终点坐标x
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "To posX", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 终点坐标y
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "To posY", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 时间
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Duration", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 移动方式
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.MoveMode);
             nodeAttr.Init(this, "Move mode", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

@@ -19,19 +19,19 @@ namespace BarrageEditor
             // 单位
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 速度
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Velocity", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 角度
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Angle", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 是否朝向于玩家
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Aim to player", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

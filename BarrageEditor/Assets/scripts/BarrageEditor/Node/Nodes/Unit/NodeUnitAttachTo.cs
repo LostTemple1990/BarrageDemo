@@ -19,15 +19,15 @@ namespace BarrageEditor
             // 单位
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 链接的单位
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Master", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 是否跟随master一起被消除
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Eliminate with master", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

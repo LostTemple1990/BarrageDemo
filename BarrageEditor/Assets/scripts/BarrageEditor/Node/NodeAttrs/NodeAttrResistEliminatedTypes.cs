@@ -8,13 +8,11 @@ using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeAttrResistEliminatedTypes : BaseNodeAttr
+    public class NodeAttrResistEliminatedTypes : NodeAttrUneditableDropdown
     {
-        public override void BindItem(GameObject item)
+        public override void BindItem(RectTransform parentTf)
         {
-            base.BindItem(item);
-
-            _valueText.DeactivateInputField();
+            base.BindItem(parentTf);
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
         }
 
@@ -30,9 +28,6 @@ namespace BarrageEditor
 
         public override void UnbindItem()
         {
-            if (_itemGo == null)
-                return;
-            _dropDown.onValueChanged.RemoveAllListeners();
             base.UnbindItem();
         }
     }

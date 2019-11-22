@@ -63,6 +63,14 @@ namespace BarrageEditor
         /// 编辑掉落道具的界面
         /// </summary>
         public const int AttrEditDropItemView = 2013;
+        /// <summary>
+        /// 单选界面
+        /// <para>nodeAttr 属性</para>
+        /// <para>string title 标题</para>
+        /// <para>string[] values</para>
+        /// </summary>
+        public const int AttrEditRadioView = 2014;
+
 
 
         private static Dictionary<int, ViewCfg> _viewCfgMap;
@@ -223,6 +231,16 @@ namespace BarrageEditor
                 viewId = AttrEditDropItemView,
                 resPath = "EditViews/EditDropItemsView",
                 className = "BarrageEditor.AttrEditDropItemsView",
+                layer = LayerId.Normal
+            };
+            _viewCfgMap.Add(cfg.viewId, cfg);
+            #endregion
+            #region 单选界面
+            cfg = new ViewCfg()
+            {
+                viewId = AttrEditRadioView,
+                resPath = "EditViews/EditRadioView",
+                className = "BarrageEditor.AttrEditRadioView",
                 layer = LayerId.Normal
             };
             _viewCfgMap.Add(cfg.viewId, cfg);

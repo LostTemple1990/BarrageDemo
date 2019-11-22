@@ -81,7 +81,7 @@ Boss的符卡数目显示相关，击杀BOSS的特效
 对话系统的编辑器相关功能 --finish
 拿编辑器复刻之前抄的所有符卡
 给掉落道具添加可视化编辑界面 --finish
-对AttrItem进行改进，某些属性下文本框不可手动编辑
+对AttrItem进行改进，某些属性下文本框不可手动编辑 --finish
 完成Rebound属性的编辑界面 --finish
 
 COLOR_DEEP_RED=1

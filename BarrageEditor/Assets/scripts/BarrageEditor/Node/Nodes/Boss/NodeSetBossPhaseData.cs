@@ -19,15 +19,15 @@ namespace BarrageEditor
             // Boss
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Boss", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 阶段显示权重
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Phase weight", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 是否多阶段
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Is multi phase", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

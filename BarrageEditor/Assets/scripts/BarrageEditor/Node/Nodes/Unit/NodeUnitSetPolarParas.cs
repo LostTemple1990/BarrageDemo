@@ -19,27 +19,27 @@ namespace BarrageEditor
             // 单位
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 初始半径
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Radius", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 角度
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Angle", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 半径增量
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "DeltaR", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 角速度
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Omega", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 中心位置
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "CenterPos", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

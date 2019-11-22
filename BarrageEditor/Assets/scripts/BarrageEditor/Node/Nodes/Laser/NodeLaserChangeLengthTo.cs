@@ -19,19 +19,19 @@ namespace BarrageEditor
             // 子弹
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 延长激光的长度
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "To Length", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 延迟
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Delay", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 展开时间
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Duration", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

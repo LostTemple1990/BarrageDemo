@@ -19,11 +19,11 @@ namespace BarrageEditor
             // 添加碰撞触发器的对象
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 检测碰撞的类型
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CollisionGroups);
             nodeAttr.Init(this, "CollisionGroup", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override void CreateDefualtChilds()
@@ -42,14 +42,14 @@ namespace BarrageEditor
         public override string ToDesc()
         {
             return string.Format("add collider trigger for {0}",
-                attrs[0].GetValueString());
+                _attrs[0].GetValueString());
         }
 
         public override string ToLuaHead()
         {
             return string.Format("{0}:AddColliderTrigger({1},function(collider,collIndex)\n",
-                attrs[0].GetValueString(),
-                attrs[1].GetValueString());
+                _attrs[0].GetValueString(),
+                _attrs[1].GetValueString());
         }
 
         public override string ToLuaFoot()

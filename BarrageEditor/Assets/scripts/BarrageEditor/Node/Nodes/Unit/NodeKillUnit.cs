@@ -19,11 +19,11 @@ namespace BarrageEditor
             // 单位
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 是否触发事件
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Trigger event", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

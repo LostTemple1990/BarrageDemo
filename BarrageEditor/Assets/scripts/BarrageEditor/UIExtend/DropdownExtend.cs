@@ -10,6 +10,8 @@ namespace BarrageEditor
     {
         new public void Show()
         {
+            if (!IsActive() || !IsInteractable())
+                return;
             base.Show();
             var toggleRoot = transform.Find("Dropdown List/Viewport/Content");
             var toggleList = toggleRoot.GetComponentsInChildren<Toggle>(false);

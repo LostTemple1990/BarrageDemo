@@ -46,6 +46,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 45c855318d6581146bbddd75c2f08878, type: 3}
   - {fileID: 21300000, guid: 341c8831dbb11b045b9fe18713cdc97c, type: 3}
   - {fileID: 21300000, guid: 4f18e7516dc760345ae465596a81628b, type: 3}
+  - {fileID: 21300000, guid: e1488571b5247b2448b676e8c52c519f, type: 3}
   - {fileID: 21300000, guid: 3443cd713512c2a44a68c9718c4fc675, type: 3}
   - {fileID: 21300000, guid: 801edb9107aa3e348a7be081348dd336, type: 3}
   - {fileID: 21300000, guid: 28d56e917e2c2e44993eb5b634f3bf55, type: 3}
@@ -59,6 +60,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 68d47302af782fc43a6554cda2c4d55c, type: 3}
   - {fileID: 21300000, guid: 57bbe612ac6e02d4f8f63270a15ebe78, type: 3}
   - {fileID: 21300000, guid: 656f2022785317441b7be2a52452e6cb, type: 3}
+  - {fileID: 21300000, guid: ccaa452272c5aad48b2ccb0e51c73581, type: 3}
   - {fileID: 21300000, guid: 6256093298293bd4ca3f910348a28ca4, type: 3}
   - {fileID: 21300000, guid: 7a8ed9321d2334c4a935f9a595f62d4f, type: 3}
   - {fileID: 21300000, guid: 7b413482ec9fe7e47bace1d3087e60ee, type: 3}
@@ -206,6 +208,7 @@ SpriteAtlas:
   - objectcreate
   - _node_dir
   - enemyinit
+  - charge
   - rebound
   - laserinit
   - simplerebounder
@@ -219,6 +222,7 @@ SpriteAtlas:
   - setrelpos
   - setstraightparas
   - folder
+  - burst
   - bosswander
   - code
   - unitkill

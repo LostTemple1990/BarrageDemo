@@ -19,27 +19,27 @@ namespace BarrageEditor
             // 单位
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 图集名称
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Atlas name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 精灵名称
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Sprite name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 混合模式
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.BlendMode);
             nodeAttr.Init(this, "Blend mode", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 层级
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Layer);
             nodeAttr.Init(this, "Layer", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 是否缓存
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Cached", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

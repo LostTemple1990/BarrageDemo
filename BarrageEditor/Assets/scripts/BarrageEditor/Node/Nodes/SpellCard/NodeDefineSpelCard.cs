@@ -22,27 +22,27 @@ namespace BarrageEditor
             // 符卡类型标识
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Type name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 符卡名称
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Spellcard name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 符卡包含boss数量
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Boss count", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 符卡持续时间
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Duration(in sec)", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 符卡击破条件
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.SCCondition);
             nodeAttr.Init(this, "Condition", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 非符、符卡
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Is Spellcard", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override void CreateDefualtChilds()

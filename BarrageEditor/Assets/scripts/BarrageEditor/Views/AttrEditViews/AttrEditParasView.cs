@@ -52,7 +52,7 @@ namespace BarrageEditor
         private void InitParas()
         {
             CustomDefineType type = CustomDefine.GetTypeByNodeType(_nodeAttr.Node.GetNodeType());
-            string typeName = _nodeAttr.Node.attrs[0].GetValueString();
+            string typeName = _nodeAttr.Node.GetAttrByIndex(0).GetValueString();
             CustomDefineData data = CustomDefine.GetDataByTypeAndName(type, typeName);
             // 获取参数名称的列表
             if ( data == null )

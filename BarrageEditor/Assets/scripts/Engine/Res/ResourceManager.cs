@@ -51,6 +51,7 @@ namespace YKEngine
             _spriteMatList.Add(Resources.Load<Material>("Materials/SpriteDefaultMat"));
             _spriteMatList.Add(Resources.Load<Material>("Materials/SpriteSoftAdditiveMat"));
             _protoDic = new Dictionary<string, GameObject>();
+            ObjectsPool.GetInstance().Init();
         }
 
         /// <summary>
@@ -180,8 +181,15 @@ namespace YKEngine
             return default(T);
         }
 
-        public GameObject GetPrefab(string packName, string resName)
+        public GameObject GetPrefab(string packName, string resName, bool useCache = false)
         {
+            GameObject prefab;
+            if (useCache)
+            {
+                prefab = ObjectsPool.GetInstance().GetGameObjectAtPool(packName + "/" + resName);
+                if (prefab != null)
+                    return prefab;
+            }
             GameObject proto;
             if (!_protoDic.TryGetValue(resName, out proto))
             {
@@ -193,23 +201,42 @@ namespace YKEngine
                 _protoDic.Add(resName, proto);
                 proto.SetActive(false);
             }
-            GameObject prefab = GameObject.Instantiate(proto) as GameObject;
+            prefab = GameObject.Instantiate(proto) as GameObject;
             prefab.SetActive(true);
             return prefab;
         }
 
-        public GameObject GetPrefab(string packName, string resName, Transform parentTf, bool instantiateInWorldSpace)
+        public GameObject GetPrefab(string packName, string resName, Transform parentTf, bool instantiateInWorldSpace,bool useCache = false)
         {
-            GameObject proto;
-            if (!_protoDic.TryGetValue(resName, out proto))
+            GameObject prefab = null;
+            if (useCache)
             {
-                proto = Resources.Load<GameObject>(packName + "/" + resName);
-                _protoDic.Add(resName, proto);
-                proto.SetActive(false);
+                prefab = ObjectsPool.GetInstance().GetGameObjectAtPool(packName + "/" + resName);
+                if (prefab != null)
+                {
+                    prefab.transform.SetParent(parentTf, instantiateInWorldSpace);
+                    prefab.SetActive(true);
+                    return prefab;
+                }
             }
-            GameObject prefab = GameObject.Instantiate(proto, parentTf, instantiateInWorldSpace) as GameObject;
-            prefab.SetActive(true);
+            if (prefab == null)
+            {
+                GameObject proto;
+                if (!_protoDic.TryGetValue(resName, out proto))
+                {
+                    proto = Resources.Load<GameObject>(packName + "/" + resName);
+                    _protoDic.Add(resName, proto);
+                    proto.SetActive(false);
+                }
+                prefab = GameObject.Instantiate(proto, parentTf, instantiateInWorldSpace) as GameObject;
+                prefab.SetActive(true);
+            }
             return prefab;
+        }
+
+        public void RestorePrefabToPool(string name,GameObject prefab)
+        {
+            ObjectsPool.GetInstance().RestoreGameObjectToPool(name, prefab);
         }
 
         /// <summary>

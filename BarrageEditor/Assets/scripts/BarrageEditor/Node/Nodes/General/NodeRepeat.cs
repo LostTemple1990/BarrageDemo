@@ -21,37 +21,37 @@ namespace BarrageEditor
             // 次数
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Number of times", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 变量1
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Var 1 name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Var 1 init value", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Var 1 increment", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 变量2
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Var 2 name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Var 2 init value", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Var 2 increment", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 变量3
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Var 3 name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Var 3 init value", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Var 3 increment", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

@@ -8,11 +8,11 @@ using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeAttrSelectEnemyStyle : BaseNodeAttr
+    public class NodeAttrSelectEnemyStyle : NodeAttrEditableDropdown
     {
-        public override void BindItem(GameObject item)
+        public override void BindItem(RectTransform parentTf)
         {
-            base.BindItem(item);
+            base.BindItem(parentTf);
             _arrowImg.gameObject.SetActive(false);
 
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);

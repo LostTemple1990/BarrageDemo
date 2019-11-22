@@ -34,6 +34,10 @@ namespace BarrageEditor
 
         private const float RootNodeOffset = 12f;
         private const float DepthInterval = 24;
+        /// <summary>
+        /// node组件描述文本的锚点x坐标
+        /// </summary>
+        private const float DescTextAnchoredPosX = 55f;
         public const float NodeHeight = 30;
 
 
@@ -44,11 +48,15 @@ namespace BarrageEditor
         /// <summary>
         /// 参数
         /// </summary>
-        public List<BaseNodeAttr> attrs;
+        protected List<BaseNodeAttr> _attrs;
         /// <summary>
         /// 当前是否展开子节点
         /// </summary>
         protected bool _isExpand;
+        /// <summary>
+        /// 当前是否可见
+        /// </summary>
+        protected bool _isVisible;
         /// <summary>
         /// 子节点
         /// </summary>
@@ -92,7 +100,7 @@ namespace BarrageEditor
             _isValid = true;
             // 基本参数初始化
             childs = new List<BaseNode>();
-            attrs = new List<BaseNodeAttr>();
+            _attrs = new List<BaseNodeAttr>();
         }
 
         public virtual void Init(RectTransform parentTf)
@@ -106,6 +114,7 @@ namespace BarrageEditor
             _selectedImg = _nodeItemTf.Find("SelectImg").GetComponent<Image>();
             _selectedImg.color = NotSelectedColor;
             _descText = _nodeItemTf.Find("SelectImg/DescText").GetComponent<Text>();
+            _descText.RegisterDirtyLayoutCallback(OnDescTextChanged);
             _clickGo = _nodeItemTf.Find("SelectImg/ClickImg").gameObject;
             // 事件监听
             UIEventListener.Get(_clickGo).AddClick(
@@ -116,11 +125,12 @@ namespace BarrageEditor
             _clickCount = 0;
             CreateDefaultAttrs();
             _preValues = new List<object>();
-            for (int i=0;i<attrs.Count;i++)
+            for (int i=0;i<_attrs.Count;i++)
             {
                 _preValues.Add("");
             }
             IsExpand = true;
+            _isVisible = false;
         }
 
         public virtual void CreateDefaultAttrs()
@@ -294,14 +304,14 @@ namespace BarrageEditor
 
         public void SetAttrsValues(List<object> values)
         {
-            for (int i=0;i<attrs.Count;i++)
+            for (int i=0;i<_attrs.Count;i++)
             {
                 // 可能会因为增加节点属性导致保存的value不够，这个时候跳出循环即可
                 if ( i >= values.Count )
                 {
                     break;
                 }
-                attrs[i].SetValue(values[i],false);
+                _attrs[i].SetValue(values[i],false);
             }
             OnAttributeValueChanged();
         }
@@ -317,7 +327,7 @@ namespace BarrageEditor
             {
                 List<object> preValues = new List<object>();
                 List<object> curValues = new List<object>();
-                for (int i=0;i<attrs.Count;i++)
+                for (int i=0;i<_attrs.Count;i++)
                 {
                     preValues.Add(_preValues[i]);
                     curValues.Add(GetAttrByIndex(i).GetValueString());
@@ -389,12 +399,18 @@ namespace BarrageEditor
             }
             int newNodeIndex = _nodeShowIndex;
             RefreshPosition(ref newNodeIndex, this);
-            EventManager.GetInstance().PostEvent(EditorEvents.NodeExpanded, newNodeIndex);
+            EventManager.GetInstance().PostEvent(EditorEvents.NodeExpandedFinished, newNodeIndex);
         }
 
         public void SetChildNodesVisible(bool value)
         {
             _nodeItemGo.SetActive(value);
+            // 当节点从不可见变为可见时，通知ProjectPanel更新宽度
+            if (!_isVisible && value)
+            {
+                EventManager.GetInstance().PostEvent(EditorEvents.UpdateProjectPanelWidth, this, false);
+            }
+            _isVisible = value;
             // 如果该节点可见，则更新一下扩展箭头
             if (value)
             {
@@ -443,6 +459,46 @@ namespace BarrageEditor
         }
 
         /// <summary>
+        /// 描述文本发生变化，则计算当前所需要的宽度
+        /// </summary>
+        private void OnDescTextChanged()
+        {
+            if (!_isValid || !_isVisible)
+                return;
+            EventManager.GetInstance().PostEvent(EditorEvents.UpdateProjectPanelWidth, this, false);
+        }
+
+        /// <summary>
+        /// 获取nodeItem所占用的实际宽度
+        /// </summary>
+        /// <returns></returns>
+        public float GetNodeItemWidth()
+        {
+            if (!_isValid)
+                return -1;
+            float textWidth = _descText.preferredWidth;
+            float anchoredPosX = _nodeDepth == 0 ? RootNodeOffset : (_nodeDepth - 1) * DepthInterval + RootNodeOffset;
+            float width = anchoredPosX + DescTextAnchoredPosX + textWidth;
+            return width;
+        }
+
+        /// <summary>
+        /// 节点是否仍然存在
+        /// </summary>
+        public bool IsValid
+        {
+            get { return _isValid; }
+        }
+
+        /// <summary>
+        /// 节点是否可见
+        /// </summary>
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+        }
+
+        /// <summary>
         /// 该节点是否展开
         /// </summary>
         public bool IsExpand
@@ -480,12 +536,17 @@ namespace BarrageEditor
 
         public virtual string ToDesc()
         {
-            return base.ToString();
+            return "";
         }
 
         public override string ToString()
         {
-            return base.ToString();
+            string ret = string.Format("NodeType : {0}\n", _nodeType);
+            for (int i=0;i<_attrs.Count;i++)
+            {
+                ret = ret + string.Format("{0} : {1}\n", _attrs[i].GetAttrName(), _attrs[i].GetValueString());
+            }
+            return ret;
         }
 
         public void OnSelected(bool value)
@@ -551,17 +612,17 @@ namespace BarrageEditor
 
         public List<BaseNodeAttr> GetAttrs()
         {
-            return attrs;
+            return _attrs;
         }
 
         public BaseNodeAttr GetAttrByIndex(int index)
         {
-            if ( index < 0 || index >= attrs.Count )
+            if ( index < 0 || index >= _attrs.Count )
             {
                 Logger.Log("Invalid attr index " + index + " for node " + _nodeType);
                 return null;
             }
-            return attrs[index];
+            return _attrs[index];
         }
 
         public virtual void ToLua(int codeDepth, ref string luaStr)
@@ -610,9 +671,9 @@ namespace BarrageEditor
 
         protected void CachePreValue()
         {
-            for (int i=0;i<attrs.Count;i++)
+            for (int i=0;i<_attrs.Count;i++)
             {
-                _preValues[i] = attrs[i].GetValueString();
+                _preValues[i] = _attrs[i].GetValueString();
             }
         }
 
@@ -637,11 +698,11 @@ namespace BarrageEditor
                 childs[i].Destroy();
             }
             childs.Clear();
-            for (i = 0; i < attrs.Count; i++)
+            for (i = 0; i < _attrs.Count; i++)
             {
-                attrs[i].UnbindItem();
+                _attrs[i].UnbindItem();
             }
-            attrs.Clear();
+            _attrs.Clear();
             UIEventListener.Get(_clickGo).RemoveAllEvents();
             UIEventListener.Get(_expandImg.gameObject).RemoveAllEvents();
             parentNode = null;
@@ -652,6 +713,7 @@ namespace BarrageEditor
             _functionImg = null;
             _selectedImg = null;
             _clickGo = null;
+            _descText.UnregisterDirtyLayoutCallback(OnDescTextChanged);
             _descText = null;
             _isValid = false;
         }

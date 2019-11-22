@@ -19,11 +19,11 @@ namespace BarrageEditor
             // Boss动画id
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Ani Id", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 碰撞半径
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Collision Size", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

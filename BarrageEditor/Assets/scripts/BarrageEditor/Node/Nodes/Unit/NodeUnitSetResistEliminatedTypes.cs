@@ -19,11 +19,11 @@ namespace BarrageEditor
             // 单位
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 忽略的碰撞组
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.ResistEliminatedTypes);
             nodeAttr.Init(this, "Resist types(op and)", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

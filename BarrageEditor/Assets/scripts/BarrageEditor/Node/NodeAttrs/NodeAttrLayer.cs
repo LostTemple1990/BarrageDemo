@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeAttrLayer : BaseNodeAttr
+    public class NodeAttrLayer : NodeAttrUneditableDropdown
     {
-        public override void BindItem(GameObject item)
+        public override void BindItem(RectTransform parentTf)
         {
-            base.BindItem(item);
+            base.BindItem(parentTf);
             List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
             optionList.Add(new Dropdown.OptionData("LayerEnemy"));
             optionList.Add(new Dropdown.OptionData("LayerEnemyBullet"));
@@ -35,7 +32,6 @@ namespace BarrageEditor
         {
             Dropdown.OptionData selectData = _dropDown.options[value];
             OnAttributeValueEdit(selectData.text);
-            _valueText.text = selectData.text;
         }
 
         private void OnEditBtnClickHandler()
@@ -45,7 +41,10 @@ namespace BarrageEditor
 
         public override void OpenEditView()
         {
-            UIManager.GetInstance().OpenView(ViewID.AttrEditTextView, this);
+            string[] values = new string[] { "LayerEnemy", "LayerEnemyBullet", "LayerPlayer", "LayerPlayerBullet", "LayerItem",
+                "LayerEffectBottom", "LayerEffectNormal", "LayerEffectTop", "LayerUIBottom", "LayerUINormal", "LayerUITop" };
+            List<object> datas = new List<object> { this, "EditLayer", values };
+            UIManager.GetInstance().OpenView(ViewID.AttrEditRadioView, datas);
         }
 
         public override void UnbindItem()

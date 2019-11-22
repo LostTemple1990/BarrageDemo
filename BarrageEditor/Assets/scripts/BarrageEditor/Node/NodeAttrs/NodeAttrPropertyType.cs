@@ -8,11 +8,11 @@ using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeAttrPropertyType : BaseNodeAttr
+    public class NodeAttrPropertyType : NodeAttrUneditableDropdown
     {
-        public override void BindItem(GameObject item)
+        public override void BindItem(RectTransform parentTf)
         {
-            base.BindItem(item);
+            base.BindItem(parentTf);
             List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
             optionList.Add(new Dropdown.OptionData("Prop_Velocity"));
             optionList.Add(new Dropdown.OptionData("Prop_Vx"));
@@ -42,7 +42,6 @@ namespace BarrageEditor
         {
             Dropdown.OptionData selectData = _dropDown.options[value];
             OnAttributeValueEdit(selectData.text);
-            _valueText.text = selectData.text;
         }
 
         private void OnEditBtnClickHandler()
@@ -52,7 +51,12 @@ namespace BarrageEditor
 
         public override void OpenEditView()
         {
-            UIManager.GetInstance().OpenView(ViewID.AttrEditTextView, this);
+            string[] values = new string[] { "Prop_Velocity", "Prop_Vx", "Prop_Vy", "Prop_VAngel",
+                "Prop_Acce", "Prop_AccAngle", "Prop_MaxVelocity",
+                "Prop_CurveRadius", "Prop_CurveAngle", "Prop_CurveDeltaR", "Prop_CurveOmega", "Prop_CurveCenterX", "Prop_CurveCenterY",
+                "Prop_Alpha", "Prop_ScaleX", "Prop_ScaleY", "Prop_LaserLength", "Prop_LaserWidth" };
+            List<object> datas = new List<object> { this, "EditPropertyType", values };
+            UIManager.GetInstance().OpenView(ViewID.AttrEditRadioView, datas);
         }
 
         public override void UnbindItem()

@@ -19,15 +19,15 @@ namespace BarrageEditor
             // 音效名称
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Sound name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 音量大小
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Volume[0.0~1.0]", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 是否循环
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Is loop", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()
@@ -38,13 +38,13 @@ namespace BarrageEditor
         public override string ToDesc()
         {
             return string.Format("play sound \"{0}\" with volume of {1},loop = {2}",
-                attrs[0].GetValueString(), attrs[1].GetValueString(), attrs[2].GetValueString());
+                _attrs[0].GetValueString(), _attrs[1].GetValueString(), _attrs[2].GetValueString());
         }
 
         public override string ToLuaHead()
         {
             return string.Format("PlaySound(\"{0}\",{1},{2})\n",
-                attrs[0].GetValueString(), attrs[1].GetValueString(), attrs[2].GetValueString());
+                _attrs[0].GetValueString(), _attrs[1].GetValueString(), _attrs[2].GetValueString());
         }
     }
 }

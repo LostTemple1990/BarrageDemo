@@ -19,11 +19,11 @@ namespace BarrageEditor
             // 子弹
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 样式的id
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.BulletId);
             nodeAttr.Init(this, "Style id", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

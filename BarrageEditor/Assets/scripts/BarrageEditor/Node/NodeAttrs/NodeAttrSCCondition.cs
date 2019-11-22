@@ -8,11 +8,11 @@ using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeAttrSCCondition : BaseNodeAttr
+    public class NodeAttrSCCondition : NodeAttrUneditableDropdown
     {
-        public override void BindItem(GameObject item)
+        public override void BindItem(RectTransform parentTf)
         {
-            base.BindItem(item);
+            base.BindItem(parentTf);
             List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
             optionList.Add(new Dropdown.OptionData("ConditionEliminateAll"));
             optionList.Add(new Dropdown.OptionData("ConditionEliminateOne"));
@@ -21,7 +21,6 @@ namespace BarrageEditor
             _dropDown.options = optionList;
             _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
 
-            _editBtnGo.SetActive(false);
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
         }
 
@@ -29,7 +28,6 @@ namespace BarrageEditor
         {
             Dropdown.OptionData selectData = _dropDown.options[value];
             OnAttributeValueEdit(selectData.text);
-            _valueText.text = selectData.text;
         }
 
         private void OnEditBtnClickHandler()
@@ -39,14 +37,13 @@ namespace BarrageEditor
 
         public override void OpenEditView()
         {
-            UIManager.GetInstance().OpenView(ViewID.AttrEditTextView, this);
+            string[] values = new string[] { "ConditionEliminateAll", "ConditionEliminateOne", "ConditionEliminateSpecificOne", "ConditionTimeOver" };
+            List<object> datas = new List<object> { this, "EditSpellCardCondition", values };
+            UIManager.GetInstance().OpenView(ViewID.AttrEditRadioView, datas);
         }
 
         public override void UnbindItem()
         {
-            if (_itemGo == null)
-                return;
-            _dropDown.onValueChanged.RemoveAllListeners();
             base.UnbindItem();
         }
     }

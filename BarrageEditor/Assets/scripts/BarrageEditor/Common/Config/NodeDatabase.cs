@@ -140,6 +140,9 @@ namespace BarrageEditor
         Rebound = 1812,
         ColliderTrigger = 1813,
         DropItems = 1821,
+        CreateChargeEffect = 1831,
+        CreateBurstEffect = 1832,
+        ShakeScreenEffect = 1836,
 
 
         PlaySound = 2201,
@@ -943,6 +946,29 @@ namespace BarrageEditor
                 shortcutTip = "drop items",
                 defaultAttrValues = new List<object> { "0", "150", "32", "32", "1,3" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateChargeEffect,
+                shortcutPath = "charge",
+                shortcutTip = "create charge effect",
+                defaultAttrValues = new List<object> { "0", "0" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateBurstEffect,
+                shortcutPath = "burst",
+                shortcutTip = "create burst effect",
+                defaultAttrValues = new List<object> { "0", "0" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
             };
             _nodeCfgDic.Add(cfg.type, cfg);
         }

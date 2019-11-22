@@ -19,7 +19,7 @@ namespace BarrageEditor
             // 触发事件
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.UnitEventType);
             nodeAttr.Init(this, "Event type", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

@@ -24,15 +24,15 @@ namespace BarrageEditor
             // 参数列表
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Parameter list", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 敌机id
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.EnemyStyle);
             nodeAttr.Init(this, "EnemyId", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 血量
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Hit point", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override void OnAttributeValueChanged(BaseNodeAttr attr = null)
@@ -61,7 +61,7 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("on create:({0})", attrs[ParamListAttrIndex].GetValueString());
+            return string.Format("on create:({0})", _attrs[ParamListAttrIndex].GetValueString());
         }
 
         public override string ToLuaHead()

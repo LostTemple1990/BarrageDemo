@@ -19,31 +19,31 @@ namespace BarrageEditor
             // Boss
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // X Range
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "X Range", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // Y Range
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Y Range", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // X Amplitude
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "X Amplitude", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // Y Amplitude
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Y Amplitude", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // Movement mode
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.MoveMode);
             nodeAttr.Init(this, "Movement Mode", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // Direction Mode
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.DirectionMode);
             nodeAttr.Init(this, "Direction Mode", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

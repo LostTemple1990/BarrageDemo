@@ -22,7 +22,7 @@ namespace BarrageEditor
             // 定义的敌机类型
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Type name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override void CreateDefualtChilds()
@@ -72,7 +72,7 @@ namespace BarrageEditor
                         else
                         {
                             BaseNode onCreteNode = GetChildByType(NodeType.OnEnemyCreate);
-                            _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, attr.GetValueString(), onCreteNode.attrs[0].GetValueString());
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.Enemy, attr.GetValueString(), onCreteNode.GetAttrByIndex(0).GetValueString());
                         }
                     }
                     else
@@ -101,12 +101,12 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("define enemy type \"{0}\"", attrs[0].GetValueString());
+            return string.Format("define enemy type \"{0}\"", _attrs[0].GetValueString());
         }
 
         public override string ToLuaHead()
         {
-            return string.Format("CustomizedEnemyTable[\"{0}\"] = {{}}\n", attrs[0].GetValueString());
+            return string.Format("CustomizedEnemyTable[\"{0}\"] = {{}}\n", _attrs[0].GetValueString());
         }
 
         public override void Destroy()

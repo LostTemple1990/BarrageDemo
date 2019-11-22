@@ -18,13 +18,11 @@ namespace BarrageEditor
         protected object _preValue;
         public delegate bool CheckValueAvailable(object value,out string msg);
 
-        private CheckValueAvailable _checkValueFunc;
+        protected CheckValueAvailable _checkValueFunc;
 
         protected GameObject _itemGo;
+        protected RectTransform _itemTf;
         protected Text _attrNameText;
-        protected InputField _valueText;
-        protected Dropdown _dropDown;
-        protected Image _arrowImg;
         protected GameObject _editBtnGo;
 
         /// <summary>
@@ -35,6 +33,8 @@ namespace BarrageEditor
         /// 临时缓存被改变过的value
         /// </summary>
         protected string _cacheEditValue;
+
+        protected string _prefabName;
 
         public virtual void Init(BaseNode node,string name,CheckValueAvailable checkFunc)
         {
@@ -68,14 +68,6 @@ namespace BarrageEditor
             _preValue = _value;
             _value = value;
             _isValueEdit = false;
-            if ( _itemGo != null )
-            {
-                _valueText.text = GetValueString();
-            }
-            if (notifyNode)
-            {
-                _node.OnAttributeValueChanged(this);
-            }
         }
 
         /// <summary>
@@ -112,21 +104,36 @@ namespace BarrageEditor
             return _value.ToString();
         }
 
-        public virtual void BindItem(GameObject item)
+        public virtual void BindItem(RectTransform parentTf)
         {
-            _itemGo = item;
-            RectTransform tf = item.GetComponent<RectTransform>();
-            _dropDown = tf.Find("Dropdown").GetComponent<Dropdown>();
-            _arrowImg = tf.Find("Dropdown/Arrow").GetComponent<Image>();
-            _editBtnGo = tf.Find("EditBtn").gameObject;
-            _attrNameText = tf.Find("AttrNameText").GetComponent<Text>();
-            _valueText = tf.Find("Dropdown/Label").GetComponent<InputField>();
+            _itemGo = ResourceManager.GetInstance().GetPrefab("Prefabs/Views/MainView", _prefabName, parentTf, false, true);
+            _itemTf = _itemGo.GetComponent<RectTransform>();
+            _editBtnGo = _itemTf.Find("EditBtn").gameObject;
+            _attrNameText = _itemTf.Find("AttrNameText").GetComponent<Text>();
             // 名称
             _attrNameText.text = GetAttrName();
-            // 值
-            _valueText.text = GetValueString();
+        }
 
-            _valueText.onEndEdit.AddListener(OnAttributeValueEdit);
+        public virtual void UnbindItem()
+        {
+            if (_itemGo == null)
+                return;
+            UIEventListener.Get(_editBtnGo).RemoveAllEvents();
+            if (!_editBtnGo.gameObject.activeSelf)
+            {
+                _editBtnGo.gameObject.SetActive(true);
+            }
+            _editBtnGo = null;
+            _attrNameText = null;
+            ResourceManager.GetInstance().RestorePrefabToPool("Prefabs/Views/MainView/" + _prefabName, _itemGo);
+            _itemGo = null;
+            _itemTf = null;
+            if ( _isValueEdit )
+            {
+                SetValue(_cacheEditValue);
+                _cacheEditValue = null;
+                _isValueEdit = false;
+            }
         }
 
         /// <summary>
@@ -137,35 +144,6 @@ namespace BarrageEditor
         {
             _isValueEdit = true;
             _cacheEditValue = value;
-        }
-
-        public virtual void UnbindItem()
-        {
-            if (_itemGo == null)
-                return;
-            _valueText.onEndEdit.RemoveAllListeners();
-            _dropDown.options.Clear();
-            UIEventListener.Get(_editBtnGo).RemoveAllEvents();
-            _dropDown = null;
-            if (!_arrowImg.gameObject.activeSelf)
-            {
-                _arrowImg.gameObject.SetActive(true);
-            }
-            _arrowImg = null;
-            if (!_editBtnGo.gameObject.activeSelf)
-            {
-                _editBtnGo.gameObject.SetActive(true);
-            }
-            _editBtnGo = null;
-            _attrNameText = null;
-            _valueText = null;
-            _itemGo = null;
-            if ( _isValueEdit )
-            {
-                SetValue(_cacheEditValue);
-                _cacheEditValue = null;
-                _isValueEdit = false;
-            }
         }
 
         public string GetAttrName()

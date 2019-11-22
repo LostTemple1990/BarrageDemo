@@ -22,7 +22,7 @@ namespace BarrageEditor
             // 定义的object类型
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Type name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override void CreateDefualtChilds()
@@ -58,7 +58,7 @@ namespace BarrageEditor
                     if (newTypeName != "")
                     {
                         BaseNode onCreateNode = GetChildByType(NodeType.OnSTGObjectCreate);
-                        _isWatchingData = CustomDefine.AddData(CustomDefineType.STGObject, newTypeName, onCreateNode.attrs[0].GetValueString());
+                        _isWatchingData = CustomDefine.AddData(CustomDefineType.STGObject, newTypeName, onCreateNode.GetAttrByIndex(0).GetValueString());
                     }
                 }
                 else
@@ -73,7 +73,7 @@ namespace BarrageEditor
                         else
                         {
                             BaseNode onCreateNode = GetChildByType(NodeType.OnSTGObjectCreate);
-                            _isWatchingData = CustomDefine.AddData(CustomDefineType.STGObject, attr.GetValueString(), onCreateNode.attrs[0].GetValueString());
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.STGObject, attr.GetValueString(), onCreateNode.GetAttrByIndex(0).GetValueString());
                         }
                     }
                     else
@@ -82,7 +82,7 @@ namespace BarrageEditor
                         if (newTypeName != "")
                         {
                             BaseNode onCreateNode = GetChildByType(NodeType.OnSTGObjectCreate);
-                            _isWatchingData = CustomDefine.AddData(CustomDefineType.STGObject, newTypeName, onCreateNode.attrs[0].GetValueString());
+                            _isWatchingData = CustomDefine.AddData(CustomDefineType.STGObject, newTypeName, onCreateNode.GetAttrByIndex(0).GetValueString());
                         }
                     }
                 }
@@ -114,12 +114,12 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("define object type \"{0}\"", attrs[0].GetValueString());
+            return string.Format("define object type \"{0}\"", _attrs[0].GetValueString());
         }
 
         public override string ToLuaHead()
         {
-            return string.Format("CustomizedSTGObjectTable[\"{0}\"] = {{}}\n", attrs[0].GetValueString());
+            return string.Format("CustomizedSTGObjectTable[\"{0}\"] = {{}}\n", _attrs[0].GetValueString());
         }
 
         public void Execute(int eventId, object data)

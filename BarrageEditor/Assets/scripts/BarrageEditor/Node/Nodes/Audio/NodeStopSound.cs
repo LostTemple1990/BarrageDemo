@@ -19,7 +19,7 @@ namespace BarrageEditor
             // 音效名称
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Sound name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()
@@ -29,13 +29,13 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("stop sound with name \"{0}\"", attrs[0].GetValueString());
+            return string.Format("stop sound with name \"{0}\"", _attrs[0].GetValueString());
         }
 
         public override string ToLuaHead()
         {
             return string.Format("StopSound(\"{0}\")\n",
-                attrs[0].GetValueString());
+                _attrs[0].GetValueString());
         }
     }
 }

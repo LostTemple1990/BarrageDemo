@@ -8,11 +8,11 @@ using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeAttrReboundBorder : BaseNodeAttr
+    public class NodeAttrReboundBorder : NodeAttrUneditableDropdown
     {
-        public override void BindItem(GameObject item)
+        public override void BindItem(RectTransform parentTf)
         {
-            base.BindItem(item);
+            base.BindItem(parentTf);
             _arrowImg.gameObject.SetActive(false);
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
         }
@@ -29,9 +29,6 @@ namespace BarrageEditor
 
         public override void UnbindItem()
         {
-            if (_itemGo == null)
-                return;
-            _dropDown.onValueChanged.RemoveAllListeners();
             base.UnbindItem();
         }
     }

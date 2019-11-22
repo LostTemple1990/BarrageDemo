@@ -19,11 +19,11 @@ namespace BarrageEditor
             // 自定义标识名称
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 高亮、取消高亮
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Highlight", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

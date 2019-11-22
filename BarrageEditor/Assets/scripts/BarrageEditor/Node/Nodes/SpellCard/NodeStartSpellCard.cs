@@ -19,15 +19,15 @@ namespace BarrageEditor
             // 符卡类型名称
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CustomizedType);
             nodeAttr.Init(this, "SC Type Name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 符卡的boss
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CustomizedType);
             nodeAttr.Init(this, "Boss", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 是否等待符卡结束
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Wait", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

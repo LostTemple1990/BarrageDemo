@@ -221,6 +221,12 @@ namespace BarrageEditor
                 case NodeType.DropItems:
                     newNode = new NodeDropItems();
                     break;
+                case NodeType.CreateChargeEffect:
+                    newNode = new NodeCreateChargeEffect();
+                    break;
+                case NodeType.CreateBurstEffect:
+                    newNode = new NodeCreateBurstEffect();
+                    break;
 
                 case NodeType.DefineSTGObject:
                     newNode = new NodeDefineSTGObject();
@@ -332,9 +338,6 @@ namespace BarrageEditor
                 case NodeAttrType.SCCondition:
                     nodeAttr = new NodeAttrSCCondition();
                     break;
-                case NodeAttrType.ItemType:
-                    nodeAttr = new NodeAttrItem();
-                    break;
                 case NodeAttrType.CollisionGroups:
                     nodeAttr = new NodeAttrCollisionGroup();
                     break;
@@ -404,9 +407,10 @@ namespace BarrageEditor
             NodeData data = new NodeData();
             data.type = (int)node.GetNodeType();
             data.attrValues = new List<string>();
-            for (i=0;i<node.attrs.Count;i++)
+            List<BaseNodeAttr> attrList = node.GetAttrs();
+            for (i = 0; i < attrList.Count; i++)
             {
-                data.attrValues.Add(node.attrs[i].GetValueString());
+                data.attrValues.Add(attrList[i].GetValueString());
             }
             data.isExpand = node.IsExpand;
             if (childIncluded)

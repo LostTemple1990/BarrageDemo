@@ -25,15 +25,22 @@ namespace BarrageEditor
         /// </summary>
         public const int NodeSelected = 3001;
         /// <summary>
-        /// 展开/收起一个节点
+        /// 展开/收起一个节点完成之后调用
         /// </summary>
-        public const int NodeExpanded = 3002;
-        public const int FocusOnNode = 3003;
+        public const int NodeExpandedFinished = 3002;
+        /// <summary>
+        /// 当节点可见/描述文本发生变化时抛出
+        /// <para>更新ProjectPanel的宽度</para>
+        /// <para>param1 NodeBase node</para>
+        /// </summary>
+        public const int UpdateProjectPanelWidth = 3003;
+
+        public const int FocusOnNode = 3005;
         /// <summary>
         /// define类型的节点被删除
         /// <para>CustomizedType type</para>
         /// <para>string typeName</para>
         /// </summary>
-        public const int DefineNodeDestroy = 3004;
+        public const int DefineNodeDestroy = 3006;
     }
 }

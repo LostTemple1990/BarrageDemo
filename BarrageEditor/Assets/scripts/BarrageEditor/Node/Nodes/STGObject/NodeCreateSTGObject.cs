@@ -19,19 +19,19 @@ namespace BarrageEditor
             // 自定义物体名称
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CustomizedType);
             nodeAttr.Init(this, "Type name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // posX
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CustomizedType);
             nodeAttr.Init(this, "PosX", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // posY
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CustomizedType);
             nodeAttr.Init(this, "PosY", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 参数列表
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.ParaList);
             nodeAttr.Init(this, "Parameter list", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()
@@ -42,23 +42,23 @@ namespace BarrageEditor
         public override string ToDesc()
         {
             string ret = string.Format("create object with of type\"{0}\" at ({1},{2})",
-                attrs[0].GetValueString(),
-                attrs[1].GetValueString(), attrs[2].GetValueString());
+                _attrs[0].GetValueString(),
+                _attrs[1].GetValueString(), _attrs[2].GetValueString());
             if (GetAttrByIndex(1).GetValueString() != "")
             {
-                ret = ret + string.Format(" with parameter {0}", attrs[3].GetValueString());
+                ret = ret + string.Format(" with parameter {0}", _attrs[3].GetValueString());
             }
             return ret;
         }
 
         public override string ToLuaHead()
         {
-            string typeName = attrs[0].GetValueString();
+            string typeName = _attrs[0].GetValueString();
             return string.Format("last = CreateCustomizedSTGObject(\"{0}\",{1},{2}{3})\n",
                 typeName,
-                attrs[1].GetValueString(),
-                attrs[2].GetValueString(),
-                attrs[3].GetValueString() == "" ? "" : "," + attrs[3].GetValueString());
+                _attrs[1].GetValueString(),
+                _attrs[2].GetValueString(),
+                _attrs[3].GetValueString() == "" ? "" : "," + _attrs[3].GetValueString());
         }
     }
 }

@@ -19,27 +19,27 @@ namespace BarrageEditor
             // 单位
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // X轴偏移量
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Offset X", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // Y轴偏移量
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Offset Y", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 旋转角度
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Rotation", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 是否跟随Master的角度
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Follow rotation of master", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 是否持续跟随Master
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Follow master continuously", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

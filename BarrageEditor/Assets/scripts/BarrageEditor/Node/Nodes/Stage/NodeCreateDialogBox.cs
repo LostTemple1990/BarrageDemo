@@ -19,26 +19,26 @@ namespace BarrageEditor
             // 对话框类型
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Style", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 对话框文本
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Text", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 位置
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "PosX", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "PosY", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 持续时间
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Duration", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 高度缩放
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Scale", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

@@ -19,23 +19,23 @@ namespace BarrageEditor
             // 中心X坐标
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "CenterX", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 中心Y坐标
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "CenterY", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 掉落矩形半宽
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "RectHalfWidth", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 掉落矩形半高
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "RectHalfHeight", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 表达式
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.DropItems);
             nodeAttr.Init(this, "Item List", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

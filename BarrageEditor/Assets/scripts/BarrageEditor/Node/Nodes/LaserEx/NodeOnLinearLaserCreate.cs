@@ -24,23 +24,23 @@ namespace BarrageEditor
             // 参数列表
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Parameter list", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // laserId
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.LaserId);
             nodeAttr.Init(this, "Laser Id", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // length
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Length", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // SourceEnable
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Show Source", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // HeadEnable
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Show Head", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override void OnAttributeValueChanged(BaseNodeAttr attr = null)
@@ -66,7 +66,7 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("on create:({0})", attrs[ParamListAttrIndex].GetValueString());
+            return string.Format("on create:({0})", _attrs[ParamListAttrIndex].GetValueString());
         }
 
         public override string ToLuaHead()
@@ -74,7 +74,7 @@ namespace BarrageEditor
             string name = parentNode.GetAttrs()[0].GetValueString();
             string ret = string.Format("CustomizedTable[\"{0}\"].Init = function(self{1})\n",
                 name,
-                attrs[ParamListAttrIndex].GetValueString() == "" ? "" : "," + attrs[ParamListAttrIndex].GetValueString()
+                _attrs[ParamListAttrIndex].GetValueString() == "" ? "" : "," + _attrs[ParamListAttrIndex].GetValueString()
                 );
             ret += string.Format("    self:SetStyleById({0})\n    self:SetLength({1})\n    self:SetSourceEnable({2})\n    self:SetHeadEnable({3})\n",
                 GetAttrByIndex(1).GetValueString(),

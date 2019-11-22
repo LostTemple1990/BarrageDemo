@@ -20,7 +20,7 @@ namespace BarrageEditor
             BaseNodeAttr nodeAttr;
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Comment", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()
@@ -30,7 +30,7 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("[comment] {0}", attrs[0].GetValueString());
+            return string.Format("[comment] {0}", _attrs[0].GetValueString());
         }
 
         public override string ToLuaHead()

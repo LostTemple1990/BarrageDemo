@@ -8,13 +8,11 @@ using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeAttrDropItems : BaseNodeAttr
+    public class NodeAttrDropItems : NodeAttrUneditable
     {
-        public override void BindItem(GameObject item)
+        public override void BindItem(RectTransform parentTf)
         {
-            base.BindItem(item);
-            _arrowImg.gameObject.SetActive(false);
-
+            base.BindItem(parentTf);
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
         }
 
@@ -26,7 +24,6 @@ namespace BarrageEditor
         public override void OpenEditView()
         {
             UIManager.GetInstance().OpenView(ViewID.AttrEditDropItemView, this);
-
         }
 
         public override void UnbindItem()

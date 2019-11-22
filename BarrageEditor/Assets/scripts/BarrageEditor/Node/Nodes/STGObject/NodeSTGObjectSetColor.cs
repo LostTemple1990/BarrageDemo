@@ -19,27 +19,27 @@ namespace BarrageEditor
             // 单位
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Unit", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // Red value
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Red value", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // Green value
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Green value", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // Blue value
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Blue value", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // Alpha
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Alpha", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 混合模式
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.BlendMode);
             nodeAttr.Init(this, "Blend mode", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()

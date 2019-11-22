@@ -19,19 +19,19 @@ namespace BarrageEditor
             // 参数列表
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Parameter list", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 长度
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Size x", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 宽度
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Size y", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 碰撞组
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CollisionGroups);
             nodeAttr.Init(this, "Collision Groups", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override void OnAttributeValueChanged(BaseNodeAttr attr = null)
@@ -57,7 +57,7 @@ namespace BarrageEditor
 
         public override string ToDesc()
         {
-            return string.Format("on create:({0})", attrs[0].GetValueString());
+            return string.Format("on create:({0})", _attrs[0].GetValueString());
         }
 
         public override string ToLuaHead()
@@ -65,7 +65,7 @@ namespace BarrageEditor
             string name = parentNode.GetAttrByIndex(0).GetValueString();
             string ret = string.Format("CustomizedColliderTable[\"{0}\"].Init = function(self{1})\n",
                 name,
-                attrs[0].GetValueString() == "" ? "" : "," + attrs[0].GetValueString()  //不带参数的话self后不带任何参数了，因此不加分隔符','
+                _attrs[0].GetValueString() == "" ? "" : "," + _attrs[0].GetValueString()  //不带参数的话self后不带任何参数了，因此不加分隔符','
                 );
             ret = string.Format("{0}    {1}:SetSize({2},{3})\n    {1}:SetCollisionGroup({4})\n",
                 ret,

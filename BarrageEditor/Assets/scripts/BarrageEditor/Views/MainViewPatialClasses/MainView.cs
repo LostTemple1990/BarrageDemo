@@ -19,32 +19,30 @@ namespace BarrageEditor
         private RectTransform _projectScrollViewTf;
         private RectTransform _projectContentTf;
         /// <summary>
-        /// project节点信息面板最小高度
+        /// project节点信息面板默认尺寸
         /// </summary>
-        private const float ProjectContentMinHeight = 521;
+        private static Vector2 ProjectContentDefaultSize;
+        /// <summary>
         /// <summary>
         /// project面板当前高度
         /// </summary>
         private float _projectContentCurHeight;
         /// <summary>
+        /// project面板当前宽度
+        /// </summary>
+        private float _projectContentCurWidth;
+        private bool _isProjectContentWidthDirty;
+        /// <summary>
         /// 节点详细信息的面板
         /// </summary>
         private RectTransform _nodeInfoPanelTf;
-        private Scrollbar _projectContentScrollbar;
+        private Scrollbar _projectContentVScrollbar;
+        private Scrollbar _projectContentHScrollbar;
 
-        struct NodeAttrItem
-        {
-            public GameObject itemGo;
-            public Text attrNameText;
-            public InputField valueText;
-            public GameObject dropdownArrowGo;
-            public Dropdown dropdown;
-            public GameObject editBtn;
-        }
-        /// <summary>
-        /// 节点属性的item结构
-        /// </summary>
-        private List<NodeAttrItem> _nodeAttrItems;
+        ///// <summary>
+        ///// 节点属性的item结构
+        ///// </summary>
+        //private List<NodeAttrItem> _nodeAttrItems;
         /// <summary>
         /// 节点名称的text
         /// </summary>
@@ -89,7 +87,7 @@ namespace BarrageEditor
         /// <summary>
         /// 当前选中的节点tab中拥有的所有节点gameObject
         /// </summary>
-        private List<GameObject> _nodeShortcutList; 
+        private List<GameObject> _nodeShortcutList;
 
         enum eNodeShortcutTab
         {
@@ -228,6 +226,7 @@ namespace BarrageEditor
                     new List<NodeType> { NodeType.DefineCollider, NodeType.CreateCustomizedCollider, NodeType.CreateSimpleCollider },
                     new List<NodeType> { NodeType.ColliderTrigger, NodeType.Rebound },
                     new List<NodeType> { NodeType.DropItems },
+                    new List<NodeType> { NodeType.CreateChargeEffect, NodeType.CreateBurstEffect },
                 },
             };
             _nodeTabs.Add(tab);
@@ -484,7 +483,6 @@ namespace BarrageEditor
         private void InitNodeInfoPanel()
         {
             _nodeInfoPanelTf = _viewTf.Find("NodeInfoPanel").GetComponent<RectTransform>();
-            _nodeAttrItems = new List<NodeAttrItem>();
             _nodeNameText = _viewTf.Find("NodeInfoPanel/NodeTypeTextItem/NodeTypeText").GetComponent<Text>();
 
             ResetNodeAttrInfo();
@@ -495,18 +493,23 @@ namespace BarrageEditor
             _projectPanelTf = _viewTf.Find("ProjectPanel").GetComponent<RectTransform>();
             _projectScrollViewTf = _viewTf.Find("ProjectPanel/Scroll View").GetComponent<RectTransform>();
             _projectContentTf = _projectScrollViewTf.Find("Viewport/Content").GetComponent<RectTransform>();
-            _projectContentScrollbar = _projectScrollViewTf.Find("Scrollbar Vertical").GetComponent<Scrollbar>();
+            ProjectContentDefaultSize = _projectContentTf.sizeDelta;
+            _projectContentCurWidth = ProjectContentDefaultSize.x;
+            _projectContentCurHeight = ProjectContentDefaultSize.y;
+            _projectContentVScrollbar = _projectScrollViewTf.Find("Scrollbar Vertical").GetComponent<Scrollbar>();
+            _projectContentHScrollbar = _projectScrollViewTf.Find("Scrollbar Horizontal").GetComponent<Scrollbar>();
             _curSelectedNode = null;
             EventManager.GetInstance().Register(EditorEvents.BeforeProjectChanged, this);
             EventManager.GetInstance().Register(EditorEvents.AfterProjectChanged, this);
             EventManager.GetInstance().Register(EditorEvents.NodeSelected, this);
-            EventManager.GetInstance().Register(EditorEvents.NodeExpanded, this);
+            EventManager.GetInstance().Register(EditorEvents.NodeExpandedFinished, this);
+            EventManager.GetInstance().Register(EditorEvents.UpdateProjectPanelWidth, this);
             EventManager.GetInstance().Register(EditorEvents.Log, this);
             EventManager.GetInstance().Register(EditorEvents.LogWarning, this);
             EventManager.GetInstance().Register(EditorEvents.LogError, this);
             //EventManager.GetInstance().Register(EditorEvents.FocusOnNode, this);
             NodeManager.SetNodeItemContainer(_projectContentTf);
-            TestProjectNodeItems();
+            //TestProjectNodeItems();
         }
 
         public void AddListeners()
@@ -540,7 +543,7 @@ namespace BarrageEditor
         {
             int showIndex = node.GetShowIndex();
             float toY = showIndex * BaseNode.NodeHeight;
-            float max = _projectContentCurHeight - ProjectContentMinHeight;
+            float max = _projectContentCurHeight - ProjectContentDefaultSize.y;
             float toValue = 1;
             // 当前内容没有填满content，
             if (max <= 0)
@@ -559,7 +562,7 @@ namespace BarrageEditor
             // 根据content的最大高度进行校正
             //Logger.Log("posY = " + toY + " max = " + max);
             //Logger.Log("toValue = " + toValue);
-            _projectContentScrollbar.value = toValue;
+            _projectContentVScrollbar.value = toValue;
             //_projectContentTf.anchoredPosition = new Vector2(0, toY);
         }
 
@@ -573,8 +576,11 @@ namespace BarrageEditor
                 case EditorEvents.NodeSelected:
                     OnNodeSelected(data as BaseNode);
                     break;
-                case EditorEvents.NodeExpanded:
+                case EditorEvents.NodeExpandedFinished:
                     OnNodeExpanded((int)data);
+                    break;
+                case EditorEvents.UpdateProjectPanelWidth:
+                    OnNodeItemShowStateChanged(data as BaseNode);
                     break;
                 case EditorEvents.Log:
                     AddLogItem(LogLevel.Normal, data as string);
@@ -595,6 +601,10 @@ namespace BarrageEditor
                 ResetNodeAttrInfo();
                 _curSelectedNode = null;
             }
+            // 恢复原本的size
+            _projectContentTf.sizeDelta = ProjectContentDefaultSize;
+            _projectContentCurWidth = ProjectContentDefaultSize.x;
+            _projectContentCurHeight = ProjectContentDefaultSize.y;
         }
 
         private void OnNodeSelected(BaseNode node)
@@ -621,14 +631,37 @@ namespace BarrageEditor
         {
             // index是从0开始计算的，因此算高度的时候要+1
             float preferredHeight = (lastIndex + 1) * BaseNode.NodeHeight;
-            if (preferredHeight < ProjectContentMinHeight)
+            if (preferredHeight < ProjectContentDefaultSize.y)
             {
-                preferredHeight = ProjectContentMinHeight;
+                preferredHeight = ProjectContentDefaultSize.y;
             }
             _projectContentCurHeight = preferredHeight;
-            _projectContentTf.sizeDelta = new Vector2(0, preferredHeight);
+            _projectContentTf.sizeDelta = new Vector2(_projectContentCurWidth, preferredHeight);
             _projectScrollViewTf.GetComponent<ScrollRect>().Rebuild(CanvasUpdate.PostLayout);
             //LayoutRebuilder.ForceRebuildLayoutImmediate(_projectScrollViewTf);
+        }
+
+        /// <summary>
+        /// NodeItem的显示状态发生变化，则判断是否更新ProjectPanel的宽度
+        /// </summary>
+        /// <param name="node"></param>
+        private void OnNodeItemShowStateChanged(BaseNode node)
+        {
+            float width = node.GetNodeItemWidth();
+            if (width > _projectContentCurWidth - 5)
+            {
+                _projectContentCurWidth = width + 5;
+                _isProjectContentWidthDirty = true;
+                //Logger.Log(node);
+                //BaseNode current = node.parentNode;
+                //while (current != null)
+                //{
+                //    Logger.Log("from\n" + current);
+                //    current = current.parentNode;
+                //}
+                //Logger.Log("width = " + width + "\n");
+                //Logger.Log("--------------------------");
+            }
         }
 
         private void ResetNodeAttrInfo()
@@ -643,13 +676,6 @@ namespace BarrageEditor
                 }
             }
             _nodeNameText.text = "please select a node to show attributes";
-            for (int i=0;i<_nodeAttrItems.Count;i++)
-            {
-                NodeAttrItem item = _nodeAttrItems[i];
-                item.itemGo.SetActive(false);
-                item.dropdown.options.Clear();
-                item.dropdownArrowGo.SetActive(true);
-            }
         }
 
         private void UpdateNodeNameItem()
@@ -663,41 +689,27 @@ namespace BarrageEditor
             int attrCount = _attributeList.Count;
             int i;
             BaseNodeAttr attribute;
-            if ( attrCount > _nodeAttrItems.Count )
-            {
-                for (i = _nodeAttrItems.Count; i < attrCount; i++)
-                {
-                    NodeAttrItem item = CreateNodeAttrItem();
-                    _nodeAttrItems.Add(item);
-                }
-            }
             for (i = 0; i < attrCount; i++)
             {
                 attribute = _attributeList[i];
-                _nodeAttrItems[i].itemGo.SetActive(true);
-                attribute.BindItem(_nodeAttrItems[i].itemGo);
+                attribute.BindItem(_nodeInfoPanelTf);
             }
-        }
-
-        private NodeAttrItem CreateNodeAttrItem()
-        {
-            GameObject itemGo = ResourceManager.GetInstance().GetPrefab("Prefabs/Views", "MainView/NodeAttributeItem");
-            RectTransform tf = itemGo.GetComponent<RectTransform>();
-            tf.SetParent(_nodeInfoPanelTf, false);
-            NodeAttrItem item = new NodeAttrItem();
-            item.itemGo = itemGo;
-            item.attrNameText = tf.Find("AttrNameText").GetComponent<Text>();
-            item.valueText = tf.Find("Dropdown/Label").GetComponent<InputField>();
-            item.dropdownArrowGo = tf.Find("Dropdown/Arrow").gameObject;
-            item.dropdown = tf.Find("Dropdown").GetComponent<Dropdown>();
-            item.editBtn = tf.Find("EditBtn").gameObject;
-            return item;
         }
 
         public override void Update()
         {
             CheckFocus();
             CheckHotKeys();
+            RenderProjectPanelSize();
+            _isProjectContentWidthDirty = false;
+        }
+
+        private void RenderProjectPanelSize()
+        {
+            if (!_isProjectContentWidthDirty)
+                return;
+            _projectContentTf.sizeDelta = new Vector2(_projectContentCurWidth, _projectContentCurHeight);
+            _projectScrollViewTf.GetComponent<ScrollRect>().Rebuild(CanvasUpdate.PostLayout);
         }
     }
 }

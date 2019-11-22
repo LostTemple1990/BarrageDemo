@@ -19,15 +19,15 @@ namespace BarrageEditor
             // 输出名称
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Output name", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 作者
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Author", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
             // 是否允许练习模式
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
             nodeAttr.Init(this, "Allow practice", null);
-            attrs.Add(nodeAttr);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()
@@ -43,7 +43,7 @@ namespace BarrageEditor
         public override string ToLuaHead()
         {
             return string.Format("-- Mod name: {0}\n--author=\"{1}\"\n--allow_practice={2}\n",
-                attrs[0].GetValueString(), attrs[1].GetValueString(), attrs[2].GetValueString());
+                _attrs[0].GetValueString(), _attrs[1].GetValueString(), _attrs[2].GetValueString());
         }
     }
 }
