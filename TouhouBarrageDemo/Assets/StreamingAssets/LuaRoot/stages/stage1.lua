@@ -709,12 +709,6 @@ Stage["Stage1"] = function()
 	--lib.InitGravitationField(field,1,0.5,0,0,0,0.05,0,0,0)
 	--lib.SetObjectColliderColliderGroup(field,eColliderGroup.EnemyBullet)
 	--
-	last = CreateSimpleBulletById(123051,0,0)
-	last:SetV(0,268.9,false)
-	last.scaleX = 1.9
-	last.scaleY = 12
-	last:SetColor(100,100,255,1)
-	if coroutine.yield(20000) == false then return end
 	if coroutine.yield(200) == false then return end
 	do
 		--local enemy = lib.CreateNormalEnemyById("100000",500,0,185);

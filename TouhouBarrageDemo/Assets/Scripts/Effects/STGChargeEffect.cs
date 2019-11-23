@@ -7,18 +7,16 @@ public class STGChargeEffect : STGEffectBase
     /// <summary>
     /// 默认尺寸
     /// </summary>
-    private const float DefaultSize = 64;
+    private const float DefaultSize = 256;
     private const int CircleShrinkDuration = 60;
 
-    private const float LimitMinX = 300;
-    private const float LimitMaxX = 500;
-    private const float LimitMinY = 300;
-    private const float LimitMaxY = 500;
+    private const float LimitMinRadius = 300;
+    private const float LimitMaxRadius = 500;
 
     private const int ChargeMinDuration = 50;
     private const int ChargeMaxDuration = 80;
 
-    private const float InitCircleScale = 8f;
+    private const float InitCircleScale = 1.5f;
 
     private List<ChargeObject> _chargeList;
     private int _chargeCount;
@@ -60,15 +58,15 @@ public class STGChargeEffect : STGEffectBase
             _circleTf.localPosition = Vector3.zero;
             _circleTf.localScale = new Vector3(InitCircleScale, InitCircleScale, 1);
             _circleSpRenderer = _circleTf.Find("Sprite").GetComponent<SpriteRenderer>();
-            _circleSpRenderer.sprite = ResourceManager.GetInstance().GetSprite(Consts.EffectAtlasName, "TransparentCircle");
-            _circleSpRenderer.color = new Color(0.95f, 0.1f, 0.1f, 0.5f);
+            _circleSpRenderer.sprite = ResourceManager.GetInstance().GetSprite("ShapeAtlas", "ShapeCircle");
+            _circleSpRenderer.color = new Color(0.9f, 0.1f, 0.1f, 0.5f);
         }
         _circleShrinkTime = 0;
         _isCircleShrinking = true;
         _chargeTime = 0;
         _isInitChargeObjects = false;
         _curPos = Vector2.zero;
-        SoundManager.GetInstance().Play("castcharge", false);
+        SoundManager.GetInstance().Play("castcharge", 0.1f, false, true);
     }
 
     private void InitChargeObjects()
@@ -100,7 +98,7 @@ public class STGChargeEffect : STGEffectBase
         {
             UpdateCircleTf();
         }
-        UpdateBurstObjects();
+        UpdateChargeObjects();
         if (_chargeTime >= ChargeMaxDuration)
         {
             _isFinish = true;
@@ -112,8 +110,11 @@ public class STGChargeEffect : STGEffectBase
         _circleShrinkTime++;
         if (_circleShrinkTime <= CircleShrinkDuration)
         {
-            float scale = MathUtil.GetEaseInQuadInterpolation(InitCircleScale, 0, _circleShrinkTime, CircleShrinkDuration);
+            float factor = MathUtil.GetEaseInQuadInterpolation(0, 1, _circleShrinkTime, CircleShrinkDuration);
+            float scale = Mathf.Lerp(InitCircleScale, 0, factor);
             _circleTf.localScale = new Vector3(scale, scale, 1);
+            float alpha = Mathf.Lerp(0.5f, 0.1f, factor);
+            _circleSpRenderer.color = new Color(0.9f, 0.1f, 0.1f, alpha);
         }
         else
         {
@@ -122,7 +123,7 @@ public class STGChargeEffect : STGEffectBase
         }
     }
 
-    private void UpdateBurstObjects()
+    private void UpdateChargeObjects()
     {
         foreach (ChargeObject co in _chargeList)
         {
@@ -139,13 +140,10 @@ public class STGChargeEffect : STGEffectBase
     /// <returns></returns>
     private Vector3 GetRandomStartPos()
     {
-        int factor;
-        float posX, posY;
-        factor = Random.Range(0, 2) * 2 - 1;
-        posX = factor * Random.Range(LimitMinX, LimitMaxX);
-        factor = Random.Range(0, 2) * 2 - 1;
-        posY = factor * Random.Range(LimitMinY, LimitMaxY);
-        // 加上起始点偏移量
+        float angle = Random.Range(0f, 360f);
+        float radius = Random.Range(LimitMinRadius, LimitMaxRadius);
+        float posX = radius * Mathf.Cos(angle * Mathf.Deg2Rad);
+        float posY = radius * Mathf.Sin(angle * Mathf.Deg2Rad);
         return new Vector3(posX + _curPos.x, posY + _curPos.y, 0);
     }
 
@@ -153,6 +151,11 @@ public class STGChargeEffect : STGEffectBase
     {
         _curPos = new Vector2(posX, posY);
         _effectContainerTf.localPosition = new Vector3(posX, posY, 0);
+    }
+
+    public void SetScale(float scale)
+    {
+        _effectContainerTf.localScale = new Vector3(scale, scale, 1);
     }
 
     public override void Clear()

@@ -206,7 +206,7 @@ public class NormalEnemy : EnemyBase
         {
             if ( eliminateType != eEliminateDef.ForcedDelete )
             {
-                SoundManager.GetInstance().Play("killenemy", false);
+                SoundManager.GetInstance().Play("killenemy", 0.1f, false, true);
                 if ( _cfg.eliminatedEffectStyle != 0 )
                 {
                     STGEnemyEliminatedEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.EnemyEliminated) as STGEnemyEliminatedEffect;

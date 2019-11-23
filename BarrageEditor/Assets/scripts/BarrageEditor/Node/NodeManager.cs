@@ -227,6 +227,12 @@ namespace BarrageEditor
                 case NodeType.CreateBurstEffect:
                     newNode = new NodeCreateBurstEffect();
                     break;
+                case NodeType.ShakeScreen:
+                    newNode = new NodeShakeScreen();
+                    break;
+                case NodeType.StopShakeScreen:
+                    newNode = new NodeStopShakeScreen();
+                    break;
 
                 case NodeType.DefineSTGObject:
                     newNode = new NodeDefineSTGObject();

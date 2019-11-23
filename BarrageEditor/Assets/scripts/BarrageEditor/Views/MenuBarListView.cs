@@ -175,6 +175,7 @@ namespace BarrageEditor
                 // todo 载入固定位置的一个模板
                 string templatePath = Application.streamingAssetsPath + "/template.nd";
                 BarrageProject.LoadProject(templatePath);
+                BarrageProject.SetProjectPath(savePath);
                 EventManager.GetInstance().PostEvent(EditorEvents.AfterProjectChanged);
                 // 当前文件
                 BarrageProject.Log("current project file: " + FileUtils.GetFileNameByPath(savePath));
@@ -216,6 +217,7 @@ namespace BarrageEditor
                 BaseNode root = BarrageProject.RootNode;
                 NodeData nd = NodeManager.SaveAsNodeData(root, true);
                 FileUtils.SerializableObjectToFile(savePath, nd);
+                BarrageProject.SetProjectPath(savePath);
             }
         }
 

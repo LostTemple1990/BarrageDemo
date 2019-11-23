@@ -196,6 +196,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: b1a5fb8e6304fd8428afc7c2522c058e, type: 3}
   - {fileID: 21300000, guid: 13ae99aecd57ff44b806e133a0e57f14, type: 3}
   - {fileID: 21300000, guid: dd13a0bed27af6f408d761950aa554b9, type: 3}
+  - {fileID: 21300000, guid: f836dfbe8de98af418688ef65f67b18d, type: 3}
   - {fileID: 21300000, guid: 15ee76ce4ba147249ab95071aa4fbd55, type: 3}
   - {fileID: 21300000, guid: e3c3eeeedbd11054a8d0662965ae7e2d, type: 3}
   - {fileID: 21300000, guid: cc0a21fed043993419b675847c6bfe96, type: 3}
@@ -374,6 +375,7 @@ SpriteAtlas:
   - child
   - unknow
   - bgstage
+  - stopshakescreen
   - paste
   - loadimagegroup
   - taskrepeat

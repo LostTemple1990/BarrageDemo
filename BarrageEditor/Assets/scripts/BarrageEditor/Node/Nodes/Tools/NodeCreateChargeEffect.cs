@@ -21,8 +21,12 @@ namespace BarrageEditor
             nodeAttr.Init(this, "PosX", null);
             _attrs.Add(nodeAttr);
             // 坐标Y
-            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.ReboundBorder);
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "PosY", null);
+            _attrs.Add(nodeAttr);
+            // 缩放
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr.Init(this, "Scale", null);
             _attrs.Add(nodeAttr);
         }
 
@@ -39,8 +43,10 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            return string.Format("CreateChargeEffect({0},{1})\n",
-                _attrs[0].GetValueString(), _attrs[1].GetValueString());
+            string scaleParam = GetAttrByIndex(2).GetValueString() == "" ? "" : string.Format(",{0}", GetAttrByIndex(2).GetValueString());
+            return string.Format("CreateChargeEffect({0},{1}{2})\n",
+                GetAttrByIndex(0).GetValueString(), GetAttrByIndex(1).GetValueString(),
+                scaleParam);
         }
     }
 }

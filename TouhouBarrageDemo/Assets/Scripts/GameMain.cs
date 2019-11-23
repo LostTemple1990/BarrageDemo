@@ -45,7 +45,7 @@ public class GameMain : MonoBehaviour
         //STGData data = new STGData()
         //{
         //    stageName = "Stage1",
-        //    characterIndex = 0,
+        //    characterIndex = 1,
         //    isReplay = false,
         //};
         //_fsm.SetNextStateId((int)eGameState.STG, data);

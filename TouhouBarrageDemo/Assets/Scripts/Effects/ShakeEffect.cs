@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class ShakeEffect : STGEffectBase
 {
-    private const float MaxShakeLevel = 10;
+    /// <summary>
+    /// 当前的ShakeEffect列表
+    /// </summary>
+    private List<ShakeEffect> ShakeList = new List<ShakeEffect>();
+    /// <summary>
+    /// 当前激活的ShakeEffect索引
+    /// </summary>
+    private int CurrentActiveIndex = -1;
 
     private Camera _camera;
     private Transform _shakeLayerTf;
@@ -23,10 +30,12 @@ public class ShakeEffect : STGEffectBase
     /// </summary>
     private int _shakeTime;
 
-    private float _shakeDelta;
+    /// <summary>
+    /// 震幅
+    /// </summary>
     private float _shakeLevel;
     /// <summary>
-    /// 最小的抖动等级
+    /// 最小震幅
     /// </summary>
     private float _minShakeLevel;
     /// <summary>
@@ -37,9 +46,9 @@ public class ShakeEffect : STGEffectBase
     private bool _isShaking;
     /// <summary>
     /// 当前的偏移
-    /// <para>偏移量实际上等于gamelayer的locaoPos</para>
+    /// <para>偏移量实际上等于gamelayer的localPos</para>
     /// </summary>
-    private Vector3 _curGameLayerOffset;
+    private Vector3 _curGameLayerPos;
 
     public ShakeEffect()
     {
@@ -54,6 +63,10 @@ public class ShakeEffect : STGEffectBase
         _shakeLayerTf = UIManager.GetInstance().GetSTGLayerTf();
         _originalRect = _camera.rect;
         _isShaking = false;
+        // 添加到全局shake列表
+        ShakeList.Add(this);
+        if (CurrentActiveIndex == -1)
+            CurrentActiveIndex = ShakeList.IndexOf(this);
     }
 
     /// <summary>
@@ -64,18 +77,17 @@ public class ShakeEffect : STGEffectBase
     /// <param name="shakeInterval">抖动间隔</param>
     /// <param name="shakeDelta"></param>
     /// <param name="shakeLevel"></param>
-    public void DoShake(int delay,int shakeDuration,int shakeInterval,float shakeDelta,float shakeLevel)
+    public void DoShake(int delay,int shakeDuration,int shakeInterval,float shakeLevel)
     {
         _shakeDelay = delay;
         _shakeDuration = shakeDuration;
         _shakeInterval = shakeInterval;
         _shakeTime = 0;
-        _shakeDelta = 1;
         _shakeLevel = shakeLevel * Global.STGAcutalScaleHeight;
         _minShakeLevel = 0;
         _maxShakeRange = 0;
         // 初始化偏移量
-        _curGameLayerOffset = _shakeLayerTf.localPosition;
+        _curGameLayerPos = _shakeLayerTf.localPosition;
         _isShaking = true;
     }
 
@@ -84,18 +96,17 @@ public class ShakeEffect : STGEffectBase
     /// </summary>
     /// <param name="delay"></param>
     /// <param name="shakeDuration"></param>
-    /// <param name="shakeInterval"></param>
+    /// <param name="shakeInterval">抖动间隔</param>
     /// <param name="shakeDelta"></param>
-    /// <param name="shakeLevel"></param>
+    /// <param name="shakeLevel">震幅，即在[-shakeLevel,shakeLevel]之间</param>
     /// <param name="minShakeLevel">每次最小的抖动范围</param>
     /// <param name="maxShakeRange">抖动的最大范围限制</param>
-    public void DoShake(int delay, int shakeDuration, int shakeInterval, float shakeDelta, float shakeLevel,float minShakeLevel,float maxShakeRange)
+    public void DoShake(int delay, int shakeDuration, int shakeInterval, float shakeLevel, float minShakeLevel, float maxShakeRange)
     {
         _shakeDelay = delay;
         _shakeDuration = shakeDuration;
         _shakeInterval = shakeInterval;
         _shakeTime = 0;
-        _shakeDelta = 1;
         _shakeLevel = shakeLevel * Global.STGAcutalScaleHeight;
         if ( minShakeLevel < shakeLevel )
         {
@@ -105,14 +116,20 @@ public class ShakeEffect : STGEffectBase
         {
             _minShakeLevel = 0;
         }
+        if (_maxShakeRange <= 0)
+            _maxShakeRange = int.MaxValue;
         _maxShakeRange = maxShakeRange * Global.STGAcutalScaleHeight;
         // 初始化偏移量
-        _curGameLayerOffset = _shakeLayerTf.localPosition;
+        _curGameLayerPos = _shakeLayerTf.localPosition;
         _isShaking = true;
     }
 
     public override void Update()
     {
+        if (CurrentActiveIndex == -1)
+        {
+            CurrentActiveIndex = ShakeList.IndexOf(this);
+        }
         if ( _isShaking )
         {
             Shake();
@@ -127,20 +144,24 @@ public class ShakeEffect : STGEffectBase
         }
         else
         {
-            if (_shakeTime % _shakeInterval == 0)
+            _shakeTime++;
+            // 只有当前ShakeEffect处于激活状态时才执行抖动
+            if (ShakeList[CurrentActiveIndex] == this)
             {
-                Vector3 offset = Vector3.zero;
-                offset.x = GetNextOffset(_curGameLayerOffset.x, _minShakeLevel, _shakeLevel, _maxShakeRange);
-                offset.y = GetNextOffset(_curGameLayerOffset.y, _minShakeLevel, _shakeLevel, _maxShakeRange);
-                _curGameLayerOffset = offset;
-                Vector3 curPos = _shakeLayerTf.localPosition;
-                _shakeLayerTf.localPosition = _curGameLayerOffset;
+                if (_shakeTime % _shakeInterval == 0)
+                {
+                    Vector3 newPos = Vector3.zero;
+                    newPos.x = GetNextOffset(_curGameLayerPos.x, _minShakeLevel, _shakeLevel, _maxShakeRange);
+                    newPos.y = GetNextOffset(_curGameLayerPos.y, _minShakeLevel, _shakeLevel, _maxShakeRange);
+                    _curGameLayerPos = newPos;
+                    _shakeLayerTf.localPosition = _curGameLayerPos;
+                }
             }
             if (_shakeTime >= _shakeDuration)
             {
                 _isShaking = false;
+                _isFinish = true;
             }
-            _shakeTime++;
         }
     }
 
@@ -213,5 +234,13 @@ public class ShakeEffect : STGEffectBase
         _shakeLayerTf.localPosition = Vector3.zero;
         _camera = null;
         _shakeLayerTf = null;
+        // 从ShakeList中移除
+        int index = ShakeList.IndexOf(this);
+        if (CurrentActiveIndex == index)
+        {
+            CurrentActiveIndex = -1;
+        }
+        ShakeList[index] = null;
+        CommonUtils.RemoveNullElementsInList<ShakeEffect>(ShakeList);
     }
 }

@@ -97,18 +97,18 @@ public class EffectsManager
             effect = _effectList[i];
             if ( effect != null )
             {
+                if (!effect.IsFinish())
+                {
+                    effect.Update();
+                }
                 if (effect.IsFinish())
                 {
                     effect.Clear();
-                    if ( effect.NeedToBeRestoredToPool() )
+                    if (effect.NeedToBeRestoredToPool())
                     {
                         RestoreEffectToPool(effect);
                     }
                     _effectList[i] = null;
-                }
-                else
-                {
-                    effect.Update();
                 }
             }
         }

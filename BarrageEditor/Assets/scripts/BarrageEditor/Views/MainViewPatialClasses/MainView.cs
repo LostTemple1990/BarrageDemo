@@ -226,7 +226,7 @@ namespace BarrageEditor
                     new List<NodeType> { NodeType.DefineCollider, NodeType.CreateCustomizedCollider, NodeType.CreateSimpleCollider },
                     new List<NodeType> { NodeType.ColliderTrigger, NodeType.Rebound },
                     new List<NodeType> { NodeType.DropItems },
-                    new List<NodeType> { NodeType.CreateChargeEffect, NodeType.CreateBurstEffect },
+                    new List<NodeType> { NodeType.CreateChargeEffect, NodeType.CreateBurstEffect, NodeType.ShakeScreen, NodeType.StopShakeScreen },
                 },
             };
             _nodeTabs.Add(tab);

@@ -117,8 +117,6 @@ public partial class LuaLib
             new NameFuncPair("SetSpriteEffectColor",SetSpriteEffectColor),
             new NameFuncPair("SpriteEffectScaleWidth",SpriteEffectChangeWidthTo),
             new NameFuncPair("SpriteEffectScaleHeight",SpriteEffectChangeHeightTo),
-            new NameFuncPair("ShakeEffectDoShake",ShakeEffectDoShake),
-            new NameFuncPair("ShakeEffectDoShakeWithLimitation",ShakeEffectDoShakeWithLimitation),
             new NameFuncPair("CreateChargeEffect",CreateChargeEffect),
             // 子弹组件
             new NameFuncPair("AddBulletComponent",AddBulletComponent),
@@ -244,6 +242,8 @@ public partial class LuaLib
             new NameFuncPair("CreateBurstEffect",CreateBurstEffect),
             new NameFuncPair("CreateShakeEffect",CreateShakeEffect),
             new NameFuncPair("CreateBossDeadEffect",CreateBossDeadEffect),
+            new NameFuncPair("ShakeScreen",ShakeScreen),
+            new NameFuncPair("StopShakeScreen",StopShakeScreen),
             // STGObject
             new NameFuncPair("CreateCustomizedSTGObject",CreateCustomizedSTGObject),
             // Unit

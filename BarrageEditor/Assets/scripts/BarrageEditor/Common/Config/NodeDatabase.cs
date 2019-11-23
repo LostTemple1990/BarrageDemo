@@ -142,7 +142,8 @@ namespace BarrageEditor
         DropItems = 1821,
         CreateChargeEffect = 1831,
         CreateBurstEffect = 1832,
-        ShakeScreenEffect = 1836,
+        ShakeScreen = 1836,
+        StopShakeScreen = 1837,
 
 
         PlaySound = 2201,
@@ -967,6 +968,28 @@ namespace BarrageEditor
                 shortcutPath = "burst",
                 shortcutTip = "create burst effect",
                 defaultAttrValues = new List<object> { "0", "0" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.ShakeScreen,
+                shortcutPath = "shakescreen",
+                shortcutTip = "shake screen",
+                defaultAttrValues = new List<object> { "shake", "0", "270", "3", "3", "1.5", "5" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.StopShakeScreen,
+                shortcutPath = "stopshakescreen",
+                shortcutTip = "stop shake screen",
+                defaultAttrValues = new List<object> { "shake" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
             };

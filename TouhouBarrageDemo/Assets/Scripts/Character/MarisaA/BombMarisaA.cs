@@ -108,6 +108,11 @@ public class BombMarisaA : BombBase
         _time = 0;
         _duration = 30;
         _isFinish = false;
+        // 震动
+        ShakeEffect shakeEffect = EffectsManager.GetInstance().CreateEffectByType(EffectType.ShakeEffect) as ShakeEffect;
+        shakeEffect.DoShake(0, 270, 3, 3f, 1.5f, 5);
+        // 音效
+        SoundManager.GetInstance().Play("se_masterspark", 0.1f, false, true);
     }
 
     public override void Update()
@@ -162,7 +167,6 @@ public class BombMarisaA : BombBase
             _colliderRect.SetHitEnemyDamage(1.5f);
             _colliderRect.SetPosition(Global.PlayerPos.x + _posOffset.x, Global.PlayerPos.y + _posOffset.y);
             _duration = 240;
-            SoundManager.GetInstance().Play("se_masterspark", 0.1f, false, true);
         }
         _time++;
     }
