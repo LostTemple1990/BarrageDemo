@@ -86,7 +86,7 @@ public class SubWeaponMarisaA : SubWeaponBase
             // 更新激光角度
             ePlayerMoveMode mode = _character.curModeMode;
             float laserAngle = mode == ePlayerMoveMode.LowSpeed ? 90f : _shootAngles[subAvailable - 1][_subIndex];
-            _laser.SetAngle(laserAngle);
+            _laser.SetRotation(laserAngle);
             _isShooting = true;
         }
         else

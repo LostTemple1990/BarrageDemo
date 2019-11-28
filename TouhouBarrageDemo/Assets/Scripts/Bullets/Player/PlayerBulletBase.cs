@@ -100,7 +100,11 @@ public class PlayerBulletBase : BulletBase
                     float offsetY = paras[4];
                     if (offsetX != 0) dx += Random.Range(-offsetX, offsetX);
                     if (offsetY != 0) dy += Random.Range(-offsetY, offsetY);
-                    effect.SetPosition(_hitPos.x + dx, _hitPos.y + dy);
+                    float sin = Mathf.Sin(_curRotation * Mathf.Deg2Rad);
+                    float cos = Mathf.Cos(_curRotation * Mathf.Deg2Rad);
+                    float relX = cos * dx - sin * dy;
+                    float relY = sin * dx + cos * dy;
+                    effect.SetPosition(_hitPos.x + relX, _hitPos.y + relY);
                     break;
                 }
             // 设置位置，参数为绝对位置
@@ -152,6 +156,14 @@ public class PlayerBulletBase : BulletBase
                 {
                     float angle = paras[1];
                     effect.SetRotation(angle);
+                    break;
+                }
+            // 旋转
+            // omega,角速度
+            case 7:
+                {
+                    float omega = paras[1];
+                    effect.DoRotation(omega, -1);
                     break;
                 }
             // orderInLayer

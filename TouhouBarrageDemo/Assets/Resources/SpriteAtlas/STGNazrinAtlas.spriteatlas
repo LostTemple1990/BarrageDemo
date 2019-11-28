@@ -58,9 +58,9 @@ SpriteAtlas:
   m_PackedSpriteNamesToIndex:
   - Nazrin_FadeToRight_1
   - Nazrin_Idle_0
-  - Nazrin_Right_1
-  - Nazrin_Cast_3
   - Nazrin_Right_0
+  - Nazrin_Cast_3
+  - Nazrin_FadeToRight_2
   - Nazrin_Cast_1
   - Nazrin_Cast_2
   - Nazrin_Idle_3

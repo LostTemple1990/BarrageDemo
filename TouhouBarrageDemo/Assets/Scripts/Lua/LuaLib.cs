@@ -837,8 +837,50 @@ public partial class LuaLib
     {
         Boss boss = luaState.ToUserData(-2) as Boss;
         bool isShow = luaState.ToBoolean(-1);
-        luaState.Pop(2);
         boss.ShowBloodBar(isShow);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置BOSS是否显示位置提示
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int ShowBossPosHint(ILuaState luaState)
+    {
+        Boss boss = luaState.ToUserData(-2) as Boss;
+        bool isShow = luaState.ToBoolean(-1);
+        boss.ShowPosHint(isShow);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置BOSS是否显示光环
+    /// <para>boss</para>
+    /// <para>bool isShow</para>
+    /// <para>bool playAni</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int ShowBossAura(ILuaState luaState)
+    {
+        Boss boss = luaState.ToUserData(-3) as Boss;
+        bool isShow = luaState.ToBoolean(-2);
+        bool playAni = luaState.ToBoolean(-1);
+        boss.ShowAura(isShow, playAni);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置BOSS是否显示符卡血量光环
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int ShowBossSpellCardHpAura(ILuaState luaState)
+    {
+        Boss boss = luaState.ToUserData(-2) as Boss;
+        bool isShow = luaState.ToBoolean(-1);
+        boss.ShowSpellCardHpAura(isShow);
         return 0;
     }
 

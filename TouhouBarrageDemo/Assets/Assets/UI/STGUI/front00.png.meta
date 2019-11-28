@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: aaf4a450927bcf14da072973ed68de3d
 TextureImporter:
   fileIDToRecycleName:
-    21300000: TextRealTime
+    21300000: BossPosHit
     21300002: TextFinishTime
   externalObjects: {}
   serializedVersion: 5
@@ -84,15 +84,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TextRealTime
+      name: BossPosHit
       rect:
         serializedVersion: 2
-        x: 672
-        y: 352
+        x: 928
+        y: 0
         width: 96
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -112,7 +112,7 @@ TextureImporter:
         width: 128
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

@@ -139,6 +139,15 @@ namespace BarrageEditor
                 case NodeType.SetBossPhaseData:
                     newNode = new NodeSetBossPhaseData();
                     break;
+                case NodeType.ShowBossPosHint:
+                    newNode = new NodeShowBossPosHint();
+                    break;
+                case NodeType.ShowBossAura:
+                    newNode = new NodeShowBossAura();
+                    break;
+                case NodeType.ShowBossSpellCardHpAura:
+                    newNode = new NodeShowBossSCHpAura();
+                    break;
 
                 case NodeType.DefineBullet:
                     newNode = new NodeDefineBullet();

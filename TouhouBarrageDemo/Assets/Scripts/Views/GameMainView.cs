@@ -68,6 +68,23 @@ public class GameMainView : ViewBase,ICommand
 
     private long[] _frameTimeTick;
 
+    /// <summary>
+    /// boss位置提示信息的最大个数
+    /// </summary>
+    private const int MaxBossHintCount = 2;
+    /// <summary>
+    /// 对象池
+    /// </summary>
+    private Stack<RectTransform> _bossHintTfPool;
+    /// <summary>
+    /// 当前显示的boss提示信息
+    /// </summary>
+    private Dictionary<Boss, RectTransform> _bossHintTfDic;
+    /// <summary>
+    /// 底部的宽度
+    /// </summary>
+    private float _bottomSizeX;
+
     public override void Init(GameObject viewObj)
     {
         base.Init(viewObj);
@@ -103,6 +120,16 @@ public class GameMainView : ViewBase,ICommand
         _curPower = -1;
         _fpsText = _viewTf.Find("FpsText").GetComponent<Text>();
         _frameTimeTick = new long[TickArrSize];
+        // Boss位置提示相关
+        _bossHintTfPool = new Stack<RectTransform>();
+        _bossHintTfDic = new Dictionary<Boss, RectTransform>();
+        for (int i=0;i<MaxBossHintCount;i++)
+        {
+            RectTransform hintTf = _viewTf.Find("Bg/BgBottom/PosHint" + i).GetComponent<RectTransform>();
+            _bossHintTfPool.Push(hintTf);
+            hintTf.anchoredPosition = new Vector2(2000, 2000);
+        }
+        _bottomSizeX = UIManager.GetInstance().GetUIRootSize().x + _viewTf.Find("Bg/BgBottom").GetComponent<RectTransform>().sizeDelta.x;
     }
 
     public override void OnShow(object data)
@@ -111,6 +138,7 @@ public class GameMainView : ViewBase,ICommand
         // 重新初始化
         _curLifeCounter = new ItemWithFramentsCounter();
         _curSpellCardCounter = new ItemWithFramentsCounter();
+        AddEvents();
         ResetFpsText();
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
@@ -123,9 +151,55 @@ public class GameMainView : ViewBase,ICommand
         _fpsText.text = "";
     }
 
+    private void AddEvents()
+    {
+        CommandManager.GetInstance().Register(CommandConsts.ShowBossPosHint, this);
+    }
+
     public void Execute(int cmd,object data)
     {
+        if (cmd == CommandConsts.ShowBossPosHint)
+            OnShowBossPosHint(data);
+    }
 
+    private void OnShowBossPosHint(object data)
+    {
+        List<object> datas = data as List<object>;
+        Boss boss = datas[0] as Boss;
+        bool isShow = (bool)datas[1];
+        RectTransform hintTf;
+        if (isShow)
+        {
+            if (!_bossHintTfDic.TryGetValue(boss, out hintTf))
+            {
+                if (_bossHintTfPool.Count > 0)
+                {
+                    hintTf = _bossHintTfPool.Pop();
+                    _bossHintTfDic.Add(boss, hintTf);
+                }
+            }
+            float posX = (float)datas[2];
+            float halfWidth = Consts.GameWidth / 2;
+            if (posX < -halfWidth || posX >= halfWidth)
+            {
+                hintTf.anchoredPosition = new Vector2(2000, 2000);
+            }
+            else
+            {
+                float factor = (posX + halfWidth) / Consts.GameWidth;
+                hintTf.anchoredPosition = new Vector2(_bottomSizeX * factor, 0);
+            }
+        }
+        else
+        {
+            if (_bossHintTfDic.ContainsKey(boss))
+            {
+                _bossHintTfDic.TryGetValue(boss, out hintTf);
+                _bossHintTfPool.Push(hintTf);
+                _bossHintTfDic.Remove(boss);
+                hintTf.anchoredPosition = new Vector2(2000, 2000);
+            }
+        }
     }
 
     public override void Update()
@@ -286,6 +360,12 @@ public class GameMainView : ViewBase,ICommand
         }
         _grazeBitCount = 0;
         _curGraze = -1;
+        CommandManager.GetInstance().Remove(CommandConsts.ShowBossPosHint, this);
+        foreach (var value in _bossHintTfDic.Values)
+        {
+            _bossHintTfPool.Push(value);
+        }
+        _bossHintTfDic.Clear();
     }
 
     public override LayerId GetLayerId()

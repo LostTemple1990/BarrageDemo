@@ -31,7 +31,9 @@ public class BossLuaInterface
     private static LuaCsClosureValue _funcSetInteractive;
     private static LuaCsClosureValue _funcShowBloodBar;
     private static LuaCsClosureValue _funcSetPhaseData;
-
+    private static LuaCsClosureValue _funcShowPosHint;
+    private static LuaCsClosureValue _funcShowAura;
+    private static LuaCsClosureValue _funcShowSCHpAura;
 
     public static void Init()
     {
@@ -62,6 +64,9 @@ public class BossLuaInterface
             _funcSetInteractive = new LuaCsClosureValue(LuaLib.SetEnemyInteractive);
             _funcShowBloodBar = new LuaCsClosureValue(LuaLib.ShowBossBloodBar);
             _funcSetPhaseData = new LuaCsClosureValue(LuaLib.SetBossCurPhaseData);
+            _funcShowPosHint = new LuaCsClosureValue(LuaLib.ShowBossPosHint);
+            _funcShowAura = new LuaCsClosureValue(LuaLib.ShowBossAura);
+            _funcShowSCHpAura = new LuaCsClosureValue(LuaLib.ShowBossSpellCardHpAura);
 
             _isInit = true;
         }
@@ -230,6 +235,15 @@ public class BossLuaInterface
                     return true;
                 case "SetPhaseData":
                     res.SetClCsValue(_funcSetPhaseData);
+                    return true;
+                case "ShowPosHint":
+                    res.SetClCsValue(_funcShowPosHint);
+                    return true;
+                case "ShowAura":
+                    res.SetClCsValue(_funcShowAura);
+                    return true;
+                case "ShowSpellCardHpAura":
+                    res.SetClCsValue(_funcShowSCHpAura);
                     return true;
                     #endregion
 

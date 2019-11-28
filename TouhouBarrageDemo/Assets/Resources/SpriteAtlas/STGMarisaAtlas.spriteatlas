@@ -147,7 +147,7 @@ SpriteAtlas:
   - pl01_24
   - Marisa_Left_1
   - Marisa_Idle_1
-  - MarisaLaserEliminateEffectSprite
+  - MarisaLaserHit
   - Marisa_FadeToLeft_2
   - MarisaASub
   - Marisa_Left_0

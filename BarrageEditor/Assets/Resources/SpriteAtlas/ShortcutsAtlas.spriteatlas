@@ -198,6 +198,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: dd13a0bed27af6f408d761950aa554b9, type: 3}
   - {fileID: 21300000, guid: f836dfbe8de98af418688ef65f67b18d, type: 3}
   - {fileID: 21300000, guid: 15ee76ce4ba147249ab95071aa4fbd55, type: 3}
+  - {fileID: 21300000, guid: 9ae81dee80ff07b48b0b27e829412f89, type: 3}
   - {fileID: 21300000, guid: e3c3eeeedbd11054a8d0662965ae7e2d, type: 3}
   - {fileID: 21300000, guid: cc0a21fed043993419b675847c6bfe96, type: 3}
   - {fileID: 21300000, guid: 53d1471f5114bc24ab04d3ce4bfab142, type: 3}
@@ -208,6 +209,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 09eb5d5f0d31e1a4db96d84501560ce6, type: 3}
   - {fileID: 21300000, guid: 75545c6fd26a6df43b8c84d9240a111e, type: 3}
   - {fileID: 21300000, guid: ae39398fb67bd324396b1c909be8c3da, type: 3}
+  - {fileID: 21300000, guid: bca7ccaff17ea6a44b93d5828248376b, type: 3}
   - {fileID: 21300000, guid: d1caacbf6a3d0a7419aca98dcb67ae15, type: 3}
   - {fileID: 21300000, guid: 990c54cf5b545dd4dbfc3745dd542442, type: 3}
   m_PackedSpriteNamesToIndex:
@@ -377,6 +379,7 @@ SpriteAtlas:
   - bgstage
   - stopshakescreen
   - paste
+  - bossshowposhint
   - loadimagegroup
   - taskrepeat
   - _node_stay
@@ -387,6 +390,7 @@ SpriteAtlas:
   - iteration
   - unitforeach
   - bossinit
+  - spellcardhp
   - bosscast
   - open
   m_Tag: ShortcutsAtlas

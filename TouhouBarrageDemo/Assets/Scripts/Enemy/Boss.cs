@@ -26,6 +26,64 @@ public class Boss : EnemyBase
     protected int _curSubPhase;
 
     protected bool _isShowBloodBar;
+    /// <summary>
+    /// 是否显示位置提示
+    /// </summary>
+    protected bool _isShowPosHint;
+    /// <summary>
+    /// 显示魔法阵
+    /// </summary>
+    protected bool _isShowAura;
+    private eAuraState _auraState;
+    private int _auraTime;
+    /// <summary>
+    /// 缓存魔法阵消失的时间
+    /// </summary>
+    private int _auraDisappearTime;
+    private Transform _auraTf;
+    /// <summary>
+    /// 魔法阵的显示状态
+    /// </summary>
+    enum eAuraState : byte
+    {
+        Creating,
+        Normal,
+        Disappearing,
+    }
+    /// <summary>
+    /// 背后魔法阵生成动画的时间
+    /// </summary>
+    private const int AuraCreatingDuration = 180;
+    /// <summary>
+    /// 背后魔法阵消失动画的时间
+    /// </summary>
+    private const int AuraDisappearingDuration = 180;
+
+    private GameObject _scLifeGo;
+    private Mesh _scLifeBorderMesh;
+    private Transform _scLifeBorderTf;
+    private Mesh _scLifeMesh;
+    private Transform _scLifeTf;
+
+    private bool _isShowSCHpAura;
+    private int _scLifeTime;
+    private const int SpellCardLifeCreatingDuration = 120;
+    // 符卡生命框的旋转角速度
+    private const float SpellCardLifeOmega = 3;
+    private const float SpellCardLifeBorderCreatingScale = 5;
+    private const float SpellCardLifeCreatingScale = 0;
+    private const float SpellCardLifeEndScale = 0.5f;
+    /// <summary>
+    /// 符卡血量的显示状态
+    /// </summary>
+    enum eSpellCardLifeState : byte
+    {
+        Creating,
+        Normal,
+        Disappearing,
+    }
+
+    private eSpellCardLifeState _scLifeState;
 
     public Boss()
         :base()
@@ -41,6 +99,7 @@ public class Boss : EnemyBase
         InterpreterManager.GetInstance().AddPara(this, LuaParaType.LightUserData);
         InterpreterManager.GetInstance().CallLuaFunction(initFuncRef, 1);
         _checkOutOfBorder = false;
+        _isShowPosHint = false;
         Logger.Log("Call InitFunc of Boss " + _bossName + " Complete!");
     }
 
@@ -52,10 +111,24 @@ public class Boss : EnemyBase
         }
         _enemyTf = _enemyGo.transform;
         _bossAni = AnimationManager.GetInstance().CreateAnimation<AnimationCharacter>(_enemyGo, "Animation",LayerId.Enemy);
-        _bloodBarLayerTf = _enemyGo.transform.Find("BloodBarLayer");
+        _bloodBarLayerTf = _enemyTf.Find("BloodBarLayer");
         _bloodBarLayerTf.gameObject.SetActive(false);
         _isShowBloodBar = false;
         _bloodBarSp = _bloodBarLayerTf.Find("BloodBar").GetComponent<SpriteRenderer>();
+        // 魔法阵
+        _isShowAura = false;
+        _auraTf = _enemyTf.Find("MagicSquare");
+        // 符卡血条
+        _scLifeGo = _enemyTf.Find("SpellCardLife").gameObject;
+        _scLifeBorderTf = _enemyTf.Find("SpellCardLife/Border");
+        _scLifeBorderMesh = _scLifeBorderTf.GetComponent<MeshFilter>().mesh;
+        _scLifeTf = _enemyTf.Find("SpellCardLife/Life");
+        _scLifeMesh = _scLifeTf.GetComponent<MeshFilter>().mesh;
+        PopulateMesh(_scLifeBorderMesh, 128, 16, 5);
+        PopulateMesh(_scLifeMesh, 112, 16, 3);
+        _isShowAura = false;
+        _isShowSCHpAura = false;
+        // 默认动作
         _bossAni.Play(aniId, AniActionType.Idle, Consts.DIR_NULL);
     }
 
@@ -133,14 +206,7 @@ public class Boss : EnemyBase
 
     public override void MoveTowards(float velocity, float angle, int duration)
     {
-        while (angle < 0)
-        {
-            angle += 360f;
-        }
-        while (angle >= 360)
-        {
-            angle -= 360f;
-        }
+        angle = MathUtil.ClampAngle(angle);
         base.MoveTowards(velocity, angle, duration);
         if (angle > 90 && angle < 270)
         {
@@ -174,6 +240,13 @@ public class Boss : EnemyBase
             CheckPlayAni();
         }
         RenderTransform();
+        if (_isShowAura)
+            RenderAura();
+        if (_isShowSCHpAura)
+            RenderSpellCardLife();
+        // 添加背景扭曲效果
+        //object[] datas = new object[] { _curPos.x, _curPos.y, 128f, 0.01f, new Color(0.62f, 0.22f, 0.61f, 1) };
+        //CommandManager.GetInstance().RunCommand(CommandConsts.UpdateBgDistortEffectProps, datas);
     }
 
     public void PlayAni(AniActionType at,int dir,int duration)
@@ -216,11 +289,205 @@ public class Boss : EnemyBase
     }
 
     /// <summary>
+    /// 显示Boss的位置提示
+    /// </summary>
+    /// <param name="isShow"></param>
+    public void ShowPosHint(bool isShow)
+    {
+        _isShowPosHint = isShow;
+        if (isShow)
+        {
+            List<object> datas = new List<object> { this, true, _curPos.x };
+            CommandManager.GetInstance().RunCommand(CommandConsts.ShowBossPosHint, datas);
+        }
+        else
+        {
+            List<object> datas = new List<object> { this, false };
+            CommandManager.GetInstance().RunCommand(CommandConsts.ShowBossPosHint, datas);
+        }
+    }
+
+    /// <summary>
+    /// 显示魔法阵
+    /// </summary>
+    /// <param name="isShow">显示、隐藏</param>
+    /// <param name="ani">是否有出现、消失动画</param>
+    public void ShowAura(bool isShow,bool ani)
+    {
+        if (isShow)
+        {
+            if (!ani)
+            {
+                _auraState = eAuraState.Normal;
+                _auraTf.localScale = Vector3.one;
+                _auraTime = 0;
+            }
+            else
+            {
+                _auraState = eAuraState.Creating;
+                _auraTime = 0;
+            }
+            _isShowAura = isShow;
+        }
+        else
+        {
+            if (!_isShowAura)
+                return;
+            if (!ani)
+            {
+                _isShowAura = false;
+                _auraTf.localScale = Vector3.zero;
+            }
+            else
+            {
+                _auraDisappearTime = _auraTime;
+                _auraTime = 0;
+                _auraState = eAuraState.Disappearing;
+            }
+        }
+    }
+
+    private void RenderAura()
+    {
+        if (_auraState == eAuraState.Creating)
+        {
+            _auraTime++;
+            float scale = (float)_auraTime / AuraCreatingDuration;
+            _auraTf.localScale = new Vector3(scale, scale, 1);
+            float zAngle = AuraCreatingDuration * 1f / 15 * _auraTime - 0.5f * _auraTime * _auraTime * 1f / 15;
+            _auraTf.localEulerAngles = new Vector3(0, 0, zAngle);
+            if (_auraTime >= AuraCreatingDuration)
+            {
+                _auraTime = 0;
+                _auraState = eAuraState.Normal;
+            }
+        }
+        else if (_auraState == eAuraState.Normal)
+        {
+            _auraTime++;
+            // 后一个数字t是周期，t帧为一个周期，前一个360为角度
+            // 通常顺序是 (_auraTime / t) * 360
+            float angle = _auraTime * 360f / 720;
+            _auraTf.localEulerAngles = new Vector3(45f * Mathf.Sin(angle * Mathf.Deg2Rad), -45f * Mathf.Sin(angle * 0.5f * Mathf.Deg2Rad), _auraTime * 0.6f);
+        }
+        else if (_auraState == eAuraState.Disappearing)
+        {
+            _auraTime++;
+            float scale = 1 - (float)_auraTime / AuraCreatingDuration;
+            _auraTf.localScale = new Vector3(scale, scale, 1);
+            float realTime = _auraTime + _auraDisappearTime;
+            float angle = realTime * 360f / 360;
+            _auraTf.localEulerAngles = new Vector3(-45f * Mathf.Sin(angle * Mathf.Deg2Rad), 45f * Mathf.Sin(angle * Mathf.Deg2Rad), realTime * 0.6f);
+            if (_auraTime >= AuraDisappearingDuration)
+                _isShowAura = false;
+        }
+    }
+
+    private const int CircleSegmentCount = 128;
+    private const int DefaultTextureCount = 6;
+    private const float DefaultTextureHeight = 128f;
+    private const float DefaultCircumference = DefaultTextureHeight * DefaultTextureCount;
+    private const float DefaultRadius = DefaultCircumference / 2 / Mathf.PI;
+
+    private void PopulateMesh(Mesh mesh,float radius,float width,int textureIndex)
+    {
+        float factor = radius / DefaultRadius;
+        float minR = radius - width / 2;
+        float maxR = radius + width / 2;
+        int index, tmpIndex;
+        Vector3[] vers = new Vector3[(CircleSegmentCount+1) << 1];
+        Vector2[] uvs = new Vector2[(CircleSegmentCount + 1) << 1];
+        Color[] colors = new Color[(CircleSegmentCount + 1) << 1];
+        float startU = textureIndex / 8f;
+        float endU = (textureIndex+1) / 8f;
+        index = 0;
+        for (int i = 0; i <= CircleSegmentCount; i++)
+        {
+            float angle = 360f * i / CircleSegmentCount;
+            float sin = Mathf.Sin(angle * Mathf.Deg2Rad);
+            float cos = Mathf.Cos(angle * Mathf.Deg2Rad);
+            float v = DefaultCircumference * i / CircleSegmentCount / (DefaultTextureHeight * factor);
+            vers[index] = new Vector3(minR * cos, minR * sin);
+            colors[index] = new Color(1, 1, 1, 0.8f);
+            uvs[index++] = new Vector2(startU, v);
+            vers[index] = new Vector3(maxR * cos, maxR * sin);
+            colors[index] = new Color(1, 1, 1, 0.8f);
+            uvs[index++] = new Vector2(endU, v);
+        }
+        // 构建三角形
+        int[] triArr = new int[CircleSegmentCount * 6];
+        index = 0;
+        for (int i = 0; i < CircleSegmentCount; i++)
+        {
+            tmpIndex = i << 1;
+            triArr[index++] = tmpIndex;
+            triArr[index++] = tmpIndex + 2;
+            triArr[index++] = tmpIndex + 1;
+            triArr[index++] = tmpIndex + 1;
+            triArr[index++] = tmpIndex + 2;
+            triArr[index++] = tmpIndex + 3;
+        }
+        mesh.vertices = vers;
+        mesh.triangles = triArr;
+        mesh.uv = uvs;
+        mesh.colors = colors;
+    }
+
+    public void ShowSpellCardHpAura(bool isShow)
+    {
+        if (_isShowSCHpAura != isShow)
+        {
+            _isShowSCHpAura = isShow;
+            _scLifeGo.SetActive(isShow);
+            if (isShow)
+            {
+                _scLifeState = eSpellCardLifeState.Creating;
+                _scLifeTime = 0;
+                _scLifeTf.localScale = new Vector3(SpellCardLifeCreatingScale, SpellCardLifeCreatingScale, 1);
+                _scLifeBorderTf.localScale = new Vector3(SpellCardLifeBorderCreatingScale, SpellCardLifeBorderCreatingScale, 1);
+            }
+        }
+    }
+
+    private void RenderSpellCardLife()
+    {
+        if (_scLifeState == eSpellCardLifeState.Creating)
+        {
+            _scLifeTime++;
+            // 缩放
+            float scale = MathUtil.GetEaseOutQuadInterpolation(SpellCardLifeCreatingScale, 1, _scLifeTime, SpellCardLifeCreatingDuration);
+            _scLifeTf.localScale = new Vector3(scale, scale, 1);
+            scale = MathUtil.GetEaseOutQuadInterpolation(SpellCardLifeBorderCreatingScale, 1, _scLifeTime, SpellCardLifeCreatingDuration);
+            _scLifeBorderTf.localScale = new Vector3(scale, scale, 1);
+            // 旋转
+            _scLifeTf.localEulerAngles = new Vector3(0, 0, SpellCardLifeOmega * _scLifeTime);
+            _scLifeBorderTf.localEulerAngles = new Vector3(0, 0, -SpellCardLifeOmega * _scLifeTime);
+            if (_scLifeTime >= SpellCardLifeCreatingDuration)
+            {
+                _scLifeState = eSpellCardLifeState.Normal;
+            }
+        }
+        else if (_scLifeState == eSpellCardLifeState.Normal)
+        {
+            _scLifeTime++;
+            // 旋转
+            _scLifeTf.localEulerAngles = new Vector3(0, 0, SpellCardLifeOmega * _scLifeTime);
+            _scLifeBorderTf.localEulerAngles = new Vector3(0, 0, -SpellCardLifeOmega * _scLifeTime);
+            // 根据血量缩放
+            float factor = 1 - _curHp / _maxHp;
+            float scale = Mathf.Lerp(1, SpellCardLifeEndScale, factor);
+            _scLifeTf.localScale = new Vector3(scale, scale, 1);
+            _scLifeBorderTf.localScale = new Vector3(scale, scale, 1);
+        }
+    }
+
+    /// <summary>
     /// 符卡结束时，清除所有task
     /// </summary>
     public void OnSpellCardFinish()
     {
         ShowBloodBar(false);
+        ShowSpellCardHpAura(false);
         ClearTasks();
     }
 
@@ -231,6 +498,16 @@ public class Boss : EnemyBase
         {
             _isPlayAni = false;
             _bossAni.Play(AniActionType.Idle, Consts.DIR_NULL);
+        }
+    }
+
+    protected override void RenderTransform()
+    {
+        base.RenderTransform();
+        if (_isShowPosHint)
+        {
+            List<object> datas = new List<object> { this, true, _curPos.x };
+            CommandManager.GetInstance().RunCommand(CommandConsts.ShowBossPosHint, datas);
         }
     }
 
@@ -274,6 +551,19 @@ public class Boss : EnemyBase
             _weights.Clear();
         }
         GameObject.Destroy(_enemyGo);
+        // Boss位置提示
+        if (_isShowPosHint)
+        {
+            List<object> datas = new List<object> { this, false };
+            CommandManager.GetInstance().RunCommand(CommandConsts.ShowBossPosHint, datas);
+        }
+        _auraTf = null;
+        _scLifeGo = null;
+        _scLifeMesh = null;
+        _scLifeBorderMesh = null;
+        _scLifeBorderTf = null;
+        _scLifeTf = null;
         base.Clear();
+        CommandManager.GetInstance().RunCommand(CommandConsts.RemoveBgDistortEffect);
     }
 }

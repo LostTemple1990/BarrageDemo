@@ -50,6 +50,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 829bc7580095bf5468a53a5045bccf80, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -60,16 +64,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _CircleCenterX: 62
-    - _CircleCenterY: 404
-    - _CircleRadius: 70
+    - _CircleCenterX: 342
+    - _CircleCenterY: 374
+    - _CircleRadius: 128
     - _CircleRadiusRatioWithHeight: 0.2
     - _CircleRadiusRatioWithWidth: 0.2
     - _Cutoff: 0.5
     - _DectectRectLeftBottomU: 0.3
     - _DectectRectLeftBottomV: 0.3
     - _DetailNormalMapScale: 1
-    - _DistortFactor: 0.1
+    - _DistortFactor: 0.01
     - _DstBlend: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5

@@ -78,6 +78,9 @@ namespace BarrageEditor
         CreateBoss = 1403,
         SetInvincible = 1410,
         ShowBossBloodBar = 1411,
+        ShowBossPosHint = 1412,
+        ShowBossAura = 1413,
+        ShowBossSpellCardHpAura = 1414,
         BossSetWanderProps = 1421,
         BossWander = 1422,
         DefineSpellCard = 1451,
@@ -140,17 +143,17 @@ namespace BarrageEditor
         Rebound = 1812,
         ColliderTrigger = 1813,
         DropItems = 1821,
-        CreateChargeEffect = 1831,
-        CreateBurstEffect = 1832,
-        ShakeScreen = 1836,
-        StopShakeScreen = 1837,
-
 
         PlaySound = 2201,
         PauseSound = 2202,
         ResumeSound = 2203,
         StopSound = 2204,
         LoadSound = 2205,
+
+        CreateChargeEffect = 1831,
+        CreateBurstEffect = 1832,
+        ShakeScreen = 1836,
+        StopShakeScreen = 1837,
     }
 
     public class NodeDatabase
@@ -193,6 +196,7 @@ namespace BarrageEditor
             InitObjectNodeCfgs();
             InitUnitNodeCfgs();
             InitAudioNodeCfgs();
+            InitEffectNodeCfgs();
         }
 
         private void InitGeneralNodeCfgs()
@@ -627,6 +631,39 @@ namespace BarrageEditor
                 allowChilds = new List<NodeType>(),
             };
             _nodeCfgDic.Add(NodeType.SetBossPhaseData, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.ShowBossPosHint,
+                shortcutPath = "bossshowposhint",
+                shortcutTip = "show positon hint of boss",
+                defaultAttrValues = new List<object> { "boss", "true" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.ShowBossAura,
+                shortcutPath = "bossshowaura",
+                shortcutTip = "show aura of boss",
+                defaultAttrValues = new List<object> { "boss", "true", "true" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.ShowBossSpellCardHpAura,
+                shortcutPath = "spellcardhp",
+                shortcutTip = "show hp aura of boss",
+                defaultAttrValues = new List<object> { "boss", "true" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
         }
 
         private void InitBulletNodeCfgs()
@@ -735,7 +772,7 @@ namespace BarrageEditor
             {
                 type = NodeType.OnLaserCreate,
                 shortcutPath = "laserinit",
-                defaultAttrValues = new List<object> { "rot", "202011", "100", "16" },
+                defaultAttrValues = new List<object> { "rot", "202011", "100", "16", "32" },
                 editOnCreated = false,
                 isDeletable = false,
             };
@@ -946,50 +983,6 @@ namespace BarrageEditor
                 shortcutPath = "dropitems",
                 shortcutTip = "drop items",
                 defaultAttrValues = new List<object> { "0", "150", "32", "32", "1,3" },
-                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
-                allowChilds = new List<NodeType>(),
-            };
-            _nodeCfgDic.Add(cfg.type, cfg);
-
-            cfg = new NodeConfig
-            {
-                type = NodeType.CreateChargeEffect,
-                shortcutPath = "charge",
-                shortcutTip = "create charge effect",
-                defaultAttrValues = new List<object> { "0", "0" },
-                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
-                allowChilds = new List<NodeType>(),
-            };
-            _nodeCfgDic.Add(cfg.type, cfg);
-
-            cfg = new NodeConfig
-            {
-                type = NodeType.CreateBurstEffect,
-                shortcutPath = "burst",
-                shortcutTip = "create burst effect",
-                defaultAttrValues = new List<object> { "0", "0" },
-                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
-                allowChilds = new List<NodeType>(),
-            };
-            _nodeCfgDic.Add(cfg.type, cfg);
-
-            cfg = new NodeConfig
-            {
-                type = NodeType.ShakeScreen,
-                shortcutPath = "shakescreen",
-                shortcutTip = "shake screen",
-                defaultAttrValues = new List<object> { "shake", "0", "270", "3", "3", "1.5", "5" },
-                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
-                allowChilds = new List<NodeType>(),
-            };
-            _nodeCfgDic.Add(cfg.type, cfg);
-
-            cfg = new NodeConfig
-            {
-                type = NodeType.StopShakeScreen,
-                shortcutPath = "stopshakescreen",
-                shortcutTip = "stop shake screen",
-                defaultAttrValues = new List<object> { "shake" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
             };
@@ -1274,6 +1267,54 @@ namespace BarrageEditor
             };
             cfg.defaultAttrValues = new List<object> { "bgm" };
             _nodeCfgDic.Add(NodeType.LoadSound, cfg);
+        }
+
+        private void InitEffectNodeCfgs()
+        {
+            NodeConfig cfg;
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateChargeEffect,
+                shortcutPath = "charge",
+                shortcutTip = "create charge effect",
+                defaultAttrValues = new List<object> { "0", "0" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.CreateBurstEffect,
+                shortcutPath = "burst",
+                shortcutTip = "create burst effect",
+                defaultAttrValues = new List<object> { "0", "0" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.ShakeScreen,
+                shortcutPath = "shakescreen",
+                shortcutTip = "shake screen",
+                defaultAttrValues = new List<object> { "shake", "0", "270", "3", "3", "1.5", "5" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.StopShakeScreen,
+                shortcutPath = "stopshakescreen",
+                shortcutTip = "stop shake screen",
+                defaultAttrValues = new List<object> { "shake" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
         }
 
         /// <summary>

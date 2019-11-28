@@ -30,6 +30,7 @@ namespace BarrageEditor
         {
             Dropdown.OptionData selectData = _dropDown.options[value];
             OnAttributeValueEdit(selectData.text);
+            _valueText.text = selectData.text;
         }
 
         private void OnEditBtnClickHandler()

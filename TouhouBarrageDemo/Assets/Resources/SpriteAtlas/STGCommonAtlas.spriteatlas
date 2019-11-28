@@ -50,7 +50,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 669ae0844c593734d8bcd634dfcc645a, type: 3}
   - {fileID: 21300000, guid: 64bac7f4db0345a478cc70b9b328b611, type: 3}
   - {fileID: 21300000, guid: 3cf1a175d2d77514baee9f6ae1e19391, type: 3}
-  - {fileID: 21300000, guid: fe254ab51be65804a8822a479b7912e1, type: 3}
   - {fileID: 21300000, guid: fd509017810a0ba4088347d71ffd4aad, type: 3}
   - {fileID: 21300000, guid: 2403f1b717ede6144b84e9f31de050f3, type: 3}
   - {fileID: 21300000, guid: 249882384df199749998393050008c60, type: 3}
@@ -62,6 +61,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: bec7c6cbbfe1a594b838ee16c3e986db, type: 3}
   - {fileID: 21300000, guid: 0707653ce13241843918ce5b0f823a97, type: 3}
   - {fileID: 21300000, guid: 3c15695c9c76e56458d83629ca405c9b, type: 3}
+  - {fileID: 21300000, guid: 13049d7ccf65f60449c7f0d4b4faad32, type: 3}
   - {fileID: 21300000, guid: 51893e3de2592b24695caf0ef6c1bf78, type: 3}
   - {fileID: 21300000, guid: 5549cf8dc639e6b4b86b9b8d5af1bca3, type: 3}
   - {fileID: 21300000, guid: 15e34fcda4998014c95771a71baf3819, type: 3}
@@ -77,7 +77,6 @@ SpriteAtlas:
   - particles_14
   - Circle
   - Rect
-  - etama2_33
   - particles_5
   - CircleBorder
   - particles_10
@@ -89,6 +88,7 @@ SpriteAtlas:
   - particles_12
   - particles_0
   - particles_9
+  - MagicSquare
   - Segment
   - particles_1
   - particles_13

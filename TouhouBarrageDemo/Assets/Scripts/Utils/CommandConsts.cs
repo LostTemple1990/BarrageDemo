@@ -8,6 +8,13 @@
     /// <para>scLeft 剩余符卡数量</para>
     /// </summary>
     public const int ShowBossInfo = 1002;
+    /// <summary>
+    /// 显示Boss位置提示信息
+    /// <para>boss boss本体</para>
+    /// <para>bool isShow 是否显示</para>
+    /// <para>[optional] posX boss的x坐标</para>
+    /// </summary>
+    public const int ShowBossPosHint = 1003;
 
     public const int CreateBgDistortEffect = 2000;
     public const int UpdateBgDistortEffectProps = 2001;

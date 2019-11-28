@@ -30,7 +30,9 @@ public class AnimationCharacter : AnimationBase
         _cache = AnimationManager.GetInstance().GetAnimationCache(_cfg.aniName);
         _isPlaying = true;
         _curFrame = 0;
-        _spList = _cache.GetSprites(GetPlayString(type,dir));
+        string key = GetPlayString(type, dir);
+        _spList = _cache.GetSprites(key);
+        _cfg.aniIntervalMap.TryGetValue(key, out _frameInterval);
         _totalFrame = _spList.Length;
         _isLoop = true;
         _curLoopCount = 1;

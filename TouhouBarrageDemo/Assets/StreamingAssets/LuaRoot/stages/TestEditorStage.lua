@@ -897,6 +897,7 @@ SpellCard["YKS1_M_SC"].Init = function(boss)
     boss:SetMaxHp(750)
     boss:SetInvincible(5)
     boss:ShowBloodBar(true)
+    boss:ShowSpellCardHpAura(true)
     --圈形子弹
     boss:AddTask(function()
         local k = 1
@@ -1110,6 +1111,7 @@ CustomizedTable["YKS1_F_SC1_Laser"] = {}
 CustomizedTable["YKS1_F_SC1_Laser"].Init = function(self,master,angle,duration,omega,rotateDuration)
     self:SetStyleById(202060)
     self:SetSize(600,10)
+    self:SetSourceSize(32)
     self.rot = angle
     self:TurnOn(60)
     self:AddTask(function()
@@ -2191,7 +2193,7 @@ Stage["Stage1"] = function()
         last = CreateCustomizedEnemy("YKStage1Enemy3",0,240)
         if Wait(1000)==false then return end
     end
-    do  --Phase5
+    do  --Phase5-MidBoss
         if Wait(200)==false then return end
         if player.characterIndex == 0 then
             if StartDialog(function()
@@ -2219,6 +2221,8 @@ Stage["Stage1"] = function()
             end) == false then return end
         end
         local boss = CreateBoss("YKS1_MidBoss",0,280)
+        boss:ShowAura(true,false)
+        boss:ShowPosHint(true)
         boss:MoveTo(0,170,90,IntModeEaseInQuad)
         if Wait(100)==false then return end
         boss:SetPhaseData(3,1,true)

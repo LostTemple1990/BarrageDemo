@@ -230,14 +230,18 @@ public static class SliceTexture
         //    0, 480, 128, 32, 4,
         //}; // MainUITitle
         //List<int> sliceData = new List<int>(sliceDataArr);
+        //int[] sliceDataArr = new int[]
+        //{
+        //    0, 0, 32, 32, 4,
+        //    0, 32, 32, 32, 4,
+        //    0, 64, 32, 32, 4,
+        //    0, 96, 32, 32, 4,
+        //    0, 128, 32, 32, 4,
+        //}; // Item
         int[] sliceDataArr = new int[]
         {
-            0, 0, 32, 32, 4,
-            0, 32, 32, 32, 4,
-            0, 64, 32, 32, 4,
-            0, 96, 32, 32, 4,
-            0, 128, 32, 32, 4,
-        }; // Item
+            0, 0, 16, 128, 7,
+        }; // EffectLine
         List<int> sliceData = new List<int>(sliceDataArr);
         ProcessSlicing(selectionImg, sliceData);
         //创建导出路径

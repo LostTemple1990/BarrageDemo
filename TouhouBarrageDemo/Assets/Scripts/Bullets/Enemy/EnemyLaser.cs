@@ -11,7 +11,7 @@ public class EnemyLaser : EnemyBulletBase
     /// <summary>
     /// 默认的发射源的大小
     /// </summary>
-    private const float SourceDefaultSize = 32;
+    private const float SourceDefaultSize = 0.32f;
     /// <summary>
     /// 擦弹冷却时间
     /// </summary>

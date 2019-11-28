@@ -76,6 +76,11 @@ public class PlayerBulletSimple : PlayerBulletBase
     {
         CheckRotated();
         base.RenderPosition();
+        if (_isRotationDirty)
+        {
+            _trans.localRotation = Quaternion.Euler(new Vector3(0, 0, _curRotation));
+            _isRotationDirty = false;
+        }
     }
 
     protected virtual void UpdatePosition()
@@ -103,6 +108,8 @@ public class PlayerBulletSimple : PlayerBulletBase
     /// <param name="angle"></param>
     public void DoStraightMove(float v,float angle)
     {
+        if (_isRotatedByVAngle)
+            SetRotation(angle);
         _movableObject.DoStraightMove(v, angle);
     }
 
@@ -113,6 +120,8 @@ public class PlayerBulletSimple : PlayerBulletBase
     /// <param name="accAngle"></param>
     public void DoAcceleration(float acce,float accAngle)
     {
+        if (_isRotatedByVAngle)
+            SetRotation(accAngle);
         _movableObject.DoAcceleration(acce, accAngle);
     }
 
@@ -124,6 +133,8 @@ public class PlayerBulletSimple : PlayerBulletBase
     /// <param name="accDuration"></param>
     public void DoAccelerationWithLimitation(float acce, float accAngle,float maxVelocity)
     {
+        if (_isRotatedByVAngle)
+            SetRotation(accAngle);
         _movableObject.DoAccelerationWithLimitation(acce, accAngle, maxVelocity);
     }
 
@@ -131,13 +142,14 @@ public class PlayerBulletSimple : PlayerBulletBase
     {
         if ( _selfRotationAngle != 0 )
         {
-            _trans.Rotate(new Vector3(0, 0, _bulletCfg.selfRotationAngle));
+            _curRotation = _curRotation + _bulletCfg.selfRotationAngle;
+            _isRotationDirty = true;
         }
         else if ( _isRotatedByVAngle )
         {
             Vector3 dv = _curPos - _lastPos;
-            float rotateAngle = MathUtil.GetAngleBetweenXAxis(dv.x, dv.y);
-            _trans.localRotation = Quaternion.Euler(new Vector3(0, 0, rotateAngle));
+            _curRotation = MathUtil.GetAngleBetweenXAxis(dv.x, dv.y);
+            _isRotationDirty = true;
         }
     }
 

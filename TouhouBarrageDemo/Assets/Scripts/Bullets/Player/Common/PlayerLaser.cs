@@ -117,12 +117,12 @@ public class PlayerLaser : PlayerBulletBase
         _repeatCount = repeatCount;
     }
 
-    public void SetAngle(float angle)
+    public override void SetRotation(float value)
     {
-        _curVAngle = angle;
+        base.SetRotation(value);
         // 角度
-        _trans.rotation = Quaternion.Euler(0, 0, _curVAngle);
-        _dirVec = new Vector2(Mathf.Cos(_curVAngle * Mathf.Deg2Rad), Mathf.Sin(_curVAngle * Mathf.Deg2Rad));
+        _trans.rotation = Quaternion.Euler(0, 0, _curRotation);
+        _dirVec = new Vector2(Mathf.Cos(_curRotation * Mathf.Deg2Rad), Mathf.Sin(_curRotation * Mathf.Deg2Rad));
     }
 
     public override void Update()

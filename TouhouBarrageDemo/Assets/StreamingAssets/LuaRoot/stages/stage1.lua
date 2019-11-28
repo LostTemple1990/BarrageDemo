@@ -695,21 +695,21 @@ end
 
 Stage["Stage1"] = function()
 	lib.PlaySound("bgm",0.1,true)
-	--local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
-	--lib.SetEffectToPos(spriteEffect,0,0)
-	--lib.SetSpriteEffectSize(spriteEffect,500,500)
-	--lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
-	--local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
-	--lib.SetObjectColliderSize(collider,80,80)
-	--lib.SetObjectColliderToPos(collider,0,0)
-	--lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
+	local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
+	lib.SetEffectToPos(spriteEffect,0,0)
+	lib.SetSpriteEffectSize(spriteEffect,160,160)
+	lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
+	local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
+	lib.SetObjectColliderSize(collider,80,80)
+	lib.SetObjectColliderToPos(collider,0,0)
+	lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
 	--local field = lib.CreateGravitationFieldByType(eColliderType.Circle)
 	--lib.SetObjectColliderSize(field,250,250)
 	--lib.SetObjectColliderToPos(field,0,0)
 	--lib.InitGravitationField(field,1,0.5,0,0,0,0.05,0,0,0)
 	--lib.SetObjectColliderColliderGroup(field,eColliderGroup.EnemyBullet)
 	--
-	if coroutine.yield(200) == false then return end
+	if coroutine.yield(200000) == false then return end
 	do
 		--local enemy = lib.CreateNormalEnemyById("100000",500,0,185);
 		local enemy = lib.CreateCustomizedEnemy("TestKillEnemy","100000",0,185,0)

@@ -106,7 +106,7 @@ SpriteAtlas:
   - Reimu_FadeToRight_1
   - Reimu_FadeToRight_2
   - pl00_2
-  - pl00_17
+  - ReimuAMainHit
   - pl00_13
   - pl00_25
   - pl00_20
@@ -120,12 +120,12 @@ SpriteAtlas:
   - Reimu_FadeToRight_0
   - Reimu_Right_1
   - Reimu_Right_3
-  - pl00_14
+  - ReimuASub
   - pl00_23
   - Reimu_Idle_3
   - pl00_26
   - pl00_9
-  - pl00_15
+  - ReimuASubHit
   - pl00_18
   - Reimu_Idle_6
   - pl00_27
@@ -141,7 +141,7 @@ SpriteAtlas:
   - pl00_7
   - Reimu_Right_2
   - Reimu_Idle_2
-  - pl00_1
+  - ReimuAMain
   - Reimu_Left_3
   - Reimu_FadeToLeft_1
   - Reimu_FadeToLeft_0

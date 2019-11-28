@@ -8,9 +8,11 @@ public class BgCameraDistortEffect : MonoBehaviour ,ICommand
     private Material _distortMat;
 	// Use this for initialization
     private bool _isInit;
+    private bool _useDistortMat;
 	void Start () 
     {
         _isInit = false;
+        _useDistortMat = false;
 	}
 	
 	// Update is called once per frame
@@ -32,7 +34,7 @@ public class BgCameraDistortEffect : MonoBehaviour ,ICommand
 
     void OnRenderImage(RenderTexture source,RenderTexture dest)
     {
-        if ( _distortMat != null )
+        if ( _useDistortMat )
         {
             Graphics.Blit(source, dest, _distortMat);
         }
@@ -62,6 +64,7 @@ public class BgCameraDistortEffect : MonoBehaviour ,ICommand
         {
             _distortMat = Resources.Load<Material>("Materials/DistortMat");
         }
+        _useDistortMat = true;
         float circleCenterX = (float)datas[0];
         float circleCenterY = (float)datas[1];
         // 坐标换算
@@ -82,7 +85,6 @@ public class BgCameraDistortEffect : MonoBehaviour ,ICommand
 
     private void ClearDistortMat()
     {
-        GameObject.Destroy(_distortMat);
-        _distortMat = null;
+        _useDistortMat = false;
     }
 }

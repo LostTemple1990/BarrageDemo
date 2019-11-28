@@ -99,6 +99,13 @@ public class BulletReimuASub1 : PlayerBulletSimple
         _curPos.y += _vy;
     }
 
+    protected override void BeginEliminating()
+    {
+        // 重新计算一下当前旋转角度，用于生成击中特效
+        _curRotation = MathUtil.GetAngleBetweenXAxis(_vx, _vy);
+        base.BeginEliminating();
+    }
+
     protected override float GetDamage()
     {
         return 1;

@@ -50,6 +50,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3443cd713512c2a44a68c9718c4fc675, type: 3}
   - {fileID: 21300000, guid: 801edb9107aa3e348a7be081348dd336, type: 3}
   - {fileID: 21300000, guid: 28d56e917e2c2e44993eb5b634f3bf55, type: 3}
+  - {fileID: 21300000, guid: ccce86c1c2a3328428afa883d29cbad1, type: 3}
   - {fileID: 21300000, guid: cf9319c14ce6b7040b589688c1f632e3, type: 3}
   - {fileID: 21300000, guid: 219341d1416fcb945bb0666591a52aa3, type: 3}
   - {fileID: 21300000, guid: c4f913d15e0b8994599678f120a5864f, type: 3}
@@ -167,6 +168,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 80faf79c3b5a0f44b8f529a37cbdbc39, type: 3}
   - {fileID: 21300000, guid: 41fec9ac7b2cd024783089b743d66307, type: 3}
   - {fileID: 21300000, guid: 4a2c95ecd7f1f674e89e1da5cdb75d7a, type: 3}
+  - {fileID: 21300000, guid: 074dc41df53e487498a09ea990a9db8a, type: 3}
   - {fileID: 21300000, guid: 2dc8cd6d3f47875418baa8681dc45e40, type: 3}
   - {fileID: 21300000, guid: dff0218da1cfbda4dafbc2262829f568, type: 3}
   - {fileID: 21300000, guid: ae745c9d19dd2cf42b0fc501d4a3acf5, type: 3}
@@ -213,6 +215,7 @@ SpriteAtlas:
   - rebound
   - laserinit
   - simplerebounder
+  - bossshowposhint
   - laserturnhalfon
   - bulletcreatestraightex
   - changealphato
@@ -330,6 +333,7 @@ SpriteAtlas:
   - lasergrow
   - ignorecollisiongroup
   - resumebgm
+  - spellcardhp
   - stagefinishgroup
   - bulletchangeprops
   - bosscast

@@ -3,12 +3,13 @@
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
-		_CircleCenterX ("CircleCenterX",Range(0,1)) = 0.3
-		_CircleCenterY ("CircleCenterY",Range(0,1)) = 0.8
+		_NoiseTex("Texture", 2D ) = "black" {}
+		_CircleCenterX ("CircleCenterX",Float) = 0.3
+		_CircleCenterY ("CircleCenterY",Float) = 0.8
 		_CircleRadius ("CircleRadius",Float) = 50
 		_STGWidth ("STGWidth",Float) = 384
 		_STGHeight ("STGHeight",Float) = 448
-		_DistortFactor ("DistortFactor",Range(0.1,0.25)) = 0.15
+		_DistortFactor ("DistortFactor",Range(0.0,0.2)) = 0.01
 		_EffectColor ("EffectColor",Color) = (0.62,0.22,0.61,1)
 	}
 	SubShader
@@ -51,6 +52,7 @@
 			}
 			
 			sampler2D _MainTex;
+			sampler2D _NoiseTex;
 			float _CircleCenterX;
 			float _CircleCenterY;
 			float _CircleRadius;
@@ -66,14 +68,12 @@
 				float2 dirVec = pos - center;
 				float len = length(dirVec);
 				fixed4 col;
-				if ( len <= _CircleRadius )
-				{
-					float2 offset = normalize(dirVec) * (_CircleRadius - len) / _CircleRadius * _DistortFactor;
-					col = tex2D(_MainTex,i.uv+offset);
-					col = lerp(col,_EffectColor,1-len/_CircleRadius);
-					return col;
-				}
-				col = tex2D(_MainTex, i.uv);
+				float k = step(len,_CircleRadius);
+				//float k = 1;
+				float2 tmp = float2(_Time.y,_Time.x);
+				float4 noise = tex2D(_NoiseTex, i.uv - tmp * 0.15);
+				float2 offset = noise.xy * _DistortFactor;
+				col = tex2D(_MainTex,i.uv+offset*k);
 				return col;
 			}
 			ENDCG

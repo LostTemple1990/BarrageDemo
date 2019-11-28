@@ -103,6 +103,7 @@ namespace BarrageEditor
             Object,
             Unit,
             Audio,
+            Effect,
             Count,
         };
 
@@ -175,7 +176,8 @@ namespace BarrageEditor
                 typeList = new List<NodeType>[]
                 {
                     new List<NodeType> { NodeType.DefineBoss, NodeType.CreateBoss },
-                    new List<NodeType> { NodeType.ShowBossBloodBar, NodeType.BossSetWanderProps, NodeType.BossWander },
+                    new List<NodeType> { NodeType.BossSetWanderProps, NodeType.BossWander },
+                    new List<NodeType> { NodeType.ShowBossBloodBar, NodeType.ShowBossPosHint, NodeType.ShowBossAura, NodeType.ShowBossSpellCardHpAura },
                     new List<NodeType> { NodeType.DefineSpellCard, NodeType.StartSpellCard, NodeType.SetBossPhaseData },
                 },
             };
@@ -226,7 +228,6 @@ namespace BarrageEditor
                     new List<NodeType> { NodeType.DefineCollider, NodeType.CreateCustomizedCollider, NodeType.CreateSimpleCollider },
                     new List<NodeType> { NodeType.ColliderTrigger, NodeType.Rebound },
                     new List<NodeType> { NodeType.DropItems },
-                    new List<NodeType> { NodeType.CreateChargeEffect, NodeType.CreateBurstEffect, NodeType.ShakeScreen, NodeType.StopShakeScreen },
                 },
             };
             _nodeTabs.Add(tab);
@@ -266,6 +267,17 @@ namespace BarrageEditor
                 {
                     new List<NodeType> { NodeType.LoadSound },
                     new List<NodeType> { NodeType.PlaySound, NodeType.StopSound, NodeType.PauseSound, NodeType.ResumeSound },
+                },
+            };
+            _nodeTabs.Add(tab);
+            // Effect
+            tab = new NodeTab()
+            {
+                type = eNodeShortcutTab.Effect,
+                tabName = "Effect",
+                typeList = new List<NodeType>[]
+                {
+                    new List<NodeType> { NodeType.CreateChargeEffect, NodeType.CreateBurstEffect, NodeType.ShakeScreen, NodeType.StopShakeScreen },
                 },
             };
             _nodeTabs.Add(tab);

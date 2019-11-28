@@ -600,7 +600,7 @@ public class STGSpriteEffect : STGEffectBase, ISTGMovable, IAttachment, IAttacha
     {
         _rotateAngle = rotateAngle;
         _rotateTime = 0;
-        _rotateDuration = duration;
+        _rotateDuration = duration == -1 ? 99999 : duration;
         _isRotating = true;
     }
 
@@ -608,7 +608,7 @@ public class STGSpriteEffect : STGEffectBase, ISTGMovable, IAttachment, IAttacha
     {
         _rotateTime++;
         _effectTf.Rotate(0, 0, _rotateAngle);
-        if ( _rotateTime >= _rotateAngle )
+        if ( _rotateTime >= _rotateDuration )
         {
             _isRotating = false;
         }

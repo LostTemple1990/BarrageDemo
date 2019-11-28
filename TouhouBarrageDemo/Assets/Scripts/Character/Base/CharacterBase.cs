@@ -482,6 +482,9 @@ public class CharacterBase : IAffectedMovableObject
         {
             pos.y += speed;
         }
+        // 计算额外运动参数
+        pos.x += _extraVelocityX + _extraAcceX;
+        pos.y += _extraVelocityY + _extraAcceY;
         // 检测是否越界
         if ( pos.x < Global.PlayerLBBorderPos.x )
         {
@@ -499,9 +502,6 @@ public class CharacterBase : IAffectedMovableObject
         {
             pos.y = Global.PlayerRTBorderPos.y;
         }
-        // 计算额外运动参数
-        pos.x += _extraVelocityX + _extraAcceX;
-        pos.y += _extraVelocityY + _extraAcceY;
         _curPos = pos;
         if (isIdle)
         {

@@ -37,6 +37,10 @@ namespace BarrageEditor
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Width", null);
             _attrs.Add(nodeAttr);
+            // source
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr.Init(this, "SourceSize", null);
+            _attrs.Add(nodeAttr);
         }
 
         public override void OnAttributeValueChanged(BaseNodeAttr attr = null)
@@ -77,6 +81,11 @@ namespace BarrageEditor
                 GetAttrByIndex(2).GetValueString(),
                 GetAttrByIndex(3).GetValueString()
                 );
+            string sourceSizeValue = GetAttrByIndex(4).GetValueString();
+            if (sourceSizeValue != "" && sourceSizeValue != "0")
+            {
+                ret += string.Format("    self:SetSourceSize({0})\n", sourceSizeValue);
+            }
             return ret;
         }
 
