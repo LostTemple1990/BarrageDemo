@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224543342579719476}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: ItemBomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224041946550715844}
   - component: {fileID: 212192774688902526}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

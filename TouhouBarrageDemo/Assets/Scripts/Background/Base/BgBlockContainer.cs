@@ -52,7 +52,7 @@ public class BgBlockContainer
         for (int i = 1; i < count; i++)
         {
             blockObj = GameObject.Instantiate(obj);
-            blockObj.transform.SetParent(_containerTf);
+            blockObj.transform.SetParent(_containerTf, false);
             _blockObjList.Add(blockObj);
         }
         _blockCount = count;

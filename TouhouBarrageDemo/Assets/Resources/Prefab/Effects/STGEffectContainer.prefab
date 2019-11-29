@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224936101740994222}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: STGEffectContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

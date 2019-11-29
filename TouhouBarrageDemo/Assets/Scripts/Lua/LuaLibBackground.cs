@@ -11,10 +11,10 @@ public partial class LuaLib
     /// <returns></returns>
     public static int CreateBgSpriteObject(ILuaState luaState)
     {
-        string spName = luaState.ToString(-1);
-        luaState.Pop(1);
-        BgSpriteObject spObj = BackgroundManager.GetInstance().CreateBgSpriteObject(spName);
-        luaState.PushLightUserData(spObj);
+        //string spName = luaState.ToString(-1);
+        //luaState.Pop(1);
+        //BgSpriteObject spObj = BackgroundManager.GetInstance().CreateBgSpriteObject(spName);
+        //luaState.PushLightUserData(spObj);
         return 1;
     }
 

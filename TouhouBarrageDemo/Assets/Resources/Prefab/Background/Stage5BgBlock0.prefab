@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4427392373916406}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Stage5BgBlock0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4864802273807240}
   - component: {fileID: 212066473010090998}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Sub1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4833891197514846}
   - component: {fileID: 212250940134696440}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Sub0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

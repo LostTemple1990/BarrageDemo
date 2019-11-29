@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224850643873078146}
   - component: {fileID: 212972635341412206}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224303257570747564}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: ReimuABomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}

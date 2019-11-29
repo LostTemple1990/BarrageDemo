@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224309777171673250}
   - component: {fileID: 212693187634814190}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Circle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224071712103272924}
   - component: {fileID: 212840051130001466}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Circle2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224447572692144382}
   - component: {fileID: 212873976164330114}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: CenterCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,7 +67,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224465506062532272}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: DeadEffectGo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224400999164286792}
   - component: {fileID: 212062359001759080}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Circle0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224650306155651960}
   - component: {fileID: 212791850949430196}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Circle3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -9,7 +9,6 @@ namespace YKEngine
 {
     public class UIManager
     {
-
         private static UIManager _instance;
 
         public static UIManager GetInstance()

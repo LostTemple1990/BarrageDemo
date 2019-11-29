@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4876060207802534}
   - component: {fileID: 222074753756461250}
   - component: {fileID: 212561200327857658}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4569648452462266}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: AniParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}

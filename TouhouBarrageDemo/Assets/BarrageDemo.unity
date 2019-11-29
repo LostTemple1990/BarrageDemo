@@ -154,7 +154,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 54606591}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: PlayerCollisionPointLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,34 +179,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &69786999
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 69787000}
-  m_Layer: 0
-  m_Name: ForegroundLayer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &69787000
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 69786999}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 841293530}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &91388514
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +188,7 @@ GameObject:
   m_Component:
   - component: {fileID: 91388515}
   - component: {fileID: 91388516}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: GameInfoLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +241,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 301166307}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: GameLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -313,7 +285,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 457373977}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: ItemLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +318,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 511895226}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: EnemyLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,7 +351,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 525012600}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: EnemyBarrageLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -407,7 +379,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 731435822}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: PlayerLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,84 +461,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &841293529
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 841293530}
-  - component: {fileID: 841293533}
-  - component: {fileID: 841293531}
-  m_Layer: 0
-  m_Name: BgCamera
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &841293530
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 841293529}
-  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 0, y: 3.43, z: -4.33}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 69787000}
-  m_Father: {fileID: 2107524953}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
---- !u!114 &841293531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 841293529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f72aed4656e8d8489c0b5c8c8e17b9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!20 &841293533
-Camera:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 841293529}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 20
-  field of view: 20
-  orthographic: 0
-  orthographic size: 5
-  m_Depth: -2
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 256
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: aece58c4dd072c140a03cdc263eff619, type: 2}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
 --- !u!1 &966311249
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,7 +472,7 @@ GameObject:
   - component: {fileID: 966311252}
   - component: {fileID: 966311251}
   - component: {fileID: 966311250}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: GameMainCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -656,7 +550,7 @@ RectTransform:
   - {fileID: 301166307}
   - {fileID: 1620884438}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -671,7 +565,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1003093920}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: STGTopEffectLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -704,7 +598,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1027063263}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: PlayerBarrageLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -772,7 +666,6 @@ GameObject:
   - component: {fileID: 1322588100}
   - component: {fileID: 1322588096}
   - component: {fileID: 1322588099}
-  - component: {fileID: 1322588098}
   m_Layer: 5
   m_Name: UICamera
   m_TagString: Untagged
@@ -816,13 +709,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!92 &1322588098
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1322588095}
-  m_Enabled: 0
 --- !u!124 &1322588099
 Behaviour:
   m_ObjectHideFlags: 0
@@ -899,7 +785,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294966527
+    m_Bits: 0
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -924,34 +810,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1405520531
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1405520532}
-  m_Layer: 8
-  m_Name: BgLayer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1405520532
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1405520531}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2107524953}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1620884434
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,7 +819,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1620884438}
   - component: {fileID: 1620884435}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: GameCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -992,7 +850,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 4608
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1032,7 +890,7 @@ GameObject:
   - component: {fileID: 1691635113}
   - component: {fileID: 1691635115}
   - component: {fileID: 1691635114}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: BgLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1241,7 +1099,7 @@ RectTransform:
   - {fileID: 1133017156}
   - {fileID: 1322588100}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1267,7 +1125,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1783090517}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: STGBottomViewLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1300,7 +1158,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1881358149}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: STGBottomEffectLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1333,7 +1191,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2020925378}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: STGNormalEffectLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1358,33 +1216,3 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &2107524952
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2107524953}
-  m_Layer: 0
-  m_Name: Background
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2107524953
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2107524952}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1405520532}
-  - {fileID: 841293530}
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

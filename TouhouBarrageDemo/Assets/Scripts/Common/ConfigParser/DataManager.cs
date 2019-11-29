@@ -38,6 +38,7 @@ public class DataManager
         _parserMap.Add("EnemyLinearLaserCfgs", "EnemyLinearLaserCfg");
         _parserMap.Add("PlayerBulletCfgs", "PlayerBulletCfg");
         _parserMap.Add("EnemyCurveLaserCfgs", "EnemyCurveLaserCfg");
+        _parserMap.Add("StageBgCfgs", "StageBgCfg");
         _datasMap = new Dictionary<string, object>();
         CfgFolderPath = Path.Combine(Application.streamingAssetsPath, "Configs");
     }

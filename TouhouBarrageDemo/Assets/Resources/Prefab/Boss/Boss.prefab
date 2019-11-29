@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4617083857016330}
   - component: {fileID: 212477969910482740}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: MagicSquare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4229308686067748}
   - component: {fileID: 212471213130621100}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: BloodBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 4697147097063934}
   - component: {fileID: 33420435117799076}
   - component: {fileID: 23437956143636516}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4127942554047470}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SpellCardLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 4006255035319254}
   - component: {fileID: 33692120281678122}
   - component: {fileID: 23294548818385576}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Life
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 4777286988615210}
   - component: {fileID: 222790129115732472}
   - component: {fileID: 212228507105685510}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4785080790334786}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4702953611972080}
   - component: {fileID: 212275667950148272}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: BloodBarBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4604071211758854}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: BloodBarLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224265933815368772}
   - component: {fileID: 212167257546858596}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224799981157257182}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: CollisionPointObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224660230501047658}
   - component: {fileID: 212441685798530472}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b730ff0a8376d0046a050cafa9fb38fe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -136,7 +136,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b730ff0a8376d0046a050cafa9fb38fe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

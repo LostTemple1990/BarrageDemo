@@ -126,6 +126,10 @@
     /// 打印当前帧的一些统计数据
     /// </summary>
     public const int LogFrameStatistics = 3004;
+    /// <summary>
+    /// 加载关卡的初始背景完成
+    /// </summary>
+    public const int STGLoadStageDefaultBgComplete = 3005;
 
     public const int RetryStage = 3010;
     public const int RetryGame = 3011;

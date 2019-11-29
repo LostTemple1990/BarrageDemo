@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224786676230111734}
   - component: {fileID: 212779417110363124}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224379415166893152}
   - component: {fileID: 212314855764878274}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 224415666499739808}
   - component: {fileID: 222855364761944124}
   - component: {fileID: 114661649826001402}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SpellCardTimeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224192777416351206}
   - component: {fileID: 212113643023506112}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224243259247785000}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: BossInfoPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 224808818532862326}
   - component: {fileID: 222009784964040310}
   - component: {fileID: 114629822067410392}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: ImgFullPower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224242092143286254}
   - component: {fileID: 212492978124388352}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: GetBonusSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224984105517673060}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: ScorePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224364222994853760}
   - component: {fileID: 212822273842177612}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224117125924712686}
   - component: {fileID: 212128355529449738}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4945428687144778}
   - component: {fileID: 212236181343649136}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: TextRealTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224502764522905138}
   - component: {fileID: 212882473360478636}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,7 +212,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224446111177682894}
   - component: {fileID: 212977735846239256}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224652501286713446}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: FinishTimePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,7 +243,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224666689798888386}
   - component: {fileID: 212728082215994134}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 224321002587405488}
   - component: {fileID: 222297861642128202}
   - component: {fileID: 114568242389285476}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: NameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224747131188883968}
   - component: {fileID: 212711134341879914}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,7 +292,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224866337725313908}
   - component: {fileID: 212287734555810884}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -307,7 +307,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224412600426691112}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: FinishTimeContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,7 +324,7 @@ GameObject:
   - component: {fileID: 224706487860136174}
   - component: {fileID: 222899856848829388}
   - component: {fileID: 114467891553791254}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SpellCardNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -340,7 +340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4439971289200620}
   - component: {fileID: 212101738036038518}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: TextFinishTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -356,7 +356,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224420309040729128}
   - component: {fileID: 212899861586977196}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -371,7 +371,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224309092847497950}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: RealTimePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -387,7 +387,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224956571203498090}
   - component: {fileID: 212847361898425542}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224069049116748236}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SpellCardResultPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,7 +418,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224295320758607034}
   - component: {fileID: 212526146074186374}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 224859044689396944}
   - component: {fileID: 222499338280909614}
   - component: {fileID: 114205611865988900}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: BGMText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 224413863682717888}
   - component: {fileID: 222974576087125182}
   - component: {fileID: 114057176036295962}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -468,7 +468,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224688526287567410}
   - component: {fileID: 212860118900741012}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,7 +484,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224437638398378012}
   - component: {fileID: 212478058126023298}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -501,7 +501,7 @@ GameObject:
   - component: {fileID: 224937396557762606}
   - component: {fileID: 222491542314122358}
   - component: {fileID: 114525053264404992}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: ImgExtend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -517,7 +517,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224256206810718354}
   - component: {fileID: 212046858690936610}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -533,7 +533,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224003691387266496}
   - component: {fileID: 212155542562934132}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -549,7 +549,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224984697760454668}
   - component: {fileID: 212511401824935692}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -564,7 +564,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224408069442822674}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -579,7 +579,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224932070444260518}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: RealTimeContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -595,7 +595,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224347361417049042}
   - component: {fileID: 212321865453661764}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -611,7 +611,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224237314584041518}
   - component: {fileID: 212457226191286258}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: BonusFailSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -626,7 +626,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224770571932554266}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: GameInfoView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -642,7 +642,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224037877146099512}
   - component: {fileID: 212100205485083734}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Num3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

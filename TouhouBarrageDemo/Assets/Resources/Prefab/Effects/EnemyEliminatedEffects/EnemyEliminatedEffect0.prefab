@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224474211188649088}
   - component: {fileID: 212959677277004458}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Sprite1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224628109566085508}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: EnemyEliminatedEffect0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224732039595101346}
   - component: {fileID: 212382073718532000}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Sprite0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,7 +67,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224749622128401170}
   - component: {fileID: 212987495942082508}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Sprite2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 51f69b407c675eb4aaf06e1e53f0f040, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -152,7 +152,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 51f69b407c675eb4aaf06e1e53f0f040, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -197,7 +197,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 51f69b407c675eb4aaf06e1e53f0f040, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

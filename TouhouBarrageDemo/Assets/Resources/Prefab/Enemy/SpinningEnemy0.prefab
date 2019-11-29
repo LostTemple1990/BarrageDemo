@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224791497460119708}
   - component: {fileID: 212803515213237366}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Border0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224923263882894788}
   - component: {fileID: 212781121166046718}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224964353341785800}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SpinningEnemy0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,7 +67,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224588111488642360}
   - component: {fileID: 212193105606307536}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Border1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300120, guid: f0ae807995cae164993e91ea5afd3536, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -152,7 +152,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300136, guid: f0ae807995cae164993e91ea5afd3536, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -197,7 +197,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300120, guid: f0ae807995cae164993e91ea5afd3536, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

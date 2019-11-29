@@ -60,9 +60,7 @@ public class BgSpriteObject : IPoolClass
         _spriteTf = _spriteObject.transform;
         _spRenderer = _spriteTf.GetComponent<SpriteRenderer>();
         // 设置父亲节点
-        _spriteTf.parent = parentTf;
-        _spriteTf.localScale = Vector3.one;
-        _spriteTf.localRotation = Quaternion.Euler(0, 0, 0);
+        _spriteTf.SetParent(parentTf, false);
         _isActive = true;
     }
 

@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224574818273256900}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: STGBgLoadingView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 224499977933449438}
   - component: {fileID: 222014569868863968}
   - component: {fileID: 114864954807686762}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4254420115160918}
   - component: {fileID: 212920656163025492}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SubWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4771512770160388}
   - component: {fileID: 212983756638360048}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: HighLightStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4815086937319648}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SubWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,7 +67,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4821694208705742}
   - component: {fileID: 212937202281325250}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: HighLightBg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b794136d9ffc2ec40b2fff301f9ac734, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -207,7 +207,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f24705df1cd5625488280804ef43a7da, type: 3}
   m_Color: {r: 0, g: 0, b: 1, a: 1}
@@ -252,7 +252,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: aa8a495ac01f62d4c8a30c00841fbd29, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

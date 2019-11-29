@@ -4,37 +4,44 @@ using System.Collections.Generic;
 
 public class StateSTGMain : IState,ICommand
 {
-    /// <summary>
-    /// 等待
-    /// </summary>
-    private const int StateWait = 1;
-    /// <summary>
-    /// 初始化STGMain
-    /// </summary>
-    private const int StateInitSTGMain = 2;
-    /// <summary>
-    /// 加载对应的stage.lua
-    /// </summary>
-    private const int StateLoadStageLua = 3;
-    /// <summary>
-    /// 执行clear
-    /// </summary>
-    private const int StateClear = 4;
-    /// <summary>
-    /// STG开始前的初始化
-    /// </summary>
-    private const int StateInitSTG = 5;
-    /// <summary>
-    /// update STG
-    /// </summary>
-    private const int StateUpdateSTG = 6;
+    enum eSTGMainState : byte
+    {
+        /// <summary>
+        /// 等待
+        /// </summary>
+        StateWait = 1,
+        /// <summary>
+        /// 初始化STGMain
+        /// </summary>
+        StateInitSTGMain = 2,
+        /// <summary>
+        /// 加载对应的stage.lua
+        /// </summary>
+        StateLoadStageLua = 3,
+        /// <summary>
+        /// 执行clear
+        /// </summary>
+        StateClear = 4,
+        /// <summary>
+        ///  STG开始前的初始化
+        /// </summary>
+        StateInitSTG = 5,
+        /// <summary>
+        /// update STG
+        /// </summary>
+        StateUpdateSTG = 6,
+        /// <summary>
+        /// 加载关卡初始背景的场景
+        /// </summary>
+        StateLoadStageDefaultBg = 7,
+    }
 
     private string _curStageName;
     private string _nextStageName;
     /// <summary>
     /// 当前状态
     /// </summary>
-    private int _curState;
+    private eSTGMainState _curState;
     /// <summary>
     /// 录像是否已经结束
     /// </summary>
@@ -76,6 +83,9 @@ public class StateSTGMain : IState,ICommand
             case CommandConsts.STGLoadStageLuaComplete:
                 OnLoadStageLuaComplete();
                 break;
+            case CommandConsts.STGLoadStageDefaultBgComplete:
+                OnLoadStageDefaultBgComplete();
+                break;
             case CommandConsts.RetryGame:
                 OnRetryGame();
                 break;
@@ -113,11 +123,12 @@ public class StateSTGMain : IState,ICommand
     public void OnStateEnter(object data=null)
     {
         // 初始化STGMain
-        _curState = StateInitSTGMain;
+        _curState = eSTGMainState.StateInitSTGMain;
         // 打开loadingView
         List<object> commandList = new List<object>();
         commandList.Add(CommandConsts.STGInitComplete);
         commandList.Add(CommandConsts.STGLoadStageLuaComplete);
+        commandList.Add(CommandConsts.STGLoadStageDefaultBgComplete);
         object[] commandArr = commandList.ToArray();
         UIManager.GetInstance().ShowView(WindowName.GameLoadingView, commandArr);
         // 添加监听
@@ -139,11 +150,11 @@ public class StateSTGMain : IState,ICommand
         // 实例化STGMain
         if (_stgMain == null )
         {
-            _curState = StateInitSTGMain;
+            _curState = eSTGMainState.StateInitSTGMain;
         }
         else
         {
-            _curState = StateInitSTG;
+            _curState = eSTGMainState.StateInitSTG;
         }
     }
 
@@ -159,6 +170,9 @@ public class StateSTGMain : IState,ICommand
         CommandManager.GetInstance().Remove(CommandConsts.PlayerMiss, this);
         CommandManager.GetInstance().Remove(CommandConsts.ContinueGameAfterGameOver, this);
 
+        CommandManager.GetInstance().Remove(CommandConsts.STGLoadStageLuaComplete, this);
+        CommandManager.GetInstance().Remove(CommandConsts.STGLoadStageDefaultBgComplete, this);
+
         UIManager.GetInstance().HideView(WindowName.GameInfoView);
         UIManager.GetInstance().HideView(WindowName.STGBottomView);
         UIManager.GetInstance().HideView(WindowName.GameMainView);
@@ -167,25 +181,29 @@ public class StateSTGMain : IState,ICommand
 
     public void OnUpdate()
     {
-        if ( _curState == StateInitSTGMain )
+        if ( _curState == eSTGMainState.StateInitSTGMain )
         {
             OnStateInitSTGMainUpdate();
         }
-        else if ( _curState == StateLoadStageLua )
-        {
-            OnStateLoadStageLuaUpdate();
-        }
-        else if ( _curState == StateClear )
-        {
-            OnStateClearUpdate();
-        }
-        else if ( _curState == StateInitSTG )
+        else if (_curState == eSTGMainState.StateInitSTG)
         {
             OnStateInitSTGUpdate();
         }
-        else if ( _curState == StateUpdateSTG )
+        else if ( _curState == eSTGMainState.StateLoadStageLua )
+        {
+            OnStateLoadStageLuaUpdate();
+        }
+        else if (_curState == eSTGMainState.StateLoadStageDefaultBg)
+        {
+            OnStateLoadStageDefaultBgUpdate();
+        }
+        else if (_curState == eSTGMainState.StateUpdateSTG)
         {
             OnSTGMainUpdate();
+        }
+        else if ( _curState == eSTGMainState.StateClear )
+        {
+            OnStateClearUpdate();
         }
     }
 
@@ -195,7 +213,7 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnSTGInitComplete()
     {
-        _curState = StateLoadStageLua;
+        _curState = eSTGMainState.StateLoadStageLua;
     }
 
     /// <summary>
@@ -204,7 +222,14 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnLoadStageLuaComplete()
     {
-        _curState = StateUpdateSTG;
+        CommandManager.GetInstance().Remove(CommandConsts.STGLoadStageLuaComplete, this);
+        _curState = eSTGMainState.StateLoadStageDefaultBg;
+    }
+
+    private void OnLoadStageDefaultBgComplete()
+    {
+        CommandManager.GetInstance().Remove(CommandConsts.STGLoadStageDefaultBgComplete, this);
+        _curState = eSTGMainState.StateUpdateSTG;
     }
 
     /// <summary>
@@ -213,7 +238,7 @@ public class StateSTGMain : IState,ICommand
     private void OnRetryGame()
     {
         Logger.Log("Retry Game");
-        _curState = StateClear;
+        _curState = eSTGMainState.StateClear;
         _nextStageName = _curStageName;
         // 打开loadingView
         List<object> commandList = new List<object>();
@@ -246,7 +271,7 @@ public class StateSTGMain : IState,ICommand
             InterpreterManager.GetInstance().LoadLuaFile(stageLuaList[i]);
         }
 
-        _curState = StateInitSTG;
+        _curState = eSTGMainState.StateInitSTG;
     }
 
     /// <summary>
@@ -281,6 +306,7 @@ public class StateSTGMain : IState,ICommand
             }
         }
         _stgData.stageName = _curStageName;
+        CommandManager.GetInstance().Register(CommandConsts.STGLoadStageLuaComplete, this);
         _stgMain.EnterStage(_curStageName);
         // 添加事件监听
         CommandManager.GetInstance().Register(CommandConsts.PlayerMiss, this);
@@ -290,8 +316,6 @@ public class StateSTGMain : IState,ICommand
         Global.IsPause = false;
         _resumeSTGSE = false;
         ReplayManager.GetInstance().SetReplayEnable(true);
-
-        _curState = StateUpdateSTG;
     }
 
     /// <summary>
@@ -303,7 +327,7 @@ public class StateSTGMain : IState,ICommand
         CommandManager.GetInstance().Remove(CommandConsts.PlayerMiss, this);
         CommandManager.GetInstance().Remove(CommandConsts.ContinueGameAfterGameOver, this);
 
-        _curState = StateInitSTG;
+        _curState = eSTGMainState.StateInitSTG;
     }
 
     /// <summary>
@@ -321,7 +345,16 @@ public class StateSTGMain : IState,ICommand
         // 设置初始残机数和符卡数目
         PlayerInterface.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
         PlayerInterface.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
-        _curState = StateLoadStageLua;
+        _curState = eSTGMainState.StateLoadStageLua;
+    }
+
+    /// <summary>
+    /// 加载关卡的默认背景场景
+    /// </summary>
+    private void OnStateLoadStageDefaultBgUpdate()
+    {
+        CommandManager.GetInstance().Register(CommandConsts.STGLoadStageDefaultBgComplete, this);
+        BackgroundManager.GetInstance().LoadStageDefaultBg(_curStageName);
     }
 
     #region STG主线程相关

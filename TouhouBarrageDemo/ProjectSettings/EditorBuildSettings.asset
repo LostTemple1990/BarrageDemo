@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/BarrageDemo.unity
     guid: 31234fe84c75a244aaf8ba4d0aad1097
+  - enabled: 1
+    path: Assets/Assets/background/Stage1/Stage1Bg.unity
+    guid: da56c5df031594a4b885d7a3482927ea
   m_configObjects: {}

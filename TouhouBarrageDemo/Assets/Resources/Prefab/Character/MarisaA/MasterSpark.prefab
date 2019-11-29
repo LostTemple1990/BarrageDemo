@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224409292460324872}
   - component: {fileID: 212370802991809450}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SparkWave3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224175174476589164}
   - component: {fileID: 212644126090729998}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SparkWave0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224851293203685694}
   - component: {fileID: 212630525056729442}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SparkWave1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224368811265486424}
   - component: {fileID: 212831682952839764}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: MasterSparkBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224762941935259424}
   - component: {fileID: 212137705028428246}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SparkWave2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224601367895095158}
   - component: {fileID: 212280968432291526}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SparkWave4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224889833704621290}
   - component: {fileID: 212966786322142358}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: MovementBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224570292921978970}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: MasterSpark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224547159201257460}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: SparkContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e409047b41407df4eab089a5fa1785c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -231,7 +231,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e409047b41407df4eab089a5fa1785c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -276,7 +276,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e409047b41407df4eab089a5fa1785c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -321,7 +321,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e409047b41407df4eab089a5fa1785c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -366,7 +366,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e409047b41407df4eab089a5fa1785c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -411,7 +411,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5fab1fa9f690e3842996799500bab854, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -456,7 +456,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1256447133
-  m_SortingLayer: 3
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5fab1fa9f690e3842996799500bab854, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

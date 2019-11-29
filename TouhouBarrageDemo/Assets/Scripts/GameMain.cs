@@ -7,6 +7,11 @@ public class GameMain : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        GameObject.DontDestroyOnLoad(GameObject.Find("Main Camera"));
+        GameObject.DontDestroyOnLoad(GameObject.Find("EventSystem"));
+        GameObject.DontDestroyOnLoad(GameObject.Find("Sound"));
+        GameObject.DontDestroyOnLoad(GameObject.Find("UIRoot"));
+        GameObject.DontDestroyOnLoad(GameObject.Find("GameMainCanvas"));
         Init();
 	}
 	
