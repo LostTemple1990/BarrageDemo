@@ -155,9 +155,23 @@ namespace BarrageEditor
                 styleId = 1,
                 name = "Style1",
                 packName = "STGCurveLaserAtlas",
-                resName = "Laser405010",
+                resName = "Laser401010",
                 showScale = 1,
                 availableColors = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+            };
+            _styleCfgList.Add(cfg);
+            #endregion
+            #region 闪电激光
+            cfg = new LaserStyleCfg
+            {
+                type = BulletType.CurveLaser,
+                typePrefixNum = 4,
+                styleId = 10,
+                name = "Style10",
+                packName = "STGCurveLaserAtlas1",
+                resName = "Laser410000",
+                showScale = 1,
+                availableColors = new List<int> { 0 },
             };
             _styleCfgList.Add(cfg);
             #endregion

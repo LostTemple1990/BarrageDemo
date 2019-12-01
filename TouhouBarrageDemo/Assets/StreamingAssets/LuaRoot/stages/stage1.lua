@@ -709,7 +709,7 @@ Stage["Stage1"] = function()
 	--lib.InitGravitationField(field,1,0.5,0,0,0,0.05,0,0,0)
 	--lib.SetObjectColliderColliderGroup(field,eColliderGroup.EnemyBullet)
 	--
-	if coroutine.yield(200000) == false then return end
+	if coroutine.yield(200) == false then return end
 	do
 		--local enemy = lib.CreateNormalEnemyById("100000",500,0,185);
 		local enemy = lib.CreateCustomizedEnemy("TestKillEnemy","100000",0,185,0)
@@ -772,7 +772,7 @@ Stage["Stage1"] = function()
 			for i=1,18 do
 				local posX,posY = lib.GetEnemyPos(enemy)
 				local angle = lib.GetAimToPlayerAngle(posX,posY)
-				laser = lib.CreateCurveLaser("401100",45,posX,posY)
+				laser = lib.CreateCurveLaser("410000",45,posX,posY)
 				lib.SetCurveLaserCurveParas(laser,0,i*20,3,3)
 				lib.SetCurveLaserWidth(laser,10)
 				if coroutine.yield(5) == false then return end

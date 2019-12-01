@@ -211,6 +211,9 @@ namespace BarrageEditor
         private void SaveAsClickHander()
         {
             Close();
+            string path = BarrageProject.GetProjectPath();
+            if (path == null)
+                return;
             string savePath = FileUtils.SaveFile("选择保存数据", "关卡数据(*.nd)\0*.nd\0");
             if (savePath != null)
             {

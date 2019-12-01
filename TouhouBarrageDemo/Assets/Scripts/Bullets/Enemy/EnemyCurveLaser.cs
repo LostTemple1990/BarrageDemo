@@ -156,11 +156,14 @@ public class EnemyCurveLaser : EnemyBulletBase
         _trans = _bullet.transform;
         Transform laserTrans = _trans.Find("LaserObject");
         _mesh = laserTrans.GetComponent<MeshFilter>().mesh;
-        int index = cfg.colorIndex;
-        _textureIndex = 16 - index;
-        _vUnit = 1f / cfg.colorsCount;
-        _startV = _vUnit * (_textureIndex - 1);
-        _endV = _vUnit * _textureIndex;
+        if (_cfg.aniCount == 0)
+        {
+            int index = cfg.colorIndex;
+            _textureIndex = 16 - index;
+            _vUnit = 1f / cfg.colorsCount;
+            _startV = _vUnit * (_textureIndex - 1);
+            _endV = _vUnit * _textureIndex;
+        }
         _isPosModified = true;
     }
 
@@ -216,6 +219,12 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     public override void Render()
     {
+        // 检测是否需要重新计算uv
+        if (_cfg.aniCount != 0)
+        {
+            if (_timeSinceCreated % 4 == 0)
+                _uvModified = true;
+        }
         PopulateMesh();
         if (_isPosModified)
             RenderPosition();
@@ -549,6 +558,12 @@ public class EnemyCurveLaser : EnemyBulletBase
     /// <param name="uvs"></param>
     private void AddUVs(int startIndex,int endIndex,List<Vector2> uvs)
     {
+        if (_cfg.aniCount > 0)
+        {
+            int index = (_timeSinceCreated >> 2) % 4;
+            _startV = 1f / 4 * index;
+            _endV = 1f / 4 * (index + 1);
+        }
         int segment = endIndex - startIndex;
         float segLen = 1f / segment;
         float u = 0f;

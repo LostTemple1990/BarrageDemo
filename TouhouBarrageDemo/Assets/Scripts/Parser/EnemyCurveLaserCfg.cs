@@ -13,6 +13,7 @@ public class EnemyCurveLaserCfg : IParser
     public string laserHeadTexName;
     public string laserSourceTexId;
     public Color eliminateColor;
+    public int aniCount;
 
     public IParser CreateNewInstance()
     {
@@ -25,6 +26,7 @@ public class EnemyCurveLaserCfg : IParser
         materialName = xmlElement.GetAttribute("materialName");
         colorIndex = int.Parse(xmlElement.GetAttribute("colorIndex"));
         colorsCount = int.Parse(xmlElement.GetAttribute("colorsCount"));
+        aniCount = int.Parse(xmlElement.GetAttribute("aniCount"));
         laserHeadTexName = xmlElement.GetAttribute("laserHeadTexName");
         laserSourceTexId = xmlElement.GetAttribute("laserSourceTexId");
         string[] colorStrs = (xmlElement.GetAttribute("eliminateColor")).Split(',');

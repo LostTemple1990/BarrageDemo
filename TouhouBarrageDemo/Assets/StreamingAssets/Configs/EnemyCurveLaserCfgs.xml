@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Data>
-	<CurveLaser id="401000" comment="普通曲线激光灰" materialName="CurveLaserMat000" colorIndex="0" colorsCount="16" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" eliminateColor="0.5,0.5,0.5"/>
-	<CurveLaser id="401001" comment="普通曲线激光灰" materialName="CurveLaserMat001" colorIndex="0" colorsCount="16" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" eliminateColor="0.5,0.5,0.5"/>
-	<CurveLaser id="401010" comment="普通曲线激光深红" materialName="CurveLaserMat000" colorIndex="1" colorsCount="16" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.625,0.3,0.3"/>
-	<CurveLaser id="401011" comment="普通曲线激光深红" materialName="CurveLaserMat001" colorIndex="1" colorsCount="16" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.625,0.3,0.3"/>
-	<CurveLaser id="401020" comment="普通曲线激光红" materialName="CurveLaserMat000" colorIndex="2" colorsCount="16" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.8,0.3,0.3"/>
-	<CurveLaser id="401021" comment="普通曲线激光红" materialName="CurveLaserMat001" colorIndex="2" colorsCount="16" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" eliminateColor="0.8,0.3,0.3"/>
-	<CurveLaser id="401030" comment="普通曲线激光深紫" materialName="CurveLaserMat000" colorIndex="3" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
-	<CurveLaser id="401031" comment="普通曲线激光深紫" materialName="CurveLaserMat001" colorIndex="3" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
-	<CurveLaser id="401040" comment="普通曲线激光紫" materialName="CurveLaserMat000" colorIndex="4" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
-	<CurveLaser id="401041" comment="普通曲线激光紫" materialName="CurveLaserMat001" colorIndex="4" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" eliminateColor="1,0.65,1"/>
-	<CurveLaser id="401050" comment="普通曲线激光深蓝" materialName="CurveLaserMat000" colorIndex="5" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
-	<CurveLaser id="401051" comment="普通曲线激光深蓝" materialName="CurveLaserMat001" colorIndex="5" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
-	<CurveLaser id="401060" comment="普通曲线激光蓝" materialName="CurveLaserMat000" colorIndex="6" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
-	<CurveLaser id="401061" comment="普通曲线激光蓝" materialName="CurveLaserMat001" colorIndex="6" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" eliminateColor="0,0.1,1"/>
-	<CurveLaser id="401070" comment="普通曲线激光深青" materialName="CurveLaserMat000" colorIndex="7" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
-	<CurveLaser id="401071" comment="普通曲线激光深青" materialName="CurveLaserMat001" colorIndex="7" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
-	<CurveLaser id="401080" comment="普通曲线激光青" materialName="CurveLaserMat000" colorIndex="8" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
-	<CurveLaser id="401081" comment="普通曲线激光青" materialName="CurveLaserMat001" colorIndex="8" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" eliminateColor="0.25,1,1"/>
-	<CurveLaser id="401090" comment="普通曲线激光深绿" materialName="CurveLaserMat000" colorIndex="9" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
-	<CurveLaser id="401091" comment="普通曲线激光深绿" materialName="CurveLaserMat001" colorIndex="9" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
-	<CurveLaser id="401100" comment="普通曲线激光绿" materialName="CurveLaserMat000" colorIndex="10" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
-	<CurveLaser id="401101" comment="普通曲线激光绿" materialName="CurveLaserMat001" colorIndex="10" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.36,0.78,1"/>
-	<CurveLaser id="401110" comment="普通曲线激光黄绿" materialName="CurveLaserMat000" colorIndex="11" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
-	<CurveLaser id="401111" comment="普通曲线激光黄绿" materialName="CurveLaserMat001" colorIndex="11" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
-	<CurveLaser id="401120" comment="普通曲线激光深黄" materialName="CurveLaserMat000" colorIndex="12" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
-	<CurveLaser id="401121" comment="普通曲线激光深黄" materialName="CurveLaserMat001" colorIndex="12" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" eliminateColor="0.9,1,0.4"/>
-	<CurveLaser id="401130" comment="普通曲线激光浅黄" materialName="CurveLaserMat000" colorIndex="13" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
-	<CurveLaser id="401131" comment="普通曲线激光浅黄" materialName="CurveLaserMat001" colorIndex="13" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
-	<CurveLaser id="401140" comment="普通曲线激光棕黄" materialName="CurveLaserMat000" colorIndex="14" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
-	<CurveLaser id="401141" comment="普通曲线激光棕黄" materialName="CurveLaserMat001" colorIndex="14" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" eliminateColor="0.9,1,0.4"/>
-	<CurveLaser id="401150" comment="普通曲线激光白" materialName="CurveLaserMat000" colorIndex="15" colorsCount="16" laserHeadTexName="LaserHead_W0" laserSourceTexId="200150" eliminateColor="0.8,0.8,0.8"/>
-	<CurveLaser id="401151" comment="普通曲线激光白" materialName="CurveLaserMat001" colorIndex="15" colorsCount="16" laserHeadTexName="LaserHead_W0" laserSourceTexId="200150" eliminateColor="0.8,0.8,0.8"/>
+	<CurveLaser id="401000" comment="普通曲线激光灰" materialName="CurveLaserMat000" colorIndex="0" colorsCount="16" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" aniCount="0" eliminateColor="0.5,0.5,0.5"/>
+	<CurveLaser id="401001" comment="普通曲线激光灰" materialName="CurveLaserMat001" colorIndex="0" colorsCount="16" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" aniCount="0" eliminateColor="0.5,0.5,0.5"/>
+	<CurveLaser id="401010" comment="普通曲线激光深红" materialName="CurveLaserMat000" colorIndex="1" colorsCount="16" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" aniCount="0" eliminateColor="0.625,0.3,0.3"/>
+	<CurveLaser id="401011" comment="普通曲线激光深红" materialName="CurveLaserMat001" colorIndex="1" colorsCount="16" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" aniCount="0" eliminateColor="0.625,0.3,0.3"/>
+	<CurveLaser id="401020" comment="普通曲线激光红" materialName="CurveLaserMat000" colorIndex="2" colorsCount="16" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" aniCount="0" eliminateColor="0.8,0.3,0.3"/>
+	<CurveLaser id="401021" comment="普通曲线激光红" materialName="CurveLaserMat001" colorIndex="2" colorsCount="16" laserHeadTexName="LaserHead_R0" laserSourceTexId="200010" aniCount="0" eliminateColor="0.8,0.3,0.3"/>
+	<CurveLaser id="401030" comment="普通曲线激光深紫" materialName="CurveLaserMat000" colorIndex="3" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" aniCount="0" eliminateColor="1,0.65,1"/>
+	<CurveLaser id="401031" comment="普通曲线激光深紫" materialName="CurveLaserMat001" colorIndex="3" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" aniCount="0" eliminateColor="1,0.65,1"/>
+	<CurveLaser id="401040" comment="普通曲线激光紫" materialName="CurveLaserMat000" colorIndex="4" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" aniCount="0" eliminateColor="1,0.65,1"/>
+	<CurveLaser id="401041" comment="普通曲线激光紫" materialName="CurveLaserMat001" colorIndex="4" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200030" aniCount="0" eliminateColor="1,0.65,1"/>
+	<CurveLaser id="401050" comment="普通曲线激光深蓝" materialName="CurveLaserMat000" colorIndex="5" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" aniCount="0" eliminateColor="0,0.1,1"/>
+	<CurveLaser id="401051" comment="普通曲线激光深蓝" materialName="CurveLaserMat001" colorIndex="5" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" aniCount="0" eliminateColor="0,0.1,1"/>
+	<CurveLaser id="401060" comment="普通曲线激光蓝" materialName="CurveLaserMat000" colorIndex="6" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" aniCount="0" eliminateColor="0,0.1,1"/>
+	<CurveLaser id="401061" comment="普通曲线激光蓝" materialName="CurveLaserMat001" colorIndex="6" colorsCount="16" laserHeadTexName="LaserHead_B0" laserSourceTexId="200050" aniCount="0" eliminateColor="0,0.1,1"/>
+	<CurveLaser id="401070" comment="普通曲线激光深青" materialName="CurveLaserMat000" colorIndex="7" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" aniCount="0" eliminateColor="0.25,1,1"/>
+	<CurveLaser id="401071" comment="普通曲线激光深青" materialName="CurveLaserMat001" colorIndex="7" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" aniCount="0" eliminateColor="0.25,1,1"/>
+	<CurveLaser id="401080" comment="普通曲线激光青" materialName="CurveLaserMat000" colorIndex="8" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" aniCount="0" eliminateColor="0.25,1,1"/>
+	<CurveLaser id="401081" comment="普通曲线激光青" materialName="CurveLaserMat001" colorIndex="8" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200070" aniCount="0" eliminateColor="0.25,1,1"/>
+	<CurveLaser id="401090" comment="普通曲线激光深绿" materialName="CurveLaserMat000" colorIndex="9" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" aniCount="0" eliminateColor="0.36,0.78,1"/>
+	<CurveLaser id="401091" comment="普通曲线激光深绿" materialName="CurveLaserMat001" colorIndex="9" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" aniCount="0" eliminateColor="0.36,0.78,1"/>
+	<CurveLaser id="401100" comment="普通曲线激光绿" materialName="CurveLaserMat000" colorIndex="10" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" aniCount="0" eliminateColor="0.36,0.78,1"/>
+	<CurveLaser id="401101" comment="普通曲线激光绿" materialName="CurveLaserMat001" colorIndex="10" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" aniCount="0" eliminateColor="0.36,0.78,1"/>
+	<CurveLaser id="401110" comment="普通曲线激光黄绿" materialName="CurveLaserMat000" colorIndex="11" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" aniCount="0" eliminateColor="0.9,1,0.4"/>
+	<CurveLaser id="401111" comment="普通曲线激光黄绿" materialName="CurveLaserMat001" colorIndex="11" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" aniCount="0" eliminateColor="0.9,1,0.4"/>
+	<CurveLaser id="401120" comment="普通曲线激光深黄" materialName="CurveLaserMat000" colorIndex="12" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" aniCount="0" eliminateColor="0.9,1,0.4"/>
+	<CurveLaser id="401121" comment="普通曲线激光深黄" materialName="CurveLaserMat001" colorIndex="12" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200090" aniCount="0" eliminateColor="0.9,1,0.4"/>
+	<CurveLaser id="401130" comment="普通曲线激光浅黄" materialName="CurveLaserMat000" colorIndex="13" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" aniCount="0" eliminateColor="0.9,1,0.4"/>
+	<CurveLaser id="401131" comment="普通曲线激光浅黄" materialName="CurveLaserMat001" colorIndex="13" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" aniCount="0" eliminateColor="0.9,1,0.4"/>
+	<CurveLaser id="401140" comment="普通曲线激光棕黄" materialName="CurveLaserMat000" colorIndex="14" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" aniCount="0" eliminateColor="0.9,1,0.4"/>
+	<CurveLaser id="401141" comment="普通曲线激光棕黄" materialName="CurveLaserMat001" colorIndex="14" colorsCount="16" laserHeadTexName="LaserHead_G0" laserSourceTexId="200130" aniCount="0" eliminateColor="0.9,1,0.4"/>
+	<CurveLaser id="401150" comment="普通曲线激光白" materialName="CurveLaserMat000" colorIndex="15" colorsCount="16" laserHeadTexName="LaserHead_W0" laserSourceTexId="200150" aniCount="0" eliminateColor="0.8,0.8,0.8"/>
+	<CurveLaser id="401151" comment="普通曲线激光白" materialName="CurveLaserMat001" colorIndex="15" colorsCount="16" laserHeadTexName="LaserHead_W0" laserSourceTexId="200150" aniCount="0" eliminateColor="0.8,0.8,0.8"/>
+	<CurveLaser id="410000" comment="动画曲线激光1灰" materialName="CurveLaserMat100" colorIndex="0" colorsCount="1" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" aniCount="4" eliminateColor="0.5,0.5,0.5"/>
+	<CurveLaser id="410001" comment="动画曲线激光1灰" materialName="CurveLaserMat101" colorIndex="0" colorsCount="1" laserHeadTexName="LaserHead_W0" laserSourceTexId="200000" aniCount="4" eliminateColor="0.5,0.5,0.5"/>
 </Data>

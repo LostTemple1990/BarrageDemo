@@ -1,4 +1,4 @@
-﻿#define SoundEnable 
+﻿//#define SoundEnable 
 
 using UnityEngine;
 using System.Collections;
