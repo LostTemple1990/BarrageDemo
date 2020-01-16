@@ -82,6 +82,10 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
     /// 是否随着依附对象的旋转而改变角度
     /// </summary>
     protected bool _isFollowMasterRotation;
+    /// <summary>
+    /// 玩家角色
+    /// </summary>
+    protected CharacterBase _player;
 
     public EnemyBulletBase()
     {
@@ -104,6 +108,7 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
         // 依附物体
         _attachmentsCount = 0;
         _isFollowingMasterContinuously = false;
+        _player = PlayerInterface.GetInstance().GetCharacter();
     }
 
     /// <summary>
@@ -455,6 +460,7 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
         _componentsCount = 0;
         _attachmentsList.Clear();
         _attachmentsCount = 0;
+        _player = null;
         base.Clear();
     }
 }

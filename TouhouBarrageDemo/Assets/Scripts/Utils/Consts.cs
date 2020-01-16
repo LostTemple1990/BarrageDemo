@@ -149,4 +149,8 @@ public class Consts
     /// 默认UI音效的音量大小
     /// </summary>
     public const float DefaultUISEVolume = 0.25f;
+    /// <summary>
+    /// Replay文件的最大数目
+    /// </summary>
+    public const int MaxReplayCount = 8;
 }

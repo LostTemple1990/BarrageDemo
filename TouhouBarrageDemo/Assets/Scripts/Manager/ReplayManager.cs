@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define UseReplayInfoFile
+
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -35,6 +37,7 @@ public class ReplayManager
 
     public void Init()
     {
+#if UseReplayInfoFile
         // 加载info文件
         string path = Application.streamingAssetsPath + "/Rep/data.ri";
         if (!System.IO.File.Exists(path))
@@ -55,6 +58,25 @@ public class ReplayManager
             fs.Close();
             _replayInfoList = tmp.infos;
         }
+#else
+        // 挨个读取rep文件生成replay数据
+        _replayInfoList = new List<ReplayInfo>();
+        string repPath;
+        FileStream fs;
+        BinaryFormatter bf = new BinaryFormatter();
+        for (int i=0;i<Consts.MaxReplayCount;i++)
+        {
+            repPath = Application.streamingAssetsPath + "/Rep/replay" + i + ".rep";
+            if (System.IO.File.Exists(repPath))
+            {
+                fs = new FileStream(repPath, FileMode.Open);
+                ReplayData repData = (ReplayData)bf.Deserialize(fs);
+                fs.Close();
+                // 添加repInfo
+                _replayInfoList.Add(repData.info);
+            }
+        }
+#endif
     }
 
     public void SaveReplay(int index, string name, STGData data)
@@ -86,6 +108,7 @@ public class ReplayManager
     /// <param name="info"></param>
     private void WriteRepInfoFile(ReplayInfo info)
     {
+#if UseReplayInfoFile
         string path = Application.streamingAssetsPath + "/Rep/data.ri";
         FileStream fs = new FileStream(path, FileMode.Open);
         BinaryFormatter bf = new BinaryFormatter();
@@ -111,6 +134,22 @@ public class ReplayManager
         fs.Close();
         // 将更新后的info赋值
         _replayInfoList = tmp.infos;
+#else
+        bool isExist = false;
+        for (int i = 0; i < _replayInfoList.Count; i++)
+        {
+            if (_replayInfoList[i].replayIndex == info.replayIndex)
+            {
+                isExist = true;
+                _replayInfoList[i] = info;
+                break;
+            }
+        }
+        if (!isExist)
+        {
+            _replayInfoList.Add(info);
+        }
+#endif
     }
 
     /// <summary>

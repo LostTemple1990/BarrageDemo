@@ -116,8 +116,7 @@ public class BulletBase :IPosition,ICollisionObject
 
     public virtual void SetPosition(float posX,float posY)
     {
-        _curPos.x = posX;
-        _curPos.y = posY;
+        _curPos = new Vector2(posX, posY);
         if (!_isInitPos)
         {
             _isInitPos = true;

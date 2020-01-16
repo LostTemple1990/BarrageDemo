@@ -16,6 +16,7 @@ namespace BarrageEditor
             List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
             optionList.Add(new Dropdown.OptionData("TypeCircle"));
             optionList.Add(new Dropdown.OptionData("TypeRect"));
+            optionList.Add(new Dropdown.OptionData("TypeItalicRect"));
             _dropDown.options = optionList;
             _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
 
@@ -35,7 +36,7 @@ namespace BarrageEditor
 
         public override void OpenEditView()
         {
-            string[] values = new string[] { "TypeCircle", "TypeRect" };
+            string[] values = new string[] { "TypeCircle", "TypeRect", "TypeItalicRect" };
             List<object> datas = new List<object> { this, "EditShapeType", values };
             UIManager.GetInstance().OpenView(ViewID.AttrEditRadioView, datas);
         }

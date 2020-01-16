@@ -33,7 +33,9 @@ SpriteAtlas:
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: f788082db3bc4784d9f83cbb14769b42, type: 3}
+  - {fileID: 21300000, guid: 4a07e1cf02cfdad4cbaabe0dc264ad0a, type: 3}
   m_PackedSpriteNamesToIndex:
   - ShapeCircle
+  - ShapeQuad32
   m_Tag: ShapeAtlas
   m_IsVariant: 0

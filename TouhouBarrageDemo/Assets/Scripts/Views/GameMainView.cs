@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using System.Diagnostics;
 
 public class GameMainView : ViewBase,ICommand
 {
@@ -330,7 +331,7 @@ public class GameMainView : ViewBase,ICommand
     {
         _updateFrameTimer++;
         _curTimeTickIndex = _curTimeTickIndex + 1 >= TickArrSize ? 0 : _curTimeTickIndex + 1;
-        _frameTimeTick[_curTimeTickIndex] = DateTime.Now.Ticks;
+        _frameTimeTick[_curTimeTickIndex] = Stopwatch.GetTimestamp();
         if (_lastTimeTickIndex == -1)
         {
             _lastTimeTickIndex = 0;

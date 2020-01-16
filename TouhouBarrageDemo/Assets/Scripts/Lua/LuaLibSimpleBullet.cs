@@ -123,35 +123,6 @@ public partial class LuaLib
         return 0;
     }
 
-    /// <summary>
-    /// <para>bullet</para>
-    /// <para>velocity</para>
-    /// <para>vAngle</para>
-    /// <para>isAimToPlayer</para>
-    /// <para>acce</para>
-    /// <para>accAngle</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int SetBulletStraightParas(ILuaState luaState)
-    {
-        EnemySimpleBullet bullet = luaState.ToUserData(-6) as EnemySimpleBullet;
-        float velocity = (float)luaState.ToNumber(-5);
-        float vAngle = (float)luaState.ToNumber(-4);
-        bool isAimToPlayer = luaState.ToBoolean(-3);
-        float acce = (float)luaState.ToNumber(-2);
-        float accAngle = (float)luaState.ToNumber(-1);
-        luaState.Pop(6);
-        // 设置子弹线性运动
-        if (isAimToPlayer)
-        {
-            vAngle += MathUtil.GetAngleBetweenXAxis(Global.PlayerPos.x - bullet.posX, Global.PlayerPos.y - bullet.posY);
-        }
-        bullet.DoStraightMove(velocity, vAngle);
-        bullet.DoAcceleration(acce, accAngle);
-        return 0;
-    }
-
     /// <summary> 赋予子弹加速度
     /// <para>bullet</para>
     /// <para>acce</para>

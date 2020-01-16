@@ -8,6 +8,8 @@ public class STGMain
     OperationController _opController;
     CharacterBase _char;
 
+    private long _lastFrameTicks;
+
     public void Update()
     {
         CommandManager.GetInstance().RunCommand(CommandConsts.STGFrameStart);
@@ -77,6 +79,16 @@ public class STGMain
             Logger.Log("------------------------------------------------");
         }
 #else
+        if (frameNode == 200)
+        {
+            _lastFrameTicks = System.DateTime.Now.Ticks;
+        }
+        else if (frameNode > 200 && frameNode <= 300)
+        {
+            long currentTicks = System.DateTime.Now.Ticks;
+            Logger.Log("Frame Interval = " + (currentTicks - _lastFrameTicks) * 0.0001f);
+            _lastFrameTicks = currentTicks;
+        }
         // 逻辑部分
         _opController.Update();
         STGStageManager.GetInstance().Update();
@@ -92,19 +104,13 @@ public class STGMain
         ExtraTaskManager.GetInstance().Update();
         BackgroundManager.GetInstance().Update();
         EffectsManager.GetInstance().Update();
+        if (frameNode == 0)
+            FPSController.GetInstance().Restart(true);
         frameNode++;
-        // 背景部分暂时写这，之后转移到lua
-        //if (frameNode % 30 == 0)
+        //if (frameNode % 60 == 0)
         //{
-        //    BgSpriteObject spObj = BackgroundManager.GetInstance().CreateBgSpriteObject("MapleLeaf1");
-        //    float posX = Random.Range(80, 150);
-        //    float posY = Random.Range(200, 225);
-        //    spObj.SetToPos(posX, posY);
-        //    float scale = Random.Range(0.2f, 1);
-        //    spObj.SetScale(new Vector3(scale, scale));
-        //    spObj.SetVelocity(Random.Range(1f, 3f), Random.Range(-150, -30));
-        //    spObj.SetSelfRotateAngle(new Vector3(0, 0, Random.Range(1f, 2f)));
-        //    spObj.DoFade(Random.Range(90, 180), Random.Range(180, 300));
+        //   STGBulletEliminateEffect1 effect =  EffectsManager.GetInstance().CreateEffectByType(EffectType.BulletEliminate) as STGBulletEliminateEffect1;
+        //    effect.SetColor(1, 0, 0, 1);
         //}
 #endif
         //if ( frameNode == 200 )
@@ -147,6 +153,16 @@ public class STGMain
 
     public void Init()
     {
+        // 游戏本体边界
+        Global.GameLBBorderPos = new Vector2(-Consts.GameWidth / 2, -Consts.GameHeight / 2);
+        Global.GameRTBorderPos = new Vector2(Consts.GameWidth / 2, Consts.GameHeight / 2);
+        // 弹幕边界
+        Global.BulletLBBorderPos = new Vector2(Global.GameLBBorderPos.x - 100, Global.GameLBBorderPos.y - 100);
+        Global.BulletRTBorderPos = new Vector2(Global.GameRTBorderPos.x + 100, Global.GameRTBorderPos.y + 100);
+        // 玩家坐标边界
+        Global.PlayerLBBorderPos = new Vector2(Global.GameLBBorderPos.x + 5, Global.GameLBBorderPos.y + 10);
+        Global.PlayerRTBorderPos = new Vector2(Global.GameRTBorderPos.x - 5, Global.GameRTBorderPos.y - 10);
+
         InterpreterManager.GetInstance().Init();
         STGStageManager.GetInstance().Init();
         AnimationManager.GetInstance().Init();

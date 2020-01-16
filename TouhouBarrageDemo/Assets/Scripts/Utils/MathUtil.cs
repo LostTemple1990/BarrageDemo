@@ -56,8 +56,93 @@ public class MathUtil
         return Vector2.Distance(pointP, pointC);
     }
 
+    public static bool DetectCollisionBetweenCircleAndAABB(Vector2 circlePos, float radius, Vector2 aabbPos, float halfWidth, float halfHeight)
+    {
+        // 计算圆与aabb是否碰撞
+        float dw = Mathf.Max(0, Mathf.Abs(circlePos.x - aabbPos.x) - halfWidth);
+        float dh = Mathf.Max(0, Mathf.Abs(circlePos.y - aabbPos.y) - halfHeight);
+        return radius * radius <= dw * dw + dh * dh;
+    }
+
     /// <summary>
-    /// 获取绕centerX,centerY点顺时针旋转angle之后的点
+    /// 检测圆和斜向矩形的碰撞
+    /// </summary>
+    /// <param name="circlePos"></param>
+    /// <param name="radius"></param>
+    /// <param name="obbPos"></param>
+    /// <param name="halfWidth"></param>
+    /// <param name="halfHeight"></param>
+    /// <param name="rot"></param>
+    /// <returns></returns>
+    public static bool DetectCollisionBetweenCircleAndOBB(Vector2 circlePos,float radius,Vector2 obbPos,float halfWidth,float halfHeight,float rot)
+    {
+        // 将圆心顺时针旋转rot角度，将obb转换成aabb
+        float sin = Mathf.Sin(rot * Mathf.Deg2Rad);
+        float cos = Mathf.Cos(rot * Mathf.Deg2Rad);
+        Vector2 obbToCircleVec = circlePos - obbPos;
+        //Vector2 relVec = new Vector2(cos * obbToCircleVec.x + sin * obbToCircleVec.y, -sin * obbToCircleVec.x + cos * obbToCircleVec.y);
+        // 计算圆与aabb是否碰撞
+        float dw = Mathf.Max(0, Mathf.Abs(cos * obbToCircleVec.x + sin * obbToCircleVec.y) - halfWidth);
+        float dh = Mathf.Max(0, Mathf.Abs(-sin * obbToCircleVec.x + cos * obbToCircleVec.y) - halfHeight);
+        return radius * radius >= dw * dw + dh * dh;
+    }
+
+    /// <summary>
+    /// 检测obb和obb的碰撞
+    /// </summary>
+    /// <param name="p0"></param>
+    /// <param name="a0"></param>
+    /// <param name="b0"></param>
+    /// <param name="rot0"></param>
+    /// <param name="p1"></param>
+    /// <param name="a1"></param>
+    /// <param name="b1"></param>
+    /// <param name="rot1"></param>
+    /// <returns></returns>
+    public static bool DetectCollisionBetweenOBBAndOBB(Vector2 p0,float a0,float b0,float rot0,Vector2 p1,float a1,float b1,float rot1)
+    {
+        float cos0 = Mathf.Cos(Mathf.Deg2Rad * rot0);
+        float sin0 = Mathf.Sin(Mathf.Deg2Rad * rot0);
+        float cos1 = Mathf.Cos(Mathf.Deg2Rad * rot1);
+        float sin1 = Mathf.Sin(Mathf.Deg2Rad * rot1);
+        //rect0分离轴
+        Vector2 rect0Vec0 = new Vector2(cos0, sin0);
+        Vector2 rect0Vec1 = new Vector2(-sin0, cos0);
+        // rect1分离轴
+        Vector2 rect1Vec0 = new Vector2(cos1, sin1);
+        Vector2 rect1Vec1 = new Vector2(-sin1, cos1);
+        List<Vector2> rectVecList = new List<Vector2> { rect0Vec0, rect0Vec1, rect1Vec0, rect1Vec1 };
+        // 两矩形中心的向量
+        Vector2 centerVec = new Vector2(p1.x - p0.x, p1.y - p0.y);
+        bool rectIsCollided = true;
+        for (int i = 0; i < rectVecList.Count; i++)
+        {
+            // 投影轴
+            Vector2 vec = rectVecList[i];
+            // rect0的投影半径对于该投影轴的投影
+            float projectionRadius0 = Mathf.Abs(Vector2.Dot(rect0Vec0, vec) * a0) + Mathf.Abs(Vector2.Dot(rect0Vec1, vec) * b0);
+            projectionRadius0 = Mathf.Abs(projectionRadius0);
+            // rect1的投影半径对于投影轴的投影
+            float projectionRadius1 = Mathf.Abs(Vector2.Dot(rect1Vec0, vec) * a1) + Mathf.Abs(Vector2.Dot(rect1Vec1, vec) * b1);
+            projectionRadius1 = Mathf.Abs(projectionRadius1);
+            // 连线对于投影轴的投影
+            float centerVecProjection = Vector2.Dot(centerVec, vec);
+            centerVecProjection = Mathf.Abs(centerVecProjection);
+            // 投影的和小于轴半径的长度,说明没有碰撞
+            if (projectionRadius0 + projectionRadius1 <= centerVecProjection)
+            {
+                rectIsCollided = false;
+                break;
+            }
+        }
+        return rectIsCollided;
+    }
+
+    /// <summary>
+    /// 获取绕centerX,centerY点逆时针旋转angle之后的点
+    /// <para>逆时针的旋转矩阵是</para>
+    /// <para>[cos -sin]</para>
+    /// <para>[sin  cos]</para>
     /// </summary>
     /// <param name="curX"></param>
     /// <param name="curY"></param>
@@ -82,12 +167,8 @@ public class MathUtil
     /// <returns></returns>
     public static float ClampAngle(float angle)
     {
-        while (angle < 0)
-        {
-            angle += 360f;
-        }
-        if (angle >= 360) angle %= 360;
-        return angle;
+        angle %= 360f;
+        return angle < 0 ? angle + 360f : angle;
     }
 
 #region 插值相关

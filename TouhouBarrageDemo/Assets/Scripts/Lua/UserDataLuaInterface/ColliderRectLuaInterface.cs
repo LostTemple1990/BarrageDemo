@@ -1,7 +1,7 @@
 ﻿using UniLua;
 using UnityEngine;
 
-public class CurveLaserLuaInterface
+public class ColliderRectLuaInterface
 {
     private static bool _isInit = false;
 
@@ -11,7 +11,6 @@ public class CurveLaserLuaInterface
 
     private static LuaCsClosureValue _funcMoveTo;
     private static LuaCsClosureValue _funcMoveTowards;
-
     private static LuaCsClosureValue _funcSetPos;
     private static LuaCsClosureValue _funcGetPos;
 
@@ -19,14 +18,11 @@ public class CurveLaserLuaInterface
     private static LuaCsClosureValue _funcSetRelativePos;
 
     private static LuaCsClosureValue _funcAddTask;
-    private static LuaCsClosureValue _funcChangeProperty;
 
     private static LuaCsClosureValue _funcSetStraightParas;
-    private static LuaCsClosureValue _funcSetSelfRotaion;
-    private static LuaCsClosureValue _funcSetStyleById;
+    private static LuaCsClosureValue _funcSetSize;
+    private static LuaCsClosureValue _funcSetCollisionGroup;
 
-    private static LuaCsClosureValue _funcSetLength;
-    private static LuaCsClosureValue _funcSetWidth;
 
     public static void Init()
     {
@@ -44,14 +40,10 @@ public class CurveLaserLuaInterface
             _funcSetRelativePos = new LuaCsClosureValue(LuaLib.SetAttachmentRelativePos);
 
             _funcAddTask = new LuaCsClosureValue(LuaLib.AddTask);
-            _funcChangeProperty = new LuaCsClosureValue(LuaLib.AddBulletParaChangeEvent);
 
             _funcSetStraightParas = new LuaCsClosureValue(LuaLib.STGMovableSetStraightParas);
-            _funcSetSelfRotaion = new LuaCsClosureValue(LuaLib.SetBulletSelfRotation);
-            _funcSetStyleById = new LuaCsClosureValue(LuaLib.SetBulletStyleById);
-
-            _funcSetLength = new LuaCsClosureValue(LuaLib.SetCurveLaserLength);
-            _funcSetWidth = new LuaCsClosureValue(LuaLib.SetCurveLaserWidth);
+            _funcSetSize = new LuaCsClosureValue(LuaLib.SetObjectColliderSize);
+            _funcSetCollisionGroup = new LuaCsClosureValue(LuaLib.SetObjectColliderColliderGroup);
 
             _isInit = true;
         }
@@ -59,7 +51,7 @@ public class CurveLaserLuaInterface
 
     public static bool Get(object o, TValue key, out TValue res)
     {
-        EnemyCurveLaser bullet = (EnemyCurveLaser)o;
+        ColliderRect collider = (ColliderRect)o;
         res = new TValue();
         if (key.TtIsString())
         {
@@ -68,81 +60,86 @@ public class CurveLaserLuaInterface
                 #region 基础变量
                 case "x":
                     {
-                        res.SetNValue(bullet.GetPosition().x);
+                        res.SetNValue(collider.GetPosition().x);
                         return true;
                     }
                 case "y":
                     {
-                        res.SetNValue(bullet.GetPosition().y);
+                        res.SetNValue(collider.GetPosition().y);
                         return true;
                     }
                 case "rot":
                     {
-                        res.SetNValue(bullet.GetRotation());
+                        res.SetNValue(collider.GetRotation());
                         return true;
                     }
                 case "dx":
                     {
-                        res.SetNValue(bullet.dx);
+                        res.SetNValue(collider.dx);
                         return true;
                     }
                 case "dy":
                     {
-                        res.SetNValue(bullet.dy);
+                        res.SetNValue(collider.dy);
+                        return true;
+                    }
+                case "SetPos":
+                    {
+                        res.SetClCsValue(_funcSetPos);
+                        return true;
+                    }
+                case "GetPos":
+                    {
+                        res.SetClCsValue(_funcGetPos);
                         return true;
                     }
                 #endregion
                 #region 运动相关变量
                 case "v":
                     {
-                        res.SetNValue(bullet.velocity);
+                        res.SetNValue(collider.velocity);
                         return true;
                     }
                 case "vx":
                     {
-                        res.SetNValue(bullet.vx);
+                        res.SetNValue(collider.vx);
                         return true;
                     }
                 case "vy":
                     {
-                        res.SetNValue(bullet.vy);
+                        res.SetNValue(collider.vy);
                         return true;
                     }
                 case "vAngle":
                     {
-                        res.SetNValue(bullet.vAngle);
+                        res.SetNValue(collider.vAngle);
                         return true;
                     }
                 case "maxV":
                     {
-                        res.SetNValue(bullet.maxVelocity);
+                        res.SetNValue(collider.maxVelocity);
                         return true;
                     }
                 case "acce":
                     {
-                        res.SetNValue(bullet.acce);
+                        res.SetNValue(collider.acce);
                         return true;
                     }
                 case "accAngle":
                     {
-                        res.SetNValue(bullet.accAngle);
+                        res.SetNValue(collider.accAngle);
                         return true;
                     }
                 #endregion
-                #region 子弹类专属变量
-                case "timer":
+                #region Collider类专属变量
+                case "SetCollisionGroup":
                     {
-                        res.SetNValue(bullet.timeSinceCreated);
+                        res.SetClCsValue(_funcSetCollisionGroup);
                         return true;
                     }
-                case "SetSelfRotation":
+                case "SetSize":
                     {
-                        res.SetClCsValue(_funcSetSelfRotaion);
-                        return true;
-                    }
-                case "SetStyleById":
-                    {
-                        res.SetClCsValue(_funcSetStyleById);
+                        res.SetClCsValue(_funcSetSize);
                         return true;
                     }
                 #endregion
@@ -177,16 +174,6 @@ public class CurveLaserLuaInterface
                         res.SetClCsValue(_funcMoveTowards);
                         return true;
                     }
-                case "SetPos":
-                    {
-                        res.SetClCsValue(_funcSetPos);
-                        return true;
-                    }
-                case "GetPos":
-                    {
-                        res.SetClCsValue(_funcGetPos);
-                        return true;
-                    }
                 #endregion
                 #region IAttachable
                 case "AttachTo":
@@ -200,39 +187,22 @@ public class CurveLaserLuaInterface
                         return true;
                     }
                 #endregion
-                #region Component
+                #region ITaskExecuter
                 case "AddTask":
                     {
                         res.SetClCsValue(_funcAddTask);
                         return true;
                     }
-                case "ChangeProperty":
-                    {
-                        res.SetClCsValue(_funcChangeProperty);
-                        return true;
-                    }
-                #endregion
-                #region 激光相关
-                case "SetWidth":
-                    {
-                        res.SetClCsValue(_funcSetWidth);
-                        return true;
-                    }
-                case "SetLength":
-                    {
-                        res.SetClCsValue(_funcSetLength);
-                        return true;
-                    }
                     #endregion
             }
         }
-        res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(EnemyCurveLaser).Name));
+        res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(ColliderRect).Name));
         return false;
     }
 
     public static bool Set(object o, TValue key, ref TValue value)
     {
-        EnemyCurveLaser bullet = (EnemyCurveLaser)o;
+        ColliderRect collider = (ColliderRect)o;
         if (key.TtIsString())
         {
             switch (key.SValue())
@@ -240,81 +210,64 @@ public class CurveLaserLuaInterface
                 #region 基础变量
                 case "x":
                     {
-                        Vector2 pos = bullet.GetPosition();
+                        Vector2 pos = collider.GetPosition();
                         pos.x = (float)value.NValue;
-                        bullet.SetPosition(pos);
+                        collider.SetPosition(pos);
                         return true;
                     }
                 case "y":
                     {
-                        Vector2 pos = bullet.GetPosition();
+                        Vector2 pos = collider.GetPosition();
                         pos.y = (float)value.NValue;
-                        bullet.SetPosition(pos);
+                        collider.SetPosition(pos);
                         return true;
                     }
                 case "rot":
                     {
-                        bullet.SetRotation((float)value.NValue);
+                        collider.SetRotation((float)value.NValue);
                         return true;
                     }
                 #endregion
                 #region 运动相关变量
                 case "v":
                     {
-                        bullet.velocity = (float)value.NValue;
+                        collider.velocity = (float)value.NValue;
                         return true;
                     }
                 case "vx":
                     {
-                        bullet.vx = (float)value.NValue;
+                        collider.vx = (float)value.NValue;
                         return true;
                     }
                 case "vy":
                     {
-                        bullet.vy = (float)value.NValue;
+                        collider.vy = (float)value.NValue;
                         return true;
                     }
                 case "vAngle":
                     {
-                        bullet.vAngle = (float)value.NValue;
+                        collider.vAngle = (float)value.NValue;
                         return true;
                     }
                 case "maxV":
                     {
-                        bullet.maxVelocity = (float)value.NValue;
+                        collider.maxVelocity = (float)value.NValue;
                         return true;
                     }
                 case "acce":
                     {
-                        bullet.acce = (float)value.NValue;
+                        collider.acce = (float)value.NValue;
                         return true;
                     }
                 case "accAngle":
                     {
-                        bullet.accAngle = (float)value.NValue;
-                        return true;
-                    }
-                #endregion
-                #region 子弹类专属变量
-                case "orderInLayer":
-                    {
-                        bullet.SetOrderInLayer((int)value.NValue);
-                        return true;
-                    }
-                case "checkCollision":
-                    {
-                        bullet.SetDetectCollision(value.BValue());
-                        return true;
-                    }
-                case "checkBorder":
-                    {
-                        bullet.SetCheckOutOfBorder(value.BValue());
+                        collider.accAngle = (float)value.NValue;
                         return true;
                     }
                     #endregion
             }
         }
-        value.SetSValue(string.Format("SetField of userData fail!Invalid key {0} for type {1}", key, typeof(EnemyCurveLaser).Name));
+        value.SetSValue(string.Format("SetField of userData fail!Invalid key {0} for type {1}", key, typeof(ColliderRect).Name));
         return false;
     }
 }

@@ -516,7 +516,7 @@ public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, IST
     }
     #endregion
 
-    public void Clear()
+    public virtual void Clear()
     {
         ClearTasks();
         _master = null;

@@ -526,11 +526,9 @@ public class EnemyLaser : EnemyBulletBase
         _rotateCounter++;
         if ( _rotateCounter >= _rotateDuration )
         {
-            while (curRotation < 0 )
-            {
-                curRotation += 360;
-            }
-            curRotation = curRotation % 360;
+            curRotation %= 360f;
+            if (curRotation < 0)
+                curRotation += 360f;
             _isRotating = false;
         }
         SetRotation(curRotation);
@@ -585,7 +583,7 @@ public class EnemyLaser : EnemyBulletBase
         CollisionDetectParas paras = new CollisionDetectParas();
         paras.nextIndex = -1;
         paras.type = CollisionDetectType.Rect;
-        paras.halfWidth = _laserHalfWidth;
+        paras.halfWidth = _laserHalfWidth * _collisionFactor;
         paras.halfHeight = _laserHalfLength;
         paras.angle = _curRotation;
         // 计算矩形中心坐标
@@ -621,38 +619,22 @@ public class EnemyLaser : EnemyBulletBase
         // 矩形中心坐标
         center.x = _laserHalfLength * cos + _curPos.x;
         center.y = _laserHalfLength * sin + _curPos.y;
-        Vector2 vec = Global.PlayerPos - center;
-        Vector2 relativeVec = new Vector2();
-        // 向量顺时针旋转laserAngle的度数
-        relativeVec.x = cos * vec.x + sin * vec.y;
-        relativeVec.y = -sin * vec.x + cos * vec.y;
-        // 判定是否在矩形内
-        float len = relativeVec.magnitude;
-        float rate = (len - Global.PlayerGrazeRadius) / len;
-        bool isGrazing = false;
-        if ( rate < 0 )
+        Vector2 vec = _player.GetPosition() - center;
+        float dw = Mathf.Max(0, Mathf.Abs(cos * vec.x + sin * vec.y) - _laserHalfLength);
+        float tmpY = Mathf.Abs(-sin * vec.x + cos * vec.y);
+        float dh = Mathf.Max(0, tmpY - _laserHalfWidth);
+        float sqrDis = dw * dw + dh * dh;
+        if (sqrDis <= _player.grazeRadius * _player.grazeRadius)
         {
-            isGrazing = true;
-        }
-        else
-        {
-            Vector2 tmpVec = relativeVec * rate;
-            if (Mathf.Abs(tmpVec.x) < _laserHalfLength && Mathf.Abs(tmpVec.y) < _laserHalfWidth)
-            {
-                isGrazing = true;
-            }
-        }
-        if ( isGrazing )
-        {
-            if ( !_isGrazed )
+            if (!_isGrazed)
             {
                 _isGrazed = true;
                 PlayerInterface.GetInstance().AddGraze(1);
                 _grazeCoolDown = GrazeCoolDown;
             }
-            rate = (len - Global.PlayerCollisionVec.z) / len;
-            relativeVec *= rate;
-            if (rate <= 0 || (Mathf.Abs(relativeVec.x) < _laserHalfLength && Mathf.Abs(relativeVec.y) < _laserHalfWidth * _collisionFactor))
+            dh = Mathf.Max(0, tmpY - _laserHalfWidth * _collisionFactor);
+            sqrDis = dw * dw + dh * dh;
+            if (sqrDis <= _player.collisionRadius * _player.collisionRadius)
             {
                 Eliminate(eEliminateDef.HitPlayer);
                 PlayerInterface.GetInstance().GetCharacter().BeingHit();

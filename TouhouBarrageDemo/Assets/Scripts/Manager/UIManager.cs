@@ -143,27 +143,6 @@ public class UIManager {
 
     public void DoScreenAdaption()
     {
-        // 游戏本体边界
-        Global.GameLBBorderPos = new Vector2(-Consts.GameWidth / 2, -Consts.GameHeight / 2);
-        Global.GameRTBorderPos = new Vector2(Consts.GameWidth / 2, Consts.GameHeight / 2);
-        //Global.GameLBBorderPos.x = -Screen.width / 2;
-        //Global.GameLBBorderPos.y = -Screen.height / 2;
-        //Global.GameRTBorderPos.x = Screen.width / 2 + 480;
-        //Global.GameRTBorderPos.y = Screen.height / 2 + 480;   
-        // 弹幕边界
-        Global.BulletLBBorderPos = new Vector2(Global.GameLBBorderPos.x - 100, Global.GameLBBorderPos.y - 100);
-        Global.BulletRTBorderPos = new Vector2(Global.GameRTBorderPos.x + 100, Global.GameRTBorderPos.y + 100);
-        //Global.BulletLBBorderPos.x = Global.GameLBBorderPos.x - 100;
-        //Global.BulletLBBorderPos.y = Global.GameLBBorderPos.y - 100;
-        //Global.BulletRTBorderPos.x = Global.GameRTBorderPos.x + 100;
-        //Global.BulletRTBorderPos.y = Global.GameRTBorderPos.y + 100;
-        Logger.Log("Screen : width = " + Screen.width + "  height = " + Screen.height);
-        //Logger.Log(Global.BulletLBBorderPos + "  " + Global.BulletRTBorderPos);
-        // 玩家坐标边界
-        Global.PlayerLBBorderPos = new Vector2(Global.GameLBBorderPos.x + Consts.PlayerHalfWidth, Global.GameLBBorderPos.y + Consts.PlayerHalfHeight);
-        Global.PlayerRTBorderPos = new Vector2(Global.GameRTBorderPos.x - Consts.PlayerHalfWidth, Global.GameRTBorderPos.y - Consts.PlayerHalfHeight);
-
-
         float scaleHeight = Screen.height / Consts.RefResolutionY;
         GameObject gameLayer = GameObject.Find("GameLayer");
         Transform tf = gameLayer.transform;

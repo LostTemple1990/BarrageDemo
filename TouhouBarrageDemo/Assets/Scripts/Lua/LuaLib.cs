@@ -34,7 +34,6 @@ public partial class LuaLib
             new NameFuncPair("SetBulletScale",SetBulletScale),
             new NameFuncPair("BulletDoScale",BulletDoScale),
             new NameFuncPair("SetBulletAppearEffectAvailable", SetBulletAppearEffectAvailable),
-            new NameFuncPair("SetBulletStraightParas",SetBulletStraightParas),
             new NameFuncPair("SetBulletCurvePara",SetBulletCurvePara),
             new NameFuncPair("DoBulletAcceleration",DoBulletAcceleration),
             new NameFuncPair("DoBulletAccelerationWithLimitation",DoBulletAccelerationWithLimitation),
@@ -217,6 +216,7 @@ public partial class LuaLib
             new NameFuncPair("Wait",Wait),
             new NameFuncPair("SetDebugStageName",SetDebugStageName),
             new NameFuncPair("FinishStage",FinishStage),
+            new NameFuncPair("ResetFPSTimer",ResetFPSTimer),
             // Bullet
             new NameFuncPair("CreateSimpleBulletById", CreateSimpleBulletById),
             new NameFuncPair("CreateCustomizedBullet",CreateCustomizedBullet),
@@ -283,7 +283,10 @@ public partial class LuaLib
         NormalEnemyLuaInterface.Init();
         BossLuaInterface.Init();
         STGObjectLuaInterface.Init();
+
         ColliderCircleLuaInterface.Init();
+        ColliderRectLuaInterface.Init();
+        ColliderItalicRectLuaInterface.Init();
 
         ReimuALuaInterface.Init();
         MarisaALuaInterface.Init();
@@ -313,8 +316,13 @@ public partial class LuaLib
                 return BossLuaInterface.Get(userData, key, out res);
             case "STGSpriteEffect":
                 return STGObjectLuaInterface.Get(userData, key, out res);
+            // Collider
             case "ColliderCircle":
                 return ColliderCircleLuaInterface.Get(userData, key, out res);
+            case "ColliderRect":
+                return ColliderRectLuaInterface.Get(userData, key, out res);
+            case "ColliderItalicRect":
+                return ColliderItalicRectLuaInterface.Get(userData, key, out res);
         }
         res = new TValue();
         res.SetSValue(string.Format("GetField from userData fail!Invalid userData of type {0}", userData.GetType().Name));
@@ -345,8 +353,13 @@ public partial class LuaLib
                 return NormalEnemyLuaInterface.Set(userData, key, ref value);
             case "STGSpriteEffect":
                 return STGObjectLuaInterface.Set(userData, key, ref value);
+            // Collider
             case "ColliderCircle":
                 return ColliderCircleLuaInterface.Set(userData, key, ref value);
+            case "ColliderRect":
+                return ColliderRectLuaInterface.Set(userData, key, ref value);
+            case "ColliderItalicRect":
+                return ColliderItalicRectLuaInterface.Set(userData, key, ref value);
         }
         value.SetSValue(string.Format("SetField of userData fail!Invalid userData of type {0}", userData.GetType().Name));
         return false;
@@ -1202,6 +1215,19 @@ public partial class LuaLib
     public static int FinishStage(ILuaState luaState)
     {
         CommandManager.GetInstance().RunCommand(CommandConsts.StageClear);
+        return 0;
+    }
+
+    /// <summary>
+    /// 重置FPS计数器
+    /// <para>fixedFPS 是否自动补帧</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int ResetFPSTimer(ILuaState luaState)
+    {
+        bool fixedFPS = luaState.ToBoolean(-1);
+        FPSController.GetInstance().Restart(fixedFPS);
         return 0;
     }
 

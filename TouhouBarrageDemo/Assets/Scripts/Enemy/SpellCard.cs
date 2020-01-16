@@ -101,7 +101,7 @@ public class SpellCard : ICommand
         _castSCCount = 0;
         _dyingCount = 0;
         _isFinishSpellCard = false;
-        _scStartTimeTick = System.DateTime.Now.Ticks;
+        _scStartTimeTick = TimeUtil.GetTimestamp();
         CommandManager.GetInstance().Register(CommandConsts.PlayerDying, this);
         CommandManager.GetInstance().Register(CommandConsts.PlayerMiss, this);
         CommandManager.GetInstance().Register(CommandConsts.PlayerCastSC, this);
@@ -242,7 +242,7 @@ public class SpellCard : ICommand
         else if (_dyingCount != 0 || _castSCCount != 0)
             getBonus = false;
         // 计算通过符卡实际经过的时间
-        long scFinishTimeTick = System.DateTime.Now.Ticks;
+        long scFinishTimeTick = TimeUtil.GetTimestamp();
         int realTimePassed = (int)((scFinishTimeTick - _scStartTimeTick) / 10000);
         object[] datas = { _isSpellCard, _isFinishSpellCard, getBonus, timePassed, realTimePassed };
         CommandManager.GetInstance().RunCommand(CommandConsts.SpellCardFinish, datas);

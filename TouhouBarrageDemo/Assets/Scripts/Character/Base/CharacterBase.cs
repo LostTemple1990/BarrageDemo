@@ -336,6 +336,20 @@ public class CharacterBase : IAffectedMovableObject
     #endregion
 
     #region 自机等待复活状态
+
+    /// <summary>
+    /// 消弹的时点
+    /// </summary>
+    private const int EliminateEffectTime = 40;
+    /// <summary>
+    /// 消弹特效持续时间
+    /// </summary>
+    private const int EliminateEffectDuration = 40;
+    /// <summary>
+    /// 消弹半径
+    /// </summary>
+    private const float ElimiateEffectSize = 500;
+
     protected virtual void OnStateWaitRebornEnter()
     {
         _waitRebornTime = 0;
@@ -349,6 +363,17 @@ public class CharacterBase : IAffectedMovableObject
     {
         RotateCollisionPoint();
         _waitRebornTime++;
+        // 创建消弹特效
+        if (_waitRebornTime == EliminateEffectTime)
+        {
+            ColliderCircle collider = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Circle) as ColliderCircle;
+            collider.SetSize(0, 0);
+            collider.ScaleToSize(ElimiateEffectSize, ElimiateEffectSize, EliminateEffectDuration);
+            collider.SetExistDuration(EliminateEffectDuration);
+            collider.SetHitEnemyDamage(1);
+            collider.SetEliminateType(eEliminateDef.PlayerDead);
+            collider.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy | eColliderGroup.Boss);
+        }
         if (_waitRebornTime >= _waitRebornDuration)
         {
             _nextState = eCharacterState.Appear;
@@ -912,5 +937,21 @@ public class CharacterBase : IAffectedMovableObject
     public virtual int CharacterIndex
     {
         get { throw new System.NotImplementedException(); }
+    }
+
+    /// <summary>
+    /// 擦弹半径
+    /// </summary>
+    public float grazeRadius
+    {
+        get { return _grazeRadius; }
+    }
+
+    /// <summary>
+    /// 碰撞半径
+    /// </summary>
+    public float collisionRadius
+    {
+        get { return _collisionRadius; }
     }
 }

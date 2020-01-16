@@ -164,18 +164,19 @@ CustomizedEnemyTable.SC1Enemy.Init = function(enemy,toPosX,toPosY,duration)
 end
 
 CustomizedEnemyTable.TestKillEnemy = {}
-CustomizedEnemyTable.TestKillEnemy.Init = function(enemy)
+CustomizedEnemyTable.TestKillEnemy.Init = function(self)
+	self:Init(100000)
 	do
-		enemy:SetMaxHp(50)
+		self:SetMaxHp(50)
 	end
 	do
-		enemy:SetDropItems(1,3,48,48)
+		self:SetDropItems(1,3,48,48)
 	end
 end
 CustomizedEnemyTable.TestKillEnemy.OnKill = function(enemy)
 	do
 		local k = 1
-		local posX,posY = lib.GetEnemyPos(enemy)
+		local posX,posY = enemy:GetPos()
 		for _=1,1 do
 			local i
 			for i=0,15 do
@@ -185,16 +186,17 @@ CustomizedEnemyTable.TestKillEnemy.OnKill = function(enemy)
 		end
 	end
 	do
-		local posX,posY = lib.GetEnemyPos(enemy)
+		local posX,posY = enemy:GetPos()
 		local master = lib.CreateSimpleBulletById("122151",posX,posY)
-		lib.SetBulletStraightParas(master,3,0,true,0,0)
-		lib.SetBulletSelfRotation(master,1)
+		master:SetStraightParas(3,0,true,0,0)
+		master.omega = 1
+		--master.navi = true
 		local relativeRotation = 0
 		for _=1,4 do
 			local bullet = lib.CreateSimpleBulletById("104151",0,250)
 			lib.AttatchToMaster(bullet,master,true)
-			local posX = 16 * (math.cos(math.rad(relativeRotation)) * 1 - math.sin(math.rad(relativeRotation)) * 0)
-			local posY = 16 * (math.sin(math.rad(relativeRotation)) * 1 - math.cos(math.rad(relativeRotation)) * 0)
+			local posX = 16 * (cos(relativeRotation) * 1 - sin(relativeRotation) * 0)
+			local posY = 16 * (sin(relativeRotation) * 1 - cos(relativeRotation) * 0)
 			lib.SetAttachmentRelativePos(bullet,posX,posY,relativeRotation,true,true)
 			relativeRotation = relativeRotation + 90
 		end
@@ -695,14 +697,14 @@ end
 
 Stage["Stage1"] = function()
 	lib.PlaySound("bgm",0.1,true)
-	local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
-	lib.SetEffectToPos(spriteEffect,0,0)
-	lib.SetSpriteEffectSize(spriteEffect,160,160)
-	lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
-	local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
-	lib.SetObjectColliderSize(collider,80,80)
-	lib.SetObjectColliderToPos(collider,0,0)
-	lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
+	--local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
+	--lib.SetEffectToPos(spriteEffect,0,0)
+	--lib.SetSpriteEffectSize(spriteEffect,160,160)
+	--lib.SetSpriteEffectColor(spriteEffect,0.55,0.45,0.65,0.75)
+	--local collider = lib.CreateObjectColliderByType(eColliderType.Circle)
+	--lib.SetObjectColliderSize(collider,80,80)
+	--lib.SetObjectColliderToPos(collider,0,0)
+	--lib.SetObjectColliderColliderGroup(collider,eColliderGroup.PlayerBullet)
 	--local field = lib.CreateGravitationFieldByType(eColliderType.Circle)
 	--lib.SetObjectColliderSize(field,250,250)
 	--lib.SetObjectColliderToPos(field,0,0)
@@ -712,7 +714,7 @@ Stage["Stage1"] = function()
 	if coroutine.yield(200) == false then return end
 	do
 		--local enemy = lib.CreateNormalEnemyById("100000",500,0,185);
-		local enemy = lib.CreateCustomizedEnemy("TestKillEnemy","100000",0,185,0)
+		local enemy = CreateCustomizedEnemy("TestKillEnemy",0,185)
 		lib.AddEnemyTask(enemy,function()
 			if coroutine.yield(150)==false then return end
 			enemy:MoveTowards(1,315,false,200)
@@ -723,8 +725,8 @@ Stage["Stage1"] = function()
 			if coroutine.yield(10000)==false then return end
 			for _=1,10 do
 				for _=1,6 do
-					lib.PlaySound("se_tan00",false)
-					local posX,posY = GetPos(enemy)
+					lib.PlaySound("se_tan00",0.05,false)
+					local posX,posY = enemy:GetPos()
 					local bullet
 					do local angle=-35 for _=1,3 do
 						bullet = lib.CreateSimpleBulletById("104060",posX,posY)
@@ -748,7 +750,7 @@ Stage["Stage1"] = function()
 					local posX,posY = lib.GetEnemyPos(enemy)
 					laser = lib.CreateLinearLaser("304060",45,posX,posY)
 					lib.SetLinearLaserHeadEnable(laser,true)
-					lib.LinearLaserDoStraightMove(laser,3,angle+i*20,false,0.02,60)
+					laser:SetStraightParas(3,angle+i*20,false,0.02,60)
 					if ( coroutine.yield(3) == false ) then return end
 				end
 			end
@@ -767,7 +769,7 @@ Stage["Stage1"] = function()
 		end)
 		--测试曲线激光
 		lib.AddEnemyTask(enemy,function()
-			--if coroutine.yield(10000) == false then return end
+			if coroutine.yield(100) == false then return end
 			local laser,i
 			for i=1,18 do
 				local posX,posY = lib.GetEnemyPos(enemy)
@@ -797,7 +799,7 @@ Stage["Stage1"] = function()
 			end
 		end)
 	end
-	if coroutine.yield(300) == false then return end
+	if coroutine.yield(300000) == false then return end
 	if StartDialog(function()
 		CreateDialogCG("Marisa","Marisa",100,150)
 		if Wait(30) == false then return end

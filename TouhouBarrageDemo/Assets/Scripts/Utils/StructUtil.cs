@@ -22,14 +22,11 @@ public struct CollisionDetectParas
     /// 中心点
     /// </summary>
     public Vector2 centerPos;
-    //public Vector2 linePointA;
-    //public Vector2 linePointB;
     public float angle;
     /// <summary>
     /// 下一个碰撞盒的索引
     /// </summary>
     public int nextIndex;
-    //public List<Vector2> multiSegmentPointList;
 }
 
 public struct GrazeDetectParas
@@ -267,6 +264,7 @@ public enum eColliderType : int
 {
     Circle = 1,
     Rect = 2,
+    ItalicRect = 3,
 }
 
 /// <summary>

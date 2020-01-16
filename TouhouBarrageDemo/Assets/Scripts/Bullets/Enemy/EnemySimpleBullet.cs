@@ -480,34 +480,21 @@ public class EnemySimpleBullet : EnemyBulletMovable
         else
         {
             // 碰撞判定宽高不相等时，采用矩形检测
-            Vector2 relativePos = Global.PlayerPos - _curPos;
-            Vector2 relativeVec = MathUtil.GetVec2AfterRotate(relativePos.x, relativePos.y, 0, 0, _curVAngle);
-            // 判定是否在矩形内
-            float len = relativeVec.magnitude;
-            float rate = (len - Global.PlayerGrazeRadius) / len;
-            bool isGrazing = false;
-            if (rate < 0)
-            {
-                isGrazing = true;
-            }
-            else
-            {
-                Vector2 tmpVec = relativeVec * rate;
-                if (Mathf.Abs(tmpVec.x) < _collisionHalfWidth && Mathf.Abs(tmpVec.y) < _collisionHalfHeight)
-                {
-                    isGrazing = true;
-                }
-            }
-            if (isGrazing)
+            Vector2 toPlayerVec = _player.GetPosition() - _curPos;
+            float sin = Mathf.Sin(_curRotation * Mathf.Deg2Rad);
+            float cos = Mathf.Cos(_curRotation * Mathf.Deg2Rad);
+            float dw = Mathf.Max(0, Mathf.Abs(cos * toPlayerVec.x + sin * toPlayerVec.y) - _collisionHalfWidth);
+            float dh = Mathf.Max(0, Mathf.Abs(-sin * toPlayerVec.x + cos * toPlayerVec.y) - _collisionHalfHeight);
+            float sqrDis = dw * dw + dh * dh;
+            // 先检测擦弹
+            if (sqrDis <= _player.grazeRadius * _player.grazeRadius)
             {
                 if (!_isGrazed)
                 {
                     _isGrazed = true;
                     PlayerInterface.GetInstance().AddGraze(1);
                 }
-                rate = (len - Global.PlayerCollisionVec.z) / len;
-                relativeVec *= rate;
-                if (rate <= 0 || (Mathf.Abs(relativeVec.x) < _collisionHalfWidth && Mathf.Abs(relativeVec.y) < _collisionHalfHeight))
+                if (sqrDis <= _player.collisionRadius * _player.collisionRadius)
                 {
                     Eliminate(eEliminateDef.HitPlayer);
                     PlayerInterface.GetInstance().GetCharacter().BeingHit();

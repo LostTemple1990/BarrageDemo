@@ -60,7 +60,7 @@
 			{
 				fixed4 col = tex2D(_MainTex, i.uv);
 				fixed maskAlpha = tex2D(_MaskTex,i.uv).a;
-				col.a *= maskAlpha >= _Rate ? 0 : 1;
+				col.a *= step(maskAlpha,_Rate);
 				return col;
 			}
 			ENDCG

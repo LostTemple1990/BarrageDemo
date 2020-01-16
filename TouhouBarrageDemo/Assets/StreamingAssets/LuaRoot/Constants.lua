@@ -133,6 +133,7 @@ eColliderType.Circle = 1
 eColliderType.Rect = 2
 TypeCircle = 1
 TypeRect = 2
+TypeItalicRect = 3
 
 eColliderGroup = {}
 eColliderGroup.Player = 1

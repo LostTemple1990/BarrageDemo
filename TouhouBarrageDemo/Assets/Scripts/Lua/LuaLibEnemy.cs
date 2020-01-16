@@ -32,7 +32,7 @@ public partial class LuaLib
         NormalEnemy enemy = EnemyManager.GetInstance().CreateEnemyByType(eEnemyType.NormalEnemy) as NormalEnemy;
         enemy.Init(cfg);
         enemy.SetMaxHp(maxHp);
-        enemy.SetPosition(new Vector3(posX, posY, 0));
+        enemy.SetPosition(posX,posY);
         luaState.PushLightUserData(enemy);
         return 1;
     }

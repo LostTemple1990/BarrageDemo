@@ -34,6 +34,9 @@ public class ColliderManager
             case eColliderType.Rect:
                 collider = new ColliderRect();
                 break;
+            case eColliderType.ItalicRect:
+                collider = new ColliderItalicRect();
+                break;
             default:
                 Logger.LogError("Collider Type " + type + " is not exist!");
                 break;

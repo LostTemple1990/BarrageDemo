@@ -12,7 +12,8 @@
 		Cull Off ZWrite Off ZTest Always
 		Lighting Off
 		Fog{ Mode Off }
-		Blend SrcAlpha OneMinusSrcAlpha
+		//Blend SrcAlpha OneMinusSrcAlpha
+		Blend OneMinusDstColor One
 
 		Tags{ "Queue" = "Transparent"
 		"IgnoreProjector" = "True"

@@ -215,32 +215,33 @@ public class ColliderCircle : ObjectColliderBase
         {
             if (_radius == 0) return false;
             // 子弹为矩形判定
-            // 以子弹中心点为圆心，将B的判定中心旋转angle的角度计算判定
-            Vector2 vec = new Vector2(_curPosX - collParas.centerPos.x, _curPosY - collParas.centerPos.y);
-            float cos = Mathf.Cos(collParas.angle * Mathf.Deg2Rad);
-            float sin = Mathf.Sin(collParas.angle * Mathf.Deg2Rad);
-            Vector2 relativeVec = new Vector2();
-            // 向量顺时针旋转laserAngle的度数
-            relativeVec.x = cos * vec.x + sin * vec.y;
-            relativeVec.y = -sin * vec.x + cos * vec.y;
-            // 计算圆和矩形的碰撞
-            float len = relativeVec.magnitude;
-            float dLen = len - _radius;
-            // 若圆心和矩形中心的连线长度小于圆的半径，说明矩形肯定有一部分在圆内
-            // 因此直接认定为碰撞
-            if (dLen <= 0)
-            {
-                return true;
-            }
-            else
-            {
-                float rate = dLen / len;
-                relativeVec *= rate;
-                if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
-                {
-                    return true;
-                }
-            }
+            return MathUtil.DetectCollisionBetweenCircleAndOBB(_curPos, _radius, collParas.centerPos, collParas.halfWidth, collParas.halfHeight, collParas.angle);
+            //// 以子弹中心点为圆心，将B的判定中心旋转angle的角度计算判定
+            //Vector2 vec = new Vector2(_curPosX - collParas.centerPos.x, _curPosY - collParas.centerPos.y);
+            //float cos = Mathf.Cos(collParas.angle * Mathf.Deg2Rad);
+            //float sin = Mathf.Sin(collParas.angle * Mathf.Deg2Rad);
+            //Vector2 relativeVec = new Vector2();
+            //// 向量顺时针旋转laserAngle的度数
+            //relativeVec.x = cos * vec.x + sin * vec.y;
+            //relativeVec.y = -sin * vec.x + cos * vec.y;
+            //// 计算圆和矩形的碰撞
+            //float len = relativeVec.magnitude;
+            //float dLen = len - _radius;
+            //// 若圆心和矩形中心的连线长度小于圆的半径，说明矩形肯定有一部分在圆内
+            //// 因此直接认定为碰撞
+            //if (dLen <= 0)
+            //{
+            //    return true;
+            //}
+            //else
+            //{
+            //    float rate = dLen / len;
+            //    relativeVec *= rate;
+            //    if (Mathf.Abs(relativeVec.x) < collParas.halfHeight && Mathf.Abs(relativeVec.y) < collParas.halfWidth)
+            //    {
+            //        return true;
+            //    }
+            //}
         }
         return false;
     }

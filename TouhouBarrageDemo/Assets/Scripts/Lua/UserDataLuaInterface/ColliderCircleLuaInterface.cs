@@ -196,7 +196,7 @@ public class ColliderCircleLuaInterface
                     #endregion
             }
         }
-        res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(STGSpriteEffect).Name));
+        res.SetSValue(string.Format("GetField from userData fail!Invalid key {0} for type {1}", key, typeof(ColliderCircle).Name));
         return false;
     }
 

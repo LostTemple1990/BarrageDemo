@@ -5,6 +5,7 @@ local CustomizedTable = {}
 local CustomizedEnemyTable = {}
 local BossTable = {}
 local CustomizedSTGObjectTable = {}
+SetDebugStageName("Stage1")
 
 -- Mod name: unnamed
 --author="YK"
@@ -2154,7 +2155,7 @@ CustomizedSTGObjectTable["Stage1Logo"].Init = function(self)
     end)
 end
 Stage["Stage1"] = function()
-    PlaySound("oborozuki",0.5,true)
+if false then     PlaySound("oborozuki",0.5,true)
     do  --初始敌机
         if Wait(60)==false then return end
         do for _=1,8 do
@@ -2277,7 +2278,7 @@ Stage["Stage1"] = function()
         last = CreateCustomizedEnemy("YKStage1Enemy6",0,240)
         if Wait(1800)==false then return end
     end
-    do  --Phase8
+end     do  --Phase8
         if Wait(200)==false then return end
         if StartDialog(function()
             CreateDialogCG("Nazrin","Nazrin",450,150)

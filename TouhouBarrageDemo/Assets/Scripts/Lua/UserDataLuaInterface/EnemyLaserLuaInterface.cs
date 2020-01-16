@@ -56,7 +56,7 @@ public class EnemyLaserLuaInterface
 
             _funcAddTask = new LuaCsClosureValue(LuaLib.AddTask);
 
-            _funcSetStraightParas = new LuaCsClosureValue(LuaLib.SetBulletStraightParas);
+            _funcSetStraightParas = new LuaCsClosureValue(LuaLib.STGMovableSetStraightParas);
             _funcSetSelfRotaion = new LuaCsClosureValue(LuaLib.SetBulletSelfRotation);
             _funcSetStyleById = new LuaCsClosureValue(LuaLib.SetBulletStyleById);
             _funcSetColor = new LuaCsClosureValue(LuaLib.SetBulletColor);

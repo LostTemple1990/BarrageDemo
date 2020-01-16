@@ -222,19 +222,23 @@ public class PlayerLaser : PlayerBulletBase
 
     private void RenderLaser()
     {
+        //Logger.Log("Laser len = " + _curLaserLen);
         if ( _preLaserLen != _curLaserLen )
         {
             _laserSr.material.SetFloat("_CurLaserLen", _curLaserLen);
             _preLaserLen = _curLaserLen;
         }
-        _laserSr.material.SetFloat("_TimeSinceCreated", _timeSinceCreated);
+        int curFrame = STGStageManager.GetInstance().GetFrameSinceStageStart();
+        _laserSr.material.SetFloat("_TimeSinceCreated", curFrame);
         if ( _hitObject )
         {
-            _trans.localScale = new Vector3(1, 0.5f, 1);
+            _trans.localScale = new Vector3(1, 0.75f, 1);
+            _laserSr.color = new Color(0.25f, 0.08f, 1f, 1f);
         }
         else
         {
             _trans.localScale = new Vector3(1, 1, 1);
+            _laserSr.color = new Color(1, 1, 1, 1);
         }
     }
 
@@ -248,9 +252,13 @@ public class PlayerLaser : PlayerBulletBase
         // 计算对角的坐标
         Vector2 diagonalPos = _curPos + _dirVec * _curLaserLen;
         float laserLBPosX = _curPos.x < diagonalPos.x ? _curPos.x : diagonalPos.x;
+        laserLBPosX -= CollisionSegmentRadius;
         float laserLBPosY = _curPos.y < diagonalPos.y ? _curPos.y : diagonalPos.y;
+        laserLBPosY -= CollisionSegmentRadius;
         float laserRTPosX = _curPos.x > diagonalPos.x ? _curPos.x : diagonalPos.x;
+        laserRTPosX += CollisionSegmentRadius;
         float laserRTPosY = _curPos.y > diagonalPos.y ? _curPos.y : diagonalPos.y;
+        laserRTPosY += CollisionSegmentRadius;
         // 快速排斥试验
         if ( laserLBPosX >= rtPos.x || laserLBPosY >= rtPos.y || laserRTPosX <= lbPos.x || laserRTPosY <= lbPos.y )
         {
@@ -312,9 +320,11 @@ public class PlayerLaser : PlayerBulletBase
 
     public override void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObjectCollider)
     {
+        Logger.Log("Before Hit Circle len = " + _curLaserLen);
         if ( _collisionSegmentsCount > n )
         {
             _curLaserLen = (_collisionSegments[n] - _curPos).magnitude;
+            Logger.Log("Hit Circle len = " + _curLaserLen);
             // 截取掉之后的碰撞组
             _collisionSegmentsCount = n;
             _hitPos = _curPos + _dirVec * _curLaserLen;

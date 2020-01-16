@@ -43,10 +43,6 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     protected float _relationX, _relationY;
     private bool _isPosModified;
-    /// <summary>
-    /// 是否已经初始化位置
-    /// </summary>
-    private bool _isInitPos;
 
     protected MovableObject _movableObj;
 
@@ -106,6 +102,10 @@ public class EnemyCurveLaser : EnemyBulletBase
     /// 配置
     /// </summary>
     private EnemyCurveLaserCfg _cfg;
+    /// <summary>
+    /// 发射源是否被消除
+    /// </summary>
+    private bool _isSourceEliminated;
 
     public EnemyCurveLaser()
     {
@@ -131,6 +131,7 @@ public class EnemyCurveLaser : EnemyBulletBase
         _collisionSegmentsCount = 0;
         _isPosModified = false;
         _isInitPos = false;
+        _isSourceEliminated = false;
         if ( _movableObj == null )
         {
             _movableObj = ObjectsPool.GetInstance().GetPoolClassAtPool<MovableObject>();
@@ -262,24 +263,38 @@ public class EnemyCurveLaser : EnemyBulletBase
         {
             CacheCollisionSegments();
         }
-        if ( _collisionSegmentsCount == 0 )
+        if ( index == 0 )
         {
             return new CollisionDetectParas
             {
-                type = CollisionDetectType.Null,
-                nextIndex = -1,
+                type = CollisionDetectType.Circle,
+                radius = _collisionRadius,
+                centerPos = _trailsList[0] + new Vector2(_relationX, _relationY),
+                nextIndex = 1,
             };
         }
-        int realIndex = index >= 0 ? index : _collisionSegmentsCount + index;
-        Vector2 segmentVec = _collisionSegmentsList[realIndex];
-        Vector2 centerPos = (_trailsList[(int)segmentVec.x] + _trailsList[(int)segmentVec.y]) / 2 + new Vector2(_relationX, _relationY);
-        return new CollisionDetectParas
+        else
         {
-            type = CollisionDetectType.Circle,
-            centerPos = centerPos,
-            radius = _collisionRadius,
-            nextIndex = realIndex + 1 >= _collisionSegmentsCount ? -1 : realIndex + 1,
-        };
+            if (_collisionSegmentsCount < index)
+            {
+                return new CollisionDetectParas
+                {
+                    type = CollisionDetectType.Null,
+                    nextIndex = -1,
+                };
+            }
+            index = index > 0 ? index : _collisionSegmentsCount + index + 1;
+            int realIndex = index - 1;
+            Vector2 segmentVec = _collisionSegmentsList[realIndex];
+            Vector2 centerPos = (_trailsList[(int)segmentVec.x] + _trailsList[(int)segmentVec.y]) / 2 + new Vector2(_relationX, _relationY);
+            return new CollisionDetectParas
+            {
+                type = CollisionDetectType.Circle,
+                centerPos = centerPos,
+                radius = _collisionRadius,
+                nextIndex = index + 1 > _collisionSegmentsCount ? -1 : index + 1,
+            };
+        }
     }
 
     /// <summary>
@@ -312,8 +327,15 @@ public class EnemyCurveLaser : EnemyBulletBase
 
     public override void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObjectCollider)
     {
-        _eliminateRangeList.Add(_collisionSegmentsList[n]);
-        _eliminateRangeListCount++;
+        if (n == 0)
+        {
+            _isSourceEliminated = true;
+        }
+        else
+        {
+            _eliminateRangeList.Add(_collisionSegmentsList[n-1]);
+            _eliminateRangeListCount++;
+        }
     }
     #endregion
 
@@ -416,29 +438,44 @@ public class EnemyCurveLaser : EnemyBulletBase
             _curTrailLen++;
             if ( _availableCount == 0 )
             {
-                // 添加第一段
-                _availableIndexRangeList.Add(new Vector2(0, 1));
-                _availableCount = 1;
+                if ( !_isSourceEliminated)
+                {
+                    // 添加第一段
+                    _availableIndexRangeList.Add(new Vector2(0, 1));
+                    _availableCount = 1;
+                }
             }
             else
             {
-                // 先检测第一段是否在起始位置
-                Vector2 availableRange = _availableIndexRangeList[0];
-                if ( availableRange.x == 0 )
+                Vector2 availableRange;
+                if ( !_isSourceEliminated)
                 {
-                    availableRange.y += 1;
-                    _availableIndexRangeList[0] = availableRange;
+                    // 先检测第一段是否在起始位置
+                    availableRange = _availableIndexRangeList[0];
+                    if (availableRange.x == 0)
+                    {
+                        availableRange.y += 1;
+                        _availableIndexRangeList[0] = availableRange;
+                    }
+                    else
+                    {
+                        // 插入(0,1)段
+                        _availableIndexRangeList.Add(new Vector2(0, 1));
+                        _availableCount++;
+                    }
+                    for (int i = 1; i < _availableCount; i++)
+                    {
+                        availableRange = _availableIndexRangeList[i];
+                        _availableIndexRangeList[i] = new Vector2(availableRange.x + 1, availableRange.y + 1);
+                    }
                 }
                 else
                 {
-                    // 插入(0,1)段
-                    _availableIndexRangeList.Add(new Vector2(0, 1));
-                    _availableCount++;
-                }
-                for (int i=1;i<_availableCount;i++)
-                {
-                    availableRange = _availableIndexRangeList[i];
-                    _availableIndexRangeList[i] = new Vector2(availableRange.x + 1, availableRange.y + 1);
+                    for (int i = 0; i < _availableCount; i++)
+                    {
+                        availableRange = _availableIndexRangeList[i];
+                        _availableIndexRangeList[i] = new Vector2(availableRange.x + 1, availableRange.y + 1);
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Diagnostics;
 
 public class TimeUtil
 {
@@ -13,7 +14,7 @@ public class TimeUtil
 
     public static void BeginSample(int count=1)
     {
-        lastTick = System.DateTime.Now.Ticks;
+        lastTick = Stopwatch.GetTimestamp();
         if ( countFlag == 0 )
         {
             curCount = 0;
@@ -25,7 +26,7 @@ public class TimeUtil
 
     public static void EndSample()
     {
-        curTick = System.DateTime.Now.Ticks;
+        curTick = Stopwatch.GetTimestamp();
         curCount++;
         sum += (curTick - lastTick);
         if ( curCount >= totalCount )
@@ -40,5 +41,14 @@ public class TimeUtil
     {
         System.DateTime now = System.DateTime.Now;
         Logger.Log("NowTime = " + now.Minute + ":" + now.Second + ":" + now.Millisecond);
+    }
+
+    /// <summary>
+    /// 获取当前时间戳
+    /// </summary>
+    /// <returns></returns>
+    public static long GetTimestamp()
+    {
+        return Stopwatch.GetTimestamp();
     }
 }
