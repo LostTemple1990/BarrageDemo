@@ -60,8 +60,8 @@ namespace BarrageEditor
         /// <summary>
         /// 子节点
         /// </summary>
-        public List<BaseNode> childs;
-        public BaseNode parentNode;
+        protected List<BaseNode> _childs;
+        protected BaseNode _parent;
 
         protected GameObject _nodeItemGo;
         protected RectTransform _nodeItemTf;
@@ -99,7 +99,7 @@ namespace BarrageEditor
             _extraDepth = 1;
             _isValid = true;
             // 基本参数初始化
-            childs = new List<BaseNode>();
+            _childs = new List<BaseNode>();
             _attrs = new List<BaseNodeAttr>();
         }
 
@@ -180,7 +180,7 @@ namespace BarrageEditor
                         hasAncestor = true;
                         break;
                     }
-                    parent = parent.parentNode;
+                    parent = parent._parent;
                 }
                 if (!hasAncestor)
                     return false;
@@ -196,19 +196,19 @@ namespace BarrageEditor
         /// <param name="index">子节点位置索引，-1为插入到最后</param>
         public virtual bool InsertChildNode(BaseNode child, int index)
         {
-            if ( index < 0 ) { index = childs.Count; }
-            if (index > childs.Count)
+            if ( index < 0 ) { index = _childs.Count; }
+            if (index > _childs.Count)
             {
                 Logger.LogError(string.Format("invalid index {0} for insertChildNode", index));
                 child.Destroy();
                 return false;
             }
-            childs.Add(null);
-            for (int i = childs.Count - 1; i > index; i--)
+            _childs.Add(null);
+            for (int i = _childs.Count - 1; i > index; i--)
             {
-                childs[i] = childs[i - 1];
+                _childs[i] = _childs[i - 1];
             }
-            childs[index] = child;
+            _childs[index] = child;
             child.SetParent(this);
             UpdateExpandImg();
             return true;
@@ -219,7 +219,7 @@ namespace BarrageEditor
             NodeConfig childCfg = DatabaseManager.NodeDatabase.GetNodeCfgByNodeType(child.GetNodeType());
             if (!childCfg.isDeletable)
                 return false;
-            if (childs.Remove(child))
+            if (_childs.Remove(child))
             {
                 child.Destroy();
                 UpdateExpandImg();
@@ -240,12 +240,12 @@ namespace BarrageEditor
 
         public int GetChildIndex(BaseNode child)
         {
-            return childs.IndexOf(child);
+            return _childs.IndexOf(child);
         }
 
         public int GetChildCount()
         {
-            return childs.Count;
+            return _childs.Count;
         }
 
         /// <summary>
@@ -257,11 +257,11 @@ namespace BarrageEditor
         public BaseNode GetChildByType(NodeType nodeType)
         {
             BaseNode child = null;
-            for (int i=0;i<childs.Count;i++)
+            for (int i=0;i<_childs.Count;i++)
             {
-                if (childs[i].GetNodeType() == nodeType)
+                if (_childs[i].GetNodeType() == nodeType)
                 {
-                    child = childs[i];
+                    child = _childs[i];
                     break;
                 }
             }
@@ -275,23 +275,23 @@ namespace BarrageEditor
         /// <returns></returns>
         public BaseNode GetChildByIndex(int index)
         {
-            if (index < 0 || index >= childs.Count)
+            if (index < 0 || index >= _childs.Count)
                 return null;
-            return childs[index];
+            return _childs[index];
         }
 
         public void SetParent(BaseNode parent)
         {
-            parentNode = parent;
+            _parent = parent;
             UpdateNodeDepth();
         }
 
         protected void UpdateNodeDepth()
         {
-            _nodeDepth = parentNode == null ? 0 : parentNode.GetDepth() + 1;
-            for (int i=0;i<childs.Count;i++)
+            _nodeDepth = _parent == null ? 0 : _parent.GetDepth() + 1;
+            for (int i=0;i<_childs.Count;i++)
             {
-                childs[i].UpdateNodeDepth();
+                _childs[i].UpdateNodeDepth();
             }
         }
 
@@ -356,14 +356,14 @@ namespace BarrageEditor
             _nodeItemTf.anchoredPosition = new Vector2(posX, posY);
             if ( _isExpand )
             {
-                int childCount = childs.Count;
+                int childCount = _childs.Count;
                 int i = 0;
                 // 找到当前遍历序列的下一个子节点
                 if (fromChild != null)
                 {
                     for (; i < childCount; i++)
                     {
-                        if (childs[i] == fromChild)
+                        if (_childs[i] == fromChild)
                         {
                             i++;
                             break;
@@ -372,15 +372,15 @@ namespace BarrageEditor
                 }
                 for (; i < childCount; i++)
                 {
-                    childs[i].RefreshPosition(ref showIndex,beginNode);
+                    _childs[i].RefreshPosition(ref showIndex,beginNode);
                 }
             }
-            if ( parentNode != null )
+            if ( _parent != null )
             {
                 // 初始的搜索节点or是往上搜索的父节点
                 if ( beginNode == this || fromChild != null )
                 {
-                    parentNode.RefreshPosition(ref showIndex, beginNode, this);
+                    _parent.RefreshPosition(ref showIndex, beginNode, this);
                 }
             }
         }
@@ -391,18 +391,22 @@ namespace BarrageEditor
         /// <param name="value"></param>
         public void Expand(bool value)
         {
-            int childCount = childs.Count;
+            int childCount = _childs.Count;
             IsExpand = childCount == 0 ? false : value;
             for (int i = 0; i < childCount; i++)
             {
-                childs[i].SetChildNodesVisible(IsExpand);
+                _childs[i].SetChildNodesVisible(IsExpand);
             }
             int newNodeIndex = _nodeShowIndex;
             RefreshPosition(ref newNodeIndex, this);
             EventManager.GetInstance().PostEvent(EditorEvents.NodeExpandedFinished, newNodeIndex);
         }
 
-        public void SetChildNodesVisible(bool value)
+        /// <summary>
+        /// 设置子节点是否可见
+        /// </summary>
+        /// <param name="value"></param>
+        protected void SetChildNodesVisible(bool value)
         {
             _nodeItemGo.SetActive(value);
             // 当节点从不可见变为可见时，通知ProjectPanel更新宽度
@@ -417,9 +421,9 @@ namespace BarrageEditor
                 UpdateExpandImg();
             }
             bool childVisible = !value || !_isExpand ? false : value;
-            for (int i = 0, len = childs.Count; i < len; i++)
+            for (int i = 0, len = _childs.Count; i < len; i++)
             {
-                childs[i].SetChildNodesVisible(childVisible);
+                _childs[i].SetChildNodesVisible(childVisible);
             }
         }
 
@@ -429,7 +433,7 @@ namespace BarrageEditor
         private void UpdateExpandImg()
         {
             ExpandImgState newState;
-            if ( childs.Count == 0 )
+            if ( _childs.Count == 0 )
             {
                 newState = ExpandImgState.NoChild;
             }
@@ -532,6 +536,11 @@ namespace BarrageEditor
         public virtual string GetNodeName()
         {
             return "undefined nodeName";
+        }
+
+        public BaseNode GetParentNode()
+        {
+            return _parent;
         }
 
         public virtual string ToDesc()
@@ -647,9 +656,9 @@ namespace BarrageEditor
                     luaStr += "if false then ";
                 }
             }
-            for (int i=0;i<childs.Count;i++)
+            for (int i=0;i<_childs.Count;i++)
             {
-                childs[i].ToLua(codeDepth + _extraDepth, ref luaStr);
+                _childs[i].ToLua(codeDepth + _extraDepth, ref luaStr);
             }
             string luaFoot = ToLuaFoot();
             if ( luaFoot != "" )
@@ -693,11 +702,11 @@ namespace BarrageEditor
         public virtual void Destroy()
         {
             int i;
-            for (i = 0; i < childs.Count; i++)
+            for (i = 0; i < _childs.Count; i++)
             {
-                childs[i].Destroy();
+                _childs[i].Destroy();
             }
-            childs.Clear();
+            _childs.Clear();
             for (i = 0; i < _attrs.Count; i++)
             {
                 _attrs[i].UnbindItem();
@@ -705,7 +714,7 @@ namespace BarrageEditor
             _attrs.Clear();
             UIEventListener.Get(_clickGo).RemoveAllEvents();
             UIEventListener.Get(_expandImg.gameObject).RemoveAllEvents();
-            parentNode = null;
+            _parent = null;
             GameObject.Destroy(_nodeItemGo);    
             _nodeItemGo = null;
             _nodeItemTf = null;

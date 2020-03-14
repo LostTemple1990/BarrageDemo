@@ -49,10 +49,10 @@ namespace BarrageEditor
             // 则更新DefineList
             if (attr != null && attr == GetAttrByIndex(ParamListAttrIndex))
             {
-                if ((parentNode as NodeDefineLinearLaser).IsWatchingData)
+                if ((_parent as NodeDefineLinearLaser).IsWatchingData)
                 {
                     // 参数列表发生变化，修改缓存
-                    string name = parentNode.GetAttrByIndex(ParamListAttrIndex).GetValueString();
+                    string name = _parent.GetAttrByIndex(ParamListAttrIndex).GetValueString();
                     CustomDefine.ModifyDefineParaList(CustomDefineType.LinearLaser, name, attr.GetValueString());
                 }
             }
@@ -71,7 +71,7 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            string name = parentNode.GetAttrs()[0].GetValueString();
+            string name = _parent.GetAttrs()[0].GetValueString();
             string ret = string.Format("CustomizedTable[\"{0}\"].Init = function(self{1})\n",
                 name,
                 _attrs[ParamListAttrIndex].GetValueString() == "" ? "" : "," + _attrs[ParamListAttrIndex].GetValueString()

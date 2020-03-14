@@ -10,17 +10,20 @@ namespace BarrageEditor
 {
     public class NodeAttrSCCondition : NodeAttrUneditableDropdown
     {
+        public NodeAttrSCCondition()
+            : base()
+        {
+            _optionStringList = new List<string>();
+            _optionStringList.Add("ConditionEliminateAll");
+            _optionStringList.Add("ConditionEliminateOne");
+            _optionStringList.Add("ConditionEliminateSpecificOne");
+            _optionStringList.Add("ConditionTimeOver");
+        }
+
         public override void BindItem(RectTransform parentTf)
         {
             base.BindItem(parentTf);
-            List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
-            optionList.Add(new Dropdown.OptionData("ConditionEliminateAll"));
-            optionList.Add(new Dropdown.OptionData("ConditionEliminateOne"));
-            optionList.Add(new Dropdown.OptionData("ConditionEliminateSpecificOne"));
-            optionList.Add(new Dropdown.OptionData("ConditionTimeOver"));
-            _dropDown.options = optionList;
             _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
-
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
         }
 

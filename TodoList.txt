@@ -83,6 +83,7 @@ Boss的符卡数目显示相关，击杀BOSS的特效
 给掉落道具添加可视化编辑界面 --finish
 对AttrItem进行改进，某些属性下文本框不可手动编辑 --finish
 完成Rebound属性的编辑界面 --finish
+不可见的节点暂时不创建对应的GameObject
 
 COLOR_DEEP_RED=1
 COLOR_RED=2

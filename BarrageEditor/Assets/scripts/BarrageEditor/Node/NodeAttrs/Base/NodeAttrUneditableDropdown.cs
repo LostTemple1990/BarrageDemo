@@ -15,6 +15,8 @@ namespace BarrageEditor
 
         protected Text _valueText;
 
+        protected List<string> _optionStringList;
+
         public NodeAttrUneditableDropdown()
             :base()
         {
@@ -49,8 +51,11 @@ namespace BarrageEditor
             _arrowImg = _itemTf.Find("Dropdown/Arrow").GetComponent<Image>();
 
             _valueText = _itemTf.Find("Dropdown/Label").GetComponent<Text>();
-            // 值
-            _valueText.text = GetValueString();
+
+            _dropDown.AddOptions(_optionStringList);
+            int defaultValue = _optionStringList.IndexOf(GetValueString());
+            _dropDown.value = defaultValue;
+
             UIEventListener.Get(_valueText.gameObject).AddPointerEnter(OnPointerEnter);
             UIEventListener.Get(_valueText.gameObject).AddPointerExit(OnPointerExit);
         }

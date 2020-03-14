@@ -43,10 +43,10 @@ namespace BarrageEditor
             {
                 if (attr == GetAttrByIndex(ParamListAttrIndex))
                 {
-                    if ((parentNode as NodeDefineEnemy).IsWatchingData)
+                    if ((_parent as NodeDefineEnemy).IsWatchingData)
                     {
                         // 参数列表发生变化，修改缓存
-                        string paraList = parentNode.GetAttrByIndex(ParamListAttrIndex).GetValueString();
+                        string paraList = _parent.GetAttrByIndex(ParamListAttrIndex).GetValueString();
                         CustomDefine.ModifyDefineParaList(CustomDefineType.Enemy, paraList, attr.GetValueString());
                     }
                 }
@@ -66,7 +66,7 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            string name = parentNode.GetAttrByIndex(0).GetValueString();
+            string name = _parent.GetAttrByIndex(0).GetValueString();
             return string.Format("CustomizedEnemyTable[\"{0}\"].Init = function(self{1})\n    self:Init({2})\n    self:SetMaxHp({3})\n",
                 name,
                 GetAttrByIndex(ParamListAttrIndex).GetValueString() == "" ? "" : ","+ GetAttrByIndex(ParamListAttrIndex).GetValueString(),  //不带参数的话self后不带任何参数了，因此不加分隔符','

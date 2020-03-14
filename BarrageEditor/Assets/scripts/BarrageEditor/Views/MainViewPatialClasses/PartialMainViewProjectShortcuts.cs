@@ -301,7 +301,7 @@ namespace BarrageEditor
                 BarrageProject.LogWarning("Delete fail!Please select a node first");
                 return;
             }
-            BaseNode parent = _curSelectedNode.parentNode;
+            BaseNode parent = _curSelectedNode.GetParentNode();
             if (parent == null)
             {
                 BarrageProject.LogWarning("Delete fail!Node root is not deletable");
@@ -359,7 +359,7 @@ namespace BarrageEditor
                 BarrageProject.LogWarning("Cut fail!Please select a node first");
                 return;
             }
-            BaseNode parent = _curSelectedNode.parentNode;
+            BaseNode parent = _curSelectedNode.GetParentNode();
             if (parent == null)
             {
                 BarrageProject.LogWarning("Cut fail!Node root is not deletable");
@@ -456,7 +456,7 @@ namespace BarrageEditor
                 return;
             }
             // 当前选择节点的父节点必须是stage
-            BaseNode parentNode = _curSelectedNode.parentNode;
+            BaseNode parentNode = _curSelectedNode.GetParentNode();
             if (parentNode == null || parentNode.GetNodeType() != NodeType.Stage)
             {
                 BarrageProject.LogError("Debug fail!Please select a node which is direct child of stage");

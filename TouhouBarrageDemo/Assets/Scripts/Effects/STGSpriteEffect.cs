@@ -501,7 +501,7 @@ public class STGSpriteEffect : STGEffectBase, ISTGMovable, IAttachment, IAttacha
             GameObject protoType = ObjectsPool.GetInstance().GetProtoType(_effectGoName);
             if (protoType == null)
             {
-                protoType = ResourceManager.GetInstance().GetPrefab("Prefab/Effects", prefabName);
+                protoType = ResourceManager.GetInstance().GetPrefab("Prefab/Effects/Special", prefabName);
                 protoType.name = _effectGoName;
                 Transform tf = protoType.transform;
                 tf.localPosition = new Vector3(2000, 2000, 0);
@@ -524,6 +524,39 @@ public class STGSpriteEffect : STGEffectBase, ISTGMovable, IAttachment, IAttacha
             _curWidth = _originalWidth;
             _curHeight = _originalHeight;
         }
+    }
+
+    /// <summary>
+    /// 设置材质属性的浮点数值
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
+    public void SetMatFloat(string name,float value)
+    {
+        _isUsingCache = false;
+        _spRenderer.material.SetFloat(name, value);
+    }
+
+    /// <summary>
+    /// 设置材质属性的整型值
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
+    public void SetMatInt(string name, int value)
+    {
+        _isUsingCache = false;
+        _spRenderer.material.SetInt(name, value);
+    }
+
+    /// <summary>
+    /// 设置材质属性的颜色值
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="value"></param>
+    public void SetMatColor(string name, Color value)
+    {
+        _isUsingCache = false;
+        _spRenderer.material.SetColor(name, value);
     }
 
     /// <summary>

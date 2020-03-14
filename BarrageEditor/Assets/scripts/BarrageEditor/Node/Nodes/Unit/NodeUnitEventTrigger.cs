@@ -41,9 +41,9 @@ namespace BarrageEditor
             string evt = GetAttrByIndex(0).GetValueString();
             if (evt == "OnKill")
             {
-                if (parentNode.GetNodeType() == NodeType.DefineEnemy)
+                if (_parent.GetNodeType() == NodeType.DefineEnemy)
                 {
-                    return string.Format("CustomizedEnemyTable[\"{0}\"].OnKill = function(self)\n", parentNode.GetAttrByIndex(0).GetValueString());
+                    return string.Format("CustomizedEnemyTable[\"{0}\"].OnKill = function(self)\n", _parent.GetAttrByIndex(0).GetValueString());
                 }
             }
             return "";

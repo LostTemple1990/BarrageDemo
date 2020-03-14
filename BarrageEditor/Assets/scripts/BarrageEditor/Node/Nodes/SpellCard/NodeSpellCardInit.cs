@@ -42,8 +42,8 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            string scTypeName = parentNode.GetAttrByIndex(0).GetValueString();
-            int bossCount = int.Parse(parentNode.GetAttrByIndex(2).GetValueString());
+            string scTypeName = _parent.GetAttrByIndex(0).GetValueString();
+            int bossCount = int.Parse(_parent.GetAttrByIndex(2).GetValueString());
             string paramStr = "";
             if (bossCount == 1)
             {
@@ -65,11 +65,11 @@ namespace BarrageEditor
             }
             string ret = string.Format("SpellCard[\"{0}\"].Init = function({1})\n", scTypeName, paramStr);
             ret += string.Format("    SetSpellCardProperties(\"{0}\",{1},{2},{3},{4})\n",
-                parentNode.GetAttrByIndex(1).GetValueString(),//符卡名称
-                parentNode.GetAttrByIndex(2).GetValueString(),//boss的个数
-                parentNode.GetAttrByIndex(3).GetValueString(),//持续时间
-                parentNode.GetAttrByIndex(4).GetValueString(),//击破条件
-                parentNode.GetAttrByIndex(5).GetValueString());//是否符卡
+                _parent.GetAttrByIndex(1).GetValueString(),//符卡名称
+                _parent.GetAttrByIndex(2).GetValueString(),//boss的个数
+                _parent.GetAttrByIndex(3).GetValueString(),//持续时间
+                _parent.GetAttrByIndex(4).GetValueString(),//击破条件
+                _parent.GetAttrByIndex(5).GetValueString());//是否符卡
             return ret;
         }
 

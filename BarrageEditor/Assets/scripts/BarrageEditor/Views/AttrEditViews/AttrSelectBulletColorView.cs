@@ -57,6 +57,7 @@ namespace BarrageEditor
                 itemTf.SetParent(_itemContainerTf, false);
                 // 初始化StyleItem结构
                 ColorItem colorItem = new ColorItem();
+                colorItem.colorId = availableColors[i];
                 colorItem.itemGo = item;
                 colorItem.btn = itemTf.Find("BtnBg").gameObject;
                 colorItem.selectImgGo = itemTf.Find("SelectImg").gameObject;

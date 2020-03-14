@@ -10,17 +10,20 @@ namespace BarrageEditor
 {
     public class NodeAttrDirectionMode : NodeAttrUneditableDropdown
     {
+        public NodeAttrDirectionMode()
+            : base()
+        {
+            _optionStringList = new List<string>();
+            _optionStringList.Add("MoveXTowardsPlayer");
+            _optionStringList.Add("MoveYTowardsPlayer");
+            _optionStringList.Add("MoveTowardsPlayer");
+            _optionStringList.Add("MoveRandom");
+        }
+
         public override void BindItem(RectTransform parentTf)
         {
             base.BindItem(parentTf);
-            List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
-            optionList.Add(new Dropdown.OptionData("MoveXTowardsPlayer"));
-            optionList.Add(new Dropdown.OptionData("MoveYTowardsPlayer"));
-            optionList.Add(new Dropdown.OptionData("MoveTowardsPlayer"));
-            optionList.Add(new Dropdown.OptionData("MoveRandom"));
-            _dropDown.options = optionList;
             _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
-
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
         }
 

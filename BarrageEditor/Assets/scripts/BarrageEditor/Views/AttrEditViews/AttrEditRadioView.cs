@@ -9,7 +9,7 @@ namespace BarrageEditor
     public class AttrEditRadioView : ViewBase
     {
         private const float ItemHeight = 40f;
-        private const float WindowTopBottom = 65;
+        private const float WindowTopBottom = 65 + 25 + 20;
         /// <summary>
         /// Panel的最小高度
         /// </summary>

@@ -57,9 +57,9 @@ public class FPSController
                 if (sleepTime > 0)
                     Thread.Sleep(sleepTime);
             }
-            Logger.Log(String.Format("PreWhile dTick {0}\nToNextTick{1}",
-                1000f * (Stopwatch.GetTimestamp() - _lastFrameTicks) / TimeUnit,
-                1000f * (nextTicks - Stopwatch.GetTimestamp()) / TimeUnit));
+            //Logger.Log(String.Format("PreWhile dTick {0}\nToNextTick{1}",
+            //    1000f * (Stopwatch.GetTimestamp() - _lastFrameTicks) / TimeUnit,
+            //    1000f * (nextTicks - Stopwatch.GetTimestamp()) / TimeUnit));
             while (nextTicks - Stopwatch.GetTimestamp() >= 10) ;
             //int count = 0;
             //while (true)
@@ -81,12 +81,12 @@ public class FPSController
             //    }
             //}
             //Logger.Log("While Count = " + count);
-            Logger.Log("Now dTick " + 1000f * (Stopwatch.GetTimestamp() - _lastFrameTicks) / TimeUnit);
+            //Logger.Log("Now dTick " + 1000f * (Stopwatch.GetTimestamp() - _lastFrameTicks) / TimeUnit);
             //_lastFrameTicks = Stopwatch.GetTimestamp();
             if (_fixedFPS && dTicks < -TimeUnit / (float)Consts.TargetFrameRate * DelayTolerance)
             {
                 float skipFrameCount = Mathf.Ceil(-dTicks * (float)Consts.TargetFrameRate / TimeUnit - DelayTolerance);
-                Logger.Log("Skip " + skipFrameCount + " frame(s)");
+                //Logger.Log("Skip " + skipFrameCount + " frame(s)");
                 _lastFrameTicks += (long)skipFrameCount * TimeUnit / Consts.TargetFrameRate;
             }
             else

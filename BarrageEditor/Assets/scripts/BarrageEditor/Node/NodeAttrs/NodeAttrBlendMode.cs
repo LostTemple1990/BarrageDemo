@@ -7,15 +7,18 @@ namespace BarrageEditor
 {
     public class NodeAttrBlendMode : NodeAttrUneditableDropdown
     {
+        public NodeAttrBlendMode()
+            : base()
+        {
+            _optionStringList = new List<string>();
+            _optionStringList.Add("BlendMode_Normal");
+            _optionStringList.Add("BlendMode_SoftAdditive");
+        }
+
         public override void BindItem(RectTransform parentTf)
         {
             base.BindItem(parentTf);
-            List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
-            optionList.Add(new Dropdown.OptionData("BlendMode_Normal"));
-            optionList.Add(new Dropdown.OptionData("BlendMode_SoftAdditive"));
-            _dropDown.options = optionList;
             _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
-
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
         }
 

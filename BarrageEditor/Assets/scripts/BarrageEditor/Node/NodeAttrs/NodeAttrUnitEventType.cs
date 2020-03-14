@@ -10,14 +10,17 @@ namespace BarrageEditor
 {
     public class NodeAttrUnitEventType : NodeAttrUneditableDropdown
     {
+        public NodeAttrUnitEventType()
+            : base()
+        {
+            _optionStringList = new List<string>();
+            _optionStringList.Add("OnKill");
+        }
+
         public override void BindItem(RectTransform parentTf)
         {
             base.BindItem(parentTf);
-            List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
-            optionList.Add(new Dropdown.OptionData("OnKill"));
-            _dropDown.options = optionList;
             _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
-
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
         }
 

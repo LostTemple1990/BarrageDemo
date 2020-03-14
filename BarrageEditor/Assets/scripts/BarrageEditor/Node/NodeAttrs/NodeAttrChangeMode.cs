@@ -10,16 +10,19 @@ namespace BarrageEditor
 {
     public class NodeAttrChangeMode : NodeAttrUneditableDropdown
     {
+        public NodeAttrChangeMode()
+            : base()
+        {
+            _optionStringList = new List<string>();
+            _optionStringList.Add("ChangeModeChangeTo");
+            _optionStringList.Add("ChangeModeIncBy");
+            _optionStringList.Add("ChangeModeDecBy");
+        }
+
         public override void BindItem(RectTransform parentTf)
         {
             base.BindItem(parentTf);
-            List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
-            optionList.Add(new Dropdown.OptionData("ChangeModeChangeTo"));
-            optionList.Add(new Dropdown.OptionData("ChangeModeIncBy"));
-            optionList.Add(new Dropdown.OptionData("ChangeModeDecBy"));
-            _dropDown.options = optionList;
             _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
-
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
         }
 

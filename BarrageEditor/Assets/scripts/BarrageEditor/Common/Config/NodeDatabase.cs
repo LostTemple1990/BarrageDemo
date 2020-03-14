@@ -135,6 +135,8 @@ namespace BarrageEditor
         SetSpriteForSTGObject = 1704,
         STGObjectSetColor = 1705,
         STGObjectChangeAlphaTo = 1706,
+        DefineSpecialSTGObject = 1711,
+        OnSpecialSTGObjectCreate = 1712,
 
         DefineCollider = 1801,
         OnColliderCreate = 1802,
@@ -424,7 +426,7 @@ namespace BarrageEditor
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 needAncestors = new List<NodeType> { NodeType.Stage, NodeType.DefineEnemy, NodeType.DefineBoss, NodeType.DefineSpellCard,
                     NodeType.DefineBullet, NodeType.DefineLaser, NodeType.DefineLinearLaser, NodeType.DefineCurveLaser,
-                    NodeType.DefineCollider, NodeType.DefineSTGObject,
+                    NodeType.DefineCollider, NodeType.DefineSTGObject, NodeType.DefineSpecialSTGObject,
                     NodeType.AddTask, },
             };
             _nodeCfgDic.Add(NodeType.AddTask, cfg);
@@ -1014,6 +1016,28 @@ namespace BarrageEditor
                 isDeletable = false,
             };
             _nodeCfgDic.Add(NodeType.OnSTGObjectCreate, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.DefineSpecialSTGObject,
+                shortcutPath = "objectdefine",
+                shortcutTip = "define special object",
+                defaultAttrValues = new List<object> { "" },
+                allowParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+                editOnCreated = true,
+            };
+            _nodeCfgDic.Add(NodeType.DefineSpecialSTGObject, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.OnSpecialSTGObjectCreate,
+                shortcutPath = "objectinit",
+                shortcutTip = "init object",
+                defaultAttrValues = new List<object> { "", "VisionMaskEffect", "LayerEffectNormal", "false" },
+                isDeletable = false,
+            };
+            _nodeCfgDic.Add(NodeType.OnSpecialSTGObjectCreate, cfg);
 
             cfg = new NodeConfig
             {

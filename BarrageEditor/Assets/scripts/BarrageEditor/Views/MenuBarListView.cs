@@ -176,6 +176,10 @@ namespace BarrageEditor
                 string templatePath = Application.streamingAssetsPath + "/template.nd";
                 BarrageProject.LoadProject(templatePath);
                 BarrageProject.SetProjectPath(savePath);
+                // 保存文件
+                BaseNode root = BarrageProject.RootNode;
+                NodeData nd = NodeManager.SaveAsNodeData(root, true);
+                FileUtils.SerializableObjectToFile(savePath, nd);
                 EventManager.GetInstance().PostEvent(EditorEvents.AfterProjectChanged);
                 // 当前文件
                 BarrageProject.Log("current project file: " + FileUtils.GetFileNameByPath(savePath));

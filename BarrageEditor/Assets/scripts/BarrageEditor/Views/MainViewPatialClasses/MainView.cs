@@ -238,7 +238,8 @@ namespace BarrageEditor
                 tabName = "Object",
                 typeList = new List<NodeType>[]
                 {
-                    new List<NodeType> { NodeType.DefineSTGObject, NodeType.CreateCusomizedSTGObject, NodeType.SetSpriteForSTGObject, NodeType.STGObjectSetColor, NodeType.STGObjectChangeAlphaTo },
+                    new List<NodeType> { NodeType.DefineSTGObject, NodeType.DefineSpecialSTGObject },
+                    new List<NodeType> { NodeType.CreateCusomizedSTGObject, NodeType.SetSpriteForSTGObject, NodeType.STGObjectSetColor, NodeType.STGObjectChangeAlphaTo },
                 },
             };
             _nodeTabs.Add(tab);
@@ -409,12 +410,12 @@ namespace BarrageEditor
             {
                 if (insertMode == NodeInsertMode.InsertAfter)
                 {
-                    parent = _curSelectedNode.parentNode;
+                    parent = _curSelectedNode.GetParentNode();
                     index = parent.GetChildIndex(_curSelectedNode) + 1;
                 }
                 else if (insertMode == NodeInsertMode.InsertBefore)
                 {
-                    parent = _curSelectedNode.parentNode;
+                    parent = _curSelectedNode.GetParentNode();
                     index = parent.GetChildIndex(_curSelectedNode);
                 }
                 else

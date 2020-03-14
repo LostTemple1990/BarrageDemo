@@ -5,7 +5,6 @@ local CustomizedTable = {}
 local CustomizedEnemyTable = {}
 local BossTable = {}
 local CustomizedSTGObjectTable = {}
-SetDebugStageName("Stage1")
 
 -- Mod name: unnamed
 --author="YK"
@@ -2154,8 +2153,19 @@ CustomizedSTGObjectTable["Stage1Logo"].Init = function(self)
         DelUnit(self)
     end)
 end
+CustomizedSTGObjectTable["TestVisionMask"] = {}
+CustomizedSTGObjectTable["TestVisionMask"].Init = function(self)
+    self:SetPrefab("VisionMaskEffect",LayerEffectTop,false)
+    self:AddTask(function()
+        do for _=1,Infinite do
+            self:SetMaterialFloat("_PlayerX",player.x)
+            self:SetMaterialFloat("_PlayerY",player.y)
+            if Wait(1)==false then return end
+        end end
+    end)
+end
 Stage["Stage1"] = function()
-if false then     PlaySound("oborozuki",0.5,true)
+    PlaySound("oborozuki",0.5,true)
     do  --初始敌机
         if Wait(60)==false then return end
         do for _=1,8 do
@@ -2278,7 +2288,7 @@ if false then     PlaySound("oborozuki",0.5,true)
         last = CreateCustomizedEnemy("YKStage1Enemy6",0,240)
         if Wait(1800)==false then return end
     end
-end     do  --Phase8
+    do  --Phase8
         if Wait(200)==false then return end
         if StartDialog(function()
             CreateDialogCG("Nazrin","Nazrin",450,150)

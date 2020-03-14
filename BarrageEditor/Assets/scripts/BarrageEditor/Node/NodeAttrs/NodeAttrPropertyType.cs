@@ -10,31 +10,34 @@ namespace BarrageEditor
 {
     public class NodeAttrPropertyType : NodeAttrUneditableDropdown
     {
+        public NodeAttrPropertyType()
+            : base()
+        {
+            _optionStringList = new List<string>();
+            _optionStringList.Add("Prop_Velocity");
+            _optionStringList.Add("Prop_Vx");
+            _optionStringList.Add("Prop_Vy");
+            _optionStringList.Add("Prop_VAngel");
+            _optionStringList.Add("Prop_Acce");
+            _optionStringList.Add("Prop_AccAngle");
+            _optionStringList.Add("Prop_MaxVelocity");
+            _optionStringList.Add("Prop_CurveRadius");
+            _optionStringList.Add("Prop_CurveAngle");
+            _optionStringList.Add("Prop_CurveDeltaR");
+            _optionStringList.Add("Prop_CurveOmega");
+            _optionStringList.Add("Prop_CurveCenterX");
+            _optionStringList.Add("Prop_CurveCenterY");
+            _optionStringList.Add("Prop_Alpha");
+            _optionStringList.Add("Prop_ScaleX");
+            _optionStringList.Add("Prop_ScaleY");
+            _optionStringList.Add("Prop_LaserLength");
+            _optionStringList.Add("Prop_LaserWidth");
+        }
+
         public override void BindItem(RectTransform parentTf)
         {
             base.BindItem(parentTf);
-            List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
-            optionList.Add(new Dropdown.OptionData("Prop_Velocity"));
-            optionList.Add(new Dropdown.OptionData("Prop_Vx"));
-            optionList.Add(new Dropdown.OptionData("Prop_Vy"));
-            optionList.Add(new Dropdown.OptionData("Prop_VAngel"));
-            optionList.Add(new Dropdown.OptionData("Prop_Acce"));
-            optionList.Add(new Dropdown.OptionData("Prop_AccAngle"));
-            optionList.Add(new Dropdown.OptionData("Prop_MaxVelocity"));
-            optionList.Add(new Dropdown.OptionData("Prop_CurveRadius"));
-            optionList.Add(new Dropdown.OptionData("Prop_CurveAngle"));
-            optionList.Add(new Dropdown.OptionData("Prop_CurveDeltaR"));
-            optionList.Add(new Dropdown.OptionData("Prop_CurveOmega"));
-            optionList.Add(new Dropdown.OptionData("Prop_CurveCenterX"));
-            optionList.Add(new Dropdown.OptionData("Prop_CurveCenterY"));
-            optionList.Add(new Dropdown.OptionData("Prop_Alpha"));
-            optionList.Add(new Dropdown.OptionData("Prop_ScaleX"));
-            optionList.Add(new Dropdown.OptionData("Prop_ScaleY"));
-            optionList.Add(new Dropdown.OptionData("Prop_LaserLength"));
-            optionList.Add(new Dropdown.OptionData("Prop_LaserWidth"));
-            _dropDown.options = optionList;
             _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
-
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
         }
 

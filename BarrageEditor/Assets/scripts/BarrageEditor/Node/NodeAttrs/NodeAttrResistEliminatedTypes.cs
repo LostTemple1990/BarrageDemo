@@ -8,7 +8,7 @@ using YKEngine;
 
 namespace BarrageEditor
 {
-    public class NodeAttrResistEliminatedTypes : NodeAttrUneditableDropdown
+    public class NodeAttrResistEliminatedTypes : NodeAttrUneditable
     {
         public override void BindItem(RectTransform parentTf)
         {

@@ -7,24 +7,27 @@ namespace BarrageEditor
 {
     public class NodeAttrLayer : NodeAttrUneditableDropdown
     {
+        public NodeAttrLayer()
+            : base()
+        {
+            _optionStringList = new List<string>();
+            _optionStringList.Add("LayerEnemy");
+            _optionStringList.Add("LayerEnemyBullet");
+            _optionStringList.Add("LayerPlayer");
+            _optionStringList.Add("LayerPlayerBullet");
+            _optionStringList.Add("LayerItem");
+            _optionStringList.Add("LayerEffectBottom");
+            _optionStringList.Add("LayerEffectNormal");
+            _optionStringList.Add("LayerEffectTop");
+            _optionStringList.Add("LayerUIBottom");
+            _optionStringList.Add("LayerUINormal");
+            _optionStringList.Add("LayerUITop");
+        }
+
         public override void BindItem(RectTransform parentTf)
         {
             base.BindItem(parentTf);
-            List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
-            optionList.Add(new Dropdown.OptionData("LayerEnemy"));
-            optionList.Add(new Dropdown.OptionData("LayerEnemyBullet"));
-            optionList.Add(new Dropdown.OptionData("LayerPlayer"));
-            optionList.Add(new Dropdown.OptionData("LayerPlayerBullet"));
-            optionList.Add(new Dropdown.OptionData("LayerItem"));
-            optionList.Add(new Dropdown.OptionData("LayerEffectBottom"));
-            optionList.Add(new Dropdown.OptionData("LayerEffectNormal"));
-            optionList.Add(new Dropdown.OptionData("LayerEffectTop"));
-            optionList.Add(new Dropdown.OptionData("LayerUIBottom"));
-            optionList.Add(new Dropdown.OptionData("LayerUINormal"));
-            optionList.Add(new Dropdown.OptionData("LayerUITop"));
-            _dropDown.options = optionList;
             _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
-
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
         }
 

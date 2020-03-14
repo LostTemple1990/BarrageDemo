@@ -25,7 +25,10 @@ public class STGObjectLuaInterface
     private static LuaCsClosureValue _funcSetSize;
     private static LuaCsClosureValue _funcChangeAlphaTo;
     private static LuaCsClosureValue _funcSetBlendMode;
-
+    private static LuaCsClosureValue _funcSetPrefab;
+    private static LuaCsClosureValue _funcSetMaterialFloat;
+    private static LuaCsClosureValue _funcSetMaterialInt;
+    private static LuaCsClosureValue _funcSetMaterialColor;
 
     public static void Init()
     {
@@ -33,6 +36,7 @@ public class STGObjectLuaInterface
         {
             _funcSetV = new LuaCsClosureValue(LuaLib.STGMovableDoStraightMove);
             _funcSetAcce = new LuaCsClosureValue(LuaLib.STGMovableDoAcceleration);
+            _funcSetStraightParas = new LuaCsClosureValue(LuaLib.STGMovableSetStraightParas);
             _funcSetPolarParas = new LuaCsClosureValue(LuaLib.STGMovableDoCurvedMove);
             _funcMoveTo = new LuaCsClosureValue(LuaLib.STGMovableMoveTo);
             _funcMoveTowards = new LuaCsClosureValue(LuaLib.STGMovableMoveTowards);
@@ -44,12 +48,15 @@ public class STGObjectLuaInterface
 
             _funcAddTask = new LuaCsClosureValue(LuaLib.AddTask);
 
-            _funcSetStraightParas = new LuaCsClosureValue(LuaLib.STGMovableSetStraightParas);
             _funcSetSprite = new LuaCsClosureValue(LuaLib.SetSTGObjectProps);
             _funcSetColor = new LuaCsClosureValue(LuaLib.SetSpriteEffectColor);
             _funcSetSize = new LuaCsClosureValue(LuaLib.SetSpriteEffectSize);
             _funcChangeAlphaTo = new LuaCsClosureValue(LuaLib.SpriteEffectChangeAlphaTo);
             _funcSetBlendMode = new LuaCsClosureValue(LuaLib.SetSpriteEffectBlendMode);
+            _funcSetPrefab = new LuaCsClosureValue(LuaLib.SpriteEffectSetPefab);
+            _funcSetMaterialFloat = new LuaCsClosureValue(LuaLib.SpriteEffectSetMatFloat);
+            _funcSetMaterialInt = new LuaCsClosureValue(LuaLib.SpriteEffectSetMatInt);
+            _funcSetMaterialColor = new LuaCsClosureValue(LuaLib.SpriteEffectSetMatColor);
 
             _isInit = true;
         }
@@ -166,6 +173,26 @@ public class STGObjectLuaInterface
                 case "alpha":
                     {
                         res.SetNValue(sprite.alpha);
+                        return true;
+                    }
+                case "SetPrefab":
+                    {
+                        res.SetClCsValue(_funcSetPrefab);
+                        return true;
+                    }
+                case "SetMaterialFloat":
+                    {
+                        res.SetClCsValue(_funcSetMaterialFloat);
+                        return true;
+                    }
+                case "SetMaterialInt":
+                    {
+                        res.SetClCsValue(_funcSetMaterialInt);
+                        return true;
+                    }
+                case "SetMaterialColor":
+                    {
+                        res.SetClCsValue(_funcSetMaterialColor);
                         return true;
                     }
                 #endregion

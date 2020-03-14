@@ -10,16 +10,19 @@ namespace BarrageEditor
 {
     public class NodeAttrShapeType : NodeAttrUneditableDropdown
     {
+        public NodeAttrShapeType()
+            : base()
+        {
+            _optionStringList = new List<string>();
+            _optionStringList.Add("TypeCircle");
+            _optionStringList.Add("TypeRect");
+            _optionStringList.Add("TypeItalicRect");
+        }
+
         public override void BindItem(RectTransform parentTf)
         {
             base.BindItem(parentTf);
-            List<Dropdown.OptionData> optionList = new List<Dropdown.OptionData>();
-            optionList.Add(new Dropdown.OptionData("TypeCircle"));
-            optionList.Add(new Dropdown.OptionData("TypeRect"));
-            optionList.Add(new Dropdown.OptionData("TypeItalicRect"));
-            _dropDown.options = optionList;
             _dropDown.onValueChanged.AddListener(OnDropdownValueChangedHandler);
-
             UIEventListener.Get(_editBtnGo).AddClick(OnEditBtnClickHandler);
         }
 

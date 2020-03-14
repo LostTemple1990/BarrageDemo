@@ -249,6 +249,12 @@ namespace BarrageEditor
                 case NodeType.OnSTGObjectCreate:
                     newNode = new NodeOnSTGObjectCreate();
                     break;
+                case NodeType.DefineSpecialSTGObject:
+                    newNode = new NodeDefineSpecialSTGObject();
+                    break;
+                case NodeType.OnSpecialSTGObjectCreate:
+                    newNode = new NodeOnSpecialSTGObjectCreate();
+                    break;
                 case NodeType.CreateCusomizedSTGObject:
                     newNode = new NodeCreateSTGObject();
                     break;
@@ -431,9 +437,10 @@ namespace BarrageEditor
             if (childIncluded)
             {
                 data.childs = new List<NodeData>();
-                for (i = 0; i < node.childs.Count; i++)
+                int childCount = node.GetChildCount();
+                for (i = 0; i < childCount; i++)
                 {
-                    NodeData childData = SaveAsNodeData(node.childs[i], true);
+                    NodeData childData = SaveAsNodeData(node.GetChildByIndex(i), true);
                     data.childs.Add(childData);
                 }
             }
@@ -521,7 +528,7 @@ namespace BarrageEditor
             if (child != null)
                 return child;
             child = curNode;
-            BaseNode parent = child.parentNode;
+            BaseNode parent = child.GetParentNode();
             while (parent != null)
             {
                 int index = parent.GetChildIndex(child);
@@ -530,7 +537,7 @@ namespace BarrageEditor
                     return parent.GetChildByIndex(index + 1);
                 }
                 child = parent;
-                parent = child.parentNode;
+                parent = child.GetParentNode();
             }
             return curNode;
         }
@@ -544,7 +551,7 @@ namespace BarrageEditor
         public static BaseNode GetPreNode(BaseNode curNode)
         {
             BaseNode preNode = curNode;
-            BaseNode parent = curNode.parentNode;
+            BaseNode parent = curNode.GetParentNode();
             if (parent == null)
                 return preNode;
             int index = parent.GetChildIndex(curNode);

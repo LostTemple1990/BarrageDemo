@@ -315,6 +315,83 @@ public partial class LuaLib
     }
 
     /// <summary>
+    /// 设置特殊的SpriteEffect
+    /// <para>spriteEffect</para>
+    /// <para>预制体名称</para>
+    /// <para>layerId 层级</para>
+    /// <para>是否缓存</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SpriteEffectSetPefab(ILuaState luaState)
+    {
+        STGSpriteEffect effect = luaState.ToUserData(-4) as STGSpriteEffect;
+        string prefabName = luaState.ToString(-3);
+        LayerId layerId = (LayerId)luaState.ToInteger(-2);
+        bool cached = luaState.ToBoolean(-1);
+        effect.SetPrefab(prefabName, layerId, cached);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置材质的属性
+    /// <para>spriteEffect</para>
+    /// <para>propertyName 属性名称</para>
+    /// <para>value 属性浮点值</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SpriteEffectSetMatFloat(ILuaState luaState)
+    {
+        STGSpriteEffect effect = luaState.ToUserData(-3) as STGSpriteEffect;
+        string propertyName = luaState.ToString(-2);
+        float value = (float)luaState.ToNumber(-1);
+        effect.SetMatFloat(propertyName, value);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置材质的属性
+    /// <para>spriteEffect</para>
+    /// <para>propertyName 属性名称</para>
+    /// <para>value 属性整型值</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SpriteEffectSetMatInt(ILuaState luaState)
+    {
+        STGSpriteEffect effect = luaState.ToUserData(-3) as STGSpriteEffect;
+        string propertyName = luaState.ToString(-2);
+        int value = luaState.ToInteger(-1);
+        effect.SetMatInt(propertyName, value);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置材质的属性
+    /// <para>spriteEffect</para>
+    /// <para>propertyName 属性名称</para>
+    /// <para>value 属性颜色值(16进制) 分别对应argb</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SpriteEffectSetMatColor(ILuaState luaState)
+    {
+        STGSpriteEffect effect = luaState.ToUserData(-3) as STGSpriteEffect;
+        string propertyName = luaState.ToString(-2);
+        int value = luaState.ToInteger(-1);
+        int b = value & 0xff;
+        value >>= 8;
+        int g = value & 0xff;
+        value >>= 8;
+        int r = value & 0xff;
+        value >>= 8;
+        int a = value;
+        effect.SetMatColor(propertyName, new Color(r / 256f, g / 256f, b / 256f, a / 256f));
+        return 0;
+    }
+
+    /// <summary>
     /// 抖动屏幕
     /// <para>delay</para>
     /// <para>duration</para>
