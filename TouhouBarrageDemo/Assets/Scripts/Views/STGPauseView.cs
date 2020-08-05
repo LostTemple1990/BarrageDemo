@@ -99,7 +99,7 @@ public class STGPauseView : ViewBase
         _yesNoItems.Add(_yesNoPanel.transform.Find("No").gameObject);
     }
 
-    public override void OnShow(object data)
+    protected override void OnShow(object data)
     {
         _isShowAniFinish = false;
         _state = StatePause;
@@ -112,7 +112,7 @@ public class STGPauseView : ViewBase
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
 
-    public override void OnHide()
+    protected override void OnHide()
     {
         TweenManager.GetInstance().RemoveTweenByGo(_curSelectItem);
         ResetImgColor(_curSelectItem);

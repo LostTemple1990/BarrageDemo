@@ -260,7 +260,7 @@ public class SpellCard : ICommand
             _bossList[i].OnSpellCardFinish();
         }
         ColliderManager.GetInstance().ClearAllObjectCollider(new List<eEliminateDef> { eEliminateDef.PlayerSpellCard });
-        CreateEliminateEnemyCollider();
+        CreateEliminateEnemyCollider(_bossList[0].GetPosition());
     }
 
     /// <summary>
@@ -272,7 +272,22 @@ public class SpellCard : ICommand
         ColliderCircle collider = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Circle) as ColliderCircle;
         collider.SetPosition(0, 120);
         collider.SetSize(0, 0);
-        collider.SetEliminateType(eEliminateDef.CodeEliminate);
+        collider.SetEliminateType(eEliminateDef.SpellCardFinish);
+        collider.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy);
+        collider.ScaleToSize(400, 400, 30);
+        collider.SetExistDuration(30);
+    }
+
+    /// <summary>
+    /// 创建一个销毁敌机子弹以及敌机的ObjectCollider
+    /// </summary>
+    private void CreateEliminateEnemyCollider(Vector2 pos)
+    {
+        // 清除子弹用的collider
+        ColliderCircle collider = ColliderManager.GetInstance().CreateColliderByType(eColliderType.Circle) as ColliderCircle;
+        collider.SetPosition(pos);
+        collider.SetSize(0, 0);
+        collider.SetEliminateType(eEliminateDef.SpellCardFinish);
         collider.SetColliderGroup(eColliderGroup.EnemyBullet | eColliderGroup.Enemy);
         collider.ScaleToSize(400, 400, 30);
         collider.SetExistDuration(30);

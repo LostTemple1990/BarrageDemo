@@ -339,7 +339,7 @@ SpriteAtlas:
   - bosscast
   - callbackfunc
   - bulletdefine
-  - loadani
+  - playani
   - rebounderinit
   - playsound
   - collidercreate

@@ -164,7 +164,6 @@ public partial class LuaLib
     {
         ObjectColliderBase collider = luaState.ToUserData(-2) as ObjectColliderBase;
         int duration = luaState.ToInteger(-1);
-        luaState.Pop(2);
         collider.SetExistDuration(duration);
         return 0;
     }
@@ -183,7 +182,6 @@ public partial class LuaLib
         float toWidth = (float)luaState.ToNumber(-3);
         float toHeight = (float)luaState.ToNumber(-2);
         int duration = luaState.ToInteger(-1);
-        luaState.Pop(4);
         collider.ScaleToSize(toWidth, toHeight, duration);
         return 0;
     }
@@ -196,7 +194,6 @@ public partial class LuaLib
     public static int ObjectColliderClearSelf(ILuaState luaState)
     {
         ObjectColliderBase collider = luaState.ToUserData(-1) as ObjectColliderBase;
-        luaState.Pop(1);
         collider.ClearSelf();
         return 0;
     }
@@ -210,7 +207,6 @@ public partial class LuaLib
     {
         ObjectColliderBase collider = luaState.ToUserData(-2) as ObjectColliderBase;
         eEliminateDef eliminateType = (eEliminateDef)luaState.ToInteger(-1);
-        luaState.Pop(2);
         collider.SetEliminateType(eliminateType);
         return 0;
     }
@@ -224,7 +220,6 @@ public partial class LuaLib
     {
         ObjectColliderBase collider = luaState.ToUserData(-2) as ObjectColliderBase;
         int damage = luaState.ToInteger(-1);
-        luaState.Pop(2);
         collider.SetHitEnemyDamage(damage);
         return 0;
     }

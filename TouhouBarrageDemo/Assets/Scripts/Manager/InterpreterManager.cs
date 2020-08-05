@@ -26,10 +26,7 @@ public class InterpreterManager
     private Dictionary<string, CustomizedDefineData> _customizedEnemyDefMap;
     private Dictionary<string, int> _customizedSTGObjectFuncMap;
     private Dictionary<string, int> _customizedColliderFuncMap;
-    /// <summary>
-    /// 记录stage对应的task的map
-    /// </summary>
-    private Dictionary<string, int> _stageMap;
+
     private List<string> _luaFileLoadedList;
     /// <summary>
     /// 已经读取过的符卡配置
@@ -58,7 +55,6 @@ public class InterpreterManager
         _customizedEnemyDefMap = new Dictionary<string, CustomizedDefineData>();
         _customizedSTGObjectFuncMap = new Dictionary<string, int>();
         _customizedColliderFuncMap = new Dictionary<string, int>();
-        _stageMap = new Dictionary<string, int>();
         _luaFileLoadedList = new List<string>();
 
         _luaGlobalNumberMap = new Dictionary<string, float>();
@@ -153,18 +149,12 @@ public class InterpreterManager
         _luaState.Pop(1);
     }
 
-    public Task CreateStageTask(string stageName)
+    public Task CreateStageTask(StageInfo info)
     {
         Task stageTask = ObjectsPool.GetInstance().GetPoolClassAtPool<Task>();
-        int taskFuncRef;
-        if (!_stageMap.TryGetValue(stageName, out taskFuncRef))
-        {
-            Logger.LogError("Stage " + stageName + " is not exist!Please check stage lua file");
-            return null;
-        }
         // 缓存一份
-        _luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, taskFuncRef);
-        taskFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+        _luaState.RawGetI(LuaDef.LUA_REGISTRYINDEX, info.taskFuncRef);
+        int taskFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
         stageTask.funcRef = taskFuncRef;
         return stageTask;
     }
@@ -297,7 +287,6 @@ public class InterpreterManager
     {
         _luaState.GetField(-1, "Stage");
         string stageName;
-        int stageTaskFuncRef;
         if (!_luaState.IsTable(-1))
         {
             Logger.Log("Return value Stage is not a table!");
@@ -308,13 +297,32 @@ public class InterpreterManager
         while (_luaState.Next(-2))
         {
             stageName = _luaState.ToString(-2);
+            if (!_luaState.IsTable(-1))
+            {
+                Logger.LogError("Stage " + stageName + " in StageTable is invalid");
+                continue;
+            }
+            // 读取关卡信息
+            StageInfo info = new StageInfo();
+            info.stageName = stageName;
+            _luaState.GetField(-1, "bg");
+            info.bg = _luaState.ToString(-1);
+            _luaState.GetField(-2, "bgm");
+            info.bgm = _luaState.ToString(-1);
+            _luaState.GetField(-3, "fixedFPS");
+            info.fixedFps = _luaState.ToBoolean(-1);
+            _luaState.Pop(3);
+            // 读取关卡task
+            _luaState.GetField(-1, "task");
             if (!_luaState.IsFunction(-1))
             {
-                Logger.Log("Stage " + stageName + " in StageTable is invalid");
+                Logger.Log("Stage task of " + stageName + " in StageTable is invalid");
             }
-            stageTaskFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
+            info.taskFuncRef = _luaState.L_Ref(LuaDef.LUA_REGISTRYINDEX);
             // 添加到stageTask中
-            _stageMap.Add(stageName, stageTaskFuncRef);
+            STGStageManager.GetInstance().AddStageInfo(info);
+            // 弹出table--Stage[stageName]
+            _luaState.Pop(1);
 #if LogLuaFuncRef
             _luaRefDic.Add(initRef, initRef);
             Logger.Log("Stage " + stageName + " is ref.Task funcRef = " + stageTaskFuncRef);

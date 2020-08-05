@@ -25,10 +25,21 @@ Constants.DirNull = 0
 Constants.DirLeft = 1
 Constants.DirRight = 2
 
+DirNull = 0
+DirLeft = 1
+DirRight = 2
+DirUp = 4
+DirDown = 8
+
 Constants.ActionTypeIdle = 0
 Constants.ActionTypeMove = 1
 --Constants.ActionTypeFadeToMove = 2
 Constants.ActionTypeCast = 3
+
+ActionIdle = 1
+ActionMove = 2
+--Constants.ActionTypeFadeToMove = 3
+ActionCast = 4
 
 Constants.ReboundLeft = 1
 Constants.ReboundRight = 2

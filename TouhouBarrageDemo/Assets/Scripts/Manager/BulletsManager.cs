@@ -453,7 +453,9 @@ public class BulletsManager : ICommand
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
+#if LogCreateBulletProto
         Logger.Log("Create Bullet ProtoType " + protoTypeName);
+#endif
         return protoType;
     }
 
@@ -484,7 +486,9 @@ public class BulletsManager : ICommand
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
+#if LogCreateBulletProto
         Logger.Log("Create Bullet ProtoType " + protoTypeName);
+#endif
         return protoType;
     }
 
@@ -518,7 +522,9 @@ public class BulletsManager : ICommand
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
+#if LogCreateBulletProto
         Logger.Log("Create Bullet ProtoType " + protoTypeName);
+#endif
         return protoType;
     }
 
@@ -540,7 +546,9 @@ public class BulletsManager : ICommand
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.PlayerBarage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
+ #if LogCreateBulletProto
         Logger.Log("Create ProtoType " + protoType.name);
+#endif
         return protoType;
     }
 
@@ -562,7 +570,9 @@ public class BulletsManager : ICommand
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.PlayerBarage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
+#if LogCreateBulletProto
         Logger.Log("Create ProtoType " + protoType.name);
+#endif
         return protoType;
     }
 
@@ -587,7 +597,9 @@ public class BulletsManager : ICommand
         UIManager.GetInstance().AddGoToLayer(protoType, LayerId.EnemyBarrage);
         // 添加原型到缓存池中
         ObjectsPool.GetInstance().AddProtoType(bulletId, protoType);
+#if LogCreateBulletProto
         Logger.Log("Create CurveLaser ProtoType " + protoTypeName);
+#endif
         return protoType;
     }
 

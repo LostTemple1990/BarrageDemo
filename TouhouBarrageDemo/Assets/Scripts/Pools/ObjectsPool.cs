@@ -23,6 +23,13 @@ public class ObjectsPool
     /// </summary>
     private Dictionary<string, GameObject> _protoTypeDic;
 
+    private int _newInstanceID;
+
+    public int GetNewInstanceID()
+    {
+        return ++_newInstanceID;
+    }
+
     private ObjectsPool()
     {
         Init();
@@ -34,6 +41,8 @@ public class ObjectsPool
         _bulletPrefabsPool = new Dictionary<string, Stack<GameObject>>();
         _dataClassPool = new Dictionary<string, Stack<IPoolClass>>();
         _protoTypeDic = new Dictionary<string, GameObject>();
+
+        _newInstanceID = 0;
     }
 
     /// <summary>

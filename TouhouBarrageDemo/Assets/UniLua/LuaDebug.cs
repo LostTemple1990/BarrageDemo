@@ -1,5 +1,4 @@
-﻿
-namespace UniLua
+﻿namespace UniLua
 {
 	public class LuaDebug
 	{
@@ -243,7 +242,43 @@ namespace UniLua
 			else ar.ShortSrc = ar.Source;
 		}
 
-		private void AddInfo( string msg )
+#if ShowLuaDebugStackTrace
+        private void AddInfo(string msg)
+        {
+            // var api = (ILuaAPI)this;
+            // TODO
+            int index = -1;
+            for (int i=0;i<BaseCI.Length;i++)
+            {
+                if (BaseCI[i] == CI)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            string res = msg + "\n";
+            while (index > 0)
+            {
+                CallInfo ci = BaseCI[index];
+                if (ci.IsLua)
+                {
+                    var line = GetCurrentLine(ci);
+                    var src = GetCurrentLuaFunc(ci).Proto.Source;
+                    if (src == null)
+                        src = "?";
+                    res = string.Format("{0}{2}:{1}\n", res, line, src);
+                }
+                else
+                {
+                    string csName = Stack[ci.FuncIndex].V.ClCsValue().F.Method.ToString();
+                    res = string.Format("{0}{1}:{2}\n", res, "C#", csName);
+                }
+                index--;
+            }
+            O_PushString(res);
+        }
+#else
+        private void AddInfo( string msg )
 		{
 			// var api = (ILuaAPI)this;
 			// TODO
@@ -261,8 +296,9 @@ namespace UniLua
 					src, line, msg ) );
 			}
 		}
+#endif
 
-		internal void G_RunError( string fmt, params object[] args )
+        internal void G_RunError( string fmt, params object[] args )
 		{
 			AddInfo( string.Format( fmt, args ) );
 			G_ErrorMsg();

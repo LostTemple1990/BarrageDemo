@@ -1,9 +1,20 @@
 <Data>
-	<Ani id="0001" aniName="enemy000" textureName="STGEnemyAtlas0" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
-	<Ani id="0002" aniName="enemy001" textureName="STGEnemyAtlas0" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
-	<Ani id="0003" aniName="enemy002" textureName="STGEnemyAtlas0" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
-	<Ani id="0010" aniName="enemy010" textureName="STGEnemyAtlas0" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="64" sizeH="64"/>
+	<Ani id="0000" aniName="enemy000" textureName="STGEnemyAtlas0" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
+	<Ani id="0001" aniName="enemy001" textureName="STGEnemyAtlas0" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
+	<Ani id="0002" aniName="enemy002" textureName="STGEnemyAtlas0" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
+	<Ani id="0003" aniName="enemy003" textureName="STGEnemyAtlas0" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
+	<Ani id="0004" aniName="enemy004" textureName="STGEnemyAtlas3" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
+	<Ani id="0005" aniName="enemy005" textureName="STGEnemyAtlas3" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
+	<Ani id="0006" aniName="enemy006" textureName="STGEnemyAtlas3" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
+	<Ani id="0007" aniName="enemy007" textureName="STGEnemyAtlas3" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="32" sizeH="32"/>
+	<Ani id="0010" aniName="enemy010" textureName="STGEnemyAtlas1" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="64" sizeH="64"/>
+	<Ani id="0011" aniName="enemy011" textureName="STGEnemyAtlas1" aniData="Idle,5,12,FadeToRight,3,12,Right,4,12" isFlapX="1" sizeW="64" sizeH="64"/>
+	<Ani id="0030" aniName="enemy030" textureName="STGEnemyAtlas2" aniData="Idle,4,12,FadeToRight,4,12,Right,4,12" isFlapX="1" sizeW="48" sizeH="32"/>
+	<Ani id="0031" aniName="enemy031" textureName="STGEnemyAtlas2" aniData="Idle,4,12,FadeToRight,4	,12,Right,4,12" isFlapX="1" sizeW="48" sizeH="32"/>
+	<Ani id="0040" aniName="enemy040" textureName="STGEnemyAtlas2" aniData="Idle,4,12,FadeToRight,4,12,Right,4,12" isFlapX="1" sizeW="48" sizeH="48"/>
+	<Ani id="0041" aniName="enemy041" textureName="STGEnemyAtlas2" aniData="Idle,4,12,FadeToRight,4	,12,Right,4,12" isFlapX="1" sizeW="48" sizeH="48"/>
 	<Ani id="1001" aniName="Reimu" textureName="STGReimuAtlas" aniData="Idle,8,8,FadeToRight,4,6,Right,4,8,FadeToLeft,4,6,Left,4,8" isFlapX="0" />
 	<Ani id="1011" aniName="Marisa" textureName="STGMarisaAtlas" aniData="Idle,8,8,FadeToRight,4,6,Right,4,8,FadeToLeft,4,6,Left,4,8" isFlapX="0" />
 	<Ani id="2001" aniName="Nazrin" textureName="STGNazrinAtlas" aniData="Idle,4,16,FadeToRight,3,12,Right,1,16,Cast,4,16" isFlapX="1" />
+	<Ani id="2002" aniName="Hina" textureName="STGHinaAtlas" aniData="Idle,4,16,Cast,8,4" isFlapX="1" />
 </Data>

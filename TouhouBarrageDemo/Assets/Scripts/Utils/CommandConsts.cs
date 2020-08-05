@@ -188,4 +188,14 @@
     /// 进入标题画面
     /// </summary>
     public const int OnEnterTitle = 3107;
+
+    /// <summary>
+    /// 预加载完成
+    /// </summary>
+    public const int PreloadComplete = 3201;
+    /// <summary>
+    /// 游戏本体焦点事件
+    /// <para>bool focus 丢失/获取焦点</para>
+    /// </summary>
+    public const int OnApplicationFocus = 3202;
 }

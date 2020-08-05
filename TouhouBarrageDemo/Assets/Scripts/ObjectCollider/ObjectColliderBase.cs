@@ -1,10 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 
-public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, ISTGMovable, ITaskExecuter
+public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, ISTGMovable, ITaskExecuter, ICollisionObject
 {
-    protected float _curPosX;
-    protected float _curPosY;
     protected Vector2 _curPos;
 
     protected int _colliderGroups;
@@ -67,6 +66,11 @@ public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, IST
     protected List<Task> _taskList;
     protected int _taskCount;
 
+    protected Action<ObjectColliderBase, ICollisionObject> _collidedByPlayer;
+    protected Action<ObjectColliderBase, ICollisionObject> _collidedByPlayerBullet;
+    protected Action<ObjectColliderBase, ICollisionObject> _collidedByEnemy;
+    protected Action<ObjectColliderBase, ICollisionObject> _collidedByEnemyBullet;
+
     public ObjectColliderBase()
     {
         _clearFlag = 0;
@@ -94,16 +98,12 @@ public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, IST
 
     public void SetPosition(float posX,float posY)
     {
-        _curPosX = posX;
-        _curPosY = posY;
         _curPos = new Vector2(posX, posY);
         _movableObject.SetPos(posX, posY);
     }
 
     public void SetPosition(Vector2 pos)
     {
-        _curPosX = pos.x;
-        _curPosY = pos.y;
         _curPos = pos;
         _movableObject.SetPos(pos.x, pos.y);
     }
@@ -162,6 +162,8 @@ public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, IST
     /// <param name="existDuration"></param>
     public void SetExistDuration(int existDuration)
     {
+        if (existDuration < 0)
+            return;
         _existTime = 0;
         _existDuration = existDuration;
     }
@@ -180,8 +182,6 @@ public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, IST
             {
                 _movableObject.Update();
                 _curPos = _movableObject.GetPos();
-                _curPosX = _curPos.x;
-                _curPosY = _curPos.y;
             }
         }
         if ((_colliderGroups & (int)eColliderGroup.Player) != 0)
@@ -516,6 +516,78 @@ public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, IST
     }
     #endregion
 
+    public void RegisterCallback(eColliderGroup group,Action<ObjectColliderBase,ICollisionObject> collideCallback)
+    {
+        if ((group & eColliderGroup.Player) != 0)
+        {
+            _collidedByPlayer += collideCallback;
+        }
+        if ((group & eColliderGroup.PlayerBullet) != 0)
+        {
+            _collidedByPlayerBullet += collideCallback;
+        }
+        if ((group & eColliderGroup.Enemy) != 0)
+        {
+            _collidedByEnemy += collideCallback;
+        }
+        if ((group & eColliderGroup.EnemyBullet) != 0)
+        {
+            _collidedByEnemyBullet += collideCallback;
+        }
+    }
+
+    #region ICollisionObject
+
+    /// <summary>
+    /// 设置是否进行碰撞检测
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetDetectCollision(bool value)
+    {
+        //_isInteractive = value;
+    }
+    /// <summary>
+    /// 是否进行碰撞检测
+    /// </summary>
+    /// <returns></returns>
+    public bool DetectCollision()
+    {
+        return true;
+    }
+    /// <summary>
+    /// 检测两物体包围盒是否相交
+    /// <para>用于未知形状碰撞体之间的快速排斥试验</para>
+    /// <para>for example</para>
+    /// <para>玩家符卡与子弹之间的碰撞</para>
+    /// <para>玩家符卡与敌机子弹形状都不是固定的</para>
+    /// <para>因此会先进行快速排斥试验</para>
+    /// </summary>
+    /// <param name="lbPos">左下坐标</param>
+    /// <param name="rtPos">右上坐标</param>
+    /// <returns></returns>
+    public virtual bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
+    {
+        return true;
+    }
+    /// <summary>
+    /// 获取碰撞检测的参数
+    /// </summary>
+    /// <param name="index">对应的第n个碰撞盒的参数</param>
+    /// <returns></returns>
+    public virtual CollisionDetectParas GetCollisionDetectParas(int index = 0)
+    {
+        throw new System.NotImplementedException();
+    }
+    /// <summary>
+    /// 物体第n个碰撞盒被物体碰撞了
+    /// </summary>
+    /// <param name="index"></param>
+    public virtual void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObjectCollider)
+    {
+
+    }
+    #endregion
+
     public virtual void Clear()
     {
         ClearTasks();
@@ -527,5 +599,9 @@ public class ObjectColliderBase : IAttachment, IAttachable, IObjectCollider, IST
         }
         ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObject);
         _movableObject = null;
+        _collidedByPlayer = null;
+        _collidedByPlayerBullet = null;
+        _collidedByEnemy = null;
+        _collidedByEnemyBullet = null;
     }
 }

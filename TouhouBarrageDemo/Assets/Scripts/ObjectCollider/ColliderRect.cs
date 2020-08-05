@@ -68,8 +68,8 @@ public class ColliderRect : ObjectColliderBase
     {
         Vector2 playerPos = Global.PlayerPos;
         float playerCollisionRadius = Global.PlayerCollisionVec.z;
-        if ( Mathf.Abs(playerPos.x-_curPosX) <= _halfWidth + playerCollisionRadius &&
-            Mathf.Abs(playerPos.y - _curPosY) <= _halfHeight + playerCollisionRadius )
+        if ( Mathf.Abs(playerPos.x- _curPos.x) <= _halfWidth + playerCollisionRadius &&
+            Mathf.Abs(playerPos.y - _curPos.y) <= _halfHeight + playerCollisionRadius )
         {
             CollidedByPlayer();
         }
@@ -80,14 +80,16 @@ public class ColliderRect : ObjectColliderBase
     /// </summary>
     protected virtual void CollidedByPlayer()
     {
-        PlayerInterface.GetInstance().GetCharacter().BeingHit();
+        CharacterBase player = PlayerInterface.GetInstance().GetCharacter();
+        player.BeingHit();
+        _collidedByPlayer?.Invoke(this, player);
     }
 
     protected override void CheckCollisionWithPlayerBullet()
     {
         // 计算碰撞盒参数
-        Vector2 lbPos = new Vector2(_curPosX - _halfWidth, _curPosY - _halfHeight);
-        Vector2 rtPos = new Vector2(_curPosX + _halfWidth, _curPosY + _halfHeight);
+        Vector2 lbPos = new Vector2(_curPos.x - _halfWidth, _curPos.y - _halfHeight);
+        Vector2 rtPos = new Vector2(_curPos.x + _halfWidth, _curPos.y + _halfHeight);
         int i, bulletCount;
         List<PlayerBulletBase> bulletList = BulletsManager.GetInstance().GetPlayerBulletList();
         PlayerBulletBase bullet;
@@ -101,7 +103,10 @@ public class ColliderRect : ObjectColliderBase
                 bullet.DetectCollision() &&
                 bullet.CheckBoundingBoxesIntersect(lbPos, rtPos))
             {
-                DetectCollisionWithPlayerBullet(bullet);
+                if (DetectCollisionWithPlayerBullet(bullet))
+                {
+                    _collidedByPlayerBullet?.Invoke(this, bullet);
+                }
             }
         }
     }
@@ -119,9 +124,9 @@ public class ColliderRect : ObjectColliderBase
             if (collParas.type == CollisionDetectType.Circle)
             {
                 // 子弹为圆形判定，方形判定来检测
-                float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
-                float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
-                // 检测该碰撞剧情与方形是否相交
+                float dx = Mathf.Abs(_curPos.x - collParas.centerPos.x);
+                float dy = Mathf.Abs(_curPos.y - collParas.centerPos.y);
+                // 检测该碰撞矩形与方形是否相交
                 if (dx <= _halfWidth + collParas.radius && dy <= _halfHeight + collParas.radius)
                 {
                     CollidedByPlayerBullet(bullet, curColliderIndex);
@@ -149,32 +154,28 @@ public class ColliderRect : ObjectColliderBase
         EnemyBase enemy;
         CollisionDetectParas para;
         float dx, dy;
-        eEliminateDef specialEliminateDef = eEliminateDef.CodeEliminate | eEliminateDef.CodeRawEliminate;
-        bool checkWithEnemy = (_colliderGroups & (int)eColliderGroup.Enemy) != 0;
-        bool checkWithBoss = (_colliderGroups & (int)eColliderGroup.Boss) != 0;
+        eEliminateDef specialEliminateDef = eEliminateDef.CodeEliminate | eEliminateDef.CodeRawEliminate | eEliminateDef.SpellCardFinish;
         for (int i = 0; i < count; i++)
         {
             enemy = enemyList[i];
-            if (enemy != null)
+            if (enemy != null && enemy.DetectCollision())
             {
-                if ((enemy.type == eEnemyType.NormalEnemy && checkWithEnemy) || (enemy.type == eEnemyType.Boss && checkWithBoss))
+                para = enemy.GetCollisionDetectParas(0);
+                // 敌机全部使用矩形判定
+                dx = Mathf.Abs(_curPos.x - para.centerPos.x);
+                dy = Mathf.Abs(_curPos.y - para.centerPos.y);
+                if (dx <= _halfWidth + para.halfWidth && dy <= _halfHeight + para.halfHeight)
                 {
-                    para = enemy.GetCollisionDetectParas(0);
-                    // 敌机全部使用矩形判定
-                    dx = Mathf.Abs(_curPosX - para.centerPos.x);
-                    dy = Mathf.Abs(_curPosY - para.centerPos.y);
-                    if (dx <= _halfWidth + para.halfWidth && dy <= _halfHeight + para.halfHeight)
+                    if ((_eliminateType & specialEliminateDef) != 0)
                     {
-                        if ((_eliminateType & specialEliminateDef) != 0)
-                        {
-                            enemy.Eliminate(_eliminateType);
-                        }
-                        else
-                        {
-                            enemy.TakeDamage(_hitEnemyDamage, _eliminateType);
-                        }
+                        enemy.Eliminate(_eliminateType);
+                    }
+                    else
+                    {
+                        enemy.TakeDamage(_hitEnemyDamage, _eliminateType);
                     }
                 }
+                _collidedByEnemy?.Invoke(this, enemy);
             }
         }
     }
@@ -182,8 +183,8 @@ public class ColliderRect : ObjectColliderBase
     protected override void CheckCollisionWithEnemyBullet()
     {
         // 计算碰撞盒参数
-        Vector2 lbPos = new Vector2(_curPosX - _halfWidth, _curPosY - _halfHeight);
-        Vector2 rtPos = new Vector2(_curPosX + _halfWidth, _curPosY + _halfHeight);
+        Vector2 lbPos = new Vector2(_curPos.x - _halfWidth, _curPos.y - _halfHeight);
+        Vector2 rtPos = new Vector2(_curPos.x + _halfWidth, _curPos.y + _halfHeight);
         int i, bulletCount;
         List<EnemyBulletBase> bulletList = BulletsManager.GetInstance().GetEnemyBulletList();
         EnemyBulletBase bullet;
@@ -197,7 +198,10 @@ public class ColliderRect : ObjectColliderBase
                 bullet.CanBeEliminated(eEliminateDef.HitObjectCollider) &&
                 bullet.CheckBoundingBoxesIntersect(lbPos, rtPos))
             {
-                DetectCollisionWithEnemyBullet(bullet);
+                if (DetectCollisionWithEnemyBullet(bullet))
+                {
+                    _collidedByEnemyBullet?.Invoke(this, bullet);
+                }
             }
         }
     }
@@ -241,8 +245,8 @@ public class ColliderRect : ObjectColliderBase
         if (collParas.type == CollisionDetectType.Circle)
         {
             // 子弹为圆形判定，方形判定来检测
-            float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
-            float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
+            float dx = Mathf.Abs(_curPos.x - collParas.centerPos.x);
+            float dy = Mathf.Abs(_curPos.y - collParas.centerPos.y);
             // 检测该碰撞剧情与方形是否相交
             if (dx <= _halfWidth + collParas.radius && dy <= _halfHeight + collParas.radius)
             {
@@ -294,5 +298,17 @@ public class ColliderRect : ObjectColliderBase
             }
         }
         return false;
+    }
+
+    public override CollisionDetectParas GetCollisionDetectParas(int index = 0)
+    {
+        CollisionDetectParas para = new CollisionDetectParas
+        {
+            type = CollisionDetectType.Rect,
+            centerPos = _curPos,
+            halfWidth = _halfWidth,
+            halfHeight = _halfHeight,
+        };
+        return para;
     }
 }

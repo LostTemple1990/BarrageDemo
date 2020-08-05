@@ -54,6 +54,7 @@ namespace BarrageEditor
                 // 设置子弹图像
                 Image bulletImg = itemTf.Find("BulletImg").GetComponent<Image>();
                 bulletImg.sprite = ResourceManager.GetInstance().GetSprite(cfg.packName, cfg.resName);
+                bulletImg.SetNativeSize();
                 int itemIndex = i;
                 // 添加事件监听
                 UIEventListener.Get(styleItem.btn).AddClick(()=>

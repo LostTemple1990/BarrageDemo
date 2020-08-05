@@ -63,8 +63,9 @@ namespace BarrageEditor
                 styleItem.selectImgGo = itemTf.Find("SelectImg").gameObject;
                 styleItem.selectImgGo.SetActive(false);
                 // 设置敌机图像
-                Image bulletImg = itemTf.Find("EnemyImg").GetComponent<Image>();
-                bulletImg.sprite = ResourceManager.GetInstance().GetSprite(cfg.packName, cfg.resName);
+                Image enemyImg = itemTf.Find("EnemyImg").GetComponent<Image>();
+                enemyImg.sprite = ResourceManager.GetInstance().GetSprite(cfg.packName, cfg.resName);
+                enemyImg.SetNativeSize();
                 int itemIndex = i;
                 // 添加事件监听
                 UIEventListener.Get(styleItem.btn).AddClick(() =>

@@ -54,7 +54,7 @@ public class Reimu : CharacterBase
     public override void Init()
     {
         _charAniId = "1001";
-        _character = ResourceManager.GetInstance().GetPrefab("Prefab/Character", "Reimu");
+        _character = ResourceManager.GetInstance().GetPrefab("Prefab/Character/ReimuA", "ReimuA");
         _aniChar = AnimationManager.GetInstance().CreateAnimation<AnimationCharacter>(_character,"ReimuAni",LayerId.Player);
         _aniChar.Play(_charAniId, AniActionType.Idle, Consts.DIR_NULL);
         base.Init();
@@ -74,7 +74,7 @@ public class Reimu : CharacterBase
             _subWeapons[i].SubWeaponIndex = i;
         }
         // 初始化炸弹
-        _bomb = new BombReimuA();
+        //_bomb = new ReimuAHSC();
         // 初始化碰撞、擦弹半径
         _collisionRadius = 2.0f;
         _grazeRadius = 4f;
@@ -238,6 +238,12 @@ public class Reimu : CharacterBase
     {
         int moveModeIndex = moveMode == ePlayerMoveMode.HighSpeed ? 0 : 1;
         return _subPosOffset[moveModeIndex][totalCount - 1][n];
+    }
+
+    protected override void OnCastSpellCard()
+    {
+        _bomb = new ReimuAHSC();
+        _bomb.Start();
     }
 
     public override int CharacterIndex

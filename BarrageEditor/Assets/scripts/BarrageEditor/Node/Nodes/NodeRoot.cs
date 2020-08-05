@@ -55,11 +55,12 @@ namespace BarrageEditor
             if (BarrageProject.IsDebugSpellCard)
             {
                 string scName = BarrageProject.DebugSpellCardNode.GetAttrByIndex(0).GetValueString();
-                ret += string.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
+                ret += string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}",
                     "\nSetDebugStageName(\"__TestSCStage\")\n",
                     string.Format("BossTable[\"{0}\"] = {{}}\n","__TestSCBoss"),
                     string.Format("BossTable[\"{0}\"].Init = function(self)\n    self:SetAni(2001)\n    self:SetPos(0,280)\n    self:SetCollisionSize(32,32)\nend\n", "__TestSCBoss"),
-                    "Stage[\"__TestSCStage\"] = function()\n    local boss = CreateBoss(\"__TestSCBoss\",0,280)\n",
+                    string.Format("Stage[\"{0}\"] = {{ bg=\"{1}\",bgm=\"{2}\",fixedFPS={3} }}\n", "__TestSCStage","","","false"),
+                    "Stage[\"__TestSCStage\"].task = function()\n    local boss = CreateBoss(\"__TestSCBoss\",0,280)\n",
                     "    boss:MoveTo(0,170,90,IntModeEaseInQuad)\n    if Wait(100)==false then return end\n",
                     "    boss:SetPhaseData(1,true)\n",
                     string.Format("    StartSpellCard(SpellCard[\"{0}\"],boss)\n",scName),

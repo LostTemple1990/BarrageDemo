@@ -5,6 +5,7 @@ local CustomizedTable = {}
 local CustomizedEnemyTable = {}
 local BossTable = {}
 local CustomizedSTGObjectTable = {}
+SetDebugStageName("Stage2")
 
 -- Mod name: unnamed
 --author="YK"
@@ -2164,8 +2165,439 @@ CustomizedSTGObjectTable["TestVisionMask"].Init = function(self)
         end end
     end)
 end
-Stage["Stage1"] = function()
-    PlaySound("oborozuki",0.5,true)
+CustomizedEnemyTable["YKStage2Phase0Enemy"] = {}
+CustomizedEnemyTable["YKStage2Phase0Enemy"].Init = function(self,downToY,moveToX)
+    self:Init(100022)
+    self:SetMaxHp(10)
+    self:AddTask(function()
+        self:MoveTo(self.x,downToY,30,IntModeEaseInQuad)
+        if Wait(30)==false then return end
+        if Wait(120)==false then return end
+        self:MoveTo(moveToX,self.y,120,IntModeEaseInQuad)
+        if Wait(120)==false then return end
+        DelUnit(self)
+    end)
+    self:AddTask(function()
+        if Wait(30)==false then return end
+        do local r,_d_r=(0),(1) local a,_d_a=(RandomFloat(0,360)),(20) for _=1,30 do
+            last = CreateSimpleBulletById(102060,self.x + r * cos(a),self.y + r * sin(a))
+            last:SetStraightParas(2,0,true,0.02,UseVelocityAngle)
+            last.maxV = 3
+            PlaySound("se_tan00",0.1,false)
+            if Wait(1)==false then return end
+        r=r+_d_r a=a+_d_a end end
+    end)
+end
+CustomizedEnemyTable["YKStage2Phase0Enemy1"] = {}
+CustomizedEnemyTable["YKStage2Phase0Enemy1"].Init = function(self,toX,toY)
+    self:Init(100010)
+    self:SetMaxHp(150)
+    self:AddTask(function()
+        local r = 15
+        do local angle,_d_angle=(RandomFloat(0,360)),(6) for _=1,Infinite do
+            do local a0,_d_a0=(angle),(90) for _=1,4 do
+                last = CreateSimpleBulletById(106020,self.x + r * cos(a0),self.y + r * sin(a0))
+                last:SetStraightParas(0,a0,false,0,a0)
+                last.maxV = 3.5
+                last:ChangeProperty(Prop_Acce,ChangeModeChangeTo,0,0.05,0,0,60,1,IntModeLinear,1,0)
+                PlaySound("se_tan01",0.1,false)
+                if Wait(1)==false then return end
+            a0=a0+_d_a0 end end
+        angle=angle+_d_angle end end
+    end)
+    self:AddTask(function()
+        self:MoveTo(toX,toY,360,IntModeLinear)
+        if Wait(360)==false then return end
+        DelUnit(self)
+    end)
+end
+CustomizedEnemyTable["YKStage2Phase0Enemy1"].OnKill = function(self)
+    last = CreateSimpleCollider(TypeCircle)
+    last:SetPos(self.x,self.y)
+    last:SetSize(128,128)
+    last:SetCollisionGroup(8)
+    last:SetExistDuration(1)
+end
+--直线移动的小妖精
+CustomizedEnemyTable["YKStage2Phase0Enemy2"] = {}
+CustomizedEnemyTable["YKStage2Phase0Enemy2"].Init = function(self,toX,toY)
+    self:Init(100002)
+    self:SetMaxHp(10)
+    self:AddTask(function()
+        self:MoveTo(toX,toY,240,IntModeLinear)
+        if Wait(240)==false then return end
+        DelUnit(self)
+    end)
+    self:AddTask(function()
+        if Wait(30)==false then return end
+        do for _=1,30 do
+            PlaySound("se_tan00",0.1,false)
+            do for _=1,4 do
+                last = CreateSimpleBulletById(102060,self.x,self.y)
+                last:SetStraightParas(2.5,-90,false,0,UseVelocityAngle)
+                if Wait(5)==false then return end
+            end end
+            if Wait(25)==false then return end
+        end end
+    end)
+end
+--封位弹大妖精
+CustomizedEnemyTable["YKStage2Phase0Enemy3"] = {}
+CustomizedEnemyTable["YKStage2Phase0Enemy3"].Init = function(self,toX,toY)
+    self:Init(100010)
+    self:SetMaxHp(10000)
+    self:AddTask(function()
+        self:MoveTo(toX,toY,30,IntModeLinear)
+        if Wait(750)==false then return end
+        KillUnit(self,true)
+    end)
+    self:AddTask(function()
+        if Wait(30)==false then return end
+        do for _=1,30 do
+            local defaultAngle = -90 + RandomFloat(-5,5)
+            do local startAngle0,_d_startAngle0=(defaultAngle + RandomFloat(-5,-1)),(-10) local startAngle1,_d_startAngle1=(defaultAngle + RandomFloat(1,5)),(10) for _=1,15 do
+                do local a0,_d_a0=(startAngle0 - 60),(20) for _=1,7 do
+                    last = CreateSimpleBulletById(107010,self.x,self.y)
+                    last:SetStraightParas(3,a0,false,0,UseVelocityAngle)
+                a0=a0+_d_a0 end end
+                do local a1,_d_a1=(startAngle1 - 60),(20) for _=1,7 do
+                    last = CreateSimpleBulletById(107010,self.x,self.y)
+                    last:SetStraightParas(3,a1,false,0,UseVelocityAngle)
+                a1=a1+_d_a1 end end
+                PlaySound("se_tan00",0.1,false)
+                if Wait(8)==false then return end
+            startAngle0=startAngle0+_d_startAngle0 startAngle1=startAngle1+_d_startAngle1 end end
+            do local startAngle0,_d_startAngle0=(defaultAngle-150 - RandomFloat(-5,-1)),(10) local startAngle1,_d_startAngle1=(defaultAngle+150 + RandomFloat(1,5)),(-10) for _=1,15 do
+                do local a0,_d_a0=(startAngle0 - 60),(20) for _=1,7 do
+                    last = CreateSimpleBulletById(107010,self.x,self.y)
+                    last:SetStraightParas(3,a0,false,0,UseVelocityAngle)
+                a0=a0+_d_a0 end end
+                do local a1,_d_a1=(startAngle1 - 60),(20) for _=1,7 do
+                    last = CreateSimpleBulletById(107010,self.x,self.y)
+                    last:SetStraightParas(3,a1,false,0,UseVelocityAngle)
+                a1=a1+_d_a1 end end
+                PlaySound("se_tan00",0.1,false)
+                if Wait(8)==false then return end
+            startAngle0=startAngle0+_d_startAngle0 startAngle1=startAngle1+_d_startAngle1 end end
+        end end
+    end)
+end
+CustomizedEnemyTable["YKStage2Phase0Enemy4"] = {}
+CustomizedEnemyTable["YKStage2Phase0Enemy4"].Init = function(self,startX,startY,toX,toY,endX,endY)
+    self:Init(100000)
+    self:SetMaxHp(10)
+    self:SetPos(startX,startY)
+    self:AddTask(function()
+        local dx,dy = toX-startX,toY-startY
+        do local t,_d_t=(1),(1) for _=1,120 do
+            self.x = startX + dx * sin(90 * t /120)
+            self.y = startY + dy * t /120
+            if Wait(1)==false then return end
+        t=t+_d_t end end
+        dx = endX - toX
+        dy = endY - toY
+        do local t,_d_t=(1),(1) for _=1,120 do
+            self.x = toX + dx * t /120
+            self.y = toY + dy * sin(90 * t /120)
+            if Wait(1)==false then return end
+        t=t+_d_t end end
+        if Wait(120)==false then return end
+        DelUnit(self)
+    end)
+    self:AddTask(function()
+        if Wait(120)==false then return end
+        do local a,_d_a=(-50),(25) for _=1,5 do
+            last = CreateSimpleBulletById(106060,self.x,self.y)
+            last:SetStraightParas(4,a,true,0,UseVelocityAngle)
+        a=a+_d_a end end
+    end)
+end
+--链弹阴阳玉
+CustomizedEnemyTable["YKStage2Phase0Enemy5"] = {}
+CustomizedEnemyTable["YKStage2Phase0Enemy5"].Init = function(self,startX,startY,toX,toY)
+    self:Init(100023)
+    self:SetMaxHp(80)
+    self:SetPos(startX,startY)
+    PlaySound("se_spineappear",0.2,false)
+    self:MoveTo(toX,toY,30,IntModeLinear)
+    self:AddTask(function()
+        if Wait(300)==false then return end
+        self:MoveTo(self.x,300,60,IntModeLinear)
+        if Wait(60)==false then return end
+        DelUnit(self)
+    end)
+    local startAngle = RandomFloat(0,360)
+    self:AddTask(function()
+        if Wait(30)==false then return end
+        do local waitTime,_d_waitTime=(80),(-5) local angle,_d_angle=(startAngle),(12) for _=1,4 do
+            do local a,_d_a=(angle),(360 / 6) for _=1,6 do
+                last = CreateCustomizedBullet("YKS2E5Bullet0",self.x,self.y,2,60,waitTime,4,a)
+                PlaySound("se_tan00",0.1,false)
+            a=a+_d_a end end
+            if Wait(5)==false then return end
+        waitTime=waitTime+_d_waitTime angle=angle+_d_angle end end
+    end)
+    self:AddTask(function()
+        if Wait(30)==false then return end
+        do local a,_d_a=(startAngle + 48),(60) for _=1,6 do
+            last = CreateSimpleBulletById(108081,self.x,self.y)
+            last:SetStraightParas(3,a,false,0,UseVelocityAngle)
+            PlaySound("se_tan00",0.1,false)
+        a=a+_d_a end end
+        if Wait(2)==false then return end
+        do local waitTime,_d_waitTime=(100),(-2) local i,_d_i=(50),(-1) for _=1,50 do
+            do local a,_d_a=(startAngle + 48),(60) for _=1,6 do
+                last = CreateSimpleBulletById(121071,self.x,self.y)
+                last:SetStraightParas(3,a,false,0,UseVelocityAngle)
+                last:ChangeProperty(Prop_VAngel,ChangeModeChangeTo,0,RandomFloat(0,360),0,0,waitTime + i * 2,0,IntModeLinear,1,0)
+                last:ChangeProperty(Prop_Velocity,ChangeModeChangeTo,0,RandomFloat(1,1.5),0,0,waitTime + i * 2,0,IntModeLinear,1,0)
+                PlaySound("se_tan00",0.1,false)
+            a=a+_d_a end end
+            if Wait(2)==false then return end
+        waitTime=waitTime+_d_waitTime i=i+_d_i end end
+    end)
+end
+CustomizedTable["YKS2E5Bullet0"] = {}
+CustomizedTable["YKS2E5Bullet0"].Init = function(self,preV,preTime,waitTime,nextV,angle)
+    self:SetStyleById(122071)
+    self:SetV(preV,angle,false)
+    self:AddTask(function()
+        if Wait(preTime)==false then return end
+        self:SetV(0,angle,false)
+        if Wait(waitTime)==false then return end
+        self:SetV(nextV,angle,false)
+    end)
+end
+--自机狙小妖精，x sin
+CustomizedEnemyTable["YKStage2Phase0Enemy6"] = {}
+CustomizedEnemyTable["YKStage2Phase0Enemy6"].Init = function(self,startX,startY,toX,toY,time)
+    self:Init(100000)
+    self:SetMaxHp(5)
+    self:SetPos(startX,startY)
+    self:AddTask(function()
+        local dx,dy = toX-startX,toY-startY
+        do local t,_d_t=(1),(1) for _=1,time do
+            self.x = startX + dx * sin(90 * t /time)
+            self.y = startY + dy * t /time
+            if Wait(1)==false then return end
+        t=t+_d_t end end
+        if Wait(120)==false then return end
+        DelUnit(self)
+    end)
+    self:AddTask(function()
+        if Wait(0)==false then return end
+        do for _=1,int(time / 10) do
+            do local a,_d_a=(-50),(25) for _=1,3 do
+                last = CreateSimpleBulletById(106081,self.x,self.y)
+                last:SetStraightParas(4,a,true,0,UseVelocityAngle)
+                PlaySound("se_tan00",0.1,false)
+            a=a+_d_a end end
+            if Wait(10)==false then return end
+        end end
+    end)
+end
+--自机狙小妖精，y sin
+CustomizedEnemyTable["YKStage2Phase0Enemy7"] = {}
+CustomizedEnemyTable["YKStage2Phase0Enemy7"].Init = function(self,startX,startY,toX,toY,time)
+    self:Init(100000)
+    self:SetMaxHp(5)
+    self:SetPos(startX,startY)
+    self:AddTask(function()
+        local dx,dy = toX-startX,toY-startY
+        do local t,_d_t=(1),(1) for _=1,time do
+            self.x = startX+ dx * t /time
+            self.y = startY + dy * sin(90 * t /time)
+            if Wait(1)==false then return end
+        t=t+_d_t end end
+        if Wait(120)==false then return end
+        DelUnit(self)
+    end)
+    self:AddTask(function()
+        if Wait(0)==false then return end
+        do for _=1,int(time / 10) do
+            do local a,_d_a=(-50),(25) for _=1,3 do
+                last = CreateSimpleBulletById(106081,self.x,self.y)
+                last:SetStraightParas(4,a,true,0,UseVelocityAngle)
+                PlaySound("se_tan00",0.1,false)
+            a=a+_d_a end end
+            if Wait(10)==false then return end
+        end end
+    end)
+end
+--偶数自机狙小妖精，x sin
+CustomizedEnemyTable["YKStage2Phase0Enemy8"] = {}
+CustomizedEnemyTable["YKStage2Phase0Enemy8"].Init = function(self,startX,startY,toX,toY,time)
+    self:Init(100000)
+    self:SetMaxHp(5)
+    self:SetPos(startX,startY)
+    self:AddTask(function()
+        local dx,dy = toX-startX,toY-startY
+        do local t,_d_t=(1),(1) for _=1,time do
+            self.x = startX + dx * sin(90 * t /time)
+            self.y = startY + dy * t /time
+            if Wait(1)==false then return end
+        t=t+_d_t end end
+        if Wait(120)==false then return end
+        DelUnit(self)
+    end)
+    self:AddTask(function()
+        if Wait(0)==false then return end
+        do for _=1,int(time / 10) do
+            do local a,_d_a=(-37.5),(25) for _=1,4 do
+                last = CreateSimpleBulletById(106081,self.x,self.y)
+                last:SetStraightParas(4,a,true,0,UseVelocityAngle)
+                PlaySound("se_tan00",0.1,false)
+            a=a+_d_a end end
+            if Wait(10)==false then return end
+        end end
+    end)
+end
+--偶数自机狙小妖精，y sin
+CustomizedEnemyTable["YKStage2Phase0Enemy9"] = {}
+CustomizedEnemyTable["YKStage2Phase0Enemy9"].Init = function(self,startX,startY,toX,toY,time)
+    self:Init(100000)
+    self:SetMaxHp(5)
+    self:SetPos(startX,startY)
+    self:AddTask(function()
+        local dx,dy = toX-startX,toY-startY
+        do local t,_d_t=(1),(1) for _=1,time do
+            self.x = startX+ dx * t /time
+            self.y = startY + dy * sin(90 * t /time)
+            if Wait(1)==false then return end
+        t=t+_d_t end end
+        if Wait(120)==false then return end
+        DelUnit(self)
+    end)
+    self:AddTask(function()
+        if Wait(0)==false then return end
+        do for _=1,int(time / 10) do
+            do local a,_d_a=(-22.5),(15) for _=1,4 do
+                last = CreateSimpleBulletById(106081,self.x,self.y)
+                last:SetStraightParas(4,a,true,0,UseVelocityAngle)
+                PlaySound("se_tan00",0.1,false)
+            a=a+_d_a end end
+            if Wait(10)==false then return end
+        end end
+    end)
+end
+--旋转弹幕的大妖精
+CustomizedEnemyTable["YKStage2Phase1Enemy0"] = {}
+CustomizedEnemyTable["YKStage2Phase1Enemy0"].Init = function(self,pathList)
+    self:Init(100010)
+    self:SetMaxHp(40)
+    self:AddTask(function()
+        do local i,_d_i=(1),(3) for _=1,Infinite do
+            if pathList[i] then
+            	self:MoveTo(pathList[i],pathList[i+1],pathList[i+2],IntModeLinear)
+            	if Wait(pathList[i+2]) == false then return end
+            else
+            	DelUnit(self)
+            end
+        i=i+_d_i end end
+    end)
+    self:AddTask(function()
+        if Wait(30)==false then return end
+        do local an,_d_an=(-10),(5) for _=1,30 do
+            do local a0,_d_a0=(an),(90) for _=1,4 do
+                do local a1,_d_a1=(a0),(-10) for _=1,3 do
+                    last = CreateSimpleBulletById(114070,self.x,self.y)
+                    last:SetStraightParas(0.5,a1,false,0.05,UseVelocityAngle)
+                    last.maxV = 4
+                a1=a1+_d_a1 end end
+            a0=a0+_d_a0 end end
+            PlaySound("se_tan00",0.05,false)
+            if Wait(5)==false then return end
+        an=an+_d_an end end
+    end)
+end
+--圆形自机狙小妖精
+CustomizedEnemyTable["YKStage2Phase1Enemy1"] = {}
+CustomizedEnemyTable["YKStage2Phase1Enemy1"].Init = function(self,startX,startY,toX,toY)
+    self:Init(100005)
+    self:SetMaxHp(40)
+    self:SetPos(startX,startY)
+    self:AddTask(function()
+        self:MoveTo(toX,toY,30,IntModeLinear)
+        if Wait(30)==false then return end
+        if Wait(30)==false then return end
+        self:MoveTo(toX,-250,120,IntModeLinear)
+        if Wait(120)==false then return end
+        DelUnit(self)
+    end)
+    self:AddTask(function()
+        if Wait(30)==false then return end
+        local v = 3
+        PlaySound("se_tan00",0.1,false)
+        do local an,_d_an=(-10),(5) for _=1,5 do
+            v = RandomFloat(v-0.2,v)
+            do local an,_d_an=(0),(-90) for _=1,3 do
+                last = CreateSimpleBulletById(105080,self.x,self.y)
+                last:SetStraightParas(v,an,false,0,UseVelocityAngle)
+            an=an+_d_an end end
+            if Wait(5)==false then return end
+        an=an+_d_an end end
+    end)
+    self:AddTask(function()
+        if Wait(30)==false then return end
+        local offset = RandomFloat(-30,30)
+        local centerX,centerY = self.x + offset,self.y + offset
+        local an = Angle(self.x,self.y,player.x,player.y)
+        PlaySound("se_tan00",0.1,false)
+        do local cAngle,_d_cAngle=(0),(30) for _=1,12 do
+            last = CreateSimpleBulletById(102060,centerX,centerY)
+            last:SetStraightParas(0.8,cAngle,false,0,UseVelocityAngle)
+            last:ChangeProperty(Prop_Velocity,ChangeModeChangeTo,0,3,0,0,30,0,IntModeLinear,1,0)
+            last:ChangeProperty(Prop_VAngel,ChangeModeChangeTo,0,an,0,0,30,0,IntModeLinear,1,0)
+        cAngle=cAngle+_d_cAngle end end
+    end)
+end
+--钟摆轨迹妖精0
+CustomizedEnemyTable["YKStage2Phase1Enemy2"] = {}
+CustomizedEnemyTable["YKStage2Phase1Enemy2"].Init = function(self,centerX,centerY,radius,startAngle,omega,existTime)
+    self:Init(100011)
+    self:SetMaxHp(40)
+    self:SetPos(centerX+cos(startAngle)*radius,centerY+sin(startAngle)*radius)
+    self:AddTask(function()
+        do local an,_d_an=(startAngle),(omega) for _=1,existTime do
+            self:SetPos(centerX+cos(an)*radius,centerY+sin(an)*radius)
+            if Wait(1)==false then return end
+        an=an+_d_an end end
+        DelUnit(self)
+    end)
+    self:AddTask(function()
+        local a = RandomFloat(0,360)
+        do local r,_d_r=(30),(-30 / 8) local waitTime,_d_waitTime=(185),(-45) for _=1,9 do
+            PlaySound("se_tan01",0.1,false)
+            do local an,_d_an=(a),(30) for _=1,12 do
+                last = CreateSimpleBulletById(102060,self.x + r * cos(an),self.y + r * sin(an))
+                last:SetStraightParas(r / waitTime,an-180,false,0,UseVelocityAngle)
+                local tmp = last
+                tmp:AddTask(function()
+                    if Wait(waitTime)==false then return end
+                    tmp:SetStraightParas(2,tmp.vAngle,false,0.02,UseVelocityAngle)
+                end)
+            an=an+_d_an end end
+            if Wait(22)==false then return end
+            do local an,_d_an=(0),(30) for _=1,12 do
+                last = CreateSimpleBulletById(102060,self.x + r * cos(an),self.y + r * sin(an))
+                last:SetStraightParas(r / waitTime,an-180,false,0,UseVelocityAngle)
+                local tmp = last
+                tmp:AddTask(function()
+                    if Wait(waitTime - 22)==false then return end
+                    tmp:SetStraightParas(2,tmp.vAngle,false,0.02,UseVelocityAngle)
+                end)
+            an=an+_d_an end end
+            if Wait(23)==false then return end
+        r=r+_d_r waitTime=waitTime+_d_waitTime end end
+    end)
+end
+BossTable["KagiyamaHina"] = {}
+BossTable["KagiyamaHina"].Init = function(self)
+    self:SetAni(2002)
+    self:SetCollisionSize(0,0)
+end
+Stage["Stage1"] = { bg="",bgm="oborozuki",fixedFPS=false }
+Stage["Stage1"].task = function(self)
     do  --初始敌机
         if Wait(60)==false then return end
         do for _=1,8 do
@@ -2412,8 +2844,257 @@ Stage["Stage1"] = function()
     end) == false then return end
     FinishStage()
 end
-Stage["Stage2"] = function()
-    PlaySound("bgm",0.5,true)
+Stage["Stage2"] = { bg="",bgm="DarkRoad",fixedFPS=true }
+Stage["Stage2"].task = function(self)
+if false then end     if Wait(340)==false then return end
+    do  --Phase0
+        PrintSoundTime("DarkRoad")
+        PrintCurFrame()
+        do local startX,_d_startX=(-120),(-20) local startY,_d_startY=(250),(-5) for _=1,4 do
+            last = CreateCustomizedEnemy("YKStage2Phase0Enemy",startX,startY,startY-100,250)
+            if Wait(5)==false then return end
+        startX=startX+_d_startX startY=startY+_d_startY end end
+        if Wait(165)==false then return end
+        do local startX,_d_startX=(120),(20) local startY,_d_startY=(250),(-5) for _=1,4 do
+            last = CreateCustomizedEnemy("YKStage2Phase0Enemy",startX,startY,startY-100,-250)
+            if Wait(5)==false then return end
+        startX=startX+_d_startX startY=startY+_d_startY end end
+        if Wait(165)==false then return end
+        do local startX,_d_startX=(-120),(-20) local startY,_d_startY=(250),(-5) for _=1,4 do
+            last = CreateCustomizedEnemy("YKStage2Phase0Enemy",startX,startY,startY-100,250)
+            if Wait(5)==false then return end
+        startX=startX+_d_startX startY=startY+_d_startY end end
+        if Wait(165)==false then return end
+        do local startX,_d_startX=(120),(20) local startY,_d_startY=(250),(-5) for _=1,4 do
+            last = CreateCustomizedEnemy("YKStage2Phase0Enemy",startX,startY,startY-100,-250)
+            if Wait(5)==false then return end
+        startX=startX+_d_startX startY=startY+_d_startY end end
+        if Wait(165)==false then return end
+        --横向妖精 从左到右
+        do for _=1,4 do
+            last = CreateCustomizedEnemy("YKStage2Phase0Enemy2",-220,150,220,150)
+            if Wait(45)==false then return end
+        end end
+        if Wait(185)==false then return end
+        last = CreateCustomizedEnemy("YKStage2Phase0Enemy1",220,100,-220,140)
+        if Wait(380)==false then return end
+        PrintCurFrame()
+        do  --p4
+            SetSoundPlayTime("DarkRoad",1820)
+            last = CreateCustomizedEnemy("YKStage2Phase0Enemy3",0,250,0,140)
+            if Wait(60)==false then return end
+            do for _=1,8 do
+                last = CreateCustomizedEnemy("YKStage2Phase0Enemy4",0,0,210,50,60,115,210,180)
+                if Wait(15)==false then return end
+            end end
+            if Wait(0)==false then return end
+            do for _=1,8 do
+                last = CreateCustomizedEnemy("YKStage2Phase0Enemy4",0,0,-210,50,-60,115,-210,180)
+                if Wait(15)==false then return end
+            end end
+            if Wait(0)==false then return end
+            do for _=1,8 do
+                last = CreateCustomizedEnemy("YKStage2Phase0Enemy4",0,0,210,50,60,115,210,180)
+                if Wait(15)==false then return end
+            end end
+            if Wait(0)==false then return end
+            do for _=1,8 do
+                last = CreateCustomizedEnemy("YKStage2Phase0Enemy4",0,0,-210,50,-60,115,-210,180)
+                if Wait(15)==false then return end
+            end end
+        end
+        do  --p5
+            SetSoundPlayTime("DarkRoad",-2360)
+            if Wait(220)==false then return end
+            last = CreateCustomizedEnemy("YKStage2Phase0Enemy5",0,250,-100,250,-100,150)
+            if Wait(120)==false then return end
+            do for _=1,15 do
+                last = CreateCustomizedEnemy("YKStage2Phase0Enemy7",-192,0,-192,50,220,200,80)
+                if Wait(5)==false then return end
+            end end
+            if Wait(180)==false then return end
+            do for _=1,15 do
+                last = CreateCustomizedEnemy("YKStage2Phase0Enemy9",-192,0,175,-224,-40,250,160)
+                if Wait(5)==false then return end
+            end end
+            if Wait(290)==false then return end
+            last = CreateCustomizedEnemy("YKStage2Phase0Enemy5",0,250,100,250,100,150)
+            if Wait(120)==false then return end
+            do for _=1,15 do
+                last = CreateCustomizedEnemy("YKStage2Phase0Enemy7",-192,0,192,50,-220,200,80)
+                if Wait(5)==false then return end
+            end end
+            if Wait(180)==false then return end
+            do for _=1,15 do
+                last = CreateCustomizedEnemy("YKStage2Phase0Enemy9",-192,0,-175,-224,40,250,160)
+                if Wait(5)==false then return end
+            end end
+        end
+    end
+    do  --Phase1
+    end
+    do  --Phase2
+        SetSoundPlayTime("DarkRoad",-3776)
+        PrintCurFrame()
+        if Wait(250)==false then return end
+        local midBoss = CreateBoss("KagiyamaHina",0,240)
+        midBoss:PlayAni(ActionCast,DirNull)
+        PlaySound("se_spineappear",0.05,false)
+        midBoss:AddTask(function()
+            midBoss:MoveTo(-120,100,60,IntModeLinear)
+            if Wait(60)==false then return end
+            local startX,startY,endX,endY = -120,100,120,100
+            local amplitude = 30
+            local halfX = (endX - startX) / 2
+            do for _=1,Infinite do
+                local sx,sy = startX,startY
+                local dx,dy = endX-startX,amplitude
+                local p = 60
+                do local i,_d_i=(1),(1) for _=1,60 do
+                    midBoss.x = sx + i / p * dx
+                    midBoss.y = sy + sin(i / p * 180) * dy
+                    if Wait(1)==false then return end
+                i=i+_d_i end end
+                sx,sy = endX,endY
+                dx,dy = startX-endX,-amplitude
+                do local i,_d_i=(1),(1) for _=1,p do
+                    midBoss.x = sx + i / p * dx
+                    midBoss.y = sy + sin(i / p * 180) * dy
+                    if Wait(1)==false then return end
+                i=i+_d_i end end
+            end end
+        end)
+        if Wait(60)==false then return end
+        do  --e0
+            local path = {-150,150,30,-120,150,180,250,170,180}
+            last = CreateCustomizedEnemy("YKStage2Phase1Enemy0",-220,170,path)
+            if Wait(180)==false then return end
+            do local posX,_d_posX=(50),(40) local posY,_d_posY=(230),(20) for _=1,3 do
+                last = CreateCustomizedEnemy("YKStage2Phase1Enemy1",posX,posY,posX,posY,posX,posY - 120)
+                if Wait(45)==false then return end
+            posX=posX+_d_posX posY=posY+_d_posY end end
+        end
+        do  --e1
+            if Wait(50)==false then return end
+            local path = {150,120,30,120,120,180,-250,170,180}
+            last = CreateCustomizedEnemy("YKStage2Phase1Enemy0",220,170,path)
+            if Wait(170)==false then return end
+            self:AddTask(function()
+                if Wait(150)==false then return end
+                do local posX,_d_posX=(-30),(20) local posY,_d_posY=(230),(5) for _=1,4 do
+                    last = CreateCustomizedEnemy("YKStage2Phase1Enemy1",posX,posY,posX,posY,posX,posY - 120)
+                    if Wait(10)==false then return end
+                posX=posX+_d_posX posY=posY+_d_posY end end
+            end)
+            do local posX,_d_posX=(-50),(-40) local posY,_d_posY=(230),(20) for _=1,4 do
+                last = CreateCustomizedEnemy("YKStage2Phase1Enemy1",posX,posY,posX,posY,posX,posY - 120)
+                if Wait(45)==false then return end
+            posX=posX+_d_posX posY=posY+_d_posY end end
+        end
+        do  --e2
+            if Wait(45)==false then return end
+            last = CreateCustomizedEnemy("YKStage2Phase1Enemy2",0,0,192,224,250,180,0.5,190)
+            last:PlayAni(ActionMove,DirRight)
+        end
+    end
+    --Test
+    if Wait(1000)==false then return end
+    do  --p5
+        SetSoundPlayTime("DarkRoad",2360)
+        if Wait(220)==false then return end
+        last = CreateCustomizedEnemy("YKStage2Phase0Enemy5",0,250,-100,250,-100,150)
+        if Wait(120)==false then return end
+        do for _=1,15 do
+            last = CreateCustomizedEnemy("YKStage2Phase0Enemy7",-192,0,-192,50,220,200,80)
+            if Wait(5)==false then return end
+        end end
+        if Wait(180)==false then return end
+        do for _=1,15 do
+            last = CreateCustomizedEnemy("YKStage2Phase0Enemy9",-192,0,175,-224,-240,250,160)
+            if Wait(5)==false then return end
+        end end
+        if Wait(290)==false then return end
+        last = CreateCustomizedEnemy("YKStage2Phase0Enemy5",0,250,100,250,100,150)
+        if Wait(120)==false then return end
+        do for _=1,15 do
+            last = CreateCustomizedEnemy("YKStage2Phase0Enemy7",-192,0,192,50,-220,200,80)
+            if Wait(5)==false then return end
+        end end
+        if Wait(180)==false then return end
+        do for _=1,15 do
+            last = CreateCustomizedEnemy("YKStage2Phase0Enemy9",-192,0,-175,-224,240,250,160)
+            if Wait(5)==false then return end
+        end end
+    end
+    do  --Phase2
+        SetSoundPlayTime("DarkRoad",3776)
+        PrintCurFrame()
+        if Wait(250)==false then return end
+        local midBoss = CreateBoss("KagiyamaHina",0,240)
+        midBoss:PlayAni(ActionCast,DirNull)
+        PlaySound("se_spineappear",0.05,false)
+        midBoss:AddTask(function()
+            midBoss:MoveTo(-120,100,60,IntModeLinear)
+            if Wait(60)==false then return end
+            local startX,startY,endX,endY = -120,100,120,100
+            local amplitude = 30
+            local halfX = (endX - startX) / 2
+            do for _=1,Infinite do
+                local sx,sy = startX,startY
+                local dx,dy = endX-startX,amplitude
+                local p = 60
+                do local i,_d_i=(1),(1) for _=1,60 do
+                    midBoss.x = sx + i / p * dx
+                    midBoss.y = sy + sin(i / p * 180) * dy
+                    if Wait(1)==false then return end
+                i=i+_d_i end end
+                sx,sy = endX,endY
+                dx,dy = startX-endX,-amplitude
+                do local i,_d_i=(1),(1) for _=1,p do
+                    midBoss.x = sx + i / p * dx
+                    midBoss.y = sy + sin(i / p * 180) * dy
+                    if Wait(1)==false then return end
+                i=i+_d_i end end
+            end end
+        end)
+        if Wait(60)==false then return end
+        do  --e0
+            local path = {-150,150,30,-120,150,180,250,170,180}
+            last = CreateCustomizedEnemy("YKStage2Phase1Enemy0",-220,170,path)
+            if Wait(180)==false then return end
+            do local posX,_d_posX=(50),(40) local posY,_d_posY=(230),(20) for _=1,3 do
+                last = CreateCustomizedEnemy("YKStage2Phase1Enemy1",posX,posY,posX,posY,posX,posY - 120)
+                if Wait(45)==false then return end
+            posX=posX+_d_posX posY=posY+_d_posY end end
+        end
+        do  --e1
+            if Wait(50)==false then return end
+            local path = {150,120,30,120,120,180,-250,170,180}
+            last = CreateCustomizedEnemy("YKStage2Phase1Enemy0",220,170,path)
+            if Wait(170)==false then return end
+            self:AddTask(function()
+                if Wait(150)==false then return end
+                do local posX,_d_posX=(-30),(20) local posY,_d_posY=(230),(5) for _=1,4 do
+                    last = CreateCustomizedEnemy("YKStage2Phase1Enemy1",posX,posY,posX,posY,posX,posY - 120)
+                    if Wait(10)==false then return end
+                posX=posX+_d_posX posY=posY+_d_posY end end
+            end)
+            do local posX,_d_posX=(-50),(-40) local posY,_d_posY=(230),(20) for _=1,4 do
+                last = CreateCustomizedEnemy("YKStage2Phase1Enemy1",posX,posY,posX,posY,posX,posY - 120)
+                if Wait(45)==false then return end
+            posX=posX+_d_posX posY=posY+_d_posY end end
+        end
+        do  --e2
+            if Wait(45)==false then return end
+            last = CreateCustomizedEnemy("YKStage2Phase1Enemy2",0,0,192,224,250,180,0.5,190)
+            last:PlayAni(ActionMove,DirRight)
+        end
+    end
+    if Wait(1000)==false then return end
+    FinishStage()
+end
+Stage["TestStage"] = { bg="",bgm="",fixedFPS=false }
+Stage["TestStage"].task = function(self)
     do  --TestEnemy
         if Wait(100)==false then return end
         last = CreateCustomizedEnemy("TestOnKillEnemy",0,185)

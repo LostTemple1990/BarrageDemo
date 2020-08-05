@@ -5,7 +5,7 @@ using YKEngine;
 
 namespace BarrageEditor
 {
-    public class AttrEditTextView : ViewBase
+    public class AttrEditTextView : MovableView
     {
         private Text _titleText;
         private Text _attrNameText;
@@ -16,8 +16,21 @@ namespace BarrageEditor
 
         private BaseNodeAttr _nodeAttr;
 
+        #region MovableView
+        protected override GameObject GetTitleGo()
+        {
+            return _viewTf.Find("Panel/Title").gameObject;
+        }
+
+        protected override GameObject GetWindowGo()
+        {
+            return _viewTf.Find("Panel").gameObject;
+        }
+        #endregion
+
         protected override void Init()
         {
+            base.Init();
             _titleText = _viewTf.Find("Panel/Title").GetComponent<Text>();
             _attrNameText = _viewTf.Find("Panel/Window/AttrName").GetComponent<Text>();
 

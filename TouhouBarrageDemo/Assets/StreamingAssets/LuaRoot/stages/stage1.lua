@@ -695,8 +695,9 @@ BossTable.MidBoss.Task = function(boss)
 	lib.EnterSpellCard(boss,sc)
 end
 
-Stage["Stage1"] = function()
-	lib.PlaySound("bgm",0.1,true)
+Stage["Stage1"] = {bg="default",bgm="bgm",fixedFPS=false}
+Stage["Stage1"].task = function()
+	--lib.PlaySound("bgm",0.1,true)
 	--local spriteEffect = lib.CreateSpriteEffectWithProps("STGCommonAtlas","Circle",eBlendMode.Normal,eEffectLayer.Bottom,false,0)
 	--lib.SetEffectToPos(spriteEffect,0,0)
 	--lib.SetSpriteEffectSize(spriteEffect,160,160)

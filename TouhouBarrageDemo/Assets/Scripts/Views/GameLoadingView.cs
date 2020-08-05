@@ -39,7 +39,7 @@ public class GameLoadingView : ViewBase ,ICommand
         _bgGo = _viewTf.Find("Background").gameObject;
     }
 
-    public override void OnShow(object data=null)
+    protected override void OnShow(object data=null)
     {
         object[] datas = data as object[];
         _curFinishCommandCount = 0;

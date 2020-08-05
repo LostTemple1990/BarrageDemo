@@ -218,40 +218,6 @@ public partial class LuaLib
         return 0;
     }
 
-    /// <summary>
-    /// 获取敌机位置
-    /// <para>return value</para>
-    /// <para>posX,posY</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int GetEnemyPos(ILuaState luaState)
-    {
-        int top = luaState.GetTop();
-        EnemyBase enemy = luaState.ToUserData(-1) as EnemyBase;
-        Vector2 pos = enemy.GetPosition();
-        luaState.PushNumber(pos.x);
-        luaState.PushNumber(pos.y);
-        return 2;
-    }
-
-    /// <summary>
-    /// 设置敌机位置
-    /// <para>enemy</para>
-    /// <para>posX</para>
-    /// <para>posY</para>
-    /// </summary>
-    /// <param name="luaState"></param>
-    /// <returns></returns>
-    public static int SetEnemyPos(ILuaState luaState)
-    {
-        EnemyBase enemy = luaState.ToUserData(-3) as EnemyBase;
-        float posX = (float)luaState.ToNumber(-2);
-        float posY = (float)luaState.ToNumber(-1);
-        enemy.SetPosition(new Vector3(posX, posY));
-        return 0;
-    }
-
     public static int HitEnemy(ILuaState luaState)
     {
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
@@ -456,6 +422,41 @@ public partial class LuaLib
         EnemyBase enemy = luaState.ToUserData(-2) as EnemyBase;
         bool isInteractive = luaState.ToBoolean(-1);
         enemy.SetInteractive(isInteractive);
+        return 0;
+    }
+
+    /// <summary>
+    /// 播放敌机动画
+    /// <para>enemy</para>
+    /// <para>参数可选</para>
+    /// <para>[Optional]AniActionType at</para>
+    /// <para>[Optional]int dir</para>
+    /// <para>[Optional]int duration</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int PlayEnemyAni(ILuaState luaState)
+    {
+        int top = luaState.GetTop();
+        EnemyBase enemy = luaState.ToUserData(-top) as EnemyBase;
+        if (top == 2)
+        {
+            AniActionType at = (AniActionType)luaState.ToInteger(-1);
+            enemy.PlayAni(at);
+        }
+        else if (top == 3)
+        {
+            AniActionType at = (AniActionType)luaState.ToInteger(-2);
+            int dir = luaState.ToInteger(-1);
+            enemy.PlayAni(at, dir);
+        }
+        else if (top == 4)
+        {
+            AniActionType at = (AniActionType)luaState.ToInteger(-3);
+            int dir = luaState.ToInteger(-2);
+            int duration = luaState.ToInteger(-1);
+            enemy.PlayAni(at, dir, duration);
+        }
         return 0;
     }
 }

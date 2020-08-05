@@ -304,6 +304,9 @@ namespace BarrageEditor
                 case NodeType.UnitEventTrigger:
                     newNode = new NodeUnitEventTrigger();
                     break;
+                case NodeType.PlayAni:
+                    newNode = new NodePlayAni();
+                    break;
 
                 case NodeType.PlaySound:
                     newNode = new NodePlaySound();
@@ -397,6 +400,12 @@ namespace BarrageEditor
                     break;
                 case NodeAttrType.DropItems:
                     nodeAttr = new NodeAttrDropItems();
+                    break;
+                case NodeAttrType.AniActionType:
+                    nodeAttr = new NodeAttrAniActionType();
+                    break;
+                case NodeAttrType.Direction:
+                    nodeAttr = new NodeAttrDirection();
                     break;
             }
             if (nodeAttr != null) return nodeAttr;

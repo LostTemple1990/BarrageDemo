@@ -26,13 +26,11 @@ public class ColliderItalicRect : ObjectColliderBase
     private float _toHeight;
 
     private float _curRotation;
-    private CharacterBase _player;
 
     public ColliderItalicRect()
         : base()
     {
         _type = eColliderType.ItalicRect;
-        _player = PlayerInterface.GetInstance().GetCharacter();
     }
 
     public override void SetSize(float arg0, float arg1)
@@ -80,8 +78,9 @@ public class ColliderItalicRect : ObjectColliderBase
 
     protected override void CheckCollisionWithPlayer()
     {
+        CharacterBase player = PlayerInterface.GetInstance().GetCharacter();
         // 由于只计算1次，所以省略掉矩形判定的步奏
-        if (MathUtil.DetectCollisionBetweenCircleAndOBB(_player.GetPosition(),_player.collisionRadius,_curPos,_halfWidth,_halfHeight,_curRotation))
+        if (MathUtil.DetectCollisionBetweenCircleAndOBB(player.GetPosition(), player.collisionRadius,_curPos,_halfWidth,_halfHeight,_curRotation))
         {
             CollidedByPlayer();
         }
@@ -92,15 +91,17 @@ public class ColliderItalicRect : ObjectColliderBase
     /// </summary>
     protected virtual void CollidedByPlayer()
     {
-        PlayerInterface.GetInstance().GetCharacter().BeingHit();
+        CharacterBase player = PlayerInterface.GetInstance().GetCharacter();
+        player.BeingHit();
+        _collidedByPlayer?.Invoke(this, player);
     }
 
     protected override void CheckCollisionWithPlayerBullet()
     {
         float maxHalfSize = Mathf.Max(_halfWidth, _halfHeight);
         // 计算碰撞盒参数
-        Vector2 lbPos = new Vector2(_curPosX - maxHalfSize, _curPosY - maxHalfSize);
-        Vector2 rtPos = new Vector2(_curPosX + maxHalfSize, _curPosY + maxHalfSize);
+        Vector2 lbPos = new Vector2(_curPos.x - maxHalfSize, _curPos.y - maxHalfSize);
+        Vector2 rtPos = new Vector2(_curPos.x + maxHalfSize, _curPos.y + maxHalfSize);
         int i, bulletCount;
         List<PlayerBulletBase> bulletList = BulletsManager.GetInstance().GetPlayerBulletList();
         PlayerBulletBase bullet;
@@ -114,7 +115,10 @@ public class ColliderItalicRect : ObjectColliderBase
                 bullet.DetectCollision() &&
                 bullet.CheckBoundingBoxesIntersect(lbPos, rtPos))
             {
-                DetectCollisionWithPlayerBullet(bullet);
+                if (DetectCollisionWithPlayerBullet(bullet))
+                {
+                    _collidedByPlayerBullet?.Invoke(this, bullet);
+                }
             }
         }
     }
@@ -157,28 +161,26 @@ public class ColliderItalicRect : ObjectColliderBase
         int count = enemyList.Count;
         EnemyBase enemy;
         CollisionDetectParas para;
-        eEliminateDef specialEliminateDef = eEliminateDef.CodeEliminate | eEliminateDef.CodeRawEliminate;
-        bool checkWithEnemy = (_colliderGroups & (int)eColliderGroup.Enemy) != 0;
-        bool checkWithBoss = (_colliderGroups & (int)eColliderGroup.Boss) != 0;
+        eEliminateDef specialEliminateDef = eEliminateDef.CodeEliminate | eEliminateDef.CodeRawEliminate | eEliminateDef.SpellCardFinish;
+        //bool checkWithEnemy = (_colliderGroups & (int)eColliderGroup.Enemy) != 0;
+        //bool checkWithBoss = (_colliderGroups & (int)eColliderGroup.Boss) != 0;
         for (int i = 0; i < count; i++)
         {
             enemy = enemyList[i];
-            if (enemy != null)
+            if (enemy != null && enemy.DetectCollision())
             {
-                if ((enemy.type == eEnemyType.NormalEnemy && checkWithEnemy) || (enemy.type == eEnemyType.Boss && checkWithBoss))
+                para = enemy.GetCollisionDetectParas(0);
+                if (MathUtil.DetectCollisionBetweenOBBAndOBB(_curPos, _halfWidth, _halfHeight, _curRotation, para.centerPos, para.halfWidth, para.halfHeight, 0))
                 {
-                    para = enemy.GetCollisionDetectParas(0);
-                    if (MathUtil.DetectCollisionBetweenOBBAndOBB(_curPos, _halfWidth, _halfHeight, _curRotation, para.centerPos, para.halfWidth, para.halfHeight, 0))
+                    if ((_eliminateType & specialEliminateDef) != 0)
                     {
-                        if ((_eliminateType & specialEliminateDef) != 0)
-                        {
-                            enemy.Eliminate(_eliminateType);
-                        }
-                        else
-                        {
-                            enemy.TakeDamage(_hitEnemyDamage, _eliminateType);
-                        }
+                        enemy.Eliminate(_eliminateType);
                     }
+                    else
+                    {
+                        enemy.TakeDamage(_hitEnemyDamage, _eliminateType);
+                    }
+                    _collidedByEnemy?.Invoke(this, enemy);
                 }
             }
         }
@@ -188,8 +190,8 @@ public class ColliderItalicRect : ObjectColliderBase
     {
         float maxHalfSize = Mathf.Max(_halfWidth, _halfHeight);
         // 计算碰撞盒参数
-        Vector2 lbPos = new Vector2(_curPosX - maxHalfSize, _curPosY - maxHalfSize);
-        Vector2 rtPos = new Vector2(_curPosX + maxHalfSize, _curPosY + maxHalfSize);
+        Vector2 lbPos = new Vector2(_curPos.x - maxHalfSize, _curPos.y - maxHalfSize);
+        Vector2 rtPos = new Vector2(_curPos.x + maxHalfSize, _curPos.y + maxHalfSize);
         int i, bulletCount;
         List<EnemyBulletBase> bulletList = BulletsManager.GetInstance().GetEnemyBulletList();
         EnemyBulletBase bullet;
@@ -203,7 +205,10 @@ public class ColliderItalicRect : ObjectColliderBase
                 bullet.CanBeEliminated(eEliminateDef.HitObjectCollider) &&
                 bullet.CheckBoundingBoxesIntersect(lbPos, rtPos))
             {
-                DetectCollisionWithEnemyBullet(bullet);
+                if (DetectCollisionWithEnemyBullet(bullet))
+                {
+                    _collidedByEnemyBullet?.Invoke(this, bullet);
+                }
             }
         }
     }
@@ -298,9 +303,16 @@ public class ColliderItalicRect : ObjectColliderBase
         return false;
     }
 
-    public override void Clear()
+    public override CollisionDetectParas GetCollisionDetectParas(int index = 0)
     {
-        _player = null;
-        base.Clear();
+        CollisionDetectParas para = new CollisionDetectParas
+        {
+            type = CollisionDetectType.ItalicRect,
+            centerPos = _curPos,
+            halfWidth = _halfWidth,
+            halfHeight = _halfHeight,
+            angle = _curRotation,
+        };
+        return para;
     }
 }

@@ -1,5 +1,6 @@
-﻿//#define SoundEnable 
+﻿#define SoundEnable 
 
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -206,6 +207,40 @@ public class SoundManager
         }
     }
 
+    /// <summary>
+    /// 输出当前音乐的时间
+    /// </summary>
+    /// <param name="name"></param>
+    public void PrintSoundTime(string name)
+    {
+        SoundEntity entity;
+        for (int i = 0; i < _curPlayCount; i++)
+        {
+            entity = _curPlayList[i];
+            if (entity != null && entity.soundName == name)
+            {
+                Logger.Log("Current play time of sound " + name + " is " + entity.source.time);
+                break;
+            }
+        }
+    }
+
+    public void SetSoundPlayTime(string name, float time)
+    {
+        if (time < 0)
+            return;
+        SoundEntity entity;
+        for (int i = 0; i < _curPlayCount; i++)
+        {
+            entity = _curPlayList[i];
+            if (entity != null && entity.soundName == name)
+            {
+                entity.source.time = time;
+                break;
+            }
+        }
+    }
+
     public AudioClip Load(string name,bool isPreload = false)
     {
         int flag;
@@ -302,6 +337,8 @@ public class SoundManager
             // 起始播放时间
             toPlayEntity.startTime = curTime;
             source.clip = Resources.Load<AudioClip>("Sounds/" + toPlayEntity.soundName);
+            if (source.clip == null)
+                Logger.LogError("Sound " + toPlayEntity.soundName + " is not exist!");
             // 是否循环
             source.loop = toPlayEntity.isLoop;
             // 结束播放时间
@@ -438,6 +475,7 @@ public class SoundEntity
         if (source != null)
         {
             source.Stop();
+            source.time = 0;
             source.clip = null;
         }
         isFinish = false;

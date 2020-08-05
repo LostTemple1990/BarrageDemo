@@ -15,6 +15,10 @@ public class BulletReimuASub1 : PlayerBulletSimple
     /// </summary>
     private EnemyBase _target;
     /// <summary>
+    /// 目标的实例id
+    /// </summary>
+    private int _targetInstID;
+    /// <summary>
     /// 标识该子弹是否已经锁定过目标
     /// </summary>
     private int _targetFlag = 0;
@@ -36,9 +40,14 @@ public class BulletReimuASub1 : PlayerBulletSimple
     {
         if (_targetFlag == 0)
         {
-            GetRandomTarget();
+            _target = FindNewTarget();
+            if (_target != null)
+            {
+                _targetFlag = 1;
+                _targetInstID = _target.GetInstanceID();
+            }
         }
-        if (_target != null && !_target.CanHit())
+        if (_target != null && _targetInstID != _target.GetInstanceID())
         {
             _target = null;
         }
@@ -48,32 +57,28 @@ public class BulletReimuASub1 : PlayerBulletSimple
         }
     }
 
-    protected virtual void GetRandomTarget()
+    protected EnemyBase FindNewTarget()
     {
-        EnemyBase target;
+        EnemyBase target = null;
+        EnemyBase tmpTarget;
         List<EnemyBase> enemyList = EnemyManager.GetInstance().GetEnemyList();
-        List<int> indexList = new List<int>();
-        int indexCount = 0;
         int enemyCount = enemyList.Count;
-        int i;
-        for (i = 0; i < enemyCount;i++)
+        float maxK = -1;
+        for (int i = 0; i < enemyCount;i++)
         {
-            target = enemyList[i];
-            if ( target != null && target.CanHit() )
+            tmpTarget = enemyList[i];
+            if (tmpTarget != null && tmpTarget.isAvailable && tmpTarget.CanHit() )
             {
-                indexList.Add(i);
-                indexCount++;
+                Vector2 dVec = tmpTarget.GetPosition() - GetPosition();
+                float k = dVec.y / (Mathf.Abs(dVec.x) + 0.01f);
+                if (k > maxK)
+                {
+                    maxK = k;
+                    target = tmpTarget;
+                }
             }
         }
-        if ( indexCount > 0 )
-        {
-            // 从可以被攻击的目标当中随机选择
-            int index = indexList[MTRandom.GetNextInt(0, indexCount - 1)];
-            target = enemyList[index];
-            // 设置追踪目标
-            _target = target;
-            _targetFlag = 1;
-        }
+        return target;
     }
 
     protected override void Move()

@@ -20,9 +20,10 @@ public class ColliderCircleLuaInterface
     private static LuaCsClosureValue _funcAddTask;
 
     private static LuaCsClosureValue _funcSetStraightParas;
+
     private static LuaCsClosureValue _funcSetSize;
     private static LuaCsClosureValue _funcSetCollisionGroup;
-
+    private static LuaCsClosureValue _funcSetExistDuration;
 
     public static void Init()
     {
@@ -42,8 +43,10 @@ public class ColliderCircleLuaInterface
             _funcAddTask = new LuaCsClosureValue(LuaLib.AddTask);
 
             _funcSetStraightParas = new LuaCsClosureValue(LuaLib.STGMovableSetStraightParas);
+
             _funcSetSize = new LuaCsClosureValue(LuaLib.SetObjectColliderSize);
             _funcSetCollisionGroup = new LuaCsClosureValue(LuaLib.SetObjectColliderColliderGroup);
+            _funcSetExistDuration = new LuaCsClosureValue(LuaLib.SetObjectColliderExistDuration);
 
             _isInit = true;
         }
@@ -140,6 +143,11 @@ public class ColliderCircleLuaInterface
                 case "SetSize":
                     {
                         res.SetClCsValue(_funcSetSize);
+                        return true;
+                    }
+                case "SetExistDuration":
+                    {
+                        res.SetClCsValue(_funcSetExistDuration);
                         return true;
                     }
                 #endregion

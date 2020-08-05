@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExtraTaskManager
+public class ExtraTaskManager : ITaskExecuter
 {
     private static ExtraTaskManager _instance;
 

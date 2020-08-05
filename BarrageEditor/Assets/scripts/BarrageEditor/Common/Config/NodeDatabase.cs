@@ -145,6 +145,7 @@ namespace BarrageEditor
         Rebound = 1812,
         ColliderTrigger = 1813,
         DropItems = 1821,
+        PlayAni = 1822,
 
         PlaySound = 2201,
         PauseSound = 2202,
@@ -341,7 +342,7 @@ namespace BarrageEditor
                 type = NodeType.Stage,
                 shortcutPath = "stage",
                 shortcutTip = "stage",
-                defaultAttrValues = new List<object> { "" },
+                defaultAttrValues = new List<object> { "", "", "", "false" },
                 allowParents = new List<NodeType> { NodeType.StageGroup },
                 editOnCreated = true,
             };
@@ -533,7 +534,7 @@ namespace BarrageEditor
             {
                 type = NodeType.OnBossCreate,
                 shortcutPath = "bossinit",
-                defaultAttrValues = new List<object> { "2001", "0", "0", "32,32" },
+                defaultAttrValues = new List<object> { "2001", "32,32" },
                 editOnCreated = false,
                 isDeletable = false,
             };
@@ -952,7 +953,7 @@ namespace BarrageEditor
                 type = NodeType.CreateSimpleCollider,
                 shortcutPath = "simplecollider",
                 shortcutTip = "create simple collider",
-                defaultAttrValues = new List<object> { "TypeCircle", "0", "0", "64", "64", "0" },
+                defaultAttrValues = new List<object> { "TypeCircle", "0", "0", "64", "64", "0", "" },
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
             };
@@ -1231,6 +1232,17 @@ namespace BarrageEditor
                     NodeType.DefineBullet, NodeType.DefineLaser, NodeType.DefineLinearLaser, NodeType.DefineCurveLaser },
             };
             _nodeCfgDic.Add(NodeType.UnitEventTrigger, cfg);
+
+            cfg = new NodeConfig
+            {
+                type = NodeType.PlayAni,
+                shortcutPath = "playani",
+                shortcutTip = "PlayAni",
+                defaultAttrValues = new List<object> { "self", "ActionIdle", "DirNull", "" },
+                forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
+                allowChilds = new List<NodeType>(),
+            };
+            _nodeCfgDic.Add(cfg.type, cfg);
         }
 
         private void InitAudioNodeCfgs()
@@ -1245,7 +1257,7 @@ namespace BarrageEditor
                 forbidParents = new List<NodeType> { NodeType.Root, NodeType.Folder },
                 allowChilds = new List<NodeType>(),
             };
-            cfg.defaultAttrValues = new List<object> { "se_tan00", "0.5", "false" };
+            cfg.defaultAttrValues = new List<object> { "se_tan00", "0.05", "false" };
             _nodeCfgDic.Add(NodeType.PlaySound, cfg);
 
             cfg = new NodeConfig

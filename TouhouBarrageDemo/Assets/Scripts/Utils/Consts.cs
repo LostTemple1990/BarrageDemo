@@ -145,6 +145,8 @@ public class Consts
     public const int STGTopEffectLayerPosZ = 12;
     public const int STGInfoLayerPosZ = 10;
 
+    public const int STGLayerIndex = 12;
+
     /// <summary>
     /// 默认UI音效的音量大小
     /// </summary>

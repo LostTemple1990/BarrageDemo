@@ -131,6 +131,8 @@ public class StateSTGMain : IState,ICommand
         commandList.Add(CommandConsts.STGLoadStageDefaultBgComplete);
         object[] commandArr = commandList.ToArray();
         UIManager.GetInstance().ShowView(WindowName.GameLoadingView, commandArr);
+        // STGCamera启用
+        UIManager.GetInstance().GetSTGCamera().cullingMask = (1 << Consts.STGLayerIndex);
         // 添加监听
         CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
         CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
@@ -177,6 +179,8 @@ public class StateSTGMain : IState,ICommand
         UIManager.GetInstance().HideView(WindowName.STGBottomView);
         UIManager.GetInstance().HideView(WindowName.GameMainView);
         UIManager.GetInstance().HideView(WindowName.STGDialogView);
+
+        UIManager.GetInstance().GetSTGCamera().cullingMask = 0;
     }
 
     public void OnUpdate()
@@ -372,19 +376,17 @@ public class StateSTGMain : IState,ICommand
             if (curFrame >= ReplayManager.GetInstance().GetReplayLastFrame())
             {
                 _isReplayFinish = true;
-                UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseAfterReplayFinished);
-                Global.IsPause = true;
-                SoundManager.GetInstance().PauseAllSTGSound();
-                CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
+                PauseGame(ePauseViewState.PauseAfterReplayFinished);
                 return;
             }
             // 检测是否在游戏进行中按下Esc进行暂停
             if (!Global.IsPause && Input.GetKeyDown(KeyCode.Escape))
             {
-                UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseInReplay);
-                Global.IsPause = true;
-                SoundManager.GetInstance().PauseAllSTGSound();
-                CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
+                PauseGame(ePauseViewState.PauseInReplay);
+            }
+            else if (!Global.IsPause && !Global.IsApplicationFocus)
+            {
+                PauseGame(ePauseViewState.PauseInReplay);
             }
         }
         else
@@ -396,10 +398,7 @@ public class StateSTGMain : IState,ICommand
                     _gameOverTimeCounter++;
                     if (_gameOverTimeCounter >= 30)
                     {
-                        UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseAfterGameOver);
-                        Global.IsPause = true;
-                        SoundManager.GetInstance().PauseAllSTGSound();
-                        CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
+                        PauseGame(ePauseViewState.PauseAfterGameOver);
                         return;
                     }
                 }
@@ -407,10 +406,11 @@ public class StateSTGMain : IState,ICommand
             // 检测是否在游戏进行中按下Esc进行暂停
             if (!Global.IsPause && Input.GetKeyDown(KeyCode.Escape))
             {
-                UIManager.GetInstance().ShowView(WindowName.STGPauseView, ePauseViewState.PauseInGame);
-                Global.IsPause = true;
-                SoundManager.GetInstance().PauseAllSTGSound();
-                CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
+                PauseGame(ePauseViewState.PauseInGame);
+            }
+            else if (!Global.IsPause && !Global.IsApplicationFocus)
+            {
+                PauseGame(ePauseViewState.PauseInGame);
             }
         }
         if (_resumeSTGSE)
@@ -422,6 +422,19 @@ public class StateSTGMain : IState,ICommand
         {
             _stgMain.Update();
         }
+    }
+
+    /// <summary>
+    /// 暂停游戏
+    /// <para>pauseState 暂停界面的状态</para>
+    /// </summary>
+    /// <param name="pauseState"></param>
+    private void PauseGame(ePauseViewState pauseState)
+    {
+        UIManager.GetInstance().ShowView(WindowName.STGPauseView, pauseState);
+        Global.IsPause = true;
+        SoundManager.GetInstance().PauseAllSTGSound();
+        CommandManager.GetInstance().RunCommand(CommandConsts.PauseGame);
     }
 
     /// <summary>

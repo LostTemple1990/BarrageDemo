@@ -99,8 +99,8 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
             {
                 para = enemy.GetCollisionDetectParas(0);
                 // 敌机全部使用矩形判定
-                dx = Mathf.Abs(_curPosX - para.centerPos.x);
-                dy = Mathf.Abs(_curPosY - para.centerPos.y);
+                dx = Mathf.Abs(_curPos.x - para.centerPos.x);
+                dy = Mathf.Abs(_curPos.y - para.centerPos.y);
                 if (dx <= _radius + para.halfWidth && dy <= _radius + para.halfHeight)
                 {
                     CollidedByObject(enemy);
@@ -112,8 +112,8 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
     protected override void CheckCollisionWithEnemyBullet()
     {
         // 计算碰撞盒参数
-        Vector2 lbPos = new Vector2(_curPosX - _radius, _curPosY - _radius);
-        Vector2 rtPos = new Vector2(_curPosX + _radius, _curPosY + _radius);
+        Vector2 lbPos = new Vector2(_curPos.x - _radius, _curPos.y - _radius);
+        Vector2 rtPos = new Vector2(_curPos.x + _radius, _curPos.y + _radius);
         int i, bulletCount;
         List<EnemyBulletBase> bulletList = BulletsManager.GetInstance().GetEnemyBulletList();
         EnemyBulletBase bullet;
@@ -167,8 +167,8 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
         if (collParas.type == CollisionDetectType.Circle)
         {
             // 子弹为圆形判定，先检测外切正方形
-            float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
-            float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
+            float dx = Mathf.Abs(_curPos.x - collParas.centerPos.x);
+            float dy = Mathf.Abs(_curPos.y - collParas.centerPos.y);
             // 两圆的半径和
             float sumOfRadius = _radius + collParas.radius;
             if (dx <= sumOfRadius && dy <= sumOfRadius)
@@ -184,7 +184,7 @@ public class GravitationFieldCircle : ObjectColliderBase , IGravitationField
             if (_radius == 0) return false;
             // 子弹为矩形判定
             // 以子弹中心点为圆心，将B的判定中心旋转angle的角度计算判定
-            Vector2 vec = new Vector2(_curPosX - collParas.centerPos.x, _curPosY - collParas.centerPos.y);
+            Vector2 vec = new Vector2(_curPos.x - collParas.centerPos.x, _curPos.y - collParas.centerPos.y);
             float cos = Mathf.Cos(collParas.angle * Mathf.Deg2Rad);
             float sin = Mathf.Sin(collParas.angle * Mathf.Deg2Rad);
             Vector2 relativeVec = new Vector2();

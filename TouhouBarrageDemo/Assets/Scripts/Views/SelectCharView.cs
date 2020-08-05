@@ -109,13 +109,13 @@ public class SelectCharView : ViewBase, ICommand
         _bgTf.sizeDelta = new Vector2(bgWidth, bgHeight);
     }
 
-    public override void OnShow(object data = null)
+    protected override void OnShow(object data = null)
     {
         SetSelectIndex(0, Consts.DIR_NULL);
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
 
-    public override void OnHide()
+    protected override void OnHide()
     {
 
         base.OnHide();

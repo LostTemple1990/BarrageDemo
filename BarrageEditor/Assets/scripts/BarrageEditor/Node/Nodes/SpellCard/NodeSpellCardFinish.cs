@@ -25,8 +25,8 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            string scTypeName = _parent.GetAttrByIndex(0).GetValueString();
-            int bossCount = int.Parse(_parent.GetAttrByIndex(2).GetValueString());
+            string scTypeName = _parentNode.GetAttrByIndex(0).GetValueString();
+            int bossCount = int.Parse(_parentNode.GetAttrByIndex(2).GetValueString());
             string paramStr = "";
             if (bossCount == 1)
             {

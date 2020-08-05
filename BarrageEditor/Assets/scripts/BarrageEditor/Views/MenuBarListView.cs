@@ -182,7 +182,7 @@ namespace BarrageEditor
                 FileUtils.SerializableObjectToFile(savePath, nd);
                 EventManager.GetInstance().PostEvent(EditorEvents.AfterProjectChanged);
                 // 当前文件
-                BarrageProject.Log("current project file: " + FileUtils.GetFileNameByPath(savePath));
+                BarrageProject.Log("Current project file: " + FileUtils.GetFileNameByPath(savePath));
             }
         }
 
@@ -196,7 +196,7 @@ namespace BarrageEditor
                 BarrageProject.UnloadProject();
                 BarrageProject.LoadProject(openPath);
                 EventManager.GetInstance().PostEvent(EditorEvents.AfterProjectChanged);
-                BarrageProject.Log("current project file: " + FileUtils.GetFileNameByPath(openPath));
+                BarrageProject.Log("Current project file: " + FileUtils.GetFileNameByPath(openPath));
             }
         }
 
@@ -209,6 +209,7 @@ namespace BarrageEditor
                 BaseNode root = BarrageProject.RootNode;
                 NodeData nd = NodeManager.SaveAsNodeData(root, true);
                 FileUtils.SerializableObjectToFile(savePath, nd);
+                BarrageProject.Log("Save Complete");
             }
         }
 
@@ -225,6 +226,7 @@ namespace BarrageEditor
                 NodeData nd = NodeManager.SaveAsNodeData(root, true);
                 FileUtils.SerializableObjectToFile(savePath, nd);
                 BarrageProject.SetProjectPath(savePath);
+                BarrageProject.Log("Save Complete");
             }
         }
 

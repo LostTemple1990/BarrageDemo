@@ -5,11 +5,13 @@ public class ViewBase
 {
     protected GameObject _view;
     protected RectTransform _viewTf;
+    protected bool _isShow;
 
     public virtual void Init(GameObject viewObj)
     {
         _view = viewObj;
         _viewTf = _view.GetComponent<RectTransform>();
+        _isShow = false;
         UIManager.GetInstance().AddGoToLayer(viewObj, GetLayerId());
     }
 
@@ -24,6 +26,7 @@ public class ViewBase
     {
         if ( _view != null )
         {
+            _isShow = true;
             _view.SetActive(true);
             Adaptive();
             OnShow(data);
@@ -35,21 +38,37 @@ public class ViewBase
 
     }
 
-    public virtual void OnShow(object data)
+    protected virtual void OnShow(object data)
     {
 
     }
 
     public void Hide()
     {
+        if (!_isShow)
+            return;
         OnHide();
+        _isShow = false;
         UIManager.GetInstance().UnregisterViewUpdate(this);
         _view.SetActive(false);
     }
 
-    public virtual void OnHide()
+    protected virtual void OnHide()
     {
+        
+    }
 
+    public void Destroy()
+    {
+        Hide();
+        OnDestroy();
+    }
+
+    protected virtual void OnDestroy()
+    {
+        GameObject.Destroy(_view);
+        _view = null;
+        _viewTf = null;
     }
 
     /// <summary>

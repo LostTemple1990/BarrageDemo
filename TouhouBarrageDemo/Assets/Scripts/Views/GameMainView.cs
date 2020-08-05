@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#define ShowDebugInfo
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
@@ -86,6 +88,13 @@ public class GameMainView : ViewBase,ICommand
     /// </summary>
     private float _bottomSizeX;
 
+#if ShowDebugInfo
+    /// <summary>
+    /// 显示调试信息的文本框
+    /// </summary>
+    private Text _debugInfoText;
+#endif
+
     public override void Init(GameObject viewObj)
     {
         base.Init(viewObj);
@@ -99,8 +108,7 @@ public class GameMainView : ViewBase,ICommand
             {
                 _grazeImgList.Add(_viewTf.Find("Info/Graze/GrazeValue/GrazeBit" + i).GetComponent<Image>());
             }
-            _curGraze = -1;
-            _grazeBitCount = 0;
+            ResetGrazeInfo();
         }
         if ( _lifeImgList == null )
         {
@@ -131,9 +139,12 @@ public class GameMainView : ViewBase,ICommand
             hintTf.anchoredPosition = new Vector2(2000, 2000);
         }
         _bottomSizeX = UIManager.GetInstance().GetUIRootSize().x + _viewTf.Find("Bg/BgBottom").GetComponent<RectTransform>().sizeDelta.x;
+#if ShowDebugInfo
+        _debugInfoText = _viewTf.Find("DebugInfoText").GetComponent<Text>();
+#endif
     }
 
-    public override void OnShow(object data)
+    protected override void OnShow(object data)
     {
         base.OnShow(data);
         // 重新初始化
@@ -150,17 +161,26 @@ public class GameMainView : ViewBase,ICommand
         _curTimeTickIndex = -1;
         _updateFrameTimer = 0;
         _fpsText.text = "";
+#if ShowDebugInfo
+        _debugInfoText.text = "";
+#endif
     }
 
     private void AddEvents()
     {
         CommandManager.GetInstance().Register(CommandConsts.ShowBossPosHint, this);
+        CommandManager.GetInstance().Register(CommandConsts.RetryStage, this);
+        CommandManager.GetInstance().Register(CommandConsts.RetryGame, this);
     }
 
     public void Execute(int cmd,object data)
     {
         if (cmd == CommandConsts.ShowBossPosHint)
             OnShowBossPosHint(data);
+        else if (cmd == CommandConsts.RetryStage)
+            OnRetry();
+        else if (cmd == CommandConsts.RetryGame)
+            OnRetry();
     }
 
     private void OnShowBossPosHint(object data)
@@ -203,9 +223,17 @@ public class GameMainView : ViewBase,ICommand
         }
     }
 
+    private void OnRetry()
+    {
+        ResetGrazeInfo();
+    }
+
     public override void Update()
     {
         UpdateFps();
+#if ShowDebugInfo
+        UpdateDebugInfo();
+#endif
         if (Global.IsPause) return;
         UpdatePowerValue();
         UpdateGrazeValue();
@@ -260,6 +288,18 @@ public class GameMainView : ViewBase,ICommand
                 _grazeImgList[i-1].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, BigNumStr + num);
                 graze /= 10;
             }
+        }
+    }
+
+    private void ResetGrazeInfo()
+    {
+        _curGraze = 0;
+        _grazeBitCount = 1;
+        _grazeImgList[0].gameObject.SetActive(true);
+        _grazeImgList[0].sprite = ResourceManager.GetInstance().GetSprite(Consts.STGMainViewAtlasName, BigNumStr + "0");
+        for (int i = 1; i < GrazeBitMaxCount; i++)
+        {
+            _grazeImgList[i].gameObject.SetActive(false);
         }
     }
 
@@ -351,7 +391,17 @@ public class GameMainView : ViewBase,ICommand
         }
     }
 
-    public override void OnHide()
+#if ShowDebugInfo
+    private void UpdateDebugInfo()
+    {
+        string info = String.Format("Current Frame : {0}\n",
+            STGStageManager.GetInstance().GetFrameSinceStageStart()
+            );
+        _debugInfoText.text = info;
+    }
+#endif
+
+    protected override void OnHide()
     {
         int i;
         // clear擦弹部分
@@ -359,9 +409,11 @@ public class GameMainView : ViewBase,ICommand
         {
             _grazeImgList[i].gameObject.SetActive(false);
         }
-        _grazeBitCount = 0;
-        _curGraze = -1;
+        //_grazeBitCount = 0;
+        //_curGraze = 0;
         CommandManager.GetInstance().Remove(CommandConsts.ShowBossPosHint, this);
+        CommandManager.GetInstance().Remove(CommandConsts.RetryStage, this);
+        CommandManager.GetInstance().Remove(CommandConsts.RetryGame, this);
         foreach (var value in _bossHintTfDic.Values)
         {
             _bossHintTfPool.Push(value);

@@ -27,6 +27,7 @@ public class NormalEnemyLuaInterface
 
     private static LuaCsClosureValue _funcSetInvincible;
     private static LuaCsClosureValue _funcSetInteractive;
+    private static LuaCsClosureValue _funcPlayAni;
 
 
     public static void Init()
@@ -54,6 +55,7 @@ public class NormalEnemyLuaInterface
 
             _funcSetInvincible = new LuaCsClosureValue(LuaLib.SetEnemyInvincible);
             _funcSetInteractive = new LuaCsClosureValue(LuaLib.SetEnemyInteractive);
+            _funcPlayAni = new LuaCsClosureValue(LuaLib.PlayEnemyAni);
 
             _isInit = true;
         }
@@ -211,7 +213,10 @@ public class NormalEnemyLuaInterface
                 case "SetInteractive":
                     res.SetClCsValue(_funcSetInteractive);
                     return true;
-                    #endregion
+                case "PlayAni":
+                    res.SetClCsValue(_funcPlayAni);
+                    return true;
+                #endregion
 
             }
         }

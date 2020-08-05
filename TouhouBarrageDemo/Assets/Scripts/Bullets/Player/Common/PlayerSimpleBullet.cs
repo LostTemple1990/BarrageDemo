@@ -162,7 +162,7 @@ public class PlayerBulletSimple : PlayerBulletBase
         {
             enemy = enemyList[i];
             // 自机子弹与敌机使用方形检测
-            if ( enemy != null && enemy.CanHit() )
+            if ( enemy != null && enemy.isAvailable && enemy.CanHit() )
             {
                 CollisionDetectParas paras = enemy.GetCollisionDetectParas();
                 if ( Mathf.Abs(_curPos.x-paras.centerPos.x) <= _collisionRadius + paras.halfWidth &&

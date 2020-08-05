@@ -75,7 +75,7 @@ public class MarisaA : CharacterBase
             _subWeapons[i].SubWeaponIndex = i;
         }
         // 初始化炸弹
-        _bomb = new BombMarisaA();
+        //_bomb = new BombMarisaA();
         // 初始化碰撞、擦弹半径
         _collisionRadius = 3.0f;
         _grazeRadius = 4f;
@@ -245,6 +245,8 @@ public class MarisaA : CharacterBase
     protected override void OnCastSpellCard()
     {
         SetShootAvailable(false, 300);
+        _bomb = new BombMarisaA();
+        _bomb.Start();
     }
 
     public override int CharacterIndex

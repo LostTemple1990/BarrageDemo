@@ -221,7 +221,7 @@ public class EnemyBulletMovable : EnemyBulletBase
     protected void MovingTo()
     {
         _moveStraightTime++;
-        Vector2 targetPos = _moveToIntFunc(_moveFromPos, _moveToPos, _moveStraightTime, _moveStraightDuration);
+        //Vector2 targetPos = _moveToIntFunc(_moveFromPos, _moveToPos, _moveStraightTime, _moveStraightDuration);
         //_dx += targetPos.x - _curPos.x;
         //_dy += targetPos.y - _curPos.y;
         _curPos = _moveToIntFunc(_moveFromPos, _moveToPos, _moveStraightTime, _moveStraightDuration);

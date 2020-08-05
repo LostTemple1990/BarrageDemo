@@ -326,11 +326,7 @@ public partial class LuaLib
             angle += relAngle;
             accAngle += relAngle;
         }
-        movableObject.DoStraightMove(v, angle);
-        if (acce != 0)
-        {
-            movableObject.DoAcceleration(acce, accAngle);
-        }
+        movableObject.SetStraightParas(v, angle, acce, accAngle);
         return 0;
     }
 
@@ -396,6 +392,33 @@ public partial class LuaLib
     {
         int frame = STGStageManager.GetInstance().GetFrameSinceStageStart();
         Logger.Log("Frame Since Stage Start = " + frame);
+        return 0;
+    }
+
+    /// <summary>
+    /// 输出音乐播放时间
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int PrintSoundTime(ILuaState luaState)
+    {
+        string soundName = luaState.ToString(-1);
+        SoundManager.GetInstance().PrintSoundTime(soundName);
+        return 0;
+    }
+
+    /// <summary>
+    /// 设置音乐播放时间
+    /// <para>string soundName</para>
+    /// <para>int frame</para>
+    /// </summary>
+    /// <param name="luaState"></param>
+    /// <returns></returns>
+    public static int SetSoundPlayTime(ILuaState luaState)
+    {
+        string soundName = luaState.ToString(-2);
+        int frame = luaState.ToInteger(-1);
+        SoundManager.GetInstance().SetSoundPlayTime(soundName, frame / 60f);
         return 0;
     }
 }

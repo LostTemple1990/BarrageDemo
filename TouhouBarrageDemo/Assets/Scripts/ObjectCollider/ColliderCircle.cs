@@ -54,14 +54,16 @@ public class ColliderCircle : ObjectColliderBase
     /// </summary>
     protected virtual void CollidedByPlayer()
     {
-        PlayerInterface.GetInstance().GetCharacter().BeingHit();
+        CharacterBase player = PlayerInterface.GetInstance().GetCharacter();
+        player.BeingHit();
+        _collidedByPlayer?.Invoke(this, player);
     }
 
     protected override void CheckCollisionWithPlayerBullet()
     {
         // 计算碰撞盒参数
-        Vector2 lbPos = new Vector2(_curPosX - _radius, _curPosY - _radius);
-        Vector2 rtPos = new Vector2(_curPosX + _radius, _curPosY + _radius);
+        Vector2 lbPos = new Vector2(_curPos.x - _radius, _curPos.y - _radius);
+        Vector2 rtPos = new Vector2(_curPos.x + _radius, _curPos.y + _radius);
         int i, bulletCount;
         List<PlayerBulletBase> bulletList = BulletsManager.GetInstance().GetPlayerBulletList();
         PlayerBulletBase bullet;
@@ -75,7 +77,10 @@ public class ColliderCircle : ObjectColliderBase
                 bullet.DetectCollision() &&
                 bullet.CheckBoundingBoxesIntersect(lbPos, rtPos))
             {
-                DetectCollisionWithPlayerBullet(bullet);
+                if (DetectCollisionWithPlayerBullet(bullet))
+                {
+                    _collidedByPlayerBullet?.Invoke(this, bullet);
+                }
             }
         }
     }
@@ -93,8 +98,8 @@ public class ColliderCircle : ObjectColliderBase
             if (collParas.type == CollisionDetectType.Circle)
             {
                 // 子弹为圆形判定，先检测外切正方形
-                float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
-                float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
+                float dx = Mathf.Abs(_curPos.x - collParas.centerPos.x);
+                float dy = Mathf.Abs(_curPos.y - collParas.centerPos.y);
                 // 两圆的半径和
                 float sumOfRadius = _radius + collParas.radius;
                 if (dx <= sumOfRadius && dy <= sumOfRadius)
@@ -117,31 +122,27 @@ public class ColliderCircle : ObjectColliderBase
         EnemyBase enemy;
         CollisionDetectParas para;
         float dx, dy;
-        eEliminateDef specialEliminateDef = eEliminateDef.CodeEliminate | eEliminateDef.CodeRawEliminate;
-        bool checkWithEnemy = (_colliderGroups & (int)eColliderGroup.Enemy) != 0;
-        bool checkWithBoss = (_colliderGroups & (int)eColliderGroup.Boss) != 0;
+        eEliminateDef specialEliminateDef = eEliminateDef.CodeEliminate | eEliminateDef.CodeRawEliminate | eEliminateDef.SpellCardFinish;
         for (int i=0;i<count;i++)
         {
             enemy = enemyList[i];
-            if (enemy != null)
+            if (enemy != null && enemy.DetectCollision())
             {
-                if ((enemy.type == eEnemyType.NormalEnemy && checkWithEnemy) || (enemy.type == eEnemyType.Boss && checkWithBoss))
+                para = enemy.GetCollisionDetectParas(0);
+                // 敌机全部使用矩形判定
+                dx = Mathf.Abs(_curPos.x - para.centerPos.x);
+                dy = Mathf.Abs(_curPos.y - para.centerPos.y);
+                if (dx <= _radius + para.halfWidth && dy <= _radius + para.halfHeight)
                 {
-                    para = enemy.GetCollisionDetectParas(0);
-                    // 敌机全部使用矩形判定
-                    dx = Mathf.Abs(_curPosX - para.centerPos.x);
-                    dy = Mathf.Abs(_curPosY - para.centerPos.y);
-                    if (dx <= _radius + para.halfWidth && dy <= _radius + para.halfHeight)
+                    if ((_eliminateType & specialEliminateDef) != 0)
                     {
-                        if ((_eliminateType & specialEliminateDef) != 0)
-                        {
-                            enemy.Eliminate(_eliminateType);
-                        }
-                        else
-                        {
-                            enemy.TakeDamage(_hitEnemyDamage, _eliminateType);
-                        }
+                        enemy.Eliminate(_eliminateType);
                     }
+                    else
+                    {
+                        enemy.TakeDamage(_hitEnemyDamage, _eliminateType);
+                    }
+                    _collidedByEnemy?.Invoke(this, enemy);
                 }
             }
         }
@@ -150,8 +151,8 @@ public class ColliderCircle : ObjectColliderBase
     protected override void CheckCollisionWithEnemyBullet()
     {
         // 计算碰撞盒参数
-        Vector2 lbPos = new Vector2(_curPosX - _radius, _curPosY - _radius);
-        Vector2 rtPos = new Vector2(_curPosX + _radius, _curPosY + _radius);
+        Vector2 lbPos = new Vector2(_curPos.x - _radius, _curPos.y - _radius);
+        Vector2 rtPos = new Vector2(_curPos.x + _radius, _curPos.y + _radius);
         int i, bulletCount;
         List<EnemyBulletBase> bulletList = BulletsManager.GetInstance().GetEnemyBulletList();
         EnemyBulletBase bullet;
@@ -165,7 +166,10 @@ public class ColliderCircle : ObjectColliderBase
                 bullet.CanBeEliminated(_eliminateType) &&
                 bullet.CheckBoundingBoxesIntersect(lbPos,rtPos) )
             {
-                DetectCollisionWithEnemyBullet(bullet);
+                if (DetectCollisionWithEnemyBullet(bullet))
+                {
+                    _collidedByEnemyBullet?.Invoke(this, bullet);
+                }
             }
         }
     }
@@ -199,8 +203,8 @@ public class ColliderCircle : ObjectColliderBase
         if (collParas.type == CollisionDetectType.Circle)
         {
             // 子弹为圆形判定，先检测外切正方形
-            float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
-            float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
+            float dx = Mathf.Abs(_curPos.x - collParas.centerPos.x);
+            float dy = Mathf.Abs(_curPos.y - collParas.centerPos.y);
             // 两圆的半径和
             float sumOfRadius = _radius + collParas.radius;
             if (dx <= sumOfRadius && dy <= sumOfRadius)
@@ -244,5 +248,16 @@ public class ColliderCircle : ObjectColliderBase
             //}
         }
         return false;
+    }
+
+    public override CollisionDetectParas GetCollisionDetectParas(int index = 0)
+    {
+        CollisionDetectParas para = new CollisionDetectParas
+        {
+            type = CollisionDetectType.Circle,
+            centerPos = _curPos,
+            radius = _radius,
+        };
+        return para;
     }
 }

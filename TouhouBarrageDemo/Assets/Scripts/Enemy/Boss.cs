@@ -249,12 +249,14 @@ public class Boss : EnemyBase
         //CommandManager.GetInstance().RunCommand(CommandConsts.UpdateBgDistortEffectProps, datas);
     }
 
-    public void PlayAni(AniActionType at,int dir,int duration)
+    public override void PlayAni(AniActionType at, int dir = Consts.DIR_NULL, int duration = int.MaxValue)
     {
-        _isPlayAni = true;
-        _playAniTime = 0;
-        _playAniDuration = duration;
-        _bossAni.Play(at, dir);
+        if (_bossAni.Play(at, dir))
+        {
+            _isPlayAni = true;
+            _playAniTime = 0;
+            _playAniDuration = duration;
+        }
     }
 
     /// <summary>

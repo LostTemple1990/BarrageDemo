@@ -354,6 +354,15 @@ namespace YKEngine
             rectTf.position = newPos;
         }
 
+        /// <summary>
+        /// 获取UI尺寸
+        /// </summary>
+        /// <returns></returns>
+        public Vector2 GetUIRootSize()
+        {
+            return new Vector2(_uiRootWidth, _uiRootHeight);
+        }
+
         private void FocusOnView(int viewId)
         {
             int index = _focusViewStack.IndexOf(viewId);

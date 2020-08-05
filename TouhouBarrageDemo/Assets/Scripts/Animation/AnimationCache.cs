@@ -34,6 +34,6 @@ public class AnimationCache
         {
             return sp;
         }
-        return null;
+        return new Sprite[0];
     }
 }

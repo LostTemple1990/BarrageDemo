@@ -34,6 +34,10 @@ public class ReplayManager
     private ReplayData _repData;
 
     private bool _isEnable;
+    /// <summary>
+    /// 存放rep的文件夹路径
+    /// </summary>
+    private string _repFolderPath;
 
     public void Init()
     {
@@ -59,6 +63,11 @@ public class ReplayManager
             _replayInfoList = tmp.infos;
         }
 #else
+#if Debug
+        _repFolderPath = Application.dataPath;
+#else
+        _repFolderPath = Application.dataPath + "../Rep";
+#endif
         // 挨个读取rep文件生成replay数据
         _replayInfoList = new List<ReplayInfo>();
         string repPath;
@@ -66,7 +75,7 @@ public class ReplayManager
         BinaryFormatter bf = new BinaryFormatter();
         for (int i=0;i<Consts.MaxReplayCount;i++)
         {
-            repPath = Application.streamingAssetsPath + "/Rep/replay" + i + ".rep";
+            repPath = _repFolderPath + "/replay" + i + ".rep";
             if (System.IO.File.Exists(repPath))
             {
                 fs = new FileStream(repPath, FileMode.Open);
@@ -158,7 +167,7 @@ public class ReplayManager
     /// <param name=""></param>
     private void WriteRepDataFile(ReplayData repData)
     {
-        string path = Application.streamingAssetsPath + "/Rep/replay" + repData.info.replayIndex + ".rep";
+        string path = _repFolderPath + "/replay" + repData.info.replayIndex + ".rep";
         FileStream fs;
         if (System.IO.File.Exists(path))
         {
@@ -175,7 +184,7 @@ public class ReplayManager
 
     public bool LoadReplay(int replayIndex)
     {
-        string path = Application.streamingAssetsPath + "/Rep/replay" + replayIndex + ".rep";
+        string path = _repFolderPath + "/replay" + replayIndex + ".rep";
         if (!System.IO.File.Exists(path))
         {
             return false;

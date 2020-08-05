@@ -21,7 +21,7 @@ SpriteAtlas:
     platformSettings: []
     packingParameters:
       serializedVersion: 2
-      padding: 4
+      padding: 2
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 0
@@ -340,7 +340,7 @@ SpriteAtlas:
   - moveto
   - archirotate
   - setting
-  - loadani
+  - playani
   - changealphato
   - stagegroup
   - collidertrigger

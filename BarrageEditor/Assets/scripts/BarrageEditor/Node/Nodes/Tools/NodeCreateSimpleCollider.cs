@@ -40,6 +40,10 @@ namespace BarrageEditor
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.CollisionGroups);
             nodeAttr.Init(this, "Collision Group", null);
             _attrs.Add(nodeAttr);
+            // 持续时间
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr.Init(this, "Duration", null);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()
@@ -61,6 +65,12 @@ namespace BarrageEditor
             retStr = string.Format("{0}last:SetPos({1},{2})\n",retStr,_attrs[1].GetValueString(), _attrs[2].GetValueString());
             retStr = string.Format("{0}last:SetSize({1},{2})\n",retStr,_attrs[3].GetValueString(), _attrs[4].GetValueString());
             retStr = string.Format("{0}last:SetCollisionGroup({1})\n", retStr, GetAttrByIndex(5).GetValueString());
+            // 持续时间
+            string durationStr = GetAttrByIndex(6).GetValueString();
+            if (durationStr != null && durationStr != "")
+            {
+                retStr = string.Format("{0}last:SetExistDuration({1})\n", retStr, durationStr);
+            }
             return retStr;
         }
     }

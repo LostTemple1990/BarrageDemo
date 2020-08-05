@@ -211,7 +211,7 @@ public class ReplayView : ViewBase, ICommand
         _bgTf.sizeDelta = new Vector2(bgWidth, bgHeight);
     }
 
-    public override void OnShow(object data)
+    protected override void OnShow(object data)
     {
         _mode = (eReplayViewMode)data;
         _selectIndex = -1;
@@ -249,7 +249,7 @@ public class ReplayView : ViewBase, ICommand
         }
     }
 
-    public override void OnHide()
+    protected override void OnHide()
     {
         _infoList.Clear();
         if (_selectIndex != -1)

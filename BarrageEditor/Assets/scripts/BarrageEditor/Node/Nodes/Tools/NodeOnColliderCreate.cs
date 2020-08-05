@@ -40,10 +40,10 @@ namespace BarrageEditor
             // 则更新DefineList
             if (attr != null && attr == GetAttrByIndex(0))
             {
-                if ((_parent as NodeDefineCollider).IsWatchingData)
+                if ((_parentNode as NodeDefineCollider).IsWatchingData)
                 {
                     // 参数列表发生变化，修改缓存
-                    string name = _parent.GetAttrByIndex(0).GetValueString();
+                    string name = _parentNode.GetAttrByIndex(0).GetValueString();
                     CustomDefine.ModifyDefineParaList(CustomDefineType.Collider, name, attr.GetValueString());
                 }
             }
@@ -62,7 +62,7 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            string name = _parent.GetAttrByIndex(0).GetValueString();
+            string name = _parentNode.GetAttrByIndex(0).GetValueString();
             string ret = string.Format("CustomizedColliderTable[\"{0}\"].Init = function(self{1})\n",
                 name,
                 _attrs[0].GetValueString() == "" ? "" : "," + _attrs[0].GetValueString()  //不带参数的话self后不带任何参数了，因此不加分隔符','

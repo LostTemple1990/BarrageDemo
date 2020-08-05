@@ -2,6 +2,9 @@
 
 using UnityEngine;
 using System.Collections;
+#if CheckSTGFrameTime
+using System.Diagnostics;
+#endif
 
 public class STGMain
 {
@@ -17,95 +20,85 @@ public class STGMain
 #if CheckSTGFrameTime
         int index = 0;
         long[] timeArr = new long[20];
-        long frameBeginTime = System.DateTime.Now.Ticks;
-        STGStageManager.GetInstance().Update();
-        timeArr[index++] = System.DateTime.Now.Ticks;
-        ColliderManager.GetInstance().UpdateFields();
-        timeArr[index++] = System.DateTime.Now.Ticks;
+        long frameBeginTime = Stopwatch.GetTimestamp();
         _opController.Update();
-        _char.Update();
-        timeArr[index++] = System.DateTime.Now.Ticks;
-        EnemyManager.GetInstance().Update();
-        timeArr[index++] = System.DateTime.Now.Ticks;
-        BulletsManager.GetInstance().Update();
-        timeArr[index++] = System.DateTime.Now.Ticks;
-        ItemManager.GetInstance().Update();
-        timeArr[index++] = System.DateTime.Now.Ticks;
-        ColliderManager.GetInstance().UpdateColliders();
-        timeArr[index++] = System.DateTime.Now.Ticks;
-        BulletsManager.GetInstance().Render();
-        timeArr[index++] = System.DateTime.Now.Ticks;
-        AnimationManager.GetInstance().Update();
-        timeArr[index++] = System.DateTime.Now.Ticks;
+        STGStageManager.GetInstance().Update();
+        timeArr[index++] = Stopwatch.GetTimestamp();
+        ColliderManager.GetInstance().UpdateFields();
+        timeArr[index++] = Stopwatch.GetTimestamp();
         ExtraTaskManager.GetInstance().Update();
-        timeArr[index++] = System.DateTime.Now.Ticks;
-        BackgroundManager.GetInstance().Update();
-        timeArr[index++] = System.DateTime.Now.Ticks;
+        timeArr[index++] = Stopwatch.GetTimestamp();
+        _char.Update();
+        timeArr[index++] = Stopwatch.GetTimestamp();
+        EnemyManager.GetInstance().Update();
+        timeArr[index++] = Stopwatch.GetTimestamp();
+        BulletsManager.GetInstance().Update();
+        timeArr[index++] = Stopwatch.GetTimestamp();
+        ItemManager.GetInstance().Update();
+        timeArr[index++] = Stopwatch.GetTimestamp();
+        ColliderManager.GetInstance().UpdateColliders();
+        timeArr[index++] = Stopwatch.GetTimestamp();
         EffectsManager.GetInstance().Update();
-        timeArr[index++] = System.DateTime.Now.Ticks;
+        timeArr[index++] = Stopwatch.GetTimestamp();
+        BulletsManager.GetInstance().Render();
+        timeArr[index++] = Stopwatch.GetTimestamp();
+        AnimationManager.GetInstance().Update();
+        timeArr[index++] = Stopwatch.GetTimestamp();
+        BackgroundManager.GetInstance().Update();
+        timeArr[index++] = Stopwatch.GetTimestamp();
         frameNode++;
-        // 背景部分暂时写这，之后转移到lua
-        if (frameNode % 30 == 0)
-        {
-            BgSpriteObject spObj = BackgroundManager.GetInstance().CreateBgSpriteObject("MapleLeaf1");
-            float posX = Random.Range(80, 150);
-            float posY = Random.Range(200, 225);
-            spObj.SetToPos(posX, posY);
-            float scale = Random.Range(0.2f, 1);
-            spObj.SetScale(new Vector3(scale, scale));
-            spObj.SetVelocity(Random.Range(1f, 3f), Random.Range(-150, -30));
-            spObj.SetSelfRotateAngle(new Vector3(0, 0, Random.Range(1f, 2f)));
-            spObj.DoFade(Random.Range(90, 180), Random.Range(180, 300));
-        }
-        long frameEndTime = System.DateTime.Now.Ticks;
+        long frameEndTime = Stopwatch.GetTimestamp();
         if ( frameEndTime - frameBeginTime >= 50000 )
         {
-            string logStr = "Frame " + STGStageManager.GetInstance().GetFrameSinceStageStart() + " cost time " + (frameEndTime - frameBeginTime) / 10000f + "ms\n";
+            string logStr = "Frame " + STGStageManager.GetInstance().GetFrameSinceStageStart() + " cost time " + (frameEndTime - frameBeginTime) * 0.0001d + "ms\n";
             index = 0;
-            logStr += "STGStageManager Update Cost Time = " + (timeArr[index]-frameBeginTime) / 10000f + "ms\n";
-            logStr += "GravitationFields Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) / 10000f + "ms\n";
-            logStr += "Character Update Cost Time = " + (timeArr[++index]-timeArr[index-1]) / 10000f + "ms\n";
-            logStr += "EnemyManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) / 10000f + "ms\n";
-            logStr += "BulletsManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) / 10000f + "ms\n";
-            logStr += "ItemManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) / 10000f + "ms\n";
-            logStr += "Colliders Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) / 10000f + "ms\n";
-            logStr += "BulletsManager Render Cost Time = " + (timeArr[++index] - timeArr[index - 1]) / 10000f + "ms\n";
-            logStr += "AnimationManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) / 10000f + "ms\n";
-            logStr += "ExtraTaskManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) / 10000f + "ms\n";
-            logStr += "BackgroundManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) / 10000f + "ms\n";
-            logStr += "EffectsManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) / 10000f + "ms\n";
+            logStr += "STGStageManager Update Cost Time = " + (timeArr[index]-frameBeginTime) * 0.0001d + "ms\n";
+            logStr += "GravitationFields Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) * 0.0001d + "ms\n";
+            logStr += "ExtraTaskManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) * 0.0001d + "ms\n";
+            logStr += "Character Update Cost Time = " + (timeArr[++index]-timeArr[index-1]) * 0.0001d + "ms\n";
+            logStr += "EnemyManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) * 0.0001d + "ms\n";
+            logStr += "BulletsManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) * 0.0001d + "ms\n";
+            logStr += "ItemManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) * 0.0001d + "ms\n";
+            logStr += "Colliders Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) * 0.0001d + "ms\n";
+            logStr += "EffectsManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) * 0.0001d + "ms\n";
+            logStr += "BulletsManager Render Cost Time = " + (timeArr[++index] - timeArr[index - 1]) * 0.0001d + "ms\n";
+            logStr += "AnimationManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) * 0.0001d + "ms\n";
+            logStr += "BackgroundManager Update Cost Time = " + (timeArr[++index] - timeArr[index - 1]) * 0.0001d + "ms\n";
             Logger.LogWarn(logStr);
             CommandManager.GetInstance().RunCommand(CommandConsts.LogFrameStatistics);
             Logger.Log("------------------------------------------------");
         }
 #else
-        if (frameNode == 200)
-        {
-            _lastFrameTicks = System.DateTime.Now.Ticks;
-        }
-        else if (frameNode > 200 && frameNode <= 300)
-        {
-            long currentTicks = System.DateTime.Now.Ticks;
-            Logger.Log("Frame Interval = " + (currentTicks - _lastFrameTicks) * 0.0001f);
-            _lastFrameTicks = currentTicks;
-        }
+        //if (frameNode == 200)
+        //{
+        //    _lastFrameTicks = System.DateTime.Now.Ticks;
+        //}
+        //else if (frameNode > 200 && frameNode <= 300)
+        //{
+        //    long currentTicks = System.DateTime.Now.Ticks;
+        //    Logger.Log("Frame Interval = " + (currentTicks - _lastFrameTicks) * 0.0001f);
+        //    _lastFrameTicks = currentTicks;
+        //}
         // 逻辑部分
         _opController.Update();
         STGStageManager.GetInstance().Update();
+        ExtraTaskManager.GetInstance().Update();
         ColliderManager.GetInstance().UpdateFields();
         _char.Update();
         EnemyManager.GetInstance().Update();
         BulletsManager.GetInstance().Update();
         ItemManager.GetInstance().Update();
         ColliderManager.GetInstance().UpdateColliders();
+        EffectsManager.GetInstance().Update();
         // 渲染部分
         BulletsManager.GetInstance().Render();
         AnimationManager.GetInstance().Update();
-        ExtraTaskManager.GetInstance().Update();
         BackgroundManager.GetInstance().Update();
-        EffectsManager.GetInstance().Update();
-        if (frameNode == 0)
-            FPSController.GetInstance().Restart(true);
+#if ShowCollisionViewer
+        CollisionViewer.Instance.Render();
+#endif
+        //if (frameNode == 0)
+        //    FPSController.GetInstance().Restart(true);
         frameNode++;
         //if (frameNode % 60 == 0)
         //{
@@ -160,8 +153,8 @@ public class STGMain
         Global.BulletLBBorderPos = new Vector2(Global.GameLBBorderPos.x - 100, Global.GameLBBorderPos.y - 100);
         Global.BulletRTBorderPos = new Vector2(Global.GameRTBorderPos.x + 100, Global.GameRTBorderPos.y + 100);
         // 玩家坐标边界
-        Global.PlayerLBBorderPos = new Vector2(Global.GameLBBorderPos.x + 5, Global.GameLBBorderPos.y + 10);
-        Global.PlayerRTBorderPos = new Vector2(Global.GameRTBorderPos.x - 5, Global.GameRTBorderPos.y - 10);
+        Global.PlayerLBBorderPos = new Vector2(Global.GameLBBorderPos.x + 10, Global.GameLBBorderPos.y + 10);
+        Global.PlayerRTBorderPos = new Vector2(Global.GameRTBorderPos.x - 10, Global.GameRTBorderPos.y - 10);
 
         InterpreterManager.GetInstance().Init();
         STGStageManager.GetInstance().Init();
@@ -202,7 +195,9 @@ public class STGMain
         _opController = OperationController.GetInstance();
         _opController.InitCharacter();
         BackgroundManager.GetInstance().Init();
-
+#if ShowCollisionViewer
+        CollisionViewer.Instance.Init();
+#endif
         CommandManager.GetInstance().RunCommand(CommandConsts.STGInitComplete);
         frameNode = 0;
     }

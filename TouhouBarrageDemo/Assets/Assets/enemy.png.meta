@@ -2,62 +2,62 @@ fileFormatVersion: 2
 guid: f0ae807995cae164993e91ea5afd3536
 TextureImporter:
   fileIDToRecycleName:
-    21300000: enemy_0
-    21300002: enemy_1
-    21300004: enemy_2
-    21300006: enemy_3
-    21300008: enemy_4
-    21300010: enemy_5
-    21300012: enemy_6
-    21300014: enemy_7
-    21300016: enemy_8
-    21300018: enemy_9
-    21300020: enemy_10
-    21300022: enemy_11
-    21300024: enemy_12
-    21300026: enemy_13
-    21300028: enemy_14
-    21300030: enemy_15
-    21300032: enemy_16
-    21300034: enemy_17
-    21300036: enemy_18
-    21300038: enemy_19
-    21300040: enemy_20
-    21300042: enemy_21
-    21300044: enemy_22
-    21300046: enemy_23
-    21300048: enemy_24
-    21300050: enemy_25
-    21300052: enemy_26
-    21300054: enemy_27
-    21300056: enemy_28
-    21300058: enemy_29
-    21300060: enemy_30
-    21300062: enemy_31
-    21300064: enemy_32
-    21300066: enemy_33
-    21300068: enemy_34
-    21300070: enemy_35
-    21300072: enemy_36
-    21300074: enemy_37
-    21300076: enemy_38
-    21300078: enemy_39
-    21300080: enemy_40
-    21300082: enemy_41
-    21300084: enemy_42
-    21300086: enemy_43
-    21300088: enemy_44
-    21300090: enemy_45
-    21300092: enemy_46
-    21300094: enemy_47
-    21300096: enemy_48
-    21300098: enemy_49
-    21300100: enemy_50
-    21300102: enemy_51
-    21300104: enemy_52
-    21300106: enemy_53
-    21300108: enemy_54
-    21300110: enemy_55
+    21300000: enemy011_Idle_0
+    21300002: enemy011_Idle_1
+    21300004: enemy011_Idle_2
+    21300006: enemy011_Idle_3
+    21300008: enemy011_Idle_4
+    21300010: enemy011_FadeToRight_0
+    21300012: enemy011_FadeToRight_1
+    21300014: enemy011_FadeToRight_2
+    21300016: enemy007_Idle_0
+    21300018: enemy007_Idle_1
+    21300020: enemy007_Idle_2
+    21300022: enemy007_Idle_3
+    21300024: enemy007_Idle_4
+    21300026: enemy007_FadeToRight_0
+    21300028: enemy007_FadeToRight_1
+    21300030: enemy007_FadeToRight_2
+    21300032: enemy007_Right_0
+    21300034: enemy007_Right_1
+    21300036: enemy007_Right_2
+    21300038: enemy007_Right_3
+    21300040: enemy006_Idle_0
+    21300042: enemy006_Idle_1
+    21300044: enemy006_Idle_2
+    21300046: enemy006_Idle_3
+    21300048: enemy006_Idle_4
+    21300050: enemy006_FadeToRight_0
+    21300052: enemy006_FadeToRight_1
+    21300054: enemy006_FadeToRight_2
+    21300056: enemy006_Right_0
+    21300058: enemy006_Right_1
+    21300060: enemy006_Right_2
+    21300062: enemy006_Right_3
+    21300064: enemy005_Idle_0
+    21300066: enemy005_Idle_1
+    21300068: enemy005_Idle_2
+    21300070: enemy005_Idle_3
+    21300072: enemy005_Idle_4
+    21300074: enemy005_FadeToRight_0
+    21300076: enemy005_FadeToRight_1
+    21300078: enemy005_FadeToRight_2
+    21300080: enemy005_Right_0
+    21300082: enemy005_Right_1
+    21300084: enemy005_Right_2
+    21300086: enemy005_Right_3
+    21300088: enemy004_Idle_0
+    21300090: enemy004_Idle_1
+    21300092: enemy004_Idle_2
+    21300094: enemy004_Idle_3
+    21300096: enemy004_Idle_4
+    21300098: enemy004_FadeToRight_0
+    21300100: enemy004_FadeToRight_1
+    21300102: enemy004_FadeToRight_2
+    21300104: enemy004_Right_0
+    21300106: enemy004_Right_1
+    21300108: enemy004_Right_2
+    21300110: enemy004_Right_3
     21300112: enemy_56
     21300114: enemy_57
     21300116: enemy_58
@@ -74,58 +74,58 @@ TextureImporter:
     21300138: SpinningEnemy10
     21300140: SpinningEnemy20
     21300142: SpinningEnemy30
-    21300144: enemy_72
-    21300146: enemy_73
-    21300148: enemy_74
-    21300150: enemy_75
-    21300152: enemy_76
-    21300154: enemy_77
-    21300156: enemy_78
-    21300158: enemy_79
-    21300160: enemy_80
-    21300162: enemy_81
-    21300164: enemy_82
-    21300166: enemy_83
-    21300168: enemy_84
-    21300170: enemy_85
-    21300172: enemy_86
-    21300174: enemy_87
-    21300176: enemy_88
-    21300178: enemy_89
-    21300180: enemy_90
-    21300182: enemy_91
-    21300184: enemy_92
-    21300186: enemy_93
-    21300188: enemy_94
-    21300190: enemy_95
-    21300192: enemy_96
-    21300194: enemy_97
-    21300196: enemy_98
-    21300198: enemy_99
-    21300200: enemy_100
-    21300202: enemy_101
-    21300204: enemy_102
-    21300206: enemy_103
-    21300208: enemy_104
-    21300210: enemy_105
-    21300212: enemy_106
-    21300214: enemy_107
-    21300216: enemy_108
-    21300218: enemy_109
-    21300220: enemy_110
-    21300222: enemy_111
-    21300224: enemy_112
-    21300226: enemy_113
-    21300228: enemy_114
-    21300230: enemy_115
-    21300232: enemy_116
-    21300234: enemy_117
-    21300236: enemy_118
-    21300238: enemy_119
-    21300240: enemy_120
-    21300242: enemy_121
-    21300244: enemy_122
-    21300246: enemy_123
+    21300144: enemy011_Right_0
+    21300146: enemy011_Right_1
+    21300148: enemy011_Right_2
+    21300150: enemy011_Right_3
+    21300152: enemy031_Right_0
+    21300154: enemy031_Right_1
+    21300156: enemy031_Right_2
+    21300158: enemy031_Right_3
+    21300160: enemy031_FadeToRight_0
+    21300162: enemy031_FadeToRight_1
+    21300164: enemy031_FadeToRight_2
+    21300166: enemy031_FadeToRight_3
+    21300168: enemy031_Idle_0
+    21300170: enemy031_Idle_1
+    21300172: enemy031_Idle_2
+    21300174: enemy031_Idle_3
+    21300176: enemy030_Right_0
+    21300178: enemy030_Right_1
+    21300180: enemy030_Right_2
+    21300182: enemy030_Right_3
+    21300184: enemy030_FadeToRight_0
+    21300186: enemy030_FadeToRight_1
+    21300188: enemy030_FadeToRight_2
+    21300190: enemy030_FadeToRight_3
+    21300192: enemy030_Idle_0
+    21300194: enemy030_Idle_1
+    21300196: enemy030_Idle_2
+    21300198: enemy030_Idle_3
+    21300200: enemy021_Right_0
+    21300202: enemy021_Right_1
+    21300204: enemy021_Right_2
+    21300206: enemy021_Right_3
+    21300208: enemy021_FadeToRight_0
+    21300210: enemy021_FadeToRight_1
+    21300212: enemy021_FadeToRight_2
+    21300214: enemy021_FadeToRight_3
+    21300216: enemy021_Idle_0
+    21300218: enemy021_Idle_1
+    21300220: enemy021_Idle_2
+    21300222: enemy021_Idle_3
+    21300224: enemy020_Right_0
+    21300226: enemy020_Right_1
+    21300228: enemy020_Right_2
+    21300230: enemy020_Right_3
+    21300232: enemy020_FadeToRight_0
+    21300234: enemy020_FadeToRight_1
+    21300236: enemy020_FadeToRight_2
+    21300238: enemy020_FadeToRight_3
+    21300240: enemy020_Idle_0
+    21300242: enemy020_Idle_1
+    21300244: enemy020_Idle_2
+    21300246: enemy020_Idle_3
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -217,7 +217,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: enemy_0
+      name: enemy011_Idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -237,7 +237,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_1
+      name: enemy011_Idle_1
       rect:
         serializedVersion: 2
         x: 64
@@ -257,7 +257,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_2
+      name: enemy011_Idle_2
       rect:
         serializedVersion: 2
         x: 128
@@ -277,7 +277,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_3
+      name: enemy011_Idle_3
       rect:
         serializedVersion: 2
         x: 192
@@ -297,7 +297,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_4
+      name: enemy011_Idle_4
       rect:
         serializedVersion: 2
         x: 256
@@ -317,7 +317,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_5
+      name: enemy011_FadeToRight_0
       rect:
         serializedVersion: 2
         x: 320
@@ -337,7 +337,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_6
+      name: enemy011_FadeToRight_1
       rect:
         serializedVersion: 2
         x: 384
@@ -357,7 +357,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_7
+      name: enemy011_FadeToRight_2
       rect:
         serializedVersion: 2
         x: 448
@@ -377,7 +377,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_8
+      name: enemy007_Idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -397,7 +397,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_9
+      name: enemy007_Idle_1
       rect:
         serializedVersion: 2
         x: 32
@@ -417,7 +417,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_10
+      name: enemy007_Idle_2
       rect:
         serializedVersion: 2
         x: 64
@@ -437,7 +437,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_11
+      name: enemy007_Idle_3
       rect:
         serializedVersion: 2
         x: 96
@@ -457,7 +457,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_12
+      name: enemy007_Idle_4
       rect:
         serializedVersion: 2
         x: 128
@@ -477,7 +477,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_13
+      name: enemy007_FadeToRight_0
       rect:
         serializedVersion: 2
         x: 160
@@ -497,7 +497,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_14
+      name: enemy007_FadeToRight_1
       rect:
         serializedVersion: 2
         x: 192
@@ -517,7 +517,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_15
+      name: enemy007_FadeToRight_2
       rect:
         serializedVersion: 2
         x: 224
@@ -537,7 +537,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_16
+      name: enemy007_Right_0
       rect:
         serializedVersion: 2
         x: 256
@@ -557,7 +557,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_17
+      name: enemy007_Right_1
       rect:
         serializedVersion: 2
         x: 288
@@ -577,7 +577,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_18
+      name: enemy007_Right_2
       rect:
         serializedVersion: 2
         x: 320
@@ -597,7 +597,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_19
+      name: enemy007_Right_3
       rect:
         serializedVersion: 2
         x: 352
@@ -617,7 +617,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_20
+      name: enemy006_Idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -637,7 +637,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_21
+      name: enemy006_Idle_1
       rect:
         serializedVersion: 2
         x: 32
@@ -657,7 +657,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_22
+      name: enemy006_Idle_2
       rect:
         serializedVersion: 2
         x: 64
@@ -677,7 +677,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_23
+      name: enemy006_Idle_3
       rect:
         serializedVersion: 2
         x: 96
@@ -697,7 +697,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_24
+      name: enemy006_Idle_4
       rect:
         serializedVersion: 2
         x: 128
@@ -717,7 +717,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_25
+      name: enemy006_FadeToRight_0
       rect:
         serializedVersion: 2
         x: 160
@@ -737,7 +737,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_26
+      name: enemy006_FadeToRight_1
       rect:
         serializedVersion: 2
         x: 192
@@ -757,7 +757,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_27
+      name: enemy006_FadeToRight_2
       rect:
         serializedVersion: 2
         x: 224
@@ -777,7 +777,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_28
+      name: enemy006_Right_0
       rect:
         serializedVersion: 2
         x: 256
@@ -797,7 +797,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_29
+      name: enemy006_Right_1
       rect:
         serializedVersion: 2
         x: 288
@@ -817,7 +817,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_30
+      name: enemy006_Right_2
       rect:
         serializedVersion: 2
         x: 320
@@ -837,7 +837,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_31
+      name: enemy006_Right_3
       rect:
         serializedVersion: 2
         x: 352
@@ -857,7 +857,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_32
+      name: enemy005_Idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -877,7 +877,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_33
+      name: enemy005_Idle_1
       rect:
         serializedVersion: 2
         x: 32
@@ -897,7 +897,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_34
+      name: enemy005_Idle_2
       rect:
         serializedVersion: 2
         x: 64
@@ -917,7 +917,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_35
+      name: enemy005_Idle_3
       rect:
         serializedVersion: 2
         x: 96
@@ -937,7 +937,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_36
+      name: enemy005_Idle_4
       rect:
         serializedVersion: 2
         x: 128
@@ -957,7 +957,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_37
+      name: enemy005_FadeToRight_0
       rect:
         serializedVersion: 2
         x: 160
@@ -977,7 +977,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_38
+      name: enemy005_FadeToRight_1
       rect:
         serializedVersion: 2
         x: 192
@@ -997,7 +997,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_39
+      name: enemy005_FadeToRight_2
       rect:
         serializedVersion: 2
         x: 224
@@ -1017,7 +1017,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_40
+      name: enemy005_Right_0
       rect:
         serializedVersion: 2
         x: 256
@@ -1037,7 +1037,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_41
+      name: enemy005_Right_1
       rect:
         serializedVersion: 2
         x: 288
@@ -1057,7 +1057,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_42
+      name: enemy005_Right_2
       rect:
         serializedVersion: 2
         x: 320
@@ -1077,7 +1077,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_43
+      name: enemy005_Right_3
       rect:
         serializedVersion: 2
         x: 352
@@ -1097,7 +1097,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_44
+      name: enemy004_Idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -1117,7 +1117,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_45
+      name: enemy004_Idle_1
       rect:
         serializedVersion: 2
         x: 32
@@ -1137,7 +1137,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_46
+      name: enemy004_Idle_2
       rect:
         serializedVersion: 2
         x: 64
@@ -1157,7 +1157,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_47
+      name: enemy004_Idle_3
       rect:
         serializedVersion: 2
         x: 96
@@ -1177,7 +1177,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_48
+      name: enemy004_Idle_4
       rect:
         serializedVersion: 2
         x: 128
@@ -1197,7 +1197,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_49
+      name: enemy004_FadeToRight_0
       rect:
         serializedVersion: 2
         x: 160
@@ -1217,7 +1217,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_50
+      name: enemy004_FadeToRight_1
       rect:
         serializedVersion: 2
         x: 192
@@ -1237,7 +1237,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_51
+      name: enemy004_FadeToRight_2
       rect:
         serializedVersion: 2
         x: 224
@@ -1257,7 +1257,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_52
+      name: enemy004_Right_0
       rect:
         serializedVersion: 2
         x: 256
@@ -1277,7 +1277,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_53
+      name: enemy004_Right_1
       rect:
         serializedVersion: 2
         x: 288
@@ -1297,7 +1297,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_54
+      name: enemy004_Right_2
       rect:
         serializedVersion: 2
         x: 320
@@ -1317,7 +1317,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_55
+      name: enemy004_Right_3
       rect:
         serializedVersion: 2
         x: 352
@@ -1657,7 +1657,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_72
+      name: enemy011_Right_0
       rect:
         serializedVersion: 2
         x: 384
@@ -1677,7 +1677,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_73
+      name: enemy011_Right_1
       rect:
         serializedVersion: 2
         x: 448
@@ -1697,7 +1697,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_74
+      name: enemy011_Right_2
       rect:
         serializedVersion: 2
         x: 384
@@ -1717,7 +1717,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_75
+      name: enemy011_Right_3
       rect:
         serializedVersion: 2
         x: 448
@@ -1737,7 +1737,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_76
+      name: enemy031_Right_0
       rect:
         serializedVersion: 2
         x: 320
@@ -1757,7 +1757,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_77
+      name: enemy031_Right_1
       rect:
         serializedVersion: 2
         x: 368
@@ -1777,7 +1777,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_78
+      name: enemy031_Right_2
       rect:
         serializedVersion: 2
         x: 416
@@ -1797,7 +1797,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_79
+      name: enemy031_Right_3
       rect:
         serializedVersion: 2
         x: 464
@@ -1817,7 +1817,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_80
+      name: enemy031_FadeToRight_0
       rect:
         serializedVersion: 2
         x: 320
@@ -1837,7 +1837,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_81
+      name: enemy031_FadeToRight_1
       rect:
         serializedVersion: 2
         x: 368
@@ -1857,7 +1857,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_82
+      name: enemy031_FadeToRight_2
       rect:
         serializedVersion: 2
         x: 416
@@ -1877,7 +1877,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_83
+      name: enemy031_FadeToRight_3
       rect:
         serializedVersion: 2
         x: 464
@@ -1897,7 +1897,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_84
+      name: enemy031_Idle_0
       rect:
         serializedVersion: 2
         x: 320
@@ -1917,7 +1917,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_85
+      name: enemy031_Idle_1
       rect:
         serializedVersion: 2
         x: 368
@@ -1937,10 +1937,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_86
+      name: enemy031_Idle_2
       rect:
         serializedVersion: 2
-        x: 416
+        x: 417
         y: 320
         width: 48
         height: 48
@@ -1957,7 +1957,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_87
+      name: enemy031_Idle_3
       rect:
         serializedVersion: 2
         x: 464
@@ -1977,7 +1977,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_88
+      name: enemy030_Right_0
       rect:
         serializedVersion: 2
         x: 320
@@ -1997,7 +1997,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_89
+      name: enemy030_Right_1
       rect:
         serializedVersion: 2
         x: 368
@@ -2017,7 +2017,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_90
+      name: enemy030_Right_2
       rect:
         serializedVersion: 2
         x: 416
@@ -2037,7 +2037,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_91
+      name: enemy030_Right_3
       rect:
         serializedVersion: 2
         x: 464
@@ -2057,7 +2057,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_92
+      name: enemy030_FadeToRight_0
       rect:
         serializedVersion: 2
         x: 320
@@ -2077,7 +2077,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_93
+      name: enemy030_FadeToRight_1
       rect:
         serializedVersion: 2
         x: 368
@@ -2097,7 +2097,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_94
+      name: enemy030_FadeToRight_2
       rect:
         serializedVersion: 2
         x: 416
@@ -2117,7 +2117,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_95
+      name: enemy030_FadeToRight_3
       rect:
         serializedVersion: 2
         x: 464
@@ -2137,7 +2137,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_96
+      name: enemy030_Idle_0
       rect:
         serializedVersion: 2
         x: 320
@@ -2157,7 +2157,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_97
+      name: enemy030_Idle_1
       rect:
         serializedVersion: 2
         x: 368
@@ -2177,7 +2177,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_98
+      name: enemy030_Idle_2
       rect:
         serializedVersion: 2
         x: 416
@@ -2197,7 +2197,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_99
+      name: enemy030_Idle_3
       rect:
         serializedVersion: 2
         x: 464
@@ -2217,7 +2217,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_100
+      name: enemy021_Right_0
       rect:
         serializedVersion: 2
         x: 0
@@ -2237,7 +2237,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_101
+      name: enemy021_Right_1
       rect:
         serializedVersion: 2
         x: 48
@@ -2257,7 +2257,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_102
+      name: enemy021_Right_2
       rect:
         serializedVersion: 2
         x: 96
@@ -2277,7 +2277,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_103
+      name: enemy021_Right_3
       rect:
         serializedVersion: 2
         x: 144
@@ -2297,7 +2297,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_104
+      name: enemy021_FadeToRight_0
       rect:
         serializedVersion: 2
         x: 0
@@ -2317,7 +2317,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_105
+      name: enemy021_FadeToRight_1
       rect:
         serializedVersion: 2
         x: 48
@@ -2337,7 +2337,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_106
+      name: enemy021_FadeToRight_2
       rect:
         serializedVersion: 2
         x: 96
@@ -2357,7 +2357,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_107
+      name: enemy021_FadeToRight_3
       rect:
         serializedVersion: 2
         x: 144
@@ -2377,7 +2377,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_108
+      name: enemy021_Idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -2397,7 +2397,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_109
+      name: enemy021_Idle_1
       rect:
         serializedVersion: 2
         x: 48
@@ -2417,7 +2417,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_110
+      name: enemy021_Idle_2
       rect:
         serializedVersion: 2
         x: 96
@@ -2437,7 +2437,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_111
+      name: enemy021_Idle_3
       rect:
         serializedVersion: 2
         x: 144
@@ -2457,7 +2457,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_112
+      name: enemy020_Right_0
       rect:
         serializedVersion: 2
         x: 0
@@ -2477,7 +2477,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_113
+      name: enemy020_Right_1
       rect:
         serializedVersion: 2
         x: 48
@@ -2497,7 +2497,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_114
+      name: enemy020_Right_2
       rect:
         serializedVersion: 2
         x: 96
@@ -2517,7 +2517,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_115
+      name: enemy020_Right_3
       rect:
         serializedVersion: 2
         x: 144
@@ -2537,7 +2537,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_116
+      name: enemy020_FadeToRight_0
       rect:
         serializedVersion: 2
         x: 0
@@ -2557,7 +2557,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_117
+      name: enemy020_FadeToRight_1
       rect:
         serializedVersion: 2
         x: 48
@@ -2577,7 +2577,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_118
+      name: enemy020_FadeToRight_2
       rect:
         serializedVersion: 2
         x: 96
@@ -2597,7 +2597,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_119
+      name: enemy020_FadeToRight_3
       rect:
         serializedVersion: 2
         x: 144
@@ -2617,7 +2617,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_120
+      name: enemy020_Idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -2637,7 +2637,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_121
+      name: enemy020_Idle_1
       rect:
         serializedVersion: 2
         x: 48
@@ -2657,7 +2657,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_122
+      name: enemy020_Idle_2
       rect:
         serializedVersion: 2
         x: 96
@@ -2677,7 +2677,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: enemy_123
+      name: enemy020_Idle_3
       rect:
         serializedVersion: 2
         x: 144

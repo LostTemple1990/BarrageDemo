@@ -127,7 +127,8 @@ public class PlayerLaser : PlayerBulletBase
 
     public override void Update()
     {
-        if (!_isCached) Cache();
+        if (!_isCached)
+            Cache();
         base.Update();
         if ( _detectCollision )
         {
@@ -137,7 +138,8 @@ public class PlayerLaser : PlayerBulletBase
 
     public override void Render()
     {
-        if (_hitObject) CreateHitEffect(_bulletCfg.hitEffectParas);
+        if (_hitObject)
+            CreateHitEffect(_bulletCfg.hitEffectParas);
         RenderLaser();
         RenderPosition();
         OnFrameStarted();
@@ -184,7 +186,7 @@ public class PlayerLaser : PlayerBulletBase
         for (int i=0;i<enemyCount;i++)
         {
             enemy = enemyList[i];
-            if ( enemy != null && enemy.CanHit() )
+            if ( enemy != null && enemy.isAvailable && enemy.CanHit() )
             {
                 collDetParas = enemy.GetCollisionDetectParas();
                 // 计算vecA

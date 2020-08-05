@@ -32,10 +32,10 @@ SpriteAtlas:
       m_AndroidETC2FallbackOverride: 0
     packingParameters:
       serializedVersion: 2
-      padding: 4
+      padding: 2
       blockOffset: 1
       allowAlphaSplitting: 0
-      enableRotation: 1
+      enableRotation: 0
       enableTightPacking: 1
     variantMultiplier: 1
     packables:
@@ -74,6 +74,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3a2b6557db36ca5439524318962c8892, type: 3}
   - {fileID: 21300000, guid: 6ee62167a27d7b540a1d035ca5f3c143, type: 3}
   - {fileID: 21300000, guid: 0666e9f7b99793e4791c76861ee93960, type: 3}
+  - {fileID: 21300000, guid: 48d08828a82aa2e4c8a289084422cbd7, type: 3}
   - {fileID: 21300000, guid: 16eedd68d231bb042a0b321893a16d59, type: 3}
   - {fileID: 21300000, guid: 3f26d49811237a04db569bf9c19f6b73, type: 3}
   - {fileID: 21300000, guid: f3ac7eb8972a8f0428728344a70b5523, type: 3}
@@ -128,6 +129,7 @@ SpriteAtlas:
   - ReimuASubHit
   - pl00_18
   - Reimu_Idle_6
+  - ReimuAHSCEffect
   - pl00_27
   - Reimu_Idle_0
   - pl00_3

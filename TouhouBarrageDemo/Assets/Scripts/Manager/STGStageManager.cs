@@ -53,10 +53,19 @@ public class STGStageManager
     /// 上次跳过剧情对话的时间间隔
     /// </summary>
     private int _timeSinceLastSkip;
+    /// <summary>
+    /// 关卡信息
+    /// </summary>
+    private Dictionary<string, StageInfo> _stageInfos;
+    /// <summary>
+    /// 当前关卡信息
+    /// </summary>
+    private StageInfo _curStageInfo;
 
     public STGStageManager()
     {
         _curSpellCard = new SpellCard();
+        _stageInfos = new Dictionary<string, StageInfo>();
     }
 
     public void Init()
@@ -105,11 +114,25 @@ public class STGStageManager
     /// <param name="stageId"></param>
     public void LoadStage(string stageName)
     {
-        _curStageTask = InterpreterManager.GetInstance().CreateStageTask(stageName);
-        _state = StateUpdateStageTask;
-        _frameSinceStageStart = 0;
-        _isEnableToShoot = true;
-        _isInDialogMode = false;
+        StageInfo info;
+        if (_stageInfos.TryGetValue(stageName,out info))
+        {
+            _curStageInfo = info;
+            _curStageTask = InterpreterManager.GetInstance().CreateStageTask(info);
+            _state = StateUpdateStageTask;
+            _frameSinceStageStart = 0;
+            _isEnableToShoot = true;
+            _isInDialogMode = false;
+            // 预先加载BGM
+            if (info.bgm == "")
+                info.bgm = "bgm";
+            SoundManager.GetInstance().PauseAllSTGSound();
+            SoundManager.GetInstance().Play(info.bgm, 0.5f, false, true);
+        }
+        else
+        {
+            Logger.LogError("Stage info of " + stageName + " is not exist!");
+        }
     }
 
     /// <summary>
@@ -158,7 +181,29 @@ public class STGStageManager
     {
         if (_curStageTask.isFinish != true)
         {
-            InterpreterManager.GetInstance().CallTaskCoroutine(_curStageTask);
+            if (!_curStageTask.isStarted)
+            {
+                // 设置fixedFPS
+                if (_curStageInfo.fixedFps)
+                {
+                    Application.targetFrameRate = 90;
+                }
+                else
+                {
+                    Application.targetFrameRate = 60;
+                }
+                FPSController.GetInstance().Restart(_curStageInfo.fixedFps);
+                // bgm开始播放
+                //SoundManager.GetInstance().SetSoundPlayTime(_curStageInfo.bgm, 0);
+                SoundManager.GetInstance().ResumeAllSTGSound();
+                //SoundManager.GetInstance().PrintSoundTime("DarkRoad");
+                InterpreterManager.GetInstance().AddPara(ExtraTaskManager.GetInstance(), LuaParaType.LightUserData);
+                InterpreterManager.GetInstance().CallTaskCoroutine(_curStageTask, 1);
+            }
+            else
+            {
+                InterpreterManager.GetInstance().CallTaskCoroutine(_curStageTask);
+            }
         }
     }
 
@@ -303,6 +348,27 @@ public class STGStageManager
         CommandManager.GetInstance().RunCommand(CommandConsts.CreateDialogBox, datas);
     }
 
+    /// <summary>
+    /// 添加stage信息
+    /// </summary>
+    /// <param name="info"></param>
+    public void AddStageInfo(StageInfo info)
+    {
+        if (!_stageInfos.ContainsKey(info.stageName))
+        {
+            _stageInfos.Add(info.stageName, info);
+        }
+    }
+
+    /// <summary>
+    /// 获取当前关卡信息
+    /// </summary>
+    /// <returns></returns>
+    public StageInfo GetCurStageInfo()
+    {
+        return _curStageInfo;
+    }
+
     public void Clear()
     {
         _curSpellCard.Clear();
@@ -316,5 +382,6 @@ public class STGStageManager
             _isInDialogMode = false;
         }
         InterpreterManager.GetInstance().StopTaskThread(_curStageTask);
+        Application.targetFrameRate = 60;
     }
 }

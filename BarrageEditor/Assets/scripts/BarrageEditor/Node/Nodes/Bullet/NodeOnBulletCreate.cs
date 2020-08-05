@@ -37,10 +37,10 @@ namespace BarrageEditor
             // 则更新DefineList
             if ( attr != null && attr == GetAttrByIndex(ParamListAttrIndex) )
             {
-                if ((_parent as NodeDefineBullet).IsWatchingData)
+                if ((_parentNode as NodeDefineBullet).IsWatchingData)
                 {
                     // 参数列表发生变化，修改缓存
-                    string name = _parent.GetAttrByIndex(ParamListAttrIndex).GetValueString();
+                    string name = _parentNode.GetAttrByIndex(ParamListAttrIndex).GetValueString();
                     CustomDefine.ModifyDefineParaList(CustomDefineType.SimpleBullet, name, attr.GetValueString());
                 }
             }
@@ -59,7 +59,7 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            string name = _parent.GetAttrs()[0].GetValueString();
+            string name = _parentNode.GetAttrs()[0].GetValueString();
             return string.Format("CustomizedTable[\"{0}\"].Init = function(self{1})\n    self:SetStyleById({2})\n",
                 name,
                 _attrs[ParamListAttrIndex].GetValueString() == "" ? "" : "," + _attrs[ParamListAttrIndex].GetValueString(),

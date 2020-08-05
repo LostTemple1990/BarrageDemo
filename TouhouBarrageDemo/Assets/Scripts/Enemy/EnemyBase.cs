@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExecuter,ISTGMovable
+public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExecuter,ISTGMovable,ICollisionObject
 {
+    protected const eEliminateDef RawEliminateTypes = eEliminateDef.CodeRawEliminate | eEliminateDef.SpellCardFinish;
     /// <summary>
     /// 当前生命值
     /// </summary>
@@ -126,6 +127,11 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     /// 是否随着依附对象的旋转而改变角度
     /// </summary>
     protected bool _isFollowMasterRotation;
+    /// <summary>
+    /// 玩家机体引用
+    /// </summary>
+    protected CharacterBase _player;
+    protected int _instID;
 
     public EnemyBase()
     {
@@ -134,6 +140,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
 
     public virtual void Init()
     {
+        _instID = ObjectsPool.GetInstance().GetNewInstanceID();
         _isAvailable = true;
         _curDir = Consts.DIR_NULL;
         _isExplosive = false;
@@ -154,6 +161,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
         _attachmentsCount = 0;
         _isFollowingMasterContinuously = false;
         _isFollowMasterRotation = false;
+        _player = PlayerInterface.GetInstance().GetCharacter();
     }
 
     public virtual void Update()
@@ -264,9 +272,9 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     {
         if (!_isInteractive)
             return;
-        Vector2 playerPos = Global.PlayerPos;
-        if ( Mathf.Abs(playerPos.x-_curPos.x) <= _collisionHalfWidth + Global.PlayerCollisionVec.z &&
-            Mathf.Abs(playerPos.y - _curPos.y) <= _collisionHalfHeight + Global.PlayerCollisionVec.z )
+        Vector2 playerPos = _player.GetPosition();
+        if ( Mathf.Abs(playerPos.x-_curPos.x) <= _collisionHalfWidth + _player.collisionRadius &&
+            Mathf.Abs(playerPos.y - _curPos.y) <= _collisionHalfHeight + _player.collisionRadius)
         {
             //Logger.Log("Hit By Enemy!");
             PlayerInterface.GetInstance().GetCharacter().BeingHit();
@@ -320,7 +328,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     /// </summary>
     protected void OnEliminate(eEliminateDef eliminateType)
     {
-        if ( eliminateType != eEliminateDef.ForcedDelete && eliminateType != eEliminateDef.CodeRawEliminate )
+        if ( eliminateType != eEliminateDef.ForcedDelete && (eliminateType & RawEliminateTypes) != 0 )
         {
             if (_onEliminateFuncRef != 0)
             {
@@ -363,21 +371,6 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     protected virtual void RenderTransform()
     {
         _enemyTf.localPosition = _curPos;
-    }
-
-    public virtual CollisionDetectParas GetCollisionDetectParas(int index=0)
-    {
-        CollisionDetectParas paras = new CollisionDetectParas
-        {
-            type = CollisionDetectType.Rect,
-            centerPos = new Vector2(_curPos.x,_curPos.y),
-            halfWidth = _collisionHalfWidth,
-            halfHeight = _collisionHalfHeight,
-            radius = Mathf.Min(_collisionHalfWidth,_collisionHalfHeight),
-            nextIndex = -1,
-            angle = 0,
-        };
-        return paras;
     }
 
     /// <summary>
@@ -551,6 +544,8 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
             _attachmentsList.Clear();
             _attachmentsCount = 0;
         }
+        _player = null;
+        _instID = -1;
     }
 
     protected virtual void ClearTasks()
@@ -737,6 +732,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
 
     }
 
+    #region IAttachable,IAttachment
     public void AddAttachment(IAttachment attachment)
     {
         for (int i=0;i<_attachmentsCount;i++)
@@ -796,7 +792,9 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
             Eliminate(eliminateType);
         }
     }
+    #endregion
 
+    #region ISTGMovable
     public void DoStraightMove(float v, float angle)
     {
         _movableObj.DoStraightMove(v, angle);
@@ -826,4 +824,77 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     {
         _movableObj.SetPolarParas(radius, angle, deltaR, omega, centerPosX, centerPosY);
     }
+    #endregion
+
+    public virtual void PlayAni(AniActionType actionType, int dir = Consts.DIR_NULL, int duration = int.MaxValue)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public int GetInstanceID()
+    {
+        return _instID;
+    }
+
+    #region ICollisionObject
+
+    /// <summary>
+    /// 设置是否进行碰撞检测
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetDetectCollision(bool value)
+    {
+        _isInteractive = value;
+    }
+    /// <summary>
+    /// 是否进行碰撞检测
+    /// </summary>
+    /// <returns></returns>
+    public bool DetectCollision()
+    {
+        return _isInteractive;
+    }
+    /// <summary>
+    /// 检测两物体包围盒是否相交
+    /// <para>用于未知形状碰撞体之间的快速排斥试验</para>
+    /// <para>for example</para>
+    /// <para>玩家符卡与子弹之间的碰撞</para>
+    /// <para>玩家符卡与敌机子弹形状都不是固定的</para>
+    /// <para>因此会先进行快速排斥试验</para>
+    /// </summary>
+    /// <param name="lbPos">左下坐标</param>
+    /// <param name="rtPos">右上坐标</param>
+    /// <returns></returns>
+    public virtual bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
+    {
+        return true;
+    }
+    /// <summary>
+    /// 获取碰撞检测的参数
+    /// </summary>
+    /// <param name="index">对应的第n个碰撞盒的参数</param>
+    /// <returns></returns>
+    public virtual CollisionDetectParas GetCollisionDetectParas(int index = 0)
+    {
+        CollisionDetectParas paras = new CollisionDetectParas
+        {
+            type = CollisionDetectType.Rect,
+            centerPos = _curPos,
+            halfWidth = _collisionHalfWidth,
+            halfHeight = _collisionHalfHeight,
+            radius = Mathf.Min(_collisionHalfWidth, _collisionHalfHeight),
+            nextIndex = -1,
+            angle = 0,
+        };
+        return paras;
+    }
+    /// <summary>
+    /// 物体第n个碰撞盒被物体碰撞了
+    /// </summary>
+    /// <param name="index"></param>
+    public virtual void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObjectCollider)
+    {
+
+    }
+    #endregion
 }

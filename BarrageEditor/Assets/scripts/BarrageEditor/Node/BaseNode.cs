@@ -61,10 +61,26 @@ namespace BarrageEditor
         /// 子节点
         /// </summary>
         protected List<BaseNode> _childs;
-        protected BaseNode _parent;
+        /// <summary>
+        /// 父节点
+        /// </summary>
+        protected BaseNode _parentNode;
 
+        /// <summary>
+        /// 父容器
+        /// </summary>
+        protected RectTransform _parentTf;
+        /// <summary>
+        /// 节点itemGo
+        /// </summary>
         protected GameObject _nodeItemGo;
+        /// <summary>
+        /// 节点itemTf
+        /// </summary>
         protected RectTransform _nodeItemTf;
+        /// <summary>
+        ///  是否显示子节点的箭头图像
+        /// </summary>
         protected Image _expandImg;
         protected Image _functionImg;
         protected Image _selectedImg;
@@ -87,7 +103,9 @@ namespace BarrageEditor
         /// <para>默认为1</para>
         /// </summary>
         protected int _extraDepth;
-
+        /// <summary>
+        /// 当前节点是否存在
+        /// </summary>
         protected bool _isValid;
         /// <summary>
         /// 修改之前的参数值
@@ -105,9 +123,30 @@ namespace BarrageEditor
 
         public virtual void Init(RectTransform parentTf)
         {
+            _parentTf = parentTf;
+            CheckAndCreateItemGo();
+            _clickCount = 0;
+            CreateDefaultAttrs();
+            _preValues = new List<object>();
+            for (int i=0;i<_attrs.Count;i++)
+            {
+                _preValues.Add("");
+            }
+            IsExpand = true;
+            _isVisible = false;
+        }
+
+        /// <summary>
+        /// 检测并创建节点对应的Go
+        /// 在需要显示的时候才创建
+        /// </summary>
+        protected virtual void CheckAndCreateItemGo()
+        {
+            if (!_isValid || _nodeItemGo != null)
+                return;
             _nodeItemGo = ResourceManager.GetInstance().GetPrefab("Prefabs/Views", "MainView/NodeItem");
             _nodeItemTf = _nodeItemGo.GetComponent<RectTransform>();
-            _nodeItemTf.SetParent(parentTf, false);
+            _nodeItemTf.SetParent(_parentTf, false);
             _expandImg = _nodeItemTf.Find("ExpandImg").GetComponent<Image>();
             _expandImg.color = ExpandImg_NodeHasNoChild_Color;
             _functionImg = _nodeItemTf.Find("FunctionImg").GetComponent<Image>();
@@ -118,19 +157,10 @@ namespace BarrageEditor
             _clickGo = _nodeItemTf.Find("SelectImg/ClickImg").gameObject;
             // 事件监听
             UIEventListener.Get(_clickGo).AddClick(
-                ()=> {
+                () => {
                     OnSelected(true);
                 });
             UIEventListener.Get(_expandImg.gameObject).AddClick(OnExpandClickHander);
-            _clickCount = 0;
-            CreateDefaultAttrs();
-            _preValues = new List<object>();
-            for (int i=0;i<_attrs.Count;i++)
-            {
-                _preValues.Add("");
-            }
-            IsExpand = true;
-            _isVisible = false;
         }
 
         public virtual void CreateDefaultAttrs()
@@ -180,7 +210,7 @@ namespace BarrageEditor
                         hasAncestor = true;
                         break;
                     }
-                    parent = parent._parent;
+                    parent = parent._parentNode;
                 }
                 if (!hasAncestor)
                     return false;
@@ -282,13 +312,13 @@ namespace BarrageEditor
 
         public void SetParent(BaseNode parent)
         {
-            _parent = parent;
+            _parentNode = parent;
             UpdateNodeDepth();
         }
 
         protected void UpdateNodeDepth()
         {
-            _nodeDepth = _parent == null ? 0 : _parent.GetDepth() + 1;
+            _nodeDepth = _parentNode == null ? 0 : _parentNode.GetDepth() + 1;
             for (int i=0;i<_childs.Count;i++)
             {
                 _childs[i].UpdateNodeDepth();
@@ -344,7 +374,7 @@ namespace BarrageEditor
             UpdateDesc();
         }
 
-        public void RefreshPosition(ref int showIndex,BaseNode beginNode,BaseNode fromChild = null)
+        protected void RefreshPosition(ref int showIndex,BaseNode beginNode,BaseNode fromChild = null)
         {
             if (beginNode != this && fromChild == null)
             {
@@ -375,12 +405,12 @@ namespace BarrageEditor
                     _childs[i].RefreshPosition(ref showIndex,beginNode);
                 }
             }
-            if ( _parent != null )
+            if ( _parentNode != null )
             {
                 // 初始的搜索节点or是往上搜索的父节点
                 if ( beginNode == this || fromChild != null )
                 {
-                    _parent.RefreshPosition(ref showIndex, beginNode, this);
+                    _parentNode.RefreshPosition(ref showIndex, beginNode, this);
                 }
             }
         }
@@ -540,7 +570,7 @@ namespace BarrageEditor
 
         public BaseNode GetParentNode()
         {
-            return _parent;
+            return _parentNode;
         }
 
         public virtual string ToDesc()
@@ -712,18 +742,23 @@ namespace BarrageEditor
                 _attrs[i].UnbindItem();
             }
             _attrs.Clear();
-            UIEventListener.Get(_clickGo).RemoveAllEvents();
-            UIEventListener.Get(_expandImg.gameObject).RemoveAllEvents();
-            _parent = null;
-            GameObject.Destroy(_nodeItemGo);    
-            _nodeItemGo = null;
-            _nodeItemTf = null;
-            _expandImg = null;
-            _functionImg = null;
-            _selectedImg = null;
-            _clickGo = null;
-            _descText.UnregisterDirtyLayoutCallback(OnDescTextChanged);
-            _descText = null;
+            if (_nodeItemGo != null)
+            {
+                UIEventListener.Get(_clickGo).RemoveAllEvents();
+                UIEventListener.Get(_expandImg.gameObject).RemoveAllEvents();
+                _parentTf = null;
+                _nodeItemTf = null;
+                _expandImg = null;
+                _functionImg = null;
+                _selectedImg = null;
+                _clickGo = null;
+                _descText.UnregisterDirtyLayoutCallback(OnDescTextChanged);
+                _descText = null;
+                GameObject.Destroy(_nodeItemGo);
+                _nodeItemGo = null;
+            }
+            _parentNode = null;
+            _parentTf = null;
             _isValid = false;
         }
     }

@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using YKEngine;
 using UnityEngine.EventSystems;
-using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace BarrageEditor
 {
@@ -64,12 +64,17 @@ namespace BarrageEditor
                 CheckHotKeyCopy();
                 CheckHotKeyCut();
                 CheckHotKeyPaste();
+                CheckHotKeySave();
             }
         }
 
-        private void CheckSave()
+        [Conditional("Release")]
+        private void CheckHotKeySave()
         {
-
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                OnSaveClickHandler();
+            }
         }
 
         private void CheckHotKeyUndo()

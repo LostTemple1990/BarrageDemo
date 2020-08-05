@@ -86,8 +86,6 @@ public partial class LuaLib
             new NameFuncPair("EnemyAccMoveTowards",EnemyAccMoveTowards),
             new NameFuncPair("EnemyAccMoveTowardsWithLimitation",EnemyAccMoveTowardsWithLimitation),
             new NameFuncPair("EnemyMoveToPos",EnemyMoveToPos),
-            new NameFuncPair("GetEnemyPos", GetEnemyPos),
-            new NameFuncPair("SetEnemyPos", SetEnemyPos),
             new NameFuncPair("SetEnemyDropItems",SetEnemyDropItems),
             new NameFuncPair("DropItems",DropItems),
             new NameFuncPair("SetEnemyInteractive",SetEnemyInteractive),
@@ -263,6 +261,8 @@ public partial class LuaLib
             new NameFuncPair("CreateDialogBox",CreateDialogBox),
             //Debug
             new NameFuncPair("PrintCurFrame",LogFrameSinceStageStart),
+            new NameFuncPair("PrintSoundTime",PrintSoundTime),
+            new NameFuncPair("SetSoundPlayTime",SetSoundPlayTime),
         };
         luaState.PushGlobalTable();
         luaState.L_SetFuncs(define, 0);
@@ -275,6 +275,8 @@ public partial class LuaLib
     {
         UniLua.Utl.RegisterGetLightUserDataPropValueFunctionDelegate(GetLightUserDataField);
         UniLua.Utl.RegisterSetLightUserDataPropValueFunctionDelegate(SetLightUserDataField);
+
+        StageTaskLuaInterface.Init();
 
         EnemySimpleBulletLuaInterface.Init();
         EnemyLaserLuaInterface.Init();
@@ -296,6 +298,9 @@ public partial class LuaLib
     {
         switch (userData.GetType().Name)
         {
+            //Stage
+            case "ExtraTaskManager":
+                return StageTaskLuaInterface.Get(userData, key, out res);
             // Character
             case "Reimu":
                 return ReimuALuaInterface.Get(userData, key, out res);
@@ -333,6 +338,9 @@ public partial class LuaLib
     {
         switch (userData.GetType().Name)
         {
+            //Stage
+            case "ExtraTaskManager":
+                return StageTaskLuaInterface.Set(userData, key, ref value);
             // Character
             case "Reimu":
                 return ReimuALuaInterface.Set(userData, key, ref value);
@@ -350,7 +358,7 @@ public partial class LuaLib
             case "NormalEnemy":
                 return NormalEnemyLuaInterface.Set(userData, key, ref value);
             case "Boss":
-                return NormalEnemyLuaInterface.Set(userData, key, ref value);
+                return BossLuaInterface.Set(userData, key, ref value);
             case "STGSpriteEffect":
                 return STGObjectLuaInterface.Set(userData, key, ref value);
             // Collider
@@ -1197,6 +1205,12 @@ public partial class LuaLib
 
     public static int Wait(ILuaState luaState)
     {
+        int top = luaState.GetTop();
+        if (top == 1 && luaState.ToInteger(-1) == 0)
+        {
+            luaState.PushBoolean(true);
+            return 1;
+        }
         return luaState.Yield(luaState.GetTop());
     }
 

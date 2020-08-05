@@ -51,6 +51,9 @@ public class GameMain : MonoBehaviour
 
     private void Init()
     {
+#if Release
+        Logger.Open();
+#endif
         CommandManager.GetInstance().Init();
         DataManager.GetInstance().Init();
         ResourceManager.GetInstance().Init();
@@ -58,19 +61,21 @@ public class GameMain : MonoBehaviour
         TimerManager.GetInstance().Init();
         TweenManager.GetInstance().Init();
         UIManager.GetInstance().Init();
+
         _fsm = new GameStateMachine();
         _fsm.Init();
+        _fsm.AddState((int)eGameState.Preload, new StatePreload());
         _fsm.AddState((int)eGameState.STG, new StateSTGMain());
         _fsm.AddState((int)eGameState.Title, new StateTitle());
-        STGData data = new STGData()
-        {
-            stageName = "Stage1",
-            characterIndex = 1,
-            isReplay = false,
-        };
-        _fsm.SetNextStateId((int)eGameState.STG, data);
-        ReplayManager.GetInstance().Init();
-        //_fsm.SetNextStateId((int)eGameState.Title);
+
+        _fsm.SetNextStateId((int)eGameState.Preload);
         //Application.targetFrameRate = 60;
     }
+
+#if Release
+    public void OnApplicationFocus(bool focus)
+    {
+        Global.IsApplicationFocus = focus;
+    }
+#endif
 }

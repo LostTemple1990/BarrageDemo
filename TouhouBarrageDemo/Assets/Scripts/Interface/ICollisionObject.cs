@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ICollisionObject
+public interface ICollisionObject : IPosition
 {
     /// <summary>
     /// 设置是否进行碰撞检测

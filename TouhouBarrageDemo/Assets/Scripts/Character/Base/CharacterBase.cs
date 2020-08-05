@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterBase : IAffectedMovableObject
+public class CharacterBase : IAffectedMovableObject,ICollisionObject
 {
     protected double _hitRadius = 0d;
     protected GameObject _character;
@@ -268,6 +268,7 @@ public class CharacterBase : IAffectedMovableObject
             {
                 _isCastingBomb = false;
                 _bomb.Clear();
+                _bomb = null;
             }
         }
         UpdateSubWeapons();
@@ -552,7 +553,6 @@ public class CharacterBase : IAffectedMovableObject
         if ( PlayerInterface.GetInstance().CastSpellCard() )
         {
             OnCastSpellCard();
-            _bomb.Start();
             _curBombCD = _bombCoolDown;
             SetInvincible(true, _bombInvincibleDuration);
             _isCastingBomb = true;
@@ -760,8 +760,11 @@ public class CharacterBase : IAffectedMovableObject
         _charAniSp = null;
         _isCastingBomb = false;
         // B
-        _bomb.Clear();
-        _bomb = null;
+        if (_bomb != null)
+        {
+            _bomb.Clear();
+            _bomb = null;
+        }
         // 副武器
         _subLayerTrans = null;
         for (int i=0;i<_subWeapons.Length;i++)
@@ -897,6 +900,7 @@ public class CharacterBase : IAffectedMovableObject
 
     public void BeingHit()
     {
+        return;
         if ( !_isInvincible )
         {
             _nextState = eCharacterState.Dying;
@@ -954,4 +958,64 @@ public class CharacterBase : IAffectedMovableObject
     {
         get { return _collisionRadius; }
     }
+
+    #region ICollisionObject
+
+    /// <summary>
+    /// 设置是否进行碰撞检测
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetDetectCollision(bool value)
+    {
+        //_isInteractive = value;
+    }
+    /// <summary>
+    /// 是否进行碰撞检测
+    /// </summary>
+    /// <returns></returns>
+    public bool DetectCollision()
+    {
+        return true;
+    }
+    /// <summary>
+    /// 检测两物体包围盒是否相交
+    /// <para>用于未知形状碰撞体之间的快速排斥试验</para>
+    /// <para>for example</para>
+    /// <para>玩家符卡与子弹之间的碰撞</para>
+    /// <para>玩家符卡与敌机子弹形状都不是固定的</para>
+    /// <para>因此会先进行快速排斥试验</para>
+    /// </summary>
+    /// <param name="lbPos">左下坐标</param>
+    /// <param name="rtPos">右上坐标</param>
+    /// <returns></returns>
+    public virtual bool CheckBoundingBoxesIntersect(Vector2 lbPos, Vector2 rtPos)
+    {
+        return true;
+    }
+    /// <summary>
+    /// 获取碰撞检测的参数
+    /// </summary>
+    /// <param name="index">对应的第n个碰撞盒的参数</param>
+    /// <returns></returns>
+    public virtual CollisionDetectParas GetCollisionDetectParas(int index = 0)
+    {
+        CollisionDetectParas paras = new CollisionDetectParas
+        {
+            type = CollisionDetectType.Circle,
+            centerPos = _curPos,
+            radius = _collisionRadius,
+            nextIndex = -1,
+            angle = 0,
+        };
+        return paras;
+    }
+    /// <summary>
+    /// 物体第n个碰撞盒被物体碰撞了
+    /// </summary>
+    /// <param name="index"></param>
+    public virtual void CollidedByObject(int n = 0, eEliminateDef eliminateDef = eEliminateDef.HitObjectCollider)
+    {
+
+    }
+    #endregion
 }

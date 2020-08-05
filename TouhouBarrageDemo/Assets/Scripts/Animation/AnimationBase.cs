@@ -127,14 +127,19 @@ public class AnimationBase
         return frame;
     }
 
-    public virtual bool Play(AniActionType type,int dir,int interval,bool isLoop=true,int loopCount=int.MaxValue)
+    protected bool Play(AniActionType type,int dir,int interval,bool isLoop=true,int loopCount=int.MaxValue)
     {
+        Sprite[] aniSpList = _cache.GetSprites(GetPlayString(type, dir));
+        if (aniSpList.Length == 0)
+        {
+            return false;
+        }
         _curAction = type;
         _curDir = dir;
         _frameInterval = interval;
         _isPlaying = true;
         _curFrame = 0;
-        _spList = _cache.GetSprites(GetPlayString(type,dir));
+        _spList = aniSpList;
         _totalFrame = _spList.Length;
         _isLoop = isLoop;
         _curLoopCount = 0;
@@ -145,15 +150,7 @@ public class AnimationBase
     public virtual bool Play(string aniName,AniActionType type, int dir, int interval, bool isLoop = true, int loopCount = int.MaxValue)
     {
         _cache = AnimationManager.GetInstance().GetAnimationCache(aniName);
-        _frameInterval = interval;
-        _isPlaying = true;
-        _curFrame = 0;
-        _spList = _cache.GetSprites(GetPlayString(type, dir));
-        _totalFrame = _spList.Length;
-        _isLoop = isLoop;
-        _curLoopCount = 0;
-        _totalLoopCount = loopCount;
-        return true;
+        return Play(type, dir, interval, isLoop, loopCount);
     }
 
     /// <summary>
@@ -168,6 +165,10 @@ public class AnimationBase
         if (type == AniActionType.Idle)
         {
             key = "Idle";
+        }
+        else if (type == AniActionType.Cast)
+        {
+            key = "Cast";
         }
         else
         {

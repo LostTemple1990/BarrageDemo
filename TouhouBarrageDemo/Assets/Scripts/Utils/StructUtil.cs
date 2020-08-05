@@ -93,10 +93,11 @@ public enum LuaOperationStatus
 
 public enum AniActionType : byte
 {
-    Idle = 0,
-    Move = 1,
-    FadeToMove = 2,
-    Cast = 3,
+    Null,
+    Idle = 1,
+    Move = 2,
+    FadeToMove = 3,
+    Cast = 4,
 }
 
 public struct BossRefData
@@ -148,23 +149,27 @@ public enum eEliminateDef : int
     /// <summary>
     /// 玩家死亡触发的消除
     /// </summary>
-    PlayerDead = 2,
+    PlayerDead = 2 << 1,
     /// <summary>
     /// 击中玩家触发的消除
     /// </summary>
-    HitPlayer = 4,
+    HitPlayer = 2 << 2,
     /// <summary>
     /// 玩家子弹击中触发的消除(针对敌机)
     /// </summary>
-    PlayerBullet = 8,
+    PlayerBullet = 2 << 3,
     /// <summary>
     /// 击中某些物体触发的消除
     /// </summary>
-    HitObjectCollider = 16,
+    HitObjectCollider = 2 << 4,
     /// <summary>
     /// 引力场
     /// </summary>
-    GravitationField = 32,
+    GravitationField = 2 << 5,
+    /// <summary>
+    /// 击破符卡消除
+    /// </summary>
+    SpellCardFinish = 2 << 6,
     /// <summary>
     /// 直接调用代码触发的消除
     /// </summary>
@@ -191,9 +196,22 @@ public enum ePlayMode : int
     PingPong = 2,
 }
 
+/// <summary>
+/// 游戏总状态机
+/// </summary>
 public enum eGameState : int
 {
-    Title = 1,
+    /// <summary>
+    /// 预加载
+    /// </summary>
+    Preload = 1,
+    /// <summary>
+    /// 主界面
+    /// </summary>
+    Title = 2,
+    /// <summary>
+    /// STG
+    /// </summary>
     STG = 3,
 }
 
@@ -394,6 +412,27 @@ public struct STGData
 }
 
 /// <summary>
+/// 关卡信息
+/// </summary>
+public struct StageInfo
+{
+    public string stageName;
+    /// <summary>
+    /// 背景
+    /// </summary>
+    public string bg;
+    /// <summary>
+    /// 背景音乐
+    /// </summary>
+    public string bgm;
+    public int taskFuncRef;
+    /// <summary>
+    /// 是否修正fps
+    /// </summary>
+    public bool fixedFps;
+}
+
+/// <summary>
 /// Replay的基础信息
 /// </summary>
 [Serializable]
@@ -511,3 +550,10 @@ public struct ItemWithFramentsCounter
     }
 }
 #endregion
+
+
+public enum eSTGCharacter : byte
+{
+    Reimu = 0,
+    Marisa = 1,
+}

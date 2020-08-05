@@ -1581,7 +1581,14 @@ namespace UniLua
 			if( index > 0 )
 			{
 				var addrIndex = ci.FuncIndex + index;
-				Utl.ApiCheck( index <= ci.TopIndex - (ci.FuncIndex + 1), "unacceptable index" );
+#if ShowLuaDebugStackTrace
+                if (!(index <= ci.TopIndex - (ci.FuncIndex + 1)))
+                {
+                    G_RunError("unacceptable index");
+                }
+#else
+                Utl.ApiCheck( index <= ci.TopIndex - (ci.FuncIndex + 1), "unacceptable index" );
+#endif
 				if( addrIndex >= Top.Index ) {
 					addr = default(StkId);
 					return false;
@@ -1592,7 +1599,14 @@ namespace UniLua
 			}
 			else if( index > LuaDef.LUA_REGISTRYINDEX )
 			{
-				Utl.ApiCheck( index != 0 && -index <= Top.Index - (ci.FuncIndex + 1), "invalid index" );
+#if ShowLuaDebugStackTrace
+                if (!(index != 0 && -index <= Top.Index - (ci.FuncIndex + 1)))
+                {
+                    G_RunError("invalid index");
+                }
+#else
+                Utl.ApiCheck( index != 0 && -index <= Top.Index - (ci.FuncIndex + 1), "invalid index" );
+#endif
 				addr = Stack[Top.Index + index];
 				return true;
 			}

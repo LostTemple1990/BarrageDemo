@@ -54,6 +54,97 @@ namespace BarrageEditor
                 resName = "enemy002",
             };
             _styleCfgList.Add(cfg);
+
+            cfg = new EnemyStyleCfg
+            {
+                group = 1,
+                styleId = 100003,
+                name = "Style1",
+                packName = "STGEnemyAtlas",
+                resName = "enemy003",
+            };
+            _styleCfgList.Add(cfg);
+
+            cfg = new EnemyStyleCfg
+            {
+                group = 1,
+                styleId = 100004,
+                name = "Style1",
+                packName = "STGEnemyAtlas",
+                resName = "enemy004",
+            };
+            _styleCfgList.Add(cfg);
+
+            cfg = new EnemyStyleCfg
+            {
+                group = 1,
+                styleId = 100005,
+                name = "Style1",
+                packName = "STGEnemyAtlas",
+                resName = "enemy005",
+            };
+            _styleCfgList.Add(cfg);
+
+            cfg = new EnemyStyleCfg
+            {
+                group = 1,
+                styleId = 100006,
+                name = "Style1",
+                packName = "STGEnemyAtlas",
+                resName = "enemy006",
+            };
+            _styleCfgList.Add(cfg);
+
+            cfg = new EnemyStyleCfg
+            {
+                group = 1,
+                styleId = 100007,
+                name = "Style1",
+                packName = "STGEnemyAtlas",
+                resName = "enemy007",
+            };
+            _styleCfgList.Add(cfg);
+            #endregion
+            #region 中型妖精
+            cfg = new EnemyStyleCfg
+            {
+                group = 1,
+                styleId = 100030,
+                name = "Style1",
+                packName = "STGEnemyAtlas",
+                resName = "enemy030",
+            };
+            _styleCfgList.Add(cfg);
+
+            cfg = new EnemyStyleCfg
+            {
+                group = 1,
+                styleId = 100031,
+                name = "Style1",
+                packName = "STGEnemyAtlas",
+                resName = "enemy031",
+            };
+            _styleCfgList.Add(cfg);
+
+            cfg = new EnemyStyleCfg
+            {
+                group = 1,
+                styleId = 100040,
+                name = "Style1",
+                packName = "STGEnemyAtlas",
+                resName = "enemy040",
+            };
+            _styleCfgList.Add(cfg);
+
+            cfg = new EnemyStyleCfg
+            {
+                group = 1,
+                styleId = 100041,
+                name = "Style1",
+                packName = "STGEnemyAtlas",
+                resName = "enemy041",
+            };
+            _styleCfgList.Add(cfg);
             #endregion
             #region 大妖精
             cfg = new EnemyStyleCfg
@@ -63,6 +154,16 @@ namespace BarrageEditor
                 name = "Style1",
                 packName = "STGEnemyAtlas",
                 resName = "enemy010",
+            };
+            _styleCfgList.Add(cfg);
+
+            cfg = new EnemyStyleCfg
+            {
+                group = 1,
+                styleId = 100011,
+                name = "Style1",
+                packName = "STGEnemyAtlas",
+                resName = "enemy011",
             };
             _styleCfgList.Add(cfg);
             #endregion

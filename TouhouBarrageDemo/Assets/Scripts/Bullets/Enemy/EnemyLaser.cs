@@ -582,9 +582,11 @@ public class EnemyLaser : EnemyBulletBase
     {
         CollisionDetectParas paras = new CollisionDetectParas();
         paras.nextIndex = -1;
-        paras.type = CollisionDetectType.Rect;
-        paras.halfWidth = _laserHalfWidth * _collisionFactor;
-        paras.halfHeight = _laserHalfLength;
+        paras.type = CollisionDetectType.ItalicRect;
+        //paras.halfWidth = _laserHalfWidth * _collisionFactor;
+        //paras.halfHeight = _laserHalfLength;
+        paras.halfWidth = _laserHalfLength;
+        paras.halfHeight = _laserHalfWidth * _collisionFactor;
         paras.angle = _curRotation;
         // 计算矩形中心坐标
         Vector2 center = new Vector2();

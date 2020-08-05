@@ -66,4 +66,6 @@ public class Global
     /// 测试的Stage名称
     /// </summary>
     public static string DebugStageName = "";
+
+    public static bool IsApplicationFocus = true;
 }

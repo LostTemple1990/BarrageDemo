@@ -467,7 +467,7 @@ public class STGDialogView : ViewBase, ICommand
         _containerGo = _containerTf.gameObject; ;
     }
 
-    public override void OnShow(object data)
+    protected override void OnShow(object data)
     {
         base.OnShow(data);
         // 注册事件监听
@@ -658,7 +658,7 @@ public class STGDialogView : ViewBase, ICommand
         _timeSinceStarted++;
     }
 
-    public override void OnHide()
+    protected override void OnHide()
     {
         ClearAllItems();
         CommandManager.GetInstance().Remove(CommandConsts.StartDialog, this);

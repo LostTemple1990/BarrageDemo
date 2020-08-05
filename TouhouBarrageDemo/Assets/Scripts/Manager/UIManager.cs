@@ -51,6 +51,7 @@ public class UIManager {
         _stgRoot = GameObject.Find("GameMainCanvas");
         _stgLayerTf = _stgRoot.transform.Find("GameLayer");
         _stgCamera = _stgRoot.transform.Find("GameCamera").GetComponent<Camera>();
+        _stgCamera.cullingMask = 0;
         // STG里面各个层级
         _layersMap = new Dictionary<LayerId, Transform>();
         _layersMap.Add(LayerId.STGBottomView, _stgLayerTf.Find("STGBottomViewLayer"));
@@ -198,6 +199,16 @@ public class UIManager {
         }
     }
 
+    public void DestroyView(string name)
+    {
+        ViewBase view;
+        if (_viewsMap.TryGetValue(name, out view))
+        {
+            view.Destroy();
+            _viewsMap.Remove(name);
+        }
+    }
+
     public void Update()
     {
         bool needClear = false;
@@ -266,7 +277,7 @@ public class UIManager {
 
     public Vector2 GetUIRootSize()
     {
-        return _uiRootTf.sizeDelta;
+        return _uiRootTf.rect.size;
     }
 }
 

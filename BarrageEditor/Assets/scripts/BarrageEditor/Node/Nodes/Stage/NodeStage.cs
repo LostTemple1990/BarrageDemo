@@ -20,6 +20,18 @@ namespace BarrageEditor
             nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
             nodeAttr.Init(this, "Name", null);
             _attrs.Add(nodeAttr);
+            // 背景
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr.Init(this, "Background", null);
+            _attrs.Add(nodeAttr);
+            // bgm
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Any);
+            nodeAttr.Init(this, "BGM", null);
+            _attrs.Add(nodeAttr);
+            // FPS同步
+            nodeAttr = NodeManager.CreateNodeAttr(NodeAttrType.Bool);
+            nodeAttr.Init(this, "FixedFPS", null);
+            _attrs.Add(nodeAttr);
         }
 
         public override string GetNodeName()
@@ -34,7 +46,13 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            return string.Format("Stage[\"{0}\"] = function()\n", GetAttrByIndex(0).GetValueString());
+            string ret = string.Format("Stage[\"{0}\"] = {{ bg=\"{1}\",bgm=\"{2}\",fixedFPS={3} }}\n",
+                GetAttrByIndex(0).GetValueString(),
+                GetAttrByIndex(1).GetValueString(),
+                GetAttrByIndex(2).GetValueString(),
+                GetAttrByIndex(3).GetValueString());
+            ret += string.Format("Stage[\"{0}\"].task = function(self)\n", GetAttrByIndex(0).GetValueString());
+            return ret;
         }
 
         public override string ToLuaFoot()

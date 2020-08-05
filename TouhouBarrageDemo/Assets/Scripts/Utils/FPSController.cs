@@ -103,7 +103,8 @@ public class FPSController
 
     public void Restart(bool fixedFPS)
     {
-        _isFirstFrame = true;
+        //_isFirstFrame = true;
+        _lastFrameTicks = Stopwatch.GetTimestamp();
         _fixedFPS = fixedFPS;
     }
 }

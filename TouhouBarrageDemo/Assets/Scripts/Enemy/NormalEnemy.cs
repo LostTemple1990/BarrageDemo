@@ -225,4 +225,9 @@ public class NormalEnemy : EnemyBase
         }
         return false;
     }
+
+    public override void PlayAni(AniActionType actionType, int dir = Consts.DIR_NULL, int duration = int.MaxValue)
+    {
+        _enemyObj.DoAction(actionType, dir, duration);
+    }
 }

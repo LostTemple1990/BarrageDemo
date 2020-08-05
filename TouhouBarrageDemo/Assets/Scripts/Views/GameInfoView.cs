@@ -157,7 +157,7 @@ public class GameInfoView : ViewBase,ICommand
         //_bgmText = _viewTf.Find("BGMText").GetComponent<Text>();
     }
 
-    public override void OnShow(object data)
+    protected override void OnShow(object data)
     {
         CommandManager.GetInstance().Register(CommandConsts.NewSpellCardTime, this);
         CommandManager.GetInstance().Register(CommandConsts.UpdateSpellCardTime, this);
@@ -172,7 +172,7 @@ public class GameInfoView : ViewBase,ICommand
         UIManager.GetInstance().RegisterViewUpdate(this);
     }
 
-    public override void OnHide()
+    protected override void OnHide()
     {
         CommandManager.GetInstance().Remove(CommandConsts.NewSpellCardTime, this);
         CommandManager.GetInstance().Remove(CommandConsts.UpdateSpellCardTime, this);

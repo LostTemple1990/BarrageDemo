@@ -3,6 +3,11 @@ using System.Collections;
 
 public class WindowName
 {
+    /// <summary>
+    /// 游戏预加载界面
+    /// </summary>
+    public const string PreloadView = "PreloadView";
+
     public const string GameInfoView = "GameInfoView";
     public const string GameMainView = "GameMainView";
     public const string STGBottomView = "STGBottomView";

@@ -79,7 +79,7 @@ public class PlayerBulletBase : BulletBase
         effect.SetSprite(effectParas.atlasName, effectParas.spriteName, effectParas.blendMode, effectParas.layerId, true);
         List<float[]> parasList = effectParas.effectParasList;
         int listCount = parasList.Count;
-        for (int i=0;i<listCount;i++)
+        for (int i = 0; i < listCount; i++)
         {
             SetSpriteEffectParas(effect, parasList[i]);
         }

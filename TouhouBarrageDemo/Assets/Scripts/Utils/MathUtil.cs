@@ -65,6 +65,22 @@ public class MathUtil
     }
 
     /// <summary>
+    /// 检测两矩形是否碰撞
+    /// </summary>
+    /// <param name="p0"></param>
+    /// <param name="a0">矩形半宽</param>
+    /// <param name="b0">矩形半高</param>
+    /// <param name="p1"></param>
+    /// <param name="a1"></param>
+    /// <param name="b1"></param>
+    /// <returns></returns>
+    public static bool DetectCollisionBetweenAABBAndAABB(Vector2 p0,float a0,float b0,Vector2 p1,float a1,float b1)
+    {
+        Vector2 dp = p0 - p1;
+        return Mathf.Abs(dp.x) <= a0 + a1 && Mathf.Abs(dp.y) <= b0 + b1;
+    }
+
+    /// <summary>
     /// 检测圆和斜向矩形的碰撞
     /// </summary>
     /// <param name="circlePos"></param>
@@ -398,7 +414,7 @@ public class MathUtil
 
     #endregion
 
-    #region 获取插值的函数
+#region 获取插值的函数
     public delegate float InterpolationFloatFunc(float start, float end, float time, float duration);
     public delegate Vector2 InterpolationVec2Func(Vector2 start, Vector2 end, float time, float duration);
     public delegate Vector3 InterpolationVec3Func(Vector3 start, Vector3 end, float time, float duration);

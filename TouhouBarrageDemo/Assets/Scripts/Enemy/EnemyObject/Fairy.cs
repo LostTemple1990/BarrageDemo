@@ -41,14 +41,15 @@ public class Fairy : EnemyObjectBase
 
     public override void DoAction(AniActionType actType, int dir, int duration=Consts.MaxDuration)
     {
-        if ( actType == AniActionType.Move )
+        if (_enemyAni.Play(actType, dir))
         {
-            _isMoving = true;
-            _moveTime = 0;
-            _moveDuration = duration;
+            if (actType == AniActionType.Move)
+            {
+                _isMoving = true;
+                _moveTime = 0;
+                _moveDuration = duration;
+            }
         }
-        //dir = actType == AniActionType.Idle ? Consts.DIR_NULL : dir;
-        _enemyAni.Play(actType, dir);
     }
 
     public override void SetToPosition(float posX, float posY)

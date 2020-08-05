@@ -67,7 +67,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _PlayerX: 25.61
+    - _PlayerX: 0
     - _PlayerY: 0
     - _STGHeight: 448
     - _STGWidth: 384

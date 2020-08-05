@@ -24,24 +24,16 @@ public class AnimationCharacter : AnimationBase
     public virtual bool Play(string aniId, AniActionType type, int dir)
     {
         _cfg = AnimationManager.GetInstance().GetUnitAniCfgById(aniId);
-        // 设置当前播放的动作类型
-        _curAction = type;
-        _curDir = type==AniActionType.Idle ? Consts.DIR_NULL : dir;
+        if (_cfg == null)
+            return false;
         _cache = AnimationManager.GetInstance().GetAnimationCache(_cfg.aniName);
-        _isPlaying = true;
-        _curFrame = 0;
-        string key = GetPlayString(type, dir);
-        _spList = _cache.GetSprites(key);
-        _cfg.aniIntervalMap.TryGetValue(key, out _frameInterval);
-        _totalFrame = _spList.Length;
-        _isLoop = true;
-        _curLoopCount = 1;
-        _totalLoopCount = int.MaxValue;
-        return true;
+        return Play(type, dir);
     }
 
-    public virtual bool Play(AniActionType type, int dir)
+    public virtual bool Play(AniActionType type, int dir, int loopCount=int.MaxValue)
     {
+        if (_cfg == null)
+            return false;
         if ( type == AniActionType.Idle || type == AniActionType.Cast )
         {
             dir = Consts.DIR_NULL;
@@ -68,17 +60,21 @@ public class AnimationCharacter : AnimationBase
         if ( type == AniActionType.Move && _curAction != AniActionType.FadeToMove )
         {
             key = GetPlayString(AniActionType.FadeToMove, dir);
-            SetPlayCompleteCallBack(FadeCompleteCBFunc,dir);
             _cfg.aniIntervalMap.TryGetValue(key, out interval);
-            Play(AniActionType.FadeToMove, dir, interval, false, 1);
+            if (Play(AniActionType.FadeToMove, dir, interval, false, 1))
+            {
+                SetPlayCompleteCallBack(FadeCompleteCBFunc, dir);
+                return true;
+            }
+            else
+            {
+                return Play(AniActionType.Move, dir, interval, true);
+            }
             //Logger.Log("AnimationPlay FadeToMove dir = " + dir);
-            return true;
         }
         key = GetPlayString(type, dir);
         _cfg.aniIntervalMap.TryGetValue(key, out interval);
-        Play(type, dir, interval, true, int.MaxValue);
-        //Logger.Log("AnimationPlay " + type + " dir = " + dir);
-        return true;
+        return Play(type, dir, interval, true, int.MaxValue);
     }
 
     protected void FadeCompleteCBFunc(object cbData)

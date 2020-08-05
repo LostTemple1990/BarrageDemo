@@ -94,8 +94,8 @@ public class GravitationFieldRect : ObjectColliderBase , IGravitationField
     {
         Vector2 playerPos = Global.PlayerPos;
         float playerCollisionRadius = Global.PlayerCollisionVec.z;
-        if (Mathf.Abs(playerPos.x - _curPosX) <= _halfWidth + playerCollisionRadius &&
-            Mathf.Abs(playerPos.y - _curPosY) <= _halfHeight + playerCollisionRadius)
+        if (Mathf.Abs(playerPos.x - _curPos.x) <= _halfWidth + playerCollisionRadius &&
+            Mathf.Abs(playerPos.y - _curPos.y) <= _halfHeight + playerCollisionRadius)
         {
             CharacterBase player = PlayerInterface.GetInstance().GetCharacter();
             CollidedByObject(player);
@@ -121,8 +121,8 @@ public class GravitationFieldRect : ObjectColliderBase , IGravitationField
             {
                 para = enemy.GetCollisionDetectParas(0);
                 // 敌机全部使用矩形判定
-                dx = Mathf.Abs(_curPosX - para.centerPos.x);
-                dy = Mathf.Abs(_curPosY - para.centerPos.y);
+                dx = Mathf.Abs(_curPos.x - para.centerPos.x);
+                dy = Mathf.Abs(_curPos.y - para.centerPos.y);
                 if (dx <= _halfWidth + para.halfWidth && dy <= _halfHeight + para.halfHeight)
                 {
                     CollidedByObject(enemy);
@@ -134,8 +134,8 @@ public class GravitationFieldRect : ObjectColliderBase , IGravitationField
     protected override void CheckCollisionWithEnemyBullet()
     {
         // 计算碰撞盒参数
-        Vector2 lbPos = new Vector2(_curPosX - _halfWidth, _curPosY - _halfHeight);
-        Vector2 rtPos = new Vector2(_curPosX + _halfWidth, _curPosY + _halfHeight);
+        Vector2 lbPos = new Vector2(_curPos.x - _halfWidth, _curPos.y - _halfHeight);
+        Vector2 rtPos = new Vector2(_curPos.x + _halfWidth, _curPos.y + _halfHeight);
         int i, bulletCount;
         List<EnemyBulletBase> bulletList = BulletsManager.GetInstance().GetEnemyBulletList();
         EnemyBulletBase bullet;
@@ -189,8 +189,8 @@ public class GravitationFieldRect : ObjectColliderBase , IGravitationField
         if (collParas.type == CollisionDetectType.Circle)
         {
             // 子弹为圆形判定，方形判定来检测
-            float dx = Mathf.Abs(_curPosX - collParas.centerPos.x);
-            float dy = Mathf.Abs(_curPosY - collParas.centerPos.y);
+            float dx = Mathf.Abs(_curPos.x - collParas.centerPos.x);
+            float dy = Mathf.Abs(_curPos.y - collParas.centerPos.y);
             // 检测该碰撞剧情与方形是否相交
             if (dx <= _halfWidth + collParas.radius && dy <= _halfHeight + collParas.radius)
             {

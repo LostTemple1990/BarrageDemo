@@ -1,8 +1,22 @@
 <Data>
-	<Enemy id="100000" name="enemy000" type="1" aniId="0001" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
-	<Enemy id="100001" name="enemy001" type="1" aniId="0002" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
-	<Enemy id="100002" name="enemy002" type="1" aniId="0003" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
-	<Enemy id="100010" name="enemy010" type="1" aniId="0010" collHW="32" collHH="32" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
+	<!--32*32小妖精-->
+	<Enemy id="100000" name="enemy000" type="1" aniId="0000" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
+	<Enemy id="100001" name="enemy001" type="1" aniId="0001" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
+	<Enemy id="100002" name="enemy002" type="1" aniId="0002" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
+	<Enemy id="100003" name="enemy003" type="1" aniId="0003" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
+	<Enemy id="100004" name="enemy004" type="1" aniId="0004" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
+	<Enemy id="100005" name="enemy005" type="1" aniId="0005" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
+	<Enemy id="100006" name="enemy006" type="1" aniId="0006" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
+	<Enemy id="100007" name="enemy007" type="1" aniId="0007" collHW="16" collHH="16" eliminateEffectStyle="3" dropHW="32" dropHH="32" />
+	<!--大妖精-->
+	<Enemy id="100010" name="enemy010" type="1" aniId="0010" collHW="32" collHH="32" eliminateEffectStyle="3" dropHW="64" dropHH="64" />
+	<Enemy id="100011" name="enemy011" type="1" aniId="0011" collHW="32" collHH="32" eliminateEffectStyle="3" dropHW="64" dropHH="64" />
+	<!--48*32小妖精-->
+	<Enemy id="100030" name="enemy030" type="1" aniId="0030" collHW="24" collHH="16" eliminateEffectStyle="3" dropHW="48" dropHH="48" />
+	<Enemy id="100031" name="enemy031" type="1" aniId="0031" collHW="24" collHH="16" eliminateEffectStyle="3" dropHW="48" dropHH="48" />
+	<!--48*48小妖精-->
+	<Enemy id="100040" name="enemy040" type="1" aniId="0040" collHW="24" collHH="24" eliminateEffectStyle="3" dropHW="48" dropHH="48" />
+	<Enemy id="100041" name="enemy041" type="1" aniId="0041" collHW="24" collHH="24" eliminateEffectStyle="3" dropHW="48" dropHH="48" />
 	<!--阴阳玉-->
 	<Enemy id="100020" name="enemy020" type="2" aniId="SpinningEnemy0" eliminateEffectStyle="3" collHW="20" collHH="20" dropHW="32" dropHH="32" />
 	<Enemy id="100021" name="enemy021" type="2" aniId="SpinningEnemy1" eliminateEffectStyle="3" collHW="20" collHH="20" dropHW="32" dropHH="32" />

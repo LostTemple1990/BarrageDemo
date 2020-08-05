@@ -349,7 +349,8 @@ namespace BarrageEditor
                 return;
             }
             NodeData nd = NodeManager.SaveAsNodeData(_curSelectedNode, true);
-            Clipboard.SetDataObject(nd);
+            Clipboard.CopyToClipboard(nd);
+            //Clipboard.SetDataObject(nd);
         }
 
         private void OnCutClickHandler()
@@ -372,7 +373,9 @@ namespace BarrageEditor
             }
             // 保存该节点的数据
             NodeData nd = NodeManager.SaveAsNodeData(_curSelectedNode, true);
-            Clipboard.SetDataObject(nd);
+            if (!Clipboard.CopyToClipboard(nd))
+                return;
+            //Clipboard.SetDataObject(nd);
             // 删除节点
             int index = parent.GetChildIndex(_curSelectedNode);
             // 删除完成之后，默认选中下一个节点
@@ -405,7 +408,9 @@ namespace BarrageEditor
                 BarrageProject.LogWarning("Paste fail!Please select a node first");
                 return;
             }
-            NodeData nd = Clipboard.GetDataObject() as NodeData;
+            NodeData nd = default(NodeData);
+            if (!Clipboard.GetClipboardObject<NodeData>(out nd))
+                return;
             if (nd == null)
             {
                 BarrageProject.LogWarning("Paste fail!There is no data in clipboard");

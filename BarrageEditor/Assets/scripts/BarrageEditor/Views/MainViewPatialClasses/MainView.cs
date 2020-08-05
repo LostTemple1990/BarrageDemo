@@ -256,6 +256,7 @@ namespace BarrageEditor
                     new List<NodeType> { NodeType.UnitSetResistEliminatedTypes },
                     new List<NodeType> { NodeType.UnitAttachTo, NodeType.UnitSetRelativePos },
                     new List<NodeType> { NodeType.KillUnit, NodeType.DelUnit },
+                    new List<NodeType> { NodeType.PlayAni },
                 },
             };
             _nodeTabs.Add(tab);

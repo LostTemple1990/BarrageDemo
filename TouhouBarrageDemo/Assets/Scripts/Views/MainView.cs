@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -193,7 +194,7 @@ public class MainView : ViewBase, ICommand
         _bgTf.sizeDelta = new Vector2(bgWidth, bgHeight);
     }
 
-    public override void OnShow(object data = null)
+    protected override void OnShow(object data = null)
     {
         _selectIndex = -1;
         InitItemsOnShow();
@@ -360,6 +361,7 @@ public class MainView : ViewBase, ICommand
         }
     }
 
+    [Conditional("Release")]
     private void Quit()
     {
         TitleItem item;
@@ -429,11 +431,14 @@ public class MainView : ViewBase, ICommand
         if (_isAniFinish)
         {
             _state = eMainViewState.None;
+#if Release
+            Logger.Close();
+#endif
             Application.Quit();
         }
     }
 
-    public override void OnHide()
+    protected override void OnHide()
     {
         SetSelectIndex(-1);
         CommandManager.GetInstance().Remove(CommandConsts.CancelSelectCharacter, this);

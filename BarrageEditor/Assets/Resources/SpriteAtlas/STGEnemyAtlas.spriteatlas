@@ -21,10 +21,10 @@ SpriteAtlas:
     platformSettings: []
     packingParameters:
       serializedVersion: 2
-      padding: 4
+      padding: 2
       blockOffset: 1
       allowAlphaSplitting: 0
-      enableRotation: 1
+      enableRotation: 0
       enableTightPacking: 1
     variantMultiplier: 1
     packables:
@@ -68,8 +68,8 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 5477bb7ff5186e84e895f96782275365, type: 3}
   m_PackedSpriteNamesToIndex:
   - enemy021
-  - enemy4
-  - enemy7
+  - enemy007
+  - enemy040
   - enemy33
   - enemy20
   - enemy29
@@ -78,26 +78,26 @@ SpriteAtlas:
   - enemy020
   - enemy003
   - enemy18
-  - enemy9
+  - enemy011
   - enemy023
   - enemy010
-  - enemy3
+  - enemy004
   - enemy15
   - enemy34
   - enemy31
   - enemy27
-  - enemy8
+  - enemy041
   - enemy000
   - enemy17
   - enemy022
   - enemy22
   - enemy21
-  - enemy5
-  - enemy6
-  - enemy2
+  - enemy030
+  - enemy031
+  - enemy006
   - enemy16
   - enemy32
-  - enemy1
+  - enemy005
   - enemy001
   - enemy19
   - enemy30

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define UseCompress
+using System;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,7 +27,11 @@ namespace YKEngine
             pth.maxFile = pth.file.Length;
             pth.fileTitle = new string(new char[64]);
             pth.maxFileTitle = pth.fileTitle.Length;
-            pth.initialDir = Application.dataPath;  // default path  
+#if Debug
+            pth.initialDir = Application.streamingAssetsPath.Replace('/','\\') + "\\MyStages\\";  // default path
+#else
+            pth.initialDir = Application.dataPath.Replace('/','\\') + "\\";  // default path
+#endif
             pth.title = title;
             pth.defExt = "txt";
             pth.flags = 0x00080000 | 0x00001000 | 0x00000800 | 0x00000008;
@@ -54,15 +59,18 @@ namespace YKEngine
             pth.maxFile = pth.file.Length;
             pth.fileTitle = new string(new char[64]);
             pth.maxFileTitle = pth.fileTitle.Length;
-            pth.initialDir = Application.dataPath;  // default path  
+#if Debug
+            pth.initialDir = Application.streamingAssetsPath.Replace('/', '\\') + "\\MyStages\\";  // default path
+#else
+            pth.initialDir = Application.dataPath.Replace('/','\\') + "\\";  // default path
+#endif
             pth.title = title;
             pth.defExt = "txt";
             pth.flags = 0x00080000 | 0x00001000 | 0x00000800 | 0x00000200 | 0x00000008;
             string filePath = null;
             if (SaveFileDialog.GetSaveFileName(pth))
             {
-                filePath = pth.file;//选择的文件路径;  
-                Debug.Log(filePath);
+                filePath = pth.file;//选择的文件路径;
             }
             Directory.SetCurrentDirectory(projectFolder);
             return filePath;
@@ -79,16 +87,39 @@ namespace YKEngine
             {
                 fs = new FileStream(path, FileMode.Create);
             }
+#if UseCompress
+            BinaryFormatter formatter = new BinaryFormatter();
+            MemoryStream ms = new MemoryStream();
+            ms.Position = 0;
+            using (System.IO.Compression.DeflateStream ds = new System.IO.Compression.DeflateStream(ms, System.IO.Compression.CompressionMode.Compress))
+            {
+                formatter.Serialize(ds, obj);
+            }
+            byte[] buffer = ms.ToArray();
+            ms.Close();
+            fs.Write(buffer, 0, buffer.Length);
+            fs.Close();
+#else
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(fs, obj);
             fs.Close();
+#endif
         }
 
         public static object DeserializeFileToObject(string path)
         {
             FileStream fs = new FileStream(path, FileMode.Open);
             BinaryFormatter bf = new BinaryFormatter();
-            object obj = bf.Deserialize(fs);
+            object obj = null;
+#if UseCompress
+            fs.Position = 0;
+            using (System.IO.Compression.DeflateStream ds = new System.IO.Compression.DeflateStream(fs, System.IO.Compression.CompressionMode.Decompress))
+            {
+                obj = bf.Deserialize(ds);
+            }
+#else
+            obj = bf.Deserialize(fs);
+#endif
             fs.Close();
             return obj;
         }

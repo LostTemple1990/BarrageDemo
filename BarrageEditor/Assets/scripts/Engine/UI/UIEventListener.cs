@@ -59,13 +59,13 @@ namespace YKEngine
 
         public void OnPointerClick(PointerEventData data)
         {
-            if ( eventPassType == eEventPassType.PassBefore )
+            if (eventPassType == eEventPassType.PassBefore)
                 PassEvent(data, ExecuteEvents.pointerClickHandler);
             if (_onPointerClick != null)
             {
                 _onPointerClick();
             }
-            if ( eventPassType == eEventPassType.PassAfter)
+            if (eventPassType == eEventPassType.PassAfter)
                 PassEvent(data, ExecuteEvents.pointerClickHandler);
         }
 
@@ -194,6 +194,21 @@ namespace YKEngine
             _onPointerDown = onPointerDown;
         }
 
+        public void AddDrag(Action<Vector2> onDrag)
+        {
+            _onDrag = onDrag;
+        }
+
+        public void AddDragBegin(Action onDragBegin)
+        {
+            _onDragBegin = onDragBegin;
+        }
+
+        public void AddDragEnd(Action onDragEnd)
+        {
+            _onDragEnd = onDragEnd;
+        }
+
         public void PassEvent<T>(PointerEventData data, ExecuteEvents.EventFunction<T> function) where T : IEventSystemHandler
         {
             List<RaycastResult> results = new List<RaycastResult>();
@@ -220,6 +235,9 @@ namespace YKEngine
             _onPointerClick = null;
             _onPointerEnter = null;
             _onPointerExit = null;
+            _onDragBegin = null;
+            _onDragEnd = null;
+            _onDrag = null;
         }
     }
 }

@@ -28,7 +28,7 @@ public class EnemyObjectBase
 
     }
 
-    public virtual void DoAction(AniActionType actType,int dir,int duration=Consts.MaxDuration)
+    public virtual void DoAction(AniActionType actType,int dir=Consts.DIR_NULL,int duration=Consts.MaxDuration)
     {
 
     }

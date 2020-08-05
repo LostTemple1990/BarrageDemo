@@ -191,6 +191,8 @@ namespace BarrageEditor
         EnemyStyle = 20,
         ReboundBorder = 21,
         DropItems = 22,
+        AniActionType = 23,
+        Direction = 24,
     }
 
     public class NodeAttrData
