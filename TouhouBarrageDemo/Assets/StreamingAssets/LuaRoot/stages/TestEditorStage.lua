@@ -5,7 +5,7 @@ local CustomizedTable = {}
 local CustomizedEnemyTable = {}
 local BossTable = {}
 local CustomizedSTGObjectTable = {}
-SetDebugStageName("Stage2")
+local CustomizedColliderTable = {}
 
 -- Mod name: unnamed
 --author="YK"
@@ -901,6 +901,7 @@ SpellCard["YKS1_M_SC"].Init = function(boss)
     boss:ShowSpellCardHpAura(true)
     --圈形子弹
     boss:AddTask(function()
+        if Wait(120)==false then return end
         local k = 1
         do for _=1,Infinite do
             local posX,posY = boss.x,boss.y
@@ -920,6 +921,7 @@ SpellCard["YKS1_M_SC"].Init = function(boss)
     end)
     --servants
     boss:AddTask(function()
+        if Wait(120)==false then return end
         if Wait(300)==false then return end
         do for _=1,Infinite do
             local duration = 120
@@ -933,6 +935,7 @@ SpellCard["YKS1_M_SC"].Init = function(boss)
     end)
     --wander
     boss:AddTask(function()
+        if Wait(120)==false then return end
         boss:SetWanderRange(-150,150,80,125)
         boss:SetWanderAmplitude(0,100,0,15)
         boss:SetWanderMode(IntModeLinear,MoveXTowardsPlayer)
@@ -945,6 +948,11 @@ SpellCard["YKS1_M_SC"].Init = function(boss)
 end
 SpellCard["YKS1_M_SC"].OnFinish = function(boss)
     DropItems(boss.x,boss.y,32,32,1,2,2,1,4,1,6,1)
+    last = CreateSimpleCollider(TypeCircle)
+    last:SetPos(boss.x,boss.y)
+    last:SetSize(250,250)
+    last:SetCollisionGroup(12)
+    last:SetExistDuration(1)
 end
 CustomizedTable["YKS1P7CurveLaser0"] = {}
 CustomizedTable["YKS1P7CurveLaser0"].Init = function(self,angle,x)
@@ -2846,7 +2854,7 @@ Stage["Stage1"].task = function(self)
 end
 Stage["Stage2"] = { bg="",bgm="DarkRoad",fixedFPS=true }
 Stage["Stage2"].task = function(self)
-if false then end     if Wait(340)==false then return end
+    if Wait(340)==false then return end
     do  --Phase0
         PrintSoundTime("DarkRoad")
         PrintCurFrame()
@@ -3174,11 +3182,32 @@ Stage["TestStage"].task = function(self)
     if Wait(1000)==false then return end
     FinishStage()
 end
+
+SetDebugStageName("__TestSCStage")
+BossTable["__TestSCBoss"] = {}
+BossTable["__TestSCBoss"].Init = function(self)
+    self:SetAni(2001)
+    self:SetPos(0,280)
+    self:SetCollisionSize(32,32)
+end
+Stage["__TestSCStage"] = { bg="",bgm="",fixedFPS=false }
+Stage["__TestSCStage"].task = function()
+    local boss = CreateBoss("__TestSCBoss",0,280)
+    boss:MoveTo(0,170,90,IntModeEaseInQuad)
+    if Wait(100)==false then return end
+    boss:SetPhaseData(1,true)
+    StartSpellCard(SpellCard["YKS1_M_SC"],boss)
+    if WaitForSpellCardFinish() == false then return end
+    if Wait(100)==false then return end
+FinishStage()
+end
+
 return
 {
    CustomizedBulletTable = CustomizedTable,
    CustomizedEnemyTable = CustomizedEnemyTable,
    BossTable = BossTable,
    CustomizedSTGObjectTable = CustomizedSTGObjectTable,
+   CustomizedColliderTable = CustomizedColliderTable,
    Stage = Stage,
 }

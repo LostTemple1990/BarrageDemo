@@ -5,20 +5,39 @@ public class ItemBase
 {
     protected ItemType _itemType;
 
-    protected int _curState;
+    protected eState _curState;
 
-    /// <summary>
-    /// 上升阶段
-    /// </summary>
-    protected const int StateUp = 1;
-    /// <summary>
-    /// 下降阶段
-    /// </summary>
-    protected const int StateDown = 2;
-    /// <summary>
-    /// 飞向玩家的阶段
-    /// </summary>
-    protected const int StateToPlayer = 3;
+    protected enum eState : byte
+    {
+        MoveUp,
+        MoveDown,
+        MoveToPlayer,
+    }
+
+    public enum eItemSpriteType : byte
+    {
+        PowerNormal,
+        PowerNormalUp,
+        PowerBig,
+        PowerBigUp,
+        PowerFull,
+        PowerFullUp,
+        LifeFragment,
+        LifeFragmentUp,
+        Life,
+        LifeUp,
+        BombFragment,
+        BombFragmentUp,
+        Bomb,
+        BombUp,
+        Total,
+    }
+
+    public struct STGItemRenderData
+    {
+        public Vector2 pos;
+        public eItemSpriteType spType;
+    }
 
     protected const float UpVy = 0.6f;
     protected const float DownVy = -1;
@@ -67,18 +86,27 @@ public class ItemBase
     protected string _upSp;
     protected SpriteRenderer _sr;
 
+    /// <summary>
+    /// 默认使用的sp类型
+    /// </summary>
+    protected eItemSpriteType _defaultSpType;
+    /// <summary>
+    /// 超过上边界时使用的sp类型
+    /// </summary>
+    protected eItemSpriteType _upSpType;
+
     protected int _clearFlag;
 
     protected CharacterBase _character;
 
     public ItemBase()
     {
-        _curPos = Vector2.zero;
+        
     }
 
     public virtual void Init()
     {
-        _curState = StateUp;
+        _curState  = eState.MoveUp;
         _curTime = 0;
         _curDuration = 90;
         _vy = UpVy;
@@ -91,27 +119,28 @@ public class ItemBase
     public virtual void Update()
     {
         // 上升
-        if (_curState == StateUp)
+        if (_curState == eState.MoveUp)
         {
             _curPos.y += _vy;
             _curTime++;
+            Vector2 playerPos = _character.GetPosition();
             if (_curTime >= _curDuration)
             {
-                _curState = StateDown;
+                _curState = eState.MoveDown;
                 _vy = DownVy;
                 _curTime = 0;
                 _curDuration = -1;
             }
             // 检测玩家是否已经到达ItemGetLine
-            if (Global.PlayerPos.y >= Consts.AutoGetItemY)
+            if (playerPos.y >= Consts.AutoGetItemY)
             {
-                _curState = StateToPlayer;
+                _curState = eState.MoveToPlayer;
                 _curTime = 0;
                 _curDuration = 60;
             }
         }
         // 下降
-        else if (_curState == StateDown)
+        else if (_curState == eState.MoveDown)
         {
             _curPos.y += _vy;
             _curTime++;
@@ -119,14 +148,14 @@ public class ItemBase
             // 检测玩家是否已经到达ItemGetLine
             if (playerPos.y >= Consts.AutoGetItemY)
             {
-                _curState = StateToPlayer;
+                _curState = eState.MoveToPlayer;
                 _curTime = 0;
                 _curDuration = 60;
             }
             // 检测玩家是否已经到了物品附近
             else if ( Mathf.Abs(playerPos.x-_curPos.x) <= NearbyDis && Mathf.Abs(playerPos.y - _curPos.y) <= NearbyDis)
             {
-                _curState = StateToPlayer;
+                _curState = eState.MoveToPlayer;
                 _curTime = 0;
                 _curDuration = 30;
             }
@@ -137,7 +166,7 @@ public class ItemBase
             }
         }
         // 飞向玩家
-        else if (_curState == StateToPlayer)
+        else if (_curState == eState.MoveToPlayer)
         {
             Vector2 playerPos = _character.GetPosition();
             _curPos.x = MathUtil.GetEaseInQuadInterpolation(_curPos.x, playerPos.x, _curTime, _curDuration);
@@ -145,7 +174,6 @@ public class ItemBase
             _curTime++;
         }
         DetectCollisionWithPlayer();
-        Render();
     }
 
     public void SetToPosition(float x, float y)
@@ -200,6 +228,28 @@ public class ItemBase
             }
         }
         _itemGO.transform.localPosition = pos;
+    }
+
+    public virtual STGItemRenderData GetRenderData()
+    {
+        Vector3 pos = _curPos;
+        if (_curPos.y >= _aboveY)
+        {
+            pos.y = _upPosY;
+            return new STGItemRenderData
+            {
+                pos = pos,
+                spType = _upSpType,
+            };
+        }
+        else
+        {
+            return new STGItemRenderData
+            {
+                pos = pos,
+                spType = _defaultSpType,
+            };
+        }
     }
 
     public int clearFlag

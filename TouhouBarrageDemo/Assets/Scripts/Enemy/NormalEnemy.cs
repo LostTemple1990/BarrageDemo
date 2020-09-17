@@ -59,8 +59,6 @@ public class NormalEnemy : EnemyBase
         if ( !IsOutOfBorder() )
         {
             CheckCollisionWithCharacter();
-            _enemyObj.Update();
-            RenderTransform();
         }
         else
         {
@@ -226,8 +224,28 @@ public class NormalEnemy : EnemyBase
         return false;
     }
 
+    #region render
     public override void PlayAni(AniActionType actionType, int dir = Consts.DIR_NULL, int duration = int.MaxValue)
     {
         _enemyObj.DoAction(actionType, dir, duration);
     }
+
+    public override void SetColor(float r, float g, float b, float a)
+    {
+        _enemyObj.SetColor(r, g, b, a);
+    }
+
+    public override void SetScale(float scaleX, float scaleY)
+    {
+        _enemyObj.SetScale(scaleX, scaleY);
+    }
+
+    public override void Render()
+    {
+        if (!_isAvailable)
+            return;
+        _enemyObj.Update();
+        RenderTransform();
+    }
+    #endregion
 }

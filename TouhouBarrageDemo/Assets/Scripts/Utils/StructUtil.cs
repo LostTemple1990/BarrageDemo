@@ -149,27 +149,27 @@ public enum eEliminateDef : int
     /// <summary>
     /// 玩家死亡触发的消除
     /// </summary>
-    PlayerDead = 2 << 1,
+    PlayerDead = 2 << 0,
     /// <summary>
     /// 击中玩家触发的消除
     /// </summary>
-    HitPlayer = 2 << 2,
+    HitPlayer = 2 << 1,
     /// <summary>
     /// 玩家子弹击中触发的消除(针对敌机)
     /// </summary>
-    PlayerBullet = 2 << 3,
+    PlayerBullet = 2 << 2,
     /// <summary>
     /// 击中某些物体触发的消除
     /// </summary>
-    HitObjectCollider = 2 << 4,
+    HitObjectCollider = 2 << 3,
     /// <summary>
     /// 引力场
     /// </summary>
-    GravitationField = 2 << 5,
+    GravitationField = 2 << 4,
     /// <summary>
     /// 击破符卡消除
     /// </summary>
-    SpellCardFinish = 2 << 6,
+    SpellCardFinish = 2 << 5,
     /// <summary>
     /// 直接调用代码触发的消除
     /// </summary>
@@ -283,6 +283,15 @@ public enum eColliderType : int
     Circle = 1,
     Rect = 2,
     ItalicRect = 3,
+}
+
+/// <summary>
+/// 自己角色
+/// </summary>
+public enum eCharacter : byte
+{
+    ReimuA = 1,
+    MarisaA = 2,
 }
 
 /// <summary>

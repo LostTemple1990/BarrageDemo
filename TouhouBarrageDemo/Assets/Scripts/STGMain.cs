@@ -79,6 +79,8 @@ public class STGMain
         //    Logger.Log("Frame Interval = " + (currentTicks - _lastFrameTicks) * 0.0001f);
         //    _lastFrameTicks = currentTicks;
         //}
+        // 每帧开始
+        BulletsManager.GetInstance().OnSTGFrameStart();
         // 逻辑部分
         _opController.Update();
         STGStageManager.GetInstance().Update();
@@ -92,6 +94,9 @@ public class STGMain
         EffectsManager.GetInstance().Update();
         // 渲染部分
         BulletsManager.GetInstance().Render();
+        EnemyManager.GetInstance().Render();
+        STGEliminateEffectManager.GetInstance().Render();
+        ItemManager.GetInstance().Render();
         AnimationManager.GetInstance().Update();
         BackgroundManager.GetInstance().Update();
 #if ShowCollisionViewer
@@ -167,6 +172,11 @@ public class STGMain
         ExtraTaskManager.GetInstance().Init();
 
         EffectsManager.GetInstance().Init();
+        STGEliminateEffectManager.GetInstance().Init();
+        BackgroundManager.GetInstance().Init();
+#if ShowCollisionViewer
+        CollisionViewer.Instance.Init();
+#endif
     }
 
     public void Clear()
@@ -184,6 +194,10 @@ public class STGMain
         STGStageManager.GetInstance().Clear();
         InterpreterManager.GetInstance().Clear();
         SoundManager.GetInstance().Clear(true);
+#if ShowCollisionViewer
+        CollisionViewer.Instance.Clear();
+#endif
+        STGEliminateEffectManager.GetInstance().Clear();
     }
 
     /// <summary>
@@ -194,17 +208,13 @@ public class STGMain
         _char = PlayerInterface.GetInstance().CreateCharacter(characterIndex);
         _opController = OperationController.GetInstance();
         _opController.InitCharacter();
-        BackgroundManager.GetInstance().Init();
-#if ShowCollisionViewer
-        CollisionViewer.Instance.Init();
-#endif
+        InterpreterManager.GetInstance().SetGlobalField("player", _char, LuaParaType.LightUserData);
+
+        // 设置初始残机数和符卡数目
+        PlayerInterface.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
+        PlayerInterface.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
+
         CommandManager.GetInstance().RunCommand(CommandConsts.STGInitComplete);
         frameNode = 0;
-    }
-
-    public void EnterStage(string stageName)
-    {
-        STGStageManager.GetInstance().LoadStage(stageName);
-        CommandManager.GetInstance().RunCommand(CommandConsts.STGLoadStageLuaComplete);
     }
 }

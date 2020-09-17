@@ -100,6 +100,8 @@ public class Boss : EnemyBase
         InterpreterManager.GetInstance().CallLuaFunction(initFuncRef, 1);
         _checkOutOfBorder = false;
         _isShowPosHint = false;
+        // 重置抵抗消除标识
+        _resistEliminateFlag = (int)eEliminateDef.SpellCardFinish;
         Logger.Log("Call InitFunc of Boss " + _bossName + " Complete!");
     }
 
@@ -235,15 +237,6 @@ public class Boss : EnemyBase
             UpdateBloodBar();
         }
         CheckCollisionWithCharacter();
-        if ( _isPlayAni )
-        {
-            CheckPlayAni();
-        }
-        RenderTransform();
-        if (_isShowAura)
-            RenderAura();
-        if (_isShowSCHpAura)
-            RenderSpellCardLife();
         // 添加背景扭曲效果
         //object[] datas = new object[] { _curPos.x, _curPos.y, 128f, 0.01f, new Color(0.62f, 0.22f, 0.61f, 1) };
         //CommandManager.GetInstance().RunCommand(CommandConsts.UpdateBgDistortEffectProps, datas);
@@ -273,7 +266,7 @@ public class Boss : EnemyBase
         _beginRate = _remainingWeight / _totalWeight;
         _curTotalRate = _weights[_curSubPhase] / _totalWeight;
         // 重置抵抗消除标识
-        _resistEliminateFlag = 0;
+        _resistEliminateFlag = (int)eEliminateDef.SpellCardFinish;
         base.SetMaxHp(maxHp);
     }
 
@@ -537,6 +530,29 @@ public class Boss : EnemyBase
                 _curHp = 0;
             }
         }
+    }
+
+    public override void SetColor(float r, float g, float b, float a)
+    {
+        _bossAni.SetColor(r, g, b, a);
+    }
+
+    public override void SetScale(float scaleX, float scaleY)
+    {
+        _bossAni.SetScale(scaleX, scaleY);
+    }
+
+    public override void Render()
+    {
+        if (_isPlayAni)
+        {
+            CheckPlayAni();
+        }
+        RenderTransform();
+        if (_isShowAura)
+            RenderAura();
+        if (_isShowSCHpAura)
+            RenderSpellCardLife();
     }
 
     public override void Clear()

@@ -59,6 +59,8 @@ public class StatePreload : IState, ICommand
             _preloadAtlasList.Add("STGLaserAtlas1");
             _preloadAtlasList.Add("STGEffectAtlas");
             _preloadAtlasList.Add("STGPlayerLaserAtlas");
+            _preloadAtlasList.Add("STGReimuAtlas");
+            _preloadAtlasList.Add("STGMarisaAtlas");
         }
 #if Debug
         SetNextState(ePreloadState.PreloadAtlas);

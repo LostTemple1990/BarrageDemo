@@ -47,18 +47,6 @@ public class PlayerInterface
         };
     }
 
-    public void Init()
-    {
-        //_curPower = Consts.PlayerInitPower;
-        _curPower = 100;
-        _graze = 0;
-        _signalValue = 0;
-        // todo 选择人物
-        //_character = new Reimu();
-        _character = new MarisaA();
-        _character.Init();
-    }
-
     /// <summary>
     /// 创建角色
     /// </summary>
@@ -82,7 +70,6 @@ public class PlayerInterface
             throw new System.Exception("invalid index of character!");
         }
         _character.Init();
-        InterpreterManager.GetInstance().SetGlobalField("player", _character, LuaParaType.LightUserData);
         return _character;
     }
 

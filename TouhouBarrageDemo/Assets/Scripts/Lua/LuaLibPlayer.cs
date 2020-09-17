@@ -73,16 +73,25 @@ public partial class LuaLib
 
     public static int GetKey(ILuaState luaState)
     {
+        int key = luaState.ToInteger(-1);
+        bool ret = OperationController.GetInstance().GetKey((eSTGKey)key);
+        luaState.PushBoolean(ret);
         return 1;
     }
 
     public static int GetKeyDown(ILuaState luaState)
     {
+        int key = luaState.ToInteger(-1);
+        bool ret = OperationController.GetInstance().GetKeyDown((eSTGKey)key);
+        luaState.PushBoolean(ret);
         return 1;
     }
 
     public static int GetKeyUp(ILuaState luaState)
     {
+        int key = luaState.ToInteger(-1);
+        bool ret = OperationController.GetInstance().GetKeyUp((eSTGKey)key);
+        luaState.PushBoolean(ret);
         return 1;
     }
 }

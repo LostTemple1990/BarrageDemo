@@ -1,4 +1,7 @@
-﻿using System;
+﻿#define DEBUG_GAMESTATE
+#define LOG_RANDOMSEED
+
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -15,17 +18,17 @@ public class StateSTGMain : IState,ICommand
         /// </summary>
         StateInitSTGMain = 2,
         /// <summary>
-        /// 加载对应的stage.lua
+        /// 创建对应Stage的Task
         /// </summary>
-        StateLoadStageLua = 3,
+        StateCreateStageTask = 3,
         /// <summary>
         /// 执行clear
         /// </summary>
         StateClear = 4,
         /// <summary>
-        ///  STG开始前的初始化
+        ///  根据STGData来初始化一些STG基本数据，包括随机数种子
         /// </summary>
-        StateInitSTG = 5,
+        StateInitSTGData = 5,
         /// <summary>
         /// update STG
         /// </summary>
@@ -34,6 +37,10 @@ public class StateSTGMain : IState,ICommand
         /// 加载关卡初始背景的场景
         /// </summary>
         StateLoadStageDefaultBg = 7,
+        /// <summary>
+        /// 初始化STG，包括创建人物、初始化人物控制器，初始残机等等信息
+        /// </summary>
+        StateInitSTG = 8,
     }
 
     private string _curStageName;
@@ -122,8 +129,6 @@ public class StateSTGMain : IState,ICommand
 
     public void OnStateEnter(object data=null)
     {
-        // 初始化STGMain
-        _curState = eSTGMainState.StateInitSTGMain;
         // 打开loadingView
         List<object> commandList = new List<object>();
         commandList.Add(CommandConsts.STGInitComplete);
@@ -156,7 +161,7 @@ public class StateSTGMain : IState,ICommand
         }
         else
         {
-            _curState = eSTGMainState.StateInitSTG;
+            _curState = eSTGMainState.StateInitSTGData;
         }
     }
 
@@ -185,15 +190,15 @@ public class StateSTGMain : IState,ICommand
 
     public void OnUpdate()
     {
-        if ( _curState == eSTGMainState.StateInitSTGMain )
+        if (_curState == eSTGMainState.StateInitSTGMain)
         {
             OnStateInitSTGMainUpdate();
         }
-        else if (_curState == eSTGMainState.StateInitSTG)
+        else if (_curState == eSTGMainState.StateInitSTGData)
         {
-            OnStateInitSTGUpdate();
+            OnStateInitSTGDataUpdate();
         }
-        else if ( _curState == eSTGMainState.StateLoadStageLua )
+        else if (_curState == eSTGMainState.StateCreateStageTask)
         {
             OnStateLoadStageLuaUpdate();
         }
@@ -205,9 +210,13 @@ public class StateSTGMain : IState,ICommand
         {
             OnSTGMainUpdate();
         }
-        else if ( _curState == eSTGMainState.StateClear )
+        else if (_curState == eSTGMainState.StateClear)
         {
             OnStateClearUpdate();
+        }
+        else if (_curState == eSTGMainState.StateInitSTG)
+        {
+            OnStateInitSTGUpdate();
         }
     }
 
@@ -217,7 +226,10 @@ public class StateSTGMain : IState,ICommand
     /// </summary>
     private void OnSTGInitComplete()
     {
-        _curState = eSTGMainState.StateLoadStageLua;
+#if DEBUG_GAMESTATE
+        Logger.Log("Starting STG...");
+#endif
+        _curState = eSTGMainState.StateUpdateSTG;
     }
 
     /// <summary>
@@ -233,7 +245,7 @@ public class StateSTGMain : IState,ICommand
     private void OnLoadStageDefaultBgComplete()
     {
         CommandManager.GetInstance().Remove(CommandConsts.STGLoadStageDefaultBgComplete, this);
-        _curState = eSTGMainState.StateUpdateSTG;
+        _curState = eSTGMainState.StateInitSTG;
     }
 
     /// <summary>
@@ -270,12 +282,24 @@ public class StateSTGMain : IState,ICommand
         // 加载各个stage.lua文件
         //List<string> stageLuaList = new List<string> { "stage1", "stage1sc" };
         List<string> stageLuaList = new List<string> { "TestEditorStage" };
+#if DEBUG_GAMESTATE
+        string fileListStr = "";
+        for (int k = 0; k < stageLuaList.Count; k++)
+        {
+            fileListStr = k == 0 ? stageLuaList[k] + ".lua" : "\n" + stageLuaList[k] + ".lua";
+        }
+        Logger.Log(string.Format("Init STGMain,Start to load lua files\n{0}", fileListStr));
+        TimeUtil.BeginSample("InitSTGMain");
+#endif
         for (int i = 0; i < stageLuaList.Count; i++)
         {
             InterpreterManager.GetInstance().LoadLuaFile(stageLuaList[i]);
         }
-
-        _curState = eSTGMainState.StateInitSTG;
+#if DEBUG_GAMESTATE
+        TimeUtil.EndSample("InitSTGMain");
+        TimeUtil.LogSampleTick("InitSTGMain", "Load luafile(s) complete.Cost time {0}");
+#endif
+        _curState = eSTGMainState.StateInitSTGData;
     }
 
     /// <summary>
@@ -284,7 +308,8 @@ public class StateSTGMain : IState,ICommand
     /// <returns></returns>
     private long InitSeed()
     {
-        long seed = System.DateTime.Now.Ticks % 0xffffffff;
+        //long seed = System.DateTime.Now.Ticks % 0xffffffff;
+        long seed = 1281328940L;
         return seed;
     }
 
@@ -310,8 +335,74 @@ public class StateSTGMain : IState,ICommand
             }
         }
         _stgData.stageName = _curStageName;
+#if DEBUG_GAMESTATE
+        Logger.Log(string.Format("Create task of stage \"{0}\"", _stgData.stageName));
+#endif
+        _curState = eSTGMainState.StateWait;
         CommandManager.GetInstance().Register(CommandConsts.STGLoadStageLuaComplete, this);
-        _stgMain.EnterStage(_curStageName);
+
+        STGStageManager.GetInstance().LoadStage(_stgData.stageName);
+
+        //_stgMain.EnterStage(_curStageName);
+    }
+
+    /// <summary>
+    /// 执行clear
+    /// </summary>
+    private void OnStateClearUpdate()
+    {
+#if DEBUG_GAMESTATE
+        Logger.Log("Clear STG");
+#endif
+        _stgMain.Clear();
+        CommandManager.GetInstance().Remove(CommandConsts.PlayerMiss, this);
+        CommandManager.GetInstance().Remove(CommandConsts.ContinueGameAfterGameOver, this);
+
+        _curState = eSTGMainState.StateInitSTGData;
+    }
+
+    /// <summary>
+    /// 重新开始游戏的初始化
+    /// </summary>
+    private void OnStateInitSTGDataUpdate()
+    {
+        Global.IsInReplayMode = _stgData.isReplay;
+        if (!Global.IsInReplayMode)
+        {
+            _stgData.seed = InitSeed();
+        }
+        MTRandom.Init(_stgData.seed);
+#if DEBUG_GAMESTATE
+        string modeStr = Global.IsInReplayMode ? "Replay" : "Play";
+#if LOG_RANDOMSEED
+        Logger.Log(string.Format("Init STGData,seed = {0}\nGameMode = {1}", _stgData.seed, modeStr));
+#else
+        Logger.Log(string.Format("Init STGData\nGameMode = {1}", _stgData.seed, modeStr));
+#endif
+#endif
+        _curState = eSTGMainState.StateCreateStageTask;
+    }
+
+    /// <summary>
+    /// 加载关卡的默认背景场景
+    /// </summary>
+    private void OnStateLoadStageDefaultBgUpdate()
+    {
+#if DEBUG_GAMESTATE
+        Logger.Log("Start loading bg of stage " + _curStageName);
+#endif
+        _curState = eSTGMainState.StateWait;
+        CommandManager.GetInstance().Register(CommandConsts.STGLoadStageDefaultBgComplete, this);
+        BackgroundManager.GetInstance().LoadStageDefaultBg(_curStageName);
+    }
+
+    private void OnStateInitSTGUpdate()
+    {
+        _curState = eSTGMainState.StateWait;
+#if DEBUG_GAMESTATE
+        Logger.Log("Init STG ");
+#endif
+        CommandManager.GetInstance().Register(CommandConsts.STGInitComplete, this);
         // 添加事件监听
         CommandManager.GetInstance().Register(CommandConsts.PlayerMiss, this);
         CommandManager.GetInstance().Register(CommandConsts.ContinueGameAfterGameOver, this);
@@ -320,45 +411,8 @@ public class StateSTGMain : IState,ICommand
         Global.IsPause = false;
         _resumeSTGSE = false;
         ReplayManager.GetInstance().SetReplayEnable(true);
-    }
 
-    /// <summary>
-    /// 执行clear
-    /// </summary>
-    private void OnStateClearUpdate()
-    {
-        _stgMain.Clear();
-        CommandManager.GetInstance().Remove(CommandConsts.PlayerMiss, this);
-        CommandManager.GetInstance().Remove(CommandConsts.ContinueGameAfterGameOver, this);
-
-        _curState = eSTGMainState.StateInitSTG;
-    }
-
-    /// <summary>
-    /// 重新开始游戏的初始化
-    /// </summary>
-    private void OnStateInitSTGUpdate()
-    {
-        Global.IsInReplayMode = _stgData.isReplay;
-        if (!Global.IsInReplayMode)
-        {
-            _stgData.seed = InitSeed();
-        }
-        MTRandom.Init(_stgData.seed);
         _stgMain.InitSTG(_stgData.characterIndex);
-        // 设置初始残机数和符卡数目
-        PlayerInterface.GetInstance().SetLifeCounter(Consts.STGInitLifeCount, 0);
-        PlayerInterface.GetInstance().SetSpellCardCounter(Consts.STGInitSpellCardCount, 0);
-        _curState = eSTGMainState.StateLoadStageLua;
-    }
-
-    /// <summary>
-    /// 加载关卡的默认背景场景
-    /// </summary>
-    private void OnStateLoadStageDefaultBgUpdate()
-    {
-        CommandManager.GetInstance().Register(CommandConsts.STGLoadStageDefaultBgComplete, this);
-        BackgroundManager.GetInstance().LoadStageDefaultBg(_curStageName);
     }
 
     #region STG主线程相关

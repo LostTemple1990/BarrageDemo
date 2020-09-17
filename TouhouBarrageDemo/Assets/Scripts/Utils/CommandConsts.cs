@@ -111,7 +111,7 @@
     /// </summary>
     public const int EnterStage = 3000;
     /// <summary>
-    /// STG部分初始化完成
+    /// STG部分初始化完成，准备开始游戏
     /// </summary>
     public const int STGInitComplete = 3001;
     /// <summary>

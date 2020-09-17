@@ -11,6 +11,11 @@ public class ItemManager
         return _instance;
     }
 
+    private const float ItemSpWidth = 32f;
+    private const float ItemSpHeight = 32f;
+    private const float ItemSpHalfWidth = ItemSpWidth / 2;
+    private const float ItemSpHalfHeight = ItemSpHeight / 2;
+
     private ItemManager()
     {
         _itemList = new List<ItemBase>();
@@ -33,6 +38,32 @@ public class ItemManager
     /// 对应最大的缓存数目
     /// </summary>
     private Dictionary<ItemType, int> _maxCacheCountDatas;
+    /// <summary>
+    /// item对应图像的uv数据
+    /// uv按照左上，左下，右上，右下来排列
+    /// </summary>
+    private Vector2[][] _itemSpriteUVData;
+
+
+    private GameObject _itemMeshGo;
+    private Mesh _itemMesh;
+
+    /// <summary>
+    /// 道具顶点list
+    /// </summary>
+    private List<Vector3> _itemVerList;
+    /// <summary>
+    /// 道具uvlist
+    /// </summary>
+    private List<Vector2> _itemUVList;
+    /// <summary>
+    /// 道具三角形索引list
+    /// </summary>
+    private List<int> _itemTriList;
+    /// <summary>
+    /// 道具颜色list
+    /// </summary>
+    private List<Color> _itemColorList;
 
     //private List<ItemType> _itemTypeList;
 
@@ -40,29 +71,143 @@ public class ItemManager
     {
         _itemCount = 0;
         _clearListCount = 0;
+        _itemSpriteUVData = new Vector2[(int)ItemBase.eItemSpriteType.Total][];
+        // PowerNormal
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerNormal] =
+            new Vector2[4] { new Vector2(0, 1), new Vector2(0, 0.8f), new Vector2(0.25f, 1), new Vector2(0.25f, 0.8f) };
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerNormalUp] =
+            new Vector2[4] { new Vector2(0.5f, 1), new Vector2(0.5f, 0.8f), new Vector2(0.75f, 1), new Vector2(0.75f, 0.8f) };
+        // PowerBig
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerBig] =
+            new Vector2[4] { new Vector2(0.25f, 0.6f), new Vector2(0.25f, 0.4f), new Vector2(0.5f, 0.6f), new Vector2(0.5f, 0.4f) };
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerBigUp] =
+            new Vector2[4] { new Vector2(0.75f, 0.6f), new Vector2(0.75f, 0.4f), new Vector2(1f, 0.6f), new Vector2(1f, 0.4f) };
+        // PowerFull
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerFull] =
+           new Vector2[4] { new Vector2(0.25f, 0.8f), new Vector2(0.25f, 0.6f), new Vector2(0.5f, 0.8f), new Vector2(0.5f, 0.6f) };
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerFullUp] =
+            new Vector2[4] { new Vector2(0.75f, 0.8f), new Vector2(0.75f, 0.6f), new Vector2(1f, 0.8f), new Vector2(1f, 0.6f) };
+        // BombFragment
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.BombFragment] =
+            new Vector2[4] { new Vector2(0, 0.2f), new Vector2(0, 0f), new Vector2(0.25f, 0.2f), new Vector2(0.25f, 0f) };
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.BombFragmentUp] =
+            new Vector2[4] { new Vector2(0.5f, 0.2f), new Vector2(0.5f, 0f), new Vector2(0.75f, 0.2f), new Vector2(0.75f, 0f) };
+        // Bomb
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.Bomb] =
+            new Vector2[4] { new Vector2(0.25f, 0.2f), new Vector2(0.25f, 0f), new Vector2(0.5f, 0.2f), new Vector2(0.5f, 0f) };
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.BombUp] =
+            new Vector2[4] { new Vector2(0.75f, 0.2f), new Vector2(0.75f, 0f), new Vector2(1f, 0.2f), new Vector2(1f, 0f) };
+        // LifeFragment
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.LifeFragment] =
+            new Vector2[4] { new Vector2(0, 0.8f), new Vector2(0, 0.6f), new Vector2(0.25f, 0.8f), new Vector2(0.25f, 0.6f) };
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.LifeFragmentUp] =
+            new Vector2[4] { new Vector2(0.5f, 0.8f), new Vector2(0.5f, 0.6f), new Vector2(0.75f, 0.8f), new Vector2(0.75f, 0.6f) };
+        // Life
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.Life] =
+            new Vector2[4] { new Vector2(0, 0.4f), new Vector2(0, 0.2f), new Vector2(0.25f, 0.4f), new Vector2(0.25f, 0.2f) };
+        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.LifeUp] =
+            new Vector2[4] { new Vector2(0.5f, 0.4f), new Vector2(0.5f, 0.2f), new Vector2(0.75f, 0.4f), new Vector2(0.75f, 0.2f) };
+
+        // mesh
+        _itemMeshGo = ResourceManager.GetInstance().GetPrefab("Prefab/Extra", "ItemMeshGo");
+        _itemMesh = _itemMeshGo.GetComponent<MeshFilter>().mesh;
+        UIManager.GetInstance().AddGoToLayer(_itemMeshGo, LayerId.Item);
+        _itemVerList = new List<Vector3>();
+        _itemUVList = new List<Vector2>();
+        _itemTriList = new List<int>();
+        _itemColorList = new List<Color>();
     }
 
     public void Update()
     {
         UpdateItems();
-        ClearItems();
+        //ClearItems();
     }
-    
+
     private void UpdateItems()
     {
-        int i;
+        int i, j;
         ItemBase item;
-        for (i=0;i<_itemCount;i++)
+        bool findFlag;
+        for (i = 0, j = 1; i < _itemCount; i++)
         {
-            item = _itemList[i];
-            _itemList[i].Update();
-            if ( item.clearFlag == 1 )
+            findFlag = false;
+            if (_itemList[i] == null)
             {
-                _clearItemList.Add(_itemList[i]);
-                _clearListCount++;
-                _itemList[i] = null;
+                for (; j < _itemCount; j++)
+                {
+                    if (_itemList[j] != null)
+                    {
+                        findFlag = true;
+                        _itemList[i] = _itemList[j];
+                        _itemList[j] = null;
+                        j++;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                findFlag = true;
+            }
+            if (findFlag)
+            {
+                item = _itemList[i];
+                item.Update();
+                if (item.clearFlag == 1)
+                {
+                    RestoreToPool(item);
+                    _itemList[i] = null;
+                }
+            }
+            else
+            {
+                break;
             }
         }
+        _itemList.RemoveRange(i, _itemCount - i);
+        _itemCount = i;
+    }
+
+    public void Render()
+    {
+        _itemMesh.Clear();
+        _itemVerList.Clear();
+        _itemUVList.Clear();
+        _itemTriList.Clear();
+        _itemColorList.Clear();
+        int verIndex = 0;
+        for (int i = 0; i < _itemCount; i++)
+        {
+            if (_itemList[i] != null)
+            {
+                ItemBase.STGItemRenderData data = _itemList[i].GetRenderData();
+                BuildItemMesh(data.spType, data.pos, ref verIndex);
+            }
+        }
+        _itemMesh.vertices = _itemVerList.ToArray();
+        _itemMesh.uv = _itemUVList.ToArray();
+        _itemMesh.triangles = _itemTriList.ToArray();
+    }
+
+    private void BuildItemMesh(ItemBase.eItemSpriteType spType,Vector2 centerPos, ref int verIndex)
+    {
+        _itemVerList.Add(new Vector3(centerPos.x - ItemSpHalfWidth, centerPos.y + ItemSpHalfHeight));
+        _itemVerList.Add(new Vector3(centerPos.x - ItemSpHalfWidth, centerPos.y - ItemSpHalfHeight));
+        _itemVerList.Add(new Vector3(centerPos.x + ItemSpHalfWidth, centerPos.y + ItemSpHalfHeight));
+        _itemVerList.Add(new Vector3(centerPos.x + ItemSpHalfWidth, centerPos.y - ItemSpHalfHeight));
+        Vector2[] spUV = _itemSpriteUVData[(int)spType];
+        for (int i = 0; i < spUV.Length; i++)
+        {
+            _itemUVList.Add(spUV[i]);
+        }
+        _itemTriList.Add(verIndex);
+        _itemTriList.Add(verIndex + 3);
+        _itemTriList.Add(verIndex + 1);
+        _itemTriList.Add(verIndex);
+        _itemTriList.Add(verIndex + 2);
+        _itemTriList.Add(verIndex + 3);
+        verIndex += 4;
     }
 
     /// <summary>
@@ -224,6 +369,11 @@ public class ItemManager
         }
         _itemList.Clear();
         _itemCount = 0;
+        _itemMesh.Clear();
+        _itemVerList.Clear();
+        _itemUVList.Clear();
+        _itemTriList.Clear();
+        _itemColorList.Clear();
     }
 
     /// <summary>

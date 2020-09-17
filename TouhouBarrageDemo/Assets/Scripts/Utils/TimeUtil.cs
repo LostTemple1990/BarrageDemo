@@ -5,62 +5,114 @@ using System.Diagnostics;
 
 public class TimeUtil
 {
-    private static long lastTick;
-    private static long curTick;
-    private static int curCount;
-    private static int totalCount;
-    private static long sum;
-    private static int countFlag = 0;
+    private static TimeUtil instance = new TimeUtil();
 
-    public static void BeginSample(int count=1)
+    private Dictionary<string, SampleData> _dic;
+
+    class SampleData
     {
-        lastTick = Stopwatch.GetTimestamp();
-        if ( countFlag == 0 )
+        public long startTick;
+        public long totalTick;
+
+        public SampleData()
         {
-            curCount = 0;
-            totalCount = count;
-            countFlag = 1;
-            sum = 0;
+            startTick = 0;
+            totalTick = 0;
         }
     }
 
-    public static void EndSample()
+    private TimeUtil()
     {
-        curTick = Stopwatch.GetTimestamp();
-        curCount++;
-        sum += (curTick - lastTick);
-        if ( curCount >= totalCount )
+        _dic = new Dictionary<string, SampleData>();
+    }
+
+    private void TimerStart(string key,bool resetTimer = true)
+    {
+        SampleData data;
+        if (!_dic.TryGetValue(key, out data))
         {
-            countFlag = 0;
-            Logger.Log("SampleTime : " + sum*0.1d/totalCount + "us");
-            sum = 0;
+            data = new SampleData();
+            _dic[key] = data;
+        }
+        if (resetTimer)
+            data.totalTick = 0;
+        data.startTick = Stopwatch.GetTimestamp();
+    }
+
+    private void TimerEnd(string key)
+    {
+        long endTick = Stopwatch.GetTimestamp();
+        var data = _dic[key];
+        data.totalTick += endTick - data.startTick;
+    }
+
+    private long GetTotalTick(string key)
+    {
+        SampleData data;
+        if (!_dic.TryGetValue(key, out data))
+        {
+            return 0;
+        }
+        return data.totalTick;
+    }
+
+
+    public static void BeginSample(string key)
+    {
+        instance.TimerStart(key);
+    }
+
+    public static void EndSample(string key)
+    {
+        instance.TimerEnd(key);
+    }
+
+    public static void Reset()
+    {
+        foreach(var data in instance._dic.Values)
+        {
+            data.totalTick = 0;
+            data.startTick = 0;
+        }
+    }
+
+    public static void Reset(string key)
+    {
+        SampleData data;
+        if (instance._dic.TryGetValue(key, out data))
+        {
+            data.totalTick = 0;
+            data.startTick = 0;
         }
     }
 
     /// <summary>
-    /// 结束采样
-    /// <para>传入参数使用string.format中的格式，要包含{0}</para>
+    /// 获取采样的时间
+    /// 单位ms
     /// </summary>
-    /// <param name="formatStr"></param>
-    public static void EndSample(string formatStr)
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public static double GetSampleTick(string key)
     {
-        curTick = Stopwatch.GetTimestamp();
-        curCount++;
-        sum += (curTick - lastTick);
-        if (curCount >= totalCount)
-        {
-            countFlag = 0;
-            double time = sum * 0.0001d / totalCount;
-            Logger.Log(string.Format(formatStr, time + "ms"));
-            sum = 0;
-        }
+        return instance.GetTotalTick(key) * 0.0001d;
+    }
+
+    /// <summary>
+    /// 输出采样时间
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="formatStr"></param>
+    public static void LogSampleTick(string key,string formatStr)
+    {
+        double time = instance.GetTotalTick(key) * 0.0001d;
+        Logger.Log(string.Format(formatStr, time + "ms"));
     }
 
     public static void LogNowTime()
     {
         long current = Stopwatch.GetTimestamp();
         System.DateTime now = new System.DateTime(current);
-        Logger.Log("NowTime = " + now.Minute + ":" + now.Second + ":" + now.Millisecond);
+        Logger.Log(string.Format("NowTime = {0}:{1}:{2}", now.Minute, now.Second, now.Millisecond));
     }
 
     /// <summary>

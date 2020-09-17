@@ -84,7 +84,27 @@ public class InterpreterManager
         {
             throw new Exception(_luaState.ToString(-1));
         }
+        InitGlobalFields();
+    }
+
+    #region Init GlobalFields
+    /// <summary>
+    /// 初始化一些全局变量
+    /// </summary>
+    private void InitGlobalFields()
+    {
         InitLayerFields();
+        InitCharacterEnum();
+    }
+
+    private void InitCharacterEnum()
+    {
+        _luaState.PushGlobalTable();
+        _luaState.PushInteger((int)eCharacter.ReimuA);
+        _luaState.SetField(-2, "ReimuA");
+        _luaState.PushInteger((int)eCharacter.MarisaA);
+        _luaState.SetField(-2, "MarisaA");
+        _luaState.Pop(1);
     }
 
     private void InitLayerFields()
@@ -127,6 +147,7 @@ public class InterpreterManager
         //弹出GlobalTable
         _luaState.Pop(1);
     }
+    #endregion
 
     public void LoadLuaFile(string fileName)
     {

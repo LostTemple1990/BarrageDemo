@@ -531,9 +531,10 @@ public class EnemySimpleBullet : EnemyBulletMovable
             if ( eliminateType != eEliminateDef.ForcedDelete )
             {
                 Color eliminateColor = _cfg.eliminateColor;
-                STGBulletEliminateEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.BulletEliminate) as STGBulletEliminateEffect;
-                effect.SetColor(eliminateColor);
-                effect.SetPosition(_curPos.x, _curPos.y);
+                //STGBulletEliminateEffect effect = EffectsManager.GetInstance().CreateEffectByType(EffectType.BulletEliminate) as STGBulletEliminateEffect;
+                //effect.SetColor(eliminateColor);
+                //effect.SetPosition(_curPos.x, _curPos.y);
+                STGEliminateEffectManager.GetInstance().CreateBulletEliminateEffect(_curPos, eliminateColor);
             }
             return true;
         }

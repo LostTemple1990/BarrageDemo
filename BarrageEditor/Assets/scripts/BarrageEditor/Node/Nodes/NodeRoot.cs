@@ -32,14 +32,15 @@ namespace BarrageEditor
 
         public override string ToLuaHead()
         {
-            string ret = string.Format("{0}{1}{2}{3}{4}{5}{6}",
+            string ret = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
                 "local lib = require \"LuaLib\"\n",
                 "local consts = Constants\n",
                 "local Stage = {}\n",
                 "local CustomizedTable = {}\n",
                 "local CustomizedEnemyTable = {}\n",
                 "local BossTable = {}\n",
-                "local CustomizedSTGObjectTable = {}\n");
+                "local CustomizedSTGObjectTable = {}\n",
+                "local CustomizedColliderTable = {}\n");
             if (BarrageProject.IsDebugStage)
             {
                 string debugStageName = BarrageProject.DebugStageNode.GetAttrByIndex(0).GetValueString();
@@ -64,15 +65,16 @@ namespace BarrageEditor
                     "    boss:MoveTo(0,170,90,IntModeEaseInQuad)\n    if Wait(100)==false then return end\n",
                     "    boss:SetPhaseData(1,true)\n",
                     string.Format("    StartSpellCard(SpellCard[\"{0}\"],boss)\n",scName),
-                    "    if WaitForSpellCardFinish() == false then return end\n    FinishStage()\nend\n\n"
+                    "    if WaitForSpellCardFinish() == false then return end\n    if Wait(100)==false then return end\nFinishStage()\nend\n\n"
                     );
             }
-            ret += string.Format("{0}{1}{2}{3}{4}{5}{6}",
+            ret += string.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
                 "return\n{\n",
                 "   CustomizedBulletTable = CustomizedTable,\n",
                 "   CustomizedEnemyTable = CustomizedEnemyTable,\n",
                 "   BossTable = BossTable,\n",
                 "   CustomizedSTGObjectTable = CustomizedSTGObjectTable,\n",
+                "   CustomizedColliderTable = CustomizedColliderTable,\n",
                 "   Stage = Stage,\n",
                 "}");
             return ret;

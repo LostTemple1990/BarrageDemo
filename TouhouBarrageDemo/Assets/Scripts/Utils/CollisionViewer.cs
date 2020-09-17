@@ -236,7 +236,13 @@ public class CollisionViewer
 
     public void Clear()
     {
-        GameObject.Destroy(_viewerGo);
-        _viewerGo = null;
+        //GameObject.Destroy(_viewerGo);
+        //_viewerGo = null;
+        //_mesh = null;
+        _mesh.Clear();
+        _verList.Clear();
+        _uvList.Clear();
+        _triList.Clear();
+        _colorList.Clear();
     }
 }

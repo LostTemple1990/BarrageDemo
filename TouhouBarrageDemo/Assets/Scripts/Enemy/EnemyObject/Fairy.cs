@@ -37,6 +37,16 @@ public class Fairy : EnemyObjectBase
                 _enemyAni.Play(AniActionType.Idle, Consts.DIR_NULL);
             }
         }
+        if (_isColorChanged)
+        {
+            _enemyAni.SetColor(_curColor.r, _curColor.g, _curColor.b, _curColor.a);
+            _isColorChanged = false;
+        }
+        if (_isScaleChanged)
+        {
+            _enemyAni.SetScale(_curScale.x, _curScale.y);
+            _isScaleChanged = false;
+        }
     }
 
     public override void DoAction(AniActionType actType, int dir, int duration=Consts.MaxDuration)
@@ -65,6 +75,18 @@ public class Fairy : EnemyObjectBase
     public override GameObject GetObject()
     {
         return _enemyGo;
+    }
+
+    public override void SetColor(float r, float g, float b, float a)
+    {
+        _curColor = new Color(r, g, b, a);
+        _isColorChanged = true;
+    }
+
+    public override void SetScale(float scaleX, float scaleY)
+    {
+        _curScale = new Vector2(scaleX, scaleY);
+        _isScaleChanged = true;
     }
 
     public override void Clear()

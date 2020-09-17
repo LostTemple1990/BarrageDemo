@@ -116,14 +116,15 @@ public class ResourceManager
         // 若当前缓存中不存在，则从图集中创建一份
         if ( sp == null )
         {
-            //TimeUtil.BeginSample();
+            //TimeUtil.BeginSample("DEBUG_SPATLAS");
             sp = CreateSpriteFromAtlas(atlasName, resName);
             if ( sp != null )
             {
                 Dictionary<string, Object> resMap = resourceData.datasDic as Dictionary<string, Object>;
                 resMap.Add(resName, sp);
             }
-            //TimeUtil.EndSample("Create Sp " + atlasName + "/" + resName + " cost {0}");
+            //TimeUtil.EndSample("DEBUG_SPATLAS");
+            //TimeUtil.LogSampleTick("DEBUG_SPATLAS", "Create Sp " + atlasName + "/" + resName + " cost {0}");
         }
         return sp;
     }

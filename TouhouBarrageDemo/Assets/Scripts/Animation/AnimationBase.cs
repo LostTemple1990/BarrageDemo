@@ -7,6 +7,9 @@ public delegate void PlayAnimationCompleteCallBack(object cbData);
 
 public class AnimationBase
 {
+    protected static Color DefaultColor = new Color(1, 1, 1, 1);
+    protected static Vector3 DefaultScale = new Vector3(1, 1, 1);
+
     protected int _curFrame;
     protected int _totalFrame;
     protected int _frameInterval;
@@ -40,6 +43,9 @@ public class AnimationBase
     protected PlayAnimationCompleteCallBack _completeCBFunc;
     protected object _completeCBPara;
 
+    protected Color _curColor;
+    protected Vector3 _curScale;
+
     public virtual void Init(LayerId id)
     {
         _aniParent = ObjectsPool.GetInstance().GetPrefabAtPool("AniParent");
@@ -52,10 +58,12 @@ public class AnimationBase
             _aniParent = ResourceManager.GetInstance().GetPrefab("Animation", "AniParent");
         }
         _trans = _aniParent.transform;
-        _aniTf = _aniParent.transform.Find("Animation");
+        _aniTf = _trans.Find("Animation");
         _aniObject = _aniTf.gameObject;
         _renderer = _aniTf.GetComponent<SpriteRenderer>();
         UIManager.GetInstance().AddGoToLayer(_aniParent, id);
+        _curColor = DefaultColor;
+        _curScale = DefaultScale;
         _isDefaultPrefab = true;
     }
 
@@ -63,10 +71,12 @@ public class AnimationBase
     {
         _aniParent = aniParent;
         _trans = _aniParent.transform;
-        _aniTf = _aniParent.transform.Find(rendererName);
+        _aniTf = _trans.Find(rendererName);
         _aniObject = _aniTf.gameObject;
         _renderer = _aniTf.GetComponent<SpriteRenderer>();
         UIManager.GetInstance().AddGoToLayer(_aniParent, id);
+        _curColor = DefaultColor;
+        _curScale = DefaultScale;
         _isDefaultPrefab = false;
     }
 
@@ -82,10 +92,7 @@ public class AnimationBase
             }
             if ( _curLoopCount >= _totalLoopCount )
             {
-                if (_completeCBFunc != null)
-                {
-                    _completeCBFunc(_completeCBPara);
-                }
+                _completeCBFunc?.Invoke(_completeCBPara);
             }
         }
 	}
@@ -199,6 +206,16 @@ public class AnimationBase
 
     public virtual void Clear()
     {
+        if (_aniParent == null)
+            return;
+        if (_curColor != DefaultColor)
+        {
+            _renderer.color = DefaultColor;
+        }
+        if (_curScale != DefaultScale)
+        {
+            _trans.localScale = DefaultScale;
+        }
         _spList = null;
         _renderer = null;
         _trans = null;
@@ -246,6 +263,18 @@ public class AnimationBase
     {
         _completeCBFunc = callback;
         _completeCBPara = callBackPara;
+    }
+
+    public void SetColor(float r,float g,float b,float a)
+    {
+        _curColor = new Color(r, g, b, a);
+        _renderer.color = _curColor;
+    }
+
+    public void SetScale(float scaleX,float scaleY)
+    {
+        _curScale = new Vector3(scaleX, scaleY, 1);
+        _trans.localScale = _curScale;
     }
 
     public void SetSpriteLayer(string layerName)

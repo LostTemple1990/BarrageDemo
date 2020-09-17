@@ -133,6 +133,7 @@ public class STGStageManager
         {
             Logger.LogError("Stage info of " + stageName + " is not exist!");
         }
+        CommandManager.GetInstance().RunCommand(CommandConsts.STGLoadStageLuaComplete);
     }
 
     /// <summary>

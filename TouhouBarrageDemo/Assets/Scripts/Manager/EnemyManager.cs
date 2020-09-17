@@ -130,6 +130,20 @@ public class EnemyManager
     public void Update()
     {
         UpdateEnemies();
+    }
+
+    public void Render()
+    {
+        EnemyBase enemy;
+        int enemyCount = _enemyList.Count;
+        for (int i=0;i<enemyCount;i++)
+        {
+            enemy = _enemyList[i];
+            if (enemy.isAvailable)
+            {
+                enemy.Render();
+            }
+        }
         CheckClearEnemies();
     }
 

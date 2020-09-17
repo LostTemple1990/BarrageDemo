@@ -1,4 +1,4 @@
-﻿Shader "YKShaders/Mesh/BlendOneNormalMeshShader"
+﻿Shader "YKShaders/Mesh/SoftAdditiveMeshShader"
 {
 	Properties
 	{
@@ -10,7 +10,7 @@
 		// No culling or depth
 		Cull Off ZWrite Off ZTest Always
 		Lighting Off
-		Blend One OneMinusSrcAlpha
+		Blend OneMinusDstColor One
 
 		Tags{ "Queue" = "Transparent"
 		"IgnoreProjector" = "True"

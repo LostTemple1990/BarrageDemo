@@ -45,6 +45,7 @@ public class DefineSymbolsTool : EditorWindow
         var list = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone);
         var symbols = new List<string>(list.Split(';'));
         _symbolsType = symbols.IndexOf("Debug") != -1 ? eSymbolsType.Debug : eSymbolsType.Release;
+        _soundEnable = symbols.IndexOf("SoundEnable") != -1;
         _logProtoMsg = symbols.IndexOf("LogCreateBulletProto") != -1;
         _showDebugInfoInMainView = symbols.IndexOf("ShowDebugInfo") != -1;
         _isStartedFromGame = symbols.IndexOf("StartFromGame") != -1;
@@ -82,6 +83,10 @@ public class DefineSymbolsTool : EditorWindow
     /// 显示lua报错堆栈信息
     /// </summary>
     private bool _showLuaDebugStackTrace;
+    /// <summary>
+    /// 播放声音
+    /// </summary>
+    private bool _soundEnable;
 
     private void OnGUI()
     {
@@ -90,12 +95,13 @@ public class DefineSymbolsTool : EditorWindow
         GUILayout.Space(5);
         if (_symbolsType == eSymbolsType.Debug)
         {
+            _soundEnable = EditorGUILayout.Toggle("播放声音", _soundEnable);
             _showLuaDebugStackTrace = EditorGUILayout.Toggle("显示LUA堆栈信息", _showLuaDebugStackTrace);
             _logProtoMsg = EditorGUILayout.Toggle("创建子弹原型信息", _logProtoMsg);
             _showDebugInfoInMainView = EditorGUILayout.Toggle("主界面显示调试信息", _showDebugInfoInMainView);
             _showCollisionViewer = EditorGUILayout.Toggle("显示判定图形", _showCollisionViewer);
             GUILayout.Space(1);
-            _isStartedFromGame = EditorGUILayout.BeginToggleGroup("StartFromGame", _isStartedFromGame);
+            _isStartedFromGame = EditorGUILayout.BeginToggleGroup("直接从游戏内开始", _isStartedFromGame);
             _char = (eStartCharacter)EditorGUILayout.EnumPopup("Character", _char);
             EditorGUILayout.EndToggleGroup();
             GUILayout.Space(5);
@@ -103,6 +109,8 @@ public class DefineSymbolsTool : EditorWindow
             {
                 List<string> newSymbols = new List<string>();
                 newSymbols.Add("Debug");
+                if (_soundEnable)
+                    newSymbols.Add("SoundEnable");
                 if (_showLuaDebugStackTrace)
                     newSymbols.Add("ShowLuaDebugStackTrace");
                 if (_logProtoMsg)

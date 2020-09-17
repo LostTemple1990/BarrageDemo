@@ -897,4 +897,21 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
 
     }
     #endregion
+
+    #region Render
+    public virtual void SetColor(float r,float g,float b,float a)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void SetScale(float scaleX,float scaleY)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void Render()
+    {
+
+    }
+    #endregion
 }

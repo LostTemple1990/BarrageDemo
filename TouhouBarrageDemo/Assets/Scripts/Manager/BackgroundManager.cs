@@ -54,7 +54,8 @@ public class BackgroundManager
         _curLoadedBgCfg = GetBackgroundCfgById(bgId);
         if (_curLoadedBgCfg != null)
         {
-            LoadBackgroundByBgName(_curLoadedBgCfg.sceneName);
+            //LoadBackgroundByBgName(_curLoadedBgCfg.sceneName);
+            LoadBackgroundAsyncByBgName(_curLoadedBgCfg.sceneName);
         }
     }
 
@@ -79,6 +80,11 @@ public class BackgroundManager
     private void LoadBackgroundByBgName(string name)
     {
         SceneManager.LoadScene(name, LoadSceneMode.Single);
+    }
+
+    private void LoadBackgroundAsyncByBgName(string name)
+    {
+        SceneManager.LoadSceneAsync(name, LoadSceneMode.Single);
     }
 
     public StageBgCfg GetBackgroundCfgById(string id)

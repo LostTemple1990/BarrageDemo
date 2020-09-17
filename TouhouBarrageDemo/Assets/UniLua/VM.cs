@@ -1,5 +1,4 @@
-﻿
-// #define DEBUG_NEW_FRAME
+﻿// #define DEBUG_NEW_FRAME
 // #define DEBUG_INSTRUCTION
 // #define DEBUG_INSTRUCTION_WITH_STACK
 

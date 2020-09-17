@@ -9,31 +9,31 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1610771684496472}
+  m_RootGameObject: {fileID: 1916537622298858}
   m_IsPrefabParent: 1
---- !u!1 &1610771684496472
+--- !u!1 &1916537622298858
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 224249202707752608}
-  - component: {fileID: 33839266934502702}
-  - component: {fileID: 23708704868725000}
+  - component: {fileID: 224679128620055390}
+  - component: {fileID: 33394616013977152}
+  - component: {fileID: 23583282478808736}
   m_Layer: 12
-  m_Name: CollisionViewer
+  m_Name: BulletEliminateEffectsGo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!23 &23708704868725000
+--- !u!23 &23583282478808736
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1610771684496472}
+  m_GameObject: {fileID: 1916537622298858}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -43,7 +43,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: b42dc283ea2a10c439df8fbc8c01e105, type: 2}
+  - {fileID: 2100000, guid: 92ba29e24d178c74cbd2a413fe3757b1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -63,19 +63,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33839266934502702
+--- !u!33 &33394616013977152
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1610771684496472}
+  m_GameObject: {fileID: 1916537622298858}
   m_Mesh: {fileID: 0}
---- !u!224 &224249202707752608
+--- !u!224 &224679128620055390
 RectTransform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1610771684496472}
+  m_GameObject: {fileID: 1916537622298858}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}

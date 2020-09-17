@@ -1,6 +1,4 @@
-﻿#define ShowDebugInfo
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
@@ -392,10 +390,19 @@ public class GameMainView : ViewBase,ICommand
     }
 
 #if ShowDebugInfo
+    private static string DebugInfo =
+        "Current Frame : {0}\n" +
+        "EnemyBullet : {1}\n";
+        //"Current Frame : {0}\n" +
+        //"Current Frame : {0}\n" +
+        //"Current Frame : {0}\n" +
+        //"Current Frame : {0}\n" +
+        //"Current Frame : {0}\n";
     private void UpdateDebugInfo()
     {
-        string info = String.Format("Current Frame : {0}\n",
-            STGStageManager.GetInstance().GetFrameSinceStageStart()
+        string info = String.Format(DebugInfo,
+            STGStageManager.GetInstance().GetFrameSinceStageStart(),
+            BulletsManager.GetInstance().GetEnemyBulletsCount()
             );
         _debugInfoText.text = info;
     }

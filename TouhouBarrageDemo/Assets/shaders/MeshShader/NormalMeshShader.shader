@@ -1,4 +1,4 @@
-﻿Shader "YKShaders/NormalMeshShader"
+﻿Shader "YKShaders/Mesh/NormalMeshShader"
 {
 	Properties
 	{

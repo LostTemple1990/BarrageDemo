@@ -370,6 +370,10 @@ public class EnemyBulletMovable : EnemyBulletBase
 
     protected virtual void RenderPosition()
     {
+        if (_trans == null)
+        {
+            int k = 1;
+        }
         _trans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
     }
 

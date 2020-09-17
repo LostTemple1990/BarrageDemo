@@ -61,7 +61,6 @@ public class BulletsManager : ICommand
         _playerBulletDataBase = DataManager.GetInstance().GetDatasByName("PlayerBulletCfgs") as Dictionary<string, IParser>;
         _enemyLinearLaserDataBase = DataManager.GetInstance().GetDatasByName("EnemyLinearLaserCfgs") as Dictionary<string, IParser>;
         _enemyCurveLaserDataBase = DataManager.GetInstance().GetDatasByName("EnemyCurveLaserCfgs") as Dictionary<string, IParser>;
-        CommandManager.GetInstance().Register(CommandConsts.STGFrameStart, this);
         CommandManager.GetInstance().Register(CommandConsts.LogFrameStatistics, this);
     }
 
@@ -98,8 +97,6 @@ public class BulletsManager : ICommand
     {
         UpdatePlayerBullets();
         UpdateEnemyBullets();
-        CheckDestroyBullets(_playerBullets);
-        CheckDestroyBullets<EnemyBulletBase>(_enemyBullets);
     }
 
     public void Render()
@@ -111,7 +108,15 @@ public class BulletsManager : ICommand
             playerBullet = _playerBullets[i];
             if ( playerBullet != null )
             {
-                playerBullet.Render();
+                if (playerBullet.ClearFlag != 1)
+                {
+                    playerBullet.Render();
+                }
+                else
+                {
+                    _clearList.Add(playerBullet);
+                    _playerBullets[i] = null;
+                }
             }
         }
         EnemyBulletBase enemyBullet;
@@ -120,9 +125,31 @@ public class BulletsManager : ICommand
             enemyBullet = _enemyBullets[i];
             if ( enemyBullet != null )
             {
-                enemyBullet.Render();
+                if (enemyBullet.ClearFlag != 1)
+                {
+                    enemyBullet.Render();
+                }
+                else
+                {
+                    _clearList.Add(enemyBullet);
+                    _enemyBullets[i] = null;
+                }
             }
         }
+        RestoreBullets();
+    }
+
+    private void RestoreBullets()
+    {
+        BulletBase bullet;
+        int listCount = _clearList.Count;
+        for (int i=0;i<listCount;i++)
+        {
+            bullet = _clearList[i];
+            bullet.Clear();
+            ObjectsPool.GetInstance().RestoreBullet(bullet);
+        }
+        _clearList.Clear();
     }
 
     private void UpdatePlayerBullets()
@@ -671,14 +698,15 @@ public class BulletsManager : ICommand
 
     public void Execute(int cmd, object data)
     {
-        if ( cmd == CommandConsts.STGFrameStart )
-        {
-            ResetFrameStatistics();
-        }
-        else if ( cmd == CommandConsts.LogFrameStatistics )
+        if (cmd == CommandConsts.LogFrameStatistics)
         {
             LogFrameStatistics();
         }
+    }
+
+    public void OnSTGFrameStart()
+    {
+        ResetFrameStatistics();
     }
 
     private void ResetFrameStatistics()
