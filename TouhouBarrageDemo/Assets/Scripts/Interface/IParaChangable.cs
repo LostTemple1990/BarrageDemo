@@ -1,6 +1,6 @@
 ﻿
-public interface IParaChangable
+public interface IParaChangable : ISTGObject
 {
-    bool GetParaValue(BulletParaType paraType, out float value);
-    bool SetParaValue(BulletParaType paraType, float value);
+    bool GetParaValue(STGObjectParaType paraType, out float value);
+    bool SetParaValue(STGObjectParaType paraType, float value);
 }

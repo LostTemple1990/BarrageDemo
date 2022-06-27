@@ -19,6 +19,7 @@ public class NormalEnemyLuaInterface
     private static LuaCsClosureValue _funcSetRelativePos;
 
     private static LuaCsClosureValue _funcAddTask;
+    private static LuaCsClosureValue _funcChangeParas;
 
     private static LuaCsClosureValue _funcSetMaxHp;
     private static LuaCsClosureValue _funcSetCollisionSize;
@@ -28,6 +29,9 @@ public class NormalEnemyLuaInterface
     private static LuaCsClosureValue _funcSetInvincible;
     private static LuaCsClosureValue _funcSetInteractive;
     private static LuaCsClosureValue _funcPlayAni;
+
+    private static LuaCsClosureValue _funcSetColor;
+    private static LuaCsClosureValue _funcSetScale;
 
 
     public static void Init()
@@ -47,6 +51,7 @@ public class NormalEnemyLuaInterface
             _funcSetRelativePos = new LuaCsClosureValue(LuaLib.SetAttachmentRelativePos);
 
             _funcAddTask = new LuaCsClosureValue(LuaLib.AddTask);
+            _funcChangeParas = new LuaCsClosureValue(LuaLib.AddBulletParaChangeEvent);
 
             _funcSetMaxHp = new LuaCsClosureValue(LuaLib.SetEnemyMaxHp);
             _funcSetCollisionSize = new LuaCsClosureValue(LuaLib.SetEnemyCollisionParas);
@@ -56,6 +61,9 @@ public class NormalEnemyLuaInterface
             _funcSetInvincible = new LuaCsClosureValue(LuaLib.SetEnemyInvincible);
             _funcSetInteractive = new LuaCsClosureValue(LuaLib.SetEnemyInteractive);
             _funcPlayAni = new LuaCsClosureValue(LuaLib.PlayEnemyAni);
+
+            _funcSetScale = new LuaCsClosureValue(LuaLib.SetEnemyScale);
+            _funcSetColor = new LuaCsClosureValue(LuaLib.SetEnemyColor);
 
             _isInit = true;
         }
@@ -187,10 +195,25 @@ public class NormalEnemyLuaInterface
                         return true;
                     }
                 #endregion
-                #region ITaskExecuter
+                #region ISTGObject
                 case "AddTask":
                     {
                         res.SetClCsValue(_funcAddTask);
+                        return true;
+                    }
+                case "ChangeProperty":
+                    {
+                        res.SetClCsValue(_funcChangeParas);
+                        return true;
+                    }
+                case "SetScale":
+                    {
+                        res.SetClCsValue(_funcSetScale);
+                        return true;
+                    }
+                case "SetColor":
+                    {
+                        res.SetClCsValue(_funcSetColor);
                         return true;
                     }
                 #endregion

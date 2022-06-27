@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using YKEngine;
+using Logger = YKEngine.Logger;
 
 namespace BarrageEditor
 {

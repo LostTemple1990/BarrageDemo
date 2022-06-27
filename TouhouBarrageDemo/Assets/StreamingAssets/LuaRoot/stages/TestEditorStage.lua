@@ -6,6 +6,7 @@ local CustomizedEnemyTable = {}
 local BossTable = {}
 local CustomizedSTGObjectTable = {}
 local CustomizedColliderTable = {}
+SetDebugStageName("Stage2")
 
 -- Mod name: unnamed
 --author="YK"
@@ -2599,10 +2600,131 @@ CustomizedEnemyTable["YKStage2Phase1Enemy2"].Init = function(self,centerX,center
         r=r+_d_r waitTime=waitTime+_d_waitTime end end
     end)
 end
+--渐变出现的小妖精
+CustomizedEnemyTable["YKStage2Phase1Enemy3"] = {}
+CustomizedEnemyTable["YKStage2Phase1Enemy3"].Init = function(self,fromX,fromY,toX,toY,duration,emitAngle)
+    self:Init(100030)
+    self:SetMaxHp(40)
+    self:SetPos(fromX,fromY)
+    self:SetColor(1,1,1,0.1)
+    self:SetInteractive(false)
+    self:ChangeProperty(Prop_Alpha,ChangeModeChangeTo,0,1,0,0,0,duration,IntModeLinear,1,0)
+    self:MoveTo(toX,toY,duration,IntModeEaseOutQuad)
+    self:AddTask(function()
+        if Wait(duration + 5)==false then return end
+        self:SetInteractive(true)
+        if Wait(duration)==false then return end
+        do for _=1,5 do
+            do local a,_d_a=(emitAngle),(18) for _=1,20 do
+                last = CreateSimpleBulletById(105060,self.x,self.y)
+                last:SetStraightParas(4.5,a,false,0,UseVelocityAngle)
+            a=a+_d_a end end
+            PlaySound("se_tan00",0.05,false)
+            if Wait(2)==false then return end
+        end end
+        if Wait(10)==false then return end
+        self:MoveTowards(5,90,false,120)
+        if Wait(30)==false then return end
+        DelUnit(self)
+    end)
+end
 BossTable["KagiyamaHina"] = {}
 BossTable["KagiyamaHina"].Init = function(self)
     self:SetAni(2002)
     self:SetCollisionSize(0,0)
+    self:PlayAni(ActionCast,DirNull)
+    PlaySound("se_spineappear",0.2,false)
+end
+SpellCard["HinaNSC1"] = {}
+SpellCard["HinaNSC1"].Init = function(boss)
+    SetSpellCardProperties("HinaMidNSC1",1,60,ConditionEliminateAll,false)
+    boss:SetMaxHp(500)
+    boss:SetInvincible(5)
+    boss:ShowBloodBar(true)
+    boss:AddTask(function()
+        boss:MoveTo(-120,100,45,IntModeLinear)
+        if Wait(45)==false then return end
+        PlaySound("se_tan00",0.05,false)
+        local startX,startY,endX,endY = -120,100,120,100
+        local amplitude = 30
+        local halfX = (endX - startX) / 2
+        do for _=1,Infinite do
+            local sx,sy = startX,startY
+            local dx,dy = endX-startX,amplitude
+            local p = 90
+            do local i,_d_i=(1),(1) for _=1,p do
+                boss.x = sx + i / p * dx
+                boss.y = sy + sin(i / p * 180) * dy
+                if Wait(1)==false then return end
+            i=i+_d_i end end
+            sx,sy = endX,endY
+            dx,dy = startX-endX,-amplitude
+            do local i,_d_i=(1),(1) for _=1,p do
+                boss.x = sx + i / p * dx
+                boss.y = sy + sin(i / p * 180) * dy
+                if Wait(1)==false then return end
+            i=i+_d_i end end
+        end end
+    end)
+    boss:AddTask(function()
+        if Wait(45)==false then return end
+        do local angle,_d_angle=(RandomFloat(0,360)),(RandomFloat(0,360)) for _=1,Infinite do
+            local bIds = {107010,107080,107010}
+            PlaySound("se_tan00",0.05,false)
+            do local index,_d_index=(1),(1) local acce,_d_acce=(0.03),(-0.007) for _=1,3 do
+                do local a,_d_a=(angle),(9) for _=1,40 do
+                    last = CreateSimpleBulletById(bIds[index],boss.x,boss.y)
+                    last:SetStraightParas(2,a,false,acce,UseVelocityAngle)
+                a=a+_d_a end end
+                if Wait(1)==false then return end
+            index=index+_d_index acce=acce+_d_acce end end
+            if Wait(42)==false then return end
+        angle=angle+_d_angle end end
+    end)
+    boss:AddTask(function()
+        if Wait(45)==false then return end
+        if Wait(525)==false then return end
+        PrintCurFrame()
+        local a = RandomFloat(0,360)
+        local r = 50
+        local r = 50
+        boss:AddTask(function()
+            do local angle,_d_angle=(a),(6) for _=1,110 do
+                last = CreateSimpleBulletById(106010,boss.x + cos(angle) * r,boss.y + sin(angle) * r)
+                last:SetStraightParas(4,angle,false,0,UseVelocityAngle)
+                PlaySound("se_tan01",0.1,false)
+                if Wait(3)==false then return end
+            angle=angle+_d_angle end end
+        end)
+        boss:AddTask(function()
+            do local angle,_d_angle=(a + 120),(6) for _=1,110 do
+                last = CreateSimpleBulletById(106060,boss.x + cos(angle) * r,boss.y + sin(angle) * r)
+                last:SetStraightParas(4,angle,false,0,UseVelocityAngle)
+                PlaySound("se_tan01",0.1,false)
+                if Wait(3)==false then return end
+            angle=angle+_d_angle end end
+        end)
+        boss:AddTask(function()
+            do local angle,_d_angle=(a + 240),(6) for _=1,110 do
+                last = CreateSimpleBulletById(106030,boss.x + cos(angle) * r,boss.y + sin(angle) * r)
+                last:SetStraightParas(4,angle,false,0,UseVelocityAngle)
+                PlaySound("se_tan01",0.1,false)
+                if Wait(3)==false then return end
+            angle=angle+_d_angle end end
+        end)
+        boss:AddTask(function()
+            if Wait(10000)==false then return end
+            do local angle,_d_angle=(a + 180),(3) for _=1,110 do
+                last = CreateSimpleBulletById(106060,boss.x,boss.y)
+                last:SetStraightParas(0.01,angle,false,0,UseVelocityAngle)
+                last:ChangeProperty(Prop_Velocity,ChangeModeChangeTo,0,4,0,0,100,30,IntModeLinear,1,0)
+                PlaySound("se_tan01",0.1,false)
+                if Wait(3)==false then return end
+            angle=angle+_d_angle end end
+        end)
+    end)
+end
+SpellCard["HinaNSC1"].OnFinish = function(boss)
 end
 Stage["Stage1"] = { bg="",bgm="oborozuki",fixedFPS=false }
 Stage["Stage1"].task = function(self)
@@ -2854,7 +2976,7 @@ Stage["Stage1"].task = function(self)
 end
 Stage["Stage2"] = { bg="",bgm="DarkRoad",fixedFPS=true }
 Stage["Stage2"].task = function(self)
-    if Wait(340)==false then return end
+if false then     if Wait(340)==false then return end
     do  --Phase0
         PrintSoundTime("DarkRoad")
         PrintCurFrame()
@@ -2945,33 +3067,6 @@ Stage["Stage2"].task = function(self)
         SetSoundPlayTime("DarkRoad",-3776)
         PrintCurFrame()
         if Wait(250)==false then return end
-        local midBoss = CreateBoss("KagiyamaHina",0,240)
-        midBoss:PlayAni(ActionCast,DirNull)
-        PlaySound("se_spineappear",0.05,false)
-        midBoss:AddTask(function()
-            midBoss:MoveTo(-120,100,60,IntModeLinear)
-            if Wait(60)==false then return end
-            local startX,startY,endX,endY = -120,100,120,100
-            local amplitude = 30
-            local halfX = (endX - startX) / 2
-            do for _=1,Infinite do
-                local sx,sy = startX,startY
-                local dx,dy = endX-startX,amplitude
-                local p = 60
-                do local i,_d_i=(1),(1) for _=1,60 do
-                    midBoss.x = sx + i / p * dx
-                    midBoss.y = sy + sin(i / p * 180) * dy
-                    if Wait(1)==false then return end
-                i=i+_d_i end end
-                sx,sy = endX,endY
-                dx,dy = startX-endX,-amplitude
-                do local i,_d_i=(1),(1) for _=1,p do
-                    midBoss.x = sx + i / p * dx
-                    midBoss.y = sy + sin(i / p * 180) * dy
-                    if Wait(1)==false then return end
-                i=i+_d_i end end
-            end end
-        end)
         if Wait(60)==false then return end
         do  --e0
             local path = {-150,150,30,-120,150,180,250,170,180}
@@ -3007,33 +3102,6 @@ Stage["Stage2"].task = function(self)
     end
     --Test
     if Wait(1000)==false then return end
-    do  --p5
-        SetSoundPlayTime("DarkRoad",2360)
-        if Wait(220)==false then return end
-        last = CreateCustomizedEnemy("YKStage2Phase0Enemy5",0,250,-100,250,-100,150)
-        if Wait(120)==false then return end
-        do for _=1,15 do
-            last = CreateCustomizedEnemy("YKStage2Phase0Enemy7",-192,0,-192,50,220,200,80)
-            if Wait(5)==false then return end
-        end end
-        if Wait(180)==false then return end
-        do for _=1,15 do
-            last = CreateCustomizedEnemy("YKStage2Phase0Enemy9",-192,0,175,-224,-240,250,160)
-            if Wait(5)==false then return end
-        end end
-        if Wait(290)==false then return end
-        last = CreateCustomizedEnemy("YKStage2Phase0Enemy5",0,250,100,250,100,150)
-        if Wait(120)==false then return end
-        do for _=1,15 do
-            last = CreateCustomizedEnemy("YKStage2Phase0Enemy7",-192,0,192,50,-220,200,80)
-            if Wait(5)==false then return end
-        end end
-        if Wait(180)==false then return end
-        do for _=1,15 do
-            last = CreateCustomizedEnemy("YKStage2Phase0Enemy9",-192,0,-175,-224,240,250,160)
-            if Wait(5)==false then return end
-        end end
-    end
     do  --Phase2
         SetSoundPlayTime("DarkRoad",3776)
         PrintCurFrame()
@@ -3097,6 +3165,74 @@ Stage["Stage2"].task = function(self)
             last = CreateCustomizedEnemy("YKStage2Phase1Enemy2",0,0,192,224,250,180,0.5,190)
             last:PlayAni(ActionMove,DirRight)
         end
+        do  --e3
+            SetSoundPlayTime("DarkRoad",4846)
+            if Wait(280)==false then return end
+            local toLeftX,toRightX = -20,20
+            local leftA = Angle(toLeftX,60,player.x,player.y)
+            local rightA = Angle(toRightX,60,player.x,player.y)
+            do local leftX,_d_leftX=(toLeftX),(-20) local rightX,_d_rightX=(toRightX),(20) for _=1,5 do
+                last = CreateCustomizedEnemy("YKStage2Phase1Enemy3",leftX - 100,160,leftX - 100,160,leftX,60 + RandomFloat(-20,20),45,leftA)
+                last = CreateCustomizedEnemy("YKStage2Phase1Enemy3",rightX + 100,160,rightX + 100,160,rightX,60 + RandomFloat(-20,20),45,rightA)
+                leftA = leftA + 15
+                rightA = rightA + 15
+                if Wait(20)==false then return end
+            leftX=leftX+_d_leftX rightX=rightX+_d_rightX end end
+        end
+    end
+    do  --Phase3
+        if Wait(60)==false then return end
+        local midBoss = CreateBoss("KagiyamaHina",0,240)
+        midBoss:PlayAni(ActionCast,DirNull)
+        PlaySound("se_spineappear",0.05,false)
+        midBoss:AddTask(function()
+            midBoss:MoveTo(-120,100,60,IntModeLinear)
+            if Wait(60)==false then return end
+            local startX,startY,endX,endY = -120,100,120,100
+            local amplitude = 30
+            local halfX = (endX - startX) / 2
+            do for _=1,Infinite do
+                local sx,sy = startX,startY
+                local dx,dy = endX-startX,amplitude
+                local p = 60
+                do local i,_d_i=(1),(1) for _=1,60 do
+                    midBoss.x = sx + i / p * dx
+                    midBoss.y = sy + sin(i / p * 180) * dy
+                    if Wait(1)==false then return end
+                i=i+_d_i end end
+                PlaySound("se_spineappear",0.05,false)
+                sx,sy = endX,endY
+                dx,dy = startX-endX,-amplitude
+                do local i,_d_i=(1),(1) for _=1,p do
+                    midBoss.x = sx + i / p * dx
+                    midBoss.y = sy + sin(i / p * 180) * dy
+                    if Wait(1)==false then return end
+                i=i+_d_i end end
+                PlaySound("se_spineappear",0.05,false)
+            end end
+        end)
+    end
+    if Wait(1000)==false then return end
+end     do  --e3
+        SetSoundPlayTime("DarkRoad",4846)
+        if Wait(280)==false then return end
+        local toLeftX,toRightX = -20,20
+        local leftA = Angle(toLeftX,60,player.x,player.y)
+        local rightA = Angle(toRightX,60,player.x,player.y)
+        do local leftX,_d_leftX=(toLeftX),(-20) local rightX,_d_rightX=(toRightX),(20) for _=1,5 do
+            last = CreateCustomizedEnemy("YKStage2Phase1Enemy3",leftX - 100,160,leftX - 100,160,leftX,60 + RandomFloat(-20,20),45,leftA)
+            last = CreateCustomizedEnemy("YKStage2Phase1Enemy3",rightX + 100,160,rightX + 100,160,rightX,60 + RandomFloat(-20,20),45,rightA)
+            leftA = leftA + 15
+            rightA = rightA + 15
+            if Wait(20)==false then return end
+        leftX=leftX+_d_leftX rightX=rightX+_d_rightX end end
+    end
+    do  --Phase3
+        if Wait(158)==false then return end
+        local boss = CreateBoss("KagiyamaHina",0,240)
+        boss:SetPhaseData(3,1,true)
+        StartSpellCard(SpellCard["HinaNSC1"],boss)
+        if WaitForSpellCardFinish() == false then return end
     end
     if Wait(1000)==false then return end
     FinishStage()
@@ -3182,26 +3318,6 @@ Stage["TestStage"].task = function(self)
     if Wait(1000)==false then return end
     FinishStage()
 end
-
-SetDebugStageName("__TestSCStage")
-BossTable["__TestSCBoss"] = {}
-BossTable["__TestSCBoss"].Init = function(self)
-    self:SetAni(2001)
-    self:SetPos(0,280)
-    self:SetCollisionSize(32,32)
-end
-Stage["__TestSCStage"] = { bg="",bgm="",fixedFPS=false }
-Stage["__TestSCStage"].task = function()
-    local boss = CreateBoss("__TestSCBoss",0,280)
-    boss:MoveTo(0,170,90,IntModeEaseInQuad)
-    if Wait(100)==false then return end
-    boss:SetPhaseData(1,true)
-    StartSpellCard(SpellCard["YKS1_M_SC"],boss)
-    if WaitForSpellCardFinish() == false then return end
-    if Wait(100)==false then return end
-FinishStage()
-end
-
 return
 {
    CustomizedBulletTable = CustomizedTable,

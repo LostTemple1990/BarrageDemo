@@ -374,12 +374,12 @@ public class EnemySimpleBulletLuaInterface
                     }
                 case "scaleX":
                     {
-                        bullet.SetBulletPara(BulletParaType.ScaleX, (float)value.NValue);
+                        bullet.SetParaValue(STGObjectParaType.ScaleX, (float)value.NValue);
                         return true;
                     }
                 case "scaleY":
                     {
-                        bullet.SetBulletPara(BulletParaType.ScaleY, (float)value.NValue);
+                        bullet.SetParaValue(STGObjectParaType.ScaleY, (float)value.NValue);
                         return true;
                     }
                     #endregion

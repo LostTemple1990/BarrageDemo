@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovableObject,ITaskExecuter,ISTGMovable
+public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovableObject,ITaskExecuter,ISTGMovable,IParaChangable
 {
     /// <summary>
     /// bulletId
@@ -15,7 +15,7 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
     /// <para>Z为是否高亮</para>
     /// </summary>
     protected string _prefabName;
-    protected List<BulletComponent> _components;
+    protected List<STGObjectComponent> _components;
     protected int _componentsCount;
 
     /// <summary>
@@ -89,7 +89,7 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
 
     public EnemyBulletBase()
     {
-        _components = new List<BulletComponent>();
+        _components = new List<STGObjectComponent>();
         _attachmentsList = new List<IAttachment>();
     }
 
@@ -161,7 +161,7 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
     }
 
     public virtual T AddOrGetComponent<T>()
-        where T : BulletComponent, new()
+        where T : STGObjectComponent, new()
     {
         for (int i=0;i<_componentsCount;i++)
         {
@@ -178,9 +178,9 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
     }
 
     public virtual T GetComponent<T>()
-        where T : BulletComponent
+        where T : STGObjectComponent
     {
-        foreach (BulletComponent bc in _components)
+        foreach (STGObjectComponent bc in _components)
         {
             if ( bc.GetType() == typeof(T) )
             {
@@ -277,16 +277,6 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
             return false;
         }
         return true;
-    }
-
-    public virtual bool SetBulletPara(BulletParaType paraType,float value)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public virtual bool GetBulletPara(BulletParaType paraType,out float value)
-    {
-        throw new System.NotImplementedException();
     }
 
     public void AddAttachment(IAttachment attachment)
@@ -442,6 +432,16 @@ public class EnemyBulletBase :BulletBase,IAttachable,IAttachment,IAffectedMovabl
             component = AddOrGetComponent<BCCustomizedTask>();
         }
         component.AddTask(task);
+    }
+
+    public virtual bool SetParaValue(STGObjectParaType type,float value)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual bool GetParaValue(STGObjectParaType type,out float value)
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void Clear()

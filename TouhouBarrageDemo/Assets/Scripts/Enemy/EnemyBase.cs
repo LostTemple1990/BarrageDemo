@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExecuter,ISTGMovable,ICollisionObject
+public class EnemyBase : IAttachable, IAttachment, IAffectedMovableObject, ITaskExecuter, ISTGMovable, ICollisionObject, ISTGObject, IParaChangable
 {
     protected const eEliminateDef RawEliminateTypes = eEliminateDef.CodeRawEliminate | eEliminateDef.SpellCardFinish;
     /// <summary>
@@ -162,6 +162,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
         _isFollowingMasterContinuously = false;
         _isFollowMasterRotation = false;
         _player = PlayerInterface.GetInstance().GetCharacter();
+        InitComponent();
     }
 
     public virtual void Update()
@@ -534,6 +535,7 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     public virtual void Clear()
     {
         ClearTasks();
+        ClearComponent();
         ObjectsPool.GetInstance().RestorePoolClassToPool<MovableObject>(_movableObj);
         _movableObj = null;
         _enemyGo = null;
@@ -912,6 +914,68 @@ public class EnemyBase :IAttachable,IAttachment,IAffectedMovableObject,ITaskExec
     public virtual void Render()
     {
 
+    }
+    #endregion
+
+    #region Component
+
+    protected List<STGObjectComponent> _componentList;
+
+    protected virtual void InitComponent()
+    {
+        _componentList = new List<STGObjectComponent>();
+    }
+
+    protected virtual void ClearComponent()
+    {
+        foreach (var com in _componentList)
+        {
+            com.Clear();
+        }
+        _componentList.Clear();
+    }
+
+    protected virtual void UpdateComponents()
+    {
+        foreach(var com in _componentList)
+        {
+            com.Update();
+        }
+    }
+
+    public T AddOrGetComponent<T>() where T : STGObjectComponent, new()
+    {
+        foreach (var com in _componentList)
+        {
+            if (com.GetType() == typeof(T))
+                return com as T;
+        }
+        var newComponent = new T();
+        newComponent.Init(this);
+        _componentList.Add(newComponent);
+        return newComponent;
+    }
+
+    public T GetComponent<T>() where T : STGObjectComponent
+    {
+        foreach (var com in _componentList)
+        {
+            if (com.GetType() == typeof(T))
+                return com as T;
+        }
+        return default(T);
+    }
+    #endregion
+
+    #region IParaChangable
+    public virtual bool GetParaValue(STGObjectParaType paraType, out float value)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual bool SetParaValue(STGObjectParaType paraType, float value)
+    {
+        throw new System.NotImplementedException();
     }
     #endregion
 }

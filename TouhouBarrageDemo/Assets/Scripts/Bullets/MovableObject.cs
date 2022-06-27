@@ -559,6 +559,18 @@ public class MovableObject : IPoolClass
         set { _curOmega = value; }
     }
 
+    public float curveCenterX
+    {
+        get { return _centerPos.x; }
+        set { _centerPos.x = value; }
+    }
+
+    public float curveCenterY
+    {
+        get { return _centerPos.y; }
+        set { _centerPos.y = value; }
+    }
+
 
     #endregion
 

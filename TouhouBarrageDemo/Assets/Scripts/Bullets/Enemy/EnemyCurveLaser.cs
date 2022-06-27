@@ -784,35 +784,35 @@ public class EnemyCurveLaser : EnemyBulletBase
         _eliminateRangeListCount = 0;
     }
 
-    public override bool GetBulletPara(BulletParaType paraType, out float value)
+    public override bool GetParaValue(STGObjectParaType paraType, out float value)
     {
         switch ( paraType)
         {
-            case BulletParaType.Velocity:
+            case STGObjectParaType.Velocity:
                 value = _movableObj.velocity;
                 return true;
-            case BulletParaType.VAngel:
+            case STGObjectParaType.VAngel:
                 value = _movableObj.vAngle;
                 return true;
-            case BulletParaType.Acce:
+            case STGObjectParaType.Acce:
                 value = _movableObj.acce;
                 return true;
-            case BulletParaType.AccAngle:
+            case STGObjectParaType.AccAngle:
                 value = _movableObj.accAngle;
                 return true;
-            case BulletParaType.CurveRadius:
+            case STGObjectParaType.CurveRadius:
                 value = _movableObj.curveRadius;
                 return true;
-            case BulletParaType.CurveAngle:
+            case STGObjectParaType.CurveAngle:
                 value = _movableObj.curveAngle;
                 return true;
-            case BulletParaType.CurveDeltaR:
+            case STGObjectParaType.CurveDeltaR:
                 value = _movableObj.curveDeltaRadius;
                 return true;
-            case BulletParaType.CurveOmega:
+            case STGObjectParaType.CurveOmega:
                 value = _movableObj.curveOmega;
                 return true;
-            case BulletParaType.MaxVelocity:
+            case STGObjectParaType.MaxVelocity:
                 value = _movableObj.maxVelocity;
                 return true;
         }
@@ -820,35 +820,35 @@ public class EnemyCurveLaser : EnemyBulletBase
         return false;
     }
 
-    public override bool SetBulletPara(BulletParaType paraType, float value)
+    public override bool SetParaValue(STGObjectParaType paraType, float value)
     {
         switch (paraType)
         {
-            case BulletParaType.Velocity:
+            case STGObjectParaType.Velocity:
                 _movableObj.velocity = value;
                 return true;
-            case BulletParaType.VAngel:
+            case STGObjectParaType.VAngel:
                 _movableObj.vAngle = value;
                 return true;
-            case BulletParaType.Acce:
+            case STGObjectParaType.Acce:
                 _movableObj.acce = value;
                 return true;
-            case BulletParaType.AccAngle:
+            case STGObjectParaType.AccAngle:
                 _movableObj.accAngle = value;
                 return true;
-            case BulletParaType.CurveRadius:
+            case STGObjectParaType.CurveRadius:
                 _movableObj.curveRadius = value;
                 return true;
-            case BulletParaType.CurveAngle:
+            case STGObjectParaType.CurveAngle:
                 _movableObj.curveAngle = value;
                 return true;
-            case BulletParaType.CurveDeltaR:
+            case STGObjectParaType.CurveDeltaR:
                 _movableObj.curveDeltaRadius = value;
                 return true;
-            case BulletParaType.CurveOmega:
+            case STGObjectParaType.CurveOmega:
                 _movableObj.curveOmega = value;
                 return true;
-            case BulletParaType.MaxVelocity:
+            case STGObjectParaType.MaxVelocity:
                 _movableObj.maxVelocity = value;
                 return true;
         }

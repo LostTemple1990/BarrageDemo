@@ -97,10 +97,10 @@ public partial class LuaLib
     public static int GetBulletPara(ILuaState luaState)
     {
         EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
-        BulletParaType paraType = (BulletParaType)luaState.ToInteger(-1);
+        STGObjectParaType paraType = (STGObjectParaType)luaState.ToInteger(-1);
         luaState.Pop(2);
         float value;
-        if ( bullet.GetBulletPara(paraType, out value) )
+        if ( bullet.GetParaValue(paraType, out value) )
         {
             luaState.PushNumber(value);
             return 1;
@@ -120,10 +120,10 @@ public partial class LuaLib
     public static int SetBulletPara(ILuaState luaState)
     {
         EnemyBulletBase bullet = luaState.ToUserData(-3) as EnemyBulletBase;
-        BulletParaType paraType = (BulletParaType)luaState.ToInteger(-2);
+        STGObjectParaType paraType = (STGObjectParaType)luaState.ToInteger(-2);
         float value = (float)luaState.ToNumber(-1);
         luaState.Pop(3);
-        bullet.SetBulletPara(paraType, value);
+        bullet.SetParaValue(paraType, value);
         return 0;
     }
 
@@ -312,7 +312,7 @@ public partial class LuaLib
         float angle;
         if (luaState.Type(-2) == LuaType.LUA_TBOOLEAN )
         {
-            bullet.GetBulletPara(BulletParaType.VAngel, out angle);
+            bullet.GetParaValue(STGObjectParaType.VAngel, out angle);
         }
         else
         {
@@ -346,7 +346,7 @@ public partial class LuaLib
         float angle;
         if (luaState.Type(-3) == LuaType.LUA_TBOOLEAN)
         {
-            bullet.GetBulletPara(BulletParaType.VAngel, out angle);
+            bullet.GetParaValue(STGObjectParaType.VAngel, out angle);
         }
         else
         {

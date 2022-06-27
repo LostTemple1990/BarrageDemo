@@ -531,7 +531,7 @@ PlayerSettings:
   webGLCompressionFormat: 1
   webGLLinkerTarget: 0
   scriptingDefineSymbols:
-    1: Debug;ShowDebugInfo;StartFromGame;StartWithMarisa
+    1: Debug;SoundEnable;ShowDebugInfo;StartFromGame;StartWithMarisa
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}

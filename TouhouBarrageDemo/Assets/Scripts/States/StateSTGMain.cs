@@ -308,8 +308,8 @@ public class StateSTGMain : IState,ICommand
     /// <returns></returns>
     private long InitSeed()
     {
-        //long seed = System.DateTime.Now.Ticks % 0xffffffff;
-        long seed = 1281328940L;
+        long seed = System.DateTime.Now.Ticks % 0xffffffff;
+        //long seed = 1281328940L;
         return seed;
     }
 

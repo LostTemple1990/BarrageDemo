@@ -2,31 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Logger
+namespace YKEngine
 {
-    private const bool logFlag = true;
-
-    public static void Log(object message)
+    public class Logger
     {
-        if (logFlag)
+        private const bool logFlag = true;
+
+        public static void Log(object message)
         {
-            Debug.Log(message);
+            if (logFlag)
+            {
+                Debug.Log(message);
+            }
         }
-    }
 
-    public static void LogWarn(object message)
-    {
-        if (logFlag)
+        public static void LogWarn(object message)
         {
-            Debug.LogWarning(message);
+            if (logFlag)
+            {
+                Debug.LogWarning(message);
+            }
         }
-    }
 
-    public static void LogError(object message)
-    {
-        if (logFlag)
+        public static void LogError(object message)
         {
-            Debug.LogError(message);
+            if (logFlag)
+            {
+                Debug.LogError(message);
+            }
         }
     }
 }

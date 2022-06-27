@@ -700,41 +700,41 @@ public class EnemyLaser : EnemyBulletBase
     }
 
     #region 设置/获取子弹参数的相关public方法
-    public override bool GetBulletPara(BulletParaType paraType, out float value)
+    public override bool GetParaValue(STGObjectParaType paraType, out float value)
     {
         value = 0;
         switch (paraType)
         {
-            case BulletParaType.Alpha:
+            case STGObjectParaType.Alpha:
                 value = _curAlpha;
                 return true;
-            case BulletParaType.LaserLength:
+            case STGObjectParaType.LaserLength:
                 value = _curLength;
                 return true;
-            case BulletParaType.LaserWidth:
+            case STGObjectParaType.LaserWidth:
                 value = _curWidth;
                 return true;
-            case BulletParaType.CurveOmega:
+            case STGObjectParaType.CurveOmega:
                 value = _laserRotateOmega;
                 return true;
         }
         return false;
     }
 
-    public override bool SetBulletPara(BulletParaType paraType, float value)
+    public override bool SetParaValue(STGObjectParaType paraType, float value)
     {
         switch (paraType)
         {
-            case BulletParaType.Alpha:
+            case STGObjectParaType.Alpha:
                 SetAlpha(value);
                 return true;
-            case BulletParaType.LaserLength:
+            case STGObjectParaType.LaserLength:
                 SetLength(value);
                 return true;
-            case BulletParaType.LaserWidth:
+            case STGObjectParaType.LaserWidth:
                 SetWidth(value);
                 return true;
-            case BulletParaType.CurveOmega:
+            case STGObjectParaType.CurveOmega:
                 _laserRotateOmega = value;
                 return true;
         }

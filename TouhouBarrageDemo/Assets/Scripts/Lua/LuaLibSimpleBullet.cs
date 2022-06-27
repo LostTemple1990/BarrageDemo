@@ -97,8 +97,8 @@ public partial class LuaLib
             EnemySimpleBullet bullet = luaState.ToUserData(-3) as EnemySimpleBullet;
             float scaleX = (float)luaState.ToNumber(-2);
             float scaleY = (float)luaState.ToNumber(-1);
-            bullet.SetBulletPara(BulletParaType.ScaleX, scaleX);
-            bullet.SetBulletPara(BulletParaType.ScaleY, scaleY);
+            bullet.SetParaValue(STGObjectParaType.ScaleX, scaleX);
+            bullet.SetParaValue(STGObjectParaType.ScaleY, scaleY);
         }
         return 0;
     }

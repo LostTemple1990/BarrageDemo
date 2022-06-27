@@ -55,6 +55,7 @@ public class NormalEnemy : EnemyBase
             UpdateInvincibleStatus();
         }
         UpdateTask();
+        UpdateComponents();
         UpdatePos();
         if ( !IsOutOfBorder() )
         {
@@ -248,4 +249,133 @@ public class NormalEnemy : EnemyBase
         RenderTransform();
     }
     #endregion
+
+    #region IParaChangable
+    public override bool SetParaValue(STGObjectParaType paraType, float value)
+    {
+        switch (paraType)
+        {
+            case STGObjectParaType.Velocity:
+                _movableObj.velocity = value;
+                return true;
+            case STGObjectParaType.Vx:
+                _movableObj.vx = value;
+                return true;
+            case STGObjectParaType.Vy:
+                _movableObj.vy = value;
+                return true;
+            case STGObjectParaType.VAngel:
+                _movableObj.vAngle = value;
+                return true;
+            case STGObjectParaType.Acce:
+                _movableObj.acce = value;
+                return true;
+            case STGObjectParaType.AccAngle:
+                _movableObj.accAngle = value;
+                return true;
+            case STGObjectParaType.MaxVelocity:
+                _movableObj.maxVelocity = value;
+                return true;
+            case STGObjectParaType.CurveAngle:
+                _movableObj.curveAngle = value;
+                return true;
+            case STGObjectParaType.CurveRadius:
+                _movableObj.curveRadius = value;
+                return true;
+            case STGObjectParaType.CurveDeltaR:
+                _movableObj.curveDeltaRadius = value;
+                return true;
+            case STGObjectParaType.CurveOmega:
+                _movableObj.curveOmega = value;
+                return true;
+            case STGObjectParaType.CurveCenterX:
+                _movableObj.curveCenterX = value;
+                return true;
+            case STGObjectParaType.CurveCenterY:
+                _movableObj.curveCenterY = value;
+                return true;
+
+            case STGObjectParaType.Alpha:
+                {
+                    Color col = _enemyObj.GetColor();
+                    _enemyObj.SetColor(col.r, col.g, col.b, value);
+                    return true;
+                }
+            case STGObjectParaType.ScaleX:
+                {
+                    Vector2 scale = _enemyObj.GetScale();
+                    _enemyObj.SetScale(value, scale.y);
+                    return true;
+                }
+            case STGObjectParaType.ScaleY:
+                {
+                    Vector2 scale = _enemyObj.GetScale();
+                    _enemyObj.SetScale(scale.x, value);
+                    return true;
+                }
+        }
+        return false;
+    }
+
+    public override bool GetParaValue(STGObjectParaType paraType, out float value)
+    {
+        switch (paraType)
+        {
+            // ------
+            case STGObjectParaType.Velocity:
+                value = _movableObj.velocity;
+                return true;
+            case STGObjectParaType.Vx:
+                value = _movableObj.vx;
+                return true;
+            case STGObjectParaType.Vy:
+                value = _movableObj.vy;
+                return true;
+            case STGObjectParaType.VAngel:
+                value = _movableObj.vAngle;
+                return true;
+            case STGObjectParaType.Acce:
+                value = _movableObj.acce;
+                return true;
+            case STGObjectParaType.AccAngle:
+                value = _movableObj.accAngle;
+                return true;
+            case STGObjectParaType.MaxVelocity:
+                value = _movableObj.maxVelocity;
+                return true;
+            case STGObjectParaType.CurveAngle:
+                value = _movableObj.curveAngle;
+                return true;
+            case STGObjectParaType.CurveRadius:
+                value = _movableObj.curveRadius;
+                return true;
+            case STGObjectParaType.CurveDeltaR:
+                value = _movableObj.curveDeltaRadius;
+                return true;
+            case STGObjectParaType.CurveOmega:
+                value = _movableObj.curveOmega;
+                return true;
+            case STGObjectParaType.CurveCenterX:
+                value = _movableObj.curveCenterX;
+                return true;
+            case STGObjectParaType.CurveCenterY:
+                value = _movableObj.curveCenterY;
+                return true;
+             //   ---------------------------------
+            case STGObjectParaType.Alpha:
+                value = _enemyObj.GetColor().a;
+                return true;
+            case STGObjectParaType.ScaleX:
+                value = _enemyObj.GetScale().x;
+                return true;
+            case STGObjectParaType.ScaleY:
+                value = _enemyObj.GetScale().y;
+                return true;
+        }
+        value = 0;
+        return false;
+    }
+
+    #endregion
+
 }

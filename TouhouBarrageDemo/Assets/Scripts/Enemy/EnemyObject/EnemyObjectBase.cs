@@ -71,6 +71,16 @@ public class EnemyObjectBase
 
     }
 
+    public Vector2 GetScale()
+    {
+        return _curScale;
+    }
+
+    public Color GetColor()
+    {
+        return _curColor;
+    }
+
     public virtual void Clear()
     {
 

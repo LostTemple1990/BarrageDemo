@@ -14,7 +14,6 @@ public partial class LuaLib
     {
         EnemyBulletBase bullet = luaState.ToUserData(-2) as EnemyBulletBase;
         BulletComponentType type = (BulletComponentType)luaState.ToInteger(-1);
-        luaState.Pop(2);
         if ( type == BulletComponentType.ParasChange )
         {
             bullet.AddOrGetComponent<BCParasChange>();
@@ -51,8 +50,8 @@ public partial class LuaLib
     /// <returns></returns>
     public static int AddBulletParaChangeEvent(ILuaState luaState)
     {
-        EnemyBulletBase bullet = luaState.ToUserData(-12) as EnemyBulletBase;
-        BulletParaType para = (BulletParaType)luaState.ToInteger(-11);
+        ISTGObject o = luaState.ToUserData(-12) as ISTGObject;
+        STGObjectParaType para = (STGObjectParaType)luaState.ToInteger(-11);
         ParaChangeMode changeMode  = (ParaChangeMode)luaState.ToInteger(-10);
         int valueType = luaState.ToInteger(-9);
         float arg0 = (float)luaState.ToNumber(-8);
@@ -63,7 +62,7 @@ public partial class LuaLib
         InterpolationMode intMode = (InterpolationMode)luaState.ToInteger(-3);
         int repeatCount = luaState.ToInteger(-2);
         int repeatInterval = luaState.ToInteger(-1);
-        BCParasChange bc = bullet.AddOrGetComponent<BCParasChange>();
+        BCParasChange bc = o.AddOrGetComponent<BCParasChange>();
         ParaChangeValue changeValue = new ParaChangeValue
         {
             argType = valueType,

@@ -11,6 +11,9 @@ public class ItemManager
         return _instance;
     }
 
+    private const int ItemTextureCol = 4;
+    private const int ItemTextureRow = 5;
+    private const int ItemTextureTotal = ItemTextureCol * ItemTextureRow;
     private const float ItemSpWidth = 32f;
     private const float ItemSpHeight = 32f;
     private const float ItemSpHalfWidth = ItemSpWidth / 2;
@@ -38,6 +41,12 @@ public class ItemManager
     /// 对应最大的缓存数目
     /// </summary>
     private Dictionary<ItemType, int> _maxCacheCountDatas;
+
+    /// <summary>
+    /// 对应item在texture中的索引
+    /// <para>左下为0，从左往右，从下往上自增</para>
+    /// </summary>
+    private int[] _textureIndex;
     /// <summary>
     /// item对应图像的uv数据
     /// uv按照左上，左下，右上，右下来排列
@@ -71,42 +80,64 @@ public class ItemManager
     {
         _itemCount = 0;
         _clearListCount = 0;
+
+        _textureIndex = new int[ItemTextureCol * ItemTextureRow];
+        for (int i = 0; i < ItemTextureTotal; i++)
+        {
+            _textureIndex[i] = -1;
+        }
+        _textureIndex[(int)ItemBase.eItemSpriteType.PowerNormal] = 16;
+        _textureIndex[(int)ItemBase.eItemSpriteType.PowerNormalUp] = 18;
+        _textureIndex[(int)ItemBase.eItemSpriteType.PowerBig] = 9;
+        _textureIndex[(int)ItemBase.eItemSpriteType.PowerBigUp] = 11;
+        _textureIndex[(int)ItemBase.eItemSpriteType.PowerFull] = 13;
+        _textureIndex[(int)ItemBase.eItemSpriteType.PowerFullUp] = 15;
+        _textureIndex[(int)ItemBase.eItemSpriteType.BombFragment] = 0;
+        _textureIndex[(int)ItemBase.eItemSpriteType.BombFragmentUp] = 2;
+        _textureIndex[(int)ItemBase.eItemSpriteType.Bomb] = 1;
+        _textureIndex[(int)ItemBase.eItemSpriteType.BombUp] = 3;
+        _textureIndex[(int)ItemBase.eItemSpriteType.LifeFragment] = 12;
+        _textureIndex[(int)ItemBase.eItemSpriteType.LifeFragmentUp] = 14;
+        _textureIndex[(int)ItemBase.eItemSpriteType.Life] = 4;
+        _textureIndex[(int)ItemBase.eItemSpriteType.LifeUp] = 6;
+
         _itemSpriteUVData = new Vector2[(int)ItemBase.eItemSpriteType.Total][];
-        // PowerNormal
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerNormal] =
-            new Vector2[4] { new Vector2(0, 1), new Vector2(0, 0.8f), new Vector2(0.25f, 1), new Vector2(0.25f, 0.8f) };
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerNormalUp] =
-            new Vector2[4] { new Vector2(0.5f, 1), new Vector2(0.5f, 0.8f), new Vector2(0.75f, 1), new Vector2(0.75f, 0.8f) };
-        // PowerBig
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerBig] =
-            new Vector2[4] { new Vector2(0.25f, 0.6f), new Vector2(0.25f, 0.4f), new Vector2(0.5f, 0.6f), new Vector2(0.5f, 0.4f) };
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerBigUp] =
-            new Vector2[4] { new Vector2(0.75f, 0.6f), new Vector2(0.75f, 0.4f), new Vector2(1f, 0.6f), new Vector2(1f, 0.4f) };
-        // PowerFull
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerFull] =
-           new Vector2[4] { new Vector2(0.25f, 0.8f), new Vector2(0.25f, 0.6f), new Vector2(0.5f, 0.8f), new Vector2(0.5f, 0.6f) };
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerFullUp] =
-            new Vector2[4] { new Vector2(0.75f, 0.8f), new Vector2(0.75f, 0.6f), new Vector2(1f, 0.8f), new Vector2(1f, 0.6f) };
-        // BombFragment
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.BombFragment] =
-            new Vector2[4] { new Vector2(0, 0.2f), new Vector2(0, 0f), new Vector2(0.25f, 0.2f), new Vector2(0.25f, 0f) };
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.BombFragmentUp] =
-            new Vector2[4] { new Vector2(0.5f, 0.2f), new Vector2(0.5f, 0f), new Vector2(0.75f, 0.2f), new Vector2(0.75f, 0f) };
-        // Bomb
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.Bomb] =
-            new Vector2[4] { new Vector2(0.25f, 0.2f), new Vector2(0.25f, 0f), new Vector2(0.5f, 0.2f), new Vector2(0.5f, 0f) };
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.BombUp] =
-            new Vector2[4] { new Vector2(0.75f, 0.2f), new Vector2(0.75f, 0f), new Vector2(1f, 0.2f), new Vector2(1f, 0f) };
-        // LifeFragment
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.LifeFragment] =
-            new Vector2[4] { new Vector2(0, 0.8f), new Vector2(0, 0.6f), new Vector2(0.25f, 0.8f), new Vector2(0.25f, 0.6f) };
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.LifeFragmentUp] =
-            new Vector2[4] { new Vector2(0.5f, 0.8f), new Vector2(0.5f, 0.6f), new Vector2(0.75f, 0.8f), new Vector2(0.75f, 0.6f) };
-        // Life
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.Life] =
-            new Vector2[4] { new Vector2(0, 0.4f), new Vector2(0, 0.2f), new Vector2(0.25f, 0.4f), new Vector2(0.25f, 0.2f) };
-        _itemSpriteUVData[(int)ItemBase.eItemSpriteType.LifeUp] =
-            new Vector2[4] { new Vector2(0.5f, 0.4f), new Vector2(0.5f, 0.2f), new Vector2(0.75f, 0.4f), new Vector2(0.75f, 0.2f) };
+        GenerateSpriteUVData();
+        //// PowerNormal
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerNormal] =
+        //    new Vector2[4] { new Vector2(0, 1), new Vector2(0, 0.8f), new Vector2(0.25f, 1), new Vector2(0.25f, 0.8f) };
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerNormalUp] =
+        //    new Vector2[4] { new Vector2(0.5f, 1), new Vector2(0.5f, 0.8f), new Vector2(0.75f, 1), new Vector2(0.75f, 0.8f) };
+        //// PowerBig
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerBig] =
+        //    new Vector2[4] { new Vector2(0.25f, 0.6f), new Vector2(0.25f, 0.4f), new Vector2(0.5f, 0.6f), new Vector2(0.5f, 0.4f) };
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerBigUp] =
+        //    new Vector2[4] { new Vector2(0.75f, 0.6f), new Vector2(0.75f, 0.4f), new Vector2(1f, 0.6f), new Vector2(1f, 0.4f) };
+        //// PowerFull
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerFull] =
+        //   new Vector2[4] { new Vector2(0.25f, 0.8f), new Vector2(0.25f, 0.6f), new Vector2(0.5f, 0.8f), new Vector2(0.5f, 0.6f) };
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.PowerFullUp] =
+        //    new Vector2[4] { new Vector2(0.75f, 0.8f), new Vector2(0.75f, 0.6f), new Vector2(1f, 0.8f), new Vector2(1f, 0.6f) };
+        //// BombFragment
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.BombFragment] =
+        //    new Vector2[4] { new Vector2(0, 0.2f), new Vector2(0, 0f), new Vector2(0.25f, 0.2f), new Vector2(0.25f, 0f) };
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.BombFragmentUp] =
+        //    new Vector2[4] { new Vector2(0.5f, 0.2f), new Vector2(0.5f, 0f), new Vector2(0.75f, 0.2f), new Vector2(0.75f, 0f) };
+        //// Bomb
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.Bomb] =
+        //    new Vector2[4] { new Vector2(0.25f, 0.2f), new Vector2(0.25f, 0f), new Vector2(0.5f, 0.2f), new Vector2(0.5f, 0f) };
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.BombUp] =
+        //    new Vector2[4] { new Vector2(0.75f, 0.2f), new Vector2(0.75f, 0f), new Vector2(1f, 0.2f), new Vector2(1f, 0f) };
+        //// LifeFragment
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.LifeFragment] =
+        //    new Vector2[4] { new Vector2(0, 0.8f), new Vector2(0, 0.6f), new Vector2(0.25f, 0.8f), new Vector2(0.25f, 0.6f) };
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.LifeFragmentUp] =
+        //    new Vector2[4] { new Vector2(0.5f, 0.8f), new Vector2(0.5f, 0.6f), new Vector2(0.75f, 0.8f), new Vector2(0.75f, 0.6f) };
+        //// Life
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.Life] =
+        //    new Vector2[4] { new Vector2(0, 0.4f), new Vector2(0, 0.2f), new Vector2(0.25f, 0.4f), new Vector2(0.25f, 0.2f) };
+        //_itemSpriteUVData[(int)ItemBase.eItemSpriteType.LifeUp] =
+        //    new Vector2[4] { new Vector2(0.5f, 0.4f), new Vector2(0.5f, 0.2f), new Vector2(0.75f, 0.4f), new Vector2(0.75f, 0.2f) };
 
         // mesh
         _itemMeshGo = ResourceManager.GetInstance().GetPrefab("Prefab/Extra", "ItemMeshGo");
@@ -116,6 +147,28 @@ public class ItemManager
         _itemUVList = new List<Vector2>();
         _itemTriList = new List<int>();
         _itemColorList = new List<Color>();
+    }
+
+    private void GenerateSpriteUVData()
+    {
+        float colUnit = 1f / ItemTextureCol;
+        float rowUnit = 1f / ItemTextureRow;
+        for (int i=0;i<ItemTextureTotal;i++)
+        {
+            int index = _textureIndex[i];
+            if (index == -1)
+                break;
+            int tmpRow = index / ItemTextureCol;
+            int tmpCol = index % ItemTextureCol;
+            // leftup,leftdown,rightup,rightdown
+            _itemSpriteUVData[i] = new Vector2[4] 
+            {
+                new Vector2(tmpCol*colUnit, (tmpRow+1)*rowUnit),
+                new Vector2(tmpCol*colUnit, tmpRow*rowUnit),
+                new Vector2((tmpCol+1)*colUnit, (tmpRow+1)*rowUnit),
+                new Vector2((tmpCol+1)*colUnit, tmpRow*rowUnit)
+            };
+        }
     }
 
     public void Update()
@@ -177,12 +230,15 @@ public class ItemManager
         _itemTriList.Clear();
         _itemColorList.Clear();
         int verIndex = 0;
+        ItemBase tmpItem;
+        ItemBase.STGItemRenderData tmpData;
         for (int i = 0; i < _itemCount; i++)
         {
-            if (_itemList[i] != null)
+            tmpItem = _itemList[i];
+            if (tmpItem != null && tmpItem.clearFlag != 1)
             {
-                ItemBase.STGItemRenderData data = _itemList[i].GetRenderData();
-                BuildItemMesh(data.spType, data.pos, ref verIndex);
+                tmpData = tmpItem.GetRenderData();
+                BuildItemMesh(tmpData.spType, tmpData.pos, ref verIndex);
             }
         }
         _itemMesh.vertices = _itemVerList.ToArray();

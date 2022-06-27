@@ -79,6 +79,7 @@ public class STGMain
         //    Logger.Log("Frame Interval = " + (currentTicks - _lastFrameTicks) * 0.0001f);
         //    _lastFrameTicks = currentTicks;
         //}
+        frameNode++;
         // 每帧开始
         BulletsManager.GetInstance().OnSTGFrameStart();
         // 逻辑部分
@@ -104,7 +105,6 @@ public class STGMain
 #endif
         //if (frameNode == 0)
         //    FPSController.GetInstance().Restart(true);
-        frameNode++;
         //if (frameNode % 60 == 0)
         //{
         //   STGBulletEliminateEffect1 effect =  EffectsManager.GetInstance().CreateEffectByType(EffectType.BulletEliminate) as STGBulletEliminateEffect1;

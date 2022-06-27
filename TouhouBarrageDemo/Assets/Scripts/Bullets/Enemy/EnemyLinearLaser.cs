@@ -1054,23 +1054,23 @@ public class EnemyLinearLaser : EnemyBulletBase
         }
     }
 
-    public override bool GetBulletPara(BulletParaType paraType, out float value)
+    public override bool GetParaValue(STGObjectParaType paraType, out float value)
     {
         switch ( paraType )
         {
-            case BulletParaType.Velocity:
+            case STGObjectParaType.Velocity:
                 value = _movableObj.velocity;
                 return true;
-            case BulletParaType.VAngel:
+            case STGObjectParaType.VAngel:
                 value = _movableObj.vAngle;
                 return true;
-            case BulletParaType.Acce:
+            case STGObjectParaType.Acce:
                 value = _movableObj.acce;
                 return true;
-            case BulletParaType.AccAngle:
+            case STGObjectParaType.AccAngle:
                 value = _movableObj.accAngle;
                 return true;
-            case BulletParaType.Alpha:
+            case STGObjectParaType.Alpha:
                 value = _curAlpha;
                 return true;
         }
@@ -1078,35 +1078,35 @@ public class EnemyLinearLaser : EnemyBulletBase
         return false;
     }
 
-    public override bool SetBulletPara(BulletParaType paraType, float value)
+    public override bool SetParaValue(STGObjectParaType paraType, float value)
     {
         switch (paraType)
         {
-            case BulletParaType.Velocity:
+            case STGObjectParaType.Velocity:
                 {
                     _movableObj.velocity = value;
                     return true;
                 }
-            case BulletParaType.VAngel:
+            case STGObjectParaType.VAngel:
                 if ( !_isInitAngle)
                 {
                     _movableObj.vAngle = value;
                     _isInitAngle = true;
                 }
                 return true;
-            case BulletParaType.Acce:
+            case STGObjectParaType.Acce:
                 {
                     _movableObj.acce = value;
                     return true;
                 }
-            case BulletParaType.AccAngle:
+            case STGObjectParaType.AccAngle:
                 if ( !_isInitAngle )
                 {
                     _movableObj.accAngle = value;
                     _isInitAngle = true;
                 }
                 return true;
-            case BulletParaType.Alpha:
+            case STGObjectParaType.Alpha:
                 SetAlpha(value);
                 return true;
         }

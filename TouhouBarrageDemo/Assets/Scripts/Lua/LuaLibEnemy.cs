@@ -459,4 +459,24 @@ public partial class LuaLib
         }
         return 0;
     }
+
+    public static int SetEnemyScale(ILuaState luaState)
+    {
+        EnemyBase enemy = luaState.ToUserData(-3) as EnemyBase;
+        float scaleX = (float)luaState.ToNumber(-2);
+        float scaleY = (float)luaState.ToNumber(-1);
+        enemy.SetScale(scaleX, scaleY);
+        return 0;
+    }
+
+    public static int SetEnemyColor(ILuaState luaState)
+    {
+        EnemyBase enemy = luaState.ToUserData(-5) as EnemyBase;
+        float r = (float)luaState.ToNumber(-4);
+        float g = (float)luaState.ToNumber(-3);
+        float b = (float)luaState.ToNumber(-2);
+        float a = (float)luaState.ToNumber(-1);
+        enemy.SetColor(r, g, b, a);
+        return 0;
+    }
 }

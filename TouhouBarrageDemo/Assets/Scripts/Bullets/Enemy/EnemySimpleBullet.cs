@@ -541,23 +541,59 @@ public class EnemySimpleBullet : EnemyBulletMovable
         return false;
     }
 
-    public override bool GetBulletPara(BulletParaType paraType, out float value)
+    #region IParaChangable
+    public override bool GetParaValue(STGObjectParaType paraType, out float value)
     {
-        float returnValue;
-        if ( base.GetBulletPara(paraType, out returnValue) )
-        {
-            value = returnValue;
-            return true;
-        }
         switch (paraType)
         {
-            case BulletParaType.Alpha:
+            // ------BulletMovable
+            case STGObjectParaType.Velocity:
+                value = _curVelocity;
+                return true;
+            case STGObjectParaType.Vx:
+                value = _vx;
+                return true;
+            case STGObjectParaType.Vy:
+                value = _vy;
+                return true;
+            case STGObjectParaType.VAngel:
+                value = _curVAngle;
+                return true;
+            case STGObjectParaType.Acce:
+                value = _curAcce;
+                return true;
+            case STGObjectParaType.AccAngle:
+                value = _curAccAngle;
+                return true;
+            case STGObjectParaType.MaxVelocity:
+                value = _maxVelocity;
+                return true;
+            case STGObjectParaType.CurveAngle:
+                value = _curCurveAngle;
+                return true;
+            case STGObjectParaType.CurveRadius:
+                value = _curRadius;
+                return true;
+            case STGObjectParaType.CurveDeltaR:
+                value = _deltaRadius;
+                return true;
+            case STGObjectParaType.CurveOmega:
+                value = _curOmega;
+                return true;
+            case STGObjectParaType.CurveCenterX:
+                value = _centerPos.x;
+                return true;
+            case STGObjectParaType.CurveCenterY:
+                value = _centerPos.y;
+                return true;
+            // ---------------------------------
+            case STGObjectParaType.Alpha:
                 value = _curAlpha;
                 return true;
-            case BulletParaType.ScaleX:
+            case STGObjectParaType.ScaleX:
                 value = _scaleX;
                 return true;
-            case BulletParaType.ScaleY:
+            case STGObjectParaType.ScaleY:
                 value = _scaleY;
                 return true;
         }
@@ -565,18 +601,57 @@ public class EnemySimpleBullet : EnemyBulletMovable
         return false;
     }
 
-    public override bool SetBulletPara(BulletParaType paraType, float value)
+    public override bool SetParaValue(STGObjectParaType paraType, float value)
     {
-        if (base.SetBulletPara(paraType, value)) return true;
         switch (paraType)
         {
-            case BulletParaType.Alpha:
+            case STGObjectParaType.Velocity:
+                Velocity = value;
+                return true;
+            case STGObjectParaType.Vx:
+                Vx = value;
+                return true;
+            case STGObjectParaType.Vy:
+                Vy = value;
+                return true;
+            case STGObjectParaType.VAngel:
+                VAngle = value;
+                return true;
+            case STGObjectParaType.Acce:
+                Acce = value;
+                return true;
+            case STGObjectParaType.AccAngle:
+                AccAngle = value;
+                return true;
+            case STGObjectParaType.MaxVelocity:
+                MaxVelocity = value;
+                return true;
+            case STGObjectParaType.CurveAngle:
+                CurveAngle = value;
+                return true;
+            case STGObjectParaType.CurveRadius:
+                CurveRadius = value;
+                return true;
+            case STGObjectParaType.CurveDeltaR:
+                CurveDeltaRadius = value;
+                return true;
+            case STGObjectParaType.CurveOmega:
+                CurveOmega = value;
+                return true;
+            case STGObjectParaType.CurveCenterX:
+                _centerPos.x = value;
+                return true;
+            case STGObjectParaType.CurveCenterY:
+                _centerPos.y = value;
+                return true;
+
+            case STGObjectParaType.Alpha:
                 SetAlpha(value);
                 return true;
-            case BulletParaType.ScaleX:
+            case STGObjectParaType.ScaleX:
                 SetScaleX(value);
                 return true;
-            case BulletParaType.ScaleY:
+            case STGObjectParaType.ScaleY:
                 SetScaleY(value);
                 return true;
         }
@@ -604,6 +679,7 @@ public class EnemySimpleBullet : EnemyBulletMovable
         _collisionHalfHeight = _cfg.collisionRadius * value;
         _isScaleChanged = true;
     }
+    #endregion
 
     public override string BulletId
     {

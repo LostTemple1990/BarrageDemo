@@ -61,7 +61,7 @@ public class MathUtil
         // 计算圆与aabb是否碰撞
         float dw = Mathf.Max(0, Mathf.Abs(circlePos.x - aabbPos.x) - halfWidth);
         float dh = Mathf.Max(0, Mathf.Abs(circlePos.y - aabbPos.y) - halfHeight);
-        return radius * radius <= dw * dw + dh * dh;
+        return radius * radius >= dw * dw + dh * dh;
     }
 
     /// <summary>

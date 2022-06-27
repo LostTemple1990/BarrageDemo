@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using YKEngine;
 using System.Collections.Generic;
+using Logger = YKEngine.Logger;
 
 namespace BarrageEditor
 {
@@ -190,7 +191,7 @@ namespace BarrageEditor
                 typeList = new List<NodeType>[]
                 {
                     new List<NodeType> { NodeType.DefineBullet, NodeType.CreateCustomizedBullet, NodeType.CreateSimpleBullet },
-                    new List<NodeType> { NodeType.SetBulletStyle, NodeType.ChangeBulletProperty },
+                    new List<NodeType> { NodeType.SetBulletStyle },
                 },
             };
             _nodeTabs.Add(tab);
@@ -202,7 +203,7 @@ namespace BarrageEditor
                 typeList = new List<NodeType>[]
                 {
                     new List<NodeType> { NodeType.DefineLaser, NodeType.CreateCustomizedLaser, NodeType.LaserTurnHalfOn, NodeType.LaserTurnOn, NodeType.LaserTurnOff, NodeType.LaserChangeLengthTo },
-                    new List<NodeType> { NodeType.SetBulletStyle, NodeType.ChangeBulletProperty },
+                    new List<NodeType> { NodeType.SetBulletStyle },
                 },
             };
             _nodeTabs.Add(tab);
@@ -226,7 +227,7 @@ namespace BarrageEditor
                 typeList = new List<NodeType>[]
                 {
                     new List<NodeType> { NodeType.DefineCollider, NodeType.CreateCustomizedCollider, NodeType.CreateSimpleCollider },
-                    new List<NodeType> { NodeType.ColliderTrigger, NodeType.Rebound },
+                    new List<NodeType> { NodeType.ChangeBulletProperty, NodeType.ColliderTrigger, NodeType.Rebound },
                     new List<NodeType> { NodeType.DropItems },
                 },
             };

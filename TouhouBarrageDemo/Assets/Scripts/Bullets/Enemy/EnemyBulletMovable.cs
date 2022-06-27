@@ -370,10 +370,6 @@ public class EnemyBulletMovable : EnemyBulletBase
 
     protected virtual void RenderPosition()
     {
-        if (_trans == null)
-        {
-            int k = 1;
-        }
         _trans.localPosition = new Vector3(_curPos.x, _curPos.y, -_orderInLayer);
     }
 
@@ -387,95 +383,95 @@ public class EnemyBulletMovable : EnemyBulletBase
     }
 
     #region 设置/获取移动参数的相关public方法
-    public override bool GetBulletPara(BulletParaType paraType, out float value)
+    public override bool GetParaValue(STGObjectParaType paraType, out float value)
     {
         value = 0;
         switch ( paraType )
         {
-            case BulletParaType.Velocity:
+            case STGObjectParaType.Velocity:
                 value = _curVelocity;
                 return true;
-            case BulletParaType.Vx:
+            case STGObjectParaType.Vx:
                 value = _vx;
                 return true;
-            case BulletParaType.Vy:
+            case STGObjectParaType.Vy:
                 value = _vy;
                 return true;
-            case BulletParaType.VAngel:
+            case STGObjectParaType.VAngel:
                 value = _curVAngle;
                 return true;
-            case BulletParaType.Acce:
+            case STGObjectParaType.Acce:
                 value = _curAcce;
                 return true;
-            case BulletParaType.AccAngle:
+            case STGObjectParaType.AccAngle:
                 value = _curAccAngle;
                 return true;
-            case BulletParaType.MaxVelocity:
+            case STGObjectParaType.MaxVelocity:
                 value = _maxVelocity;
                 return true;
-            case BulletParaType.CurveAngle:
+            case STGObjectParaType.CurveAngle:
                 value = _curCurveAngle;
                 return true;
-            case BulletParaType.CurveRadius:
+            case STGObjectParaType.CurveRadius:
                 value = _curRadius;
                 return true;
-            case BulletParaType.CurveDeltaR:
+            case STGObjectParaType.CurveDeltaR:
                 value = _deltaRadius;
                 return true;
-            case BulletParaType.CurveOmega:
+            case STGObjectParaType.CurveOmega:
                 value = _curOmega;
                 return true;
-            case BulletParaType.CurveCenterX:
+            case STGObjectParaType.CurveCenterX:
                 value = _centerPos.x;
                 return true;
-            case BulletParaType.CurveCenterY:
+            case STGObjectParaType.CurveCenterY:
                 value = _centerPos.y;
                 return true;
         }
         return false;
     }
 
-    public override bool SetBulletPara(BulletParaType paraType, float value)
+    public override bool SetParaValue(STGObjectParaType paraType, float value)
     {
         switch (paraType)
         {
-            case BulletParaType.Velocity:
+            case STGObjectParaType.Velocity:
                 Velocity = value;
                 return true;
-            case BulletParaType.Vx:
+            case STGObjectParaType.Vx:
                 Vx = value;
                 return true;
-            case BulletParaType.Vy:
+            case STGObjectParaType.Vy:
                 Vy = value;
                 return true;
-            case BulletParaType.VAngel:
+            case STGObjectParaType.VAngel:
                 VAngle = value;
                 return true;
-            case BulletParaType.Acce:
+            case STGObjectParaType.Acce:
                 Acce = value;
                 return true;
-            case BulletParaType.AccAngle:
+            case STGObjectParaType.AccAngle:
                 AccAngle = value;
                 return true;
-            case BulletParaType.MaxVelocity:
+            case STGObjectParaType.MaxVelocity:
                 MaxVelocity = value;
                 return true;
-            case BulletParaType.CurveAngle:
+            case STGObjectParaType.CurveAngle:
                 CurveAngle = value;
                 return true;
-            case BulletParaType.CurveRadius:
+            case STGObjectParaType.CurveRadius:
                 CurveRadius = value;
                 return true;
-            case BulletParaType.CurveDeltaR:
+            case STGObjectParaType.CurveDeltaR:
                 CurveDeltaRadius = value;
                 return true;
-            case BulletParaType.CurveOmega:
+            case STGObjectParaType.CurveOmega:
                 CurveOmega = value;
                 return true;
-            case BulletParaType.CurveCenterX:
+            case STGObjectParaType.CurveCenterX:
                 _centerPos.x = value;
                 return true;
-            case BulletParaType.CurveCenterY:
+            case STGObjectParaType.CurveCenterY:
                 _centerPos.y = value;
                 return true;
         }

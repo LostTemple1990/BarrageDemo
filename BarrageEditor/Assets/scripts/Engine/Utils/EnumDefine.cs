@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnumDefine
+namespace YKEngine
 {
-
-}
-
-public enum eBlendMode : int
-{
-    Normal = 0,
-    SoftAdditive = 1,
+    public enum eBlendMode : int
+    {
+        Normal = 0,
+        SoftAdditive = 1,
+    }
 }
